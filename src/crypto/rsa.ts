@@ -1,6 +1,8 @@
 import { RSAKeychain, RSA } from 'react-native-rsa-native'
 global.Buffer = global.Buffer || require('buffer').Buffer
+
 // import SecureStorage from 'react-native-secure-storage'
+import EncryptedStorage from 'react-native-encrypted-storage';
 
 const KEY_SIZE = 2048
 const KEY_TAG = 'sphinx'
@@ -13,18 +15,25 @@ export async function generateKeyPair(): Promise<{ private: string, public: stri
     const keys = await RSA.generateKeys(KEY_SIZE)
     const priv = privuncert(keys.private)
     const pub = pubuncert(keys.public)
+
     // await SecureStorage.setItem('private', priv, { service: 'sphinx_encryption_key' })
+    await EncryptedStorage.setItem(
+      "private", priv
+    );
+
     return { private: priv, public: pub }
   } catch (e) { }
 }
 
 export async function getPrivateKey() {
   try {
-    const config = { service: 'sphinx_encryption_key' }
+
+    // const config = { service: 'sphinx_encryption_key' }
     // const got = await SecureStorage.getItem('private', config)
     // return got
+    const item = await EncryptedStorage.getItem("private");
+    return item;
 
-    return null;
   } catch (e) {
     console.log(e)
   }
@@ -32,11 +41,15 @@ export async function getPrivateKey() {
 
 export async function setPrivateKey(priv) {
   try {
-    const config = { service: 'sphinx_encryption_key' }
+
+    // const config = { service: 'sphinx_encryption_key' }
     // const got = await SecureStorage.setItem('private', priv, config)
     // return got
+    await EncryptedStorage.setItem(
+      "private", priv
+    );
 
-    return null;
+    return priv;
   } catch (e) {
     console.log(e)
   }
@@ -44,9 +57,11 @@ export async function setPrivateKey(priv) {
 
 export async function decrypt(data) {
   try {
-    const config = { service: 'sphinx_encryption_key' }
+    // const config = { service: 'sphinx_encryption_key' }
     // const priv = await SecureStorage.getItem('private', config)
-    const priv = null;
+
+    const priv = await EncryptedStorage.getItem("private");
+
     const key = privcert(priv)
 
     const buf = Buffer.from(data, 'base64')

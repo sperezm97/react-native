@@ -3,7 +3,10 @@ import { View, StyleSheet, Text } from "react-native";
 import NumKey from "./numkey";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { ActivityIndicator, Colors } from "react-native-paper";
+
 // import SecureStorage from 'react-native-secure-storage'
+import EncryptedStorage from "react-native-encrypted-storage";
+
 import ReactNativeHapticFeedback from "react-native-haptic-feedback";
 import AsyncStorage from "@react-native-community/async-storage";
 import moment from "moment";
@@ -27,7 +30,10 @@ export default function PIN(props) {
       }
       // await SecureStorage.removeItem('pin',ssConfig)
       // const storedPin = await SecureStorage.getItem("pin", ssConfig);
-      const storedPin = null;
+
+      await EncryptedStorage.removeItem("pin");
+      const storedPin = await EncryptedStorage.getItem("pin");
+
       if (storedPin) setMode("enter");
     })();
   }, []);
@@ -61,8 +67,9 @@ export default function PIN(props) {
     if (mode === "enter") {
       setChecking(true);
       try {
-        const storedPin = null;
         // const storedPin = await SecureStorage.getItem("pin", ssConfig);
+        const storedPin = await EncryptedStorage.getItem("pin");
+
         if (storedPin === thePin) {
           AsyncStorage.setItem("pin_entered", ts());
           props.onFinish();
@@ -134,7 +141,8 @@ export default function PIN(props) {
 export async function userPinCode(): Promise<string> {
   try {
     // const pin = await SecureStorage.getItem("pin", ssConfig);
-    const pin = null;
+    const pin = await EncryptedStorage.getItem("pin");
+
     if (pin) return pin;
     else return "";
   } catch (e) {
@@ -145,7 +153,9 @@ export async function userPinCode(): Promise<string> {
 export async function setPinCode(pin): Promise<any> {
   AsyncStorage.setItem("pin_entered", ts());
   // return await SecureStorage.setItem("pin", pin, ssConfig);
-  return null;
+
+  await EncryptedStorage.setItem("pin", pin);
+  return pin;
 }
 
 export async function updatePinTimeout(v) {
@@ -178,6 +188,8 @@ export async function wasEnteredRecently(): Promise<boolean> {
 
 export async function clearPin(): Promise<boolean> {
   // await SecureStorage.removeItem("pin", ssConfig);
+
+  await EncryptedStorage.removeItem("pin");
   await AsyncStorage.removeItem("pin_entered");
   return true;
 }

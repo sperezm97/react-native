@@ -109,11 +109,31 @@ function initWeb() {
   hydrate('theme', themeStore)
 }
 
+function initIOS() {
+  console.log('=> initialize store')
+  Promise.all([
+    hydrate('user', userStore),
+    hydrate('details', detailsStore),
+    hydrate('contacts', contactStore),
+    hydrate('chats', chatStore),
+    hydrate('meme', memeStore),
+  ]).then(() => {
+    console.log('=> store initialized')
+    uiStore.setReady(true)
+    testAsyncStorage()
+    hydrateMessageStoreFromRealm()
+  })
+  hydrate('theme', themeStore)
+}
+
 if (Platform.OS === 'android') {
   initAndroid()
 }
 if (Platform.OS === 'web') {
   initWeb()
+}
+if (Platform.OS === 'ios') {
+  initIOS()
 }
 
 const ctx = React.createContext({

@@ -262,7 +262,7 @@ export class UiStore {
     this.onchain = b
   }
 
-  @observable newContact: {[k:string]:string} = null
+  @observable newContact: { [k: string]: string } = null
   @action setNewContact(obj: { [k: string]: any }) {
     this.newContact = obj
   }
