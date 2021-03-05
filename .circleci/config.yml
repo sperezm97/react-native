@@ -27,11 +27,11 @@ jobs:
             npm install && ls node_modules
             ls -la
 
-      - run:
-          name: Update .env file
-          command: |
-            cd ..
-            mv .env.production .env
+      # - run:
+      #     name: Update .env file
+      #     command: |
+      #       cd ..
+      #       mv .env.production .env
 
       - run:
           name: Install pods
@@ -72,12 +72,12 @@ jobs:
             npm install && ls node_modules
             ls -la
 
-      - run:
-          name: Update .env file
-          command: |
-            cd ..
-            mv .env.staging .env
-            # mv .env.storybook .env
+      # - run:
+      #     name: Update .env file
+      #     command: |
+      #       cd ..
+      #       mv .env.staging .env
+      #       # mv .env.storybook .env
 
       - run:
           name: Install pods
