@@ -4,7 +4,7 @@ jobs:
     working_directory: ~/production_ios/ios
 
     macos:
-      xcode: "12.4"
+      xcode: "12.4.0"
 
     steps:
       - checkout:
@@ -49,7 +49,7 @@ jobs:
     working_directory: ~/staging_ios/ios
 
     macos:
-      xcode: "12.4"
+      xcode: "12.4.0"
 
     steps:
       - checkout:
