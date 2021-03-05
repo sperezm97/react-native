@@ -1,0 +1,351 @@
+platform :ios do
+  before_all do
+    setup_circle_ci
+  end
+
+ # PRODUCTION 
+  desc "Build project"
+  lane :production_circle do
+    get_version_numbers_for_production
+
+    provision_for_production
+
+    match(
+      type: "appstore",
+      app_identifier: ["gg.hotstreak.HotStreak"],
+      readonly: true
+    )
+
+    increment_build_number(
+      xcodeproj: "ios/HotStreak.xcodeproj",
+      build_number: Time.now.to_i
+    )
+
+    disable_automatic_code_signing(
+      path: "ios/HotStreak.xcodeproj"
+    )
+
+    update_project_provisioning(
+      xcodeproj: "ios/HotStreak.xcodeproj"
+    )
+
+    gym(
+      scheme: "HotStreak-Production",
+      workspace: "ios/HotStreak.xcworkspace",
+      export_method: "app-store",
+      export_options: {
+        provisioningProfiles: {
+            "gg.hotstreak.HotStreak" => "match AppStore gg.hotstreak.HotStreak"
+        }
+      }
+    )
+
+    # deliver(
+    #   username: "ci@unblockable.com",
+    #   force: true
+    # )
+  end
+
+  desc "Set up provisioning"
+  lane :provision_for_production do
+    Dir.chdir("../ios") do
+      match(
+        app_identifier: "gg.hotstreak.HotStreak"
+      )
+
+      get_certificates
+
+      get_provisioning_profile(
+        app_identifier: "gg.hotstreak.HotStreak"
+      )
+
+      get_push_certificate(
+        force: false, # create a new profile, even if the old one is still valid
+        app_identifier: "gg.hotstreak.HotStreak.staging", # optional app identifier,
+        save_private_key: false,
+        new_profile: proc do |profile_path| # this block gets called when a new profile was generated
+          puts profile_path # the absolute path to the new PEM file
+          # insert the code to upload the PEM file to the server
+        end
+      )
+    end
+  end
+
+  desc "Get version numbers"
+  lane :get_version_numbers_for_production do
+    app_version = get_version_number(
+      xcodeproj: "ios/HotStreak.xcodeproj",
+      target: "HotStreak"
+    )
+  
+    build_number = latest_testflight_build_number(
+      app_identifier: "gg.hotstreak.HotStreak",
+      username: "ci@unblockable.com",
+      version: app_version
+    )
+  
+    # app_version = app_version + 1
+    puts app_version
+
+    # build_number = build_number + 1
+    # build_number = Time.now.to_i
+    puts build_number
+  end
+
+# STAGING
+  desc "Build project"
+  lane :staging_circle do
+    get_version_numbers_for_staging
+
+    provision_for_staging
+
+    match(
+      type: "appstore",
+      app_identifier: ["gg.hotstreak.HotStreak.staging"],
+      readonly: true
+    )
+
+    increment_build_number(
+      xcodeproj: "ios/HotStreak.xcodeproj",
+      build_number: Time.now.to_i
+    )
+
+    disable_automatic_code_signing(
+      path: "ios/HotStreak.xcodeproj"
+    )
+
+    update_project_provisioning(
+      xcodeproj: "ios/HotStreak.xcodeproj"
+    )
+
+    gym(
+      scheme: "HotStreak-Staging",
+      workspace: "ios/HotStreak.xcworkspace",
+      export_method: "app-store",
+      export_options: {
+        provisioningProfiles: {
+            "gg.hotstreak.HotStreak.staging" => "match AppStore gg.hotstreak.HotStreak.staging"
+        }
+      }
+    )
+
+    deliver(
+      username: "ci@unblockable.com",
+      force: true
+    )
+  end
+
+  desc "Set up provisioning"
+  lane :provision_for_staging do
+    Dir.chdir("../ios") do
+      match(
+        app_identifier: "gg.hotstreak.HotStreak.staging",
+        type: "development"
+      )
+
+      get_certificates(
+        development: true
+      )
+
+      get_provisioning_profile(
+        development: true,
+        # adhoc: false,
+        app_identifier: "gg.hotstreak.HotStreak.staging"
+      )
+
+      get_push_certificate(
+        development: true,
+        force: false, # create a new profile, even if the old one is still valid
+        app_identifier: "gg.hotstreak.HotStreak.staging", # optional app identifier,
+        save_private_key: false,
+        new_profile: proc do |profile_path| # this block gets called when a new profile was generated
+          puts profile_path # the absolute path to the new PEM file
+          # insert the code to upload the PEM file to the server
+        end
+      )
+    end
+  end
+
+  desc "Get version numbers"
+  lane :get_version_numbers_for_staging do
+    app_version = get_version_number(
+      xcodeproj: "ios/HotStreak.xcodeproj",
+      target: "HotStreak"
+    )
+  
+    build_number = latest_testflight_build_number(
+      app_identifier: "gg.hotstreak.HotStreak.staging",
+      username: "ci@unblockable.com",
+      version: app_version
+    )
+  
+    # app_version = app_version + 1
+    puts app_version
+
+    # build_number = build_number + 1
+    # build_number = Time.now.to_i
+    puts build_number
+  end
+end
+
+platform :android do
+  desc "Update production version"
+  lane :production_beta_track_version_update do
+    versions = google_play_track_version_codes(
+        track: "beta",
+        package_name: "gg.hotstreak.HotStreak",
+        json_key_data: ENV["ANDROID_KEY"]
+    )
+
+    puts versions
+
+    if !versions.any?
+      versions = google_play_track_version_codes(
+          track: "production",
+          package_name: "gg.hotstreak.HotStreak",
+          json_key_data: ENV["ANDROID_KEY"]
+      )
+    end
+
+    version = versions[0]
+    version = version + 1
+
+    puts version
+
+    # OSX
+    system(`sed -i "" 's/versionCode .*/versionCode '#{version}'/g' "../android/app/build.gradle"`)
+    system(`sed -i "" 's/versionName .*/versionName '\\"1.0.#{version}\\"'/g' "../android/app/build.gradle"`)
+
+    version
+  end
+
+  desc "Deploy a new version of production to the Play Store"
+  lane :production_beta_track_release do |options|
+    puts options[:build_path]
+
+    # VERSION
+    versions = google_play_track_version_codes(
+        track: "beta",
+        package_name: "gg.hotstreak.HotStreak",
+        json_key_data: ENV["ANDROID_KEY"]
+    )
+
+    puts versions
+
+    if !versions.any?
+      versions = google_play_track_version_codes(
+          track: "production",
+          package_name: "gg.hotstreak.HotStreak",
+          json_key_data: ENV["ANDROID_KEY"]
+      )
+    end
+
+    version = versions[0]
+    version = version + 1
+
+    puts version
+    # VERSION
+
+    system(`curl https://upload.bugsnag.com/react-native-source-map \
+      -F apiKey=#{ENV['BUGSNAG_KEY']} \
+      -F appVersion=1.0.#{version} \
+      -F dev=false \
+      -F platform=android \
+      -F sourceMap=@../sourcemap.android.js \
+      -F bundle=@../android/app/build/generated/assets/react/release/index.android.bundle`)
+
+    puts Dir.pwd
+    puts Dir.entries(".")
+
+    supply(
+      track: "beta",
+      package_name: "gg.hotstreak.HotStreak",
+      apk: options[:build_path],
+      json_key_data: ENV["ANDROID_KEY"]
+    )
+  end
+
+  desc "Update staging version"
+  lane :staging_beta_track_version_update do
+    versions = google_play_track_version_codes(
+        track: "beta",
+        package_name: "gg.hotstreak.HotStreak.staging",
+        json_key_data: ENV["ANDROID_KEY"]
+    )
+
+    puts versions
+
+    if !versions.any?
+      versions = google_play_track_version_codes(
+          track: "production",
+          package_name: "gg.hotstreak.HotStreak.staging",
+          json_key_data: ENV["ANDROID_KEY"]
+      )
+    end
+
+    version = versions[0]
+    version = version + 1
+
+    puts version
+
+    # OSX
+    system(`sed -i "" 's/versionCode .*/versionCode '#{version}'/g' "../android/app/build.gradle"`)
+    system(`sed -i "" 's/versionName .*/versionName '\\"1.0.#{version}\\"'/g' "../android/app/build.gradle"`)
+
+    # system(`curl https://upload.bugsnag.com/react-native-source-map \
+    #  -F apiKey=YOUR_API_KEY_HERE \
+    #  -F appVersion=#{ENV['BUGSNAG_KEY']} \
+    #  -F dev=false \
+    #  -F platform=android \
+    #  -F sourceMap=@android-release.bundle.map \
+    #  -F bundle=@android-release.bundle`)
+
+    version
+  end
+
+  desc "Deploy a new version of staging to the Play Store"
+  lane :staging_beta_track_release do |options|
+    # VERSION
+    versions = google_play_track_version_codes(
+        track: "beta",
+        package_name: "gg.hotstreak.HotStreak",
+        json_key_data: ENV["ANDROID_KEY"]
+    )
+
+    puts versions
+
+    if !versions.any?
+      versions = google_play_track_version_codes(
+          track: "production",
+          package_name: "gg.hotstreak.HotStreak",
+          json_key_data: ENV["ANDROID_KEY"]
+      )
+    end
+
+    version = versions[0]
+    version = version + 1
+
+    puts version
+    # VERSION
+
+    puts options[:build_path]
+
+    system(`curl https://upload.bugsnag.com/react-native-source-map \
+      -F apiKey=#{ENV['BUGSNAG_KEY']} \
+      -F appVersion=1.0.#{version} \
+      -F dev=true \
+      -F platform=android \
+      -F sourceMap=@../sourcemap.android.js \
+      -F bundle=@../android/app/build/generated/assets/react/release/index.android.bundle`)
+
+    puts Dir.pwd
+    puts Dir.entries(".")
+
+    supply(
+      track: "beta",
+      package_name: "gg.hotstreak.HotStreak.staging",
+      apk: options[:build_path],
+      json_key_data: ENV["ANDROID_KEY"]
+    )
+  end
+end

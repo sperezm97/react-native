@@ -1,0 +1,218 @@
+---
+jobs:
+  production_ios:
+    working_directory: ~/production_ios/ios
+
+    macos:
+      xcode: "12.4"
+
+    steps:
+      - checkout:
+          path: ~/production_ios
+
+      - run:
+          command: "bundle install"
+          name: Build
+
+      - run:
+          name: "Check current version of node"
+          command: |
+            which node
+            node -v
+
+      # - run:
+      #     name: Install node_modules
+      #     command: |
+      #       cd ..
+      #       npm install && ls node_modules
+      #       ls -la
+
+      # - run:
+      #     name: Update .env file
+      #     command: |
+      #       cd ..
+      #       mv .env.production .env
+
+      # - run:
+      #     name: Install pods
+      #     command: |
+      #       cd ../ios
+      #       pod install
+
+      # - run:
+      #     name: Build
+      #     command: |
+      #       cd ..
+      #       bundle exec fastlane ios production_circle
+
+  staging_ios:
+    working_directory: ~/staging_ios/ios
+
+    macos:
+      xcode: "10.2.1"
+
+    steps:
+      - checkout:
+          path: ~/staging_ios
+
+      - run:
+          command: "bundle install"
+          name: Build
+
+      - run:
+          name: "Check current version of node"
+          command: |
+            which node
+            node -v
+
+      - run:
+          name: Install node_modules
+          command: |
+            cd ..  
+            npm install && ls node_modules
+            ls -la
+
+      - run:
+          name: Update .env file
+          command: |
+            cd ..
+            mv .env.staging .env
+            # mv .env.storybook .env
+
+      - run:
+          name: Install pods
+          command: |
+            cd ../ios  
+            pod install
+
+      - run:
+          name: Build
+          command: |
+            cd .. 
+            bundle exec fastlane ios staging_circle
+
+  # production_android:
+  #   working_directory: ~/production_android/android
+
+  #   macos:
+  #     xcode: "10.2.1"
+
+  #   environment:
+  #     ANDROID_HOME: "/usr/local/share/android-sdk"
+
+  #   steps:
+  #     - checkout:
+  #         path: ~/production_android
+
+  #     - run:
+  #         command: "bundle install"
+  #         name: Build
+
+  #     - run:
+  #         name: Install Android Studio
+  #         command: cd .. && bash scripts/circle-install-android.sdk.sh
+
+  #     - run:
+  #         name: "Check current version of node"
+  #         command: |
+  #           which node
+  #           node -v
+
+  #     - run:
+  #         name: Install Android Studio
+  #         command: |
+  #           cd ..
+  #           mv android android.staging
+  #           mv android.production android
+
+  #     - run:
+  #         name: Install node_modules
+  #         command: cd .. && npm install && ls node_modules
+
+  #     - run:
+  #         command: "cd .. && bundle exec fastlane android production_beta_track_version_update"
+  #         name: "Get version and increment"
+
+  #     - run:
+  #         name: Gradle Build
+  #         command: ENVFILE=.env.production ./gradlew task build --debug --no-daemon --scan --max-workers=1 -PMYAPP_RELEASE_STORE_FILE=${MYAPP_RELEASE_STORE_FILE} -PMYAPP_RELEASE_STORE_PASSWORD=${MYAPP_RELEASE_STORE_PASSWORD} -PMYAPP_RELEASE_KEY_ALIAS=${MYAPP_RELEASE_KEY_ALIAS} -PMYAPP_RELEASE_KEY_PASSWORD=${MYAPP_RELEASE_KEY_PASSWORD} | grep .apk
+
+  #     - run:
+  #         name: Check build
+  #         command: cp app/build/outputs/apk/release/app-release.apk ../
+
+  #     - run:
+  #         command: "cd .. && bundle exec fastlane android production_beta_track_release build_path:app-release.apk"
+  #         name: Deploy to AppStore
+
+  # staging_android:
+  #   working_directory: ~/staging_android/android
+
+  #   macos:
+  #     xcode: "10.2.1"
+
+  #   environment:
+  #     ANDROID_HOME: "/usr/local/share/android-sdk"
+  #     BABEL_ENV: "development"
+
+  #   steps:
+  #     - checkout:
+  #         path: ~/staging_android
+
+  #     - run:
+  #         command: "bundle install"
+  #         name: Build
+
+  #     - run:
+  #         name: Install Android Studio
+  #         command: cd .. && bash scripts/circle-install-android.sdk.sh
+
+  #     - run:
+  #         name: "Check current version of node"
+  #         command: |
+  #           which node
+  #           node -v
+
+  #     - run:
+  #         name: Install node_modules
+  #         command: cd .. && npm install && ls node_modules
+
+  #     - run:
+  #         command: "cd .. && bundle exec fastlane android staging_beta_track_version_update"
+  #         name: "Get version and increment"
+
+  #     - run:
+  #         name: Gradle Build
+  #         command: ENVFILE=.env.staging ./gradlew task build --debug --no-daemon --scan --max-workers=1 -PMYAPP_RELEASE_STORE_FILE_STAGING=${MYAPP_RELEASE_STORE_FILE_STAGING} -PMYAPP_RELEASE_STORE_PASSWORD_STAGING=${MYAPP_RELEASE_STORE_PASSWORD_STAGING} -PMYAPP_RELEASE_KEY_ALIAS_STAGING=${MYAPP_RELEASE_KEY_ALIAS_STAGING} -PMYAPP_RELEASE_KEY_PASSWORD_STAGING=${MYAPP_RELEASE_KEY_PASSWORD_STAGING} | grep .apk
+
+  #     - run:
+  #         name: Check build
+  #         command: cp app/build/outputs/apk/release/app-release.apk ../
+
+  #     - run:
+  #         command: "cd .. && bundle exec fastlane android staging_beta_track_release build_path:app-release.apk"
+  #         name: Deploy to AppStore
+
+version: 2.1
+workflows:
+  build_all:
+    jobs:
+      # - production_android:
+      #     filters:
+      #       branches:
+      #         only: master
+
+      # - staging_android:
+      #     filters:
+      #       branches:
+      #         only: master
+
+      # # - production_ios:
+      # #     filters:
+      # #       branches:
+      # #         only: master
+
+      - staging_ios:
+          filters:
+            branches:
+              only: master
