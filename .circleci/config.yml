@@ -15,16 +15,16 @@ jobs:
           name: Build
 
       - run:
-          name: "Check current version of node"
+          name: Install yarn
           command: |
-            which node
-            node -v
+            curl -o- -L https://yarnpkg.com/install.sh | bash
+            echo 'export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"' >> $BASH_ENV
 
       - run:
           name: Install node_modules
           command: |
             cd ..
-            npm install && ls node_modules
+            yarn install && ls node_modules
             ls -la
 
       # - run:
@@ -59,17 +59,23 @@ jobs:
           command: "bundle install"
           name: Build
 
+      # - run:
+      #     name: "Check current version of node"
+      #     command: |
+      #       which node
+      #       node -v
+
       - run:
-          name: "Check current version of node"
+          name: Install yarn
           command: |
-            which node
-            node -v
+            curl -o- -L https://yarnpkg.com/install.sh | bash
+            echo 'export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"' >> $BASH_ENV
 
       - run:
           name: Install node_modules
           command: |
             cd ..  
-            npm install && ls node_modules
+            yarn install && ls node_modules
             ls -la
 
       # - run:
