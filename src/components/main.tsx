@@ -19,7 +19,7 @@ async function createPrivateKeyIfNotExists(contacts) {
   });
 }
 
-// let pushToken = "";
+let pushToken = "";
 // push.configure(
 //   (t) => {
 //     console.log("PUSH TOKEN:", t && t.token);

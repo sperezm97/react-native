@@ -148,8 +148,8 @@ function App() {
 
     return (
       <>
-        <NavigationContainer>
-          <PaperProvider theme={paperTheme}>
+        <PaperProvider theme={paperTheme}>
+          <NavigationContainer>
             {/* <StatusBar /> */}
             {signedUp && <Main />}
             {!signedUp && (
@@ -161,8 +161,8 @@ function App() {
                 }}
               />
             )}
-          </PaperProvider>
-        </NavigationContainer>
+          </NavigationContainer>
+        </PaperProvider>
       </>
     );
   });

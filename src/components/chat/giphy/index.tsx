@@ -1,8 +1,8 @@
-import React from 'react';
-import { Image, View, ScrollView, TouchableOpacity, Modal } from 'react-native';
-import { IconButton, TextInput, Text } from 'react-native-paper';
-import {useTheme} from '../../../store'
-import styles from './styles';
+import React from "react";
+import { Image, View, ScrollView, TouchableOpacity, Modal } from "react-native";
+import { IconButton, TextInput, Text } from "react-native-paper";
+import { useTheme } from "../../../store";
+import styles from "./styles";
 
 /**
  * Component that shows a modal with specific gifs
@@ -23,7 +23,7 @@ export default function Giphy({
   setSearchGif,
   getGifsBySearch,
 }) {
-  const theme = useTheme()
+  const theme = useTheme();
   return (
     <View style={styles.centeredView}>
       <Modal
@@ -33,9 +33,17 @@ export default function Giphy({
         animationType="slide"
         transparent={true}
       >
-        <View style={{...styles.modalView,backgroundColor:theme.bg,borderColor:theme.border}}>
+        <View
+          style={{
+            ...styles.modalView,
+            backgroundColor: theme.bg,
+            borderColor: theme.border,
+          }}
+        >
           <View style={styles.header}>
-            <Text style={{...styles.select,color:theme.title}}>Select gif</Text>
+            <Text style={{ ...styles.select, color: theme.title }}>
+              Select gif
+            </Text>
             <IconButton
               icon="close"
               color={theme.subtitle}
@@ -45,7 +53,7 @@ export default function Giphy({
           </View>
           <TextInput
             style={styles.input}
-            label='Search'
+            label="Search"
             value={searchGif}
             onChangeText={(value) => setSearchGif(value)}
             onSubmitEditing={getGifsBySearch}
@@ -53,21 +61,23 @@ export default function Giphy({
           <ScrollView>
             <View style={styles.gifContainer}>
               {gifs.map((gif) => {
-                const thumb = gif.images.original.url.replace(/giphy.gif/g, '100w.gif')
-                return (<TouchableOpacity
-                  key={gif.id}
-                  onPress={() => onSendGifHandler(gif)}
-                >
-                  <Image
-                    source={{ uri: thumb }}
-                    style={styles.gif}
-                  />
-                </TouchableOpacity>)
+                const thumb = gif.images.original.url.replace(
+                  /giphy.gif/g,
+                  "100w.gif"
+                );
+                return (
+                  <TouchableOpacity
+                    key={gif.id}
+                    onPress={() => onSendGifHandler(gif)}
+                  >
+                    <Image source={{ uri: thumb }} style={styles.gif} />
+                  </TouchableOpacity>
+                );
               })}
             </View>
           </ScrollView>
         </View>
       </Modal>
     </View>
-  )
-};
+  );
+}
