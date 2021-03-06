@@ -11,17 +11,18 @@ platform :ios do
    # increase the build number by 1. If no build is available
    # for that version, then start at 1
    increment_build_number(
-     build_number: latest_testflight_build_number(
-       initial_build_number: 1,
-       version: get_version_number(
-        xcodeproj: "ios/Chat.xcodeproj",
-        target: "Chat"
-      )
-    ) + 1,
+      build_number: latest_testflight_build_number(
+        initial_build_number: 1,
+        version: get_version_number(
+          xcodeproj: "ios/Chat.xcodeproj",
+          target: "Chat"
+        )
+      ) + 1,
+      xcodeproj: "ios/Chat.xcodeproj",
    )
    # Set up Distribution code signing and build the app
    match(type: "appstore")
-   gym(scheme: "Chat")
+   gym(scheme: "Chat", workspace: "ios/Chat.xcworkspace")
    # Upload the binary to TestFlight and automatically publish
    # to the configured beta testing group
   #  pilot(
