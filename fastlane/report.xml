@@ -5,7 +5,17 @@
     
     
       
-      <testcase classname="fastlane.lanes" name="0: upload_to_app_store" time="126.106978">
+      <testcase classname="fastlane.lanes" name="0: setup_circle_ci" time="0.000564">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="1: get_version_number" time="0.068514">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="2: latest_testflight_build_number" time="282.286596">
         
       </testcase>
     

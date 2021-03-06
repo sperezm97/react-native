@@ -12,39 +12,45 @@ Install _fastlane_ using
 ```
 [sudo] gem install fastlane -NV
 ```
-or alternatively using `brew cask install fastlane`
+or alternatively using `brew install fastlane`
 
 # Available Actions
-### staging_alpha
+## iOS
+### ios upload_testflight
 ```
-fastlane staging_alpha
+fastlane ios upload_testflight
 ```
-Deploy a new alpha version to the Google Play Store
-### staging_alpha_track_version
+Upload to Testflight
+### ios production_circle
 ```
-fastlane staging_alpha_track_version
+fastlane ios production_circle
 ```
-
-### production_alpha
+Build project
+### ios provision_for_production
 ```
-fastlane production_alpha
+fastlane ios provision_for_production
 ```
-
-### production_alpha_track_version
+Set up provisioning
+### ios get_version_numbers_for_production
 ```
-fastlane production_alpha_track_version
+fastlane ios get_version_numbers_for_production
 ```
-
-### ios_staging_build_version
+Get version numbers
+### ios staging_circle
 ```
-fastlane ios_staging_build_version
+fastlane ios staging_circle
 ```
-
-### ios_staging_release
+Build project
+### ios provision_for_staging
 ```
-fastlane ios_staging_release
+fastlane ios provision_for_staging
 ```
-
+Set up provisioning
+### ios get_version_numbers_for_staging
+```
+fastlane ios get_version_numbers_for_staging
+```
+Get version numbers
 
 ----
 
