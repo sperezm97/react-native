@@ -25,25 +25,14 @@ platform :ios do
 
    gym(scheme: "Chat", workspace: "ios/Chat.xcworkspace")
 
-  #  gym(
-  #   scheme: "Chat",
-  #   workspace: "ios/Chat.xcworkspace",
-  #   export_method: "app-store",
-  #   export_options: {
-  #     provisioningProfiles: {
-  #         "chat.n2n2.Chat" => "match AppStore chat.n2n2.Chat"
-  #     }
-  #   },
-  # )
-
    # Upload the binary to TestFlight and automatically publish
    # to the configured beta testing group
-  #  pilot(
-  #    distribute_external: true,
-  #    notify_external_testers: true,
-  #    groups: ["HelloWorld Beta Testers"],
-  #    changelog: "This is another new build from CircleCI!"
-  #  )
+   pilot(
+     distribute_external: true,
+     notify_external_testers: true,
+     groups: ["HelloWorld Beta Testers"],
+     changelog: "This is another new build from CircleCI!"
+   )
  end
  
  # PRODUCTION 
