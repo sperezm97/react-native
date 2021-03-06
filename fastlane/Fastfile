@@ -23,40 +23,18 @@ platform :ios do
    # Set up Distribution code signing and build the app
    match(type: "appstore")
 
-  #  gym(scheme: "Chat", workspace: "ios/Chat.xcworkspace")
+   gym(scheme: "Chat", workspace: "ios/Chat.xcworkspace")
 
   #  gym(
   #   scheme: "Chat",
   #   workspace: "ios/Chat.xcworkspace",
   #   export_method: "app-store",
-  #   # export_options: {
-  #   #   provisioningProfiles: {
-  #   #       "chat.n2n2.Chat" => "match AppStore chat.n2n2.Chat"
-  #   #   }
-  #   # },
-  #   export_xcargs: "-allowProvisioningUpdates"
+  #   export_options: {
+  #     provisioningProfiles: {
+  #         "chat.n2n2.Chat" => "match AppStore chat.n2n2.Chat"
+  #     }
+  #   },
   # )
-
-  disable_automatic_code_signing(
-    path: "ios/Chat.xcodeproj"
-  )
-
-  update_project_provisioning(
-    xcodeproj: "ios/Chat.xcodeproj"
-  )
-
-  gym(
-    # scheme: "Chat-Staging",
-    scheme: "Chat",
-    workspace: "ios/Chat.xcworkspace",
-    export_method: "app-store",
-    export_options: {
-      provisioningProfiles: {
-          "chat.n2n2.Chat" => "match AppStore chat.n2n2.Chat"
-          # "chat.n2n2.Chat.staging" => "match AppStore chat.n2n2.Chat.staging"
-      }
-    }
-  )
 
    # Upload the binary to TestFlight and automatically publish
    # to the configured beta testing group
