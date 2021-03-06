@@ -3,6 +3,32 @@ platform :ios do
     setup_circle_ci
   end
 
+ # 2.0
+ desc "Upload to Testflight"
+ lane :upload_testflight do
+   # Get the version number from the project and check against
+   # the latest build already available on TestFlight, then
+   # increase the build number by 1. If no build is available
+   # for that version, then start at 1
+   increment_build_number(
+     build_number: latest_testflight_build_number(
+       initial_build_number: 1,
+       version: get_version_number(xcodeproj: "Chat.xcodeproj")
+     ) + 1,
+   )
+   # Set up Distribution code signing and build the app
+   match(type: "appstore")
+   gym(scheme: "Chat")
+   # Upload the binary to TestFlight and automatically publish
+   # to the configured beta testing group
+  #  pilot(
+  #    distribute_external: true,
+  #    notify_external_testers: true,
+  #    groups: ["HelloWorld Beta Testers"],
+  #    changelog: "This is another new build from CircleCI!"
+  #  )
+ end
+ 
  # PRODUCTION 
   desc "Build project"
   lane :production_circle do
@@ -101,7 +127,8 @@ platform :ios do
 
     match(
       type: "appstore",
-      app_identifier: ["chat.n2n2.Chat.staging"],
+      # app_identifier: ["chat.n2n2.Chat.staging"],
+      app_identifier: ["chat.n2n2.Chat"],
       readonly: true
     )
 
@@ -119,12 +146,14 @@ platform :ios do
     )
 
     gym(
-      scheme: "Chat-Staging",
+      # scheme: "Chat-Staging",
+      scheme: "Chat",
       workspace: "ios/Chat.xcworkspace",
       export_method: "app-store",
       export_options: {
         provisioningProfiles: {
-            "chat.n2n2.Chat.staging" => "match AppStore chat.n2n2.Chat.staging"
+            "chat.n2n2.Chat" => "match AppStore chat.n2n2.Chat"
+            # "chat.n2n2.Chat.staging" => "match AppStore chat.n2n2.Chat.staging"
         }
       }
     )
@@ -139,7 +168,8 @@ platform :ios do
   lane :provision_for_staging do
     Dir.chdir("../ios") do
       match(
-        app_identifier: "chat.n2n2.Chat.staging",
+        app_identifier: "chat.n2n2.Chat",
+        # app_identifier: "chat.n2n2.Chat.staging",
         type: "development"
       )
 
@@ -150,13 +180,15 @@ platform :ios do
       get_provisioning_profile(
         development: true,
         # adhoc: false,
-        app_identifier: "chat.n2n2.Chat.staging"
+        app_identifier: "chat.n2n2.Chat",
+        # app_identifier: "chat.n2n2.Chat.staging"
       )
 
       get_push_certificate(
         development: true,
         force: false, # create a new profile, even if the old one is still valid
-        app_identifier: "chat.n2n2.Chat.staging", # optional app identifier,
+        app_identifier: "chat.n2n2.Chat",
+        # app_identifier: "chat.n2n2.Chat.staging", # optional app identifier,
         save_private_key: false,
         new_profile: proc do |profile_path| # this block gets called when a new profile was generated
           puts profile_path # the absolute path to the new PEM file
@@ -174,7 +206,8 @@ platform :ios do
     )
   
     build_number = latest_testflight_build_number(
-      app_identifier: "chat.n2n2.Chat.staging",
+      app_identifier: "chat.n2n2.Chat",
+        # app_identifier: "chat.n2n2.Chat.staging",
       username: "ci@n2n2.co",
       version: app_version
     )

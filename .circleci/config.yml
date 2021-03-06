@@ -97,6 +97,12 @@ jobs:
       #       cd ..
       #       bundle exec fastlane ios staging_circle
 
+      - run:
+          name: Build
+          command: |
+            cd ..
+            bundle exec fastlane ios upload_testflight
+
   # production_android:
   #   working_directory: ~/production_android/android
 
