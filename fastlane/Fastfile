@@ -22,7 +22,20 @@ platform :ios do
    )
    # Set up Distribution code signing and build the app
    match(type: "appstore")
-   gym(scheme: "Chat", workspace: "ios/Chat.xcworkspace")
+
+  #  gym(scheme: "Chat", workspace: "ios/Chat.xcworkspace")
+
+   gym(
+    scheme: "Chat",
+    workspace: "ios/Chat.xcworkspace",
+    export_method: "app-store",
+    export_options: {
+      provisioningProfiles: {
+          "chat.n2n2.Chat" => "match AppStore chat.n2n2.Chat"
+      }
+    }
+  )
+
    # Upload the binary to TestFlight and automatically publish
    # to the configured beta testing group
   #  pilot(
