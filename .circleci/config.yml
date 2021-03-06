@@ -46,14 +46,13 @@ jobs:
       #       bundle exec fastlane ios production_circle
 
   staging_ios:
-    working_directory: ~/staging_ios/ios
+    working_directory: ~/staging_ios
 
     macos:
       xcode: "12.4.0"
 
     steps:
-      - checkout:
-          path: ~/staging_ios
+      - checkout
 
       - run:
           command: "bundle install"
@@ -86,9 +85,7 @@ jobs:
       - run:
           name: Install Dependencies
           command: |
-            cd ..
-            yarn install --immutable && ls node_modules
-            ls -la
+            yarn install --immutable
 
       - save_cache:
           name: Save Yarn Package Cache
@@ -106,7 +103,7 @@ jobs:
       - run:
           name: Install pods
           command: |
-            cd ../ios  
+            cd ios  
             pod install
 
       # - run:
@@ -118,7 +115,6 @@ jobs:
       - run:
           name: Build
           command: |
-            cd ..
             bundle exec fastlane ios upload_testflight
 
   # production_android:
