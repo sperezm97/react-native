@@ -71,12 +71,27 @@ jobs:
             curl -o- -L https://yarnpkg.com/install.sh | bash
             echo 'export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"' >> $BASH_ENV
 
+      # - run:
+      #     name: Install node_modules
+      #     command: |
+      #       cd ..
+      #       yarn install && ls node_modules
+      #       ls -la
+
+      - restore_cache:
+          name: Restore Yarn Package Cache
+          keys:
+            - yarn-packages-{{ checksum "yarn.lock" }}
+
       - run:
-          name: Install node_modules
-          command: |
-            cd ..  
-            yarn install && ls node_modules
-            ls -la
+          name: Install Dependencies
+          command: yarn install --immutable
+
+      - save_cache:
+          name: Save Yarn Package Cache
+          key: yarn-packages-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/yarn
 
       # - run:
       #     name: Update .env file
