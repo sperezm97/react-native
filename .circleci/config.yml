@@ -85,7 +85,10 @@ jobs:
 
       - run:
           name: Install Dependencies
-          command: yarn install --immutable
+          command: |
+            cd ..
+            yarn install --immutable && ls node_modules
+            ls -la
 
       - save_cache:
           name: Save Yarn Package Cache
