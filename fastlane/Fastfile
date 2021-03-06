@@ -29,11 +29,12 @@ platform :ios do
     scheme: "Chat",
     workspace: "ios/Chat.xcworkspace",
     export_method: "app-store",
-    export_options: {
-      provisioningProfiles: {
-          "chat.n2n2.Chat" => "match AppStore chat.n2n2.Chat"
-      }
-    }
+    # export_options: {
+    #   provisioningProfiles: {
+    #       "chat.n2n2.Chat" => "match AppStore chat.n2n2.Chat"
+    #   }
+    # },
+    export_xcargs: "-allowProvisioningUpdates"
   )
 
    # Upload the binary to TestFlight and automatically publish
