@@ -115,7 +115,7 @@ jobs:
       - run:
           name: Build
           command: |
-            bundle exec fastlane ios upload_testflight
+            bundle exec fastlane ios upload_testflight --verbose
 
   # production_android:
   #   working_directory: ~/production_android/android
