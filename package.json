@@ -21,7 +21,8 @@
   },
   "rnpm": {
     "assets": [
-      "./android_assets/fonts"
+      "./android_assets/fonts",
+      "./resources/fonts"
     ]
   },
   "build": {

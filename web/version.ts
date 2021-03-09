@@ -30,12 +30,12 @@ export async function check(): Promise<boolean> {
   }
 
   const platforms = {
-    win32:'windows',
-    linux:'linux',
-    darwin:'linux' // for testing on mac!
+    win32: 'windows',
+    linux: 'linux',
+    darwin: 'linux' // for testing on mac!
   }
-  
-  const {version,platform} = await getThisVersionAndPlatform()
+
+  const { version, platform } = await getThisVersionAndPlatform()
   const thePlatform = platforms[platform] || 'linux'
 
   localStorage.setItem('version_checked', ts())
@@ -54,14 +54,14 @@ interface VersionAndPlatform {
   version: number
   platform: string
 }
-async function getThisVersionAndPlatform():Promise<VersionAndPlatform>{
+async function getThisVersionAndPlatform(): Promise<VersionAndPlatform> {
   try {
-    const v:any = await ipc.send('version-and-platform', {})
+    const v: any = await ipc.send('version-and-platform', {})
     return v
-  } catch(e) {
+  } catch (e) {
     return {
-      version:1,
-      platform:'win32'
+      version: 1,
+      platform: 'win32'
     }
   }
 }

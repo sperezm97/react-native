@@ -63,15 +63,15 @@ export function useCachedEncryptedFile(props, ldat) {
           Authorization: `Bearer ${server.token}`,
         })
       console.log('The file saved to ', res.path())
-      
+
       const headers = res.info().headers
       const disp = headers['Content-Disposition']
-      
-      if(disp) {
+
+      if (disp) {
         const arr = disp.split('=')
-        if(arr.length===2) {
-          const filename=arr[1]
-          if(filename) meme.addToFilenameCache(id,filename)
+        if (arr.length === 2) {
+          const filename = arr[1]
+          if (filename) meme.addToFilenameCache(id, filename)
         }
       }
 

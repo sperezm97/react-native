@@ -15,6 +15,7 @@
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* ChatTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* ChatTests.m */; };
+		5F14147C25F7DCFB00E39A40 /* icomoon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5F14147B25F7DCFB00E39A40 /* icomoon.ttf */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		E5384EB8F5B35112B2A8F0BD /* libPods-Chat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E8EFF043E30811C269A1786D /* libPods-Chat.a */; };
 /* End PBXBuildFile section */
@@ -50,6 +51,7 @@
 		2D02E47B1E0B4A5D006451C7 /* Chat-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Chat-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* Chat-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Chat-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		52DC7120F4AB7318B78635DF /* Pods-Chat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Chat.release.xcconfig"; path = "Target Support Files/Pods-Chat/Pods-Chat.release.xcconfig"; sourceTree = "<group>"; };
+		5F14147B25F7DCFB00E39A40 /* icomoon.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = icomoon.ttf; path = ../resources/fonts/icomoon.ttf; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Chat/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		AC0DCDBC865B573FE81436E9 /* Pods-Chat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Chat.debug.xcconfig"; path = "Target Support Files/Pods-Chat/Pods-Chat.debug.xcconfig"; sourceTree = "<group>"; };
 		E8EFF043E30811C269A1786D /* libPods-Chat.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Chat.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -140,6 +142,14 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		5D1E12D849CB49FF97811B30 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				5F14147B25F7DCFB00E39A40 /* icomoon.ttf */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
@@ -156,6 +166,7 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				425ABC90B9B0E2FB264C9467 /* Pods */,
+				5D1E12D849CB49FF97811B30 /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -316,6 +327,7 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				5F14147C25F7DCFB00E39A40 /* icomoon.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
