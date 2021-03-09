@@ -173,11 +173,11 @@ export default function Code(props) {
         center={[80, 40]}
         radius={400}
       >
-        <Image
+        {/* <Image
           source={require("../../../android_assets/sphinx-white-logo.png")}
           style={{ width: 120, height: 120 }}
           resizeMode={"cover"}
-        />
+        /> */}
         <Title style={styles.welcome}>Welcome</Title>
         <Text style={styles.msg}>
           Paste the invitation text or scan the QR code

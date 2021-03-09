@@ -117,3 +117,5 @@ RNTester/Pods/*
 .vs
 
 Gemfile.lock
+
+_/
