@@ -1,14 +1,15 @@
 import { observable, action } from 'mobx'
+import { persist } from 'mobx-persist'
+import moment from 'moment'
+import { Platform } from 'react-native'
+
 import { relay } from '../api'
 import { chatStore, Chat } from './chats'
 import { detailsStore } from './details'
 import { constants } from '../constants'
-import { persist } from 'mobx-persist'
-import moment from 'moment'
 import { encryptText, makeRemoteTextMap, decodeSingle, decodeMessages, orgMsgsFromExisting, orgMsgs, putIn, putInReverse } from './msgHelpers'
-import { Platform } from 'react-native'
-import {updateRealmMsg} from '../realm/exports'
-import {persistMsgLocalForage} from './storage'
+import { updateRealmMsg } from '../realm/exports'
+import { persistMsgLocalForage } from './storage'
 
 const DAYS = Platform.OS === 'android' ? 7 : 7
 export const MAX_MSGS_PER_CHAT = Platform.OS === 'android' ? 100 : 1000
@@ -66,15 +67,16 @@ export interface BoostMsg {
 }
 
 class MsgStore {
-
   @persist('object')
   @observable // chat id: message array
   messages: { [k: number]: Msg[] } = {}
 
-  @persist('object') @observable
+  @persist('object')
+  @observable
   lastSeen: { [k: number]: number } = {} // {chat_id: new Date().getTime()}
 
-  @persist @observable
+  @persist
+  @observable
   lastFetched: number
 
   @action clearAllMessages() {
@@ -100,18 +102,18 @@ class MsgStore {
   //   }
   // }
 
-  @action persister(){
-    if(Platform.OS === 'android') {
+  @action persister() {
+    if (Platform.OS === 'android') {
       updateRealmMsg(this)
     }
-    if(Platform.OS === 'web') {
+    if (Platform.OS === 'web') {
       persistMsgLocalForage(this)
     }
   }
 
   @action lengthOfAllMessages() {
     let l = 0
-    Object.values(this.messages).forEach(msgs=>{
+    Object.values(this.messages).forEach(msgs => {
       l += msgs.length
     })
     return l
@@ -121,45 +123,46 @@ class MsgStore {
     let done = false
     let offset = 0
     const dateq = moment.utc(0).format('YYYY-MM-DD%20HH:mm:ss')
-    let msgs: { [k: number]: Msg[] } = {} = {}
+    let msgs: { [k: number]: Msg[] } = ({} = {})
     while (!done) {
       const r = await relay.get(`msgs?limit=200&offset=${offset}&date=${dateq}`)
       if (r.new_messages && r.new_messages.length) {
         const decodedMsgs = await decodeMessages(r.new_messages)
         msgs = orgMsgsFromExisting(msgs, decodedMsgs)
-        if(r.new_messages.length < 200) {
+        if (r.new_messages.length < 200) {
           done = true
         }
       }
       offset += 200
     }
-    console.log("RESTORE DONE!")
+    console.log('RESTORE DONE!')
     this.sortAllMsgs(msgs)
     this.lastFetched = new Date().getTime()
     this.persister()
   }
 
   @action
-  async getMessages(forceMore?:boolean) {
+  async getMessages(forceMore?: boolean) {
     const len = this.lengthOfAllMessages()
-    if(len===0) {
+    if (len === 0) {
       return this.restoreMessages()
     }
-    console.log("=> GET MESSAGES: forceMore?",forceMore)
+    console.log('=> GET MESSAGES: forceMore?', forceMore)
     let route = 'messages'
     if (!forceMore && this.lastFetched) {
       const mult = 1
       const dateq = moment.utc(this.lastFetched - 1000 * mult).format('YYYY-MM-DD%20HH:mm:ss')
       route += `?date=${dateq}`
-    } else { // else just get last week
-      console.log("=> GET LAST WEEK")
+    } else {
+      // else just get last week
+      console.log('=> GET LAST WEEK')
       const start = moment().subtract(DAYS, 'days').format('YYYY-MM-DD%20HH:mm:ss')
       route += `?date=${start}`
     }
     try {
       const r = await relay.get(route)
       if (!r) return
-      console.log("=> NEW MSGS LENGTH", r.new_messages.length)
+      console.log('=> NEW MSGS LENGTH', r.new_messages.length)
       if (r.new_messages && r.new_messages.length) {
         await this.batchDecodeMessages(r.new_messages)
       } else {
@@ -176,7 +179,7 @@ class MsgStore {
     const rest = msgs.slice(0, msgs.length - 10)
     const decodedMsgs = await decodeMessages(first10)
     this.messages = orgMsgsFromExisting(this.messages, decodedMsgs)
-    console.log("OK! FIRST 10!")
+    console.log('OK! FIRST 10!')
 
     this.reverseDecodeMessages(rest.reverse())
   }
@@ -187,14 +190,14 @@ class MsgStore {
     const allms: { [k: number]: Msg[] } = JSON.parse(JSON.stringify(this.messages))
     putInReverse(allms, decoded)
     this.sortAllMsgs(allms)
-    console.log("NOW ALL ARE DONE!")
+    console.log('NOW ALL ARE DONE!')
     this.persister()
   }
 
   sortAllMsgs(allms: { [k: number]: Msg[] }) {
     const final = {}
     let toSort: { [k: number]: Msg[] } = allms || JSON.parse(JSON.stringify(this.messages))
-    Object.entries(toSort).forEach((entries) => {
+    Object.entries(toSort).forEach(entries => {
       const k = entries[0]
       const v: Msg[] = entries[1]
       v.sort((a, b) => moment(b.date).unix() - moment(a.date).unix())
@@ -211,7 +214,7 @@ class MsgStore {
         this.messages[newMsg.chat_id][idx] = {
           ...m,
           // add alias?
-          status: this.messages[newMsg.chat_id][idx].status,
+          status: this.messages[newMsg.chat_id][idx].status
         }
         this.persister()
       }
@@ -234,36 +237,49 @@ class MsgStore {
   }
 
   @action
-  async sendMessage(
-    { contact_id, text, chat_id, amount, reply_uuid, boost, message_price }:
-    { contact_id:number|null, text:string, chat_id:number|null, amount:number, reply_uuid:string, boost?:boolean, message_price?:number }
-  ) {
+  async sendMessage({
+    contact_id,
+    text,
+    chat_id,
+    amount,
+    reply_uuid,
+    boost,
+    message_price
+  }: {
+    contact_id: number | null
+    text: string
+    chat_id: number | null
+    amount: number
+    reply_uuid: string
+    boost?: boolean
+    message_price?: number
+  }) {
     try {
       const encryptedText = await encryptText({ contact_id: 1, text })
       const remote_text_map = await makeRemoteTextMap({ contact_id, text, chat_id })
-      const v:{[k:string]:any} = {
+      const v: { [k: string]: any } = {
         contact_id,
         chat_id: chat_id || null,
         text: encryptedText,
         remote_text_map,
         amount: amount || 0,
         reply_uuid,
-        boost: boost||false,
+        boost: boost || false
       }
-      if(message_price) v.message_price = message_price
+      if (message_price) v.message_price = message_price
       // const r = await relay.post('messages', v)
       // this.gotNewMessage(r)
       if (!chat_id) {
         const r = await relay.post('messages', v)
-        console.log("257 ==============", r)
+        console.log('257 ==============', r)
         if (!r) return
         this.gotNewMessage(r)
       } else {
-        const putInMsgType = boost?constants.message_types.boost:constants.message_types.message
-        const amt = boost&&message_price&&message_price<amount ? amount-message_price : amount
-        putIn(this.messages, { ...v, id: -1, sender: 1, amount:amt, date: moment().toISOString(), type: putInMsgType, message_content: text }, chat_id)
+        const putInMsgType = boost ? constants.message_types.boost : constants.message_types.message
+        const amt = boost && message_price && message_price < amount ? amount - message_price : amount
+        putIn(this.messages, { ...v, id: -1, sender: 1, amount: amt, date: moment().toISOString(), type: putInMsgType, message_content: text }, chat_id)
         const r = await relay.post('messages', v)
-        console.log("266 ==============", r)
+        console.log('266 ==============', r)
         if (!r) return
         // console.log("RESULT")
         this.messagePosted(r)
@@ -304,12 +320,13 @@ class MsgStore {
 
   @action
   async setMessageAsReceived(m) {
-    if (!(m.chat_id)) return
+    if (!m.chat_id) return
     const msgsForChat = this.messages[m.chat_id]
     const ogMessage = msgsForChat && msgsForChat.find(msg => msg.id === m.id || msg.id === -1)
     if (ogMessage) {
       ogMessage.status = constants.statuses.received
-    } else { // add anyway (for on another app)
+    } else {
+      // add anyway (for on another app)
       this.gotNewMessage(m)
     }
   }
@@ -342,7 +359,7 @@ class MsgStore {
       const v = {
         amount: amt,
         destination_key: dest,
-        text: memo,
+        text: memo
       }
       const r = await relay.post('payment', v)
       if (!r) return
@@ -378,9 +395,9 @@ class MsgStore {
         chat_id: chat_id || null,
         amount: amt,
         memo: myenc,
-        remote_memo: encMemo,
+        remote_memo: encMemo
       }
-      const r = await relay.post('invoices', v) // raw invoice: 
+      const r = await relay.post('invoices', v) // raw invoice:
       if (!r) return
       this.gotNewMessage(r)
     } catch (e) {
@@ -421,7 +438,7 @@ class MsgStore {
 
   @action
   async deleteMessage(id) {
-    if (!id) return console.log("NO ID!")
+    if (!id) return console.log('NO ID!')
     const r = await relay.del(`message/${id}`)
     if (!r) return
     if (r.chat_id) {
@@ -519,7 +536,6 @@ class MsgStore {
     const msgs = [msg]
     this.messages = orgMsgsFromExisting(this.messages, msgs)
   }
-
 }
 
 export const msgStore = new MsgStore()
@@ -540,6 +556,6 @@ let msgsBuffer = []
 
 async function asyncForEach(array, callback) {
   for (let index = 0; index < array.length; index++) {
-    await callback(array[index], index, array);
+    await callback(array[index], index, array)
   }
 }

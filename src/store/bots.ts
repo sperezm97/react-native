@@ -1,9 +1,10 @@
 import { observable, action } from 'mobx'
+
 import { relay } from '../api'
 
 export interface Bot {
   id: string
-  chat_id: number,
+  chat_id: number
   name: string
   secret: string
   created_at: string
@@ -30,7 +31,8 @@ class BotStore {
 
   @action async createBot(name: string, webhook: string) {
     const r = await relay.post('bot', {
-      name, webhook
+      name,
+      webhook
     })
     if (r) {
       console.log(r)
@@ -48,7 +50,6 @@ class BotStore {
   @action reset() {
     this.bots = []
   }
-
 }
 
 export const botStore = new BotStore()

@@ -1,9 +1,11 @@
 import { observable, action } from 'mobx'
-import { relay } from '../api'
 import { persist } from 'mobx-persist'
 
+import { relay } from '../api'
+
 class DetailsStore {
-  @persist @observable
+  @persist
+  @observable
   balance: number = 0
 
   @action
@@ -63,7 +65,6 @@ class DetailsStore {
     this.balance = 0
     this.logs = ''
   }
-
 }
 
 export const detailsStore = new DetailsStore()

@@ -1,7 +1,9 @@
 import { action } from 'mobx'
+
+import { DEFAULT_TRIBE_SERVER } from '../config'
 import { chatStore } from './chats'
 import { relay } from '../api'
-import {detailsStore} from './details'
+import { detailsStore } from './details'
 
 export const NUM_SECONDS = 60
 
@@ -16,7 +18,7 @@ export interface StreamPayment {
   feedID: number
   itemID: number
   ts: number
-  speed?: string,
+  speed?: string
   title?: string
   text?: string
   url?: string
@@ -27,7 +29,6 @@ export interface StreamPayment {
 }
 
 export class FeedStore {
-
   @action async sendPayments(destinations: Destination[], text: string, amount: number, chat_id: number, update_meta: boolean) {
     await relay.post('stream', {
       destinations,
@@ -36,12 +37,12 @@ export class FeedStore {
       chat_id,
       update_meta
     })
-    if(chat_id && update_meta && text) {
+    if (chat_id && update_meta && text) {
       let meta
       try {
         meta = JSON.parse(text)
-      } catch(e) {}
-      if(meta) {
+      } catch (e) {}
+      if (meta) {
         chatStore.updateChatMeta(chat_id, meta)
       }
     }
@@ -69,20 +70,19 @@ export class FeedStore {
   async loadFeedById(id: string) {
     if (!id) return
     try {
-      const r = await fetch(`https://tribes.sphinx.chat/podcast?id=${id}`)
+      const r = await fetch(`https://${DEFAULT_TRIBE_SERVER}/podcast?id=${id}`)
       const j = await r.json()
       return j
     } catch (e) {
       console.log(e)
     }
   }
-
 }
 
 export const feedStore = new FeedStore()
 
 async function asyncForEach(array, callback) {
   for (let index = 0; index < array.length; index++) {
-    await callback(array[index], index, array);
+    await callback(array[index], index, array)
   }
 }

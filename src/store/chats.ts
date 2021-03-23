@@ -1,10 +1,11 @@
 import { observable, action } from 'mobx'
 import { persist } from 'mobx-persist'
+
+import config, { DEFAULT_TRIBE_SERVER } from '../config'
 import { Invite, contactStore } from './contacts'
 import { relay } from '../api'
 import { constants } from '../constants'
 import { detailsStore } from './details'
-
 /*
 disconneted - socket?
 03eab50cef61b9360bc24f0fd8a8cb3ebd7cec226d9f6fd39150594e0da8bd58a7
@@ -13,8 +14,6 @@ android crash when open tribe
 
 only send confirmation if u are trbie owner/??
 */
-
-const DEFAULT_TRIBE_SERVER = 'tribes.sphinx.chat'
 
 export interface Chat {
   id: number
@@ -60,10 +59,12 @@ export interface TribeServer {
 }
 
 export class ChatStore {
-  @persist('list') @observable
+  @persist('list')
+  @observable
   chats: Chat[] = []
 
-  @persist('object') @observable
+  @persist('object')
+  @observable
   pricesPerMinute: { [k: number]: number } = {}
 
   @action
@@ -77,10 +78,9 @@ export class ChatStore {
     this.pricesPerMinute[chatID] = ppm
   }
 
-  @persist('list') @observable
-  servers: TribeServer[] = [
-    { host: DEFAULT_TRIBE_SERVER }
-  ]
+  @persist('list')
+  @observable
+  servers: TribeServer[] = [{ host: DEFAULT_TRIBE_SERVER }]
 
   @action getDefaultTribeServer(): TribeServer {
     const server = this.servers.find(s => s.host === DEFAULT_TRIBE_SERVER)
@@ -104,7 +104,7 @@ export class ChatStore {
       let meta
       try {
         meta = JSON.parse(String(c.meta))
-      } catch (e) { }
+      } catch (e) {}
       return { ...c, meta }
     }
     return c
@@ -131,7 +131,8 @@ export class ChatStore {
   @action
   async createGroup(contact_ids: number[], name: string) {
     const r = await relay.post('group', {
-      name, contact_ids
+      name,
+      contact_ids
     })
     if (!r) return
     this.gotChat(r)
@@ -140,11 +141,27 @@ export class ChatStore {
 
   @action
   async createTribe({ name, description, tags, img, price_per_message, price_to_join, escrow_amount, escrow_time, unlisted, is_private, app_url, feed_url }) {
-    console.log('======>', { name, description, tags, img, price_per_message, price_to_join, escrow_amount, escrow_time, unlisted, is_private, app_url, feed_url })
-    await sleep(1);
+    console.log('======>', {
+      name,
+      description,
+      tags,
+      img,
+      price_per_message,
+      price_to_join,
+      escrow_amount,
+      escrow_time,
+      unlisted,
+      is_private,
+      app_url,
+      feed_url
+    })
+    await sleep(1)
     const r = await relay.post('group', {
-      name, description, tags: tags || [],
-      is_tribe: true, is_listed: true,
+      name,
+      description,
+      tags: tags || [],
+      is_tribe: true,
+      is_listed: true,
       price_per_message: price_per_message || 0,
       price_to_join: price_to_join || 0,
       escrow_amount: escrow_amount || 0,
@@ -163,7 +180,9 @@ export class ChatStore {
   @action
   async editTribe({ id, name, description, tags, img, price_per_message, price_to_join, escrow_amount, escrow_time, unlisted, is_private, app_url, feed_url }) {
     const r = await relay.put(`group/${id}`, {
-      name, description, tags: tags || [],
+      name,
+      description,
+      tags: tags || [],
       is_listed: true,
       price_per_message: price_per_message || 0,
       price_to_join: price_to_join || 0,
@@ -182,12 +201,42 @@ export class ChatStore {
 
   @action
   async joinTribe({
-    name, uuid, group_key, host, amount, img, owner_alias, owner_pubkey, is_private, my_alias, my_photo_url,
+    name,
+    uuid,
+    group_key,
+    host,
+    amount,
+    img,
+    owner_alias,
+    owner_pubkey,
+    is_private,
+    my_alias,
+    my_photo_url
   }: {
-    name: string, uuid: string, group_key: string, host: string, amount: number, img: string, owner_alias: string, owner_pubkey: string, is_private: boolean, my_alias?: string, my_photo_url?: string,
+    name: string
+    uuid: string
+    group_key: string
+    host: string
+    amount: number
+    img: string
+    owner_alias: string
+    owner_pubkey: string
+    is_private: boolean
+    my_alias?: string
+    my_photo_url?: string
   }) {
     const r = await relay.post('tribe', {
-      name, uuid, group_key, amount, host, img, owner_alias, owner_pubkey, private: is_private, my_alias: my_alias || '', my_photo_url: my_photo_url || ''
+      name,
+      uuid,
+      group_key,
+      amount,
+      host,
+      img,
+      owner_alias,
+      owner_pubkey,
+      private: is_private,
+      my_alias: my_alias || '',
+      my_photo_url: my_photo_url || ''
     })
     if (!r) return
     this.gotChat(r)
@@ -197,20 +246,17 @@ export class ChatStore {
 
   @action
   async joinDefaultTribe() {
-    const params = await this.getTribeDetails(
-      'tribes.sphinx.chat',
-      'X3IWAiAW5vNrtOX5TLEJzqNWWr3rrUaXUwaqsfUXRMGNF7IWOHroTGbD4Gn2_rFuRZcsER0tZkrLw3sMnzj4RFAk_sx0'
-    )
+    const params = await this.getTribeDetails(DEFAULT_TRIBE_SERVER, config.tribes.uuid)
     await this.joinTribe({
       name: params.name,
       group_key: params.group_key,
       owner_alias: params.owner_alias,
       owner_pubkey: params.owner_pubkey,
-      host: params.host || 'tribes.sphinx.chat',
+      host: params.host || DEFAULT_TRIBE_SERVER,
       uuid: params.uuid,
       img: params.img,
       amount: params.price_to_join || 0,
-      is_private: params.private,
+      is_private: params.private
     })
   }
 
@@ -231,7 +277,8 @@ export class ChatStore {
   @action
   async kick(chatID, contactID) {
     const r = await relay.put(`kick/${chatID}/${contactID}`)
-    if (r === true) { // success
+    if (r === true) {
+      // success
       const chat = this.chats.find(c => c.id === chatID)
       if (chat) chat.contact_ids = chat.contact_ids.filter(cid => cid !== contactID)
     }
@@ -287,7 +334,7 @@ export class ChatStore {
   @action
   async getTribeDetails(host: string, uuid: string) {
     if (!host || !uuid) return
-    const theHost = host.includes('localhost') ? 'tribes.sphinx.chat' : host
+    const theHost = host.includes('localhost') ? DEFAULT_TRIBE_SERVER : host
     try {
       const r = await fetch(`https://${theHost}/tribes/${uuid}`)
       const j = await r.json()
@@ -327,7 +374,7 @@ export class ChatStore {
   @action
   async loadFeed(host: string, uuid: string, url: string) {
     if (!host || !url) return
-    const theHost = host.includes('localhost') ? 'tribes.sphinx.chat' : host
+    const theHost = host.includes('localhost') ? DEFAULT_TRIBE_SERVER : host
     try {
       const r = await fetch(`https://${theHost}/podcast?url=${url}`)
       const j = await r.json()
@@ -341,11 +388,9 @@ export class ChatStore {
   @action reset() {
     this.chats = []
   }
-
 }
 
 export const chatStore = new ChatStore()
-
 
 async function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms))
