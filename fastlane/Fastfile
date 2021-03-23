@@ -29,8 +29,8 @@ platform :ios do
    # to the configured beta testing group
    pilot(
      distribute_external: true,
-     notify_external_testers: true,
-     groups: ["HelloWorld Beta Testers"],
+     notify_external_testers: false,
+    #  groups: ["HelloWorld Beta Testers"],
      changelog: "This is another new build from CircleCI!"
    )
  end
