@@ -5,7 +5,8 @@ const config = {
     api: 'https://hub.sphinx.chat/api/v1/'
   },
   tribes: {
-    server: 'tribes.sphinx.chat'
+    server: 'tribes.sphinx.chat',
+    uuid: 'X3IWAiAW5vNrtOX5TLEJzqNWWr3rrUaXUwaqsfUXRMGNF7IWOHroTGbD4Gn2_rFuRZcsER0tZkrLw3sMnzj4RFAk_sx0'
   },
   meme: {
     server: 'memes.sphinx.chat'

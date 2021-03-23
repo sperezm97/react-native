@@ -1,7 +1,7 @@
 import { observable, action } from 'mobx'
 import { persist } from 'mobx-persist'
 
-import { DEFAULT_TRIBE_SERVER } from '../config'
+import config, { DEFAULT_TRIBE_SERVER } from '../config'
 import { Invite, contactStore } from './contacts'
 import { relay } from '../api'
 import { constants } from '../constants'
@@ -246,7 +246,7 @@ export class ChatStore {
 
   @action
   async joinDefaultTribe() {
-    const params = await this.getTribeDetails(DEFAULT_TRIBE_SERVER, 'X3IWAiAW5vNrtOX5TLEJzqNWWr3rrUaXUwaqsfUXRMGNF7IWOHroTGbD4Gn2_rFuRZcsER0tZkrLw3sMnzj4RFAk_sx0')
+    const params = await this.getTribeDetails(DEFAULT_TRIBE_SERVER, config.tribes.uuid)
     await this.joinTribe({
       name: params.name,
       group_key: params.group_key,
