@@ -1,8 +1,9 @@
 import { observable, action } from 'mobx'
+import { persist } from 'mobx-persist'
+
 import { relay, invite } from '../api'
 import { chatStore } from './chats'
 import { subStore } from './subs'
-import { persist } from 'mobx-persist'
 import { createFormData } from '../api/formdata'
 import { userStore } from './user'
 import { detailsStore } from './details'
@@ -33,7 +34,6 @@ export interface Contact {
   from_group: boolean
 
   invite: Invite
-
 }
 
 export interface Invite {
@@ -48,7 +48,8 @@ export interface Invite {
 }
 
 class ContactStore {
-  @persist('list') @observable
+  @persist('list')
+  @observable
   contacts: Contact[] = []
 
   @action
@@ -265,7 +266,6 @@ class ContactStore {
   @action reset() {
     this.contacts = []
   }
-
 }
 
 export const contactStore = new ContactStore()

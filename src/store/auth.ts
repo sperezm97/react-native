@@ -1,20 +1,19 @@
 import { observable, action } from 'mobx'
-import { relay, composeAPI } from '../api'
 import { persist } from 'mobx-persist'
-import { userStore } from './user'
 import { Linking } from 'react-native'
+
+import { DEFAULT_AUTH_SERVER } from '../config'
+import { relay, composeAPI } from '../api'
+import { userStore } from './user'
 
 export interface Server {
   host: string
 }
 
-const DEFAULT_AUTH_SERVER = 'auth.sphinx.chat'
-
 class AuthStore {
-  @persist('list') @observable
-  servers: Server[] = [
-    { host: DEFAULT_AUTH_SERVER }
-  ]
+  @persist('list')
+  @observable
+  servers: Server[] = [{ host: DEFAULT_AUTH_SERVER }]
 
   @action getDefaultServer(): Server {
     const server = this.servers.find(s => s.host === DEFAULT_AUTH_SERVER)
@@ -34,8 +33,8 @@ class AuthStore {
     var q = new URLSearchParams({
       id,
       sig: r.sig,
-      pubkey: pubkey,
-    }).toString();
+      pubkey: pubkey
+    }).toString()
     const url = 'https://' + authServer.host + '/oauth_verify?' + q
 
     Linking.canOpenURL(url).then(supported => {
@@ -53,7 +52,6 @@ class AuthStore {
     if (!(r && r.sig)) return ''
     return r.sig
   }
-
 }
 
 export const authStore = new AuthStore()

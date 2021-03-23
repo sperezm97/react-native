@@ -1,24 +1,24 @@
 import { observable, action } from 'mobx'
-import { relay, composeAPI } from '../api'
 import { persist } from 'mobx-persist'
-import { userStore } from './user'
 import moment from 'moment'
 import * as localForage from 'localforage'
+
+import { DEFAULT_MEME_SERVER } from '../config'
+import { relay, composeAPI } from '../api'
+import { userStore } from './user'
 
 export interface Server {
   host: string
   token: string
 }
 
-const DEFAULT_MEME_SERVER = 'memes.sphinx.chat'
-
 class MemeStore {
-  @persist('list') @observable
-  servers: Server[] = [
-    { host: DEFAULT_MEME_SERVER, token: '' }
-  ]
+  @persist('list')
+  @observable
+  servers: Server[] = [{ host: DEFAULT_MEME_SERVER, token: '' }]
 
-  @persist @observable
+  @persist
+  @observable
   lastAuthenticated: number
 
   @action getDefaultServer(): Server {
@@ -29,10 +29,10 @@ class MemeStore {
   @action
   async authenticateAll() {
     const lastAuth = this.lastAuthenticated || 0
-    const days = 0  // one week
-    const isOld = moment(new Date(lastAuth)).isBefore(moment().subtract((days * 24 - 1), 'hours'))
+    const days = 0 // one week
+    const isOld = moment(new Date(lastAuth)).isBefore(moment().subtract(days * 24 - 1, 'hours'))
     if (isOld) {
-      await asyncForEach(this.servers, async (s) => {
+      await asyncForEach(this.servers, async s => {
         await this.authenticate(s)
       })
       this.lastAuthenticated = new Date().getTime()
@@ -51,9 +51,15 @@ class MemeStore {
     const r2 = await relay.get(`signer/${r.challenge}`)
     if (!(r2 && r2.sig)) return
 
-    const r3 = await meme.post('verify', {
-      id: r.id, sig: r2.sig, pubkey
-    }, 'application/x-www-form-urlencoded')
+    const r3 = await meme.post(
+      'verify',
+      {
+        id: r.id,
+        sig: r2.sig,
+        pubkey
+      },
+      'application/x-www-form-urlencoded'
+    )
 
     console.log(r3)
     if (!(r3 && r3.token)) return
@@ -87,13 +93,12 @@ class MemeStore {
     this.cacheFileName = {}
     this.filenameCache = {}
   }
-
 }
 
 export const memeStore = new MemeStore()
 
 async function asyncForEach(array, callback) {
   for (let index = 0; index < array.length; index++) {
-    await callback(array[index], index, array);
+    await callback(array[index], index, array)
   }
 }

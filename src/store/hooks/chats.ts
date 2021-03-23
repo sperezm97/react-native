@@ -1,9 +1,11 @@
 import { useState } from 'react'
+import moment from 'moment'
+
 import { useStores } from '../index'
+import { DEFAULT_DOMAIN } from '../../config'
 import { Chat } from '../chats'
 import { Contact } from '../contacts'
 import { constants } from '../../constants'
-import moment from 'moment'
 
 export function useChats() {
   const { chats, msg, contacts, ui } = useStores()
@@ -41,7 +43,7 @@ function lastMessageText(msg) {
     if (msg.message_content.startsWith('giphy::')) return 'GIF ' + verb
     if (msg.message_content.startsWith('clip::')) return 'Clip ' + verb
     if (msg.message_content.startsWith('boost::')) return 'Boost ' + verb
-    if (msg.message_content.startsWith('sphinx.chat://?action=tribe')) return 'Tribe Link ' + verb
+    if (msg.message_content.startsWith(`${DEFAULT_DOMAIN}://?action=tribe`)) return 'Tribe Link ' + verb
     if (msg.message_content.startsWith('https://jitsi.sphinx.chat/')) return 'Join Call'
     return msg.message_content
   }
@@ -86,16 +88,18 @@ export function allChats(chats: Chat[], contacts: Contact[]): Chat[] {
       const chatForContact = chats.find(c => {
         return c.type === conversation && c.contact_ids.includes(contact.id)
       })
-      if (chatForContact) { // add in name = contact.name
+      if (chatForContact) {
+        // add in name = contact.name
         conversations.push({ ...chatForContact, name: contact.alias })
       } else {
-        conversations.push({ // "fake" chat (first)
+        conversations.push({
+          // "fake" chat (first)
           name: contact.alias,
           photo_url: contact.photo_url,
           updated_at: new Date().toJSON(),
           contact_ids: [1, contact.id],
           invite: contact.invite,
-          type: conversation,
+          type: conversation
         })
       }
     }
@@ -133,8 +137,6 @@ export function sortChats(chatsToShow, messages) {
 export function filterChats(theChats, searchTerm) {
   return theChats.filter(c => {
     if (!searchTerm) return true
-    return (c.invite ? true : false) ||
-      c.name.toLowerCase().includes(searchTerm.toLowerCase())
+    return (c.invite ? true : false) || c.name.toLowerCase().includes(searchTerm.toLowerCase())
   })
 }
-

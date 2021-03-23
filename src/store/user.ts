@@ -1,46 +1,53 @@
 import { observable, action } from 'mobx'
+import { persist } from 'mobx-persist'
+
 import * as api from '../api'
 import { randString } from '../crypto/rand'
-import { persist } from 'mobx-persist'
 import { uiStore } from './ui'
 
 interface Invite {
-  inviterNickname: string,
-  inviterPubkey: string,
-  welcomeMessage: string,
-  action: string,
+  inviterNickname: string
+  inviterPubkey: string
+  welcomeMessage: string
+  action: string
 }
 
 class UserStore {
-
   @observable code: string = ''
 
   @observable invite: Invite = {
     inviterNickname: '',
     inviterPubkey: '',
     welcomeMessage: '',
-    action: '',
+    action: ''
   }
 
-  @persist @observable
+  @persist
+  @observable
   onboardStep: number = 0
 
-  @persist @observable
+  @persist
+  @observable
   alias: string = ''
 
-  @persist @observable
+  @persist
+  @observable
   publicKey: string = ''
 
-  @persist @observable
+  @persist
+  @observable
   currentIP: string = ''
 
-  @persist @observable
+  @persist
+  @observable
   authToken: string = ''
 
-  @persist @observable
+  @persist
+  @observable
   deviceId: string = ''
 
-  @persist @observable
+  @persist
+  @observable
   tipAmount: number = 100
 
   @action reset() {
@@ -55,7 +62,7 @@ class UserStore {
       inviterNickname: '',
       inviterPubkey: '',
       welcomeMessage: '',
-      action: '',
+      action: ''
     }
   }
 
@@ -85,7 +92,7 @@ class UserStore {
   }
 
   @action
-  setTipAmount(s:number) {
+  setTipAmount(s: number) {
     this.tipAmount = s
   }
 
@@ -96,7 +103,7 @@ class UserStore {
       inviterNickname: '',
       inviterPubkey: '',
       welcomeMessage: '',
-      action: '',
+      action: ''
     }
   }
 
@@ -110,8 +117,10 @@ class UserStore {
     const token = arr[3]
     this.setCurrentIP(ip)
     this.setAuthToken(token)
-    console.log("RESTORE NOW!")
-    api.instantiateRelay(ip, token,
+    console.log('RESTORE NOW!')
+    api.instantiateRelay(
+      ip,
+      token,
       () => uiStore.setConnected(true),
       () => uiStore.setConnected(false),
       this.resetIP
@@ -137,12 +146,12 @@ class UserStore {
   async signupWithCode(code: string): Promise<{ [k: string]: string }> {
     try {
       this.code = code
-      console.log("THE CODDE", code)
+      console.log('THE CODDE', code)
       const r = await api.invite.post('signup', {
         invite_string: code
       })
       if (!r) {
-        console.log("no invite response")
+        console.log('no invite response')
         return
       }
       if (!r.invite) {
@@ -154,12 +163,12 @@ class UserStore {
         inviterNickname: r.invite.nickname,
         inviterPubkey: r.invite.pubkey,
         welcomeMessage: r.invite.message,
-        action: r.invite.action || '',
+        action: r.invite.action || ''
       }
       api.instantiateRelay(r.ip) // no token
       return { ip: r.ip, password: r.password }
     } catch (e) {
-      console.log("Error:", e)
+      console.log('Error:', e)
     }
   }
 
@@ -171,27 +180,29 @@ class UserStore {
       api.instantiateRelay(ip) // no token
       return ip
     } catch (e) {
-      console.log("Error:", e)
+      console.log('Error:', e)
     }
   }
 
   @action
   async generateToken(pwd: string) {
-    if(api.relay===null && this.currentIP) {
+    if (api.relay === null && this.currentIP) {
       api.instantiateRelay(this.currentIP)
       await sleep(1)
     }
     try {
       const token = await randString(20)
-      console.log("OK GEN TOKEN!", this.currentIP, pwd)
+      console.log('OK GEN TOKEN!', this.currentIP, pwd)
       const r = await api.relay.post(`contacts/tokens?pwd=${pwd}`, {
         token
       })
-      if(!r) return console.log("=> FAILED TO REACH RELAY")
+      if (!r) return console.log('=> FAILED TO REACH RELAY')
       this.authToken = token
-      api.instantiateRelay(this.currentIP, token,
+      api.instantiateRelay(
+        this.currentIP,
+        token,
         () => uiStore.setConnected(true),
-        () => uiStore.setConnected(false),
+        () => uiStore.setConnected(false)
       )
       return token
     } catch (e) {
@@ -212,24 +223,22 @@ class UserStore {
 
   @action
   async resetIP() {
-    console.log("user.RESET_IP")
+    console.log('user.RESET_IP')
     const pubkey = this.publicKey
     if (!(pubkey && pubkey.length === 66)) return
     try {
       const r = await api.invite.get(`nodes/${pubkey}`)
       if (!(r && r.node_ip)) return
-      console.log("NEW IP", r.node_ip)
+      console.log('NEW IP', r.node_ip)
       this.currentIP = r.node_ip
       return r.node_ip
     } catch (e) {
-      console.log("Error:", e)
+      console.log('Error:', e)
     }
   }
 
   @action
-  async testinit() {
-  }
-
+  async testinit() {}
 }
 
 export const userStore = new UserStore()

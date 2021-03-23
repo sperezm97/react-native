@@ -1,10 +1,10 @@
-
 import { feedStore } from './feed'
 import { chatStore } from './chats'
+import { DEFAULT_TRIBE_SERVER } from '../config'
 
 export default async function actions(action: string) {
   if (!action) return
-  console.log("ACTION", action)
+  console.log('ACTION', action)
 
   if (action.startsWith('create_podcast')) {
     const arr = action.split(':')
@@ -24,7 +24,7 @@ export default async function actions(action: string) {
       escrow_amount: 0,
       escrow_time: 0,
       unlisted: false,
-      is_private: false,
+      is_private: false
     })
   }
 
@@ -32,7 +32,7 @@ export default async function actions(action: string) {
     const arr = action.split(':')
     if (arr.length < 2) return
     const uuid = arr[1]
-    const host = arr.length === 3 ? arr[2] : 'tribes.sphinx.chat'
+    const host = arr.length === 3 ? arr[2] : DEFAULT_TRIBE_SERVER
     const r = await chatStore.getTribeDetails(host, uuid)
     await chatStore.joinTribe({
       name: r.title,
@@ -43,7 +43,7 @@ export default async function actions(action: string) {
       amount: r.price_to_join,
       owner_alias: r.owner_alias,
       owner_pubkey: r.owner_pubkey,
-      is_private: false,
+      is_private: false
     })
   }
 }
