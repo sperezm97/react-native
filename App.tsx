@@ -20,7 +20,8 @@ import EE, { RESET_IP_FINISHED } from './src/components/utils/ee'
 
 declare var global: { HermesInternal: null | {} }
 
-export default function Wrap() {
+// splash screen
+export default function Wrap() {  
   const { ui, chats } = useStores()
   const [wrapReady, setWrapReady] = useState(false)
 
@@ -59,6 +60,7 @@ function App() {
   const [signedUp, setSignedUp] = useState(false) // <=
   const [pinned, setPinned] = useState(false)
 
+
   function connectedHandler() {
     ui.setConnected(true)
   }
@@ -78,10 +80,10 @@ function App() {
       theme.setDark(theme.mode === 'Dark')
     }
 
-    check24Hour()
+    check24Hour();
 
     // TrackPlayer.setupPlayer();
-    ;(async () => {
+    (async () => {
       console.log('=> USER', user)
       const isSignedUp =
         user.currentIP && user.authToken && !user.onboardStep ? true : false
@@ -145,6 +147,8 @@ function App() {
       dark: theme.dark
     }
 
+
+
     return (
       <>
         <PaperProvider theme={paperTheme}>
@@ -167,6 +171,7 @@ function App() {
   })
 }
 
+// TODO => Abstraction
 async function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms))
 }

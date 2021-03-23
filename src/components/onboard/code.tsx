@@ -85,6 +85,7 @@ export default function Code(props) {
 
     setChecking(true);
     try {
+      // atob decodes the code
       const codeString = atob(theCode);
       if (codeString.startsWith("keys::")) {
         setShowPin(true);
