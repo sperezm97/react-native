@@ -21,7 +21,7 @@ import EE, { RESET_IP_FINISHED } from './src/components/utils/ee'
 declare var global: { HermesInternal: null | {} }
 
 // splash screen
-export default function Wrap() {  
+export default function Wrap() {
   const { ui, chats } = useStores()
   const [wrapReady, setWrapReady] = useState(false)
 
@@ -60,7 +60,6 @@ function App() {
   const [signedUp, setSignedUp] = useState(false) // <=
   const [pinned, setPinned] = useState(false)
 
-
   function connectedHandler() {
     ui.setConnected(true)
   }
@@ -80,22 +79,15 @@ function App() {
       theme.setDark(theme.mode === 'Dark')
     }
 
-    check24Hour();
+    check24Hour()
 
     // TrackPlayer.setupPlayer();
-    (async () => {
+    ;(async () => {
       console.log('=> USER', user)
-      const isSignedUp =
-        user.currentIP && user.authToken && !user.onboardStep ? true : false
+      const isSignedUp = user.currentIP && user.authToken && !user.onboardStep ? true : false
       setSignedUp(isSignedUp)
       if (isSignedUp) {
-        instantiateRelay(
-          user.currentIP,
-          user.authToken,
-          connectedHandler,
-          disconnectedHandler,
-          resetIP
-        )
+        instantiateRelay(user.currentIP, user.authToken, connectedHandler, disconnectedHandler, resetIP)
       }
       const pinWasEnteredRecently = await wasEnteredRecently()
       if (pinWasEnteredRecently) setPinned(true)
@@ -109,12 +101,7 @@ function App() {
   async function resetIP() {
     ui.setLoadingHistory(true)
     const newIP = await user.resetIP()
-    instantiateRelay(
-      newIP,
-      user.authToken,
-      connectedHandler,
-      disconnectedHandler
-    )
+    instantiateRelay(newIP, user.authToken, connectedHandler, disconnectedHandler)
     EE.emit(RESET_IP_FINISHED)
   }
 
@@ -146,8 +133,6 @@ function App() {
       },
       dark: theme.dark
     }
-
-
 
     return (
       <>
