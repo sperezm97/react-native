@@ -81,10 +81,12 @@ export class UiStore {
 
   @observable editTribeParams: { [k: string]: any } = null
   @action setEditTribeParams(o) {
-    this.editTribeParams = o ? {
-      ...o,
-      escrow_time: o.escrow_millis ? Math.floor(o.escrow_millis / (60 * 60 * 1000)) : 0
-    } : null
+    this.editTribeParams = o
+      ? {
+          ...o,
+          escrow_time: o.escrow_millis ? Math.floor(o.escrow_millis / (60 * 60 * 1000)) : 0
+        }
+      : null
   }
 
   @observable shareTribeUUID: string = null
@@ -138,7 +140,7 @@ export class UiStore {
     setTimeout(() => {
       this.payMode = ''
       this.chatForPayModal = null
-    }, 500) // delay 
+    }, 500) // delay
   }
 
   @observable confirmInvoiceMsg: Msg
@@ -174,7 +176,7 @@ export class UiStore {
     setTimeout(() => {
       this.rawInvoiceModalParams = null
       this.lastPaidInvoice = ''
-    }, 500) // delay 
+    }, 500) // delay
   }
 
   @observable lastPaidInvoice: string = ''
