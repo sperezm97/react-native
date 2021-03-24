@@ -28,6 +28,8 @@ export default function Wrap() {
   async function gotLink(e) {
     if (e && typeof e === 'string') {
       const j = utils.jsonFromUrl(e)
+      console.log('j initial link', j)
+
       if (j['action']) await qrActions(j, ui, chats)
     }
   }
