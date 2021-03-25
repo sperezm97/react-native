@@ -12,6 +12,27 @@
 #import <SKIOSNetworkPlugin/SKIOSNetworkAdapter.h>
 #import <FlipperKitReactPlugin/FlipperKitReactPlugin.h>
 
+// iOS 9.x or newer
+#import <React/RCTLinkingManager.h>
+
+- (BOOL)application:(UIApplication *)application
+   openURL:(NSURL *)url
+   options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
+{
+  return [RCTLinkingManager application:application openURL:url options:options];
+}
+
+
+// // iOS 8.x or older
+// #import <React/RCTLinkingManager.h>
+
+// - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
+//   sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+// {
+//   return [RCTLinkingManager application:application openURL:url
+//                       sourceApplication:sourceApplication annotation:annotation];
+// }
+
 static void InitializeFlipper(UIApplication *application) {
   FlipperClient *client = [FlipperClient sharedClient];
   SKDescriptorMapper *layoutDescriptorMapper = [[SKDescriptorMapper alloc] initWithDefaults];

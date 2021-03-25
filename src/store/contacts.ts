@@ -56,6 +56,7 @@ class ContactStore {
   async getContacts() {
     try {
       const r = await relay.get('contacts')
+
       if (!r) return
       if (r.contacts) {
         this.contacts = r.contacts
@@ -72,7 +73,7 @@ class ContactStore {
       if (r.subscriptions) subStore.setSubs(r.subscriptions)
       return r
     } catch (e) {
-      console.log(e)
+      console.log('getContacts error', e)
     }
   }
 

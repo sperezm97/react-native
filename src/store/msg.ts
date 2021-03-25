@@ -120,30 +120,38 @@ class MsgStore {
   }
 
   @action async restoreMessages() {
-    let done = false
-    let offset = 0
-    const dateq = moment.utc(0).format('YYYY-MM-DD%20HH:mm:ss')
-    let msgs: { [k: number]: Msg[] } = ({} = {})
-    while (!done) {
+    try {
+      let done = false
+      let offset = 0
+      const dateq = moment.utc(0).format('YYYY-MM-DD%20HH:mm:ss')
+      let msgs: { [k: number]: Msg[] } = ({} = {})
+
       const r = await relay.get(`msgs?limit=200&offset=${offset}&date=${dateq}`)
-      if (r.new_messages && r.new_messages.length) {
-        const decodedMsgs = await decodeMessages(r.new_messages)
-        msgs = orgMsgsFromExisting(msgs, decodedMsgs)
-        if (r.new_messages.length < 200) {
-          done = true
+      if (!r.new_messages) return
+
+      while (!done) {
+        if (r.new_messages && r.new_messages.length) {
+          const decodedMsgs = await decodeMessages(r.new_messages)
+          msgs = orgMsgsFromExisting(msgs, decodedMsgs)
+          if (r.new_messages.length < 200) {
+            done = true
+          }
         }
+        offset += 200
       }
-      offset += 200
+      console.log('RESTORE DONE!')
+      this.sortAllMsgs(msgs)
+      this.lastFetched = new Date().getTime()
+      this.persister()
+    } catch (error) {
+      console.log('restoreMessages error', error)
     }
-    console.log('RESTORE DONE!')
-    this.sortAllMsgs(msgs)
-    this.lastFetched = new Date().getTime()
-    this.persister()
   }
 
   @action
   async getMessages(forceMore?: boolean) {
     const len = this.lengthOfAllMessages()
+
     if (len === 0) {
       return this.restoreMessages()
     }
@@ -169,7 +177,7 @@ class MsgStore {
         this.sortAllMsgs(null)
       }
     } catch (e) {
-      console.log(e)
+      console.log('getMessages error', e)
     }
   }
 

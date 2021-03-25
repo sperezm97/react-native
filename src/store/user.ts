@@ -2,6 +2,7 @@ import { observable, action } from 'mobx'
 import { persist } from 'mobx-persist'
 
 import * as api from '../api'
+import config from '../config'
 import { randString } from '../crypto/rand'
 import { uiStore } from './ui'
 
@@ -177,6 +178,7 @@ class UserStore {
     try {
       this.currentIP = ip
       this.invite = supportContact
+      console.log(this.currentIP, 'this.currentIP')
       api.instantiateRelay(ip) // no token
       return ip
     } catch (e) {
@@ -248,8 +250,8 @@ async function sleep(ms) {
 }
 
 const supportContact = {
-  inviterNickname: 'Sphinx Support',
-  inviterPubkey: '023d70f2f76d283c6c4e58109ee3a2816eb9d8feb40b23d62469060a2b2867b77f',
-  welcomeMessage: 'Welcome to Sphinx!',
+  inviterNickname: 'N2N2 Support',
+  inviterPubkey: config.inviter.key,
+  welcomeMessage: 'Welcome to N2N2!',
   action: ''
 }

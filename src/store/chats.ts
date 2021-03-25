@@ -172,6 +172,9 @@ export class ChatStore {
       app_url: app_url || '',
       feed_url: feed_url || ''
     })
+
+    console.log('r after creating a tribe', r)
+
     if (!r) return
     this.gotChat(r)
     return r
