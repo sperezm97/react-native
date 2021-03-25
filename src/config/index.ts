@@ -23,7 +23,7 @@ const config = {
     api: 'https://hub.n2n2.chat/api/v1/'
   },
   tribes: {
-    server: 'tribes.n2n2.chat',
+    server: 'tribes-1.n2n2.chat',
     uuid: 'X3IWAiAW5vNrtOX5TLEJzqNWWr3rrUaXUwaqsfUXRMGNF7IWOHroTGbD4Gn2_rFuRZcsER0tZkrLw3sMnzj4RFAk_sx0'
   },
   meme: {

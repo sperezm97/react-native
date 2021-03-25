@@ -1,7 +1,7 @@
 {
-  "name": "sphinx",
+  "name": "n2n2",
   "description": "Bitcoin Lightning Powered Chat",
-  "author": "Evan Feenstra",
+  "author": "",
   "version": "0.1.0",
   "main": "public/electron",
   "homepage": "./",
@@ -27,12 +27,12 @@
     ]
   },
   "build": {
-    "appId": "sphinx.chat",
-    "productName": "Sphinx Chat",
-    "copyright": "copyright © 2020 Stakwork",
+    "appId": "n2n2.chat",
+    "productName": "N2N2 Chat",
+    "copyright": "copyright © 2021 N2N2",
     "win": {
       "target": "nsis",
-      "publisherName": "Stakwork",
+      "publisherName": "N2N2",
       "icon": "build/static/icon.ico"
     },
     "nsis": {
@@ -43,7 +43,7 @@
     },
     "mac": {
       "identity": null,
-      "category": "com.stakwork.sphinx.chat",
+      "category": "chat.n2n2.Chat",
       "icon": "build/static/icon.ico"
     },
     "linux": {
@@ -53,7 +53,7 @@
       "icon": "build/static/icon.png",
       "category": "Finance",
       "desktop": {
-        "Name": "Sphinx",
+        "Name": "N2N2",
         "Comment": "Lightning Chat",
         "Categories": "Network;Finance"
       }

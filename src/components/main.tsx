@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react'
 import { AppState } from 'react-native'
+
 import MainNav from './mainnav'
 import { useStores } from '../store'
 import { initPicSrc } from './utils/picSrc'
@@ -49,6 +50,7 @@ export default function Main() {
     }
     if (appState.current.match(/active/) && nextAppState === 'background') {
       const count = msg.countUnseenMessages()
+
       // BadgeAndroid.setBadge(count);
     }
     appState.current = nextAppState
@@ -63,7 +65,7 @@ export default function Main() {
     console.log('============> LOAD HISTORY', user.currentIP)
     ui.setLoadingHistory(true)
 
-    await Promise.all([contacts.getContacts(), msg.getMessages()])
+    // await Promise.all([contacts.getContacts(), msg.getMessages()])
 
     ui.setLoadingHistory(false)
     // msg.initLastSeen()

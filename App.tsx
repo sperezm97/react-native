@@ -1,20 +1,23 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper'
+import { useDarkMode } from 'react-native-dynamic'
+import { is24HourFormat } from 'react-native-device-time-format'
+import { useObserver } from 'mobx-react-lite'
+import { NavigationContainer } from '@react-navigation/native'
+import { Linking, AppState } from 'react-native'
+
 import Main from './src/components/main'
 import Onboard from './src/components/onboard'
 import { useStores, useTheme } from './src/store'
 import { instantiateRelay } from './src/api'
-import { useObserver } from 'mobx-react-lite'
 import Loading from './src/components/loading'
 import StatusBar from './src/components/utils/statusBar'
 import * as utils from './src/components/utils/utils'
-import { Linking } from 'react-native'
-import { NavigationContainer } from '@react-navigation/native'
+
 import { qrActions } from './src/qrActions'
 // import AsyncStorage from '@react-native-community/async-storage'
 import PINCode, { wasEnteredRecently } from './src/components/utils/pin'
-import { useDarkMode } from 'react-native-dynamic'
-import { is24HourFormat } from 'react-native-device-time-format'
+
 // import TrackPlayer from "react-native-track-player";
 import EE, { RESET_IP_FINISHED } from './src/components/utils/ee'
 
@@ -24,8 +27,62 @@ declare var global: { HermesInternal: null | {} }
 export default function Wrap() {
   const { ui, chats } = useStores()
   const [wrapReady, setWrapReady] = useState(false)
+  const [appState, setAppState] = useState(AppState.currentState)
+
+  useEffect(() => {
+    // AppState.addEventListener('change', handleAppStateChange)
+    AppState.addEventListener('change', state => {
+      if (state === 'active') {
+        console.log('state active')
+
+        Linking.getInitialURL()
+          .then(e => {
+            console.log('Initial Url then ', e)
+            if (e) {
+              console.log('Initial Url ', e)
+            }
+          })
+          .catch(error => console.log(error))
+      }
+
+      if (state === 'background') {
+        console.log('background')
+      }
+    })
+
+    Linking.addEventListener('url', gotLink)
+
+    // return () => {
+    //   AppState.removeEventListener('change', handleAppStateChange)
+    // }
+  }, [])
+
+  // const handleAppStateChange = nextAppState => {
+  //   console.log('App State: ' + nextAppState)
+  //   if (appState != nextAppState) {
+  //     if (appState.match(/inactive|background/) && nextAppState === 'active') {
+  //       console.log('App State: ' + 'App has come to the foreground!')
+  //       alert('App State: ' + 'App has come to the foreground!')
+  //     }
+  //     alert('App State: ' + nextAppState)
+  //     Linking.getInitialURL()
+  //       .then(e => {
+  //         console.log('e------- deep link', e)
+
+  //         if (e) gotLink(e).then(() => setWrapReady(true))
+  //         // start with initial url
+  //         else setWrapReady(true) // cold start
+  //       })
+  //       .catch(() => setWrapReady(true)) // this should not happen?
+  //     Linking.addEventListener('url', gotLink)
+
+  //     setAppState(nextAppState)
+  //   }
+  // }
 
   async function gotLink(e) {
+    console.log('got link called')
+
     if (e && typeof e === 'string') {
       const j = utils.jsonFromUrl(e)
       console.log('j initial link', j)
@@ -33,6 +90,7 @@ export default function Wrap() {
       if (j['action']) await qrActions(j, ui, chats)
     }
   }
+
   useEffect(() => {
     // rsa.testSecure()
     // rsa.getPublicKey()
@@ -40,6 +98,8 @@ export default function Wrap() {
     console.log('=> check for deeplink')
     Linking.getInitialURL()
       .then(e => {
+        console.log('e------- deep link', e)
+
         if (e) gotLink(e).then(() => setWrapReady(true))
         // start with initial url
         else setWrapReady(true) // cold start

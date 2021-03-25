@@ -241,6 +241,8 @@ export class ChatStore {
       my_alias: my_alias || '',
       my_photo_url: my_photo_url || ''
     })
+    console.log('r from join tribe', r)
+
     if (!r) return
     this.gotChat(r)
     if (amount) detailsStore.addToBalance(amount * -1)
