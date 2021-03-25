@@ -27,12 +27,13 @@ platform :ios do
 
    # Upload the binary to TestFlight and automatically publish
    # to the configured beta testing group
-   pilot(
-     distribute_external: true,
-     notify_external_testers: false,
-    #  groups: ["HelloWorld Beta Testers"],
-     changelog: "This is another new build from CircleCI!"
-   )
+   pilot(skip_submission: true)
+  #  pilot(
+  #    distribute_external: true,
+  #    notify_external_testers: true,
+  #    groups: ["HelloWorld Beta Testers"],
+  #    changelog: "This is another new build from CircleCI!"
+  #  )
  end
  
  # PRODUCTION 
