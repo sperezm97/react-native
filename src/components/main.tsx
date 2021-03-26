@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react'
-import { AppState } from 'react-native'
+import { AppState, Linking } from 'react-native'
 
 import MainNav from './mainnav'
 import { useStores } from '../store'
@@ -31,6 +31,11 @@ let pushToken = ''
 //   }
 // );
 
+const urlHandler = event => {
+  // setUrl(JSON.stringify(event));
+  console.log('WHAT:::::::::', event)
+}
+
 export default function Main() {
   const [showVersionDialog, setShowVersionDialog] = useState(false)
   const { contacts, msg, details, user, meme, ui } = useStores()
@@ -47,6 +52,7 @@ export default function Main() {
     if (appState.current.match(/inactive|background/) && nextAppState === 'active') {
       loadHistory()
       checkVersion()
+      Linking.addEventListener('url', urlHandler)
     }
     if (appState.current.match(/active/) && nextAppState === 'background') {
       const count = msg.countUnseenMessages()
