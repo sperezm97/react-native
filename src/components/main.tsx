@@ -1,7 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react'
-import { AppState, Linking } from 'react-native'
+import { AppState } from 'react-native'
 
-import MainNav from './mainnav'
 import { useStores } from '../store'
 import { initPicSrc } from './utils/picSrc'
 import * as push from './push'
@@ -9,6 +8,7 @@ import * as rsa from '../crypto/rsa'
 // import * as BadgeAndroid from "react-native-android-badge";
 import EE, { RESET_IP, RESET_IP_FINISHED } from './utils/ee'
 import { check, VersionDialog } from './checkVersion'
+import Navigation from './Navigation'
 
 async function createPrivateKeyIfNotExists(contacts) {
   const priv = await rsa.getPrivateKey()
@@ -31,11 +31,6 @@ let pushToken = ''
 //   }
 // );
 
-const urlHandler = event => {
-  // setUrl(JSON.stringify(event));
-  console.log('WHAT:::::::::', event)
-}
-
 export default function Main() {
   const [showVersionDialog, setShowVersionDialog] = useState(false)
   const { contacts, msg, details, user, meme, ui } = useStores()
@@ -48,17 +43,23 @@ export default function Main() {
     }
   }, [])
 
+  // useEffect(() => {
+  // rsa.testSecure()
+  // rsa.getPublicKey()
+  // RNWebRTC.registerGlobals()
+  // }, [])
+
   function handleAppStateChange(nextAppState) {
     if (appState.current.match(/inactive|background/) && nextAppState === 'active') {
       loadHistory()
       checkVersion()
-      Linking.addEventListener('url', urlHandler)
     }
     if (appState.current.match(/active/) && nextAppState === 'background') {
       const count = msg.countUnseenMessages()
 
       // BadgeAndroid.setBadge(count);
     }
+
     appState.current = nextAppState
   }
 
@@ -69,9 +70,10 @@ export default function Main() {
 
   async function loadHistory() {
     console.log('============> LOAD HISTORY', user.currentIP)
+
     ui.setLoadingHistory(true)
 
-    // await Promise.all([contacts.getContacts(), msg.getMessages()])
+    await Promise.all([contacts.getContacts(), msg.getMessages()])
 
     ui.setLoadingHistory(false)
     // msg.initLastSeen()
@@ -107,7 +109,7 @@ export default function Main() {
 
   return (
     <>
-      <MainNav />
+      <Navigation />
       <VersionDialog showVersionDialog={showVersionDialog} onCloseVersionDialog={onCloseVersionDialog} />
     </>
   )
