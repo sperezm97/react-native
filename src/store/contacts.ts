@@ -57,6 +57,8 @@ class ContactStore {
     try {
       const r = await relay.get('contacts')
 
+      console.log('r:::', r)
+
       if (!r) return
       if (r.contacts) {
         this.contacts = r.contacts

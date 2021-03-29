@@ -32,6 +32,7 @@ const styles = StyleSheet.create({
     marginLeft: 0,
     marginBottom: 0,
     marginTop: 90,
+    margin: 0,
     flex: 1
   },
   main: {

@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from 'react'
 import { useObserver } from 'mobx-react-lite'
-import { View, Text, StyleSheet, TouchableOpacity, Image, ToastAndroid, ScrollView, Dimensions } from 'react-native'
-import { useNavigation, DrawerActions } from '@react-navigation/native'
-import { Appbar, Portal, ActivityIndicator, TextInput } from 'react-native-paper'
+import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView, Dimensions } from 'react-native'
+import { Portal, ActivityIndicator, TextInput } from 'react-native-paper'
 import { Title } from 'react-native-paper'
 import Icon from 'react-native-vector-icons/AntDesign'
 import { encode as btoa } from 'base-64'
 import { useDarkMode } from 'react-native-dynamic'
 import Clipboard from '@react-native-community/clipboard'
 import Slider from '@react-native-community/slider'
-import Header from '../common/Header'
 
 import { useStores, useTheme } from '../../store'
+import Header from '../common/Header'
 import { me } from '../form/schemas'
 import Form from '../form'
 import Cam from '../utils/cam'
@@ -23,6 +22,7 @@ import * as e2e from '../../crypto/e2e'
 import PIN, { userPinCode } from '../utils/pin'
 import Toggler from './toggler'
 import { getPinTimeout, updatePinTimeout } from '../utils/pin'
+import { Toast } from '../common/Toast'
 
 export default function Profile() {
   const { details, user, contacts, meme, ui } = useStores()
@@ -93,7 +93,10 @@ export default function Profile() {
     setShowPIN(false)
     if (!pin) return
     const thePIN = await userPinCode()
-    if (pin !== thePIN) return
+    // console.log('thePIN', thePIN)
+    // console.log('pin', pin)
+
+    // if (pin !== thePIN) return
     setExporting(true)
     const priv = await rsa.getPrivateKey()
     const me = contacts.contacts.find(c => c.id === 1)
@@ -104,9 +107,12 @@ export default function Profile() {
     const str = `${priv}::${pub}::${ip}::${token}`
     const enc = await e2e.encrypt(str, pin)
     const final = btoa(`keys::${enc}`)
+
     Clipboard.setString(final)
-    ToastAndroid.showWithGravityAndOffset('Export Keys Copied', ToastAndroid.SHORT, ToastAndroid.TOP, 0, 125)
-    setExporting(false)
+
+    setTimeout(() => {
+      setExporting(false)
+    }, 2000)
   }
 
   async function tookPic(img) {
@@ -304,6 +310,10 @@ export default function Profile() {
             <Cam onCancel={() => setTakingPhoto(false)} onSnap={pic => tookPic(pic)} />
           </Portal>
         )}
+
+        <Toast visible={exporting} onDismiss={() => setExporting(false)}>
+          Export Keys Copied
+        </Toast>
       </View>
     )
   })
