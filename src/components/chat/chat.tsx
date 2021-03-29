@@ -46,6 +46,7 @@ export default function Chat() {
     })
   }
 
+  //
   useLayoutEffect(() => {
     navigation.setOptions({
       header: props => (

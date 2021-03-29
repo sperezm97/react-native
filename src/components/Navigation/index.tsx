@@ -1,11 +1,11 @@
 import React from 'react'
 import { createDrawerNavigator } from '@react-navigation/drawer'
 
+import { useStores, useTheme } from '../../store'
 import DashNav from '../dash/dashnav'
 import ContactsNav from '../contacts/contactsNav'
 import Profile from '../profile/profile'
-import DrawerContent from '../menu/drawer'
-import { useStores, useTheme } from '../../store'
+import DrawerContent from '../common/Drawer'
 import Modals from '../modals'
 import { setTint } from '../utils/statusBar'
 

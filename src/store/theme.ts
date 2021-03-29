@@ -1,12 +1,11 @@
-
 import { observable, action } from 'mobx'
 import { persist } from 'mobx-persist'
 
 type Mode = 'System' | 'Dark' | 'Light'
 
 export class ThemeStore {
-
-  @persist @observable
+  @persist
+  @observable
   mode: Mode = 'System'
 
   @action setMode(m: Mode) {
@@ -23,6 +22,8 @@ export class ThemeStore {
     this.border = d ? '#111' : '#ccc'
     this.selected = d ? '#3b4681' : '#ddddff'
     this.deep = d ? '#292c33' : '#ccc'
+    this.primary = d ? '#283593' : '#0067ff'
+    this.secondary = d ? '#1a237e' : '#055deb'
   }
 
   @observable bg: string = '#FFF'
@@ -32,13 +33,18 @@ export class ThemeStore {
   @observable border: string = '#ccc'
   @observable selected: string = '#ddddff'
   @observable deep: string = '#ccc'
+  @observable primary: string = '#0067ff'
+  @observable secondary: string = '#055deb'
+  @observable white: string = '#ffff'
+  @observable grey: string = '#d0d0d0'
+  // @observable grey: string = '#ddd'
 
-  primary: string = '#6289FD'
+  // primary: string = '#6289FD'
+  // secondary: string = '#6289FD'
   accent: string = '#48c998'
   active: string = '#49ca97'
   inactive: string = '#febd59'
   error: string = '#DB5554'
-
 }
 
 export const themeStore = new ThemeStore()

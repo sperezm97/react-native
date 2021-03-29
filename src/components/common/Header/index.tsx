@@ -32,15 +32,13 @@ export default function Header(props) {
               }}
               color={theme.primary}
             />
-
             <TouchableOpacity
               onPress={() => {
                 navigation.dispatch(DrawerActions.openDrawer())
               }}
               style={{ ...styles.flex }}
             >
-              <Image source={require('../../../assets/n2n2.png')} style={styles.brand} resizeMode={'contain'} />
-              <Text style={{ ...styles.brandText, color: theme.primary }}>N2N2</Text>
+              <Image source={require('../../../assets/n2n2-text.png')} style={styles.brand} resizeMode={'contain'} />
             </TouchableOpacity>
           </View>
           <View>
@@ -76,8 +74,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
   brand: {
-    width: 25,
-    height: 25,
+    width: 65,
+    height: 65,
     marginLeft: 10,
     marginRight: 6
   },
