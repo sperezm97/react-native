@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useLayoutEffect } from 'react'
 import { View, StyleSheet, InteractionManager, BackHandler, ToastAndroid } from 'react-native'
-import { useRoute } from '@react-navigation/native'
-import { useNavigation } from '@react-navigation/native'
+import { useRoute, useNavigation } from '@react-navigation/native'
 import { ActivityIndicator } from 'react-native-paper'
 
 import Header from './header'

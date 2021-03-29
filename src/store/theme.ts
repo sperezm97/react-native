@@ -16,7 +16,7 @@ export class ThemeStore {
   @action setDark(d: boolean) {
     this.dark = d
     this.main = d ? '#1c252e' : '#FFF'
-    this.bg = d ? '#141d26' : '#f3f3f3'
+    this.bg = d ? '#141d26' : '#ffff'
     this.title = d ? '#ddd' : '#666'
     this.subtitle = d ? '#8b98b4' : '#7e7e7e'
     this.border = d ? '#111' : '#ccc'
@@ -26,7 +26,7 @@ export class ThemeStore {
     this.secondary = d ? '#1a237e' : '#055deb'
   }
 
-  @observable bg: string = '#FFF'
+  @observable bg: string = '#ffff'
   @observable main: string = '#f3f3f3'
   @observable title: string = '#666'
   @observable subtitle: string = '#7e7e7e'
@@ -37,6 +37,7 @@ export class ThemeStore {
   @observable secondary: string = '#055deb'
   @observable white: string = '#ffff'
   @observable grey: string = '#d0d0d0'
+  @observable black: string = '#212529'
   // @observable grey: string = '#ddd'
 
   // primary: string = '#6289FD'

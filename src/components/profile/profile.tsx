@@ -9,6 +9,7 @@ import { encode as btoa } from 'base-64'
 import { useDarkMode } from 'react-native-dynamic'
 import Clipboard from '@react-native-community/clipboard'
 import Slider from '@react-native-community/slider'
+import Header from '../common/Header'
 
 import { useStores, useTheme } from '../../store'
 import { me } from '../form/schemas'
@@ -235,7 +236,7 @@ export default function Profile() {
                 initialValues={{
                   alias: user.alias,
                   public_key: user.publicKey,
-                  private_photo: meContact.private_photo || false
+                  private_photo: meContact?.private_photo || false
                 }}
                 onSubmit={async values => {
                   setSaving(true)
@@ -306,17 +307,6 @@ export default function Profile() {
       </View>
     )
   })
-}
-
-function Header() {
-  const navigation = useNavigation()
-  const theme = useTheme()
-  return (
-    <Appbar.Header style={{ width: '100%', backgroundColor: theme.main }}>
-      <Appbar.Action icon='menu' onPress={() => navigation.dispatch(DrawerActions.openDrawer())} accessibilityLabel='menu-close-profile' />
-      <Appbar.Content title='Profile' />
-    </Appbar.Header>
-  )
 }
 
 const styles = StyleSheet.create({

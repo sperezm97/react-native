@@ -10,7 +10,7 @@ import Main from './src/components/main'
 import Onboard from './src/components/onboard'
 import { useStores, useTheme } from './src/store'
 import { instantiateRelay } from './src/api'
-import Loading from './src/components/loading'
+import Loading from './src/components/common/Loading'
 import StatusBar from './src/components/utils/statusBar'
 import * as utils from './src/components/utils/utils'
 
