@@ -31,6 +31,7 @@ const styles = StyleSheet.create({
     marginRight: 0,
     marginLeft: 0,
     marginBottom: 0,
+    marginTop: 90,
     flex: 1
   },
   main: {

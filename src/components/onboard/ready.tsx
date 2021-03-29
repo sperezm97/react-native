@@ -35,7 +35,7 @@ export default function Ready(props) {
             <Text style={styles.boldTitle}>ready</Text>
           </View>
           <View style={styles.titleRow}>
-            <Text style={styles.title}>to use Sphinx</Text>
+            <Text style={styles.title}>to use N2N2</Text>
           </View>
         </View>
         <View style={styles.msgWrap} accessibilityLabel='onboard-ready-message'>

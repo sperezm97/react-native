@@ -110,7 +110,7 @@ export default function Main() {
   return (
     <>
       <Navigation />
-      <VersionDialog showVersionDialog={showVersionDialog} onCloseVersionDialog={onCloseVersionDialog} />
+      {/* <VersionDialog showVersionDialog={showVersionDialog} onCloseVersionDialog={onCloseVersionDialog} /> */}
     </>
   )
 }
