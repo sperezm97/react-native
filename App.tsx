@@ -10,7 +10,7 @@ import Main from './src/components/main'
 import Onboard from './src/components/onboard'
 import { useStores, useTheme } from './src/store'
 import { instantiateRelay } from './src/api'
-import Loading from './src/components/loading'
+import Loading from './src/components/common/Loading'
 import StatusBar from './src/components/utils/statusBar'
 import * as utils from './src/components/utils/utils'
 
@@ -27,26 +27,35 @@ declare var global: { HermesInternal: null | {} }
 export default function Wrap() {
   const { ui, chats } = useStores()
   const [wrapReady, setWrapReady] = useState(false)
-  const [appState, setAppState] = useState(AppState.currentState)
+  const [isBack, setBack] = useState(false)
+
+  console.log('isBack::', isBack)
+
+  useEffect(() => {
+    console.log('appState:::in useEffect', isBack)
+    Linking.addEventListener('url', gotLink)
+  }, [isBack])
 
   useEffect(() => {
     // AppState.addEventListener('change', handleAppStateChange)
     AppState.addEventListener('change', state => {
       if (state === 'active') {
         console.log('state active')
+        setBack(true)
 
-        Linking.getInitialURL()
-          .then(e => {
-            console.log('Initial Url then ', e)
-            if (e) {
-              console.log('Initial Url ', e)
-            }
-          })
-          .catch(error => console.log(error))
+        // Linking.getInitialURL()
+        //   .then(e => {
+        //     console.log('Initial Url then ', e)
+        //     if (e) {
+        //       console.log('Initial Url ', e)
+        //     }
+        //   })
+        //   .catch(error => console.log(error))
       }
 
       if (state === 'background') {
         console.log('background')
+        setBack(false)
       }
     })
 
@@ -57,37 +66,12 @@ export default function Wrap() {
     // }
   }, [])
 
-  // const handleAppStateChange = nextAppState => {
-  //   console.log('App State: ' + nextAppState)
-  //   if (appState != nextAppState) {
-  //     if (appState.match(/inactive|background/) && nextAppState === 'active') {
-  //       console.log('App State: ' + 'App has come to the foreground!')
-  //       alert('App State: ' + 'App has come to the foreground!')
-  //     }
-  //     alert('App State: ' + nextAppState)
-  //     Linking.getInitialURL()
-  //       .then(e => {
-  //         console.log('e------- deep link', e)
-
-  //         if (e) gotLink(e).then(() => setWrapReady(true))
-  //         // start with initial url
-  //         else setWrapReady(true) // cold start
-  //       })
-  //       .catch(() => setWrapReady(true)) // this should not happen?
-  //     Linking.addEventListener('url', gotLink)
-
-  //     setAppState(nextAppState)
-  //   }
-  // }
-
   async function gotLink(e) {
     console.log('got link called')
 
     if (e && typeof e === 'string') {
       const j = utils.jsonFromUrl(e)
       console.log('j initial link', j)
-
-      if (j['action']) await qrActions(j, ui, chats)
     }
   }
 
