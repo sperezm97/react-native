@@ -45,7 +45,7 @@ export default function AddFriend({ visible }) {
             onPress={onNewToSphinxHandler}
             style={{ backgroundColor: '#55D1A9', borderRadius: 30, width: '75%', height: 60, display: 'flex', justifyContent: 'center' }}
           >
-            New to Sphinx
+            New to N2N2
           </Button>
           <Button
             mode='contained'
@@ -54,7 +54,7 @@ export default function AddFriend({ visible }) {
             onPress={onAlreadyOnSphinxHandler}
             style={{ backgroundColor: '#6289FD', borderRadius: 30, width: '75%', height: 60, display: 'flex', justifyContent: 'center', marginTop: 28 }}
           >
-            Already on Sphinx
+            Already on N2N2
           </Button>
         </FadeView>
 

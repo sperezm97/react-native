@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import { useObserver } from 'mobx-react-lite'
 import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView, Dimensions } from 'react-native'
-import { Portal, ActivityIndicator, TextInput } from 'react-native-paper'
+import { useNavigation, DrawerActions } from '@react-navigation/native'
+import { Appbar, Portal, ActivityIndicator, TextInput } from 'react-native-paper'
 import { Title } from 'react-native-paper'
 import Icon from 'react-native-vector-icons/AntDesign'
 import { encode as btoa } from 'base-64'
 import { useDarkMode } from 'react-native-dynamic'
 import Clipboard from '@react-native-community/clipboard'
 import Slider from '@react-native-community/slider'
+import Toast from 'react-native-simple-toast'
 
 import { useStores, useTheme } from '../../store'
 import Header from '../common/Header'
@@ -22,7 +24,6 @@ import * as e2e from '../../crypto/e2e'
 import PIN, { userPinCode } from '../utils/pin'
 import Toggler from './toggler'
 import { getPinTimeout, updatePinTimeout } from '../utils/pin'
-import { Toast } from '../common/Toast'
 
 export default function Profile() {
   const { details, user, contacts, meme, ui } = useStores()
@@ -110,9 +111,7 @@ export default function Profile() {
 
     Clipboard.setString(final)
 
-    setTimeout(() => {
-      setExporting(false)
-    }, 2000)
+    Toast.showWithGravity('Export Keys Copied.', Toast.LONG, Toast.CENTER)
   }
 
   async function tookPic(img) {
@@ -310,10 +309,6 @@ export default function Profile() {
             <Cam onCancel={() => setTakingPhoto(false)} onSnap={pic => tookPic(pic)} />
           </Portal>
         )}
-
-        <Toast visible={exporting} onDismiss={() => setExporting(false)}>
-          Export Keys Copied
-        </Toast>
       </View>
     )
   })

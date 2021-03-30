@@ -176,6 +176,7 @@
     "react-native-screens": "^2.0.0-beta.11",
     "react-native-secure-key-store": "^2.0.5",
     "react-native-share": "^3.0.0",
+    "react-native-simple-toast": "^1.1.3",
     "react-native-swipe-list-view": "^2.2.0",
     "react-native-tcp": "^3.3.2",
     "react-native-touch-id": "^4.4.1",

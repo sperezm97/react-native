@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 import { useObserver } from 'mobx-react-lite'
-import { View, Text, StyleSheet, ToastAndroid } from 'react-native'
+import { View, Text, StyleSheet } from 'react-native'
 import { Button } from 'react-native-paper'
 import Share from 'react-native-share'
 import Clipboard from '@react-native-community/clipboard'
+import Toast from 'react-native-simple-toast'
 
 import { useStores, useTheme } from '../../store'
 import { DEFAULT_DOMAIN } from '../../config'
@@ -16,7 +17,7 @@ export default function ShareTribe({ visible }) {
   const theme = useTheme()
   function copy() {
     Clipboard.setString(uuid)
-    ToastAndroid.showWithGravityAndOffset('Tribe QR Copied!', ToastAndroid.SHORT, ToastAndroid.TOP, 0, 125)
+    Toast.showWithGravity('Tribe QR Copied!', Toast.SHORT, Toast.TOP)
   }
   async function share() {
     try {

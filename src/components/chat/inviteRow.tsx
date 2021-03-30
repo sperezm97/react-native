@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
-import { TouchableOpacity, View, Text, StyleSheet, Image, ToastAndroid } from 'react-native'
+import { TouchableOpacity, View, Text, StyleSheet, Image } from 'react-native'
 import { Dialog, Portal, Button } from 'react-native-paper'
+
+import moment from 'moment'
+import Toast from 'react-native-simple-toast'
+
 import { constantCodes } from '../../constants'
 import { useStores, useTheme } from '../../store'
-import moment from 'moment'
 
 export default function InviteRow(props) {
   const theme = useTheme()
@@ -17,15 +20,17 @@ export default function InviteRow(props) {
 
   const expiredStatus = props.invite.status === 5
   const yesterday = moment().utc().add(-24, 'hours')
-  const isExpired = moment(invite.created_at || (new Date())).utc().isBefore(yesterday)
+  const isExpired = moment(invite.created_at || new Date())
+    .utc()
+    .isBefore(yesterday)
   if (isExpired || expiredStatus) return <></>
 
   const actions = {
-    'payment_pending': () => {
-      if(!confirmed) setDialogOpen(true)
+    payment_pending: () => {
+      if (!confirmed) setDialogOpen(true)
     },
-    'ready': () => ui.setShareInviteModal(invite.invite_string),
-    'delivered': () => ui.setShareInviteModal(invite.invite_string)
+    ready: () => ui.setShareInviteModal(invite.invite_string),
+    delivered: () => ui.setShareInviteModal(invite.invite_string)
   }
   function doAction() {
     if (actions[statusString]) actions[statusString]()
@@ -36,12 +41,8 @@ export default function InviteRow(props) {
   async function onConfirmHandler() {
     const balance = details.balance
     if (balance < invite.price) {
-      ToastAndroid.showWithGravityAndOffset(
-        'Not Enough Balance',
-        ToastAndroid.SHORT,
-        ToastAndroid.TOP,
-        0, 125
-      );
+      Toast.showWithGravity('Not Enough Balance', Toast.SHORT, Toast.TOP)
+
       setDialogOpen(false)
     } else {
       setLoading(true)
@@ -52,57 +53,49 @@ export default function InviteRow(props) {
     }
   }
 
-  return <TouchableOpacity style={{...styles.chatRow,backgroundColor:theme.main}} activeOpacity={0.5}
-    onPress={doAction}>
-    <View style={styles.inviteQR}>
-      <Image style={{ height: 40, width: 40 }} source={require('../../../android_assets/invite_qr.png')} />
-    </View>
-    <View style={styles.chatContent}>
-      <View style={styles.chatContentTop}>
-        <Text style={{...styles.chatName,color:theme.title}}>{`Invite: ${name}`}</Text>
-        {invite.price && <Text style={styles.invitePrice}>{invite.price}</Text>}
+  return (
+    <TouchableOpacity style={{ ...styles.chatRow, backgroundColor: theme.main }} activeOpacity={0.5} onPress={doAction}>
+      <View style={styles.inviteQR}>
+        <Image style={{ height: 40, width: 40 }} source={require('../../../android_assets/invite_qr.png')} />
       </View>
-      <View style={styles.chatMsgWrap}>
-        {inviteIcon(statusString)}
-        <Text style={{...styles.chatMsg,color:theme.subtitle}}>{inviteMsg(statusString, name, confirmed)}</Text>
+      <View style={styles.chatContent}>
+        <View style={styles.chatContentTop}>
+          <Text style={{ ...styles.chatName, color: theme.title }}>{`Invite: ${name}`}</Text>
+          {invite.price && <Text style={styles.invitePrice}>{invite.price}</Text>}
+        </View>
+        <View style={styles.chatMsgWrap}>
+          {inviteIcon(statusString)}
+          <Text style={{ ...styles.chatMsg, color: theme.subtitle }}>{inviteMsg(statusString, name, confirmed)}</Text>
+        </View>
       </View>
-    </View>
 
-    <Portal>
-      <Dialog visible={dialogOpen} style={{ bottom: 10 }}
-        onDismiss={setDialogOpenToFalseHandler}>
-        <Dialog.Title>{`Pay for invitation?`}</Dialog.Title>
-        <Dialog.Actions style={{ justifyContent: 'space-between' }}>
-          <Button onPress={setDialogOpenToFalseHandler} labelStyle={{ color: 'grey' }}>
-            <Icon name="cancel" size={14} color="grey" />
-            <View style={{ width: 4, height: 6 }}></View>
-            <Text>Cancel</Text>
-          </Button>
-          <Button icon="credit-card" loading={loading} onPress={onConfirmHandler}>
-            Confirm
-          </Button>
-        </Dialog.Actions>
-      </Dialog>
-
-    </Portal>
-
-  </TouchableOpacity>
+      <Portal>
+        <Dialog visible={dialogOpen} style={{ bottom: 10 }} onDismiss={setDialogOpenToFalseHandler}>
+          <Dialog.Title>{`Pay for invitation?`}</Dialog.Title>
+          <Dialog.Actions style={{ justifyContent: 'space-between' }}>
+            <Button onPress={setDialogOpenToFalseHandler} labelStyle={{ color: 'grey' }}>
+              <Icon name='cancel' size={14} color='grey' />
+              <View style={{ width: 4, height: 6 }}></View>
+              <Text>Cancel</Text>
+            </Button>
+            <Button icon='credit-card' loading={loading} onPress={onConfirmHandler}>
+              Confirm
+            </Button>
+          </Dialog.Actions>
+        </Dialog>
+      </Portal>
+    </TouchableOpacity>
+  )
 }
 
 function inviteIcon(statusString) {
   switch (statusString) {
     case 'payment_pending':
-      return <Icon
-        name="credit-card" size={14} color="grey" style={{ marginRight: 4 }}
-      />
+      return <Icon name='credit-card' size={14} color='grey' style={{ marginRight: 4 }} />
     case 'ready':
-      return <Icon
-        name="check" size={14} color="#64C684" style={{ marginRight: 4 }}
-      />
+      return <Icon name='check' size={14} color='#64C684' style={{ marginRight: 4 }} />
     case 'delivered':
-      return <Icon
-        name="check" size={14} color="#64C684" style={{ marginRight: 4 }}
-      />
+      return <Icon name='check' size={14} color='#64C684' style={{ marginRight: 4 }} />
     default:
       return <></>
   }
@@ -128,32 +121,35 @@ function inviteMsg(statusString: string, name: string, confirmed?: boolean) {
 
 export const styles = StyleSheet.create({
   inviteQR: {
-    width: 40, height: 40,
+    width: 40,
+    height: 40,
     overflow: 'hidden',
     backgroundColor: 'transparent',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 18,
-    marginLeft: 18,
+    marginLeft: 18
   },
   avatarWrap: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    width: 52, height: 52,
+    width: 52,
+    height: 52,
     marginRight: 18,
-    marginLeft: 10,
+    marginLeft: 10
   },
   avatar: {
-    width: 52, height: 52,
+    width: 52,
+    height: 52,
     borderRadius: 26,
     backgroundColor: 'transparent',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     position: 'relative',
-    overflow: 'hidden',
+    overflow: 'hidden'
   },
   chatRow: {
     height: 80,
@@ -161,12 +157,12 @@ export const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     flexDirection: 'row',
-    borderBottomWidth: 1,
+    borderBottomWidth: 1
   },
   chatContent: {
     display: 'flex',
     flexDirection: 'column',
-    flex: 1,
+    flex: 1
   },
   chatContentTop: {
     display: 'flex',
@@ -186,20 +182,20 @@ export const styles = StyleSheet.create({
     paddingBottom: 3,
     borderRadius: 3,
     fontSize: 12,
-    marginRight: 20,
+    marginRight: 20
   },
   chatName: {
     marginRight: 12,
     fontSize: 16,
     fontWeight: 'bold',
-    marginBottom: 4,
+    marginBottom: 4
   },
   chatMsgWrap: {
     display: 'flex',
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   chatMsg: {
-    fontSize: 13,
-  },
+    fontSize: 13
+  }
 })
