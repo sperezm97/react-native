@@ -8,13 +8,24 @@ import { useStores } from '../../store'
 import ModalWrap from './modalWrap'
 import Header from './modalHeader'
 
-export default function Support({ visible }) {
-  const { ui, details } = useStores()
-  const [loading, setLoading] = useState(true)
-  const [text, setText] = useState('')
+export default function SupportWrap({ visible }) {
+  const { ui } = useStores()
+
   function close() {
     ui.setSupportModal(false)
   }
+
+  return (
+    <ModalWrap onClose={close} visible={visible} noSwipe>
+      {visible && <Support visible={visible} close={close} />}
+    </ModalWrap>
+  )
+}
+
+function Support({ visible, close }) {
+  const { details } = useStores()
+  const [loading, setLoading] = useState(true)
+  const [text, setText] = useState('')
 
   async function loadLogs() {
     setLoading(true)
@@ -40,42 +51,40 @@ export default function Support({ visible }) {
   }, [visible])
 
   return useObserver(() => (
-    <ModalWrap onClose={close} visible={visible} noSwipe>
-      <Portal.Host>
-        <Header title='Support' onClose={() => close()} />
+    <Portal.Host>
+      <Header title='Support' onClose={() => close()} />
 
-        <View style={styles.modal}>
-          <TextInput
-            numberOfLines={4}
-            textAlignVertical='top'
-            multiline={true}
-            placeholder='Describe your problem here...'
-            onChangeText={e => setText(e)}
-            value={text}
-            blurOnSubmit={true}
-            style={styles.input}
-          />
-          {!loading && (
-            <ScrollView style={styles.logsScroller}>
-              <Text style={styles.logs}>{details.logs}</Text>
-            </ScrollView>
-          )}
-          {loading && (
-            <View style={styles.spinWrap}>
-              <ActivityIndicator animating={true} color='grey' />
-            </View>
-          )}
-          <View style={styles.buttonWrap}>
-            <Button mode='contained' disabled={!details.logs} onPress={() => email()} dark={true} style={styles.button}>
-              Send Message
-            </Button>
-            <Button mode='contained' disabled={!details.logs} onPress={() => copy()} dark={true} style={styles.button}>
-              Copy Logs
-            </Button>
+      <View style={styles.modal}>
+        <TextInput
+          numberOfLines={4}
+          textAlignVertical='top'
+          multiline={true}
+          placeholder='Describe your problem here...'
+          onChangeText={e => setText(e)}
+          value={text}
+          blurOnSubmit={true}
+          style={styles.input}
+        />
+        {!loading && (
+          <ScrollView style={styles.logsScroller}>
+            <Text style={styles.logs}>{details.logs}</Text>
+          </ScrollView>
+        )}
+        {loading && (
+          <View style={styles.spinWrap}>
+            <ActivityIndicator animating={true} color='grey' />
           </View>
+        )}
+        <View style={styles.buttonWrap}>
+          <Button mode='contained' disabled={!details.logs} onPress={() => email()} dark={true} style={styles.button}>
+            Send Message
+          </Button>
+          <Button mode='contained' disabled={!details.logs} onPress={() => copy()} dark={true} style={styles.button}>
+            Copy Logs
+          </Button>
         </View>
-      </Portal.Host>
-    </ModalWrap>
+      </View>
+    </Portal.Host>
   ))
 }
 

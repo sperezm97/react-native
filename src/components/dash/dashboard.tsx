@@ -10,6 +10,7 @@ import BottomBar from './bottomBar'
 export default function Dashboard() {
   const { ui } = useStores()
   const theme = useTheme()
+
   return useObserver(() => (
     <View style={{ ...styles.main, backgroundColor: theme.bg }} accessibilityLabel='dashboard'>
       <View

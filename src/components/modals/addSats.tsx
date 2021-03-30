@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useObserver } from 'mobx-react-lite'
 import { View, Text, StyleSheet, TouchableOpacity, Linking } from 'react-native'
-import { Button, Portal, TextInput } from 'react-native-paper'
+import { Button, TextInput } from 'react-native-paper'
 import FastImage from 'react-native-fast-image'
 import Clipboard from '@react-native-community/clipboard'
 import Toast from 'react-native-simple-toast'
@@ -12,27 +12,35 @@ import Header from './modalHeader'
 
 const apps = [{ name: 'cash', label: 'Cash App', url: 'https://cash.app/$', img: require('../../../android_assets/apps/cash.png') }]
 
-export default function AddSats({ visible }) {
-  const { ui, queries } = useStores()
-  const theme = useTheme()
-  const [selectedApp, setSelectedApp] = useState(null)
+export default function AddSatsWrap({ visible }) {
+  const { ui } = useStores()
 
   function close() {
     ui.setAddSatsModal(false)
   }
+
+  return (
+    <ModalWrap onClose={close} visible={visible}>
+      {visible && <AddSats close={close} />}
+    </ModalWrap>
+  )
+}
+
+function AddSats({ close }) {
+  const [selectedApp, setSelectedApp] = useState(null)
 
   function selectApp(a) {
     setSelectedApp(a)
   }
 
   return useObserver(() => (
-    <ModalWrap onClose={close} visible={visible}>
-      <Header title='Add Sats' onClose={() => close()} />
+    <>
+      <Header title='Add Sats' onClose={close} />
 
       {(!selectedApp ? true : false) && <Apps selectApp={selectApp} />}
 
       {(selectedApp ? true : false) && <Do app={selectedApp} />}
-    </ModalWrap>
+    </>
   ))
 }
 

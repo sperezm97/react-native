@@ -1,12 +1,13 @@
-import React, { useEffect } from 'react'
-import { View, StyleSheet, Dimensions } from 'react-native'
+import React, { useEffect, useState, useLayoutEffect } from 'react'
+import { View, StyleSheet, Dimensions, Button, Text } from 'react-native'
 import Modal from 'react-native-modal'
 
 import { useTheme } from '../../store'
 
-export default function Wrap(props) {
+export default function ModalWrap(props) {
   const theme = useTheme()
-  const { visible, onClose, children, noSwipe } = props
+  const { visible, onClose, children, noSwipe, animationOutTiming } = props
+
   return (
     <Modal
       isVisible={visible}
@@ -14,16 +15,23 @@ export default function Wrap(props) {
       onSwipeComplete={() => onClose()}
       swipeDirection={noSwipe ? null : 'down'}
       onBackButtonPress={() => onClose()}
-      useNativeDriver={true}
       coverScreen={true}
-      // statusBarTranslucent={true}
-      // deviceHeight={Dimensions.get('screen').height-142}
+      animationIn={'slideInUp'}
+      animationOut={'slideOutDown'}
+      animationOutTiming={animationOutTiming}
       propagateSwipe={props.propagateSwipe ? true : false}
       swipeThreshold={20}
+      // useNativeDriver={true}
+      // statusBarTranslucent={true}
+      // deviceHeight={Dimensions.get('screen').height-142}
     >
-      {visible ? <View style={{ ...styles.main, backgroundColor: theme.bg }}>{children}</View> : <View />}
+      <View style={{ ...styles.main, backgroundColor: theme.bg }}>{children}</View>
     </Modal>
   )
+}
+
+ModalWrap.defaultProps = {
+  animationOutTiming: 400
 }
 
 const styles = StyleSheet.create({

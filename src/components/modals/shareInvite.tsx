@@ -11,16 +11,28 @@ import ModalWrap from './modalWrap'
 import Header from './modalHeader'
 import QRCode from '../utils/qrcode'
 
-export default function ShareInvite({ visible }) {
-  const { ui, contacts } = useStores()
+export default function ShareInviteWrap({ visible }) {
+  const { ui } = useStores()
 
   function close() {
     ui.clearShareInviteModal()
   }
+
+  return (
+    <ModalWrap onClose={close} visible={visible}>
+      {visible && <ShareInvite close={close} />}
+    </ModalWrap>
+  )
+}
+
+function ShareInvite({ close }) {
+  const { ui } = useStores()
+
   function copy() {
     Clipboard.setString(ui.shareInviteString)
     Toast.showWithGravity('Invite Copied!', Toast.SHORT, Toast.TOP)
   }
+
   async function share() {
     try {
       await Share.open({ message: ui.shareInviteString })
@@ -28,29 +40,28 @@ export default function ShareInvite({ visible }) {
   }
 
   const hasInvite = ui.shareInviteString ? true : false
+
   return useObserver(() => (
-    <ModalWrap onClose={close} visible={visible}>
-      <Portal.Host>
-        <Header title='Share Invitation Code' onClose={() => close()} />
-        <TouchableWithoutFeedback style={styles.wrap} onPress={copy}>
-          <View style={styles.wrap}>
-            <View style={styles.tapWrap}>
-              <Image style={{ height: 29, width: 17 }} source={require('../../../android_assets/tap_to_copy.png')} />
-              <Text style={styles.tapToCopy}>TAP TO COPY</Text>
-            </View>
-            <View style={styles.qrWrap}>{hasInvite && <QRCode value={ui.shareInviteString} size={210} bgColor='black' fgColor='white' />}</View>
-            {hasInvite && (
-              <View style={styles.inviteStringWrap}>
-                <Text style={styles.inviteString}>{ui.shareInviteString}</Text>
-              </View>
-            )}
-            <Button icon='share' onPress={() => share()} style={styles.shareButton}>
-              Share
-            </Button>
+    <Portal.Host>
+      <Header title='Share Invitation Code' onClose={close} />
+      <TouchableWithoutFeedback style={styles.wrap} onPress={copy}>
+        <View style={styles.wrap}>
+          <View style={styles.tapWrap}>
+            <Image style={{ height: 29, width: 17 }} source={require('../../../android_assets/tap_to_copy.png')} />
+            <Text style={styles.tapToCopy}>TAP TO COPY</Text>
           </View>
-        </TouchableWithoutFeedback>
-      </Portal.Host>
-    </ModalWrap>
+          <View style={styles.qrWrap}>{hasInvite && <QRCode value={ui.shareInviteString} size={210} bgColor='black' fgColor='white' />}</View>
+          {hasInvite && (
+            <View style={styles.inviteStringWrap}>
+              <Text style={styles.inviteString}>{ui.shareInviteString}</Text>
+            </View>
+          )}
+          <Button icon='share' onPress={() => share()} style={styles.shareButton}>
+            Share
+          </Button>
+        </View>
+      </TouchableWithoutFeedback>
+    </Portal.Host>
   ))
 }
 
