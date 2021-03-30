@@ -51,39 +51,46 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
   const hasLoopout = tribeBots && tribeBots.length && tribeBots.find(tb => tb.prefix === '/loopout' && tb.commands && tb.commands.find(c => c.command === '*')) ? true : false
 
   const waitingForAdminApproval = chat.status === constants.chat_statuses.pending
+
   function sendMessage() {
-    if (!text) return
-    if (waitingForAdminApproval) return
-    let contact_id = chat.contact_ids.find(cid => cid !== 1)
-    let { price, failureMessage } = calcBotPrice(tribeBots, text)
-    if (failureMessage) {
-      Toast.showWithGravity(failureMessage, Toast.SHORT, Toast.TOP)
-      return
-    }
+    try {
+      console.log('text', text)
 
-    let txt = text
-    if (extraTextContent) {
-      const { type, ...rest } = extraTextContent
-      txt = type + '::' + JSON.stringify({ ...rest, text })
-    }
+      if (!text) return
+      if (waitingForAdminApproval) return
+      let contact_id = chat.contact_ids.find(cid => cid !== 1)
+      let { price, failureMessage } = calcBotPrice(tribeBots, text)
+      if (failureMessage) {
+        Toast.showWithGravity(failureMessage, Toast.SHORT, Toast.TOP)
+        return
+      }
 
-    msg.sendMessage({
-      contact_id: contact_id || null,
-      text: txt,
-      chat_id: chat.id || null,
-      amount: price + pricePerMessage || 0,
-      reply_uuid: replyUuid || ''
-    })
-    setText('')
-    if (replyUuid) {
-      setReplyUuid('')
-      EE.emit(CLEAR_REPLY_UUID, null)
+      let txt = text
+      if (extraTextContent) {
+        const { type, ...rest } = extraTextContent
+        txt = type + '::' + JSON.stringify({ ...rest, text })
+      }
+
+      msg.sendMessage({
+        contact_id: contact_id || null,
+        text: txt,
+        chat_id: chat.id || null,
+        amount: price + pricePerMessage || 0,
+        reply_uuid: replyUuid || ''
+      })
+      setText('')
+      if (replyUuid) {
+        setReplyUuid('')
+        EE.emit(CLEAR_REPLY_UUID, null)
+      }
+      if (extraTextContent) {
+        setExtraTextContent(null)
+      }
+      // inputRef.current.blur()
+      // setInputFocused(false)
+    } catch (error) {
+      console.log('error:::', error)
     }
-    if (extraTextContent) {
-      setExtraTextContent(null)
-    }
-    // inputRef.current.blur()
-    // setInputFocused(false)
   }
 
   function gotExtraTextContent(body) {

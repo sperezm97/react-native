@@ -263,8 +263,15 @@ class MsgStore {
     message_price?: number
   }) {
     try {
+      console.log('chat_id', chat_id)
+
       const encryptedText = await encryptText({ contact_id: 1, text })
+      console.log('encryptedText', encryptedText)
+
       const remote_text_map = await makeRemoteTextMap({ contact_id, text, chat_id })
+
+      console.log('remote_text_map', remote_text_map)
+
       const v: { [k: string]: any } = {
         contact_id,
         chat_id: chat_id || null,
@@ -278,6 +285,8 @@ class MsgStore {
       // const r = await relay.post('messages', v)
       // this.gotNewMessage(r)
       if (!chat_id) {
+        console.log('no chat_id')
+
         const r = await relay.post('messages', v)
         console.log('257 ==============', r)
         if (!r) return
@@ -293,6 +302,7 @@ class MsgStore {
         this.messagePosted(r)
         if (amount) detailsStore.addToBalance(amount * -1)
       }
+      console.log('after')
     } catch (e) {
       console.log(e)
     }
