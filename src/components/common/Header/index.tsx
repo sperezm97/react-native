@@ -1,9 +1,10 @@
 import React from 'react'
-import { View, Text, StyleSheet, ToastAndroid, Image, TouchableOpacity } from 'react-native'
+import { View, StyleSheet, Image, TouchableOpacity } from 'react-native'
 import { Appbar, IconButton, ActivityIndicator } from 'react-native-paper'
 import { DrawerActions, useNavigation } from '@react-navigation/native'
 import { useObserver } from 'mobx-react-lite'
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons'
+import Toast from 'react-native-simple-toast'
 
 import { useStores, useTheme } from '../../../store'
 
@@ -15,7 +16,7 @@ export default function Header(props) {
   const showStatusHandler = () => {
     const status = ui.connected ? 'Connected node' : 'Disconnected node'
 
-    ToastAndroid.showWithGravityAndOffset(status, ToastAndroid.SHORT, ToastAndroid.TOP, 0, 125)
+    Toast.showWithGravity(status, Toast.SHORT, Toast.CENTER)
   }
 
   return useObserver(() => {

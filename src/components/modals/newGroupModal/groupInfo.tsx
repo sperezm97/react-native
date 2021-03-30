@@ -1,22 +1,37 @@
 import React, { useState } from 'react'
 import { useObserver } from 'mobx-react-lite'
-import { useStores, useTheme } from '../../../store'
 import { View, Text, StyleSheet, Image, TouchableOpacity, FlatList } from 'react-native'
 import { Portal, IconButton, Button, Dialog, TextInput } from 'react-native-paper'
+import ImagePicker from 'react-native-image-picker'
+import Slider from '@react-native-community/slider'
+import moment from 'moment'
+
+import { useStores, useTheme } from '../../../store'
 import ModalWrap from '../modalWrap'
 import Header from './header'
 import FadeView from '../../utils/fadeView'
 import People from './people'
 import { useChatPicSrc, createChatPic } from '../../utils/picSrc'
-import moment from 'moment'
 import { Contact, DeletableContact, PendingContact } from './items'
 import EE, { LEFT_GROUP } from '../../utils/ee'
-import ImagePicker from 'react-native-image-picker';
 import { constants } from '../../../constants'
 import Avatar from '../../chat/msg/avatar'
-import Slider from '@react-native-community/slider';
 
-export default function GroupInfo({ visible }) {
+export default function GroupInfoWrap({ visible }) {
+  const { ui } = useStores()
+
+  function close() {
+    ui.closeGroupModal()
+  }
+
+  return (
+    <ModalWrap onClose={close} visible={visible} propagateSwipe={true}>
+      {visible && <GroupInfo close={close} />}
+    </ModalWrap>
+  )
+}
+
+function GroupInfo({ close }) {
   const { ui, contacts, chats, user, msg } = useStores()
   const theme = useTheme()
   const [selected, setSelected] = useState([])
@@ -25,31 +40,23 @@ export default function GroupInfo({ visible }) {
   const [leaveDialog, setLeaveDialog] = useState(false)
   const [editDialog, setEditDialog] = useState(false)
   const [loadingTribe, setLoadingTribe] = useState(false)
-  
+
   const group = ui.groupModalParams
 
-  const [alias,setAlias] = useState((group&&group['my_alias'])||'')
-  function maybeUpdateAlias(){
-    if(!(group&&group.id)) return
-    if(alias!==group['my_alias']) {
+  const [alias, setAlias] = useState((group && group['my_alias']) || '')
+  function maybeUpdateAlias() {
+    if (!(group && group.id)) return
+    if (alias !== group['my_alias']) {
       chats.updateMyInfoInChat(group.id, alias, '')
     }
   }
 
   let initppm = chats.pricesPerMinute[group.id]
-  if(!(initppm||initppm===0)) initppm = group.pricePerMinute||5
-  const [ppm,setPpm] = useState(initppm)
+  if (!(initppm || initppm === 0)) initppm = group.pricePerMinute || 5
+  const [ppm, setPpm] = useState(initppm)
 
   async function onKickContact(cid) {
     await chats.kick(group.id, cid)
-  }
-
-  function close() {
-    ui.closeGroupModal()
-    // setTimeout(() => {
-    //   setSelected([])
-    //   setLeaveDialog(false)
-    // }, 200)
   }
 
   async function addGroupMembers() {
@@ -113,13 +120,7 @@ export default function GroupInfo({ visible }) {
   /**
    * RenderPendingContactsToShow
    */
-  const renderPendingContactsToShow: any = ({ item, index }: any) => (
-    <PendingContact
-      key={index}
-      contact={item}
-      onApproveOrDenyMember={onApproveOrDenyMember}
-    />
-  )
+  const renderPendingContactsToShow: any = ({ item, index }: any) => <PendingContact key={index} contact={item} onApproveOrDenyMember={onApproveOrDenyMember} />
 
   const dotsVerticalHandler = () => {
     if (isTribeAdmin) setEditDialog(true)
@@ -133,12 +134,12 @@ export default function GroupInfo({ visible }) {
   }
   const setEditDialogToFalseHandler = () => setEditDialog(false)
 
-  function fuzzyIndexOf(arr, n){
+  function fuzzyIndexOf(arr, n) {
     let smallestDiff = Infinity
     let index = -1
-    arr.forEach((m,i)=>{
-      const diff = Math.abs(m-n)
-      if(diff<smallestDiff) {
+    arr.forEach((m, i) => {
+      const diff = Math.abs(m - n)
+      if (diff < smallestDiff) {
         smallestDiff = diff
         index = i
       }
@@ -146,79 +147,76 @@ export default function GroupInfo({ visible }) {
     return index
   }
 
-  const ppms = [0,3,5,10,20,50,100]
-  function chooseSatsPerMinute(n){
-    if(!group.id) return
+  const ppms = [0, 3, 5, 10, 20, 50, 100]
+  function chooseSatsPerMinute(n) {
+    if (!group.id) return
     const price = ppms[n] || 0
-    chats.setPricePerMinute(group.id,price)
+    chats.setPricePerMinute(group.id, price)
   }
-  function satsPerMinuteChanged(n){
-    setPpm(ppms[n]||0)
+  function satsPerMinuteChanged(n) {
+    setPpm(ppms[n] || 0)
   }
-  let sliderValue = fuzzyIndexOf(ppms,ppm)
-  if(sliderValue<0) sliderValue=2
+  let sliderValue = fuzzyIndexOf(ppms, ppm)
+  if (sliderValue < 0) sliderValue = 2
 
-  const showValueSlider = (isTribe && !isTribeAdmin && (group&&group.feed_url)) ? true : false
+  const showValueSlider = isTribe && !isTribeAdmin && group && group.feed_url ? true : false
 
   return useObserver(() => {
     const contactsToShow = contacts.contacts.filter(c => {
       return c.id > 1 && group && group.contact_ids.includes(c.id)
     })
-    const pendingContactsToShow = (contacts.contacts.filter(c => {
-      return c.id > 1 && group && group.pending_contact_ids && group.pending_contact_ids.includes(c.id)
-    })) || []
+    const pendingContactsToShow =
+      contacts.contacts.filter(c => {
+        return c.id > 1 && group && group.pending_contact_ids && group.pending_contact_ids.includes(c.id)
+      }) || []
     const selectedContacts = contacts.contacts.filter(c => selected.includes(c.id))
     const showSelectedContacts = selectedContacts.length > 0
-    return <ModalWrap onClose={close} visible={visible}
-      propagateSwipe={true}>
+    return (
       <Portal.Host>
-        <Header title={addPeople ? 'Add Contacts' : 'Group'}
-          showNext={addPeople && showSelectedContacts}
-          onClose={close} nextButtonText="Add"
-          next={addGroupMembers} loading={loading}
-        />
+        <Header title={addPeople ? 'Add Contacts' : 'Group'} showNext={addPeople && showSelectedContacts} onClose={close} nextButtonText='Add' next={addGroupMembers} loading={loading} />
 
         <FadeView opacity={!addPeople ? 1 : 0} style={styles.content}>
-
-          {hasGroup && <View style={styles.groupInfo}>
-            <View style={styles.groupInfoLeft}>
-              <TouchableOpacity onPress={changePic}>
-                {group && <Avatar big alias={group.name} photo={uri || ''} />}
-              </TouchableOpacity>
-              <View style={styles.groupInfoText}>
-                <Text style={{...styles.groupInfoName,color:theme.title}}>{group.name}</Text>
-                <Text style={styles.groupInfoCreated}>{`Created on ${moment(group.created_at).format('ll')}`}</Text>
-                <Text style={{...styles.groupInfoPrices,color:theme.subtitle}}>
-                  {`Price per message: ${group.price_per_message}, Amount to stake: ${group.escrow_amount}`}
-                </Text>
+          {hasGroup && (
+            <View style={styles.groupInfo}>
+              <View style={styles.groupInfoLeft}>
+                <TouchableOpacity onPress={changePic}>{group && <Avatar big alias={group.name} photo={uri || ''} />}</TouchableOpacity>
+                <View style={styles.groupInfoText}>
+                  <Text style={{ ...styles.groupInfoName, color: theme.title }}>{group.name}</Text>
+                  <Text style={styles.groupInfoCreated}>{`Created on ${moment(group.created_at).format('ll')}`}</Text>
+                  <Text style={{ ...styles.groupInfoPrices, color: theme.subtitle }}>{`Price per message: ${group.price_per_message}, Amount to stake: ${group.escrow_amount}`}</Text>
+                </View>
               </View>
+              <IconButton icon='dots-vertical' size={32} color='#666' style={{ marginLeft: 0, marginRight: 0, position: 'absolute', right: 4 }} onPress={dotsVerticalHandler} />
             </View>
-            <IconButton icon="dots-vertical" size={32} color="#666"
-              style={{ marginLeft: 0, marginRight: 0, position:'absolute', right:4 }}
-              onPress={dotsVerticalHandler}
-            />
-          </View>}
+          )}
 
-          {showValueSlider && <View style={styles.slideWrap}>
-            <View style={styles.slideText}>
-              <Text style={{...styles.slideLabel,color:theme.subtitle}}>Podcast: sats per minute</Text>
-              <Text style={{...styles.slideValue,color:theme.subtitle}}>{ppm}</Text>
+          {showValueSlider && (
+            <View style={styles.slideWrap}>
+              <View style={styles.slideText}>
+                <Text style={{ ...styles.slideLabel, color: theme.subtitle }}>Podcast: sats per minute</Text>
+                <Text style={{ ...styles.slideValue, color: theme.subtitle }}>{ppm}</Text>
+              </View>
+              <Slider
+                minimumValue={0}
+                maximumValue={6}
+                value={sliderValue}
+                step={1}
+                minimumTrackTintColor={theme.primary}
+                maximumTrackTintColor={theme.primary}
+                thumbTintColor={theme.primary}
+                onSlidingComplete={chooseSatsPerMinute}
+                onValueChange={satsPerMinuteChanged}
+                style={{ width: '90%' }}
+              />
             </View>
-            <Slider minimumValue={0} maximumValue={6} value={sliderValue} step={1}
-              minimumTrackTintColor={theme.primary}
-              maximumTrackTintColor={theme.primary}
-              thumbTintColor={theme.primary}
-              onSlidingComplete={chooseSatsPerMinute}
-              onValueChange={satsPerMinuteChanged}
-              style={{width:'90%'}}
-            />
-          </View>}
+          )}
 
           <View style={styles.inputWrap}>
-            <Text style={{...styles.inputLabel,color:theme.subtitle}}>My Name in this tribe</Text>
-            <TextInput mode="outlined"
-              placeholder="Your Name in this Tribe"
-              onChangeText={e=> setAlias(e)}
+            <Text style={{ ...styles.inputLabel, color: theme.subtitle }}>My Name in this tribe</Text>
+            <TextInput
+              mode='outlined'
+              placeholder='Your Name in this Tribe'
+              onChangeText={e => setAlias(e)}
               value={alias}
               style={styles.input}
               // onFocus={()=> setKey(true)}
@@ -226,50 +224,41 @@ export default function GroupInfo({ visible }) {
             />
           </View>
 
-          {(!isTribe || isTribeAdmin) && <View style={styles.members}>
-            {contactsToShow && contactsToShow.length > 0 && <>
-              <Text style={styles.membersTitle}>GROUP MEMBERS</Text>
-              <FlatList
-                style={styles.scroller}
-                data={contactsToShow}
-                renderItem={renderContact}
-                keyExtractor={(item) => String(item.id)}
-              />
-            </>}
-            {isTribeAdmin && pendingContactsToShow.length > 0 && <>
-              <Text style={styles.membersTitle}>PENDING GROUP MEMBERS</Text>
-              <FlatList
-                style={styles.scroller}
-                data={pendingContactsToShow}
-                renderItem={renderPendingContactsToShow}
-                keyExtractor={(item) => String(item.id)}
-              />
-            </>}
-            {!isTribeAdmin && <Button mode="contained" dark={true} icon="plus"
-              onPress={onSetAddPeopleHandler}
-              style={styles.addPeople}>
-              Add People
-            </Button>}
-          </View>}
-
+          {(!isTribe || isTribeAdmin) && (
+            <View style={styles.members}>
+              {contactsToShow && contactsToShow.length > 0 && (
+                <>
+                  <Text style={styles.membersTitle}>GROUP MEMBERS</Text>
+                  <FlatList style={styles.scroller} data={contactsToShow} renderItem={renderContact} keyExtractor={item => String(item.id)} />
+                </>
+              )}
+              {isTribeAdmin && pendingContactsToShow.length > 0 && (
+                <>
+                  <Text style={styles.membersTitle}>PENDING GROUP MEMBERS</Text>
+                  <FlatList style={styles.scroller} data={pendingContactsToShow} renderItem={renderPendingContactsToShow} keyExtractor={item => String(item.id)} />
+                </>
+              )}
+              {!isTribeAdmin && (
+                <Button mode='contained' dark={true} icon='plus' onPress={onSetAddPeopleHandler} style={styles.addPeople}>
+                  Add People
+                </Button>
+              )}
+            </View>
+          )}
         </FadeView>
 
         <FadeView opacity={addPeople ? 1 : 0} style={styles.content}>
-          <People setSelected={setSelected}
-            initialContactIds={(group && group.contact_ids) || []}
-          />
+          <People setSelected={setSelected} initialContactIds={(group && group.contact_ids) || []} />
         </FadeView>
 
         <Portal>
-          <Dialog visible={leaveDialog} style={{ bottom: 10, zIndex: 99 }}
-            onDismiss={setLeaveDialogToFalseHandler}>
+          <Dialog visible={leaveDialog} style={{ bottom: 10, zIndex: 99 }} onDismiss={setLeaveDialogToFalseHandler}>
             <Dialog.Title>Exit Group?</Dialog.Title>
             <Dialog.Actions style={{ justifyContent: 'space-between' }}>
-              <Button icon="cancel" onPress={setLeaveDialogToFalseHandler} color="#888">
+              <Button icon='cancel' onPress={setLeaveDialogToFalseHandler} color='#888'>
                 Cancel
               </Button>
-              <Button icon="exit-to-app" onPress={onExitGroupHandler}
-                loading={loading} color="#DB5554">
+              <Button icon='exit-to-app' onPress={onExitGroupHandler} loading={loading} color='#DB5554'>
                 Exit Group
               </Button>
             </Dialog.Actions>
@@ -277,34 +266,39 @@ export default function GroupInfo({ visible }) {
         </Portal>
 
         <Portal>
-          <Dialog visible={editDialog} style={{ bottom: 10, zIndex: 99 }}
-            onDismiss={setEditDialogToFalseHandler}>
+          <Dialog visible={editDialog} style={{ bottom: 10, zIndex: 99 }} onDismiss={setEditDialogToFalseHandler}>
             <Dialog.Title>Group Settings</Dialog.Title>
             <Dialog.Actions style={{ justifyContent: 'space-between', flexDirection: 'column', alignItems: 'flex-start', height: 150 }}>
-              <Button loading={loadingTribe} icon="pencil" onPress={async () => {
-                setLoadingTribe(true)
-                const params = await chats.getTribeDetails(group.host, group.uuid)
-                if (params) ui.setEditTribeParams({ id: group.id, ...params })
-                setEditDialog(false)
-                setLoadingTribe(false)
-              }}>
+              <Button
+                loading={loadingTribe}
+                icon='pencil'
+                onPress={async () => {
+                  setLoadingTribe(true)
+                  const params = await chats.getTribeDetails(group.host, group.uuid)
+                  if (params) ui.setEditTribeParams({ id: group.id, ...params })
+                  setEditDialog(false)
+                  setLoadingTribe(false)
+                }}
+              >
                 Edit Group
               </Button>
-              <Button icon="share" onPress={async () => {
-                ui.setShareTribeUUID(group.uuid)
-                setEditDialog(false)
-              }}>
+              <Button
+                icon='share'
+                onPress={async () => {
+                  ui.setShareTribeUUID(group.uuid)
+                  setEditDialog(false)
+                }}
+              >
                 Share Group
               </Button>
-              <Button icon="cancel" onPress={setEditDialogToFalseHandler} color="#888">
+              <Button icon='cancel' onPress={setEditDialogToFalseHandler} color='#888'>
                 Cancel
               </Button>
             </Dialog.Actions>
           </Dialog>
         </Portal>
-
       </Portal.Host>
-    </ModalWrap>
+    )
   })
 }
 
@@ -313,7 +307,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'flex-start',
-    marginBottom: 40,
+    marginBottom: 40
   },
   groupInfo: {
     display: 'flex',
@@ -325,43 +319,41 @@ const styles = StyleSheet.create({
   groupInfoLeft: {
     marginLeft: 16,
     display: 'flex',
-    flexDirection: 'row',
+    flexDirection: 'row'
   },
   groupInfoText: {
     display: 'flex',
     height: 54,
     justifyContent: 'center',
     marginLeft: 14,
-    maxWidth:'77%',
+    maxWidth: '77%'
   },
   groupInfoName: {
     color: 'black',
-    fontSize: 16,
+    fontSize: 16
   },
   groupInfoCreated: {
     color: '#888',
-    fontSize: 10,
+    fontSize: 10
   },
-  groupInfoPrices:{
-    fontSize: 10,
+  groupInfoPrices: {
+    fontSize: 10
   },
   members: {
     marginTop: 19,
     display: 'flex',
     flexDirection: 'column',
-    width: '100%',
+    width: '100%'
   },
   membersTitle: {
     color: '#888',
     fontSize: 14,
-    marginLeft: 16,
+    marginLeft: 16
   },
-  membersList: {
-
-  },
+  membersList: {},
   scroller: {
     width: '100%',
-    position: 'relative',
+    position: 'relative'
   },
   addPeople: {
     height: 46,
@@ -375,40 +367,40 @@ const styles = StyleSheet.create({
     marginTop: 16,
     zIndex: 8
   },
-  slideWrap:{
-    width:'100%',
-    display:'flex',
-    alignItems:'center',
-    justifyContent:'center',
-    height:62,
-    marginTop:20
+  slideWrap: {
+    width: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 62,
+    marginTop: 20
   },
-  slideText:{
-    width:'90%',
-    display:'flex',
-    flexDirection:'row',
-    alignItems:'center',
-    justifyContent:'space-between',
-    paddingLeft:15,paddingRight:15,
-    marginBottom:10
+  slideText: {
+    width: '90%',
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingLeft: 15,
+    paddingRight: 15,
+    marginBottom: 10
   },
-  slideLabel:{
-    fontSize:13
+  slideLabel: {
+    fontSize: 13
   },
-  slideValue:{
-    fontSize:15,
-    fontWeight:'bold'
+  slideValue: {
+    fontSize: 15,
+    fontWeight: 'bold'
   },
-  inputWrap:{
-    display:'flex',
-    marginTop:15,
+  inputWrap: {
+    display: 'flex',
+    marginTop: 15
   },
-  inputLabel:{
-    fontSize:11
+  inputLabel: {
+    fontSize: 11
   },
-  input:{
-    maxHeight:55,
-    minWidth:240
+  input: {
+    maxHeight: 55,
+    minWidth: 240
   }
 })
-

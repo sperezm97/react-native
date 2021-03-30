@@ -2,7 +2,7 @@ import { RSAKeychain, RSA } from 'react-native-rsa-native'
 global.Buffer = global.Buffer || require('buffer').Buffer
 
 // import SecureStorage from 'react-native-secure-storage'
-import EncryptedStorage from 'react-native-encrypted-storage';
+import EncryptedStorage from 'react-native-encrypted-storage'
 
 const KEY_SIZE = 2048
 const KEY_TAG = 'sphinx'
@@ -10,30 +10,27 @@ const KEY_TAG = 'sphinx'
 const BLOCK_SIZE = 256
 const MAX_CHUNK_SIZE = BLOCK_SIZE - 11 // 11 is the PCKS1 padding
 
-export async function generateKeyPair(): Promise<{ private: string, public: string }> {
+export async function generateKeyPair(): Promise<{ private: string; public: string }> {
   try {
     const keys = await RSA.generateKeys(KEY_SIZE)
     const priv = privuncert(keys.private)
     const pub = pubuncert(keys.public)
 
     // await SecureStorage.setItem('private', priv, { service: 'sphinx_encryption_key' })
-    await EncryptedStorage.setItem(
-      "private", priv
-    );
+    await EncryptedStorage.setItem('private', priv)
 
     return { private: priv, public: pub }
-  } catch (e) { }
+  } catch (e) {}
 }
 
 export async function getPrivateKey() {
   try {
-
     // const config = { service: 'sphinx_encryption_key' }
     // const got = await SecureStorage.getItem('private', config)
     // return got
-    const item = await EncryptedStorage.getItem("private");
-    return item;
+    const item = await EncryptedStorage.getItem('private')
 
+    return item
   } catch (e) {
     console.log(e)
   }
@@ -41,15 +38,12 @@ export async function getPrivateKey() {
 
 export async function setPrivateKey(priv) {
   try {
-
     // const config = { service: 'sphinx_encryption_key' }
     // const got = await SecureStorage.setItem('private', priv, config)
     // return got
-    await EncryptedStorage.setItem(
-      "private", priv
-    );
+    await EncryptedStorage.setItem('private', priv)
 
-    return priv;
+    return priv
   } catch (e) {
     console.log(e)
   }
@@ -60,7 +54,7 @@ export async function decrypt(data) {
     // const config = { service: 'sphinx_encryption_key' }
     // const priv = await SecureStorage.getItem('private', config)
 
-    const priv = await EncryptedStorage.getItem("private");
+    const priv = await EncryptedStorage.getItem('private')
 
     const key = privcert(priv)
 
@@ -77,7 +71,7 @@ export async function decrypt(data) {
       finalDec += dec
     })
     return finalDec
-  } catch (e) { }
+  } catch (e) {}
   return ''
 }
 
@@ -85,7 +79,7 @@ export async function keyGen() {
   try {
     const keys = await RSAKeychain.generateKeys(KEY_TAG, KEY_SIZE)
     return pubuncert(keys.public)
-  } catch (e) { }
+  } catch (e) {}
   return ''
 }
 
@@ -118,7 +112,7 @@ export async function encrypt(data, pubkey) {
       finalBuf = Buffer.concat([finalBuf, encBuf])
     })
     return finalBuf.toString('base64')
-  } catch (e) { }
+  } catch (e) {}
   return ''
 }
 
@@ -138,18 +132,18 @@ export async function decryptOld(data) {
       finalDec += dec
     })
     return finalDec
-  } catch (e) { }
+  } catch (e) {}
   return ''
 }
 
 export async function testRSA() {
-  const msg = "my secret message"
+  const msg = 'my secret message'
   try {
     const keys = await keyGen()
     console.log(keys)
     const enc = await encrypt(msg, keys.public)
     const dec = await decrypt(enc)
-    console.log("MESSAGE:", dec)
+    console.log('MESSAGE:', dec)
   } catch (e) {
     console.log(e)
   }
@@ -162,14 +156,10 @@ function pubuncert(key) {
   return s.replace(/[\r\n]+/gm, '')
 }
 function pubcert(key) {
-  return '-----BEGIN RSA PUBLIC KEY-----\n' +
-    key + '\n' +
-    '-----END RSA PUBLIC KEY-----'
+  return '-----BEGIN RSA PUBLIC KEY-----\n' + key + '\n' + '-----END RSA PUBLIC KEY-----'
 }
 function privcert(key) {
-  return '-----BEGIN RSA PRIVATE KEY-----\n' +
-    key + '\n' +
-    '-----END RSA PRIVATE KEY-----'
+  return '-----BEGIN RSA PRIVATE KEY-----\n' + key + '\n' + '-----END RSA PRIVATE KEY-----'
 }
 function privuncert(key) {
   let s = key
@@ -180,6 +170,6 @@ function privuncert(key) {
 
 async function asyncForEach(array, callback) {
   for (let index = 0; index < array.length; index++) {
-    await callback(array[index], index, array);
+    await callback(array[index], index, array)
   }
 }

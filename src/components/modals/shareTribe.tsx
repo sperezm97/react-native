@@ -1,38 +1,50 @@
 import React, { useState } from 'react'
 import { useObserver } from 'mobx-react-lite'
-import { View, Text, StyleSheet, ToastAndroid } from 'react-native'
-import { Button } from 'react-native-paper'
+import { View, Text, StyleSheet } from 'react-native'
+import { Button, Portal } from 'react-native-paper'
 import Share from 'react-native-share'
 import Clipboard from '@react-native-community/clipboard'
+import Toast from 'react-native-simple-toast'
 
 import { useStores, useTheme } from '../../store'
 import { DEFAULT_DOMAIN } from '../../config'
-import Modal from './modalWrap'
+import ModalWrap from './modalWrap'
 import QRCode from '../utils/qrcode'
 import Header from './modalHeader'
 
-export default function ShareTribe({ visible }) {
+export default function ShareTribeWrap({ visible }) {
+  const { ui } = useStores()
+
+  function close() {
+    ui.setShareTribeUUID(null)
+  }
+
+  return (
+    <ModalWrap onClose={close} visible={visible}>
+      {visible && <ShareTribe close={close} />}
+    </ModalWrap>
+  )
+}
+
+function ShareTribe({ close }) {
   const { ui, chats } = useStores()
   const theme = useTheme()
   function copy() {
     Clipboard.setString(uuid)
-    ToastAndroid.showWithGravityAndOffset('Tribe QR Copied!', ToastAndroid.SHORT, ToastAndroid.TOP, 0, 125)
+    Toast.showWithGravity('Tribe QR Copied!', Toast.SHORT, Toast.TOP)
   }
+
   async function share() {
     try {
       await Share.open({ message: uuid })
     } catch (e) {}
   }
 
-  function close() {
-    ui.setShareTribeUUID(null)
-  }
-
   const uuid = ui.shareTribeUUID
   const host = chats.getDefaultTribeServer().host
   const qr = `${DEFAULT_DOMAIN}://?action=tribe&uuid=${uuid}&host=${host}`
   return useObserver(() => (
-    <Modal visible={visible} onClose={close}>
+    <Portal.Host>
       <Header title='Join Group QR Code' onClose={close} />
       <View style={styles.qrWrap}>
         <QRCode value={qr} size={250} />
@@ -46,7 +58,7 @@ export default function ShareTribe({ visible }) {
           Copy
         </Button>
       </View>
-    </Modal>
+    </Portal.Host>
   ))
 }
 

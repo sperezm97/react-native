@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useLayoutEffect } from 'react'
-import { View, StyleSheet, InteractionManager, BackHandler, ToastAndroid } from 'react-native'
+import { View, StyleSheet, InteractionManager, BackHandler } from 'react-native'
 import { useRoute, useNavigation } from '@react-navigation/native'
 import { ActivityIndicator } from 'react-native-paper'
+import Toast from 'react-native-simple-toast'
 
 import Header from './header'
 import MsgList from './msgList'
@@ -92,7 +93,8 @@ export default function Chat() {
       if (params) {
         const price = params.price_per_message + params.escrow_amount
         setPricePerMessage(price)
-        ToastAndroid.showWithGravityAndOffset('Price Per Message: ' + price + ' sat', ToastAndroid.SHORT, ToastAndroid.TOP, 0, 125)
+        Toast.showWithGravity('Price Per Message: ' + price + ' sat', Toast.SHORT, Toast.TOP)
+
         if (!isTribeAdmin) {
           if (chat.name !== params.name || chat.photo_url !== params.img) {
             chats.updateTribeAsNonAdmin(chat.id, params.name, params.img)

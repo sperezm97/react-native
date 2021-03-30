@@ -106,7 +106,8 @@ export default function Drawer(props) {
 
 const styles = StyleSheet.create({
   container: {
-    display: 'flex'
+    display: 'flex',
+    position: 'relative'
   },
   drawerHeader: {
     paddingLeft: 10,
