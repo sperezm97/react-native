@@ -1,10 +1,10 @@
 import React, { useState, useRef } from 'react'
 import { View, Text, StyleSheet, TextInput } from 'react-native'
-import { Button } from 'react-native-paper'
 
 import { useStores, useTheme } from '../../store'
 import Slider from '../utils/slider'
 import * as rsa from '../../crypto/rsa'
+import Button from '../common/Button'
 
 export default function NameAndKey(props) {
   const { onDone, z, show } = props
@@ -33,15 +33,7 @@ export default function NameAndKey(props) {
     <Slider z={z} show={show} style={{ backgroundColor: theme.lightGrey }} accessibilityLabel='onboard-name'>
       <TextInput value={text} ref={inputRef} accessibilityLabel='onboard-name-input' placeholder='Set Nickname' style={styles.input} onChangeText={text => setText(text)} />
       <View style={styles.buttonWrap} accessibilityLabel='onboard-name-button-wrap'>
-        <Button
-          mode='contained'
-          accessibilityLabel='onboard-name-button'
-          loading={updating}
-          onPress={ok}
-          disabled={!text}
-          contentStyle={{ height: 60 }}
-          style={{ ...styles.button, backgroundColor: text ? theme.primary : theme.disabled }}
-        >
+        <Button accessibilityLabel='onboard-name-button' loading={updating} onPress={ok} disabled={!text} style={{ ...styles.button, backgroundColor: text ? theme.primary : theme.disabled }}>
           <Text style={{ color: text ? theme.white : theme.black }}>Next</Text>
         </Button>
       </View>

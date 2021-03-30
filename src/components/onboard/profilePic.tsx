@@ -1,12 +1,13 @@
 import React, { useState } from 'react'
 import { View, StyleSheet, Text, Image } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
-import { Button, IconButton } from 'react-native-paper'
+import { IconButton } from 'react-native-paper'
 import ImagePicker from 'react-native-image-picker'
 import RNFetchBlob from 'rn-fetch-blob'
 
 import { useStores, useTheme } from '../../store'
 import Slider from '../utils/slider'
+import Button from '../common/Button'
 
 export default function ProfilePic({ z, show, onDone, onBack }) {
   const { contacts, user, meme } = useStores()
@@ -92,25 +93,12 @@ export default function ProfilePic({ z, show, onDone, onBack }) {
         <View style={styles.mid} accessibilityLabel='onboard-profile-middle'>
           {img && <Image source={{ uri: img.uri }} style={{ width: 180, height: 180, borderRadius: 90 }} resizeMode={'cover'} />}
           {!img && <Image source={require('../../../android_assets/avatar3x.png')} style={{ width: 180, height: 180 }} resizeMode={'cover'} />}
-          <Button
-            mode='contained'
-            accessibilityLabel='onboard-profile-choose-image'
-            onPress={pickImage}
-            style={{ ...styles.selectButton, backgroundColor: theme.lightGrey }}
-            contentStyle={{ height: 60 }}
-          >
+          <Button accessibilityLabel='onboard-profile-choose-image' onPress={pickImage} style={{ ...styles.selectButton, backgroundColor: theme.lightGrey }}>
             <Text style={{ color: theme.black }}>Select Image</Text>
           </Button>
         </View>
         <View style={styles.buttonWrap} accessibilityLabel='onboard-profile-button-wrap'>
-          <Button
-            mode='contained'
-            accessibilityLabel='onboard-profile-button'
-            loading={uploading}
-            onPress={finish}
-            contentStyle={{ height: 60 }}
-            style={{ ...styles.button, backgroundColor: theme.primary }}
-          >
+          <Button accessibilityLabel='onboard-profile-button' loading={uploading} onPress={finish} style={{ ...styles.button, backgroundColor: theme.primary }}>
             <Text style={{ color: theme.white }}> {img ? 'Next' : 'Skip'}</Text>
           </Button>
         </View>

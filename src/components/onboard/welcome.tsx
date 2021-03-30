@@ -1,11 +1,11 @@
 import React from 'react'
 import { View, StyleSheet, Text, Image } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
-import { Button } from 'react-native-paper'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 import { useStores, useTheme } from '../../store'
 import Slider from '../utils/slider'
+import Button from '../common/Button'
 
 export default function Welcome(props) {
   const { onDone, z, show } = props
@@ -26,7 +26,7 @@ export default function Welcome(props) {
             <Text style={styles.name}>{user.invite.inviterNickname || 'Inviter'}</Text>
             <Text style={{ ...styles.message, color: theme.darkGrey }}>{`"${user.invite.welcomeMessage || 'Welcome to N2N2!'}"`}</Text>
           </View>
-          <Button mode='contained' accessibilityLabel='onboard-welcome-button' onPress={go} style={{ ...styles.button, backgroundColor: theme.primary }} contentStyle={{ height: 70 }}>
+          <Button accessibilityLabel='onboard-welcome-button' onPress={go} style={{ ...styles.button, backgroundColor: theme.primary }} btnHeight={70}>
             <Text style={{ fontSize: 16, fontWeight: '600', color: theme.white }}>Get Started</Text>
             <View style={{ width: 12, height: 1 }}></View>
             <Icon name='arrow-right' color={theme.white} size={18} />

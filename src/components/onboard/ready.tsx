@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 import { View, StyleSheet, Text } from 'react-native'
-import { Button } from 'react-native-paper'
 import RadialGradient from 'react-native-radial-gradient'
 
 import { useStores, useTheme } from '../../store'
 import Slider from '../utils/slider'
 import { constants } from '../../constants'
 import actions from '../../store/actions'
+import Button from '../common/Button'
 
 export default function Ready(props) {
   const { z, show, onDone } = props
@@ -57,14 +57,7 @@ export default function Ready(props) {
           </View>
         </View>
         <View style={styles.buttonWrap} accessibilityLabel='onboard-ready-button-wrap'>
-          <Button
-            mode='contained'
-            accessibilityLabel='onboard-ready-button'
-            loading={loading}
-            onPress={finish}
-            style={{ ...styles.button, backgroundColor: theme.white }}
-            contentStyle={{ height: 60 }}
-          >
+          <Button accessibilityLabel='onboard-ready-button' loading={loading} onPress={finish} style={{ ...styles.button, backgroundColor: theme.white }}>
             <Text style={{ fontWeight: '600', color: theme.black }}>Finish</Text>
           </Button>
         </View>
