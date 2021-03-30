@@ -33,7 +33,7 @@ const config = {
     server: 'auth.n2n2.chat'
   },
   inviter: {
-    key: '023d70f2f76d283c6c4e58109ee3a2816eb9d8feb40b23d62469060a2b2867b77f'
+    key: '0317dd32b94d37fa0ee0a481f30cd6090e7b28e593937e5b9446a30cc534f87c07'
   }
 }
 
