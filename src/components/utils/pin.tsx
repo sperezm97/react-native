@@ -1,235 +1,230 @@
-import React, { useState, useEffect } from "react";
-import { View, StyleSheet, Text } from "react-native";
-import NumKey from "./numkey";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import { ActivityIndicator, Colors } from "react-native-paper";
-
+import React, { useState, useEffect } from 'react'
+import { View, StyleSheet, Text } from 'react-native'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+import { ActivityIndicator, Colors } from 'react-native-paper'
+import EncryptedStorage from 'react-native-encrypted-storage'
+import ReactNativeHapticFeedback from 'react-native-haptic-feedback'
+import AsyncStorage from '@react-native-community/async-storage'
+import moment from 'moment'
 // import SecureStorage from 'react-native-secure-storage'
-import EncryptedStorage from "react-native-encrypted-storage";
 
-import ReactNativeHapticFeedback from "react-native-haptic-feedback";
-import AsyncStorage from "@react-native-community/async-storage";
-import moment from "moment";
+import { useTheme } from '../../store'
+import NumKey from './numkey'
 
-const ssConfig = { service: "sphinx_pin" };
+// const ssConfig = { service: 'sphinx_pin' }
 // removeItem
 
-const ns = [1, 2, 3, 4, 5, 6];
+const ns = [1, 2, 3, 4, 5, 6]
 export default function PIN(props) {
-  const [pin, setPin] = useState("");
-  const [chosenPin, setChosenPin] = useState("");
-  const [checking, setChecking] = useState(false);
-  const [err, setErr] = useState(false);
-  const [mode, setMode] = useState("choose");
+  const [pin, setPin] = useState('')
+  const [chosenPin, setChosenPin] = useState('')
+  const [checking, setChecking] = useState(false)
+  const [err, setErr] = useState(false)
+  const [mode, setMode] = useState('choose')
+  const theme = useTheme()
 
   useEffect(() => {
-    (async () => {
+    ;(async () => {
       if (props.forceEnterMode) {
-        setMode("enter");
-        return;
+        setMode('enter')
+        return
       }
       // await SecureStorage.removeItem('pin',ssConfig)
       // const storedPin = await SecureStorage.getItem("pin", ssConfig);
 
-      await EncryptedStorage.removeItem("pin");
-      const storedPin = await EncryptedStorage.getItem("pin");
+      await EncryptedStorage.removeItem('pin')
+      const storedPin = await EncryptedStorage.getItem('pin')
 
-      if (storedPin) setMode("enter");
-    })();
-  }, []);
+      if (storedPin) setMode('enter')
+    })()
+  }, [])
 
   async function check(thePin) {
     if (props.forceEnterMode) {
-      setChecking(true);
-      return props.onFinish(thePin);
+      setChecking(true)
+      return props.onFinish(thePin)
     }
-    ReactNativeHapticFeedback.trigger("impactLight", {
+    ReactNativeHapticFeedback.trigger('impactLight', {
       enableVibrateFallback: true,
-      ignoreAndroidSystemSettings: false,
-    });
-    if (mode === "choose") {
+      ignoreAndroidSystemSettings: false
+    })
+    if (mode === 'choose') {
       if (chosenPin) {
         if (thePin === chosenPin) {
           // success!
-          setChecking(true);
-          await setPinCode(thePin);
-          props.onFinish();
+          setChecking(true)
+          await setPinCode(thePin)
+          props.onFinish()
         } else {
-          setErr(true);
-          setPin("");
-          setChosenPin("");
+          setErr(true)
+          setPin('')
+          setChosenPin('')
         }
       } else {
-        setChosenPin(thePin);
-        setPin("");
+        setChosenPin(thePin)
+        setPin('')
       }
     }
-    if (mode === "enter") {
-      setChecking(true);
+    if (mode === 'enter') {
+      setChecking(true)
       try {
         // const storedPin = await SecureStorage.getItem("pin", ssConfig);
-        const storedPin = await EncryptedStorage.getItem("pin");
+        const storedPin = await EncryptedStorage.getItem('pin')
 
         if (storedPin === thePin) {
-          AsyncStorage.setItem("pin_entered", ts());
-          props.onFinish();
+          AsyncStorage.setItem('pin_entered', ts())
+          props.onFinish()
         } else {
-          setErr(true);
-          setPin("");
-          setChecking(false);
+          setErr(true)
+          setPin('')
+          setChecking(false)
         }
       } catch (e) {}
     }
   }
   function go(v) {
-    const newPin = pin + v;
-    if (err) setErr(false);
-    setPin(newPin);
+    const newPin = pin + v
+    if (err) setErr(false)
+    setPin(newPin)
     if (newPin.length === 6) {
-      check(newPin);
+      check(newPin)
     }
   }
   function backspace() {
-    const newPin = pin.substr(0, pin.length - 1);
-    setPin(newPin);
+    const newPin = pin.substr(0, pin.length - 1)
+    setPin(newPin)
   }
 
-  let txt = "ENTER PIN";
-  if (mode === "choose") {
-    txt = "CHOOSE PIN";
-    if (chosenPin) txt = "CONFIRM PIN";
+  let txt = 'ENTER PIN'
+  if (mode === 'choose') {
+    txt = 'CHOOSE PIN'
+    if (chosenPin) txt = 'CONFIRM PIN'
   }
-  if (err) txt = "TRY AGAIN!";
+  if (err) txt = 'TRY AGAIN!'
 
   return (
-    <View style={styles.wrap}>
+    <View style={{ ...styles.wrap, backgroundColor: theme.primary }}>
       <View style={styles.top}>
         <View style={styles.lock}>
-          <Icon name="lock-outline" color="white" size={20} />
+          <Icon name='lock-outline' color='white' size={20} />
           <Text style={styles.choose}>{txt}</Text>
         </View>
         <View style={styles.circles}>
-          {ns.map((n) => (
+          {ns.map(n => (
             <View
               key={n}
               style={{
-                backgroundColor: pin.length >= n ? "white" : "transparent",
+                backgroundColor: pin.length >= n ? 'white' : 'transparent',
                 height: 25,
                 width: 25,
                 borderRadius: 13,
                 marginLeft: 10,
                 marginRight: 10,
                 borderWidth: 1,
-                borderColor: "white",
+                borderColor: 'white'
               }}
             />
           ))}
         </View>
-        <View style={styles.spinWrap}>
-          {checking && <ActivityIndicator animating={true} color="white" />}
-        </View>
+        <View style={styles.spinWrap}>{checking && <ActivityIndicator animating={true} color='white' />}</View>
       </View>
-      <NumKey
-        onKeyPress={(v) => go(v)}
-        dark={true}
-        onBackspace={() => backspace()}
-      />
+      <NumKey onKeyPress={v => go(v)} dark={true} onBackspace={() => backspace()} />
     </View>
-  );
+  )
 }
 
 export async function userPinCode(): Promise<string> {
   try {
     // const pin = await SecureStorage.getItem("pin", ssConfig);
-    const pin = await EncryptedStorage.getItem("pin");
+    const pin = await EncryptedStorage.getItem('pin')
 
-    if (pin) return pin;
-    else return "";
+    if (pin) return pin
+    else return ''
   } catch (e) {
-    return "";
+    return ''
   }
 }
 
 export async function setPinCode(pin): Promise<any> {
-  AsyncStorage.setItem("pin_entered", ts());
+  AsyncStorage.setItem('pin_entered', ts())
   // return await SecureStorage.setItem("pin", pin, ssConfig);
 
-  await EncryptedStorage.setItem("pin", pin);
-  return pin;
+  await EncryptedStorage.setItem('pin', pin)
+  return pin
 }
 
 export async function updatePinTimeout(v) {
-  await AsyncStorage.setItem("pin_timeout", v);
+  await AsyncStorage.setItem('pin_timeout', v)
 }
 
 export async function getPinTimeout() {
-  let hours = 12;
-  let hoursString = await AsyncStorage.getItem("pin_timeout");
+  let hours = 12
+  let hoursString = await AsyncStorage.getItem('pin_timeout')
   if (hoursString) {
-    const hoursInt = parseInt(hoursString);
-    if (hoursInt || hoursInt === 0) hours = hoursInt;
+    const hoursInt = parseInt(hoursString)
+    if (hoursInt || hoursInt === 0) hours = hoursInt
   }
-  return hours;
+  return hours
 }
 
 export async function wasEnteredRecently(): Promise<boolean> {
-  const now = moment().unix();
-  const hours = await getPinTimeout();
-  const enteredAtStr = await AsyncStorage.getItem("pin_entered");
-  const enteredAt = parseInt(enteredAtStr);
+  const now = moment().unix()
+  const hours = await getPinTimeout()
+  const enteredAtStr = await AsyncStorage.getItem('pin_entered')
+  const enteredAt = parseInt(enteredAtStr)
   if (!enteredAt) {
-    return false;
+    return false
   }
   if (now < enteredAt + 60 * 60 * hours) {
-    return true;
+    return true
   }
-  return false;
+  return false
 }
 
 export async function clearPin(): Promise<boolean> {
   // await SecureStorage.removeItem("pin", ssConfig);
 
-  await EncryptedStorage.removeItem("pin");
-  await AsyncStorage.removeItem("pin_entered");
-  return true;
+  await EncryptedStorage.removeItem('pin')
+  await AsyncStorage.removeItem('pin_entered')
+  return true
 }
 
 function ts() {
-  return moment().unix() + "";
+  return moment().unix() + ''
 }
 
 const styles = StyleSheet.create({
   wrap: {
     flex: 1,
-    backgroundColor: "#6289FD",
-    width: "100%",
+    // backgroundColor: "#6289FD",
+    width: '100%'
   },
   top: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    marginBottom: 60,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 60
   },
   lock: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   choose: {
-    color: "white",
-    fontWeight: "bold",
+    color: 'white',
+    fontWeight: 'bold',
     fontSize: 20,
-    marginTop: 20,
+    marginTop: 20
   },
   spinWrap: {
-    height: 20,
+    height: 20
   },
   circles: {
-    width: "100%",
-    display: "flex",
+    width: '100%',
+    display: 'flex',
     marginBottom: 60,
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-});
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
+  }
+})
