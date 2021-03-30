@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, StyleSheet, Image, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
 import { Appbar, IconButton, ActivityIndicator } from 'react-native-paper'
 import { DrawerActions, useNavigation } from '@react-navigation/native'
 import { useObserver } from 'mobx-react-lite'
@@ -42,7 +42,8 @@ export default function Header(props) {
               <Image source={require('../../../assets/n2n2-text.png')} style={styles.brand} resizeMode={'contain'} />
             </TouchableOpacity>
           </View>
-          <View>
+          <View style={{ ...styles.flex }}>
+            <Text>{details.balance} sat</Text>
             {ui.loadingHistory ? (
               <ActivityIndicator animating={true} color='white' size={18} style={{ position: 'absolute', right: 15 }} />
             ) : (
