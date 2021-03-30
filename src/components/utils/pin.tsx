@@ -106,29 +106,29 @@ export default function PIN(props) {
     <View style={{ ...styles.wrap, backgroundColor: theme.primary }}>
       <View style={styles.top}>
         <View style={styles.lock}>
-          <Icon name='lock-outline' color='white' size={20} />
-          <Text style={styles.choose}>{txt}</Text>
+          <Icon name='lock-outline' size={25} color={theme.white} />
+          <Text style={{ ...styles.choose, color: theme.white }}>{txt}</Text>
         </View>
         <View style={styles.circles}>
           {ns.map(n => (
             <View
               key={n}
               style={{
-                backgroundColor: pin.length >= n ? 'white' : 'transparent',
+                backgroundColor: pin.length >= n ? theme.white : 'transparent',
                 height: 25,
                 width: 25,
                 borderRadius: 13,
                 marginLeft: 10,
                 marginRight: 10,
                 borderWidth: 1,
-                borderColor: 'white'
+                borderColor: theme.white
               }}
             />
           ))}
         </View>
         <View style={styles.spinWrap}>{checking && <ActivityIndicator animating={true} color='white' />}</View>
       </View>
-      <NumKey onKeyPress={v => go(v)} dark={true} onBackspace={() => backspace()} />
+      <NumKey onKeyPress={v => go(v)} onBackspace={() => backspace()} />
     </View>
   )
 }
@@ -211,7 +211,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   choose: {
-    color: 'white',
     fontWeight: 'bold',
     fontSize: 20,
     marginTop: 20

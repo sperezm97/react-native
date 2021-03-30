@@ -16,7 +16,7 @@ export default function Header(props) {
   const showStatusHandler = () => {
     const status = ui.connected ? 'Connected node' : 'Disconnected node'
 
-    Toast.showWithGravity(status, Toast.SHORT, Toast.CENTER)
+    Toast.showWithGravity(status, 0.4, Toast.CENTER)
   }
 
   return useObserver(() => {
