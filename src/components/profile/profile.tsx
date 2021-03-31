@@ -180,11 +180,11 @@ export default function Profile() {
       borderBottomColor: theme.dark ? '#181818' : '#ddd',
       borderTopColor: theme.dark ? '#181818' : '#ddd'
     }
+
     const width = Math.round(Dimensions.get('window').width)
     return (
       <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
         <Header />
-
         <View style={styles.userInfoSection}>
           <View>
             <TouchableOpacity onPress={() => setDialogOpen(true)} style={styles.userPic}>

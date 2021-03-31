@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { View, StyleSheet, Text } from 'react-native'
 import RadialGradient from 'react-native-radial-gradient'
+import { ActivityIndicator } from 'react-native-paper'
 
 import { useStores, useTheme } from '../../store'
 import Slider from '../utils/slider'
@@ -57,8 +58,10 @@ export default function Ready(props) {
           </View>
         </View>
         <View style={styles.buttonWrap} accessibilityLabel='onboard-ready-button-wrap'>
-          <Button accessibilityLabel='onboard-ready-button' loading={loading} onPress={finish} style={{ ...styles.button, backgroundColor: theme.white }}>
-            <Text style={{ fontWeight: '600', color: theme.black }}>Finish</Text>
+          <Button accessibilityLabel='onboard-ready-button' onPress={finish} style={{ ...styles.button, backgroundColor: theme.white }}>
+            {loading && <ActivityIndicator animating={loading} color={theme.grey} size={18} />}
+            <View style={{ width: 12, height: 1 }}></View>
+            <Text style={{ fontSize: 16, fontWeight: '600', color: theme.black }}>Finish</Text>
           </Button>
         </View>
       </RadialGradient>
@@ -132,9 +135,7 @@ const styles = StyleSheet.create({
   },
   button: {
     width: '75%',
-    borderRadius: 30,
-    display: 'flex',
-    justifyContent: 'center'
+    borderRadius: 30
   }
 })
 

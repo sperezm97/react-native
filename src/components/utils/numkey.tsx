@@ -16,7 +16,15 @@ export default function NumKey(props) {
   const h = props.squish ? 240 : 275
 
   return (
-    <View style={{ ...styles.wrap, height: h, maxHeight: h, minHeight: h, backgroundColor: props.dark || theme.dark ? theme.black : theme.white }}>
+    <View
+      style={{
+        ...styles.wrap,
+        height: h,
+        maxHeight: h,
+        minHeight: h,
+        backgroundColor: props.dark ? theme.black : theme.dark ? theme.main : theme.white
+      }}
+    >
       {keys.map((row, i) => {
         return (
           <View key={i} style={styles.row}>
