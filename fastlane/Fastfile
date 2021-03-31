@@ -21,7 +21,10 @@ platform :ios do
       xcodeproj: "ios/Chat.xcodeproj",
    )
    # Set up Distribution code signing and build the app
-   match(type: "appstore")
+   match(
+   type: "appstore",
+   readonly: false
+   )
 
    gym(scheme: "Chat", workspace: "ios/Chat.xcworkspace")
 
