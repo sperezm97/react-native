@@ -16,7 +16,7 @@ export default function NumKey(props) {
   const h = props.squish ? 240 : 275
 
   return (
-    <View style={{ ...styles.wrap, height: h, maxHeight: h, minHeight: h, backgroundColor: theme.black }}>
+    <View style={{ ...styles.wrap, height: h, maxHeight: h, minHeight: h, backgroundColor: props.dark || theme.dark ? theme.black : theme.white }}>
       {keys.map((row, i) => {
         return (
           <View key={i} style={styles.row}>
@@ -44,7 +44,7 @@ export default function NumKey(props) {
                     if (props.onKeyPress) props.onKeyPress(key)
                   }}
                 >
-                  <Text style={{ ...styles.keyText, color: theme.white }}>{key}</Text>
+                  <Text style={{ ...styles.keyText, color: props.dark || theme.dark ? theme.white : theme.grey }}>{key}</Text>
                 </TouchableOpacity>
               )
             })}
@@ -53,6 +53,10 @@ export default function NumKey(props) {
       })}
     </View>
   )
+}
+
+NumKey.defaultProps = {
+  dark: false
 }
 
 const styles = StyleSheet.create({

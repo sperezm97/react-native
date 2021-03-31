@@ -21,10 +21,10 @@ export default function Welcome(props) {
       <Slider z={z} show={show} accessibilityLabel='onboard-welcome'>
         <View style={styles.wrap}>
           <View style={styles.center} accessibilityLabel='onboard-welcome-center'>
-            <Text style={styles.top}>A message from your friend...</Text>
+            <Text style={{ ...styles.top, color: theme.dark ? theme.white : theme.black }}>A message from your friend...</Text>
             <Image source={require('../../../android_assets/avatar.png')} style={{ width: 120, height: 120 }} resizeMode={'cover'} />
-            <Text style={styles.name}>{user.invite.inviterNickname || 'Inviter'}</Text>
-            <Text style={{ ...styles.message, color: theme.darkGrey }}>{`"${user.invite.welcomeMessage || 'Welcome to N2N2!'}"`}</Text>
+            <Text style={{ ...styles.name, color: theme.dark ? theme.white : theme.black }}>{user.invite.inviterNickname || 'Inviter'}</Text>
+            <Text style={{ ...styles.message, color: theme.title }}>{`"${user.invite.welcomeMessage || 'Welcome to N2N2!'}"`}</Text>
           </View>
           <Button accessibilityLabel='onboard-welcome-button' onPress={go} style={{ ...styles.button, backgroundColor: theme.primary }} btnHeight={70}>
             <Text style={{ fontSize: 16, fontWeight: '600', color: theme.white }}>Get Started</Text>

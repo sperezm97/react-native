@@ -103,7 +103,7 @@ export default function PIN(props) {
   if (err) txt = 'TRY AGAIN!'
 
   return (
-    <View style={{ ...styles.wrap, backgroundColor: theme.primary }}>
+    <View style={{ ...styles.wrap, backgroundColor: theme.blue }}>
       <View style={styles.top}>
         <View style={styles.lock}>
           <Icon name='lock-outline' size={25} color={theme.white} />
@@ -128,7 +128,7 @@ export default function PIN(props) {
         </View>
         <View style={styles.spinWrap}>{checking && <ActivityIndicator animating={true} color='white' />}</View>
       </View>
-      <NumKey onKeyPress={v => go(v)} onBackspace={() => backspace()} />
+      <NumKey onKeyPress={v => go(v)} onBackspace={() => backspace()} dark />
     </View>
   )
 }

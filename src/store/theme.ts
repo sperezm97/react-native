@@ -22,8 +22,9 @@ export class ThemeStore {
     this.border = d ? '#111' : '#ccc'
     this.selected = d ? '#3b4681' : '#ddddff'
     this.deep = d ? '#292c33' : '#ccc'
-    this.primary = d ? '#283593' : '#0067ff'
-    this.secondary = d ? '#1a237e' : '#055deb'
+    this.primary = d ? '#132835' : '#0067ff'
+    this.secondary = d ? '#131c27' : '#055deb'
+    this.gradient = d ? '#212b35' : '#4889e8'
   }
 
   @observable bg: string = '#ffff'
@@ -42,6 +43,8 @@ export class ThemeStore {
   @observable black: string = '#212529'
   @observable gradient: string = '#4889e8'
   @observable disabled: string = '#d9dce0'
+  @observable clay: string = '#212932'
+  @observable blue: string = '#0067ff'
 
   // @observable grey: string = '#ddd'
 
@@ -54,3 +57,5 @@ export class ThemeStore {
 }
 
 export const themeStore = new ThemeStore()
+
+// themeStore.setDark(true)

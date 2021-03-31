@@ -9,6 +9,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 
 import { useStores, useTheme } from '../../../store'
 import { usePicSrc } from '../../utils/picSrc'
+import Balance from '../Balance'
 
 export default function Drawer(props) {
   const { ui, details, user, contacts } = useStores()
@@ -35,8 +36,8 @@ export default function Drawer(props) {
             <View style={styles.userInfo}>
               <Title style={{ ...styles.title, color: theme.white }}>{user.alias}</Title>
               <View style={styles.userBalance}>
-                <Text style={{ color: theme.white }}>{details.balance}</Text>
-                <Text style={{ marginLeft: 10, marginRight: 10, color: theme.white }}>sat</Text>
+                <Balance color={theme.white} style={{ marginRight: 12 }} balance={details.balance} />
+
                 <AntDesign name='wallet' color={theme.grey} size={20} />
               </View>
               <TouchableOpacity style={{ backgroundColor: theme.primary }} onPress={() => ui.setAddSatsModal(true)}>

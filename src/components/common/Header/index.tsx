@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
+import { View, StyleSheet, Image, TouchableOpacity } from 'react-native'
 import { Appbar, IconButton, ActivityIndicator } from 'react-native-paper'
 import { DrawerActions, useNavigation } from '@react-navigation/native'
 import { useObserver } from 'mobx-react-lite'
@@ -7,6 +7,7 @@ import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import Toast from 'react-native-simple-toast'
 
 import { useStores, useTheme } from '../../../store'
+import Balance from '../Balance'
 
 export default function Header(props) {
   const navigation = useNavigation()
@@ -31,23 +32,22 @@ export default function Header(props) {
               onPress={() => {
                 navigation.dispatch(DrawerActions.openDrawer())
               }}
-              color={theme.primary}
+              color={theme.dark ? theme.white : theme.darkGrey}
             />
             <TouchableOpacity
               onPress={() => {
                 navigation.dispatch(DrawerActions.openDrawer())
               }}
-              style={{ ...styles.flex }}
             >
               <Image source={require('../../../assets/n2n2-text.png')} style={styles.brand} resizeMode={'contain'} />
             </TouchableOpacity>
           </View>
-          <View style={{ ...styles.flex }}>
-            <Text>{details.balance} sat</Text>
+          <Balance balance={details.balance} color={theme.dark ? theme.white : theme.black} />
+          <View style={{ ...styles.flex, ...styles.right }}>
             {ui.loadingHistory ? (
-              <ActivityIndicator animating={true} color='white' size={18} style={{ position: 'absolute', right: 15 }} />
+              <ActivityIndicator animating={true} color={theme.grey} size={18} style={{}} />
             ) : (
-              <TouchableOpacity onPress={showStatusHandler} style={styles.status}>
+              <TouchableOpacity onPress={showStatusHandler} style={{ ...styles.status }}>
                 <MaterialIcon name='lightning-bolt' size={20} color={ui.connected ? '#49ca97' : '#febd59'} />
               </TouchableOpacity>
             )}
@@ -69,25 +69,22 @@ const styles = StyleSheet.create({
   },
   content: {
     justifyContent: 'space-between',
-    width: '100%',
-    height: '100%'
+    width: '100%'
   },
   left: {
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    width: 50
+  },
+  right: {
+    marginRight: 12,
+    justifyContent: 'flex-end'
   },
   brand: {
     width: 65,
     height: 65,
-    marginLeft: 10,
-    marginRight: 6
-  },
-  brandText: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#fff'
+    maxWidth: 65
   },
   status: {
-    width: 24,
-    marginRight: 10
+    width: 20
   }
 })
