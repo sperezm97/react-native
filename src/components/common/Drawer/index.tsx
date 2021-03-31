@@ -9,6 +9,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 
 import { useStores, useTheme } from '../../../store'
 import { usePicSrc } from '../../utils/picSrc'
+import Balance from '../Balance'
 
 export default function Drawer(props) {
   const { ui, details, user, contacts } = useStores()
@@ -26,21 +27,20 @@ export default function Drawer(props) {
   const openSupportModalHandler = () => ui.setSupportModal(true)
 
   return useObserver(() => (
-    <DrawerContentScrollView style={{ ...props.style, backgroundColor: theme.secondary }} {...props}>
+    <DrawerContentScrollView style={{ ...props.style, backgroundColor: theme.dark ? theme.bg : theme.secondary }} {...props}>
       <View style={{ ...styles.container, height: height - 52 }}>
         {/* drawer header */}
-        <View style={{ ...styles.drawerHeader, backgroundColor: theme.primary }}>
+        <View style={{ ...styles.drawerHeader, backgroundColor: theme.dark ? theme.main : theme.primary }}>
           <View style={{ ...styles.drawerHeaderContent }}>
             <Avatar.Image source={hasImg ? { uri } : require('../../../../android_assets/avatar.png')} size={45} />
             <View style={styles.userInfo}>
               <Title style={{ ...styles.title, color: theme.white }}>{user.alias}</Title>
               <View style={styles.userBalance}>
-                <Text style={{ color: theme.white }}>{details.balance}</Text>
-                <Text style={{ marginLeft: 10, marginRight: 10, color: theme.white }}>sat</Text>
+                <Balance color={theme.white} style={{ marginRight: 12 }} balance={details.balance} />
                 <AntDesign name='wallet' color={theme.grey} size={20} />
               </View>
-              <TouchableOpacity style={{ backgroundColor: theme.primary }} onPress={() => ui.setAddSatsModal(true)}>
-                <Text style={{ color: 'white', fontSize: 12 }}>ADD SATS</Text>
+              <TouchableOpacity onPress={() => ui.setAddSatsModal(true)}>
+                <Text style={{ color: theme.white, fontSize: 12 }}>ADD SATS</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -54,7 +54,7 @@ export default function Drawer(props) {
               <List.Item
                 title='Dashboard'
                 titleStyle={{ color: theme.white }}
-                rippleColor={theme.primary}
+                rippleColor={theme.dark ? theme.main : theme.primary}
                 left={props => <List.Icon {...props} icon={() => <AntDesign name='message1' color={theme.white} size={25} />} />}
                 onPress={goToDashboardHandler}
               />
@@ -63,7 +63,7 @@ export default function Drawer(props) {
               <List.Item
                 title='Contacts'
                 titleStyle={{ color: theme.white }}
-                rippleColor={theme.primary}
+                rippleColor={theme.dark ? theme.main : theme.primary}
                 left={props => <List.Icon {...props} icon={() => <MaterialCommunityIcons name='account-multiple' color={theme.white} size={25} />} />}
                 onPress={goToContactsHandler}
               />
@@ -71,7 +71,7 @@ export default function Drawer(props) {
               <List.Item
                 title='Profile'
                 titleStyle={{ color: theme.white }}
-                rippleColor={theme.primary}
+                rippleColor={theme.dark ? theme.main : theme.primary}
                 left={props => <List.Icon {...props} icon={() => <MaterialCommunityIcons name='account' color={theme.white} size={25} />} />}
                 onPress={goToProfileHandler}
               />

@@ -8,6 +8,7 @@ import Profile from '../profile/profile'
 import DrawerContent from '../common/Drawer'
 import Modals from '../modals'
 import { setTint } from '../utils/statusBar'
+// import TabNav from './TabNav'
 
 const Drawer = createDrawerNavigator()
 

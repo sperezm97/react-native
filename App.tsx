@@ -71,7 +71,7 @@ export default function Wrap() {
 
     if (e && typeof e === 'string') {
       const j = utils.jsonFromUrl(e)
-      console.log('j initial link', j)
+      if (j['action']) await qrActions(j, ui, chats)
     }
   }
 
@@ -170,8 +170,8 @@ function App() {
       roundness: 2,
       colors: {
         ...DefaultTheme.colors,
-        primary: '#6289FD',
-        accent: '#55D1A9',
+        primary: theme.primary,
+        accent: theme.accent,
         text: theme.title,
         placeholder: theme.subtitle,
         background: theme.bg,

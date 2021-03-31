@@ -1,16 +1,20 @@
-import React, { useState, useEffect } from 'react'
-import { View, StyleSheet, Text, Image, TextInput } from 'react-native'
-import { Button } from 'react-native-paper'
-import { useStores } from '../../store'
+import React, { useState } from 'react'
+import { View, StyleSheet, Text } from 'react-native'
 import RadialGradient from 'react-native-radial-gradient'
+import { ActivityIndicator } from 'react-native-paper'
+
+import { useStores, useTheme } from '../../store'
 import Slider from '../utils/slider'
 import { constants } from '../../constants'
 import actions from '../../store/actions'
+import Button from '../common/Button'
 
 export default function Ready(props) {
   const { z, show, onDone } = props
   const { user, contacts, chats } = useStores()
   const [loading, setLoading] = useState(false)
+  const theme = useTheme()
+
   async function finish() {
     setLoading(true)
     await Promise.all([
@@ -26,9 +30,10 @@ export default function Ready(props) {
     setLoading(false)
     onDone()
   }
+
   return (
     <Slider z={z} show={show} accessibilityLabel='onboard-ready'>
-      <RadialGradient style={styles.gradient} colors={['#A68CFF', '#6A8FFF']} stops={[0.1, 1]} center={[80, 40]} radius={400}>
+      <RadialGradient style={styles.gradient} colors={[theme.gradient, theme.secondary]} stops={[0.1, 1]} center={[80, 40]} radius={400}>
         <View style={styles.titleWrap} accessibilityLabel='onboard-ready-title'>
           <View style={styles.titleRow}>
             <Text style={styles.title}>You're</Text>
@@ -53,8 +58,10 @@ export default function Ready(props) {
           </View>
         </View>
         <View style={styles.buttonWrap} accessibilityLabel='onboard-ready-button-wrap'>
-          <Button mode='contained' accessibilityLabel='onboard-ready-button' loading={loading} onPress={finish} style={styles.button}>
-            Finish
+          <Button accessibilityLabel='onboard-ready-button' onPress={finish} style={{ ...styles.button, backgroundColor: theme.white }}>
+            {loading && <ActivityIndicator animating={loading} color={theme.grey} size={18} />}
+            <View style={{ width: 12, height: 1 }}></View>
+            <Text style={{ fontSize: 16, fontWeight: '600', color: theme.black }}>Finish</Text>
           </Button>
         </View>
       </RadialGradient>
@@ -128,11 +135,7 @@ const styles = StyleSheet.create({
   },
   button: {
     width: '75%',
-    borderRadius: 30,
-    height: 60,
-    display: 'flex',
-    justifyContent: 'center',
-    backgroundColor: 'white'
+    borderRadius: 30
   }
 })
 

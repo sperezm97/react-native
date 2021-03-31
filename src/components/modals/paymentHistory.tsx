@@ -28,7 +28,7 @@ function PaymentHistory({ visible, close }) {
   const [loading, setLoading] = useState(true)
   const [payments, setPayments] = useState([])
 
-  function isSphinxMsgs(msgs): boolean {
+  function isMsgs(msgs): boolean {
     const m = msgs && msgs.length && msgs[0]
     if (m.message_content || m.message_content === '' || m.message_content === null) {
       // needs this field
@@ -42,9 +42,13 @@ function PaymentHistory({ visible, close }) {
       if (visible) {
         setLoading(true)
         const ps = await details.getPayments()
-        if (!isSphinxMsgs(ps)) return
-        setPayments(ps)
+
+        console.log('ps', ps)
+
+        console.log(isMsgs(ps))
         setLoading(false)
+        if (!isMsgs(ps)) return
+        setPayments(ps)
         console.log(payments.length)
       }
     })()

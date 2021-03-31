@@ -79,6 +79,9 @@ export default function Main() {
 
     // await Promise.all([contacts.getContacts(), msg.getMessages()])
 
+    msg.getMessages()
+    contacts.getContacts()
+
     ui.setLoadingHistory(false)
     // msg.initLastSeen()
     await sleep(500)

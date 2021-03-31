@@ -105,8 +105,8 @@ function ChatRow(props) {
       <TouchableOpacity
         style={{
           ...styles.chatRow,
-          backgroundColor: theme.main,
-          borderBottomColor: theme.dark ? '#0d1319' : '#e5e5e5'
+          backgroundColor: theme.bg
+          // borderBottomColor: theme.dark ? '#0d1319' : '#e5e5e5'
         }}
         activeOpacity={0.5}
         onPress={onSeeChatHandler}
@@ -122,7 +122,7 @@ function ChatRow(props) {
           )}
         </View>
         <View style={styles.chatContent}>
-          <Text style={{ ...styles.chatName, color: theme.dark ? '#ddd' : '#666' }}>{name}</Text>
+          <Text style={{ ...styles.chatName, color: theme.dark ? theme.white : theme.darkGrey }}>{name}</Text>
           {hasLastMsg && (
             <Text
               numberOfLines={1}

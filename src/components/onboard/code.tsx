@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
-import { View, StyleSheet, Text, Image, TextInput, TouchableOpacity, Linking } from 'react-native'
+import { View, StyleSheet, Text, TextInput, TouchableOpacity, Linking } from 'react-native'
 import { Title, IconButton, ActivityIndicator } from 'react-native-paper'
-import QR from '../utils/qr'
-import { useStores } from '../../store'
 import RadialGradient from 'react-native-radial-gradient'
 import { decode as atob } from 'base-64'
+
+import QR from '../utils/qr'
+import { useStores, useTheme } from '../../store'
 import * as e2e from '../../crypto/e2e'
 import * as rsa from '../../crypto/rsa'
 import PINCode, { setPinCode } from '../utils/pin'
@@ -13,13 +14,14 @@ import { DEFAULT_HOST } from '../../config'
 
 export default function Code(props) {
   const { onDone, z, onRestore } = props
-  const { user, contacts } = useStores()
+  const { user } = useStores()
 
   const [scanning, setScanning] = useState(false)
   const [code, setCode] = useState('')
   const [checking, setChecking] = useState(false)
   const [showPin, setShowPin] = useState(false)
   const [wrong, setWrong] = useState('')
+  const theme = useTheme()
 
   async function scan(data) {
     setCode(data)
@@ -149,14 +151,10 @@ export default function Code(props) {
       />
     )
   }
+
   return (
     <View style={{ ...styles.wrap, zIndex: z }} accessibilityLabel='onboard-code'>
-      <RadialGradient style={styles.gradient} colors={['#A68CFF', '#6A8FFF']} stops={[0.1, 1]} center={[80, 40]} radius={400}>
-        {/* <Image
-          source={require("../../../android_assets/sphinx-white-logo.png")}
-          style={{ width: 120, height: 120 }}
-          resizeMode={"cover"}
-        /> */}
+      <RadialGradient style={styles.gradient} colors={[theme.gradient, theme.secondary]} stops={[0.1, 1]} center={[80, 40]} radius={400}>
         <Title style={styles.welcome}>Welcome</Title>
         <Text style={styles.msg}>Paste the invitation text or scan the QR code</Text>
         <View style={styles.inputWrap} accessibilityLabel='onboard-code-input-wrap'>
@@ -171,10 +169,16 @@ export default function Code(props) {
               if (wrong) setWrong('')
             }}
           />
-          <IconButton accessibilityLabel='onboard-code-qr-button' icon='qrcode-scan' color='#888' size={28} style={{ position: 'absolute', right: 12, top: 38 }} onPress={() => setScanning(true)} />
+          <IconButton
+            accessibilityLabel='onboard-code-qr-button'
+            icon='qrcode-scan'
+            color={theme.grey}
+            size={28}
+            style={{ position: 'absolute', right: 12, top: 38 }}
+            onPress={() => setScanning(true)}
+          />
         </View>
         <View style={styles.spinWrap}>{checking && <ActivityIndicator animating={true} color='white' />}</View>
-
         {(wrong ? true : false) && (
           <View style={styles.wrong}>
             <Text style={styles.wrongText}>{wrong}</Text>

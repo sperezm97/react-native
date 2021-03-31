@@ -21,10 +21,12 @@ export default function PubKeyWrap({ visible, pubkey, close }) {
 
 function PubKey({ pubkey, close }) {
   const theme = useTheme()
+
   function copy() {
     Clipboard.setString(pubkey)
     Toast.showWithGravity('Public Key Copied.', Toast.LONG, Toast.CENTER)
   }
+
   async function share() {
     try {
       await Share.open({ message: pubkey })
@@ -35,7 +37,7 @@ function PubKey({ pubkey, close }) {
     <Portal.Host>
       <Header title='Public Key' onClose={close} />
       <View style={styles.qrWrap}>
-        <QRCode value={pubkey} size={250} />
+        <QRCode value={pubkey} size={450} />
       </View>
       <Text style={{ ...styles.pubkeyText, color: theme.title }}>{pubkey}</Text>
       <View style={styles.buttonsWrap}>
@@ -57,6 +59,7 @@ const styles = StyleSheet.create({
     padding: 20,
     width: '100%',
     alignItems: 'center',
+    justifyContent: 'center',
     marginTop: 50
   },
   pubkeyText: {
