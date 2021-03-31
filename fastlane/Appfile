@@ -1,7 +1,7 @@
 # app_identifier "gg.hotstreak.HotStreak.development" # The bundle identifier of your app
 team_id "5ZGU9RL6KG" # Developer Portal Team ID
 apple_id "ci@n2n2.co"
-app_identifier "chat.n2n2.Chat"
+app_identifier "chat.n2n2.Chat.staging"
 
 # you can even provide different app identifiers, Apple IDs and team names per lane:
 # More information: https://github.com/fastlane/fastlane/blob/master/fastlane/docs/Appfile.md
