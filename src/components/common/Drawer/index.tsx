@@ -69,7 +69,7 @@ export default function Drawer(props) {
               />
               <View style={{ ...styles.borderBottom, borderBottomColor: theme.border }} />
               <List.Item
-                title='Profile'
+                title='Settings'
                 titleStyle={{ color: theme.white }}
                 rippleColor={theme.dark ? theme.main : theme.primary}
                 left={props => <List.Icon {...props} icon={() => <MaterialCommunityIcons name='account' color={theme.white} size={25} />} />}
