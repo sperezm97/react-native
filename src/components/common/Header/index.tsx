@@ -9,7 +9,7 @@ import Toast from 'react-native-simple-toast'
 import { useStores, useTheme } from '../../../store'
 import Balance from '../Balance'
 
-export default function Header(props) {
+export default function Header() {
   const navigation = useNavigation()
   const { details, ui } = useStores()
   const theme = useTheme()
@@ -22,7 +22,7 @@ export default function Header(props) {
 
   return useObserver(() => {
     return (
-      <Appbar.Header style={{ ...styles.appBar, backgroundColor: theme.bg }}>
+      <Appbar.Header style={{ ...styles.appBar, backgroundColor: theme.bg, marginBottom: 10 }}>
         <View style={{ ...styles.flex, ...styles.content }}>
           <View style={{ ...styles.flex, ...styles.left }}>
             <IconButton
@@ -33,6 +33,7 @@ export default function Header(props) {
                 navigation.dispatch(DrawerActions.openDrawer())
               }}
               color={theme.dark ? theme.white : theme.darkGrey}
+              style={{ marginLeft: 0 }}
             />
             <TouchableOpacity
               onPress={() => {

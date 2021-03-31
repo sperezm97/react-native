@@ -156,8 +156,8 @@ export const styles = StyleSheet.create({
     width: '100%',
     display: 'flex',
     alignItems: 'center',
-    flexDirection: 'row',
-    borderBottomWidth: 1
+    flexDirection: 'row'
+    // borderBottomWidth: 1
   },
   chatContent: {
     display: 'flex',

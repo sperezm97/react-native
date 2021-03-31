@@ -105,8 +105,8 @@ function ChatRow(props) {
       <TouchableOpacity
         style={{
           ...styles.chatRow,
-          backgroundColor: theme.main,
-          borderBottomColor: theme.dark ? '#0d1319' : '#e5e5e5'
+          backgroundColor: theme.bg
+          // borderBottomColor: theme.dark ? '#0d1319' : '#e5e5e5'
         }}
         activeOpacity={0.5}
         onPress={onSeeChatHandler}
