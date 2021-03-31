@@ -23,17 +23,17 @@ const config = {
     api: 'https://hub.n2n2.chat/api/v1/'
   },
   tribes: {
-    server: 'tribes-1.n2n2.chat',
-    uuid: 'X3IWAiAW5vNrtOX5TLEJzqNWWr3rrUaXUwaqsfUXRMGNF7IWOHroTGbD4Gn2_rFuRZcsER0tZkrLw3sMnzj4RFAk_sx0'
+    server: 'tribes-staging.n2n2.chat',
+    uuid: 'YGT2Bx-VzNmGHkGIZqQnD7cBh7I6z6Wb_wNIuRpmOjR_mowtxQnCi4Z250FpyEB_R0BOvE5IDbqaogSOzaZXbCRGCg0s'
   },
   meme: {
-    server: 'memes.n2n2.chat'
+    server: 'meme-staging.n2n2.chat'
   },
   auth: {
     server: 'auth.n2n2.chat'
   },
   inviter: {
-    key: '0317dd32b94d37fa0ee0a481f30cd6090e7b28e593937e5b9446a30cc534f87c07'
+    key: '0228af7ad42a56c4069a7af192d139747e98283dfc8d5ba8da9884821c3ef2758e'
   }
 }
 

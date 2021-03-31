@@ -73,13 +73,13 @@ export default function Main() {
 
     ui.setLoadingHistory(true)
 
-    contacts.getContacts()
+    // contacts.getContacts()
 
     // TODO while loop
 
     // await Promise.all([contacts.getContacts(), msg.getMessages()])
 
-    msg.getMessages()
+    // msg.getMessages()
     contacts.getContacts()
 
     ui.setLoadingHistory(false)
