@@ -22,7 +22,7 @@ export class ThemeStore {
     this.border = d ? '#111' : '#ccc'
     this.selected = d ? '#3b4681' : '#ddddff'
     this.deep = d ? '#292c33' : '#ccc'
-    this.primary = d ? '#394697' : '#0067ff'
+    this.primary = d ? '#0067ff' : '#0067ff'
     this.secondary = d ? '#131c27' : '#055deb'
     this.gradient = d ? '#212b35' : '#4889e8'
   }

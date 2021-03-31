@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useObserver } from 'mobx-react-lite'
 import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView, Dimensions } from 'react-native'
-import { useNavigation, DrawerActions } from '@react-navigation/native'
-import { Appbar, Portal, ActivityIndicator, TextInput } from 'react-native-paper'
+import { Portal, ActivityIndicator, TextInput } from 'react-native-paper'
 import { Title } from 'react-native-paper'
 import Icon from 'react-native-vector-icons/AntDesign'
 import { encode as btoa } from 'base-64'
@@ -24,6 +23,7 @@ import * as e2e from '../../crypto/e2e'
 import PIN, { userPinCode } from '../utils/pin'
 import Toggler from './toggler'
 import { getPinTimeout, updatePinTimeout } from '../utils/pin'
+import Button from '../common/Button'
 
 export default function Profile() {
   const { details, user, contacts, meme, ui } = useStores()
@@ -176,47 +176,49 @@ export default function Profile() {
     }
 
     const cardStyles = {
-      backgroundColor: theme.main,
+      backgroundColor: theme.bg,
       borderBottomColor: theme.dark ? '#181818' : '#ddd',
       borderTopColor: theme.dark ? '#181818' : '#ddd'
     }
 
     const width = Math.round(Dimensions.get('window').width)
     return (
-      <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
+      <View style={{ ...styles.wrap, backgroundColor: theme.main }}>
         <Header />
-        <View style={styles.userInfoSection}>
-          <View>
-            <TouchableOpacity onPress={() => setDialogOpen(true)} style={styles.userPic}>
-              <Image resizeMode='cover' source={imgURI ? { uri: imgURI } : require('../../../android_assets/avatar.png')} style={{ width: 60, height: 60, borderRadius: 30 }} />
-              {uploading && <ActivityIndicator animating={true} color='#55D1A9' style={styles.spinner} />}
-            </TouchableOpacity>
-          </View>
-          <View style={styles.userInfo}>
-            <Title style={styles.title}>{user.alias}</Title>
-            <View style={styles.userBalance}>
-              <Text style={{ color: theme.title }}>{details.balance}</Text>
-              <Text style={{ marginLeft: 10, marginRight: 10, color: '#c0c0c0' }}>sat</Text>
-              <TouchableOpacity
-                onPress={() => {
-                  setTapCount(cu => {
-                    if (cu >= 6) {
-                      // seventh tap
-                      shareContactKey()
-                      return 0
-                    }
-                    return cu + 1
-                  })
-                }}
-              >
-                {sharing ? (
-                  <View style={{ height: 20, paddingTop: 4 }}>
-                    <ActivityIndicator animating={true} color='#d0d0d0' size={12} style={{ marginLeft: 4 }} />
-                  </View>
-                ) : (
-                  <Icon name='wallet' color='#d0d0d0' size={20} />
-                )}
+        <View style={{ backgroundColor: theme.bg }}>
+          <View style={{ ...styles.userInfoSection }}>
+            <View>
+              <TouchableOpacity onPress={() => setDialogOpen(true)} style={styles.userPic}>
+                <Image resizeMode='cover' source={imgURI ? { uri: imgURI } : require('../../../android_assets/avatar.png')} style={{ width: 60, height: 60, borderRadius: 30 }} />
+                {uploading && <ActivityIndicator animating={true} color='#55D1A9' style={styles.spinner} />}
               </TouchableOpacity>
+            </View>
+            <View style={styles.userInfo}>
+              <Title style={styles.title}>{user.alias}</Title>
+              <View style={styles.userBalance}>
+                <Text style={{ color: theme.title }}>{details.balance}</Text>
+                <Text style={{ marginLeft: 10, marginRight: 10, color: '#c0c0c0' }}>sat</Text>
+                <TouchableOpacity
+                  onPress={() => {
+                    setTapCount(cu => {
+                      if (cu >= 6) {
+                        // seventh tap
+                        shareContactKey()
+                        return 0
+                      }
+                      return cu + 1
+                    })
+                  }}
+                >
+                  {sharing ? (
+                    <View style={{ height: 20, paddingTop: 4 }}>
+                      <ActivityIndicator animating={true} color='#d0d0d0' size={12} style={{ marginLeft: 4 }} />
+                    </View>
+                  ) : (
+                    <Icon name='wallet' color='#d0d0d0' size={20} />
+                  )}
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
         </View>
@@ -262,14 +264,17 @@ export default function Profile() {
 
             <View style={{ ...styles.inputs, ...cardStyles }}>
               <Text style={{ ...styles.label, color: theme.subtitle }}>Default tip amount</Text>
-              <Text style={{ paddingLeft: 12, paddingRight: 12 }}>
-                <TextInput placeholder='Default Tip Amount' value={tipAmount + ''} onChangeText={tipAmountChange} onBlur={tipAmountDoneChanging} />
-              </Text>
+              <TextInput placeholder='Default Tip Amount' value={tipAmount + ''} onChangeText={tipAmountChange} onBlur={tipAmountDoneChanging} />
             </View>
 
-            <TouchableOpacity style={{ ...styles.export, ...cardStyles }} onPress={() => setShowPIN(true)}>
-              <Text style={styles.exportText}>{!exporting ? 'Want to switch devices? Export keys' : 'Encrypting keys with your PIN........'}</Text>
-            </TouchableOpacity>
+            <View style={{ ...cardStyles, ...styles.exportWrap }}>
+              <Text style={{ ...styles.exportText, color: theme.dark ? theme.white : theme.black }}>Want to switch devices?</Text>
+              <Button accessibilityLabel='onboard-welcome-button' onPress={() => setShowPIN(true)} style={{ ...styles.export, backgroundColor: theme.primary }}>
+                <Text>Export keys</Text>
+                <View style={{ width: 12, height: 1 }}></View>
+                <Icon name='key' color={theme.white} size={18} />
+              </Button>
+            </View>
           </ScrollView>
         )}
 
@@ -400,20 +405,23 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginTop: 10
   },
-  export: {
-    width: '100%',
+  exportWrap: {
+    minHeight: 190,
     display: 'flex',
-    alignItems: 'center',
     justifyContent: 'center',
-    height: 50,
-    marginTop: 10,
-    borderBottomWidth: 1,
-    borderTopWidth: 1,
-    marginBottom: 45
+    paddingBottom: 20
   },
   exportText: {
-    color: '#6289FD',
-    fontSize: 12
+    fontSize: 14,
+    fontWeight: '500',
+    textAlign: 'center',
+    marginBottom: 14
+  },
+  export: {
+    borderRadius: 30,
+    width: '65%',
+    marginRight: 'auto',
+    marginLeft: 'auto'
   },
   label: {
     fontSize: 12,

@@ -9,7 +9,7 @@ export default function Toggler({ items, onSelect, selectedItem, width, extraSty
   const w = WIDTH / items.length
 
   return (
-    <View style={styles.wrap}>
+    <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
       <View style={{ ...styles.border, ...extraStyles, borderColor: theme.dark ? '#555' : '#ddd', minWidth: WIDTH, maxWidth: WIDTH }}>
         {items.map((item, i) => {
           const selected = item === selectedItem
@@ -38,7 +38,6 @@ export default function Toggler({ items, onSelect, selectedItem, width, extraSty
 
 const styles = StyleSheet.create({
   wrap: {
-    height: 50,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center'
