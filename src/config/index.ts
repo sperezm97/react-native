@@ -26,8 +26,8 @@ const config = {
     server: 'tribes-staging.n2n2.chat',
     uuid: 'YGT2Bx-VzNmGHkGIZqQnD7cBh7I6z6Wb_wNIuRpmOjR_mowtxQnCi4Z250FpyEB_R0BOvE5IDbqaogSOzaZXbCRGCg0s'
   },
-  meme: {
-    server: 'meme-staging.n2n2.chat'
+  memes: {
+    server: 'memes-staging.n2n2.chat'
   },
   auth: {
     server: 'auth.n2n2.chat'
@@ -41,7 +41,7 @@ export const DEFAULT_HOST = config.host
 export const DEFAULT_DOMAIN = config.domain
 export const DEFAULT_HUB_API = config.hub.api
 export const DEFAULT_TRIBE_SERVER = config.tribes.server
-export const DEFAULT_MEME_SERVER = config.meme.server
+export const DEFAULT_MEME_SERVER = config.memes.server
 export const DEFAULT_AUTH_SERVER = config.auth.server
 
 export default config

@@ -69,20 +69,10 @@ export default function Main() {
   }
 
   async function loadHistory() {
-    console.log('============> LOAD HISTORY', user.currentIP)
-
     ui.setLoadingHistory(true)
-
-    // contacts.getContacts()
-
-    // TODO while loop
-
-    // await Promise.all([contacts.getContacts(), msg.getMessages()])
-
-    msg.getMessages()
-    contacts.getContacts()
-
+    await Promise.all([contacts.getContacts(), msg.getMessages()])
     ui.setLoadingHistory(false)
+
     // msg.initLastSeen()
     await sleep(500)
     details.getBalance()

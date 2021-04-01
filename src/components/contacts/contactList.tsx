@@ -1,15 +1,15 @@
 import React from 'react'
-import { useStores, useTheme } from '../../store'
 import { useObserver } from 'mobx-react-lite'
 import { TouchableOpacity, ScrollView, SectionList, View, Text, StyleSheet, Image } from 'react-native'
 import { SwipeRow } from 'react-native-swipe-list-view'
 import { IconButton } from 'react-native-paper'
-import { usePicSrc } from '../utils/picSrc'
 import FastImage from 'react-native-fast-image'
+
+import { useStores, useTheme } from '../../store'
+import { usePicSrc } from '../utils/picSrc'
 
 export default function ContactList() {
   const { ui, contacts } = useStores()
-  console.log('contacts', contacts)
 
   const theme = useTheme()
   return useObserver(() => {

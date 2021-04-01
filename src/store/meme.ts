@@ -23,6 +23,7 @@ class MemeStore {
 
   @action getDefaultServer(): Server {
     const server = this.servers.find(s => s.host === DEFAULT_MEME_SERVER)
+
     return server
   }
 
@@ -45,7 +46,9 @@ class MemeStore {
     if (!pubkey) return
 
     const meme = composeAPI(server.host)
+
     const r = await meme.get('ask')
+
     if (!(r && r.challenge)) return
 
     const r2 = await relay.get(`signer/${r.challenge}`)

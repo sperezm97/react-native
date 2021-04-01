@@ -43,13 +43,9 @@ function PaymentHistory({ visible, close }) {
         setLoading(true)
         const ps = await details.getPayments()
 
-        console.log('ps', ps)
-
-        console.log(isMsgs(ps))
         setLoading(false)
         if (!isMsgs(ps)) return
         setPayments(ps)
-        console.log(payments.length)
       }
     })()
   }, [visible])

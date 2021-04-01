@@ -149,13 +149,12 @@ class MsgStore {
   }
 
   @action
-  async getMessages(forceMore?: boolean) {
+  async getMessages(forceMore: boolean = false) {
     const len = this.lengthOfAllMessages()
 
     if (len === 0) {
       return this.restoreMessages()
     }
-    console.log('=> GET MESSAGES: forceMore?', forceMore)
     let route = 'messages'
     if (!forceMore && this.lastFetched) {
       const mult = 1
@@ -170,7 +169,6 @@ class MsgStore {
     try {
       const r = await relay.get(route)
       if (!r) return
-      console.log('=> NEW MSGS LENGTH', r.new_messages.length)
       if (r.new_messages && r.new_messages.length) {
         await this.batchDecodeMessages(r.new_messages)
       } else {

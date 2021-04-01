@@ -26,8 +26,6 @@ function addMethod(m: string, rootUrl: string): Function {
     if (!data) data = {}
 
     try {
-      console.log('this.tokenValue::::', this.tokenValue)
-
       const skip = isPublic(rootUrl + url)
       if (this.tokenKey && !this.tokenValue && !skip) {
         // throw new Error("no token")
@@ -91,7 +89,7 @@ function addMethod(m: string, rootUrl: string): Function {
       }
     } catch (e) {
       // 20 is an "abort" i guess
-      console.warn(e)
+      console.warn(e, 'url', url)
       const isWebAbort = e.code === 20
       const isRNAbort = e.message === 'Aborted'
       if (isWebAbort || isRNAbort) reportTimeout(this.resetIPCallback)
