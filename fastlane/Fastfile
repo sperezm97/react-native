@@ -20,11 +20,15 @@ platform :ios do
       ) + 1,
       xcodeproj: "ios/Chat.xcodeproj",
    )
+
+  # automatic code signing
+  update_code_signing_settings(
+    use_automatic_signing: true,
+    path: "ios/Chat.xcodeproj"
+  )
+
    # Set up Distribution code signing and build the app
-   match(
-   type: "appstore",
-   readonly: false
-   )
+   match(type: "appstore")
 
    gym(scheme: "Chat", workspace: "ios/Chat.xcworkspace")
 

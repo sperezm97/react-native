@@ -79,7 +79,7 @@ export default function Main() {
 
     // await Promise.all([contacts.getContacts(), msg.getMessages()])
 
-    // msg.getMessages()
+    msg.getMessages()
     contacts.getContacts()
 
     ui.setLoadingHistory(false)
