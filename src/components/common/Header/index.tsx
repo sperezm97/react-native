@@ -22,7 +22,7 @@ export default function Header() {
 
   return useObserver(() => {
     return (
-      <Appbar.Header style={{ ...styles.appBar, backgroundColor: theme.bg, marginBottom: 10 }}>
+      <Appbar.Header style={{ ...styles.appBar, backgroundColor: theme.bg }}>
         <View style={{ ...styles.flex, ...styles.content }}>
           <View style={{ ...styles.flex, ...styles.left }}>
             <IconButton

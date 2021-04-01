@@ -1,13 +1,16 @@
 import React, { useState, useCallback } from 'react'
 import { useObserver } from 'mobx-react-lite'
-import { useStores, hooks, useTheme } from '../../store'
 import { TouchableOpacity, FlatList, View, Text, StyleSheet, Dimensions } from 'react-native'
-import { Button } from 'react-native-paper'
-import InviteRow, { styles } from './inviteRow'
 import { useNavigation } from '@react-navigation/native'
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback'
+
+import { useStores, hooks, useTheme } from '../../store'
+import InviteRow, { styles } from './inviteRow'
 import { useChatPicSrc } from '../utils/picSrc'
 import Avatar from './msg/avatar'
+import PushableButton from '../common/Button/PushableButton'
+import RefreshLoading from '../common/RefreshLoading'
+
 const { useChats, useChatRow } = hooks
 
 export default function ChatList() {
@@ -44,18 +47,17 @@ export default function ChatList() {
 
   const footerComponent: any = () => (
     <View style={moreStyles.buttonsWrap}>
-      <Button mode='contained' dark={true} icon='plus' accessibilityLabel='add-friend-button' onPress={setAddFriendModalHandler} style={{ ...moreStyles.button, backgroundColor: '#55D1A9' }}>
+      <PushableButton dark={true} icon='plus' accessibilityLabel='add-friend-button' onPress={setAddFriendModalHandler} style={{ ...moreStyles.button, backgroundColor: '#55D1A9' }}>
         Friend
-      </Button>
-      <Button mode='contained' dark={true} icon='plus' accessibilityLabel='new-group-button' style={moreStyles.button} onPress={setNewGroupModalHandler}>
+      </PushableButton>
+      <PushableButton dark={true} icon='plus' accessibilityLabel='new-group-button' onPress={setNewGroupModalHandler} style={moreStyles.button}>
         Tribe
-      </Button>
+      </PushableButton>
     </View>
   )
 
   return useObserver(() => {
     const chatsToShow = useChats()
-    // console.log("=> chatsToShow.length",chatsToShow.length)
     return (
       <View style={{ width: '100%', flex: 1 }} accessibilityLabel='chatlist'>
         <FlatList<any>
@@ -68,8 +70,7 @@ export default function ChatList() {
             }
             return String(item.id)
           }}
-          refreshing={refreshing}
-          onRefresh={onRefresh}
+          refreshControl={<RefreshLoading refreshing={refreshing} onRefresh={onRefresh} />}
           ListFooterComponent={footerComponent}
         />
       </View>
