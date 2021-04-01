@@ -24,6 +24,7 @@ import PIN, { userPinCode } from '../utils/pin'
 import Toggler from './toggler'
 import { getPinTimeout, updatePinTimeout } from '../utils/pin'
 import Button from '../common/Button'
+import Balance from '../common/Balance'
 
 export default function Profile() {
   const { details, user, contacts, meme, ui } = useStores()
@@ -196,8 +197,7 @@ export default function Profile() {
             <View style={styles.userInfo}>
               <Title style={styles.title}>{user.alias}</Title>
               <View style={styles.userBalance}>
-                <Text style={{ color: theme.title }}>{details.balance}</Text>
-                <Text style={{ marginLeft: 10, marginRight: 10, color: '#c0c0c0' }}>sat</Text>
+                <Balance balance={details.balance} color={theme.subtitle} style={{ marginRight: 10 }} />
                 <TouchableOpacity
                   onPress={() => {
                     setTapCount(cu => {
@@ -215,7 +215,7 @@ export default function Profile() {
                       <ActivityIndicator animating={true} color='#d0d0d0' size={12} style={{ marginLeft: 4 }} />
                     </View>
                   ) : (
-                    <Icon name='wallet' color='#d0d0d0' size={20} />
+                    <Icon name='wallet' color={theme.icon} size={20} />
                   )}
                 </TouchableOpacity>
               </View>

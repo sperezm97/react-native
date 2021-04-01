@@ -82,7 +82,7 @@ export default function Header({
     const appURL = tribeParams && tribeParams.app_url
     return (
       <Appbar.Header style={{ width: '100%', backgroundColor: theme.main, elevation: 5, zIndex: 102, position: 'relative', display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-        <Appbar.BackAction onPress={onBackHandler} color={theme.darkGrey} size={20} />
+        <Appbar.BackAction onPress={onBackHandler} color={theme.icon} size={20} />
         <View>
           <Avatar big={false} alias={name} photo={uri || ''} />
         </View>
@@ -94,8 +94,8 @@ export default function Header({
           {isPodcast && <Text style={{ ...styles.stats, color: theme.title }}>{isTribeAdmin ? `Earned: ${earned} sats` : `Contributed: ${spent} sats`}</Text>}
         </View>
         {/* <Appbar.Action icon="video" onPress={launchVideo} color="grey" /> */}
-        {theChat && <Appbar.Action icon={isMuted ? 'bell-off' : 'bell'} onPress={muteChat} color={theme.darkGrey} style={{ position: 'absolute', right: 10 }} />}
-        {theChat && theChat.type === tribe && (appURL ? true : false) && <Appbar.Action color={theme.darkGrey} icon={appMode ? 'android-messages' : 'open-in-app'} onPress={setAppModeHandler} />}
+        {theChat && <Appbar.Action icon={isMuted ? 'bell-off' : 'bell'} onPress={muteChat} color={theme.icon} style={{ position: 'absolute', right: 10 }} />}
+        {theChat && theChat.type === tribe && (appURL ? true : false) && <Appbar.Action color={theme.icon} icon={appMode ? 'android-messages' : 'open-in-app'} onPress={setAppModeHandler} />}
       </Appbar.Header>
     )
   })

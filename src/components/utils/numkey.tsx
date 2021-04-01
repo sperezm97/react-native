@@ -22,7 +22,7 @@ export default function NumKey(props) {
         height: h,
         maxHeight: h,
         minHeight: h,
-        backgroundColor: props.dark ? theme.black : theme.dark ? theme.main : theme.white
+        backgroundColor: props.dark ? theme.black : theme.bg
       }}
     >
       {keys.map((row, i) => {

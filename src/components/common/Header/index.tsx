@@ -32,7 +32,7 @@ export default function Header() {
               onPress={() => {
                 navigation.dispatch(DrawerActions.openDrawer())
               }}
-              color={theme.dark ? theme.white : theme.darkGrey}
+              color={theme.icon}
               style={{ marginLeft: 0 }}
             />
             <TouchableOpacity

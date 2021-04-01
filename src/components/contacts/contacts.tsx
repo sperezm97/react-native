@@ -20,7 +20,7 @@ export default function Contacts() {
           <Search placeholder='Search Contacts' onChangeText={onChangeTextHandler} value={ui.contactsSearchTerm} />
         </View>
         <View style={styles.iconWrap}>
-          <IconButton icon='account-plus' color={theme.grey} size={20} onPress={setAddFriendModalHandler} />
+          <IconButton icon='account-plus' color={theme.icon} size={20} onPress={setAddFriendModalHandler} />
         </View>
       </View>
       <ContactList />

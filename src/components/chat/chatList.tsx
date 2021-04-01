@@ -123,7 +123,7 @@ function ChatRow(props) {
           )}
         </View>
         <View style={styles.chatContent}>
-          <Text style={{ ...styles.chatName, color: theme.dark ? theme.white : theme.darkGrey }}>{name}</Text>
+          <Text style={{ ...styles.chatName, color: theme.title }}>{name}</Text>
           {hasLastMsg && (
             <Text
               numberOfLines={1}
@@ -131,7 +131,7 @@ function ChatRow(props) {
                 ...styles.chatMsg,
                 fontWeight: hasUnseen ? 'bold' : 'normal',
                 maxWidth: w - 105,
-                color: theme.dark ? '#8b98b4' : '#7e7e7e'
+                color: theme.subtitle
               }}
             >
               {lastMsgText}

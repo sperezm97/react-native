@@ -37,7 +37,7 @@ export default function Drawer(props) {
               <Title style={{ ...styles.title, color: theme.white }}>{user.alias}</Title>
               <View style={styles.userBalance}>
                 <Balance color={theme.white} style={{ marginRight: 12 }} balance={details.balance} />
-                <AntDesign name='wallet' color={theme.grey} size={20} />
+                <AntDesign name='wallet' color={theme.lightGrey} size={20} />
               </View>
               <TouchableOpacity onPress={() => ui.setAddSatsModal(true)}>
                 <Text style={{ color: theme.white, fontSize: 12 }}>ADD SATS</Text>
@@ -86,7 +86,7 @@ export default function Drawer(props) {
           <List.Item
             title='Support'
             titleStyle={{ color: theme.white }}
-            rippleColor={theme.primary}
+            rippleColor={theme.dark ? theme.main : theme.primary}
             left={props => <List.Icon {...props} icon={() => <MaterialCommunityIcons name='email' color={theme.white} size={25} />} />}
             onPress={openSupportModalHandler}
           />
@@ -94,7 +94,7 @@ export default function Drawer(props) {
           <List.Item
             title='Logout'
             titleStyle={{ color: theme.white }}
-            rippleColor={theme.primary}
+            rippleColor={theme.dark ? theme.main : theme.primary}
             left={props => <List.Icon {...props} icon={() => <MaterialCommunityIcons name='logout' color={theme.white} size={25} />} />}
             onPress={openSupportModalHandler}
           />

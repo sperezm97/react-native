@@ -8,9 +8,9 @@ export default function Search(props) {
   const theme = useTheme()
 
   const styles = { ...style, elevation: 0, height: 40, backgroundColor: theme.bg, borderRadius: 5 }
-  const iconColor = theme.dark ? theme.white : theme.grey
+  const iconColor = theme.icon
   const inputStyle = {
-    color: theme.darkGrey,
+    color: theme.input,
     fontSize: 13
   }
   const placeholderTextColor = theme.title

@@ -330,7 +330,7 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
         <View style={styles.barInner} accessibilityLabel='chat-bottombar-inner'>
           {!recordingStartTime && (
             <TouchableOpacity style={{ ...styles.img, backgroundColor: theme.bg, borderColor: theme.border }} accessibilityLabel='more-button' onPress={() => setDialogOpen(true)}>
-              <Icon name='plus' color='#888' size={27} />
+              <Icon name='plus' color={theme.icon} size={27} />
             </TouchableOpacity>
           )}
           {!recordingStartTime && (

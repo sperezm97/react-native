@@ -29,7 +29,7 @@ export default function ContactList() {
           }}
           renderItem={({ item }) => <Item contact={item} onPress={contact => ui.setEditContactModal(contact)} />}
           renderSectionHeader={({ section: { title } }) => (
-            <View style={{ ...styles.section, backgroundColor: theme.dark ? '#212e39' : '#eee' }}>
+            <View style={{ ...styles.section, backgroundColor: theme.main }}>
               <Text style={{ ...styles.sectionTitle, color: theme.subtitle }}>{title}</Text>
             </View>
           )}

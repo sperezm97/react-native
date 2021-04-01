@@ -7,7 +7,7 @@ export default function RefreshLoading(props) {
   const { refreshing, onRefresh, title } = props
   const theme = useTheme()
 
-  return <RefreshControl refreshing={refreshing} onRefresh={onRefresh} title={title} tintColor={theme.dark ? theme.white : theme.darkGrey} titleColor={theme.dark ? theme.white : theme.darkGrey} />
+  return <RefreshControl refreshing={refreshing} onRefresh={onRefresh} title={title} tintColor={theme.icon} titleColor={theme.subtitle} />
 }
 
 RefreshLoading.defaultProps = {

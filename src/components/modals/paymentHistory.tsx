@@ -7,6 +7,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { useStores, useTheme } from '../../store'
 import ModalWrap from './modalWrap'
 import Header from './modalHeader'
+import Empty from '../common/Empty'
 
 export default function PaymentHistoryWrap({ visible }) {
   const { ui } = useStores()
@@ -59,11 +60,12 @@ function PaymentHistory({ visible, close }) {
 
   return useObserver(() => (
     <View style={styles.wrap}>
-      <Header title='Payment History' onClose={close} />
+      <Header title='Transactions' onClose={close} />
       {!loading && <FlatList<any> style={{ ...styles.scroller, borderTopColor: theme.border }} data={payments} renderItem={renderItem} keyExtractor={item => String(item.id)} />}
+      {!loading && payments.length <= 0 && <Empty text='No transactions found' />}
       {loading && (
         <View style={styles.loading}>
-          <ActivityIndicator animating color='grey' />
+          <ActivityIndicator animating color={theme.darkGrey} />
         </View>
       )}
     </View>
