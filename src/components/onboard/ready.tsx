@@ -24,8 +24,8 @@ export default function Ready(props) {
         public_key: user.invite.inviterPubkey,
         status: constants.contact_statuses.confirmed
       }),
-      actions(user.invite.action)
-      // chats.joinDefaultTribe()
+      actions(user.invite.action),
+      chats.joinDefaultTribe()
     ])
     setLoading(false)
     onDone()

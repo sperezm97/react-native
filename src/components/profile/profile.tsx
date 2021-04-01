@@ -11,6 +11,7 @@ import Slider from '@react-native-community/slider'
 import Toast from 'react-native-simple-toast'
 
 import { useStores, useTheme } from '../../store'
+import { constants } from '../../constants'
 import Header from '../common/Header'
 import { me } from '../form/schemas'
 import Form from '../form'
@@ -112,7 +113,7 @@ export default function Profile() {
 
     Clipboard.setString(final)
 
-    Toast.showWithGravity('Export Keys Copied.', Toast.LONG, Toast.CENTER)
+    Toast.showWithGravity('Export Keys Copied.', constants.ui.toast.duration, Toast.CENTER)
   }
 
   async function tookPic(img) {

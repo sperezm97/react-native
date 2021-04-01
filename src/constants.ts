@@ -16,9 +16,9 @@ const constants = {
     pending: 0,
     confirmed: 1,
     cancelled: 2,
-    received:  3,
+    received: 3,
     failed: 4,
-    deleted: 5,
+    deleted: 5
   },
   chat_statuses: {
     approved: 0,
@@ -53,7 +53,7 @@ const constants = {
     bot_cmd: 24,
     bot_res: 25,
     keysend: 28,
-    boost: 29,
+    boost: 29
   },
   payment_errors: {
     timeout: 'Timed Out',
@@ -66,14 +66,19 @@ const constants = {
     conversation: 0,
     group: 1,
     tribe: 2
+  },
+  ui: {
+    toast: {
+      duration: 0.5
+    }
   }
 }
 
-function switcher(consts){
+function switcher(consts) {
   const codes = {}
   for (let [k, obj] of Object.entries(consts)) {
     for (let [str, num] of Object.entries(obj)) {
-      if(!codes[k]) codes[k] = {}
+      if (!codes[k]) codes[k] = {}
       codes[k][num] = str
     }
   }
@@ -84,6 +89,4 @@ function switcher(consts){
 
 const constantCodes = switcher(constants)
 
-export {
-  constants, constantCodes
-}
+export { constants, constantCodes }

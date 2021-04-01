@@ -250,7 +250,7 @@ async function sleep(ms) {
 }
 
 const supportContact = {
-  inviterNickname: 'N2N2 Support',
+  inviterNickname: 'N2N2 Root',
   inviterPubkey: config.inviter.key,
   welcomeMessage: 'Welcome to N2N2!',
   action: ''

@@ -1,10 +1,10 @@
 import React from 'react'
-import { View, Text } from 'react-native'
+import { View } from 'react-native'
 
 import Canvas from './canvas'
 
 export default function QRCode(props) {
-  var size = props.size || 250
+  const size = props.size || 250
   return (
     <View style={{ display: 'flex', flexDirection: 'column', alignContent: 'center', justifyContent: 'center' }}>
       <Canvas value={utf16to8(props.value)} size={size} style={{ height: 180, width: 180, minWidth: 40, minHeight: 40, maxWidth: 200 }} />

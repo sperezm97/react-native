@@ -6,7 +6,7 @@ import ReactNativeHapticFeedback from 'react-native-haptic-feedback'
 
 import { useStores, hooks, useTheme } from '../../store'
 import InviteRow, { styles } from './inviteRow'
-import { useChatPicSrc } from '../utils/picSrc'
+import { chatPicSrc, useChatPicSrc } from '../utils/picSrc'
 import Avatar from './msg/avatar'
 import PushableButton from '../common/Button/PushableButton'
 import RefreshLoading from '../common/RefreshLoading'
@@ -14,7 +14,7 @@ import RefreshLoading from '../common/RefreshLoading'
 const { useChats, useChatRow } = hooks
 
 export default function ChatList() {
-  const { ui, contacts, msg, details } = useStores()
+  const { ui, contacts, msg, details, chats } = useStores()
 
   const [refreshing, setRefreshing] = useState(false)
   const onRefresh = useCallback(async () => {
