@@ -127,7 +127,8 @@ class MsgStore {
       let msgs: { [k: number]: Msg[] } = ({} = {})
 
       const r = await relay.get(`msgs?limit=200&offset=${offset}&date=${dateq}`)
-      if (!r.new_messages) return
+
+      if (r.new_messages.length <= 0) return
 
       while (!done) {
         if (r.new_messages && r.new_messages.length) {
