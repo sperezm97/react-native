@@ -134,9 +134,11 @@ export default function Profile() {
     const server = meme.getDefaultServer()
     if (!server) return
 
+    uri = uri.replace('file://', '')
+
     RNFetchBlob.fetch(
       'POST',
-      `https://${server.host}/public`,
+      `http://${server.host}/public`,
       {
         Authorization: `Bearer ${server.token}`,
         'Content-Type': 'multipart/form-data'
@@ -156,9 +158,9 @@ export default function Profile() {
       })
       .then(async resp => {
         let json = resp.json()
+
         if (json.muid) {
-          console.log('UPLOADED!!', json.muid)
-          setPhotoUrl(`https://${server.host}/public/${json.muid}`)
+          setPhotoUrl(`http://${server.host}/public/${json.muid}`)
         }
         setUploading(false)
       })
@@ -171,6 +173,7 @@ export default function Profile() {
   return useObserver(() => {
     const meContact = contacts.contacts.find(c => c.id === 1)
     let imgURI = usePicSrc(meContact)
+
     if (photo_url) imgURI = photo_url
 
     if (showPIN) {
@@ -410,6 +413,7 @@ const styles = StyleSheet.create({
     minHeight: 190,
     display: 'flex',
     justifyContent: 'center',
+    paddingTop: 20,
     paddingBottom: 20
   },
   exportText: {

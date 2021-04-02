@@ -11,7 +11,7 @@ export default function Search(props) {
   const iconColor = theme.icon
   const inputStyle = {
     color: theme.input,
-    fontSize: 13
+    fontSize: 15
   }
   const placeholderTextColor = theme.title
 

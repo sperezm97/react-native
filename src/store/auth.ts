@@ -3,7 +3,7 @@ import { persist } from 'mobx-persist'
 import { Linking } from 'react-native'
 
 import { DEFAULT_AUTH_SERVER } from '../config'
-import { relay, composeAPI } from '../api'
+import { relay } from '../api'
 import { userStore } from './user'
 
 export interface Server {

@@ -43,6 +43,7 @@ class MemeStore {
   @action
   async authenticate(server) {
     const pubkey = userStore.publicKey
+
     if (!pubkey) return
 
     const meme = composeAPI(server.host)
@@ -64,7 +65,6 @@ class MemeStore {
       'application/x-www-form-urlencoded'
     )
 
-    console.log(r3)
     if (!(r3 && r3.token)) return
     server.token = r3.token
   }

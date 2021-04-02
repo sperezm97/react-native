@@ -335,8 +335,6 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
             <TextInput
               textAlignVertical='top'
               accessibilityLabel='message-input'
-              numberOfLines={4}
-              multiline={true}
               blurOnSubmit={true}
               onContentSizeChange={e => {
                 let h = e.nativeEvent.contentSize.height

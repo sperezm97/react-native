@@ -42,7 +42,7 @@ function Canvas(props) {
         injectedJavaScript={`const meta = document.createElement('meta'); meta.setAttribute('content', 'width=width, initial-scale=1, maximum-scale=1, user-scalable=no'); meta.setAttribute('name', 'viewport'); document.getElementsByTagName('head')[0].appendChild(meta);`}
         scalesPageToFit={true}
         contentInset={{ top: 0, right: 0, bottom: 0, left: 0 }}
-        source={{ uri: `https://${DEFAULT_MEME_SERVER}/ion?room=hi&name=Evan` }}
+        source={{ uri: `${DEFAULT_MEME_SERVER}/ion?room=hi&name=Evan` }}
         // source={{uri:'https://rtc.sphinx.chat:8080/?room=hi'}}
         style={{ ...props.style, resizeMode: 'cover', flex: 1 }}
         javaScriptEnabled={true}
