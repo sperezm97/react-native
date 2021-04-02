@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Dimensions, Animated } from 'react-native'
 import { IconButton } from 'react-native-paper'
+
 import { useTheme } from '../../../store'
 import Pushable from '../Pushable'
 
 const icons = {
-  Dashboard: 'arrow-bottom-left',
-  Profile: 'format-list-bulleted'
-  // '':'qrcode-scan',
-  // '':'arrow-top-right'
+  Home: 'home',
+  Chat: 'chat',
+  Payment: 'credit-card-settings',
+  Account: 'account'
 }
 
 export default function TabBar({ state, descriptors, navigation }) {
@@ -16,7 +17,7 @@ export default function TabBar({ state, descriptors, navigation }) {
   const focusedOptions = descriptors[state.routes[state.index].key].options
   const { width } = Dimensions.get('window')
 
-  const tabbarWidth = width - 32
+  const tabbarWidth = width - 42
 
   if (focusedOptions.tabBarVisible === false) {
     return null
@@ -44,7 +45,13 @@ export default function TabBar({ state, descriptors, navigation }) {
               }
             }}
           >
-            <IconButton icon={icons[label]} size={32} color={theme.white} style={{ width: tabbarWidth / 5 }} />
+            <IconButton
+              icon={icons[label]}
+              size={32}
+              style={{ width: tabbarWidth / 4 }}
+              color={state.index === index ? theme.white : theme.grey}
+              // color={theme.white}
+            />
           </Pushable>
         )
       })}

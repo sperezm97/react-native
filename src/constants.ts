@@ -66,11 +66,6 @@ const constants = {
     conversation: 0,
     group: 1,
     tribe: 2
-  },
-  ui: {
-    toast: {
-      duration: 0.5
-    }
   }
 }
 
@@ -88,5 +83,9 @@ function switcher(consts) {
 }
 
 const constantCodes = switcher(constants)
+
+export const TOAST_DURATION = 0.5
+export const STACK_HEADER_HEIGHT = 50
+export const TAB_HEIGHT = 50
 
 export { constants, constantCodes }

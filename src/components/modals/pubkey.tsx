@@ -9,7 +9,7 @@ import Clipboard from '@react-native-community/clipboard'
 import Toast from 'react-native-simple-toast'
 
 import { useTheme } from '../../store'
-import { constants } from '../../constants'
+import { TOAST_DURATION } from '../../constants'
 import ModalWrap from './modalWrap'
 import Button from '../common/Button'
 
@@ -26,7 +26,7 @@ function PubKey({ pubkey, close }) {
 
   function copy() {
     Clipboard.setString(pubkey)
-    Toast.showWithGravity('Public Key Copied.', constants.ui.toast.duration, Toast.CENTER)
+    Toast.showWithGravity('Public Key Copied.', TOAST_DURATION, Toast.CENTER)
   }
 
   async function share() {
