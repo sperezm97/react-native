@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useLayoutEffect } from 'react'
-import { View, Text, StyleSheet, InteractionManager, BackHandler, KeyboardAvoidingView, ScrollView, SafeAreaView } from 'react-native'
+import { View, StyleSheet, InteractionManager, BackHandler, KeyboardAvoidingView, ScrollView, SafeAreaView } from 'react-native'
 import { useRoute, useNavigation } from '@react-navigation/native'
-import { ActivityIndicator, TextInput } from 'react-native-paper'
+import { ActivityIndicator } from 'react-native-paper'
 import Toast from 'react-native-simple-toast'
 
 import Header from './header'

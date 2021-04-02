@@ -122,7 +122,7 @@ function MsgList({ msgs, msgsLength, chat, onDelete, myPubkey, myAlias, onApprov
       <VirtualizedList
         accessibilityLabel='message-list'
         inverted
-        style={{ zIndex: 100 }}
+        style={{ zIndex: 100, marginBottom: 20 }}
         windowSize={10} // ?
         ref={scrollViewRef}
         data={msgs}

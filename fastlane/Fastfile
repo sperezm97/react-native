@@ -20,7 +20,7 @@ platform :ios do
       ) + 1,
       xcodeproj: "ios/Chat.xcodeproj",
    )
-
+  
 
   # automatic code signing
   disable_automatic_code_signing(
