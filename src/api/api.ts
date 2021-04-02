@@ -74,7 +74,7 @@ function addMethod(m: string, rootUrl: string): Function {
           // localStorage.setItem(tokenName, res.token)
         }
         if (res.error) {
-          console.warn(res.error)
+          // console.warn(res.error)
           return
         }
         if (res.status && res.status === 'ok') {
@@ -89,7 +89,7 @@ function addMethod(m: string, rootUrl: string): Function {
       }
     } catch (e) {
       // 20 is an "abort" i guess
-      console.warn(e, 'url', url)
+      // console.warn(e, 'url', url)
       const isWebAbort = e.code === 20
       const isRNAbort = e.message === 'Aborted'
       if (isWebAbort || isRNAbort) reportTimeout(this.resetIPCallback)

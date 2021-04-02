@@ -9,6 +9,7 @@ import { useDarkMode } from 'react-native-dynamic'
 import Clipboard from '@react-native-community/clipboard'
 import Slider from '@react-native-community/slider'
 import Toast from 'react-native-simple-toast'
+import RNFetchBlob from 'rn-fetch-blob'
 
 import { useStores, useTheme } from '../../store'
 import { constants } from '../../constants'
@@ -18,7 +19,6 @@ import Form from '../form'
 import Cam from '../utils/cam'
 import ImgSrcDialog from '../utils/imgSrcDialog'
 import { usePicSrc } from '../utils/picSrc'
-import RNFetchBlob from 'rn-fetch-blob'
 import * as rsa from '../../crypto/rsa'
 import * as e2e from '../../crypto/e2e'
 import PIN, { userPinCode } from '../utils/pin'
@@ -152,7 +152,7 @@ export default function Profile() {
       ]
     )
       .uploadProgress({ interval: 250 }, (written, total) => {
-        // console.log('uploaded', written / total)
+        console.log('uploaded', written / total)
       })
       .then(async resp => {
         let json = resp.json()

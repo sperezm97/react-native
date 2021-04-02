@@ -22,7 +22,6 @@ PODS:
     - GCDWebServer/Core (= 3.5.4)
   - GCDWebServer/Core (3.5.4)
   - glog (0.3.5)
-  - JitsiMeetSDK (2.4.0)
   - libwebp (1.2.0):
     - libwebp/demux (= 1.2.0)
     - libwebp/mux (= 1.2.0)
@@ -214,11 +213,8 @@ PODS:
     - React-Core
   - react-native-get-random-values (1.6.0):
     - React-Core
-  - react-native-image-picker (2.4.0):
-    - React
-  - react-native-jitsi-meet (2.1.1):
-    - JitsiMeetSDK (= 2.4.0)
-    - React
+  - react-native-image-picker (3.3.2):
+    - React-Core
   - react-native-randombytes (3.6.0):
     - React-Core
   - react-native-rncryptor (1.0.0):
@@ -380,7 +376,6 @@ DEPENDENCIES:
   - react-native-encrypted-storage (from `../node_modules/react-native-encrypted-storage`)
   - react-native-get-random-values (from `../node_modules/react-native-get-random-values`)
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
-  - react-native-jitsi-meet (from `../node_modules/react-native-jitsi-meet`)
   - react-native-randombytes (from `../node_modules/react-native-randombytes`)
   - react-native-rncryptor (from `../node_modules/react-native-rncryptor`)
   - react-native-rsa-native (from `../node_modules/react-native-rsa-native`)
@@ -428,7 +423,6 @@ SPEC REPOS:
   trunk:
     - boost-for-react-native
     - GCDWebServer
-    - JitsiMeetSDK
     - libwebp
     - lottie-ios
     - SDWebImage
@@ -476,8 +470,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-get-random-values"
   react-native-image-picker:
     :path: "../node_modules/react-native-image-picker"
-  react-native-jitsi-meet:
-    :path: "../node_modules/react-native-jitsi-meet"
   react-native-randombytes:
     :path: "../node_modules/react-native-randombytes"
   react-native-rncryptor:
@@ -571,7 +563,6 @@ SPEC CHECKSUMS:
   Folly: b73c3869541e86821df3c387eb0af5f65addfab4
   GCDWebServer: 2c156a56c8226e2d5c0c3f208a3621ccffbe3ce4
   glog: 40a13f7840415b9a77023fbcae0f1e6f43192af3
-  JitsiMeetSDK: d4a3aeed1a75fd57e6a78e5d202b6051dfcb9320
   libwebp: e90b9c01d99205d03b6bb8f2c8c415e5a4ef66f0
   lottie-ios: 3a3758ef5a008e762faec9c9d50a39842f26d124
   lottie-react-native: 1fb4ce21d6ad37dab8343eaff8719df76035bd93
@@ -588,8 +579,7 @@ SPEC CHECKSUMS:
   react-native-camera: f432fcf1b32b528bbf7c3543d3e3b1deb0c5b72a
   react-native-encrypted-storage: e78d848ce0fb663c2ce306e37921d026809322e6
   react-native-get-random-values: f0fc24a5887a3341589515a86282a574407b59e4
-  react-native-image-picker: 4e63090db19a528e36c0cc07d1423c8c0cb4c4ef
-  react-native-jitsi-meet: 29ed76cdc6142d9a6c013bb14dd6205df0b5452b
+  react-native-image-picker: b42940647478bf106ad3c491d6f5d9d40916d865
   react-native-randombytes: b6677f7d495c27e9ee0dbd77ebc97b3c59173729
   react-native-rncryptor: e273429757c7b34d0b2f90f71ba8a592dd02f973
   react-native-rsa-native: 348b5057073920db0e154724c3a49e6b34e1da6b
@@ -636,6 +626,6 @@ SPEC CHECKSUMS:
   TouchID: ba4c656d849cceabc2e4eef722dea5e55959ecf4
   Yoga: 4bd86afe9883422a7c4028c00e34790f560923d6
 
-PODFILE CHECKSUM: 6876d08a4b0ff5c33a3e486ce8ef0753a322219b
+PODFILE CHECKSUM: bb9cbd41a041e3f5dd6fe59b342fbfdaceb09902
 
 COCOAPODS: 1.10.1

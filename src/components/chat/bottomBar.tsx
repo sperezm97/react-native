@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { useObserver } from 'mobx-react-lite'
-import { TouchableOpacity, View, Text, TextInput, StyleSheet, PanResponder, Animated } from 'react-native'
+import { TouchableOpacity, View, Text, TextInput, StyleSheet, PanResponder, Animated, KeyboardAvoidingView } from 'react-native'
 import { IconButton, Portal, ActivityIndicator } from 'react-native-paper'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import AudioRecorderPlayer from 'react-native-audio-recorder-player'
@@ -54,8 +54,6 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
 
   function sendMessage() {
     try {
-      console.log('text', text)
-
       if (!text) return
       if (waitingForAdminApproval) return
       let contact_id = chat.contact_ids.find(cid => cid !== 1)
@@ -315,8 +313,8 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
   if (hasReplyContent) fullHeight += 48
   return useObserver(() => (
     <>
-      <View style={{ ...styles.spacer, height: fullHeight }} />
-      <View style={{ ...styles.bar, height: fullHeight, bottom: 0, backgroundColor: theme.main, borderColor: theme.border }} accessibilityLabel='chat-bottombar'>
+      {/* <View style={{ ...styles.spacer, height: fullHeight }} /> */}
+      <View style={{ ...styles.bar, height: fullHeight, bottom: 0, backgroundColor: theme.bg, borderColor: theme.border }} accessibilityLabel='chat-bottombar'>
         {(hasReplyContent ? true : false) && (
           <ReplyContent
             showClose={true}
@@ -441,19 +439,20 @@ const styles = StyleSheet.create({
     maxWidth: '100%'
   },
   bar: {
-    flex: 1,
+    // flex: 1,
     width: '100%',
     maxWidth: '100%',
+    height: 20,
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
     elevation: 5,
-    borderWidth: 2,
+    borderWidth: 1,
     borderBottomWidth: 0,
     borderLeftWidth: 0,
-    borderRightWidth: 0,
-    position: 'absolute',
-    zIndex: 999
+    borderRightWidth: 0
+    // position: 'absolute',
+    // zIndex: 999
   },
   barInner: {
     width: '100%',
