@@ -159,6 +159,8 @@ export default function Profile() {
       .then(async resp => {
         let json = resp.json()
 
+        console.log('json:', json)
+
         if (json.muid) {
           setPhotoUrl(`http://${server.host}/public/${json.muid}`)
         }
@@ -168,6 +170,16 @@ export default function Profile() {
         console.log(err)
         setUploading(false)
       })
+  }
+
+  async function save(values) {
+    setSaving(true)
+    await contacts.updateContact(1, {
+      alias: values.alias,
+      private_photo: values.private_photo,
+      ...(photo_url && { photo_url })
+    })
+    setSaving(false)
   }
 
   return useObserver(() => {
@@ -249,15 +261,7 @@ export default function Profile() {
                   public_key: user.publicKey,
                   private_photo: meContact?.private_photo || false
                 }}
-                onSubmit={async values => {
-                  setSaving(true)
-                  await contacts.updateContact(1, {
-                    alias: values.alias,
-                    private_photo: values.private_photo,
-                    ...(photo_url && { photo_url })
-                  })
-                  setSaving(false)
-                }}
+                onSubmit={values => save(values)}
               />
             </View>
 

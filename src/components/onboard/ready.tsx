@@ -15,6 +15,8 @@ export default function Ready(props) {
   const [loading, setLoading] = useState(false)
   const theme = useTheme()
 
+  console.log('user::', user)
+
   async function finish() {
     setLoading(true)
     await Promise.all([

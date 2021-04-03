@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useLayoutEffect } from 'react'
-import { View, StyleSheet, InteractionManager, BackHandler, KeyboardAvoidingView, ScrollView, SafeAreaView } from 'react-native'
+import { View, StyleSheet, InteractionManager, BackHandler, KeyboardAvoidingView, Dimensions } from 'react-native'
 import { useRoute, useNavigation } from '@react-navigation/native'
 import { ActivityIndicator } from 'react-native-paper'
 import Toast from 'react-native-simple-toast'
@@ -143,6 +143,8 @@ export default function Chat() {
 
   const podID = pod && pod.id
   const { earned, spent } = useIncomingPayments(podID)
+
+  // const height = Math.round(Dimensions.get('window').height) - 40
 
   const headerHeight = 40
   let pricePerMinute = 0

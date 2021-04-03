@@ -159,10 +159,11 @@ export default function Code(props) {
         <Text style={styles.msg}>Paste the invitation text or scan the QR code</Text>
         <View style={styles.inputWrap} accessibilityLabel='onboard-code-input-wrap'>
           <TextInput
-            value={code}
+            autoCorrect={false}
             accessibilityLabel='onboard-code-input'
             placeholder='Enter Code ...'
             style={styles.input}
+            value={code}
             onChangeText={text => setCode(text)}
             onBlur={() => checkInvite(code)}
             onFocus={() => {

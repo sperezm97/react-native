@@ -15,7 +15,7 @@ export default function Main({ contact, loading, confirmOrContinue, contactless 
   const [text, setText] = useState('')
   const [inputFocused, setInputFocused] = useState(false)
 
-  const height = Math.round(Dimensions.get('window').height) - 280
+  const height = Math.round(Dimensions.get('window').height) - 80
   const uri = usePicSrc(contact)
   const hasImg = uri ? true : false
 
