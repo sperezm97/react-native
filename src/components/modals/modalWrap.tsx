@@ -8,10 +8,12 @@ export default function ModalWrap(props) {
   const theme = useTheme()
   const { visible, onClose, children, noSwipe, animationOutTiming } = props
 
+  const headerHeight = 40
+
   return (
     <Modal
       isVisible={visible}
-      style={styles.modal}
+      style={{ ...styles.modal, marginTop: headerHeight }}
       onSwipeComplete={() => onClose()}
       swipeDirection={noSwipe ? null : 'down'}
       onBackButtonPress={() => onClose()}
@@ -36,10 +38,6 @@ ModalWrap.defaultProps = {
 
 const styles = StyleSheet.create({
   modal: {
-    marginRight: 0,
-    marginLeft: 0,
-    marginBottom: 0,
-    marginTop: 90,
     margin: 0,
     flex: 1
   },

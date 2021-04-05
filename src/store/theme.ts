@@ -21,8 +21,9 @@ export class ThemeStore {
     this.subtitle = d ? '#8b98b4' : '#7e7e7e'
     this.text = d ? '#fff' : '#212529'
     this.icon = d ? '#f3f3f3' : '#777'
-    this.input = d ? '#f3f3f3' : '#7e7e7e'
-    this.placeholder = d ? '#bec3c8' : '#90949c'
+    this.input = d ? '#fff' : '#000000'
+    this.inputBg = d ? '#1c252e' : '#f0f2f5'
+    this.placeholder = d ? '#8b98b4' : '#90949c'
     this.border = d ? '#212e39' : '#f0f2f5'
     this.selected = d ? '#3b4681' : '#ddddff'
     this.deep = d ? '#292c33' : '#ccc'
@@ -35,10 +36,11 @@ export class ThemeStore {
   @observable main: string = '#f3f3f3'
   @observable title: string = '#666'
   @observable subtitle: string = '#7e7e7e'
-  @observable text: string = '#212529'
+  @observable text: string = '#000000'
   @observable typo: string = '#212529'
   @observable icon: string = '#777'
-  @observable input: string = '#777'
+  @observable input: string = '#000000'
+  @observable inputBg: string = '#f0f2f5'
   @observable placeholder: string = '#90949c'
   @observable border: string = '#f0f2f5'
   @observable selected: string = '#ddddff'
@@ -49,7 +51,7 @@ export class ThemeStore {
   @observable lightGrey: string = '#f5f6f8'
   @observable grey: string = '#d0d0d0'
   @observable darkGrey: string = '#777'
-  @observable black: string = '#212529'
+  @observable black: string = '#000000'
   @observable gradient: string = '#4889e8'
   @observable disabled: string = '#d9dce0'
   @observable clay: string = '#212932'
@@ -63,5 +65,5 @@ export class ThemeStore {
 
 export const themeStore = new ThemeStore()
 
-// themeStore.setDark(true)
+themeStore.setDark(true)
 // main light color => #f4f6f6

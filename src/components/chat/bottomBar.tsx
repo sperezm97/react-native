@@ -343,15 +343,13 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
               }}
               placeholder='Message...'
               ref={inputRef}
-              style={{ ...styles.input, marginLeft: hideMic ? 15 : 0, height: textInputHeight, maxHeight: 98, backgroundColor: theme.bg, borderColor: theme.border, color: theme.title }}
+              style={{ ...styles.input, marginLeft: hideMic ? 15 : 0, height: textInputHeight, maxHeight: 98, backgroundColor: theme.inputBg, borderColor: theme.border, color: theme.input }}
               placeholderTextColor={theme.subtitle}
               onFocus={e => setInputFocused(true)}
               onBlur={() => setInputFocused(false)}
               onChangeText={e => setText(e)}
               value={text}
-            >
-              {/* <Text>{text}</Text> */}
-            </TextInput>
+            />
           )}
 
           {recordingStartTime && (
@@ -378,11 +376,12 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
               )}
             </Animated.View>
           )}
+
           {recordingStartTime && <View style={styles.recordingCircle}></View>}
 
           {hideMic && (
             <View style={styles.sendButtonWrap}>
-              <TouchableOpacity activeOpacity={0.5} style={styles.sendButton} onPress={() => sendMessage()} accessibilityLabel='send-message'>
+              <TouchableOpacity activeOpacity={0.5} style={{ ...styles.sendButton, backgroundColor: theme.primary }} onPress={() => sendMessage()} accessibilityLabel='send-message'>
                 <Icon name='send' size={17} color='white' />
               </TouchableOpacity>
             </View>
@@ -473,7 +472,6 @@ const styles = StyleSheet.create({
     height: 40
   },
   sendButton: {
-    backgroundColor: '#6289FD',
     marginLeft: 7,
     width: 38,
     maxWidth: 38,

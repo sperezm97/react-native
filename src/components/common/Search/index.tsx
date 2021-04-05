@@ -7,7 +7,7 @@ export default function Search(props) {
   const { placeholder, value, onChangeText, style } = props
   const theme = useTheme()
 
-  const styles = { ...style, elevation: 0, height: 40, backgroundColor: theme.bg, borderRadius: 5 }
+  const styles = { ...style, elevation: 0, height: 40, backgroundColor: theme.inputBg, borderRadius: 5 }
   const iconColor = theme.icon
   const inputStyle = {
     color: theme.input,
