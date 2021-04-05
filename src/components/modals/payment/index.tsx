@@ -171,6 +171,7 @@ function SendPayment({ visible, close }) {
   }
 
   const isLoopout = ui.payMode === 'loopout'
+
   const hasRawInvoice = rawInvoice ? true : false
 
   return useObserver(() => {

@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, StyleSheet, Image, TouchableOpacity } from 'react-native'
 import { Appbar, IconButton, ActivityIndicator } from 'react-native-paper'
-import { DrawerActions, useNavigation } from '@react-navigation/native'
+import { useNavigation } from '@react-navigation/native'
 import { useObserver } from 'mobx-react-lite'
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import Toast from 'react-native-simple-toast'
@@ -30,7 +30,6 @@ export default function Header() {
               <IconButton icon='qrcode-scan' size={22} color={theme.icon} />
             </Pushable>
           </View>
-          <Balance balance={details.balance} color={theme.dark ? theme.white : theme.black} />
           <View style={{ ...styles.flex, ...styles.right }}>
             {ui.loadingHistory ? (
               <ActivityIndicator animating={true} color={theme.grey} size={18} style={{}} />

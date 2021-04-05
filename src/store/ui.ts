@@ -288,6 +288,11 @@ export class UiStore {
   @action setShowVersionDialog(b: boolean) {
     this.showVersionDialog = b
   }
+
+  @observable paymentRequest: boolean
+  @action setPaymentRequest(b: boolean) {
+    this.paymentRequest = b
+  }
 }
 
 export const uiStore = new UiStore()

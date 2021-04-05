@@ -8,8 +8,7 @@ import Profile from '../profile/profile'
 import DrawerContent from '../common/Drawer'
 import Modals from '../modals'
 import { setTint } from '../utils/statusBar'
-import TabNav from './TabNav'
-// import TabNav from './TabNav'
+import Root from './Root'
 
 const Drawer = createDrawerNavigator()
 
@@ -35,7 +34,7 @@ export default function Navigation() {
         <Drawer.Screen name='Contacts' component={ContactsNav} listeners={{ focus: contacts }} />
         <Drawer.Screen name='Profile' component={Profile} listeners={{ focus: profile }} />
       </Drawer.Navigator>
-      {/* <TabNav /> */}
+      {/* <Root /> */}
       <Modals />
     </>
   )

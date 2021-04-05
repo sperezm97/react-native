@@ -12,7 +12,7 @@ export default function Tabs(props) {
       {...props}
       indicatorStyle={{ backgroundColor: theme.primary }}
       style={{ backgroundColor: theme.bg }}
-      renderLabel={({ route, focused, color }) => <Text style={{ color: theme.title }}>{route.title}</Text>}
+      renderLabel={({ route }) => <Text style={{ color: theme.title }}>{route.title}</Text>}
     />
   )
 }

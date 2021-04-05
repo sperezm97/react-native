@@ -1,34 +1,35 @@
-import React, { useState } from 'react'
-import { View, Text, StyleSheet, useWindowDimensions } from 'react-native'
-import { TabView, SceneMap } from 'react-native-tab-view'
+import React from 'react'
+import { View, Text, StyleSheet } from 'react-native'
 
-import Tabs from '../common/Tabs'
-import Container from './Container'
-
-function FirstRoute() {
-  return <Container />
-}
-
-function SecondRoute() {
-  return <Container />
-}
+import { useStores, useTheme } from '../../store/'
+import TabBar from '../common/TabBar'
+import Header from './Header'
+import Transactions from './Transactions'
+import Button from '../common/Button'
 
 export default function Payment() {
-  const layout = useWindowDimensions()
-  const [index, setIndex] = useState(0)
-  const [routes] = useState([
-    { key: 'first', title: 'REQUEST' },
-    { key: 'second', title: 'SEND' }
-  ])
-
-  const renderScene = SceneMap({
-    first: FirstRoute,
-    second: SecondRoute
-  })
+  const { details, ui } = useStores()
+  const theme = useTheme()
 
   return (
-    <View style={{ ...styles.wrap }}>
-      <TabView navigationState={{ index, routes }} renderScene={renderScene} onIndexChange={setIndex} initialLayout={{ width: layout.width }} renderTabBar={props => <Tabs {...props} />} />
+    <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
+      <Header />
+      <View style={{ ...styles.headerActions }}>
+        <View style={styles.wallet}>
+          <Text style={{ marginBottom: 10, fontSize: 26, fontWeight: '500', color: theme.text }}>My Wallet</Text>
+          <Text style={{ fontSize: 16, color: theme.text }}>{details.balance} sat</Text>
+        </View>
+        <View style={styles.buttonWrap}>
+          <Button mode='outlined' icon='arrow-top-right' style={{ width: 130, borderColor: theme.border }} btnHeight={45} onPress={() => ui.setPayMode('payment', null)}>
+            SEND
+          </Button>
+          <Button mode='outlined' icon='arrow-bottom-left' style={{ width: 130, borderColor: theme.border, borderLeftWidth: 0 }} btnHeight={45} onPress={() => ui.setPayMode('invoice', null)}>
+            RECEIVE
+          </Button>
+        </View>
+      </View>
+      <Transactions />
+      <TabBar />
     </View>
   )
 }
@@ -36,5 +37,31 @@ export default function Payment() {
 const styles = StyleSheet.create({
   wrap: {
     flex: 1
+  },
+
+  headerActions: {
+    width: '100%',
+    height: 250,
+    maxHeight: 250,
+    minHeight: 250,
+    display: 'flex',
+    justifyContent: 'center'
+  },
+  wallet: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  buttonWrap: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    // justifyContent: 'space-between',
+    // width: 200,
+    // marginRight: 'auto',
+    // marginLeft: 'auto',
+    paddingTop: 30
   }
 })
