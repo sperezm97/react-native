@@ -50,6 +50,7 @@ export default function MsgListWrap({ chat, pricePerMessage }: { chat: Chat; pri
   }
   return useObserver(() => {
     const msgs = useMsgs(chat, limit) || []
+
     return (
       <MsgList
         msgs={msgs}
@@ -202,6 +203,8 @@ function ListItem({ m, chat, isGroup, isTribe, onDelete, myPubkey, myAlias, send
   // if (!viewable) { /* THESE RENDER FIRST????? AND THEN THE ACTUAL MSGS DO */
   //   return <View style={{ height: 50, width: 1 }} />
   // }
+  // console.log('m', m)
+
   if (m.dateLine) {
     return <DateLine dateString={m.dateLine} />
   }

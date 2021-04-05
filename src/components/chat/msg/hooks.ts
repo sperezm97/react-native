@@ -21,9 +21,11 @@ export function useCachedEncryptedFile(props, ldat) {
   const isPaidMessage = media_type === 'sphinx/text'
 
   function dispose() {
-    RNFetchBlob.session(sess).dispose().then(() => {
-      console.log(`${sess} disposed`)
-    })
+    RNFetchBlob.session(sess)
+      .dispose()
+      .then(() => {
+        console.log(`${sess} disposed`)
+      })
   }
 
   async function trigger() {
@@ -35,7 +37,8 @@ export function useCachedEncryptedFile(props, ldat) {
       return
     }
 
-    const url = `https://${ldat.host}/file/${media_token}`
+    const url = `http://${ldat.host}/file/${media_token}`
+
     const server = meme.servers.find(s => s.host === ldat.host)
 
     setLoading(true)
@@ -55,13 +58,11 @@ export function useCachedEncryptedFile(props, ldat) {
 
     if (!server) return
     try {
-      const res = await RNFetchBlob
-        .config({
-          path: dirs.CacheDir + `/attachments/msg_${id}`
-        })
-        .fetch('GET', url, {
-          Authorization: `Bearer ${server.token}`,
-        })
+      const res = await RNFetchBlob.config({
+        path: dirs.CacheDir + `/attachments/msg_${id}`
+      }).fetch('GET', url, {
+        Authorization: `Bearer ${server.token}`
+      })
       console.log('The file saved to ', res.path())
 
       const headers = res.info().headers

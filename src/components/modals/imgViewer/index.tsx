@@ -92,7 +92,7 @@ function ImageViewer(props) {
 
     setUploading(true)
     inputRef.current.blur()
-    const type = showMsgMessage ? 'sphinx/text' : 'image/jpg'
+    const type = showMsgMessage ? 'n2n2/text' : 'image/jpg'
     const name = showMsgMessage ? 'Message.txt' : 'Image.jpg'
 
     const pwd = await randString(32)
@@ -109,7 +109,7 @@ function ImageViewer(props) {
 
     RNFetchBlob.fetch(
       'POST',
-      `https://${server.host}/file`,
+      `http://${server.host}/file`,
       {
         Authorization: `Bearer ${server.token}`,
         'Content-Type': 'multipart/form-data'
