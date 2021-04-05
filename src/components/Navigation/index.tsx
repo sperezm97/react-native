@@ -29,12 +29,12 @@ export default function Navigation() {
   }
   return (
     <>
-      {/* <Drawer.Navigator initialRouteName='Dashboard' drawerContent={props => <DrawerContent {...props} />}>
+      <Drawer.Navigator initialRouteName='Dashboard' drawerContent={props => <DrawerContent {...props} />}>
         <Drawer.Screen name='Dashboard' component={DashNav} listeners={{ focus: dash }} />
         <Drawer.Screen name='Contacts' component={ContactsNav} listeners={{ focus: contacts }} />
         <Drawer.Screen name='Profile' component={Profile} listeners={{ focus: profile }} />
-      </Drawer.Navigator> */}
-      <Root />
+      </Drawer.Navigator>
+      {/* <Root /> */}
       <Modals />
     </>
   )

@@ -10,12 +10,13 @@ const RootStack = createStackNavigator()
 
 export default function Root() {
   return (
-    <RootStack.Navigator initialRouteName='Dashboard'>
+    <RootStack.Navigator initialRouteName='Payment'>
       <RootStack.Screen
-        name='Dashboard'
+        name='Home'
         component={Dashboard}
         options={{
-          headerShown: false
+          headerShown: false,
+          animationEnabled: false
         }}
       />
       <RootStack.Screen

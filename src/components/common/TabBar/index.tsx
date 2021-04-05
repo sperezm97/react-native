@@ -8,9 +8,9 @@ import Pushable from '../Pushable'
 
 export default function TabBar() {
   const theme = useTheme()
-  const { width } = Dimensions.get('window')
   const navigation = useNavigation()
   const current = useRoute()
+  const { width } = Dimensions.get('window')
   const tabbarWidth = width - 42
 
   const routes = [
@@ -26,7 +26,7 @@ export default function TabBar() {
     },
     {
       name: 'Payment',
-      icon: 'credit-card',
+      icon: 'wallet',
       key: 'payment'
     },
     {
@@ -37,7 +37,7 @@ export default function TabBar() {
   ]
 
   return (
-    <View style={{ ...styles.tabBar, backgroundColor: theme.primary }}>
+    <View style={{ ...styles.tabBar, backgroundColor: theme.bg }}>
       {routes.map(route => {
         return (
           <Pushable
@@ -46,7 +46,7 @@ export default function TabBar() {
               navigation.navigate(route.name)
             }}
           >
-            <IconButton icon={route.icon} size={32} style={{ width: tabbarWidth / 4 }} color={route.name === current.name ? theme.white : theme.grey} />
+            <IconButton icon={route.icon} size={28} style={{ width: tabbarWidth / 4 }} color={route.name === current.name ? theme.primary : theme.icon} />
           </Pushable>
         )
       })}

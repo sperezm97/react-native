@@ -30,7 +30,6 @@ export default function Header() {
               <IconButton icon='qrcode-scan' size={22} color={theme.icon} />
             </Pushable>
           </View>
-          <Balance balance={details.balance} color={theme.dark ? theme.white : theme.black} />
           <View style={{ ...styles.flex, ...styles.right }}>
             {ui.loadingHistory ? (
               <ActivityIndicator animating={true} color={theme.grey} size={18} style={{}} />
