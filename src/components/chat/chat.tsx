@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useLayoutEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, StyleSheet, InteractionManager, BackHandler, KeyboardAvoidingView, Dimensions } from 'react-native'
 import { useRoute, useNavigation } from '@react-navigation/native'
 import { ActivityIndicator } from 'react-native-paper'
@@ -45,14 +45,6 @@ export default function Chat() {
       return true
     })
   }
-
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      header: props => (
-        <Header chat={chat} appMode={appMode} setAppMode={setAppMode} status={status} tribeParams={tribeParams} earned={earned} spent={spent} pricePerMinute={pricePerMinute} {...props} />
-      )
-    })
-  }, [navigation, route])
 
   useEffect(() => {
     // check for contact key, exchange if none
@@ -159,6 +151,7 @@ export default function Chat() {
         //  contentContainerStyle={{ flex: 1 }}
         keyboardVerticalOffset={headerHeight + 64}
       >
+        <Header chat={chat} appMode={appMode} setAppMode={setAppMode} status={status} tribeParams={tribeParams} earned={earned} spent={spent} pricePerMinute={pricePerMinute} />
         {(appURL ? true : false) && (
           <View style={{ ...styles.layer, zIndex: appMode ? 100 : 99 }} accessibilityLabel='chat-application-frame'>
             <Frame url={appURL} />

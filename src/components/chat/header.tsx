@@ -81,7 +81,7 @@ export default function Header({
     let uri = useChatPicSrc(chat)
     const appURL = tribeParams && tribeParams.app_url
     return (
-      <Appbar.Header style={{ ...styles.wrap, backgroundColor: theme.main }}>
+      <Appbar.Header style={{ ...styles.wrap, backgroundColor: theme.main, borderBottomColor: theme.border }}>
         <Appbar.BackAction onPress={onBackHandler} color={theme.icon} size={20} />
         <View>
           <Avatar big={false} alias={name} photo={uri || ''} />
@@ -105,7 +105,8 @@ const styles = StyleSheet.create({
   wrap: {
     height: 55,
     width: '100%',
-    elevation: 5,
+    elevation: 0,
+    borderBottomWidth: 1,
     zIndex: 102,
     position: 'relative',
     display: 'flex',

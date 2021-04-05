@@ -6,6 +6,7 @@ import { useStores, useTheme } from '../../store'
 import ChatList from '../chat/chatList'
 import Search from '../common/Search'
 import BottomBar from './bottomBar'
+import Header from '../common/Header'
 // import TabBar from '../common/TabBar'
 
 export default function Dashboard() {
@@ -14,6 +15,7 @@ export default function Dashboard() {
 
   return useObserver(() => (
     <View style={{ ...styles.main, backgroundColor: theme.bg }} accessibilityLabel='dashboard'>
+      <Header />
       <Search
         placeholder='Search'
         value={ui.searchTerm}
