@@ -20,7 +20,6 @@ import Header from '../modalHeader'
 
 export default function ImageViewerWrap({ params, visible }) {
   const { ui } = useStores()
-  console.log('visible', visible)
 
   function close() {
     ui.setImgViewerParams(null)
@@ -106,8 +105,11 @@ function ImageViewer(props) {
     if (showMsgMessage) {
       enc = await e2e.encrypt(text, pwd)
     } else {
-      enc = await e2e.encryptFile(uri, pwd)
+      const newUri = uri.replace('file://', '')
+      enc = await e2e.encryptFile(newUri, pwd)
     }
+
+    console.log('enc::', enc)
 
     RNFetchBlob.fetch(
       'POST',
