@@ -26,7 +26,7 @@ export default function Scan({ pay, loading, isLoopout, error }) {
   const boxHeight = h
   const hasAddy = addy ? true : false
   return (
-    <View style={{ ...styles.wrap, height: h - 125 }}>
+    <View style={{ ...styles.wrap, height: h - 125, backgroundColor: theme.bg }}>
       <View style={styles.top}>
         <View style={{ ...styles.scannerWrap, width: w, height: boxHeight, maxWidth: w, maxHeight: boxHeight }}>
           <Scanner height={w} scanned={hasAddy} handleBarCodeScanned={scanned} />

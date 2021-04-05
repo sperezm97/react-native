@@ -4,8 +4,9 @@ import { useObserver } from 'mobx-react-lite'
 
 import { useStores, useTheme } from '../../store'
 import ChatList from '../chat/chatList'
-import BottomBar from './bottomBar'
 import Search from '../common/Search'
+// import BottomBar from './bottomBar'
+import TabBar from '../common/TabBar'
 
 export default function Dashboard() {
   const { ui } = useStores()
@@ -21,7 +22,7 @@ export default function Dashboard() {
         }}
       />
       <ChatList />
-      <BottomBar />
+      <TabBar />
     </View>
   ))
 }

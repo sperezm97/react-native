@@ -39,7 +39,7 @@ export default function NumKey(props) {
                       if (props.onBackspace) props.onBackspace()
                     }}
                   >
-                    <IconButton icon='backspace' color={props.dark || theme.dark ? theme.white : theme.grey} accessibilityLabel={`pin-number-backspace`} />
+                    <IconButton icon='backspace' color={props.dark ? theme.white : theme.subtitle} accessibilityLabel={`pin-number-backspace`} />
                   </TouchableOpacity>
                 )
               }
@@ -52,7 +52,7 @@ export default function NumKey(props) {
                     if (props.onKeyPress) props.onKeyPress(key)
                   }}
                 >
-                  <Text style={{ ...styles.keyText, color: props.dark || theme.dark ? theme.white : theme.grey }}>{key}</Text>
+                  <Text style={{ ...styles.keyText, color: props.dark ? theme.white : theme.subtitle }}>{key}</Text>
                 </TouchableOpacity>
               )
             })}

@@ -22,7 +22,8 @@ export class ThemeStore {
     this.text = d ? '#fff' : '#212529'
     this.icon = d ? '#f3f3f3' : '#777'
     this.input = d ? '#f3f3f3' : '#7e7e7e'
-    this.border = d ? '#111' : '#ccc'
+    this.placeholder = d ? '#bec3c8' : '#90949c'
+    this.border = d ? '#212e39' : '#f0f2f5'
     this.selected = d ? '#3b4681' : '#ddddff'
     this.deep = d ? '#292c33' : '#ccc'
     this.primary = d ? '#0067ff' : '#0067ff'
@@ -35,9 +36,11 @@ export class ThemeStore {
   @observable title: string = '#666'
   @observable subtitle: string = '#7e7e7e'
   @observable text: string = '#212529'
+  @observable typo: string = '#212529'
   @observable icon: string = '#777'
   @observable input: string = '#777'
-  @observable border: string = '#ccc'
+  @observable placeholder: string = '#90949c'
+  @observable border: string = '#f0f2f5'
   @observable selected: string = '#ddddff'
   @observable deep: string = '#ccc'
   @observable primary: string = '#0067ff'
@@ -61,3 +64,4 @@ export class ThemeStore {
 export const themeStore = new ThemeStore()
 
 // themeStore.setDark(true)
+// main light color => #f4f6f6

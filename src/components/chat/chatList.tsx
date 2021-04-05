@@ -87,7 +87,8 @@ function ChatRow(props) {
     requestAnimationFrame(() => {
       msg.seeChat(props.id)
       // msg.getMessages()
-      navigation.navigate('Dashboard', {
+
+      navigation.navigate('Chat', {
         screen: 'Chat',
         params: props
       })

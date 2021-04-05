@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import { useObserver } from 'mobx-react-lite'
 import { StyleSheet, View } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
 
-import { useStores } from '../../store'
+import { useStores, useTheme } from '../../store'
 import Main from './Main'
 import Scan from './Scan'
 import FadeView from '../utils/fadeView'
@@ -12,7 +13,7 @@ const ALPHABET = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
 const basex = require('bs58-rn')
 const base58 = basex(ALPHABET)
 
-export default function Container() {
+export default function Request() {
   const { ui, msg, contacts } = useStores()
 
   const [next, setNext] = useState('')
@@ -20,58 +21,14 @@ export default function Container() {
   const [rawInvoice, setRawInvoice] = useState(null)
   const [amtToPay, setAmtToPay] = useState(null)
   const [err, setErr] = useState('')
+  const theme = useTheme()
+  const navigation = useNavigation()
 
   const chat = ui.chatForPayModal
 
   const contact_id = chat && chat.contact_ids && chat.contact_ids.find(cid => cid !== 1)
 
-  const contact = contact_id && contacts.contacts.find(c => c.id === contact_id)
-
-  async function sendPayment(amt, text) {
-    if (!amt) return
-    setLoading(true)
-    await msg.sendPayment({
-      contact_id: contact_id || null,
-      amt,
-      chat_id: (chat && chat.id) || null,
-      destination_key: '',
-      memo: text
-    })
-    setLoading(false)
-    ui.clearPayModal()
-  }
-
-  async function sendInvoice(amt, text) {
-    if (!amt) return
-    setLoading(true)
-    const inv = await msg.sendInvoice({
-      contact_id: contact_id || null,
-      amt,
-      memo: text,
-      chat_id: (chat && chat.id) || null
-    })
-    setLoading(false)
-    if (chat) ui.clearPayModal() // done (if in a chat)
-    return inv
-  }
-
-  async function sendContactless(amt, text) {
-    if (ui.payMode === 'invoice') {
-      setLoading(true)
-      const inv = await msg.createRawInvoice({ amt, memo: text })
-      setRawInvoice({ ...inv, amount: amt })
-      setLoading(false)
-      setNext(ui.payMode)
-    } else if (ui.payMode === 'payment') {
-      setNext(ui.payMode)
-      setAmtToPay(amt)
-    } else if (ui.payMode === 'loopout') {
-      setNext(ui.payMode)
-      setAmtToPay(amt)
-    }
-  }
   async function payLoopout(addy) {
-    // gen msg?
     setErr('')
     console.log('PAY LOOPOUT')
     if (amtToPay < 250000) {
@@ -99,6 +56,7 @@ export default function Container() {
     setLoading(false)
     close()
   }
+
   async function payContactless(addy) {
     if (ui.payMode === 'loopout') {
       payLoopout(addy)
@@ -123,34 +81,35 @@ export default function Container() {
       setRawInvoice(null)
     })
   }
-  async function confirmOrContinue(amt, text) {
-    console.log('amt', amt)
 
-    if (!chat) {
-      sendContactless(amt, text)
-      setTimeout(() => setTint('dark'), 150)
-      return
-    }
-    if (ui.payMode === 'loopout') {
-      sendContactless(amt, text)
-      setTimeout(() => setTint('dark'), 150)
-      return
-    }
-    if (ui.payMode === 'payment') await sendPayment(amt, text)
-    if (ui.payMode === 'invoice') await sendInvoice(amt, text)
+  async function sendInvoice(amt, text) {
+    if (!amt) return
+    setLoading(true)
+    const inv = await msg.sendInvoice({
+      contact_id: contact_id || null,
+      amt,
+      memo: text,
+      chat_id: (chat && chat.id) || null
+    })
+    setLoading(false)
+    return inv
+  }
+
+  async function confirmOrContinue(amt, text) {
+    await sendInvoice(amt, text)
     setTimeout(() => setTint('light'), 150)
     clearOut()
+
+    ui.confirmInvoiceMsg
   }
 
   const isLoopout = ui.payMode === 'loopout'
   const hasRawInvoice = rawInvoice ? true : false
 
   return useObserver(() => {
-    const label = ui.payMode === 'payment' ? 'Send Payment' : isLoopout ? 'Send Bitcoin' : 'Request Payment'
-
     return (
-      <View style={styles.wrap}>
-        <Main loading={loading} confirmOrContinue={confirmOrContinue} />
+      <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
+        <Main loading={loading} confirmOrContinue={confirmOrContinue} request />
 
         <FadeView opacity={next === 'invoice' ? 1 : 0} style={styles.content}>
           {hasRawInvoice && <ShowRawInvoice amount={rawInvoice.amount} payreq={rawInvoice.invoice} paid={rawInvoice.invoice === ui.lastPaidInvoice} />}
