@@ -30,6 +30,11 @@ export default function MediaMsg(props) {
 
   let { data, uri, loading, trigger, paidMessageText } = useCachedEncryptedFile(props, ldat)
 
+  // uri = uri.replace('file://', '')
+
+  // console.log('data:::', data)
+  // console.log('uri:::', uri)
+
   // useEffect(() => {
   //   if (props.viewable) trigger()
   // }, [props.viewable, props.media_token]) // refresh when scroll, or when purchase accepted
@@ -57,6 +62,8 @@ export default function MediaMsg(props) {
     console.log('TOOLTIP')
   }
   function press() {
+    // console.log('press')
+
     if (media_type.startsWith('image')) {
       if (data) ui.setImgViewerParams({ data })
       if (uri) ui.setImgViewerParams({ uri })
@@ -149,13 +156,12 @@ export default function MediaMsg(props) {
         )}
 
         {showBoostRow && <BoostRow {...props} pad myAlias={props.myAlias} />}
-
-        {showPurchaseButton && (
-          <Button style={styles.payButton} mode='contained' dark={true} onPress={onButtonPressHandler} loading={buying} icon={purchased ? 'check' : 'arrow-top-right'}>
-            <Text style={{ fontSize: 11 }}>{purchased ? 'Purchased' : `Pay ${amt} sat`}</Text>
-          </Button>
-        )}
       </TouchableOpacity>
+      {showPurchaseButton && (
+        <Button style={styles.payButton} mode='contained' dark={true} onPress={onButtonPressHandler} loading={buying} icon={purchased ? 'check' : 'arrow-top-right'}>
+          <Text style={{ fontSize: 11 }}>{purchased ? 'Purchased' : `Pay ${amt} sat`}</Text>
+        </Button>
+      )}
     </View>
   )
 }

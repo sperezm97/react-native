@@ -4,9 +4,9 @@ import App from './App'
 import { name as appName } from './app.json'
 // import TrackPlayer from 'react-native-track-player';
 
-// if (__DEV__) {
-//   NativeModules.DevSettings.setIsDebuggingRemotely(true)
-// }
+if (__DEV__) {
+  NativeModules.DevSettings.setIsDebuggingRemotely(true)
+}
 
 LogBox.ignoreLogs(['Require cycle:'])
 

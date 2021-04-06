@@ -17,6 +17,8 @@ export class ThemeStore {
     this.dark = d
     this.bg = d ? '#141d26' : '#fff'
     this.main = d ? '#1c252e' : '#f3f3f3'
+    // this.bg = d ? '#12181f' : '#fff'
+    // this.main = d ? '#141d26' : '#f3f3f3'
     this.title = d ? '#ddd' : '#666'
     this.subtitle = d ? '#8b98b4' : '#7e7e7e'
     this.text = d ? '#fff' : '#212529'
@@ -65,5 +67,5 @@ export class ThemeStore {
 
 export const themeStore = new ThemeStore()
 
-themeStore.setDark(true)
+// themeStore.setDark(true)
 // main light color => #f4f6f6

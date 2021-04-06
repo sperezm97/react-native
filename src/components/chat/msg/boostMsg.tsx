@@ -12,17 +12,15 @@ export default function BoostMessage(props) {
   const obj = useParsedJsonOrClipMsg(message_content)
   const { ts, feedID, itemID, amount } = obj
 
-  return <View style={{ ...styles.pad }}>
-    <View style={{...styles.rocketWrap, backgroundColor:theme.accent}}>
-      <CustomIcon color="white" size={20} name="fireworks" />
+  return (
+    <View style={{ ...styles.pad }}>
+      <View style={{ ...styles.rocketWrap, backgroundColor: theme.accent }}>
+        <CustomIcon color='white' size={20} name='fireworks' />
+      </View>
+      <Text style={{ color: theme.title, fontWeight: 'bold' }}>{amount}</Text>
+      <Text style={{ color: theme.title, opacity: 0.5, marginLeft: 6 }}>sat</Text>
     </View>
-    <Text style={{ color: theme.title, fontWeight:'bold' }}>
-      {amount}
-    </Text>
-    <Text style={{ color: theme.title, opacity:0.5, marginLeft:6 }}>
-      sat
-    </Text>
-  </View>
+  )
 }
 
 const styles = StyleSheet.create({
@@ -33,20 +31,21 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     paddingLeft: 12,
     paddingRight: 12,
-    display:'flex',
-    flexDirection:'row',
-    alignItems:'center',
-    minWidth:150,
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    minWidth: 150
   },
-  rocketWrap:{
-    height:30,width:30,
-    backgroundColor:'white',
-    borderRadius:15,
-    position:'absolute',
-    right:6,
-    top:6,
-    display:'flex',
-    alignItems:'center',
-    justifyContent:'center'
-  },
+  rocketWrap: {
+    height: 30,
+    width: 30,
+    backgroundColor: 'white',
+    borderRadius: 15,
+    position: 'absolute',
+    right: 6,
+    top: 6,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
+  }
 })

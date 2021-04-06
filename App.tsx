@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper'
+import { DefaultTheme, Provider as PaperProvider, configureFonts } from 'react-native-paper'
 import { useDarkMode } from 'react-native-dynamic'
 import { is24HourFormat } from 'react-native-device-time-format'
 import { useObserver } from 'mobx-react-lite'

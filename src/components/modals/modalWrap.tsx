@@ -13,16 +13,18 @@ export default function ModalWrap(props) {
   return (
     <Modal
       isVisible={visible}
-      style={{ ...styles.modal, marginTop: headerHeight }}
+      style={{ ...styles.modal }}
       onSwipeComplete={() => onClose()}
       swipeDirection={noSwipe ? null : 'down'}
       onBackButtonPress={() => onClose()}
-      coverScreen={true}
+      // coverScreen={true}
       animationIn={'slideInUp'}
       animationOut={'slideOutDown'}
       animationOutTiming={animationOutTiming}
       propagateSwipe={props.propagateSwipe ? true : false}
       swipeThreshold={20}
+      coverScreen={false}
+      // deviceHeight={Dimensions.get('screen').height}
       // useNativeDriver={true}
       // statusBarTranslucent={true}
       // deviceHeight={Dimensions.get('screen').height-142}
@@ -44,7 +46,7 @@ const styles = StyleSheet.create({
   main: {
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-    marginTop: 5,
+    paddingTop: 45,
     flex: 1,
     width: '100%',
     height: '100%'

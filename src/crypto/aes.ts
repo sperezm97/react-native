@@ -1,5 +1,5 @@
 // import RNCryptor from 'rn-rncryptor'
-// https://github.com/Evanfeenstra/rn-rncryptor
+// https://github.com/masterial/react-native-rncryptor
 
 import RNCryptor from 'react-native-rncryptor'
 
