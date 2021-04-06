@@ -436,11 +436,10 @@ const styles = StyleSheet.create({
     maxWidth: '100%'
   },
   bar: {
-    // flex: 1,
     width: '100%',
     maxWidth: '100%',
     height: 20,
-    flexDirection: 'column',
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     elevation: 5,
@@ -448,8 +447,6 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0,
     borderLeftWidth: 0,
     borderRightWidth: 0
-    // position: 'absolute',
-    // zIndex: 999
   },
   barInner: {
     width: '100%',

@@ -28,7 +28,7 @@ export default function MediaMsg(props) {
     if (ldat.sig) purchased = true
   }
 
-  const { data, uri, loading, trigger, paidMessageText } = useCachedEncryptedFile(props, ldat)
+  let { data, uri, loading, trigger, paidMessageText } = useCachedEncryptedFile(props, ldat)
 
   // useEffect(() => {
   //   if (props.viewable) trigger()

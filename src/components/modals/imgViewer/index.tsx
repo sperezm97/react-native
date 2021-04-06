@@ -49,6 +49,7 @@ function ImageViewer(props) {
   const showImg = uri || data ? true : false
   const showInput = contact_id || chat_id ? true : false
   const showMsgMessage = params.msg ? true : false
+  const title = showMsgMessage ? 'Send Paid Message' : 'Send Image'
 
   async function sendFinalMsg({ muid, media_key, media_type, price }) {
     await msg.sendAttachment({
@@ -109,8 +110,6 @@ function ImageViewer(props) {
       enc = await e2e.encryptFile(newUri, pwd)
     }
 
-    console.log('enc::', enc)
-
     RNFetchBlob.fetch(
       'POST',
       `http://${server.host}/file`,
@@ -165,7 +164,7 @@ function ImageViewer(props) {
 
   return useObserver(() => (
     <Portal.Host>
-      <Header title='Send Image' onClose={close} />
+      <Header title={title} onClose={close} />
       <View style={{ ...styles.wrap, backgroundColor: theme.black }}>
         {/* {showInput && !isTribe && <SetPrice setAmount={amt=> setPrice(amt)} />} */}
         {showInput && <SetPrice setAmount={amt => setPrice(amt)} onShow={onShowAmount} />}

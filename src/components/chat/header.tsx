@@ -103,7 +103,7 @@ export default function Header({
 
 const styles = StyleSheet.create({
   wrap: {
-    height: 55,
+    height: 60,
     width: '100%',
     elevation: 0,
     borderBottomWidth: 1,

@@ -124,6 +124,7 @@ function MsgList({ msgs, msgsLength, chat, onDelete, myPubkey, myAlias, onApprov
         accessibilityLabel='message-list'
         inverted
         style={{ zIndex: 100 }}
+        contentContainerStyle={{ paddingTop: 20, paddingBottom: 40 }}
         windowSize={10} // ?
         ref={scrollViewRef}
         data={msgs}
@@ -242,14 +243,6 @@ function DateLine({ dateString }) {
 }
 
 const styles = StyleSheet.create({
-  scroller: {
-    flex: 1,
-    overflow: 'scroll',
-    flexDirection: 'column'
-  },
-  msgList: {
-    flex: 1
-  },
   line: {
     borderBottomWidth: 1,
     borderColor: '#ddd',

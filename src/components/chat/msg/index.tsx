@@ -122,7 +122,9 @@ function MsgBubble(props) {
     borderColor = '#777'
     if (!isMe) borderColor = '#4AC998'
   }
+
   const isDeleted = props.status === constants.statuses.deleted
+
   const onRequestCloseHandler = () => setShowPopover(false)
   const onLongPressHandler = () => {
     ReactNativeHapticFeedback.trigger('impactLight', {

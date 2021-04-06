@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, StyleSheet, InteractionManager, BackHandler, KeyboardAvoidingView, Dimensions } from 'react-native'
+import { View, StyleSheet, InteractionManager, BackHandler, KeyboardAvoidingView, Dimensions, Text } from 'react-native'
 import { useRoute, useNavigation } from '@react-navigation/native'
 import { ActivityIndicator } from 'react-native-paper'
 import Toast from 'react-native-simple-toast'
@@ -138,34 +138,24 @@ export default function Chat() {
 
   // const height = Math.round(Dimensions.get('window').height) - 40
 
-  const headerHeight = 40
+  const headerHeight = 50
   let pricePerMinute = 0
   if (pod && pod.value && pod.value.model && pod.value.model.suggested) {
     pricePerMinute = Math.round(parseFloat(pod.value.model.suggested) * 100000000)
   }
+
   return (
     <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
-      <KeyboardAvoidingView
-        style={styles.keyboardAvoidContainer}
-        behavior='padding'
-        //  contentContainerStyle={{ flex: 1 }}
-        keyboardVerticalOffset={headerHeight + 64}
-      >
-        <Header chat={chat} appMode={appMode} setAppMode={setAppMode} status={status} tribeParams={tribeParams} earned={earned} spent={spent} pricePerMinute={pricePerMinute} />
-        {(appURL ? true : false) && (
-          <View style={{ ...styles.layer, zIndex: appMode ? 100 : 99 }} accessibilityLabel='chat-application-frame'>
-            <Frame url={appURL} />
-          </View>
-        )}
+      <Header chat={chat} appMode={appMode} setAppMode={setAppMode} status={status} tribeParams={tribeParams} earned={earned} spent={spent} pricePerMinute={pricePerMinute} />
 
-        <View
-          style={{
-            ...styles.layer,
-            zIndex: appMode ? 99 : 100,
-            backgroundColor: theme.dark ? theme.bg : 'white'
-          }}
-          accessibilityLabel='chat-content'
-        >
+      <View style={{ ...styles.content }}>
+        <KeyboardAvoidingView style={styles.keyboardAvoidContainer} behavior='padding' keyboardVerticalOffset={headerHeight + 64}>
+          {(appURL ? true : false) && (
+            <View style={{ ...styles.layer, zIndex: appMode ? 100 : 99 }} accessibilityLabel='chat-application-frame'>
+              <Frame url={appURL} />
+            </View>
+          )}
+
           {!theShow && (
             <View style={{ ...styles.loadWrap, backgroundColor: theme.bg }}>
               <ActivityIndicator animating={true} color={theme.subtitle} />
@@ -174,25 +164,27 @@ export default function Chat() {
 
           {theShow && <MsgList chat={chat} pricePerMessage={pricePerMessage} />}
 
-          {/* <Pod
-          pod={pod}
+          {/* <Pod   
+          pod={pod}  
           show={feedURL ? true : false}
           chat={chat}
           onBoost={onBoost}
-          podError={podError}
+          podError={podError}  
         /> */}
 
           {/* <Anim dark={theme.dark} /> */}
-
           {theShow && <BottomBar chat={chat} pricePerMessage={pricePerMessage} tribeBots={tribeBots} />}
-        </View>
-      </KeyboardAvoidingView>
+        </KeyboardAvoidingView>
+      </View>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
   wrap: {
+    flex: 1
+  },
+  content: {
     flex: 1
   },
   keyboardAvoidContainer: {
