@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { View, StyleSheet, InteractionManager, BackHandler, KeyboardAvoidingView, Dimensions, Text } from 'react-native'
+import { View, StyleSheet, InteractionManager, BackHandler, KeyboardAvoidingView, Dimensions, Text, Platform } from 'react-native'
 import { useRoute, useNavigation } from '@react-navigation/native'
 import { ActivityIndicator } from 'react-native-paper'
 import Toast from 'react-native-simple-toast'
+import { ifIphoneX } from 'react-native-iphone-x-helper'
 
 import Header from './header'
 import MsgList from './msgList'
@@ -138,7 +139,10 @@ export default function Chat() {
 
   // const height = Math.round(Dimensions.get('window').height) - 40
 
-  const headerHeight = 50
+  const isIOS = Platform.OS === 'ios'
+
+  const statusBarHeight = isIOS ? ifIphoneX(50, 20) : 0
+  const headerHeight = statusBarHeight + 64
   let pricePerMinute = 0
   if (pod && pod.value && pod.value.model && pod.value.model.suggested) {
     pricePerMinute = Math.round(parseFloat(pod.value.model.suggested) * 100000000)
@@ -149,7 +153,7 @@ export default function Chat() {
       <Header chat={chat} appMode={appMode} setAppMode={setAppMode} status={status} tribeParams={tribeParams} earned={earned} spent={spent} pricePerMinute={pricePerMinute} />
 
       <View style={{ ...styles.content }}>
-        <KeyboardAvoidingView style={styles.keyboardAvoidContainer} behavior='padding' keyboardVerticalOffset={headerHeight + 64}>
+        <KeyboardAvoidingView style={styles.keyboardAvoidContainer} behavior='padding' keyboardVerticalOffset={headerHeight}>
           {(appURL ? true : false) && (
             <View style={{ ...styles.layer, zIndex: appMode ? 100 : 99 }} accessibilityLabel='chat-application-frame'>
               <Frame url={appURL} />

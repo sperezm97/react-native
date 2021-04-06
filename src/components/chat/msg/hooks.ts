@@ -33,14 +33,16 @@ export function useCachedEncryptedFile(props, ldat) {
     if (!(ldat && ldat.host)) {
       return
     }
+
+    // console.log("ldat.sig",ldat.sig);
+
     if (!ldat.sig) {
+      console.log('here', media_token)
+
       return
     }
 
     const url = `http://${ldat.host}/file/${media_token}`
-
-    console.log('ldat::', ldat)
-    console.log('url::', url)
 
     const server = meme.servers.find(s => s.host === ldat.host)
 
@@ -69,7 +71,6 @@ export function useCachedEncryptedFile(props, ldat) {
         Authorization: `Bearer ${server.token}`
       })
       // console.log('The file saved to ', res.path())
-      console.log('res', res)
 
       const headers = res.info().headers
       const disp = headers['Content-Disposition']
@@ -84,9 +85,6 @@ export function useCachedEncryptedFile(props, ldat) {
 
       const path = res.path()
       const status = res.info().status
-
-      console.log('path', path)
-      console.log('status', status)
 
       if (status == 200 && path) {
         let extension = ''
@@ -123,7 +121,7 @@ export function useCachedEncryptedFile(props, ldat) {
       //   setLoading(false)
       // }
     } catch (e) {
-      console.log('error encryption', e)
+      console.log(e)
     }
   }
 
