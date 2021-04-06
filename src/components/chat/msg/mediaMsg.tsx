@@ -30,11 +30,6 @@ export default function MediaMsg(props) {
 
   let { data, uri, loading, trigger, paidMessageText } = useCachedEncryptedFile(props, ldat)
 
-  // uri = uri.replace('file://', '')
-
-  // console.log('data:::', data)
-  // console.log('uri:::', uri)
-
   // useEffect(() => {
   //   if (props.viewable) trigger()
   // }, [props.viewable, props.media_token]) // refresh when scroll, or when purchase accepted
@@ -49,6 +44,9 @@ export default function MediaMsg(props) {
     if (!contact_id) {
       contact_id = chat.contact_ids && chat.contact_ids.find(cid => cid !== 1)
     }
+
+    console.log('chat.id,', chat.id)
+
     await msg.purchaseMedia({
       chat_id: chat.id,
       media_token,
@@ -217,7 +215,8 @@ const styles = StyleSheet.create({
     width: 200,
     // minHeight:200,
     display: 'flex',
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-end',
+    paddingTop: 30
   },
   img: {
     width: 200,
