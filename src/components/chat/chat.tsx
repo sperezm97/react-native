@@ -137,10 +137,7 @@ export default function Chat() {
   const podID = pod && pod.id
   const { earned, spent } = useIncomingPayments(podID)
 
-  // const height = Math.round(Dimensions.get('window').height) - 40
-
   const isIOS = Platform.OS === 'ios'
-
   const statusBarHeight = isIOS ? ifIphoneX(50, 20) : 0
   const headerHeight = statusBarHeight + 64
   let pricePerMinute = 0

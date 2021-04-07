@@ -1,10 +1,10 @@
 import React from 'react'
 import { View, StyleSheet, Dimensions } from 'react-native'
-import { IconButton } from 'react-native-paper'
 import { useNavigation, useRoute } from '@react-navigation/native'
 
 import { useTheme } from '../../../store'
 import Pushable from '../Pushable'
+import Icon from '../Icon'
 
 export default function TabBar() {
   const theme = useTheme()
@@ -46,7 +46,9 @@ export default function TabBar() {
               navigation.navigate(route.name)
             }}
           >
-            <IconButton icon={route.icon} size={28} style={{ width: tabbarWidth / 4 }} color={route.name === current.name ? theme.primary : theme.icon} />
+            <View style={{ ...styles.iconWrapper, width: tabbarWidth / 4 }}>
+              <Icon name={route.name} color={route.name === current.name ? theme.primary : theme.icon} size={24} />
+            </View>
           </Pushable>
         )
       })}
@@ -59,5 +61,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     height: 60
+  },
+  iconWrapper: {
+    height: 40,
+    alignItems: 'center',
+    justifyContent: 'center'
   }
 })

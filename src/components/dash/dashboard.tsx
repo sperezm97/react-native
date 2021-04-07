@@ -7,7 +7,7 @@ import ChatList from '../chat/chatList'
 import Search from '../common/Search'
 import BottomBar from './bottomBar'
 import Header from '../common/Header'
-// import TabBar from '../common/TabBar'
+import TabBar from '../common/TabBar'
 
 export default function Dashboard() {
   const { ui } = useStores()
@@ -24,7 +24,7 @@ export default function Dashboard() {
         }}
       />
       <ChatList />
-      <BottomBar />
+      <TabBar />
     </View>
   ))
 }
