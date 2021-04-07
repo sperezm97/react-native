@@ -58,8 +58,9 @@ export class ThemeStore {
   @observable disabled: string = '#d9dce0'
   @observable clay: string = '#212932'
   @observable blue: string = '#0067ff'
+  @observable red: string = '#f50057'
 
-  @observable accent: string = '#48c998'
+  @observable accent: string = '#0a84ff'
   @observable active: string = '#49ca97'
   @observable inactive: string = '#febd59'
   @observable error: string = '#DB5554'

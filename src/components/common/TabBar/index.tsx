@@ -30,7 +30,7 @@ export default function TabBar() {
       key: 'payment'
     },
     {
-      name: 'Profile',
+      name: 'Account',
       icon: 'account',
       key: 'account'
     }

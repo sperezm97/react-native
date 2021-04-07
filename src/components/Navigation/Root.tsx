@@ -3,7 +3,7 @@ import React from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
 
 import Chats from '../chat/Navigation'
-// import Profile from '../profile/profile'
+import Account from '../Account/Navigation'
 import Payment from '../Payment'
 import Home from '../Home'
 
@@ -36,14 +36,14 @@ export default function Root() {
           animationEnabled: false
         }}
       />
-      {/* <RootStack.Screen
-        name='Profile'
-        component={Profile}
+      <RootStack.Screen
+        name='Account'
+        component={Account}
         options={{
           headerShown: false,
           animationEnabled: false
         }}
-      /> */}
+      />
     </RootStack.Navigator>
   )
 }

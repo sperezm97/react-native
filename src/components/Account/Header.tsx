@@ -1,19 +1,17 @@
 import React from 'react'
-import { View, StyleSheet, Image, TouchableOpacity } from 'react-native'
-import { Appbar, IconButton, ActivityIndicator } from 'react-native-paper'
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
+import { Appbar, ActivityIndicator } from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native'
 import { useObserver } from 'mobx-react-lite'
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import Toast from 'react-native-simple-toast'
 
 import { useStores, useTheme } from '../../store'
-import Balance from '../common/Balance'
-import Pushable from '../common/Pushable'
 
 export default function Header() {
-  const navigation = useNavigation()
   const { details, ui } = useStores()
   const theme = useTheme()
+  const navigation = useNavigation()
 
   const showStatusHandler = () => {
     const status = ui.connected ? 'Connected node' : 'Disconnected node'
@@ -26,18 +24,20 @@ export default function Header() {
       <Appbar.Header style={{ ...styles.appBar, backgroundColor: theme.bg }}>
         <View style={{ ...styles.flex, ...styles.content }}>
           <View style={{ ...styles.flex, ...styles.left }}>
+            {/* <Image source={require('../../assets/n2n2-text.png')} style={styles.brand} resizeMode={'contain'} /> */}
             {ui.loadingHistory ? (
-              <ActivityIndicator animating={true} color={theme.grey} size={18} style={{}} />
+              <ActivityIndicator animating={true} color={theme.grey} size={18} />
             ) : (
-              <TouchableOpacity onPress={showStatusHandler} style={{ ...styles.status }}>
+              <TouchableOpacity onPress={showStatusHandler}>
+                {/* <Icon name='Zap' color={ui.connected ? '#49ca97' : '#febd59'} /> */}
                 <MaterialIcon name='lightning-bolt' size={20} color={ui.connected ? '#49ca97' : '#febd59'} />
               </TouchableOpacity>
             )}
           </View>
           <View style={{ ...styles.flex, ...styles.right }}>
-            <Pushable onPress={() => console.log('click')}>
-              <IconButton icon='qrcode-scan' size={22} color={theme.icon} />
-            </Pushable>
+            <TouchableOpacity onPress={() => navigation.navigate('Settings')}>
+              <Text style={{ ...styles.edit, color: theme.primary }}>Edit</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </Appbar.Header>
@@ -47,7 +47,8 @@ export default function Header() {
 
 const styles = StyleSheet.create({
   appBar: {
-    elevation: 0
+    elevation: 0,
+    height: 20
   },
   flex: {
     display: 'flex',
@@ -70,9 +71,10 @@ const styles = StyleSheet.create({
   brand: {
     width: 65,
     height: 65,
-    maxWidth: 65
+    maxWidth: 65,
+    marginLeft: 14
   },
-  status: {
-    width: 20
+  edit: {
+    fontSize: 16
   }
 })

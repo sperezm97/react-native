@@ -88,10 +88,7 @@ function ChatRow(props) {
       msg.seeChat(props.id)
       // msg.getMessages()
 
-      navigation.navigate('Dashboard', {
-        screen: 'Chat',
-        params: props
-      })
+      navigation.navigate('Chat', { ...props })
     })
   }
 

@@ -71,7 +71,7 @@ export default function Header({
       requestAnimationFrame(() => {
         // msg.seeChat(chat.id)
         details.getBalance()
-        navigation.navigate('Home', { params: { rnd: Math.random() } })
+        navigation.navigate('Chats', { params: { rnd: Math.random() } })
       })
     }
 

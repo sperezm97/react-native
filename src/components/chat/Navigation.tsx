@@ -1,23 +1,20 @@
 import React from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
 
-const ChatsStack = createStackNavigator()
-
-import Chat from './chat'
-import Chats from './Chats'
-import { DashStackParamList } from '../../../src/types'
 import { setTint } from '../utils/statusBar'
 import { useTheme } from '../../store'
+import Chat from './chat'
+import Chats from './Chats'
 import Header from '../common/Header'
 
-const Stack = createStackNavigator<DashStackParamList>()
+const Stack = createStackNavigator()
 
-export default function DashNav() {
+export default function Navigation() {
   const theme = useTheme()
 
   return (
-    <ChatsStack.Navigator initialRouteName='Chats'>
-      <ChatsStack.Screen
+    <Stack.Navigator initialRouteName='Chats'>
+      <Stack.Screen
         name='Chats'
         component={Chats}
         listeners={{ focus: () => setTint('dark') }}
@@ -25,7 +22,7 @@ export default function DashNav() {
           headerShown: false
         }}
       />
-      <ChatsStack.Screen
+      <Stack.Screen
         name='Chat'
         component={Chat}
         listeners={{ focus: () => setTint(theme.dark ? 'black' : 'light') }}
@@ -33,6 +30,6 @@ export default function DashNav() {
           headerShown: false
         }}
       />
-    </ChatsStack.Navigator>
+    </Stack.Navigator>
   )
 }
