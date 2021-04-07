@@ -178,7 +178,7 @@ export default function Account() {
                 </TouchableOpacity>
 
                 <View style={{ display: 'flex', flexDirection: 'column' }}>
-                  <Title style={{ ...styles.title, color: theme.title }}>{user.alias}</Title>
+                  <Title style={{ ...styles.title, color: theme.text }}>{user.alias}</Title>
                 </View>
               </View>
             </View>
@@ -226,8 +226,8 @@ const styles = StyleSheet.create({
     flex: 1
   },
   userInfoSection: {
-    paddingTop: 25,
-    paddingBottom: 25,
+    // paddingTop: 5,
+    paddingBottom: 10,
     borderBottomWidth: 1,
     flexDirection: 'row',
     alignItems: 'center',
@@ -255,7 +255,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontWeight: '600',
-    marginTop: 20
+    marginTop: 10
   },
   spinner: {
     position: 'absolute',

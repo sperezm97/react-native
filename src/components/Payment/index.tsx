@@ -16,7 +16,7 @@ export default function Payment() {
       <Header />
       <View style={{ ...styles.headerActions }}>
         <View style={styles.wallet}>
-          <Text style={{ marginBottom: 10, fontSize: 26, fontWeight: '500', color: theme.title }}>My Wallet</Text>
+          <Text style={{ marginBottom: 10, fontSize: 26, fontWeight: '500', color: theme.text }}>My Wallet</Text>
           <Text style={{ fontSize: 16, color: theme.title }}>
             {details.balance} <Text style={{ color: theme.subtitle }}>sat</Text>
           </Text>

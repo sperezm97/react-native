@@ -21,16 +21,14 @@ export default function Network() {
   return useObserver(() => (
     <View style={{ ...styles.wrap, backgroundColor: theme.main }}>
       <BackHeader title='Appearance' />
-      <View style={{ flex: 1 }}>
-        <View style={{ ...styles.box, backgroundColor: theme.bg }}>
-          <RadioButton.Group onValueChange={value => selectAppearance(value)} value={theme.mode}>
-            <RadioButton.Item label='Dark' value='Dark' />
-            <Border />
-            <RadioButton.Item label='Light' value='Light' />
-            <Border />
-            <RadioButton.Item label='System' value='System' style={{ shadowColor: theme.primary }} />
-          </RadioButton.Group>
-        </View>
+      <View style={{ ...styles.box, backgroundColor: theme.bg }}>
+        <RadioButton.Group onValueChange={value => selectAppearance(value)} value={theme.mode}>
+          <RadioButton.Item label='Dark' value='Dark' />
+          <Border />
+          <RadioButton.Item label='Light' value='Light' />
+          <Border />
+          <RadioButton.Item label='System' value='System' style={{ shadowColor: theme.primary }} />
+        </RadioButton.Group>
       </View>
     </View>
   ))
@@ -44,7 +42,6 @@ function Border() {
 
 const styles = StyleSheet.create({
   wrap: {
-    width: '100%',
     flex: 1
   },
   box: {

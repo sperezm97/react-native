@@ -47,8 +47,8 @@ export default function Header(props) {
 
 const styles = StyleSheet.create({
   appBar: {
-    elevation: 0,
-    height: 20
+    elevation: 0
+    // height: 20
   },
   flex: {
     display: 'flex',
