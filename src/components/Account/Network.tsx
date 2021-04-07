@@ -2,12 +2,12 @@ import React from 'react'
 import { StyleSheet, View, Text } from 'react-native'
 
 import TabBar from '../common/TabBar'
-import Header from '../common/Header'
+import BackHeader from './BackHeader'
 
 export default function Network() {
   return (
     <View style={styles.wrap}>
-      {/* <Header /> */}
+      <BackHeader title='Network' />
       <View style={styles.content}>
         <Text style={{ fontSize: 18 }}>Network</Text>
       </View>

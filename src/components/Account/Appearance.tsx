@@ -1,13 +1,11 @@
 import React from 'react'
-import { StyleSheet, View, Text } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { useDarkMode } from 'react-native-dynamic'
 import { useObserver } from 'mobx-react-lite'
-import { Appbar, RadioButton } from 'react-native-paper'
-import { useNavigation } from '@react-navigation/native'
+import { RadioButton } from 'react-native-paper'
 
 import { useTheme } from '../../store'
-import TabBar from '../common/TabBar'
-// import Header from '../common/Header'
+import BackHeader from './BackHeader'
 
 export default function Network() {
   const theme = useTheme()
@@ -22,7 +20,7 @@ export default function Network() {
 
   return useObserver(() => (
     <View style={{ ...styles.wrap, backgroundColor: theme.main }}>
-      <Header />
+      <BackHeader title='Appearance' />
       <View style={{ flex: 1 }}>
         <View style={{ ...styles.box, backgroundColor: theme.bg }}>
           <RadioButton.Group onValueChange={value => selectAppearance(value)} value={theme.mode}>
@@ -44,27 +42,6 @@ function Border() {
   return <View style={{ ...styles.borderBottom, borderBottomColor: theme.border }}></View>
 }
 
-function Header() {
-  const theme = useTheme()
-  const navigation = useNavigation()
-
-  function onBack() {
-    requestAnimationFrame(() => {
-      navigation.navigate('Account')
-    })
-  }
-
-  return (
-    <Appbar.Header style={{ ...styles.appBar, backgroundColor: theme.main, borderBottomColor: theme.border }}>
-      <Appbar.BackAction onPress={onBack} color={theme.icon} size={20} />
-      {/* <View style={styles.textWrap}>
-    <TouchableOpacity onPress={clickTitle} style={styles.title}>
-    </TouchableOpacity>
-  </View> */}
-    </Appbar.Header>
-  )
-}
-
 const styles = StyleSheet.create({
   wrap: {
     width: '100%',
@@ -75,9 +52,5 @@ const styles = StyleSheet.create({
   },
   borderBottom: {
     borderBottomWidth: 1
-  },
-  appBar: {
-    elevation: 0,
-    height: 50
   }
 })

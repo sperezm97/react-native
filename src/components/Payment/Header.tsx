@@ -29,7 +29,7 @@ export default function Header() {
             {ui.loadingHistory ? (
               <ActivityIndicator animating={true} color={theme.grey} size={18} style={{}} />
             ) : (
-              <TouchableOpacity onPress={showStatusHandler} style={{ ...styles.status }}>
+              <TouchableOpacity onPress={showStatusHandler}>
                 <MaterialIcon name='lightning-bolt' size={20} color={ui.connected ? '#49ca97' : '#febd59'} />
               </TouchableOpacity>
             )}
@@ -66,13 +66,5 @@ const styles = StyleSheet.create({
   right: {
     marginRight: 14,
     justifyContent: 'flex-end'
-  },
-  brand: {
-    width: 65,
-    height: 65,
-    maxWidth: 65
-  },
-  status: {
-    width: 20
   }
 })

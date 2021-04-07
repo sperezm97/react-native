@@ -28,17 +28,17 @@ export default function Navigation() {
         name='Network'
         component={Network}
         listeners={{ focus: () => setTint(theme.dark ? 'black' : 'light') }}
-        // options={{
-        //   headerShown: false
-        // }}
+        options={{
+          headerShown: false
+        }}
       />
       <Stack.Screen
         name='Security'
         component={Security}
         listeners={{ focus: () => setTint(theme.dark ? 'black' : 'light') }}
-        // options={{
-        //   headerShown: false
-        // }}
+        options={{
+          headerShown: false
+        }}
       />
       <Stack.Screen
         name='Appearance'

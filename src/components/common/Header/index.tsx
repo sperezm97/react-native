@@ -58,17 +58,17 @@ const styles = StyleSheet.create({
   },
   left: {
     justifyContent: 'space-between',
-    width: 50
+    width: 50,
+    marginLeft: 14
   },
   right: {
-    marginRight: 12,
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-end',
+    marginRight: 14
   },
   brand: {
     width: 70,
     height: 70,
-    maxWidth: 70,
-    marginLeft: 14
+    maxWidth: 70
   },
   status: {
     width: 20
