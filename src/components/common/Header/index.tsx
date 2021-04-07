@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, StyleSheet, Image, TouchableOpacity } from 'react-native'
-import { Appbar, IconButton, ActivityIndicator } from 'react-native-paper'
-import { DrawerActions, useNavigation } from '@react-navigation/native'
+import { Appbar, ActivityIndicator } from 'react-native-paper'
+import { useNavigation } from '@react-navigation/native'
 import { useObserver } from 'mobx-react-lite'
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import Toast from 'react-native-simple-toast'
@@ -25,23 +25,7 @@ export default function Header() {
       <Appbar.Header style={{ ...styles.appBar, backgroundColor: theme.bg }}>
         <View style={{ ...styles.flex, ...styles.content }}>
           <View style={{ ...styles.flex, ...styles.left }}>
-            <IconButton
-              icon='menu'
-              size={30}
-              accessibilityLabel='menu-button'
-              onPress={() => {
-                navigation.dispatch(DrawerActions.openDrawer())
-              }}
-              color={theme.icon}
-              style={{ marginLeft: 0 }}
-            />
-            <TouchableOpacity
-              onPress={() => {
-                navigation.dispatch(DrawerActions.openDrawer())
-              }}
-            >
-              <Image source={require('../../../assets/n2n2-text.png')} style={styles.brand} resizeMode={'contain'} />
-            </TouchableOpacity>
+            <Image source={require('../../../assets/n2n2-text.png')} style={styles.brand} resizeMode={'contain'} />
           </View>
           <Balance balance={details.balance} color={theme.dark ? theme.white : theme.black} />
           <View style={{ ...styles.flex, ...styles.right }}>
@@ -81,9 +65,10 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end'
   },
   brand: {
-    width: 65,
-    height: 65,
-    maxWidth: 65
+    width: 70,
+    height: 70,
+    maxWidth: 70,
+    marginLeft: 14
   },
   status: {
     width: 20

@@ -10,6 +10,7 @@ import Clipboard from '@react-native-community/clipboard'
 import Slider from '@react-native-community/slider'
 import Toast from 'react-native-simple-toast'
 import RNFetchBlob from 'rn-fetch-blob'
+import { useNavigation } from '@react-navigation/native'
 
 import { useStores, useTheme } from '../../store'
 import { TOAST_DURATION } from '../../constants'
@@ -22,10 +23,10 @@ import { usePicSrc } from '../utils/picSrc'
 import * as rsa from '../../crypto/rsa'
 import * as e2e from '../../crypto/e2e'
 import PIN, { userPinCode } from '../utils/pin'
-import Toggler from './toggler'
 import { getPinTimeout, updatePinTimeout } from '../utils/pin'
 import Button from '../common/Button'
 import Balance from '../common/Balance'
+import ActionMenu from '../common/ActionMenu'
 
 export default function Profile() {
   const { details, user, contacts, meme, ui } = useStores()
@@ -44,6 +45,7 @@ export default function Profile() {
   const [initialPinTimeout, setInitialPinTimeout] = useState(12)
   const [serverURL, setServerURL] = useState('')
   const [tipAmount, setTipAmount] = useState(user.tipAmount + '')
+  const navigation = useNavigation()
 
   async function loadPinTimeout() {
     const pt = await getPinTimeout()
@@ -198,6 +200,23 @@ export default function Profile() {
       borderTopColor: theme.dark ? '#181818' : '#ddd'
     }
 
+    const items = [
+      [
+        {
+          title: 'Account Details',
+          icon: 'ChevronRight',
+          thumbIcon: 'Home',
+          thumbBgColor: theme.primary,
+          action: () => navigation.navigate('')
+        },
+        {
+          title: 'Payment Details',
+          icon: 'ChevronRight',
+          action: () => navigation.navigate('')
+        }
+      ]
+    ]
+
     const width = Math.round(Dimensions.get('window').width)
     return (
       <View style={{ ...styles.wrap, backgroundColor: theme.main }}>
@@ -239,14 +258,6 @@ export default function Profile() {
           </View>
         </View>
 
-        <Toggler
-          width={width}
-          extraStyles={{ borderRadius: 0, borderRightWidth: 0, borderLeftWidth: 0 }}
-          onSelect={e => setAdvanced(e === 'Advanced')}
-          selectedItem={advanced ? 'Advanced' : 'Basic'}
-          items={['Basic', 'Advanced']}
-        />
-
         {!advanced && (
           <ScrollView style={styles.scroller}>
             <View style={{ ...styles.formWrap, ...cardStyles }}>
@@ -267,7 +278,6 @@ export default function Profile() {
 
             <View style={{ ...styles.options, ...cardStyles }}>
               <Text style={{ ...styles.label, color: theme.subtitle }}>Appearance</Text>
-              <Toggler width={300} extraStyles={{}} onSelect={selectAppearance} selectedItem={theme.mode} items={['System', 'Dark', 'Light']} />
             </View>
 
             <View style={{ ...styles.inputs, ...cardStyles }}>
@@ -322,6 +332,8 @@ export default function Profile() {
             <Cam onCancel={() => setTakingPhoto(false)} onSnap={pic => tookPic(pic)} />
           </Portal>
         )}
+
+        <ActionMenu items={items} />
       </View>
     )
   })

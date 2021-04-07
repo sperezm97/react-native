@@ -61,8 +61,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     height: 60,
-    marginLeft: 16,
-    marginRight: 16
+    paddingLeft: 16,
+    paddingRight: 16
   },
   iconWrapper: {
     height: 40,
