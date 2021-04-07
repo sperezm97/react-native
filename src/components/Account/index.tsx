@@ -1,10 +1,9 @@
 import React, { useState } from 'react'
 import { useObserver } from 'mobx-react-lite'
 import { View, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native'
-import { Portal, Title } from 'react-native-paper'
-
 import RNFetchBlob from 'rn-fetch-blob'
 import { useNavigation, useFocusEffect } from '@react-navigation/native'
+import { Portal, Dialog, Title } from 'react-native-paper'
 
 import { useStores, useTheme } from '../../store'
 import Header from './Header'
@@ -14,14 +13,18 @@ import { usePicSrc } from '../utils/picSrc'
 import ActionMenu from '../common/ActionMenu'
 import TabBar from '../common/TabBar'
 import Icon from '../common/Icon'
+import Form from '../form'
+import { me } from '../form/schemas'
 
 export default function Account() {
   const { user, contacts, meme } = useStores()
   const theme = useTheme()
   const [uploading, setUploading] = useState(false)
   const [dialogOpen, setDialogOpen] = useState(false)
+  const [userDialog, setUserDialog] = React.useState(false)
   const [takingPhoto, setTakingPhoto] = useState(false)
   const [photo_url, setPhotoUrl] = useState('')
+  const [saving, setSaving] = useState(false)
   const [avatar, setAvatar] = useState({
     newImage: require('../../assets/avatars/balvin.png'),
     randomImages: [
@@ -105,11 +108,23 @@ export default function Account() {
           setPhotoUrl(`http://${server.host}/public/${json.muid}`)
         }
         setUploading(false)
+        await contacts.updateContact(1, {
+          ...(photo_url && { photo_url })
+        })
       })
       .catch(err => {
         console.log(err)
         setUploading(false)
       })
+  }
+
+  async function saveUser(values) {
+    setSaving(true)
+    await contacts.updateContact(1, {
+      alias: values.alias
+    })
+    setSaving(false)
+    setUserDialog(false)
   }
 
   const items = [
@@ -146,7 +161,7 @@ export default function Account() {
 
     return (
       <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
-        <Header />
+        <Header onEdit={() => setUserDialog(true)} />
         <View style={{ flex: 1, backgroundColor: theme.bg }}>
           <ScrollView>
             <View style={{ ...styles.userInfoSection, borderBottomColor: theme.border }}>
@@ -177,6 +192,26 @@ export default function Account() {
                 <Cam onCancel={() => setTakingPhoto(false)} onSnap={pic => tookPic(pic)} />
               </Portal>
             )}
+
+            <Portal>
+              <Dialog visible={userDialog} onDismiss={() => setUserDialog(false)} style={{ backgroundColor: theme.bg }}>
+                <Dialog.Title style={{ color: theme.primary, marginBottom: 30, fontWeight: '400' }}>Edit Name</Dialog.Title>
+                <Dialog.Content>
+                  <Form
+                    nopad
+                    displayOnly
+                    schema={me}
+                    loading={saving}
+                    buttonText='Save'
+                    initialValues={{
+                      alias: user.alias
+                    }}
+                    onSubmit={values => saveUser(values)}
+                    action
+                  />
+                </Dialog.Content>
+              </Dialog>
+            </Portal>
           </ScrollView>
         </View>
 

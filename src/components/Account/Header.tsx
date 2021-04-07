@@ -8,7 +8,7 @@ import Toast from 'react-native-simple-toast'
 
 import { useStores, useTheme } from '../../store'
 
-export default function Header() {
+export default function Header(props) {
   const { details, ui } = useStores()
   const theme = useTheme()
   const navigation = useNavigation()
@@ -35,7 +35,7 @@ export default function Header() {
             )}
           </View>
           <View style={{ ...styles.flex, ...styles.right }}>
-            <TouchableOpacity onPress={() => navigation.navigate('Settings')}>
+            <TouchableOpacity onPress={props.onEdit}>
               <Text style={{ ...styles.edit, color: theme.primary }}>Edit</Text>
             </TouchableOpacity>
           </View>
