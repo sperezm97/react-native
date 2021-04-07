@@ -112,7 +112,7 @@ function ImageViewer(props) {
 
     RNFetchBlob.fetch(
       'POST',
-      `http://${server.host}/file`,
+      `https://${server.host}/file`,
       {
         Authorization: `Bearer ${server.token}`,
         'Content-Type': 'multipart/form-data'

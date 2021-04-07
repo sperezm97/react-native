@@ -28,9 +28,9 @@ export default function MediaMsg(props) {
     if (ldat.sig) purchased = true
   }
 
-  console.log('ldat', ldat.sig)
-  console.log('purchased', purchased)
-  console.log('media_token', media_token)
+  // console.log('ldat', ldat.sig)
+  // console.log('purchased', purchased)
+  // console.log('media_token', media_token)
 
   console.log('-----')
 
@@ -160,7 +160,6 @@ export default function MediaMsg(props) {
         )}
 
         {showBoostRow && <BoostRow {...props} pad myAlias={props.myAlias} />}
-        <Text>{media_token}</Text>
       </TouchableOpacity>
       {showPurchaseButton && (
         <Button style={styles.payButton} mode='contained' dark={true} onPress={onButtonPressHandler} loading={buying} icon={purchased ? 'check' : 'arrow-top-right'}>

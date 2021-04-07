@@ -81,7 +81,7 @@ export default function Account() {
 
     RNFetchBlob.fetch(
       'POST',
-      `http://${server.host}/public`,
+      `https://${server.host}/public`,
       {
         Authorization: `Bearer ${server.token}`,
         'Content-Type': 'multipart/form-data'
@@ -105,7 +105,7 @@ export default function Account() {
         console.log('json:', json)
 
         if (json.muid) {
-          setPhotoUrl(`http://${server.host}/public/${json.muid}`)
+          setPhotoUrl(`https://${server.host}/public/${json.muid}`)
         }
         setUploading(false)
         await contacts.updateContact(1, {

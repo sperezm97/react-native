@@ -22,11 +22,11 @@ export default function Payment() {
           </Text>
         </View>
         <View style={styles.buttonWrap}>
-          <Button mode='outlined' icon='arrow-top-right' style={{ width: 130, borderColor: theme.border }} btnHeight={45} onPress={() => ui.setPayMode('payment', null)}>
-            SEND
-          </Button>
           <Button mode='outlined' icon='arrow-bottom-left' style={{ width: 130, borderColor: theme.border, borderLeftWidth: 0 }} btnHeight={45} onPress={() => ui.setPayMode('invoice', null)}>
             RECEIVE
+          </Button>
+          <Button mode='outlined' icon='arrow-top-right' style={{ width: 130, borderColor: theme.border }} btnHeight={45} onPress={() => ui.setPayMode('payment', null)}>
+            SEND
           </Button>
         </View>
       </View>

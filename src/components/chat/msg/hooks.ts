@@ -34,15 +34,15 @@ export function useCachedEncryptedFile(props, ldat) {
       return
     }
 
-    // console.log("ldat.sig",ldat.sig);
+    console.log('ldat.sig', ldat)
 
     if (!ldat.sig) {
-      console.log('here', media_token)
+      console.log('here', ldat)
 
       return
     }
 
-    const url = `http://${ldat.host}/file/${media_token}`
+    const url = `https://${ldat.host}/file/${media_token}`
 
     const server = meme.servers.find(s => s.host === ldat.host)
 
