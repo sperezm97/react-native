@@ -11,7 +11,7 @@ export default function TabBar() {
   const navigation = useNavigation()
   const current = useRoute()
   const { width } = Dimensions.get('window')
-  const tabbarWidth = width - 42
+  const tabbarWidth = width - 32
 
   const routes = [
     {
@@ -20,7 +20,7 @@ export default function TabBar() {
       key: 'home'
     },
     {
-      name: 'Home',
+      name: 'Chats',
       icon: 'chat',
       key: 'chat'
     },
@@ -60,7 +60,9 @@ const styles = StyleSheet.create({
   tabBar: {
     flexDirection: 'row',
     alignItems: 'center',
-    height: 60
+    height: 60,
+    marginLeft: 16,
+    marginRight: 16
   },
   iconWrapper: {
     height: 40,

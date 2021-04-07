@@ -2,7 +2,7 @@ import React from 'react'
 
 import { createStackNavigator } from '@react-navigation/stack'
 
-import Dashboard from '../dash/dashnav'
+import Chats from '../chat/Navigation'
 import Payment from '../Payment'
 import Profile from '../profile/profile'
 
@@ -10,10 +10,10 @@ const RootStack = createStackNavigator()
 
 export default function Root() {
   return (
-    <RootStack.Navigator initialRouteName='Home'>
+    <RootStack.Navigator initialRouteName='Chat'>
       <RootStack.Screen
-        name='Home'
-        component={Dashboard}
+        name='Chats'
+        component={Chats}
         options={{
           headerShown: false,
           animationEnabled: false
