@@ -44,9 +44,9 @@ export default function Navigation() {
         name='Appearance'
         component={Appearance}
         listeners={{ focus: () => setTint(theme.dark ? 'black' : 'light') }}
-        // options={{
-        //   headerShown: false
-        // }}
+        options={{
+          headerShown: false
+        }}
       />
     </Stack.Navigator>
   )

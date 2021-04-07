@@ -50,7 +50,6 @@ export function useCachedEncryptedFile(props, ldat) {
     // if img already exists return it
     const existingPath = dirs.CacheDir + `/attachments/msg_${id}_decrypted`
     const exists = await RNFetchBlob.fs.exists(existingPath)
-    console.log('exists::', id, '---', exists)
 
     if (exists) {
       if (isPaidMessage) {
