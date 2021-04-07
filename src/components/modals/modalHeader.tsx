@@ -9,9 +9,9 @@ export default function Header(props) {
   const theme = useTheme()
   return (
     <View style={{ ...styles.header, ...(props.background && { backgroundColor: props.background }) }}>
-      <View style={styles.headerLefty}>{leftArrow && <IconButton icon='arrow-left' color={theme.grey} size={22} style={{ marginRight: 14, marginTop: 8 }} onPress={() => onClose()} />}</View>
+      <View style={styles.headerLefty}>{leftArrow && <IconButton icon='arrow-left' color={theme.icon} size={22} style={{ marginRight: 14, marginTop: 8 }} onPress={() => onClose()} />}</View>
       <Text style={{ ...styles.headerTitle, color: theme.title }}>{title}</Text>
-      <View style={styles.headerLefty}>{!leftArrow && <IconButton icon='close' color={theme.grey} size={22} style={{ marginRight: 14, marginTop: 8 }} onPress={() => onClose()} />}</View>
+      <View style={styles.headerLefty}>{!leftArrow && <IconButton icon='close' color={theme.icon} size={22} style={{ marginRight: 14, marginTop: 8 }} onPress={() => onClose()} />}</View>
     </View>
   )
 }

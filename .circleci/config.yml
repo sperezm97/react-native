@@ -4,14 +4,14 @@ jobs:
     working_directory: ~/production_ios/ios
 
     macos:
-      xcode: "12.4.0"
+      xcode: '12.4.0'
 
     steps:
       - checkout:
           path: ~/production_ios
 
       - run:
-          command: "bundle install"
+          command: 'bundle install'
           name: Build
 
       - run:
@@ -49,33 +49,20 @@ jobs:
     working_directory: ~/staging_ios
 
     macos:
-      xcode: "12.4.0"
+      xcode: '12.4.0'
 
     steps:
       - checkout
 
       - run:
-          command: "bundle install"
+          command: 'bundle install'
           name: Build
-
-      # - run:
-      #     name: "Check current version of node"
-      #     command: |
-      #       which node
-      #       node -v
 
       - run:
           name: Install yarn
           command: |
             curl -o- -L https://yarnpkg.com/install.sh | bash
             echo 'export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"' >> $BASH_ENV
-
-      # - run:
-      #     name: Install node_modules
-      #     command: |
-      #       cd ..
-      #       yarn install && ls node_modules
-      #       ls -la
 
       - restore_cache:
           name: Restore Yarn Package Cache
@@ -115,7 +102,7 @@ jobs:
       - run:
           name: Build
           command: |
-            bundle exec fastlane ios upload_testflight --verbose
+            bundle exec fastlane ios upload_testflight_staging --verbose
 
   # production_android:
   #   working_directory: ~/production_android/android
@@ -241,4 +228,4 @@ workflows:
       - staging_ios:
           filters:
             branches:
-              only: main
+              only: staging

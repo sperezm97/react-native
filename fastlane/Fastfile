@@ -4,8 +4,8 @@ platform :ios do
   end
 
  # 2.0
- desc "Upload to Testflight"
- lane :upload_testflight do
+ desc "Upload to Testflight (Staging)"
+ lane :upload_testflight_staging do
    # Get the version number from the project and check against
    # the latest build already available on TestFlight, then
    # increase the build number by 1. If no build is available
@@ -20,6 +20,18 @@ platform :ios do
       ) + 1,
       xcodeproj: "ios/Chat.xcodeproj",
    )
+  
+
+  # automatic code signing
+  disable_automatic_code_signing(
+    path: "ios/Chat.xcodeproj"
+  )
+  
+  #  update_code_signing_settings(
+  #    use_automatic_signing: true,
+  #    path: "ios/Chat.xcodeproj"
+  #  )
+
    # Set up Distribution code signing and build the app
    match(type: "appstore")
 

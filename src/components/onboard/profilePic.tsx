@@ -1,26 +1,26 @@
 import React, { useState } from 'react'
 import { View, StyleSheet, Text, Image } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
-import { IconButton } from 'react-native-paper'
-import ImagePicker from 'react-native-image-picker'
+import { IconButton, Portal } from 'react-native-paper'
+import * as ImagePicker from 'react-native-image-picker'
 import RNFetchBlob from 'rn-fetch-blob'
 
 import { useStores, useTheme } from '../../store'
 import Slider from '../utils/slider'
 import Button from '../common/Button'
+import ImgSrcDialog from '../utils/imgSrcDialog'
+import Cam from '../utils/cam'
 
 export default function ProfilePic({ z, show, onDone, onBack }) {
   const { contacts, user, meme } = useStores()
   const [uploading, setUploading] = useState(false)
+  const [dialogOpen, setDialogOpen] = useState(false)
+  const [takingPhoto, setTakingPhoto] = useState(false)
   const [img, setImg] = useState(null)
   const theme = useTheme()
 
-  async function pickImage() {
-    ImagePicker.launchImageLibrary({}, result => {
-      if (!result.didCancel) {
-        setImg(result)
-      }
-    })
+  async function pickImage(img) {
+    setImg(img)
   }
 
   async function finish() {
@@ -46,9 +46,12 @@ export default function ProfilePic({ z, show, onDone, onBack }) {
         resolve('')
         return
       }
+
+      uri = uri.replace('file://', '')
+
       RNFetchBlob.fetch(
         'POST',
-        `https://${server.host}/public`,
+        `http://${server.host}/public`,
         {
           Authorization: `Bearer ${server.token}`,
           'Content-Type': 'multipart/form-data'
@@ -69,7 +72,7 @@ export default function ProfilePic({ z, show, onDone, onBack }) {
         .then(async resp => {
           let json = resp.json()
           if (json.muid) {
-            resolve(`https://${server.host}/public/${json.muid}`)
+            resolve(`http://${server.host}/public/${json.muid}`)
           }
           setUploading(false)
           return
@@ -93,7 +96,7 @@ export default function ProfilePic({ z, show, onDone, onBack }) {
         <View style={styles.mid} accessibilityLabel='onboard-profile-middle'>
           {img && <Image source={{ uri: img.uri }} style={{ width: 180, height: 180, borderRadius: 90 }} resizeMode={'cover'} />}
           {!img && <Image source={require('../../../android_assets/avatar3x.png')} style={{ width: 180, height: 180 }} resizeMode={'cover'} />}
-          <Button accessibilityLabel='onboard-profile-choose-image' onPress={pickImage} style={{ ...styles.selectButton, backgroundColor: theme.lightGrey }}>
+          <Button accessibilityLabel='onboard-profile-choose-image' onPress={() => setDialogOpen(true)} style={{ ...styles.selectButton, backgroundColor: theme.lightGrey }}>
             <Text style={{ color: theme.black }}>Select Image</Text>
           </Button>
         </View>
@@ -102,6 +105,14 @@ export default function ProfilePic({ z, show, onDone, onBack }) {
             <Text style={{ color: theme.white }}> {img ? 'Next' : 'Skip'}</Text>
           </Button>
         </View>
+
+        <ImgSrcDialog open={dialogOpen} onClose={() => setDialogOpen(false)} onPick={img => pickImage(img)} onChooseCam={() => setTakingPhoto(true)} />
+
+        {takingPhoto && (
+          <Portal>
+            <Cam onCancel={() => setTakingPhoto(false)} onSnap={img => pickImage(img)} />
+          </Portal>
+        )}
       </Slider>
     )
   })

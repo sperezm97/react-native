@@ -1,50 +1,52 @@
-import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, Dimensions, Animated } from 'react-native'
+import React from 'react'
+import { View, StyleSheet, Dimensions } from 'react-native'
 import { IconButton } from 'react-native-paper'
+import { useNavigation, useRoute } from '@react-navigation/native'
+
 import { useTheme } from '../../../store'
 import Pushable from '../Pushable'
 
-const icons = {
-  Dashboard: 'arrow-bottom-left',
-  Profile: 'format-list-bulleted'
-  // '':'qrcode-scan',
-  // '':'arrow-top-right'
-}
-
-export default function TabBar({ state, descriptors, navigation }) {
+export default function TabBar() {
   const theme = useTheme()
-  const focusedOptions = descriptors[state.routes[state.index].key].options
+  const navigation = useNavigation()
+  const current = useRoute()
   const { width } = Dimensions.get('window')
+  const tabbarWidth = width - 42
 
-  const tabbarWidth = width - 32
-
-  if (focusedOptions.tabBarVisible === false) {
-    return null
-  }
+  const routes = [
+    {
+      name: 'Home',
+      icon: 'home',
+      key: 'home'
+    },
+    {
+      name: 'Home',
+      icon: 'chat',
+      key: 'chat'
+    },
+    {
+      name: 'Payment',
+      icon: 'wallet',
+      key: 'payment'
+    },
+    {
+      name: 'Profile',
+      icon: 'account',
+      key: 'account'
+    }
+  ]
 
   return (
-    <View style={{ ...styles.tabBar, backgroundColor: theme.primary }}>
-      {state.routes.map((route, index) => {
-        const { options } = descriptors[route.key]
-        const label = options.tabBarLabel !== undefined ? options.tabBarLabel : options.title !== undefined ? options.title : route.name
-
-        const isFocused = state.index === index
-
+    <View style={{ ...styles.tabBar, backgroundColor: theme.bg }}>
+      {routes.map(route => {
         return (
           <Pushable
-            key={index}
+            key={route.key}
             onPress={() => {
-              const event = navigation.emit({
-                type: 'tabPress',
-                target: route.key,
-                canPreventDefault: true
-              })
-              if (!isFocused && !event.defaultPrevented) {
-                navigation.navigate(route)
-              }
+              navigation.navigate(route.name)
             }}
           >
-            <IconButton icon={icons[label]} size={32} color={theme.white} style={{ width: tabbarWidth / 5 }} />
+            <IconButton icon={route.icon} size={28} style={{ width: tabbarWidth / 4 }} color={route.name === current.name ? theme.primary : theme.icon} />
           </Pushable>
         )
       })}

@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
 import { View, StyleSheet, Text, Dimensions } from 'react-native'
-import { Button, Avatar, TextInput } from 'react-native-paper'
+import { Avatar, TextInput } from 'react-native-paper'
 
 import NumKey from '../../utils/numkey'
 import { usePicSrc } from '../../utils/picSrc'
 import { useStores, useTheme } from '../../../store'
 import { useAvatarColor } from '../../../store/hooks/msg'
+import Button from '../../common/Button'
 
 export default function Main({ contact, loading, confirmOrContinue, contactless }) {
   const { ui, details } = useStores()
@@ -63,7 +64,7 @@ export default function Main({ contact, loading, confirmOrContinue, contactless 
       <View style={styles.bottom}>
         <View style={styles.confirmWrap}>
           {amt !== '0' && (
-            <Button style={styles.confirm} loading={loading} onPress={() => confirmOrContinue(parseInt(amt), text)} mode='contained' dark={true}>
+            <Button style={{ ...styles.confirm }} loading={loading} onPress={() => confirmOrContinue(parseInt(amt), text)}>
               {contactless || isLoopout ? 'CONTINUE' : 'CONFIRM'}
             </Button>
           )}
@@ -76,9 +77,9 @@ export default function Main({ contact, loading, confirmOrContinue, contactless 
             <TextInput
               value={text}
               placeholder='Add Message'
-              mode='outlined'
+              // mode='flat'
               onChangeText={v => setText(v)}
-              style={styles.input}
+              style={{ ...styles.input, backgroundColor: theme.bg }}
               onFocus={() => setInputFocused(true)}
               onBlur={() => setInputFocused(false)}
             />
@@ -144,12 +145,8 @@ const styles = StyleSheet.create({
     marginTop: 12
   },
   confirm: {
-    backgroundColor: '#6289FD',
-    height: 35,
+    height: 45,
     width: 150,
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 20
   },
@@ -168,7 +165,6 @@ const styles = StyleSheet.create({
     flex: 1,
     marginBottom: 10,
     textAlign: 'center',
-    borderBottomWidth: 1,
     fontSize: 16
   },
   bottom: {

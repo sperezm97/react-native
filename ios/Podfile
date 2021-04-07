@@ -8,6 +8,7 @@ target 'Chat' do
 
   use_react_native!(:path => config["reactNativePath"])
 
+
   # target 'ChatTests' do
   #   inherit! :complete
   #   # Pods for testing

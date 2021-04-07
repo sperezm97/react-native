@@ -20,16 +20,17 @@ export default function ShowRawInvoice({ amount, payreq, paid }) {
     } catch (e) {}
   }
   const { height, width } = Dimensions.get('window')
-  const h = height - 80
+  const h = height - 280
+
   return (
-    <View style={{ ...styles.innerWrap, minHeight: h, maxHeight: h }}>
+    <View style={{ ...styles.innerWrap, minHeight: h }}>
       {amount && (
         <View style={styles.amtWrap}>
-          <Text style={{ fontSize: 16 }}>{`Amount: ${amount} sats`}</Text>
+          <Text style={{ fontSize: 16, color: theme.title, marginBottom: 12 }}>{`Amount: ${amount} sats`}</Text>
         </View>
       )}
       <View style={styles.qrWrap}>
-        <QRCode value={payreq} size={width - 30} />
+        <QRCode value={payreq} size={720} />
         {paid && (
           <View style={styles.paidWrap}>
             <Text style={styles.paid}>PAID</Text>
@@ -74,6 +75,8 @@ const styles = StyleSheet.create({
   payreqText: {
     paddingLeft: 20,
     paddingRight: 20,
+    marginTop: 40,
+    marginBottom: 20,
     width: '100%',
     flexWrap: 'wrap'
   },

@@ -1,7 +1,7 @@
 // import RNCryptor from 'rn-rncryptor'
-// https://github.com/Evanfeenstra/rn-rncryptor
+// https://github.com/masterial/react-native-rncryptor
 
-import RNCryptor from 'react-native-rncryptor';
+import RNCryptor from 'react-native-rncryptor'
 
 export async function encrypt(txt, pwd): Promise<string> {
   try {
@@ -89,4 +89,3 @@ async function testAES() {
   const dec = await decrypt(enc, 'pass')
   console.log(dec, dec === msg)
 }
-

@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { useObserver } from 'mobx-react-lite'
-import { TouchableOpacity, View, Text, TextInput, StyleSheet, PanResponder, Animated } from 'react-native'
+import { TouchableOpacity, View, Text, TextInput, StyleSheet, PanResponder, Animated, KeyboardAvoidingView } from 'react-native'
 import { IconButton, Portal, ActivityIndicator } from 'react-native-paper'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import AudioRecorderPlayer from 'react-native-audio-recorder-player'
@@ -54,8 +54,6 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
 
   function sendMessage() {
     try {
-      console.log('text', text)
-
       if (!text) return
       if (waitingForAdminApproval) return
       let contact_id = chat.contact_ids.find(cid => cid !== 1)
@@ -315,8 +313,8 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
   if (hasReplyContent) fullHeight += 48
   return useObserver(() => (
     <>
-      <View style={{ ...styles.spacer, height: fullHeight }} />
-      <View style={{ ...styles.bar, height: fullHeight, bottom: 0, backgroundColor: theme.main, borderColor: theme.border }} accessibilityLabel='chat-bottombar'>
+      {/* <View style={{ ...styles.spacer, height: fullHeight }} /> */}
+      <View style={{ ...styles.bar, height: fullHeight, bottom: 0, backgroundColor: theme.bg, borderColor: theme.border }} accessibilityLabel='chat-bottombar'>
         {(hasReplyContent ? true : false) && (
           <ReplyContent
             showClose={true}
@@ -330,15 +328,13 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
         <View style={styles.barInner} accessibilityLabel='chat-bottombar-inner'>
           {!recordingStartTime && (
             <TouchableOpacity style={{ ...styles.img, backgroundColor: theme.bg, borderColor: theme.border }} accessibilityLabel='more-button' onPress={() => setDialogOpen(true)}>
-              <Icon name='plus' color='#888' size={27} />
+              <Icon name='plus' color={theme.icon} size={27} />
             </TouchableOpacity>
           )}
           {!recordingStartTime && (
             <TextInput
               textAlignVertical='top'
               accessibilityLabel='message-input'
-              numberOfLines={4}
-              multiline={true}
               blurOnSubmit={true}
               onContentSizeChange={e => {
                 let h = e.nativeEvent.contentSize.height
@@ -347,15 +343,13 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
               }}
               placeholder='Message...'
               ref={inputRef}
-              style={{ ...styles.input, marginLeft: hideMic ? 15 : 0, height: textInputHeight, maxHeight: 98, backgroundColor: theme.bg, borderColor: theme.border, color: theme.title }}
+              style={{ ...styles.input, marginLeft: hideMic ? 15 : 0, height: textInputHeight, maxHeight: 98, backgroundColor: theme.inputBg, borderColor: theme.border, color: theme.input }}
               placeholderTextColor={theme.subtitle}
               onFocus={e => setInputFocused(true)}
               onBlur={() => setInputFocused(false)}
               onChangeText={e => setText(e)}
               value={text}
-            >
-              {/* <Text>{text}</Text> */}
-            </TextInput>
+            />
           )}
 
           {recordingStartTime && (
@@ -382,11 +376,12 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
               )}
             </Animated.View>
           )}
+
           {recordingStartTime && <View style={styles.recordingCircle}></View>}
 
           {hideMic && (
             <View style={styles.sendButtonWrap}>
-              <TouchableOpacity activeOpacity={0.5} style={styles.sendButton} onPress={() => sendMessage()} accessibilityLabel='send-message'>
+              <TouchableOpacity activeOpacity={0.5} style={{ ...styles.sendButton, backgroundColor: theme.primary }} onPress={() => sendMessage()} accessibilityLabel='send-message'>
                 <Icon name='send' size={17} color='white' />
               </TouchableOpacity>
             </View>
@@ -441,19 +436,17 @@ const styles = StyleSheet.create({
     maxWidth: '100%'
   },
   bar: {
-    flex: 1,
     width: '100%',
     maxWidth: '100%',
-    flexDirection: 'column',
+    height: 20,
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     elevation: 5,
-    borderWidth: 2,
+    borderWidth: 1,
     borderBottomWidth: 0,
     borderLeftWidth: 0,
-    borderRightWidth: 0,
-    position: 'absolute',
-    zIndex: 999
+    borderRightWidth: 0
   },
   barInner: {
     width: '100%',
@@ -476,7 +469,6 @@ const styles = StyleSheet.create({
     height: 40
   },
   sendButton: {
-    backgroundColor: '#6289FD',
     marginLeft: 7,
     width: 38,
     maxWidth: 38,

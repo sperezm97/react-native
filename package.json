@@ -2,7 +2,7 @@
   "name": "n2n2",
   "description": "Bitcoin Lightning Powered Chat",
   "author": "",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "main": "public/electron",
   "homepage": "./",
   "scripts": {
@@ -43,7 +43,7 @@
     },
     "mac": {
       "identity": null,
-      "category": "chat.n2n2.Chat",
+      "category": "chat.n2n2.Chat.staging",
       "icon": "build/static/icon.ico"
     },
     "linux": {
@@ -154,8 +154,7 @@
     "react-native-gesture-handler": "^1.6.1",
     "react-native-get-random-values": "^1.4.0",
     "react-native-haptic-feedback": "^1.9.0",
-    "react-native-image-picker": "^2.3.1",
-    "react-native-jitsi-meet": "^2.1.1",
+    "react-native-image-picker": "^3.3.2",
     "react-native-keyboard-aware-scrollview": "^2.1.0",
     "react-native-keychain": "^4.0.5",
     "react-native-level-fs": "^3.0.1",
@@ -179,6 +178,7 @@
     "react-native-share": "^3.0.0",
     "react-native-simple-toast": "^1.1.3",
     "react-native-swipe-list-view": "^2.2.0",
+    "react-native-tab-view": "2.16.0",
     "react-native-tcp": "^3.3.2",
     "react-native-touch-id": "^4.4.1",
     "react-native-translucent-modal": "^1.1.2",

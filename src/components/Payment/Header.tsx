@@ -1,13 +1,14 @@
 import React from 'react'
 import { View, StyleSheet, Image, TouchableOpacity } from 'react-native'
 import { Appbar, IconButton, ActivityIndicator } from 'react-native-paper'
-import { DrawerActions, useNavigation } from '@react-navigation/native'
+import { useNavigation } from '@react-navigation/native'
 import { useObserver } from 'mobx-react-lite'
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import Toast from 'react-native-simple-toast'
 
-import { useStores, useTheme } from '../../../store'
-import Balance from '../Balance'
+import { useStores, useTheme } from '../../store'
+import Balance from '../common/Balance'
+import Pushable from '../common/Pushable'
 
 export default function Header() {
   const navigation = useNavigation()
@@ -25,25 +26,10 @@ export default function Header() {
       <Appbar.Header style={{ ...styles.appBar, backgroundColor: theme.bg }}>
         <View style={{ ...styles.flex, ...styles.content }}>
           <View style={{ ...styles.flex, ...styles.left }}>
-            <IconButton
-              icon='menu'
-              size={30}
-              accessibilityLabel='menu-button'
-              onPress={() => {
-                navigation.dispatch(DrawerActions.openDrawer())
-              }}
-              color={theme.icon}
-              style={{ marginLeft: 0 }}
-            />
-            <TouchableOpacity
-              onPress={() => {
-                navigation.dispatch(DrawerActions.openDrawer())
-              }}
-            >
-              <Image source={require('../../../assets/n2n2-text.png')} style={styles.brand} resizeMode={'contain'} />
-            </TouchableOpacity>
+            <Pushable onPress={() => console.log('click')}>
+              <IconButton icon='qrcode-scan' size={22} color={theme.icon} />
+            </Pushable>
           </View>
-          <Balance balance={details.balance} color={theme.dark ? theme.white : theme.black} />
           <View style={{ ...styles.flex, ...styles.right }}>
             {ui.loadingHistory ? (
               <ActivityIndicator animating={true} color={theme.grey} size={18} style={{}} />

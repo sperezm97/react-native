@@ -15,6 +15,8 @@ export default function Ready(props) {
   const [loading, setLoading] = useState(false)
   const theme = useTheme()
 
+  console.log('user::', user)
+
   async function finish() {
     setLoading(true)
     await Promise.all([
@@ -24,8 +26,8 @@ export default function Ready(props) {
         public_key: user.invite.inviterPubkey,
         status: constants.contact_statuses.confirmed
       }),
-      actions(user.invite.action)
-      // chats.joinDefaultTribe()
+      actions(user.invite.action),
+      chats.joinDefaultTribe()
     ])
     setLoading(false)
     onDone()

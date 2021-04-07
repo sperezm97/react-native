@@ -9,21 +9,23 @@ import { useDarkMode } from 'react-native-dynamic'
 import Clipboard from '@react-native-community/clipboard'
 import Slider from '@react-native-community/slider'
 import Toast from 'react-native-simple-toast'
+import RNFetchBlob from 'rn-fetch-blob'
 
 import { useStores, useTheme } from '../../store'
+import { TOAST_DURATION } from '../../constants'
 import Header from '../common/Header'
 import { me } from '../form/schemas'
 import Form from '../form'
 import Cam from '../utils/cam'
 import ImgSrcDialog from '../utils/imgSrcDialog'
 import { usePicSrc } from '../utils/picSrc'
-import RNFetchBlob from 'rn-fetch-blob'
 import * as rsa from '../../crypto/rsa'
 import * as e2e from '../../crypto/e2e'
 import PIN, { userPinCode } from '../utils/pin'
 import Toggler from './toggler'
 import { getPinTimeout, updatePinTimeout } from '../utils/pin'
 import Button from '../common/Button'
+import Balance from '../common/Balance'
 
 export default function Profile() {
   const { details, user, contacts, meme, ui } = useStores()
@@ -111,7 +113,7 @@ export default function Profile() {
 
     Clipboard.setString(final)
 
-    Toast.showWithGravity('Export Keys Copied.', Toast.LONG, Toast.CENTER)
+    Toast.showWithGravity('Export Keys Copied.', TOAST_DURATION, Toast.CENTER)
   }
 
   async function tookPic(img) {
@@ -132,9 +134,11 @@ export default function Profile() {
     const server = meme.getDefaultServer()
     if (!server) return
 
+    uri = uri.replace('file://', '')
+
     RNFetchBlob.fetch(
       'POST',
-      `https://${server.host}/public`,
+      `http://${server.host}/public`,
       {
         Authorization: `Bearer ${server.token}`,
         'Content-Type': 'multipart/form-data'
@@ -150,13 +154,15 @@ export default function Profile() {
       ]
     )
       .uploadProgress({ interval: 250 }, (written, total) => {
-        // console.log('uploaded', written / total)
+        console.log('uploaded', written / total)
       })
       .then(async resp => {
         let json = resp.json()
+
+        console.log('json:', json)
+
         if (json.muid) {
-          console.log('UPLOADED!!', json.muid)
-          setPhotoUrl(`https://${server.host}/public/${json.muid}`)
+          setPhotoUrl(`http://${server.host}/public/${json.muid}`)
         }
         setUploading(false)
       })
@@ -166,9 +172,20 @@ export default function Profile() {
       })
   }
 
+  async function save(values) {
+    setSaving(true)
+    await contacts.updateContact(1, {
+      alias: values.alias,
+      private_photo: values.private_photo,
+      ...(photo_url && { photo_url })
+    })
+    setSaving(false)
+  }
+
   return useObserver(() => {
     const meContact = contacts.contacts.find(c => c.id === 1)
     let imgURI = usePicSrc(meContact)
+
     if (photo_url) imgURI = photo_url
 
     if (showPIN) {
@@ -196,8 +213,7 @@ export default function Profile() {
             <View style={styles.userInfo}>
               <Title style={styles.title}>{user.alias}</Title>
               <View style={styles.userBalance}>
-                <Text style={{ color: theme.title }}>{details.balance}</Text>
-                <Text style={{ marginLeft: 10, marginRight: 10, color: '#c0c0c0' }}>sat</Text>
+                <Balance balance={details.balance} color={theme.subtitle} style={{ marginRight: 10 }} />
                 <TouchableOpacity
                   onPress={() => {
                     setTapCount(cu => {
@@ -215,7 +231,7 @@ export default function Profile() {
                       <ActivityIndicator animating={true} color='#d0d0d0' size={12} style={{ marginLeft: 4 }} />
                     </View>
                   ) : (
-                    <Icon name='wallet' color='#d0d0d0' size={20} />
+                    <Icon name='wallet' color={theme.icon} size={20} />
                   )}
                 </TouchableOpacity>
               </View>
@@ -245,15 +261,7 @@ export default function Profile() {
                   public_key: user.publicKey,
                   private_photo: meContact?.private_photo || false
                 }}
-                onSubmit={async values => {
-                  setSaving(true)
-                  await contacts.updateContact(1, {
-                    alias: values.alias,
-                    private_photo: values.private_photo,
-                    ...(photo_url && { photo_url })
-                  })
-                  setSaving(false)
-                }}
+                onSubmit={values => save(values)}
               />
             </View>
 
@@ -409,6 +417,7 @@ const styles = StyleSheet.create({
     minHeight: 190,
     display: 'flex',
     justifyContent: 'center',
+    paddingTop: 20,
     paddingBottom: 20
   },
   exportText: {

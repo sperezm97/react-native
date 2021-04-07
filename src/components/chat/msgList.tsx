@@ -1,20 +1,21 @@
 import React, { useRef, useMemo, useState, useCallback, useEffect } from 'react'
 import { useObserver } from 'mobx-react-lite'
-import { useStores, hooks, useTheme } from '../../store'
 import { VirtualizedList, View, Text, StyleSheet, Keyboard, Dimensions, ActivityIndicator } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
+
+import { useStores, hooks, useTheme } from '../../store'
 import { Chat } from '../../store/chats'
 import { useMsgSender } from '../../store/hooks/msg'
 import Message from './msg'
-import { useNavigation } from '@react-navigation/native'
 import { constants } from '../../constants'
-import EE, {SHOW_REFRESHER} from '../utils/ee'
+import EE, { SHOW_REFRESHER } from '../utils/ee'
 
 const { useMsgs } = hooks
 
 const group = constants.chat_types.group
 const tribe = constants.chat_types.tribe
 
-export default function MsgListWrap({ chat, pricePerMessage }: { chat: Chat, pricePerMessage:number }) {
+export default function MsgListWrap({ chat, pricePerMessage }: { chat: Chat; pricePerMessage: number }) {
   const { msg, ui, user, chats } = useStores()
   const [limit, setLimit] = useState(40)
 
@@ -22,16 +23,17 @@ export default function MsgListWrap({ chat, pricePerMessage }: { chat: Chat, pri
     setLimit(c => c + 40)
   }
 
-  async function onBoostMsg(m){
-    const {uuid} = m
-    if(!uuid) return
-    const amount = (user.tipAmount||100) + pricePerMessage
+  async function onBoostMsg(m) {
+    const { uuid } = m
+    if (!uuid) return
+    const amount = (user.tipAmount || 100) + pricePerMessage
     msg.sendMessage({
-      boost:true,
-      contact_id:null,
-      text:'', amount,
-      chat_id: chat.id||null,
-      reply_uuid:uuid,
+      boost: true,
+      contact_id: null,
+      text: '',
+      amount,
+      chat_id: chat.id || null,
+      reply_uuid: uuid,
       message_price: pricePerMessage
     })
   }
@@ -48,17 +50,21 @@ export default function MsgListWrap({ chat, pricePerMessage }: { chat: Chat, pri
   }
   return useObserver(() => {
     const msgs = useMsgs(chat, limit) || []
-    return <MsgList
-      msgs={msgs}
-      msgsLength={(msgs && msgs.length) || 0}
-      chat={chat}
-      onDelete={onDelete}
-      myPubkey={user.publicKey} myAlias={user.alias}
-      onApproveOrDenyMember={onApproveOrDenyMember}
-      onDeleteChat={onDeleteChat}
-      onLoadMoreMsgs={onLoadMoreMsgs}
-      onBoostMsg={onBoostMsg}
-    />
+
+    return (
+      <MsgList
+        msgs={msgs}
+        msgsLength={(msgs && msgs.length) || 0}
+        chat={chat}
+        onDelete={onDelete}
+        myPubkey={user.publicKey}
+        myAlias={user.alias}
+        onApproveOrDenyMember={onApproveOrDenyMember}
+        onDeleteChat={onDeleteChat}
+        onLoadMoreMsgs={onLoadMoreMsgs}
+        onBoostMsg={onBoostMsg}
+      />
+    )
   })
 }
 
@@ -93,14 +99,16 @@ function MsgList({ msgs, msgsLength, chat, onDelete, myPubkey, myAlias, onApprov
     return () => {
       clearTimeout(ref)
       Keyboard.removeListener('keyboardDidShow', () => {})
-      scrollViewRef.current = null;
+      scrollViewRef.current = null
     }
   }, [msgsLength])
 
   if (chat.status === constants.chat_statuses.pending) {
-    return <View style={{ display: 'flex', alignItems: 'center' }}>
-      <Text style={{ marginTop: 27, color:theme.subtitle }}>Waiting for admin approval</Text>
-    </View>
+    return (
+      <View style={{ display: 'flex', alignItems: 'center' }}>
+        <Text style={{ marginTop: 27, color: theme.subtitle }}>Waiting for admin approval</Text>
+      </View>
+    )
   }
 
   const windowWidth = Math.round(Dimensions.get('window').width)
@@ -109,116 +117,132 @@ function MsgList({ msgs, msgsLength, chat, onDelete, myPubkey, myAlias, onApprov
   const isTribe = chat.type === tribe
   const initialNumToRender = 20
 
-  return (<>
-    <Refresher />
-    <VirtualizedList
-      accessibilityLabel="message-list"
-      inverted
-      style={{zIndex:100}}
-      windowSize={10} // ?
-      ref={scrollViewRef}
-      data={msgs}
-      initialNumToRender={initialNumToRender}
-      initialScrollIndex={0}
-      onEndReached={onEndReached}
-      onEndReachedThreshold={0.1}
-      viewabilityConfig={{
-        waitForInteraction: false,
-        viewAreaCoveragePercentThreshold: 20
-      }}
-      onViewableItemsChanged={({ viewableItems, changed }) => {
-        // debounce(() => {
-        //   const ids = {}
-        //   if (viewableItems) {
-        //     viewableItems.forEach(c => {
-        //       if (c.item.id) ids[c.item.id] = true
-        //     })
-        //   }
-        //   setViewableIds(current => ({ ...current, ...ids }))
-        // }, 200)
-      }}
-      renderItem={({ item, index }) => {
-        const {senderAlias, senderPic} = useMsgSender(item, contacts.contacts, isTribe)
-        return <ListItem key={item.id}
-          windowWidth={windowWidth}
-          // viewable={viewableIds[item.id] === true}
-          m={item} chat={chat}
-          senderAlias={senderAlias} senderPic={senderPic}
-          isGroup={isGroup} isTribe={isTribe}
-          onDelete={onDelete} myPubkey={myPubkey} myAlias={myAlias}
-          onApproveOrDenyMember={onApproveOrDenyMember}
-          onDeleteChat={onDeleteChat}
-          onBoostMsg={onBoostMsg}
-        />
-      }}
-      keyExtractor={(item: any) => item.id + ''}
-      getItemCount={() => msgs.length}
-      getItem={(data, index) => (data[index])}
-      ListHeaderComponent={<View style={{ height: 13 }} />}
-    />
-  </>)
+  return (
+    <>
+      <Refresher />
+      <VirtualizedList
+        accessibilityLabel='message-list'
+        inverted
+        style={{ zIndex: 100 }}
+        contentContainerStyle={{ paddingTop: 20, paddingBottom: 40 }}
+        windowSize={10} // ?
+        ref={scrollViewRef}
+        data={msgs}
+        initialNumToRender={initialNumToRender}
+        initialScrollIndex={0}
+        onEndReached={onEndReached}
+        onEndReachedThreshold={0.1}
+        viewabilityConfig={{
+          waitForInteraction: false,
+          viewAreaCoveragePercentThreshold: 20
+        }}
+        onViewableItemsChanged={({ viewableItems, changed }) => {
+          // debounce(() => {
+          //   const ids = {}
+          //   if (viewableItems) {
+          //     viewableItems.forEach(c => {
+          //       if (c.item.id) ids[c.item.id] = true
+          //     })
+          //   }
+          //   setViewableIds(current => ({ ...current, ...ids }))
+          // }, 200)
+        }}
+        renderItem={({ item, index }) => {
+          const { senderAlias, senderPic } = useMsgSender(item, contacts.contacts, isTribe)
+          return (
+            <ListItem
+              key={item.id}
+              windowWidth={windowWidth}
+              // viewable={viewableIds[item.id] === true}
+              m={item}
+              chat={chat}
+              senderAlias={senderAlias}
+              senderPic={senderPic}
+              isGroup={isGroup}
+              isTribe={isTribe}
+              onDelete={onDelete}
+              myPubkey={myPubkey}
+              myAlias={myAlias}
+              onApproveOrDenyMember={onApproveOrDenyMember}
+              onDeleteChat={onDeleteChat}
+              onBoostMsg={onBoostMsg}
+            />
+          )
+        }}
+        keyExtractor={(item: any) => item.id + ''}
+        getItemCount={() => msgs.length}
+        getItem={(data, index) => data[index]}
+        ListHeaderComponent={<View style={{ height: 13 }} />}
+      />
+    </>
+  )
 }
 
-function Refresher(){
-  const [show,setShow] = useState(false)
-  useEffect(()=>{
-    function doShow(){
+function Refresher() {
+  const [show, setShow] = useState(false)
+  useEffect(() => {
+    function doShow() {
       setShow(true)
-      setTimeout(()=>{
+      setTimeout(() => {
         setShow(false)
       }, 1000)
     }
     EE.on(SHOW_REFRESHER, doShow)
-    return ()=> EE.removeListener(SHOW_REFRESHER,doShow)
-  },[])
-  if(!show) return <></>
-  return <View style={{...styles.refreshingWrap,height:show?60:0}}>
-    <View style={styles.refreshingCircle}>
-      <ActivityIndicator animating={true} color="grey" size={25} />
+    return () => EE.removeListener(SHOW_REFRESHER, doShow)
+  }, [])
+  if (!show) return <></>
+  return (
+    <View style={{ ...styles.refreshingWrap, height: show ? 60 : 0 }}>
+      <View style={styles.refreshingCircle}>
+        <ActivityIndicator animating={true} color='grey' size={25} />
+      </View>
     </View>
-  </View>
+  )
 }
 
 function ListItem({ m, chat, isGroup, isTribe, onDelete, myPubkey, myAlias, senderAlias, senderPic, windowWidth, onApproveOrDenyMember, onDeleteChat, onBoostMsg }) {
   // if (!viewable) { /* THESE RENDER FIRST????? AND THEN THE ACTUAL MSGS DO */
   //   return <View style={{ height: 50, width: 1 }} />
   // }
+  // console.log('m', m)
+
   if (m.dateLine) {
     return <DateLine dateString={m.dateLine} />
   }
   const msg = m
   if (!m.chat) msg.chat = chat
-  return useMemo(() => <Message {...msg}
-    isGroup={isGroup} isTribe={isTribe}
-    senderAlias={senderAlias} senderPic={senderPic}
-    onDelete={onDelete} myPubkey={myPubkey} myAlias={myAlias} windowWidth={windowWidth}
-    onApproveOrDenyMember={onApproveOrDenyMember} onDeleteChat={onDeleteChat}
-    onBoostMsg={onBoostMsg}
-  />, [m.id, m.type, m.media_token, m.status, m.sold, m.boosts_total_sats])
+  return useMemo(
+    () => (
+      <Message
+        {...msg}
+        isGroup={isGroup}
+        isTribe={isTribe}
+        senderAlias={senderAlias}
+        senderPic={senderPic}
+        onDelete={onDelete}
+        myPubkey={myPubkey}
+        myAlias={myAlias}
+        windowWidth={windowWidth}
+        onApproveOrDenyMember={onApproveOrDenyMember}
+        onDeleteChat={onDeleteChat}
+        onBoostMsg={onBoostMsg}
+      />
+    ),
+    [m.id, m.type, m.media_token, m.status, m.sold, m.boosts_total_sats]
+  )
 }
 
 function DateLine({ dateString }) {
   const theme = useTheme()
-  return <View style={styles.dateLine}>
-    <View style={styles.line}></View>
-    <Text style={{...styles.dateString,
-      backgroundColor:theme.dark?theme.bg:'white',
-      color:theme.title
-    }}>
-      {dateString}
-    </Text>
-  </View>
+  return (
+    <View style={styles.dateLine}>
+      <View style={styles.line}></View>
+      <Text style={{ ...styles.dateString, backgroundColor: theme.dark ? theme.bg : 'white', color: theme.title }}>{dateString}</Text>
+    </View>
+  )
 }
 
 const styles = StyleSheet.create({
-  scroller: {
-    flex: 1,
-    overflow: 'scroll',
-    flexDirection: 'column',
-  },
-  msgList: {
-    flex: 1,
-  },
   line: {
     borderBottomWidth: 1,
     borderColor: '#ddd',
@@ -235,7 +259,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     flexDirection: 'row',
     justifyContent: 'center',
-    position: 'relative',
+    position: 'relative'
   },
   dateString: {
     fontSize: 12,
@@ -243,28 +267,29 @@ const styles = StyleSheet.create({
     paddingLeft: 16,
     paddingRight: 16
   },
-  refreshingWrap:{
-    position:'absolute',
-    zIndex:102,
-    top:55,
-    width:'100%',
-    display:'flex',
-    flexDirection:'row',
-    alignItems:'center',
-    justifyContent:'center',
-    overflow:'hidden'
+  refreshingWrap: {
+    position: 'absolute',
+    zIndex: 102,
+    top: 55,
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    overflow: 'hidden'
   },
-  refreshingCircle:{
-    height:42,width:42,
-    borderRadius:25,
-    backgroundColor:'white',
-    borderWidth:1,
-    borderColor:'#ddd',
-    borderStyle:'solid',
-    display:'flex',
-    flexDirection:'row',
-    alignItems:'center',
-    justifyContent:'center',
+  refreshingCircle: {
+    height: 42,
+    width: 42,
+    borderRadius: 25,
+    backgroundColor: 'white',
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderStyle: 'solid',
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center'
   }
 })
 
@@ -283,5 +308,5 @@ function debounce(func, delay) {
 }
 
 async function sleep(ms) {
-	return new Promise(resolve => setTimeout(resolve, ms))
+  return new Promise(resolve => setTimeout(resolve, ms))
 }

@@ -23,10 +23,17 @@ export default function DashNav() {
         component={Dashboard}
         listeners={{ focus: () => setTint('dark') }}
         options={{
-          header: () => <Header />
+          headerShown: false
         }}
       />
-      <Stack.Screen name='Chat' component={Chat} listeners={{ focus: () => setTint(theme.dark ? 'black' : 'light') }} />
+      <Stack.Screen
+        name='Chat'
+        component={Chat}
+        listeners={{ focus: () => setTint(theme.dark ? 'black' : 'light') }}
+        options={{
+          headerShown: false
+        }}
+      />
     </HomeStack.Navigator>
   )
 }

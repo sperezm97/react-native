@@ -57,8 +57,6 @@ class ContactStore {
     try {
       const r = await relay.get('contacts')
 
-      console.log('r:::', r)
-
       if (!r) return
       if (r.contacts) {
         this.contacts = r.contacts
@@ -71,8 +69,10 @@ class ContactStore {
           }
         }
       }
+
       if (r.chats) chatStore.setChats(r.chats)
       if (r.subscriptions) subStore.setSubs(r.subscriptions)
+
       return r
     } catch (e) {
       console.log('getContacts error', e)

@@ -19,17 +19,19 @@ export default function PaymentMsg(props) {
     color = '#74ABFF'
   }
 
-  return <View style={{ ...styles.bub, ...shared.innerPad }}>
-    <View style={styles.row}>
-      <View style={{ ...styles.iconWrap, backgroundColor: color }}>
-        <Icon name={icon} size={15} color="white" />
-      </View>
-      <View style={{ ...styles.row }}>
-        <Text style={styles.amount}>{amount}</Text>
-        <Text style={styles.sat}>sat</Text>
+  return (
+    <View style={{ ...styles.bub, ...shared.innerPad }}>
+      <View style={styles.row}>
+        <View style={{ ...styles.iconWrap, backgroundColor: color }}>
+          <Icon name={icon} size={15} color='white' />
+        </View>
+        <View style={{ ...styles.row }}>
+          <Text style={styles.amount}>{amount}</Text>
+          <Text style={styles.sat}>sat</Text>
+        </View>
       </View>
     </View>
-  </View>
+  )
 }
 
 const styles = StyleSheet.create({
@@ -43,7 +45,7 @@ const styles = StyleSheet.create({
   },
   sat: {
     color: '#aaa',
-    fontSize: 14,
+    fontSize: 14
   },
   iconWrap: {
     backgroundColor: '#74ABFF',
@@ -59,6 +61,6 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'flex-start',
-    alignItems: 'center',
+    alignItems: 'center'
   }
 })

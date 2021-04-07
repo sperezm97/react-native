@@ -1,17 +1,20 @@
 import React, { useState, useCallback } from 'react'
 import { useObserver } from 'mobx-react-lite'
-import { useStores, hooks, useTheme } from '../../store'
 import { TouchableOpacity, FlatList, View, Text, StyleSheet, Dimensions } from 'react-native'
-import { Button } from 'react-native-paper'
-import InviteRow, { styles } from './inviteRow'
 import { useNavigation } from '@react-navigation/native'
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback'
-import { useChatPicSrc } from '../utils/picSrc'
+
+import { useStores, hooks, useTheme } from '../../store'
+import InviteRow, { styles } from './inviteRow'
+import { chatPicSrc, useChatPicSrc } from '../utils/picSrc'
 import Avatar from './msg/avatar'
+import PushableButton from '../common/Button/PushableButton'
+import RefreshLoading from '../common/RefreshLoading'
+
 const { useChats, useChatRow } = hooks
 
 export default function ChatList() {
-  const { ui, contacts, msg, details } = useStores()
+  const { ui, contacts, msg, details, chats } = useStores()
 
   const [refreshing, setRefreshing] = useState(false)
   const onRefresh = useCallback(async () => {
@@ -44,18 +47,17 @@ export default function ChatList() {
 
   const footerComponent: any = () => (
     <View style={moreStyles.buttonsWrap}>
-      <Button mode='contained' dark={true} icon='plus' accessibilityLabel='add-friend-button' onPress={setAddFriendModalHandler} style={{ ...moreStyles.button, backgroundColor: '#55D1A9' }}>
+      <PushableButton dark={true} icon='plus' accessibilityLabel='add-friend-button' onPress={setAddFriendModalHandler} style={{ ...moreStyles.button, backgroundColor: '#55D1A9' }}>
         Friend
-      </Button>
-      <Button mode='contained' dark={true} icon='plus' accessibilityLabel='new-group-button' style={moreStyles.button} onPress={setNewGroupModalHandler}>
+      </PushableButton>
+      <PushableButton dark={true} icon='plus' accessibilityLabel='new-group-button' onPress={setNewGroupModalHandler} style={moreStyles.button}>
         Tribe
-      </Button>
+      </PushableButton>
     </View>
   )
 
   return useObserver(() => {
     const chatsToShow = useChats()
-    // console.log("=> chatsToShow.length",chatsToShow.length)
     return (
       <View style={{ width: '100%', flex: 1 }} accessibilityLabel='chatlist'>
         <FlatList<any>
@@ -68,8 +70,7 @@ export default function ChatList() {
             }
             return String(item.id)
           }}
-          refreshing={refreshing}
-          onRefresh={onRefresh}
+          refreshControl={<RefreshLoading refreshing={refreshing} onRefresh={onRefresh} />}
           ListFooterComponent={footerComponent}
         />
       </View>
@@ -86,6 +87,7 @@ function ChatRow(props) {
     requestAnimationFrame(() => {
       msg.seeChat(props.id)
       // msg.getMessages()
+
       navigation.navigate('Dashboard', {
         screen: 'Chat',
         params: props
@@ -122,7 +124,7 @@ function ChatRow(props) {
           )}
         </View>
         <View style={styles.chatContent}>
-          <Text style={{ ...styles.chatName, color: theme.dark ? theme.white : theme.darkGrey }}>{name}</Text>
+          <Text style={{ ...styles.chatName, color: theme.title }}>{name}</Text>
           {hasLastMsg && (
             <Text
               numberOfLines={1}
@@ -130,7 +132,7 @@ function ChatRow(props) {
                 ...styles.chatMsg,
                 fontWeight: hasUnseen ? 'bold' : 'normal',
                 maxWidth: w - 105,
-                color: theme.dark ? '#8b98b4' : '#7e7e7e'
+                color: theme.subtitle
               }}
             >
               {lastMsgText}

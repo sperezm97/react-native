@@ -21,9 +21,11 @@ export function useCachedEncryptedFile(props, ldat) {
   const isPaidMessage = media_type === 'sphinx/text'
 
   function dispose() {
-    RNFetchBlob.session(sess).dispose().then(() => {
-      console.log(`${sess} disposed`)
-    })
+    RNFetchBlob.session(sess)
+      .dispose()
+      .then(() => {
+        console.log(`${sess} disposed`)
+      })
   }
 
   async function trigger() {
@@ -35,13 +37,19 @@ export function useCachedEncryptedFile(props, ldat) {
       return
     }
 
-    const url = `https://${ldat.host}/file/${media_token}`
+    const url = `http://${ldat.host}/file/${media_token}`
+
+    console.log('ldat::', ldat)
+    console.log('url::', url)
+
     const server = meme.servers.find(s => s.host === ldat.host)
 
     setLoading(true)
     // if img already exists return it
     const existingPath = dirs.CacheDir + `/attachments/msg_${id}_decrypted`
     const exists = await RNFetchBlob.fs.exists(existingPath)
+    console.log('exists::', id, '---', exists)
+
     if (exists) {
       if (isPaidMessage) {
         const txt = await parsePaidMsg(id)
@@ -55,14 +63,13 @@ export function useCachedEncryptedFile(props, ldat) {
 
     if (!server) return
     try {
-      const res = await RNFetchBlob
-        .config({
-          path: dirs.CacheDir + `/attachments/msg_${id}`
-        })
-        .fetch('GET', url, {
-          Authorization: `Bearer ${server.token}`,
-        })
-      console.log('The file saved to ', res.path())
+      const res = await RNFetchBlob.config({
+        path: dirs.CacheDir + `/attachments/msg_${id}`
+      }).fetch('GET', url, {
+        Authorization: `Bearer ${server.token}`
+      })
+      // console.log('The file saved to ', res.path())
+      console.log('res', res)
 
       const headers = res.info().headers
       const disp = headers['Content-Disposition']
@@ -77,11 +84,16 @@ export function useCachedEncryptedFile(props, ldat) {
 
       const path = res.path()
       const status = res.info().status
+
+      console.log('path', path)
+      console.log('status', status)
+
       if (status == 200 && path) {
         let extension = ''
         if (media_type.startsWith('audio')) {
           // extension = 'm4a'
         }
+
         if (isPaidMessage) {
           const txt = await aes.decryptFileAndSaveReturningContent(path, media_key, extension)
           setPaidMessageText(txt)
@@ -111,7 +123,7 @@ export function useCachedEncryptedFile(props, ldat) {
       //   setLoading(false)
       // }
     } catch (e) {
-      console.log(e)
+      console.log('error encryption', e)
     }
   }
 

@@ -22,7 +22,7 @@ export default function NumKey(props) {
         height: h,
         maxHeight: h,
         minHeight: h,
-        backgroundColor: props.dark ? theme.black : theme.dark ? theme.main : theme.white
+        backgroundColor: props.dark ? theme.black : theme.bg
       }}
     >
       {keys.map((row, i) => {
@@ -39,7 +39,7 @@ export default function NumKey(props) {
                       if (props.onBackspace) props.onBackspace()
                     }}
                   >
-                    <IconButton icon='backspace' color={theme.white} accessibilityLabel={`pin-number-backspace`} />
+                    <IconButton icon='backspace' color={props.dark ? theme.white : theme.subtitle} accessibilityLabel={`pin-number-backspace`} />
                   </TouchableOpacity>
                 )
               }
@@ -52,7 +52,7 @@ export default function NumKey(props) {
                     if (props.onKeyPress) props.onKeyPress(key)
                   }}
                 >
-                  <Text style={{ ...styles.keyText, color: props.dark || theme.dark ? theme.white : theme.grey }}>{key}</Text>
+                  <Text style={{ ...styles.keyText, color: props.dark ? theme.white : theme.subtitle }}>{key}</Text>
                 </TouchableOpacity>
               )
             })}

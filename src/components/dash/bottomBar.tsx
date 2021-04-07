@@ -27,23 +27,23 @@ export default function BottomTabs() {
       <Pushable
         onPress={() => ui.setPayMode('invoice', null)} // chat here
       >
-        <IconButton icon='arrow-bottom-left' size={32} color={theme.darkGrey} />
+        <IconButton icon='arrow-bottom-left' size={32} color={theme.icon} />
       </Pushable>
 
       <Pushable onPress={() => ui.setPaymentHistory(true)}>
-        <IconButton icon='format-list-bulleted' size={29} color={theme.darkGrey} />
+        <IconButton icon='format-list-bulleted' size={29} color={theme.icon} />
       </Pushable>
 
       <Pushable
         onPress={() => setScanning(true)} // after scan, set {amount,payment_request}
       >
-        <IconButton icon='qrcode-scan' size={25} color={theme.darkGrey} />
+        <IconButton icon='qrcode-scan' size={25} color={theme.icon} />
       </Pushable>
 
       <Pushable
         onPress={() => ui.setPayMode('payment', null)} // chat here
       >
-        <IconButton icon='arrow-top-right' size={32} color={theme.darkGrey} />
+        <IconButton icon='arrow-top-right' size={32} color={theme.icon} />
       </Pushable>
     </View>
   ))

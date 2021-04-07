@@ -23,6 +23,7 @@ class MemeStore {
 
   @action getDefaultServer(): Server {
     const server = this.servers.find(s => s.host === DEFAULT_MEME_SERVER)
+
     return server
   }
 
@@ -42,10 +43,13 @@ class MemeStore {
   @action
   async authenticate(server) {
     const pubkey = userStore.publicKey
+
     if (!pubkey) return
 
     const meme = composeAPI(server.host)
+
     const r = await meme.get('ask')
+
     if (!(r && r.challenge)) return
 
     const r2 = await relay.get(`signer/${r.challenge}`)
@@ -61,7 +65,6 @@ class MemeStore {
       'application/x-www-form-urlencoded'
     )
 
-    console.log(r3)
     if (!(r3 && r3.token)) return
     server.token = r3.token
   }

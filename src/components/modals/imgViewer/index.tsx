@@ -1,30 +1,42 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { useObserver } from 'mobx-react-lite'
-import { View, StyleSheet, Image, Dimensions, TextInput, Text, TouchableOpacity, BackHandler } from 'react-native'
-import { IconButton } from 'react-native-paper'
+import { View, StyleSheet, Image, Dimensions, TextInput, Text, TouchableOpacity, BackHandler, KeyboardAvoidingView } from 'react-native'
+import { Portal, IconButton } from 'react-native-paper'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import RNFetchBlob from 'rn-fetch-blob'
 import { ActivityIndicator } from 'react-native-paper'
 import * as base64 from 'base-64'
 import FastImage from 'react-native-fast-image'
 
-import { useStores } from '../../../store'
+import { useStores, useTheme } from '../../../store'
 import { randString } from '../../../crypto/rand'
 import * as e2e from '../../../crypto/e2e'
 import SetPrice from './setPrice'
 import EE, { LEFT_IMAGE_VIEWER } from '../../utils/ee'
 import { constants } from '../../../constants'
 import { fileUpload } from '../../chat/fileUpload'
+import ModalWrap from '../modalWrap'
+import Header from '../modalHeader'
 
 export default function ImageViewerWrap({ params, visible }) {
-  return visible && <ImageViewer params={params} />
+  const { ui } = useStores()
+
+  function close() {
+    ui.setImgViewerParams(null)
+  }
+
+  return (
+    <ModalWrap onClose={close} visible={visible}>
+      {visible && <ImageViewer params={params} close={close} />}
+    </ModalWrap>
+  )
 }
 
 function ImageViewer(props) {
-  const { params } = props
+  const { params, close, visible } = props
   const { data, uri, chat_id, contact_id, pricePerMessage } = params
   const { ui, meme, msg, chats } = useStores()
-
+  const theme = useTheme()
   const [text, setText] = useState('')
   const [price, setPrice] = useState(0)
   const [inputFocused, setInputFocused] = useState(false)
@@ -37,17 +49,7 @@ function ImageViewer(props) {
   const showImg = uri || data ? true : false
   const showInput = contact_id || chat_id ? true : false
   const showMsgMessage = params.msg ? true : false
-
-  useEffect(() => {
-    BackHandler.addEventListener('hardwareBackPress', function () {
-      ui.setImgViewerParams(null)
-      return true
-    })
-    return () => {
-      EE.emit(LEFT_IMAGE_VIEWER)
-      BackHandler.removeEventListener('hardwareBackPress', () => {})
-    }
-  }, [])
+  const title = showMsgMessage ? 'Send Paid Message' : 'Send Image'
 
   async function sendFinalMsg({ muid, media_key, media_type, price }) {
     await msg.sendAttachment({
@@ -60,7 +62,7 @@ function ImageViewer(props) {
       text: showMsgMessage ? '' : text,
       amount: pricePerMessage || 0
     })
-    ui.setImgViewerParams(null)
+    close()
   }
 
   async function sendGif() {
@@ -78,7 +80,7 @@ function ImageViewer(props) {
       reply_uuid: '',
       amount: 0
     })
-    ui.setImgViewerParams(null)
+    close()
   }
 
   async function sendAttachment() {
@@ -92,7 +94,7 @@ function ImageViewer(props) {
 
     setUploading(true)
     inputRef.current.blur()
-    const type = showMsgMessage ? 'sphinx/text' : 'image/jpg'
+    const type = showMsgMessage ? 'n2n2/text' : 'image/jpg'
     const name = showMsgMessage ? 'Message.txt' : 'Image.jpg'
 
     const pwd = await randString(32)
@@ -104,12 +106,13 @@ function ImageViewer(props) {
     if (showMsgMessage) {
       enc = await e2e.encrypt(text, pwd)
     } else {
-      enc = await e2e.encryptFile(uri, pwd)
+      const newUri = uri.replace('file://', '')
+      enc = await e2e.encryptFile(newUri, pwd)
     }
 
     RNFetchBlob.fetch(
       'POST',
-      `https://${server.host}/file`,
+      `http://${server.host}/file`,
       {
         Authorization: `Bearer ${server.token}`,
         'Content-Type': 'multipart/form-data'
@@ -145,7 +148,7 @@ function ImageViewer(props) {
       })
   }
 
-  const boxStyles = { width: w, height: h - 130, top: 80 }
+  const boxStyles = { width: w, height: h - 160 }
   const disabled = uploading || (showMsgMessage && !price)
 
   const theChat = chat_id && chats.chats.find(c => c.id === chat_id)
@@ -157,68 +160,59 @@ function ImageViewer(props) {
     }
   }
 
+  const headerHeight = 60
+
   return useObserver(() => (
-    <View style={styles.wrap}>
-      <IconButton
-        icon='arrow-left'
-        color='white'
-        size={27}
-        style={styles.back}
-        onPress={() => {
-          ui.setImgViewerParams({ data: '', uri: '' })
-        }}
-      />
+    <Portal.Host>
+      <Header title={title} onClose={close} />
+      <View style={{ ...styles.wrap, backgroundColor: theme.black }}>
+        {/* {showInput && !isTribe && <SetPrice setAmount={amt=> setPrice(amt)} />} */}
+        {showInput && <SetPrice setAmount={amt => setPrice(amt)} onShow={onShowAmount} />}
 
-      {/* {showInput && !isTribe && <SetPrice setAmount={amt=> setPrice(amt)} />} */}
-      {showInput && <SetPrice setAmount={amt => setPrice(amt)} onShow={onShowAmount} />}
-
-      {showImg && <FastImage resizeMode='contain' source={{ uri: uri || data }} style={{ ...styles.img, ...boxStyles }} />}
-      {showMsgMessage && !uploading && (
-        <View style={{ ...styles.msgMessage, ...boxStyles }}>
-          <Text style={styles.msgMessageText}>Set a price and enter your message</Text>
-        </View>
-      )}
-
-      {uploading && (
-        <View style={{ ...styles.activityWrap, width: w, height: h - 180 }}>
-          <ActivityIndicator animating={true} color='white' size='large' />
-          <Text style={styles.progressNum}>{`${uploadPercent}%`}</Text>
-        </View>
-      )}
-
-      {showInput && (
-        <View style={styles.send}>
-          <TextInput placeholder='Message...' ref={inputRef} style={styles.input} onFocus={() => setInputFocused(true)} onBlur={() => setInputFocused(false)} onChangeText={e => setText(e)}>
-            <Text>{text}</Text>
-          </TextInput>
-          <View style={styles.sendButtonWrap}>
-            <TouchableOpacity activeOpacity={0.5} style={styles.sendButton} onPress={() => sendAttachment()} disabled={disabled}>
-              <Icon name='send' size={17} color='white' />
-            </TouchableOpacity>
+        {showImg && <FastImage resizeMode='contain' source={{ uri: uri || data }} style={{ ...styles.img, ...boxStyles }} />}
+        {showMsgMessage && !uploading && (
+          <View style={{ ...styles.msgMessage, ...boxStyles }}>
+            <Text style={styles.msgMessageText}>Set a price and enter your message</Text>
           </View>
-        </View>
-      )}
-    </View>
+        )}
+
+        {uploading && (
+          <View style={{ ...styles.activityWrap, width: w, height: h - 180 }}>
+            <ActivityIndicator animating={true} color='white' size='large' />
+            <Text style={styles.progressNum}>{`${uploadPercent}%`}</Text>
+          </View>
+        )}
+
+        {showInput && (
+          <KeyboardAvoidingView style={{ position: 'absolute', left: 0, right: 0, bottom: 0 }} behavior='position' keyboardVerticalOffset={headerHeight}>
+            <View style={styles.send}>
+              <TextInput
+                placeholder='Message...'
+                ref={inputRef}
+                style={{ ...styles.input, backgroundColor: theme.inputBg, color: theme.input }}
+                placeholderTextColor={theme.subtitle}
+                onFocus={() => setInputFocused(true)}
+                onBlur={() => setInputFocused(false)}
+                onChangeText={e => setText(e)}
+              >
+                <Text>{text}</Text>
+              </TextInput>
+              <View style={styles.sendButtonWrap}>
+                <TouchableOpacity activeOpacity={0.5} style={{ ...styles.sendButton, backgroundColor: theme.primary }} onPress={() => sendAttachment()} disabled={disabled}>
+                  <Icon name='send' size={17} color={theme.white} />
+                </TouchableOpacity>
+              </View>
+            </View>
+          </KeyboardAvoidingView>
+        )}
+      </View>
+    </Portal.Host>
   ))
 }
 
 const styles = StyleSheet.create({
   wrap: {
-    flex: 1,
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    bottom: 0,
-    right: 0,
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    backgroundColor: 'black'
-  },
-  back: {
-    position: 'absolute',
-    left: 4,
-    top: 31
+    flex: 1
   },
   img: {
     width: '100%'
@@ -237,20 +231,18 @@ const styles = StyleSheet.create({
     width: '100%',
     left: 0,
     right: 0,
-    bottom: 0,
-    display: 'flex',
+    bottom: 50,
     flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
     paddingLeft: 10,
     paddingRight: 10
   },
   input: {
     flex: 1,
     borderRadius: 20,
-    borderColor: '#ccc',
-    backgroundColor: 'whitesmoke',
     paddingLeft: 18,
     paddingRight: 18,
-    borderWidth: 1,
     height: 40,
     fontSize: 17,
     lineHeight: 20
@@ -260,7 +252,6 @@ const styles = StyleSheet.create({
     height: 40
   },
   sendButton: {
-    backgroundColor: '#6289FD',
     marginLeft: 7,
     width: 39,
     maxWidth: 39,

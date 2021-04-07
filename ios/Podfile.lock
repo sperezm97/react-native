@@ -22,7 +22,6 @@ PODS:
     - GCDWebServer/Core (= 3.5.4)
   - GCDWebServer/Core (3.5.4)
   - glog (0.3.5)
-  - JitsiMeetSDK (2.4.0)
   - libwebp (1.2.0):
     - libwebp/demux (= 1.2.0)
     - libwebp/mux (= 1.2.0)
@@ -202,23 +201,20 @@ PODS:
     - React-cxxreact (= 0.63.4)
     - React-jsi (= 0.63.4)
   - React-jsinspector (0.63.4)
-  - react-native-camera (3.43.0):
+  - react-native-camera (3.43.3):
     - React-Core
-    - react-native-camera/RCT (= 3.43.0)
-    - react-native-camera/RN (= 3.43.0)
-  - react-native-camera/RCT (3.43.0):
+    - react-native-camera/RCT (= 3.43.3)
+    - react-native-camera/RN (= 3.43.3)
+  - react-native-camera/RCT (3.43.3):
     - React-Core
-  - react-native-camera/RN (3.43.0):
+  - react-native-camera/RN (3.43.3):
     - React-Core
   - react-native-encrypted-storage (4.0.2):
     - React-Core
   - react-native-get-random-values (1.6.0):
     - React-Core
-  - react-native-image-picker (2.4.0):
-    - React
-  - react-native-jitsi-meet (2.1.1):
-    - JitsiMeetSDK (= 2.4.0)
-    - React
+  - react-native-image-picker (3.3.2):
+    - React-Core
   - react-native-randombytes (3.6.0):
     - React-Core
   - react-native-rncryptor (1.0.0):
@@ -303,12 +299,12 @@ PODS:
     - React-jsi (= 0.63.4)
   - ReactNativeAudioToolkit (2.0.3):
     - React
-  - RealmJS (10.2.0):
+  - RealmJS (10.3.0):
     - GCDWebServer
     - React
   - rn-fetch-blob (0.12.0):
     - React-Core
-  - RNAudioRecorderPlayer (2.6.1):
+  - RNAudioRecorderPlayer (2.6.2):
     - React
   - RNCAsyncStorage (1.12.1):
     - React-Core
@@ -332,7 +328,7 @@ PODS:
     - React
   - RNReactNativeHapticFeedback (1.11.0):
     - React-Core
-  - RNReanimated (1.13.2):
+  - RNReanimated (1.13.3):
     - React-Core
   - RNScreens (2.18.1):
     - React-Core
@@ -380,7 +376,6 @@ DEPENDENCIES:
   - react-native-encrypted-storage (from `../node_modules/react-native-encrypted-storage`)
   - react-native-get-random-values (from `../node_modules/react-native-get-random-values`)
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
-  - react-native-jitsi-meet (from `../node_modules/react-native-jitsi-meet`)
   - react-native-randombytes (from `../node_modules/react-native-randombytes`)
   - react-native-rncryptor (from `../node_modules/react-native-rncryptor`)
   - react-native-rsa-native (from `../node_modules/react-native-rsa-native`)
@@ -428,7 +423,6 @@ SPEC REPOS:
   trunk:
     - boost-for-react-native
     - GCDWebServer
-    - JitsiMeetSDK
     - libwebp
     - lottie-ios
     - SDWebImage
@@ -476,8 +470,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-get-random-values"
   react-native-image-picker:
     :path: "../node_modules/react-native-image-picker"
-  react-native-jitsi-meet:
-    :path: "../node_modules/react-native-jitsi-meet"
   react-native-randombytes:
     :path: "../node_modules/react-native-randombytes"
   react-native-rncryptor:
@@ -571,7 +563,6 @@ SPEC CHECKSUMS:
   Folly: b73c3869541e86821df3c387eb0af5f65addfab4
   GCDWebServer: 2c156a56c8226e2d5c0c3f208a3621ccffbe3ce4
   glog: 40a13f7840415b9a77023fbcae0f1e6f43192af3
-  JitsiMeetSDK: d4a3aeed1a75fd57e6a78e5d202b6051dfcb9320
   libwebp: e90b9c01d99205d03b6bb8f2c8c415e5a4ef66f0
   lottie-ios: 3a3758ef5a008e762faec9c9d50a39842f26d124
   lottie-react-native: 1fb4ce21d6ad37dab8343eaff8719df76035bd93
@@ -585,11 +576,10 @@ SPEC CHECKSUMS:
   React-jsi: a0418934cf48f25b485631deb27c64dc40fb4c31
   React-jsiexecutor: 93bd528844ad21dc07aab1c67cb10abae6df6949
   React-jsinspector: 58aef7155bc9a9683f5b60b35eccea8722a4f53a
-  react-native-camera: f432fcf1b32b528bbf7c3543d3e3b1deb0c5b72a
+  react-native-camera: 3d39a6120b9e99525bc9d7696a7232c4527c0d44
   react-native-encrypted-storage: e78d848ce0fb663c2ce306e37921d026809322e6
   react-native-get-random-values: f0fc24a5887a3341589515a86282a574407b59e4
-  react-native-image-picker: 4e63090db19a528e36c0cc07d1423c8c0cb4c4ef
-  react-native-jitsi-meet: 29ed76cdc6142d9a6c013bb14dd6205df0b5452b
+  react-native-image-picker: b42940647478bf106ad3c491d6f5d9d40916d865
   react-native-randombytes: b6677f7d495c27e9ee0dbd77ebc97b3c59173729
   react-native-rncryptor: e273429757c7b34d0b2f90f71ba8a592dd02f973
   react-native-rsa-native: 348b5057073920db0e154724c3a49e6b34e1da6b
@@ -610,9 +600,9 @@ SPEC CHECKSUMS:
   React-RCTVibration: ae4f914cfe8de7d4de95ae1ea6cc8f6315d73d9d
   ReactCommon: 73d79c7039f473b76db6ff7c6b159c478acbbb3b
   ReactNativeAudioToolkit: de9610f323e855ac6574be8c99621f3d57c5df06
-  RealmJS: 5195064e9aeccf94ae3756bd9d0f2301b9074b07
+  RealmJS: ca9b0c1677d5248c6c360bc1b733ed087d345c2f
   rn-fetch-blob: f065bb7ab7fb48dd002629f8bdcb0336602d3cba
-  RNAudioRecorderPlayer: a6ac518af3561edb583fcf837deeed3d5ff18806
+  RNAudioRecorderPlayer: 3466c676143ea96d19fa1a6e5563f4d38a58a874
   RNCAsyncStorage: b03032fdbdb725bea0bd9e5ec5a7272865ae7398
   RNCClipboard: 41d8d918092ae8e676f18adada19104fa3e68495
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
@@ -623,7 +613,7 @@ SPEC CHECKSUMS:
   RNKeychain: 840f8e6f13be0576202aefcdffd26a4f54bfe7b5
   RNOS: 6f2f9a70895bbbfbdad7196abd952e7b01d45027
   RNReactNativeHapticFeedback: 653a8c126a0f5e88ce15ffe280b3ff37e1fbb285
-  RNReanimated: e03f7425cb7a38dcf1b644d680d1bfc91c3337ad
+  RNReanimated: 514a11da3a2bcc6c3dfd9de32b38e2b9bf101926
   RNScreens: f7ad633b2e0190b77b6a7aab7f914fad6f198d8d
   RNSecureKeyStore: f1ad870e53806453039f650720d2845c678d89c8
   RNShare: 7e22ba3bf66294ff7c122a1f2da8a8ec642091a0
@@ -636,6 +626,6 @@ SPEC CHECKSUMS:
   TouchID: ba4c656d849cceabc2e4eef722dea5e55959ecf4
   Yoga: 4bd86afe9883422a7c4028c00e34790f560923d6
 
-PODFILE CHECKSUM: 6876d08a4b0ff5c33a3e486ce8ef0753a322219b
+PODFILE CHECKSUM: bb9cbd41a041e3f5dd6fe59b342fbfdaceb09902
 
 COCOAPODS: 1.10.1

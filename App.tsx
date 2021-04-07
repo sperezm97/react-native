@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper'
+import { DefaultTheme, Provider as PaperProvider, configureFonts } from 'react-native-paper'
 import { useDarkMode } from 'react-native-dynamic'
 import { is24HourFormat } from 'react-native-device-time-format'
 import { useObserver } from 'mobx-react-lite'
@@ -29,10 +29,7 @@ export default function Wrap() {
   const [wrapReady, setWrapReady] = useState(false)
   const [isBack, setBack] = useState(false)
 
-  console.log('isBack::', isBack)
-
   useEffect(() => {
-    console.log('appState:::in useEffect', isBack)
     Linking.addEventListener('url', gotLink)
   }, [isBack])
 
@@ -40,7 +37,7 @@ export default function Wrap() {
     // AppState.addEventListener('change', handleAppStateChange)
     AppState.addEventListener('change', state => {
       if (state === 'active') {
-        console.log('state active')
+        // console.log('state active')
         setBack(true)
 
         // Linking.getInitialURL()
@@ -54,7 +51,7 @@ export default function Wrap() {
       }
 
       if (state === 'background') {
-        console.log('background')
+        // console.log('background')
         setBack(false)
       }
     })
@@ -129,7 +126,6 @@ function App() {
 
     // TrackPlayer.setupPlayer();
     ;(async () => {
-      console.log('=> USER', user)
       const isSignedUp = user.currentIP && user.authToken && !user.onboardStep ? true : false
       setSignedUp(isSignedUp)
       if (isSignedUp) {
@@ -173,7 +169,7 @@ function App() {
         primary: theme.primary,
         accent: theme.accent,
         text: theme.title,
-        placeholder: theme.subtitle,
+        // placeholder: theme.placeholder,
         background: theme.bg,
         surface: theme.main
       },

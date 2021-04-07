@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 import { Animated, TouchableWithoutFeedback } from 'react-native'
 
-export default function Pushable({ children, onPress }) {
+export default function Pushable({ children, onPress, scale }) {
   const [pressAnim] = useState(new Animated.Value(1))
 
   const pressAnimation = () => {
     Animated.timing(pressAnim, {
-      toValue: 0.8,
+      toValue: scale,
       duration: 100,
       useNativeDriver: true
     }).start()
@@ -33,4 +33,8 @@ export default function Pushable({ children, onPress }) {
       </Animated.View>
     </TouchableWithoutFeedback>
   )
+}
+
+Pushable.defaultProps = {
+  scale: 0.8
 }

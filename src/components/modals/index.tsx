@@ -56,7 +56,7 @@ export default function Modals() {
         <GroupModal visible={ui.groupModal} />
         <Redeem visible={showRedeemModal} />
         <VideoViewer params={showVid} visible={ui.vidViewerParams} />
-        <ImageViewer params={showImageViewer} visible={ui.imgViewerParams} />
+        <ImageViewer params={ui.imgViewerParams} visible={showImageViewer} />
       </>
     )
   })

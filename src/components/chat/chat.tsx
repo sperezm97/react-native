@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useLayoutEffect } from 'react'
-import { View, StyleSheet, InteractionManager, BackHandler } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { View, StyleSheet, InteractionManager, BackHandler, KeyboardAvoidingView, Dimensions, Text } from 'react-native'
 import { useRoute, useNavigation } from '@react-navigation/native'
 import { ActivityIndicator } from 'react-native-paper'
 import Toast from 'react-native-simple-toast'
@@ -13,10 +13,10 @@ import { contactForConversation } from './utils'
 import EE, { LEFT_GROUP, LEFT_IMAGE_VIEWER } from '../utils/ee'
 import { constants } from '../../constants'
 import Frame from './frame'
-// import Pod from "./pod";
 import { StreamPayment } from '../../store/feed'
-// import Anim from "./pod/anim";
 import { useIncomingPayments } from '../../store/hooks/pod'
+// import Pod from "./pod";
+// import Anim from "./pod/anim";
 
 export type RouteStatus = 'active' | 'inactive' | null
 
@@ -45,15 +45,6 @@ export default function Chat() {
       return true
     })
   }
-
-  //
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      header: props => (
-        <Header chat={chat} appMode={appMode} setAppMode={setAppMode} status={status} tribeParams={tribeParams} earned={earned} spent={spent} pricePerMinute={pricePerMinute} {...props} />
-      )
-    })
-  }, [navigation, route])
 
   useEffect(() => {
     // check for contact key, exchange if none
@@ -145,50 +136,60 @@ export default function Chat() {
   const podID = pod && pod.id
   const { earned, spent } = useIncomingPayments(podID)
 
+  // const height = Math.round(Dimensions.get('window').height) - 40
+
+  const headerHeight = 50
   let pricePerMinute = 0
   if (pod && pod.value && pod.value.model && pod.value.model.suggested) {
     pricePerMinute = Math.round(parseFloat(pod.value.model.suggested) * 100000000)
   }
+
   return (
-    <View style={{ ...styles.main, backgroundColor: theme.bg }} accessibilityLabel='chat'>
-      {(appURL ? true : false) && (
-        <View style={{ ...styles.layer, zIndex: appMode ? 100 : 99 }} accessibilityLabel='chat-application-frame'>
-          <Frame url={appURL} />
-        </View>
-      )}
+    <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
+      <Header chat={chat} appMode={appMode} setAppMode={setAppMode} status={status} tribeParams={tribeParams} earned={earned} spent={spent} pricePerMinute={pricePerMinute} />
 
-      <View
-        style={{
-          ...styles.layer,
-          zIndex: appMode ? 99 : 100,
-          backgroundColor: theme.dark ? theme.bg : 'white'
-        }}
-        accessibilityLabel='chat-content'
-      >
-        {!theShow && (
-          <View style={{ ...styles.loadWrap, backgroundColor: theme.bg }}>
-            <ActivityIndicator animating={true} color={theme.subtitle} />
-          </View>
-        )}
-        {theShow && <MsgList chat={chat} pricePerMessage={pricePerMessage} />}
+      <View style={{ ...styles.content }}>
+        <KeyboardAvoidingView style={styles.keyboardAvoidContainer} behavior='padding' keyboardVerticalOffset={headerHeight + 64}>
+          {(appURL ? true : false) && (
+            <View style={{ ...styles.layer, zIndex: appMode ? 100 : 99 }} accessibilityLabel='chat-application-frame'>
+              <Frame url={appURL} />
+            </View>
+          )}
 
-        {/* <Pod
-          pod={pod}
+          {!theShow && (
+            <View style={{ ...styles.loadWrap, backgroundColor: theme.bg }}>
+              <ActivityIndicator animating={true} color={theme.subtitle} />
+            </View>
+          )}
+
+          {theShow && <MsgList chat={chat} pricePerMessage={pricePerMessage} />}
+
+          {/* <Pod   
+          pod={pod}  
           show={feedURL ? true : false}
           chat={chat}
           onBoost={onBoost}
-          podError={podError}
+          podError={podError}  
         /> */}
 
-        {/* <Anim dark={theme.dark} /> */}
-
-        {theShow && <BottomBar chat={chat} pricePerMessage={pricePerMessage} tribeBots={tribeBots} />}
+          {/* <Anim dark={theme.dark} /> */}
+          {theShow && <BottomBar chat={chat} pricePerMessage={pricePerMessage} tribeBots={tribeBots} />}
+        </KeyboardAvoidingView>
       </View>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
+  wrap: {
+    flex: 1
+  },
+  content: {
+    flex: 1
+  },
+  keyboardAvoidContainer: {
+    flex: 1
+  },
   main: {
     display: 'flex',
     width: '100%',

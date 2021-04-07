@@ -7,7 +7,7 @@ import { useCachedEncryptedFile } from './hooks'
 import { ActivityIndicator, Button, IconButton } from 'react-native-paper'
 import AudioPlayer from './audioPlayer'
 import { parseLDAT } from '../../utils/ldat'
-import Video from 'react-native-video';
+import Video from 'react-native-video'
 import FileMsg from './fileMsg'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import BoostRow from './boostRow'
@@ -27,7 +27,8 @@ export default function MediaMsg(props) {
     amt = ldat.meta.amt
     if (ldat.sig) purchased = true
   }
-  const { data, uri, loading, trigger, paidMessageText } = useCachedEncryptedFile(props, ldat)
+
+  let { data, uri, loading, trigger, paidMessageText } = useCachedEncryptedFile(props, ldat)
 
   // useEffect(() => {
   //   if (props.viewable) trigger()
@@ -43,19 +44,24 @@ export default function MediaMsg(props) {
     if (!contact_id) {
       contact_id = chat.contact_ids && chat.contact_ids.find(cid => cid !== 1)
     }
+
+    console.log('chat.id,', chat.id)
+
     await msg.purchaseMedia({
       chat_id: chat.id,
       media_token,
       amount,
-      contact_id,
+      contact_id
     })
     setBuying(false)
   }
 
   function showTooltip() {
-    console.log("TOOLTIP")
+    console.log('TOOLTIP')
   }
   function press() {
+    // console.log('press')
+
     if (media_type.startsWith('image')) {
       if (data) ui.setImgViewerParams({ data })
       if (uri) ui.setImgViewerParams({ uri })
@@ -65,13 +71,13 @@ export default function MediaMsg(props) {
     console.log('longpress')
   }
 
-  const hasImgData = (data || uri) ? true : false
+  const hasImgData = data || uri ? true : false
   const hasContent = message_content ? true : false
   const showPurchaseButton = amt && !isMe ? true : false
   const showStats = isMe && amt
   const sold = props.sold
 
-  const showBoostRow = props.boosts_total_sats?true:false
+  const showBoostRow = props.boosts_total_sats ? true : false
 
   let isImg = false
   let minHeight = 60
@@ -97,57 +103,65 @@ export default function MediaMsg(props) {
 
   const onLongPressHandler = () => props.onLongPress(props)
 
-  return <View collapsable={false}>
-    <TouchableOpacity style={{ ...styles.wrap, minHeight: wrapHeight }}
-      //onPressIn={tap} onPressOut={untap}
-      onLongPress={onLongPressHandler}
-      onPress={press}
-      activeOpacity={0.65}>
+  return (
+    <View collapsable={false}>
+      <TouchableOpacity
+        style={{ ...styles.wrap, minHeight: wrapHeight }}
+        //onPressIn={tap} onPressOut={untap}
+        onLongPress={onLongPressHandler}
+        onPress={press}
+        activeOpacity={0.65}
+      >
+        {showStats && (
+          <View style={styles.stats}>
+            <Text style={styles.satStats}>{`${amt} sat`}</Text>
+            <Text style={{ ...styles.satStats, opacity: sold ? 1 : 0 }}>Purchased</Text>
+          </View>
+        )}
 
-      {showStats && <View style={styles.stats}>
-        <Text style={styles.satStats}>{`${amt} sat`}</Text>
-        <Text style={{ ...styles.satStats, opacity: sold ? 1 : 0 }}>Purchased</Text>
-      </View>}
+        {!hasImgData && (
+          <View style={{ minHeight, ...styles.loading }}>
+            {loading && (
+              <View style={{ minHeight, ...styles.loadingWrap }}>
+                <ActivityIndicator animating={true} color='grey' />
+              </View>
+            )}
+            {paidMessageText && (
+              <View style={{ minHeight, ...styles.paidAttachmentText }}>
+                <Text style={{ color: theme.title }}>{paidMessageText}</Text>
+              </View>
+            )}
+            {showPayToUnlockMessage && (
+              <View style={{ ...styles.paidAttachmentText, alignItems: 'center' }}>
+                <Text style={{ ...styles.payToUnlockMessage, color: theme.subtitle }}>Pay to unlock message</Text>
+              </View>
+            )}
+          </View>
+        )}
 
-      {!hasImgData && <View style={{ minHeight, ...styles.loading }}>
-        {loading && <View style={{ minHeight, ...styles.loadingWrap }}>
-          <ActivityIndicator animating={true} color="grey" />
-        </View>}
-        {paidMessageText && <View style={{ minHeight, ...styles.paidAttachmentText }}>
-          <Text style={{color:theme.title}}>{paidMessageText}</Text>
-        </View>}
-        {showPayToUnlockMessage && <View style={{ ...styles.paidAttachmentText, alignItems: 'center' }}>
-          <Text style={{...styles.payToUnlockMessage,color:theme.subtitle}}>
-            Pay to unlock message
-          </Text>
-        </View>}
-      </View>}
+        {hasImgData && <Media type={media_type} data={data} uri={uri} filename={meme.filenameCache[props.id]} />}
 
-      {hasImgData && <Media type={media_type} data={data} uri={uri} 
-        filename={meme.filenameCache[props.id]}
-      />}
+        {isImg && showPurchaseButton && !purchased && (
+          <View style={styles.imgIconWrap}>
+            <Icon name='image' color='grey' size={50} />
+          </View>
+        )}
 
-      {isImg && (showPurchaseButton&&!purchased) && <View style={styles.imgIconWrap}>
-        <Icon name="image" color="grey" size={50} />
-      </View>}
+        {hasContent && (
+          <View style={shared.innerPad}>
+            <Text style={{ ...styles.text, color: theme.title }}>{message_content}</Text>
+          </View>
+        )}
 
-      {hasContent && <View style={shared.innerPad}>
-        <Text style={{...styles.text,color:theme.title}}>{message_content}</Text>
-      </View>}
-
-      {showBoostRow && <BoostRow {...props} pad myAlias={props.myAlias}/>}
-
-      {showPurchaseButton && <Button style={styles.payButton} mode="contained" dark={true}
-        onPress={onButtonPressHandler}
-        loading={buying}
-        icon={purchased ? 'check' : 'arrow-top-right'}>
-        <Text style={{ fontSize: 11 }}>
-          {purchased ? 'Purchased' : `Pay ${amt} sat`}
-        </Text>
-      </Button>}
-
-    </TouchableOpacity>
-  </View>
+        {showBoostRow && <BoostRow {...props} pad myAlias={props.myAlias} />}
+      </TouchableOpacity>
+      {showPurchaseButton && (
+        <Button style={styles.payButton} mode='contained' dark={true} onPress={onButtonPressHandler} loading={buying} icon={purchased ? 'check' : 'arrow-top-right'}>
+          <Text style={{ fontSize: 11 }}>{purchased ? 'Purchased' : `Pay ${amt} sat`}</Text>
+        </Button>
+      )}
+    </View>
+  )
 }
 
 function Media({ type, data, uri, filename }) {
@@ -165,36 +179,36 @@ function Media({ type, data, uri, filename }) {
   return <FileMsg type={type} uri={uri} filename={filename} />
 }
 
-function VideoPlayer(props){
+function VideoPlayer(props) {
   const { ui } = useStores()
-  function onEnd() {
-    
-  }
-  function onPlay(){
+  function onEnd() {}
+  function onPlay() {
     ui.setVidViewerParams(props)
   }
-  return <>
-    <Video source={props.uri} resizeMode="cover"
-      paused={true} onEnd={onEnd} 
-      style={{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        bottom: 0,
-        right: 0,
-        zIndex:100,
-      }}
-    />
-    <IconButton icon="play" size={55} color="white" 
-      style={{position:'absolute',top:50,left:50,zIndex:101}} 
-      onPress={onPlay}
-    />
-  </>
+  return (
+    <>
+      <Video
+        source={props.uri}
+        resizeMode='cover'
+        paused={true}
+        onEnd={onEnd}
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          bottom: 0,
+          right: 0,
+          zIndex: 100
+        }}
+      />
+      <IconButton icon='play' size={55} color='white' style={{ position: 'absolute', top: 50, left: 50, zIndex: 101 }} onPress={onPlay} />
+    </>
+  )
 }
 
 const styles = StyleSheet.create({
   text: {
-    fontSize: 16,
+    fontSize: 16
   },
   wrap: {
     // flex:1,
@@ -202,6 +216,7 @@ const styles = StyleSheet.create({
     // minHeight:200,
     display: 'flex',
     justifyContent: 'flex-end',
+    paddingTop: 30
   },
   img: {
     width: 200,
@@ -216,18 +231,20 @@ const styles = StyleSheet.create({
     height: 38,
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
     // position:'absolute',
     // bottom:0,
   },
   stats: {
     position: 'absolute',
     width: '100%',
-    top: 0, left: 0, right: 0,
+    top: 0,
+    left: 0,
+    right: 0,
     display: 'flex',
     flexDirection: 'row',
     padding: 7,
-    justifyContent: 'space-between',
+    justifyContent: 'space-between'
   },
   satStats: {
     color: 'white',
@@ -243,7 +260,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 4,
+    borderRadius: 4
   },
   paidAttachmentText: {
     width: '100%',
@@ -253,7 +270,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     paddingLeft: 10,
     paddingBottom: 13,
-    paddingTop: 13,
+    paddingTop: 13
   },
   payToUnlockMessage: {
     fontSize: 12,
@@ -266,21 +283,24 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    position: 'relative',
+    position: 'relative'
   },
   loadingWrap: {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
-    top: 0, left: 0, right: 0, bottom: 0,
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0
   },
-  imgIconWrap:{
-    position:'absolute',
-    width:'100%',
-    top:80,
-    display:'flex',
-    alignItems:'center',
-    justifyContent:'center'
+  imgIconWrap: {
+    position: 'absolute',
+    width: '100%',
+    top: 80,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
   }
 })

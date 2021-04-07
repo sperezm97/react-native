@@ -1,29 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { useObserver } from 'mobx-react-lite'
 import { View, StyleSheet, Text, FlatList } from 'react-native'
-import { ActivityIndicator } from 'react-native-paper'
+import { ActivityIndicator, Title } from 'react-native-paper'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 import { useStores, useTheme } from '../../store'
-import ModalWrap from './modalWrap'
-import Header from './modalHeader'
 import Empty from '../common/Empty'
 
-export default function PaymentHistoryWrap({ visible }) {
-  const { ui } = useStores()
-
-  function close() {
-    ui.setPaymentHistory(false)
-  }
-
-  return (
-    <ModalWrap onClose={close} visible={visible} noSwipe>
-      {visible && <PaymentHistory visible={visible} close={close} />}
-    </ModalWrap>
-  )
-}
-
-function PaymentHistory({ visible, close }) {
+export default function Transactions() {
   const { details } = useStores()
   const theme = useTheme()
   const [loading, setLoading] = useState(true)
@@ -40,16 +24,14 @@ function PaymentHistory({ visible, close }) {
 
   useEffect(() => {
     ;(async () => {
-      if (visible) {
-        setLoading(true)
-        const ps = await details.getPayments()
+      setLoading(true)
+      const ps = await details.getPayments()
 
-        setLoading(false)
-        if (!isMsgs(ps)) return
-        setPayments(ps)
-      }
+      setLoading(false)
+      if (!isMsgs(ps)) return
+      setPayments(ps)
     })()
-  }, [visible])
+  }, [])
 
   /**
    * renderItem component
@@ -60,9 +42,9 @@ function PaymentHistory({ visible, close }) {
 
   return useObserver(() => (
     <View style={styles.wrap}>
-      <Header title='Transactions' onClose={close} />
+      <Title style={{ ...styles.title, color: theme.text }}>Payment History</Title>
       {!loading && <FlatList<any> style={{ ...styles.scroller, borderTopColor: theme.border }} data={payments} renderItem={renderItem} keyExtractor={item => String(item.id)} />}
-      {!loading && payments.length <= 0 && <Empty text='No transactions found' />}
+      {!loading && payments.length <= 0 && <Empty text='No transactions found' style={{ alignItems: 'center' }} />}
       {loading && (
         <View style={styles.loading}>
           <ActivityIndicator animating color={theme.darkGrey} />
@@ -126,15 +108,19 @@ function Payment(props) {
 const styles = StyleSheet.create({
   wrap: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
+    paddingBottom: 40
+  },
+  title: {
+    paddingBottom: 10,
+    paddingLeft: 16,
+    fontSize: 24
   },
   scroller: {
-    flexGrow: 1,
-    width: '100%',
-    overflow: 'scroll',
-    flexDirection: 'column',
-    borderTopWidth: 1
+    // flexGrow: 1,
+    // width: '100%',
+    // overflow: 'scroll',
+    // flexDirection: 'column',
+    // borderTopWidth: 1
   },
   payment: {
     width: '100%',

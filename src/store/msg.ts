@@ -127,7 +127,8 @@ class MsgStore {
       let msgs: { [k: number]: Msg[] } = ({} = {})
 
       const r = await relay.get(`msgs?limit=200&offset=${offset}&date=${dateq}`)
-      if (!r.new_messages) return
+
+      if (r.new_messages.length <= 0) return
 
       while (!done) {
         if (r.new_messages && r.new_messages.length) {
@@ -149,13 +150,12 @@ class MsgStore {
   }
 
   @action
-  async getMessages(forceMore?: boolean) {
+  async getMessages(forceMore: boolean = false) {
     const len = this.lengthOfAllMessages()
 
     if (len === 0) {
       return this.restoreMessages()
     }
-    console.log('=> GET MESSAGES: forceMore?', forceMore)
     let route = 'messages'
     if (!forceMore && this.lastFetched) {
       const mult = 1
@@ -170,7 +170,6 @@ class MsgStore {
     try {
       const r = await relay.get(route)
       if (!r) return
-      console.log('=> NEW MSGS LENGTH', r.new_messages.length)
       if (r.new_messages && r.new_messages.length) {
         await this.batchDecodeMessages(r.new_messages)
       } else {
@@ -397,7 +396,7 @@ class MsgStore {
         media_token: media_token
       }
       const r = await relay.post('purchase', v)
-      console.log(r)
+      console.log('r::::', r)
     } catch (e) {
       console.log(e)
     }
