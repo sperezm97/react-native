@@ -54,6 +54,7 @@ export default function PIN(props) {
           // success!
           setChecking(true)
           await setPinCode(thePin)
+
           props.onFinish()
         } else {
           setErr(true)
@@ -73,6 +74,7 @@ export default function PIN(props) {
 
         if (storedPin === thePin) {
           AsyncStorage.setItem('pin_entered', ts())
+
           props.onFinish()
         } else {
           setErr(true)
@@ -196,7 +198,6 @@ function ts() {
 const styles = StyleSheet.create({
   wrap: {
     flex: 1,
-    // backgroundColor: "#6289FD",
     width: '100%'
   },
   top: {

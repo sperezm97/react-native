@@ -1,7 +1,6 @@
 import React from 'react'
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
-import { Appbar, ActivityIndicator } from 'react-native-paper'
-import { useNavigation } from '@react-navigation/native'
+import { Appbar } from 'react-native-paper'
 import { useObserver } from 'mobx-react-lite'
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import Toast from 'react-native-simple-toast'
@@ -9,31 +8,13 @@ import Toast from 'react-native-simple-toast'
 import { useStores, useTheme } from '../../store'
 
 export default function Header(props) {
-  const { details, ui } = useStores()
   const theme = useTheme()
-  const navigation = useNavigation()
-
-  const showStatusHandler = () => {
-    const status = ui.connected ? 'Connected node' : 'Disconnected node'
-
-    Toast.showWithGravity(status, 0.4, Toast.CENTER)
-  }
 
   return useObserver(() => {
     return (
       <Appbar.Header style={{ ...styles.appBar, backgroundColor: theme.bg }}>
         <View style={{ ...styles.flex, ...styles.content }}>
-          <View style={{ ...styles.flex, ...styles.left }}>
-            {/* <Image source={require('../../assets/n2n2-text.png')} style={styles.brand} resizeMode={'contain'} /> */}
-            {ui.loadingHistory ? (
-              <ActivityIndicator animating={true} color={theme.grey} size={18} />
-            ) : (
-              <TouchableOpacity onPress={showStatusHandler}>
-                {/* <Icon name='Zap' color={ui.connected ? '#49ca97' : '#febd59'} /> */}
-                <MaterialIcon name='lightning-bolt' size={20} color={ui.connected ? '#49ca97' : '#febd59'} />
-              </TouchableOpacity>
-            )}
-          </View>
+          <View style={{ ...styles.flex, ...styles.left }}>{/* <Image source={require('../../assets/n2n2-text.png')} style={styles.brand} resizeMode={'contain'} /> */}</View>
           <View style={{ ...styles.flex, ...styles.right }}>
             <TouchableOpacity onPress={props.onEdit}>
               <Text style={{ ...styles.edit, color: theme.primary }}>Edit</Text>

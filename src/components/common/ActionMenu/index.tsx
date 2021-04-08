@@ -45,18 +45,17 @@ export default function ActionMenu({ items }) {
 
 const styles = StyleSheet.create({
   wrap: {
-    marginRight: 12,
-    marginLeft: 12,
-    borderRadius: 10,
-    paddingRight: 14
+    marginRight: 16,
+    marginLeft: 16,
+    borderRadius: 10
+    // paddingRight: 14
   },
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingTop: 20,
-    paddingBottom: 20,
-    paddingLeft: 16
+    paddingBottom: 20
   },
   previewText: {
     fontSize: 16,

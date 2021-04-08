@@ -59,11 +59,11 @@ const styles = StyleSheet.create({
   left: {
     justifyContent: 'space-between',
     width: 50,
-    marginLeft: 14
+    marginLeft: 12
   },
   right: {
     justifyContent: 'flex-end',
-    marginRight: 14
+    marginRight: 12
   },
   brand: {
     width: 70,

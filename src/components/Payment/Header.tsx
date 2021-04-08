@@ -26,6 +26,11 @@ export default function Header() {
       <Appbar.Header style={{ ...styles.appBar, backgroundColor: theme.bg }}>
         <View style={{ ...styles.flex, ...styles.content }}>
           <View style={{ ...styles.flex, ...styles.left }}>
+            <Pushable onPress={() => console.log('click')}>
+              <IconButton icon='qrcode-scan' size={22} color={theme.icon} />
+            </Pushable>
+          </View>
+          <View style={{ ...styles.flex, ...styles.right }}>
             {ui.loadingHistory ? (
               <ActivityIndicator animating={true} color={theme.grey} size={18} style={{}} />
             ) : (
@@ -33,11 +38,6 @@ export default function Header() {
                 <MaterialIcon name='lightning-bolt' size={20} color={ui.connected ? '#49ca97' : '#febd59'} />
               </TouchableOpacity>
             )}
-          </View>
-          <View style={{ ...styles.flex, ...styles.right }}>
-            <Pushable onPress={() => console.log('click')}>
-              <IconButton icon='qrcode-scan' size={22} color={theme.icon} />
-            </Pushable>
           </View>
         </View>
       </Appbar.Header>
@@ -61,10 +61,10 @@ const styles = StyleSheet.create({
   left: {
     justifyContent: 'space-between',
     width: 50,
-    marginLeft: 14
+    marginLeft: 0
   },
   right: {
-    marginRight: 14,
+    marginRight: 12,
     justifyContent: 'flex-end'
   }
 })
