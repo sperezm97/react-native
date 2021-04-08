@@ -32,12 +32,12 @@ export default function Network() {
     <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
       <BackHeader title='Network' />
       <View style={styles.box}>
-        <Text style={{ marginBottom: 6, color: theme.subtitle }}>Server URL</Text>
+        <Text style={{ color: theme.text }}>Server URL</Text>
         <TextInput
           placeholder='Server URL'
           value={serverURL}
           onChangeText={serverURLchange}
-          style={{ backgroundColor: theme.bg }}
+          style={{ height: 50, backgroundColor: theme.bg }}
           placeholderTextColor={theme.subtitle}
           underlineColor={theme.border}
         />

@@ -3,12 +3,11 @@ import { View, Text, StyleSheet } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
 import Clipboard from '@react-native-community/clipboard'
 import Share from 'react-native-share'
-
-import QRCode from '../utils/qrcode'
 import Toast from 'react-native-simple-toast'
 
 import { useStores, useTheme } from '../../store'
 import { TOAST_DURATION } from '../../constants'
+import QRCode from '../utils/qrcode'
 import Button from '../common/Button'
 import BackHeader from './BackHeader'
 

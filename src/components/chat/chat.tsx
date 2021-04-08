@@ -16,8 +16,8 @@ import { constants } from '../../constants'
 import Frame from './frame'
 import { StreamPayment } from '../../store/feed'
 import { useIncomingPayments } from '../../store/hooks/pod'
-// import Pod from "./pod";
-// import Anim from "./pod/anim";
+import Pod from './pod'
+import Anim from './pod/anim'
 
 export type RouteStatus = 'active' | 'inactive' | null
 
@@ -165,13 +165,7 @@ export default function Chat() {
 
           {theShow && <MsgList chat={chat} pricePerMessage={pricePerMessage} />}
 
-          {/* <Pod   
-          pod={pod}  
-          show={feedURL ? true : false}
-          chat={chat}
-          onBoost={onBoost}
-          podError={podError}  
-        /> */}
+          <Pod pod={pod} show={feedURL ? true : false} chat={chat} onBoost={onBoost} podError={podError} />
 
           {/* <Anim dark={theme.dark} /> */}
           {theShow && <BottomBar chat={chat} pricePerMessage={pricePerMessage} tribeBots={tribeBots} />}
