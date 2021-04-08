@@ -38,7 +38,7 @@ export default function Network() {
           value={serverURL}
           onChangeText={serverURLchange}
           style={{ height: 50, backgroundColor: theme.bg }}
-          placeholderTextColor={theme.subtitle}
+          placeholderTextColor={theme.placeholder}
           underlineColor={theme.border}
         />
         <View style={styles.btnWrap}>

@@ -66,7 +66,7 @@ export default function AccountDetails() {
               }}
             >
               <TouchableOpacity style={{ alignSelf: 'center' }} onPress={copyAddress}>
-                <Text numberOfLines={1} ellipsizeMode='tail' style={{ color: theme.subtitle }}>
+                <Text numberOfLines={1} ellipsizeMode='tail' style={{ color: theme.placeholder }}>
                   {user.publicKey}
                 </Text>
               </TouchableOpacity>
@@ -90,7 +90,6 @@ export default function AccountDetails() {
           value={tipAmount + ''}
           onChangeText={tipAmountChange}
           style={{ height: 50, backgroundColor: theme.bg }}
-          placeholderTextColor={theme.subtitle}
           underlineColor={theme.border}
         />
         <View style={styles.btnWrap}>

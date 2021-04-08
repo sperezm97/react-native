@@ -381,8 +381,11 @@ export class ChatStore {
     if (!host || !url) return
     const theHost = host.includes('localhost') ? DEFAULT_TRIBE_SERVER : host
     try {
+      console.log('r  url', `https://${theHost}/podcast?url=${url}`)
       const r = await fetch(`https://${theHost}/podcast?url=${url}`)
+
       const j = await r.json()
+
       return j
     } catch (e) {
       console.log(e)

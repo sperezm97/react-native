@@ -28,12 +28,6 @@ export default function MediaMsg(props) {
     if (ldat.sig) purchased = true
   }
 
-  // console.log('ldat', ldat.sig)
-  // console.log('purchased', purchased)
-  // console.log('media_token', media_token)
-
-  console.log('-----')
-
   let { data, uri, loading, trigger, paidMessageText } = useCachedEncryptedFile(props, ldat)
 
   // useEffect(() => {
@@ -50,8 +44,6 @@ export default function MediaMsg(props) {
     if (!contact_id) {
       contact_id = chat.contact_ids && chat.contact_ids.find(cid => cid !== 1)
     }
-
-    console.log('chat.id,', chat.id)
 
     await msg.purchaseMedia({
       chat_id: chat.id,

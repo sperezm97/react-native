@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { View, ScrollView, StyleSheet } from 'react-native'
-import ImagePicker from 'react-native-image-picker';
+import ImagePicker from 'react-native-image-picker'
 import { useStores } from '../../../store'
 import Form from '../../form'
 import { tribe } from '../../form/schemas'
@@ -32,17 +32,18 @@ export default function NewTribe({ onFinish }) {
     //   await createChatPic(group.id, img.uri)
     //   chats.updateChatPhotoURI(group.id, img.uri)
     // }
-    setTimeout(()=>{
+    setTimeout(() => {
       onFinish()
       setLoading(false)
-    },150)
+    }, 150)
   }
   const showDone = true
 
   const theEditTribeParams = ui.editTribeParams ? { ...ui.editTribeParams, is_private: ui.editTribeParams.private } : null
-  return <View style={styles.wrap}>
-    <ScrollView style={styles.scroller} contentContainerStyle={styles.container}>
-      {/* <TouchableOpacity onPress={pickImage}>
+  return (
+    <View style={styles.wrap}>
+      <ScrollView style={styles.scroller} contentContainerStyle={styles.container}>
+        {/* <TouchableOpacity onPress={pickImage}>
         {img && <Image source={{uri: img.uri}} 
           style={{width:180,height:180,borderRadius:90}} resizeMode={'cover'}
         />}
@@ -50,21 +51,34 @@ export default function NewTribe({ onFinish }) {
           style={{width:180,height:180}} resizeMode={'cover'}
         />}
       </TouchableOpacity> */}
-      <Form schema={tribe} loading={loading}
-        // buttonAccessibilityLabel="tribe-form-button"
-        buttonText={(ui.editTribeParams ? 'Edit' : 'Create') + ' Group'}
-        onSubmit={finish}
-        initialValues={ui.editTribeParams ? theEditTribeParams : {
-          escrow_amount: 10, escrow_time: 12,
-          price_to_join: 0, price_per_message: 0,
-          name: '', description: '', 
-          img: '', tags:[],
-          feed_url: '', app_url :'',
-          unlisted: false, is_private: false,
-        }}
-      />
-    </ScrollView>
-  </View>
+        <Form
+          schema={tribe}
+          loading={loading}
+          // buttonAccessibilityLabel="tribe-form-button"
+          buttonText={(ui.editTribeParams ? 'Edit' : 'Create') + ' Group'}
+          onSubmit={finish}
+          initialValues={
+            ui.editTribeParams
+              ? theEditTribeParams
+              : {
+                  feed_url: '',
+                  app_url: '',
+                  escrow_amount: 10,
+                  escrow_time: 12,
+                  price_to_join: 0,
+                  price_per_message: 0,
+                  name: '',
+                  description: '',
+                  img: '',
+                  tags: [],
+                  unlisted: false,
+                  is_private: false
+                }
+          }
+        />
+      </ScrollView>
+    </View>
+  )
 }
 
 const styles = StyleSheet.create({
@@ -74,15 +88,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     width: '100%',
-    minHeight: 400,
+    minHeight: 400
   },
   scroller: {
     width: '100%',
     flex: 1,
-    display: 'flex',
+    display: 'flex'
   },
   container: {
     width: '100%',
-    paddingBottom: 20,
-  },
+    paddingBottom: 20
+  }
 })

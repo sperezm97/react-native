@@ -1,15 +1,15 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { View, StyleSheet, Text, ActivityIndicator, AppState, Dimensions, ScrollView, ToastAndroid } from 'react-native'
 import { useStores, useTheme } from '../../../store'
-import TrackPlayer from 'react-native-track-player';
-import { IconButton } from 'react-native-paper';
+import TrackPlayer from 'react-native-track-player'
+import { IconButton } from 'react-native-paper'
 import Controls from './controls'
 import useInterval from '../../utils/useInterval'
 import EE, { CLIP_PAYMENT, PLAY_ANIMATION } from '../../utils/ee'
 import { Destination, StreamPayment, NUM_SECONDS } from '../../../store/feed'
 import PodBar from './podBar'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { TouchableOpacity } from 'react-native-gesture-handler'
 import FastImage from 'react-native-fast-image'
 import Replay from './replay'
 import { getPosition, setPosition } from './position'
@@ -19,6 +19,8 @@ export default function Pod({ pod, show, chat, onBoost, podError }) {
   const chatID = chat.id
   const { feed, user, msg, chats, details } = useStores()
   const myid = user.myid
+
+  console.log('podError', podError)
 
   const [loading, setLoading] = useState(false)
   const [playing, setPlaying] = useState(false)
@@ -44,7 +46,7 @@ export default function Pod({ pod, show, chat, onBoost, podError }) {
     // }
     if (playing) TrackPlayer.pause()
     else {
-      console.log("PLAY!")
+      console.log('PLAY!')
       TrackPlayer.play()
       if (!duration) getAndSetDuration()
     }
@@ -58,7 +60,7 @@ export default function Pod({ pod, show, chat, onBoost, podError }) {
       title: episode.title,
       artist: episode.author || 'author',
       artwork: episode.image
-    });
+    })
   }
 
   async function selectEpisode(episode) {
@@ -66,7 +68,7 @@ export default function Pod({ pod, show, chat, onBoost, podError }) {
     setDuration(0)
     setSelectedEpisodeID(episode.id)
     await addEpisodeToQueue(episode)
-    await TrackPlayer.play();
+    await TrackPlayer.play()
     setPlaying(true)
     getAndSetDuration()
   }
@@ -81,7 +83,6 @@ export default function Pod({ pod, show, chat, onBoost, podError }) {
   }
 
   async function initialSelect(ps) {
-
     let theID = queuedTrackID
     if (chat.meta && chat.meta.itemID) {
       theID = chat.meta.itemID
@@ -104,8 +105,8 @@ export default function Pod({ pod, show, chat, onBoost, podError }) {
     // if its the same, dont seek
     if (queuedTrackID && queuedTrackID !== episode.id) {
       const ts = chat.meta && chat.meta.ts
-      if (!playing && ts || ts === 0) {
-        await TrackPlayer.seekTo(ts);
+      if ((!playing && ts) || ts === 0) {
+        await TrackPlayer.seekTo(ts)
         setPosition()
       }
     }
@@ -156,10 +157,10 @@ export default function Pod({ pod, show, chat, onBoost, podError }) {
       feedID: pod.id,
       itemID: selectedEpisodeID,
       ts: Math.round(pos) || 0,
-      speed: speed,
+      speed: speed
     }
     const memo = JSON.stringify(sp)
-    feed.sendPayments(dests, memo, (pricePerMinute * mult || 1), chatID, true)
+    feed.sendPayments(dests, memo, pricePerMinute * mult || 1, chatID, true)
   }
 
   const count = useRef(0)
@@ -175,9 +176,9 @@ export default function Pod({ pod, show, chat, onBoost, podError }) {
     }
   }, 1000)
 
-  const appState = useRef(AppState.currentState);
+  const appState = useRef(AppState.currentState)
   function handleAppStateChange(nextAppState) {
-    if (appState.current.match(/inactive|background/) && nextAppState === "active") {
+    if (appState.current.match(/inactive|background/) && nextAppState === 'active') {
       const now = Math.round(Date.now().valueOf() / 1000)
       const gap = now - storedTime.current
       if (gap > 0) {
@@ -185,15 +186,15 @@ export default function Pod({ pod, show, chat, onBoost, podError }) {
         if (n) sendPayments(n)
       }
     }
-    if (appState.current.match(/active/) && nextAppState === "background") {
+    if (appState.current.match(/active/) && nextAppState === 'background') {
       storedTime.current = Math.round(Date.now().valueOf() / 1000)
     }
-    appState.current = nextAppState;
+    appState.current = nextAppState
   }
   useEffect(() => {
-    AppState.addEventListener("change", handleAppStateChange);
+    AppState.addEventListener('change', handleAppStateChange)
     return () => {
-      AppState.removeEventListener("change", handleAppStateChange);
+      AppState.removeEventListener('change', handleAppStateChange)
     }
   }, [])
 
@@ -250,13 +251,14 @@ export default function Pod({ pod, show, chat, onBoost, podError }) {
       if (arr.length < 2) return
       try {
         const dat = JSON.parse(arr[1])
-        if (dat) msgsforReplay.push({
-          ...dat,
-          type: arr[0],
-          alias: m.sender_alias || (m.sender === myid ? user.alias : ''),
-          date: m.date,
-        })
-      } catch (e) { }
+        if (dat)
+          msgsforReplay.push({
+            ...dat,
+            type: arr[0],
+            alias: m.sender_alias || (m.sender === myid ? user.alias : ''),
+            date: m.date
+          })
+      } catch (e) {}
     })
     replayMsgs.current = msgsforReplay
     setFull(true)
@@ -267,25 +269,14 @@ export default function Pod({ pod, show, chat, onBoost, podError }) {
   }
 
   if (!episode) {
-    return <PodBar episode={episode}
-      onToggle={onToggle} playing={playing}
-      onShowFull={openFull} boost={boost}
-      duration={duration} loading={true}
-      podError={podError}
-    />
+    return <PodBar episode={episode} onToggle={onToggle} playing={playing} onShowFull={openFull} boost={boost} duration={duration} loading={true} podError={podError} />
   }
 
   function boost() {
-    
     const amount = user.tipAmount || 100
 
-    if(amount>details.balance){
-      ToastAndroid.showWithGravityAndOffset(
-        'Not Enough Balance',
-        ToastAndroid.SHORT,
-        ToastAndroid.CENTER,
-        0, 125
-      );
+    if (amount > details.balance) {
+      ToastAndroid.showWithGravityAndOffset('Not Enough Balance', ToastAndroid.SHORT, ToastAndroid.CENTER, 0, 125)
       return
     }
 
@@ -296,7 +287,7 @@ export default function Pod({ pod, show, chat, onBoost, podError }) {
         feedID: pod.id,
         itemID: selectedEpisodeID,
         ts: Math.round(pos) || 0,
-        amount,
+        amount
       }
       onBoost(sp)
       const dests = pod && pod.value && pod.value.destinations
@@ -308,54 +299,52 @@ export default function Pod({ pod, show, chat, onBoost, podError }) {
   }
 
   if (!full) {
-    return <PodBar episode={episode}
-      onToggle={onToggle} playing={playing}
-      onShowFull={openFull} boost={boost}
-      duration={duration} loading={false} podError={''}
-    />
+    return <PodBar episode={episode} onToggle={onToggle} playing={playing} onShowFull={openFull} boost={boost} duration={duration} loading={false} podError={''} />
   }
 
   const renderListItem: any = ({ item, index, selected, fallbackImage }) => {
-    return <TouchableOpacity key={index} style={{ ...styles.episode, borderBottomColor: theme.border, backgroundColor: selected ? theme.deep : theme.bg }}
-      onPress={() => selectEpisode(item)}>
-      {/* <IconButton icon="play" onPress={()=>selectEpisode(item)} /> */}
-      <Icon name="play" color={theme.subtitle} size={16} style={{ opacity: selected ? 1 : 0 }} />
-      <FastImage source={{ uri: item.image || fallbackImage }}
-        style={{ width: 42, height: 42, marginLeft: 8, marginRight: 12 }} resizeMode={'cover'}
-      />
-      <Text style={{ ...styles.episodeTitle, color: theme.title }}>{item.title}</Text>
-    </TouchableOpacity>
+    return (
+      <TouchableOpacity key={index} style={{ ...styles.episode, borderBottomColor: theme.border, backgroundColor: selected ? theme.deep : theme.bg }} onPress={() => selectEpisode(item)}>
+        {/* <IconButton icon="play" onPress={()=>selectEpisode(item)} /> */}
+        <Icon name='play' color={theme.subtitle} size={16} style={{ opacity: selected ? 1 : 0 }} />
+        <FastImage source={{ uri: item.image || fallbackImage }} style={{ width: 42, height: 42, marginLeft: 8, marginRight: 12 }} resizeMode={'cover'} />
+        <Text style={{ ...styles.episodeTitle, color: theme.title }}>{item.title}</Text>
+      </TouchableOpacity>
+    )
   }
 
   const width = Math.round(Dimensions.get('window').width)
-  return <View style={{ ...styles.wrap, backgroundColor: theme.bg, borderBottomColor: theme.border }}>
-    {loading && <View style={{ ...styles.spinWrap }}>
-      <ActivityIndicator animating={true} color="#bbb" />
-    </View>}
+  return (
+    <View style={{ ...styles.wrap, backgroundColor: theme.bg, borderBottomColor: theme.border }}>
+      {loading && (
+        <View style={{ ...styles.spinWrap }}>
+          <ActivityIndicator animating={true} color='#bbb' />
+        </View>
+      )}
 
-    {/* <IconButton size={25} icon="menu" color={theme.title} style={styles.clickList}
+      {/* <IconButton size={25} icon="menu" color={theme.title} style={styles.clickList}
       onPress={clickList}
     /> */}
 
-    {!loading && episode && <ScrollView style={styles.scroll} contentContainerStyle={styles.inner}>
+      {!loading && episode && (
+        <ScrollView style={styles.scroll} contentContainerStyle={styles.inner}>
+          <IconButton size={32} icon='chevron-down' color={theme.title} style={styles.closeFull} onPress={closeFull} />
 
-      <IconButton size={32} icon="chevron-down" color={theme.title} style={styles.closeFull}
-        onPress={closeFull}
-      />
+          {/* <Boost onPress={boost} style={{position:'absolute',right:15,top:width-108,zIndex:200}} inert={false} /> */}
 
-      {/* <Boost onPress={boost} style={{position:'absolute',right:15,top:width-108,zIndex:200}} inert={false} /> */}
-
-      {pod.image && <View style={{ ...styles.imgWrap, width, height: width - 34 }}>
-        <FastImage source={{ uri: episode.image || pod.image }}
-          style={{ width: width - 78, height: width - 78, marginLeft: 39, marginTop: 25, borderRadius: 19 }} resizeMode={'cover'}
-        />
-        <Replay msgs={replayMsgs.current} playing={playing} />
-      </View>}
-      <View style={styles.top}>
-        {episode.title && <Text style={{ color: theme.title, fontSize: 18 }} numberOfLines={1}>
-          {episode.title}
-        </Text>}
-        {/* <View style={styles.info}>
+          {pod.image && (
+            <View style={{ ...styles.imgWrap, width, height: width - 34 }}>
+              <FastImage source={{ uri: episode.image || pod.image }} style={{ width: width - 78, height: width - 78, marginLeft: 39, marginTop: 25, borderRadius: 19 }} resizeMode={'cover'} />
+              <Replay msgs={replayMsgs.current} playing={playing} />
+            </View>
+          )}
+          <View style={styles.top}>
+            {episode.title && (
+              <Text style={{ color: theme.title, fontSize: 18 }} numberOfLines={1}>
+                {episode.title}
+              </Text>
+            )}
+            {/* <View style={styles.info}>
           {pod.title && <Text style={{ color: theme.title, ...styles.podcastTitle }} numberOfLines={1}>
             {pod.title}
           </Text>}
@@ -366,34 +355,35 @@ export default function Pod({ pod, show, chat, onBoost, podError }) {
             {`Price per minute: ${pricePerMinute} sats`}  
           </Text>}
         </View> */}
-
-      </View>
-      <View style={styles.track}>
-        <Controls theme={theme} onToggle={onToggle} playing={playing}
-          duration={duration} episode={episode} pod={pod}
-          myPubkey={user.publicKey} boost={boost} speed={speed} setRate={setRate}
-        />
-      </View>
-      {(pod.episodes ? true : false) && <View style={styles.listWrap}>
-        <View style={{ ...styles.episodesLabel, borderBottomColor: theme.border }}>
-          <Text style={{ color: theme.subtitle, fontSize: 12, fontWeight: 'bold' }}>EPISODES</Text>
-          <Text style={{ color: theme.subtitle, opacity: 0.85, fontSize: 12, marginLeft: 10 }}>{pod.episodes.length}</Text>
-        </View>
-        <ItemList style={styles.list} data={pod.episodes} fallbackImage={pod.image}
-          renderItem={renderListItem} selectedEpisodeID={selectedEpisodeID}
-        />
-      </View>}
-    </ScrollView>}
-  </View>
+          </View>
+          <View style={styles.track}>
+            <Controls theme={theme} onToggle={onToggle} playing={playing} duration={duration} episode={episode} pod={pod} myPubkey={user.publicKey} boost={boost} speed={speed} setRate={setRate} />
+          </View>
+          {(pod.episodes ? true : false) && (
+            <View style={styles.listWrap}>
+              <View style={{ ...styles.episodesLabel, borderBottomColor: theme.border }}>
+                <Text style={{ color: theme.subtitle, fontSize: 12, fontWeight: 'bold' }}>EPISODES</Text>
+                <Text style={{ color: theme.subtitle, opacity: 0.85, fontSize: 12, marginLeft: 10 }}>{pod.episodes.length}</Text>
+              </View>
+              <ItemList style={styles.list} data={pod.episodes} fallbackImage={pod.image} renderItem={renderListItem} selectedEpisodeID={selectedEpisodeID} />
+            </View>
+          )}
+        </ScrollView>
+      )}
+    </View>
+  )
 }
 
 function ItemList({ data, renderItem, style, selectedEpisodeID, fallbackImage }) {
-  return <View style={style}>
-    {data && data.map((item, index) => {
-      const selected = selectedEpisodeID === item.id
-      return renderItem({ item, index, selected, fallbackImage })
-    })}
-  </View>
+  return (
+    <View style={style}>
+      {data &&
+        data.map((item, index) => {
+          const selected = selectedEpisodeID === item.id
+          return renderItem({ item, index, selected, fallbackImage })
+        })}
+    </View>
+  )
 }
 
 const styles = StyleSheet.create({
@@ -416,7 +406,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    width: '100%',
+    width: '100%'
   },
   title: {
     color: 'white'
@@ -426,7 +416,7 @@ const styles = StyleSheet.create({
     flex: 1,
     display: 'flex',
     maxHeight: '90%',
-    overflow: 'scroll',
+    overflow: 'scroll'
   },
   inner: {
     margin: 4,
@@ -444,7 +434,7 @@ const styles = StyleSheet.create({
     marginTop: 0,
     display: 'flex',
     flex: 1,
-    justifyContent: 'space-around',
+    justifyContent: 'space-around'
   },
   podcastTitle: {
     fontSize: 15,
@@ -452,7 +442,7 @@ const styles = StyleSheet.create({
     maxWidth: '100%'
   },
   track: {
-    width: '90%',
+    width: '90%'
     // height:128,
   },
   listWrap: {
@@ -495,7 +485,7 @@ const styles = StyleSheet.create({
     width: '100%',
     borderBottomWidth: 2,
     padding: 4,
-    marginTop: 8, marginBottom: 6
+    marginTop: 8,
+    marginBottom: 6
   }
 })
-

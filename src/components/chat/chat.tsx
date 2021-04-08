@@ -113,6 +113,7 @@ export default function Chat() {
 
   async function loadPod(tr) {
     const params = await chats.loadFeed(chat.host, chat.uuid, tr.feed_url)
+
     if (params) setPod(params)
     if (!params) setPodError('no podcast found')
     // if (params) initialSelect(params)
