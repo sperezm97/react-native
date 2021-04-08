@@ -11,7 +11,6 @@ import Onboard from './src/components/onboard'
 import { useStores, useTheme } from './src/store'
 import { instantiateRelay } from './src/api'
 import Loading from './src/components/common/Loading'
-import StatusBar from './src/components/utils/statusBar'
 import * as utils from './src/components/utils/utils'
 
 import { qrActions } from './src/qrActions'
@@ -180,7 +179,6 @@ function App() {
       <>
         <PaperProvider theme={paperTheme}>
           <NavigationContainer>
-            {/* <StatusBar /> */}
             {signedUp && <Main />}
             {!signedUp && (
               <Onboard

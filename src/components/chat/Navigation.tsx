@@ -1,8 +1,8 @@
 import React from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
 
-import { setTint } from '../utils/statusBar'
 import { useTheme } from '../../store'
+import { setTint } from '../common/StatusBar'
 import Chat from './chat'
 import Chats from './Chats'
 import Header from '../common/Header'

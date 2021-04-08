@@ -293,6 +293,11 @@ export class UiStore {
   @action setPaymentRequest(b: boolean) {
     this.paymentRequest = b
   }
+
+  @observable pinCodeModal: boolean = false
+  @action setPinCodeModal(b) {
+    this.pinCodeModal = b
+  }
 }
 
 export const uiStore = new UiStore()
