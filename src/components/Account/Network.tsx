@@ -31,7 +31,7 @@ export default function Network() {
   return (
     <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
       <BackHeader title='Network' />
-      <View style={styles.box}>
+      <View style={styles.content}>
         <Text style={{ color: theme.text }}>Server URL</Text>
         <TextInput
           placeholder='Server URL'
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
   wrap: {
     flex: 1
   },
-  box: {
+  content: {
     marginTop: 40,
     paddingRight: 14,
     paddingLeft: 14

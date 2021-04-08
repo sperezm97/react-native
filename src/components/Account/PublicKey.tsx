@@ -35,7 +35,7 @@ export default function PubKey() {
         </View>
         <Text style={{ ...styles.pubkeyText, color: theme.title }}>{user.publicKey}</Text>
         <View style={styles.buttonsWrap}>
-          <Button onPress={() => share()} style={styles.button}>
+          <Button style={styles.button} onPress={() => share()}>
             Share
           </Button>
           <Button style={styles.button} onPress={() => copy()}>
@@ -84,7 +84,6 @@ const styles = StyleSheet.create({
     borderRadius: 23,
     display: 'flex',
     justifyContent: 'center',
-    height: 46,
     width: 120
   }
 })

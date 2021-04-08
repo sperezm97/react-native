@@ -10,6 +10,7 @@ import Network from './Network'
 import Security from './Security'
 import Appearance from './Appearance'
 import PublicKey from './PublicKey'
+import Support from './Support'
 
 const Stack = createStackNavigator()
 
@@ -61,6 +62,14 @@ export default function Navigation() {
       <Stack.Screen
         name='QRCode'
         component={PublicKey}
+        listeners={{ focus: () => setTint(theme.dark ? 'black' : 'light') }}
+        options={{
+          headerShown: false
+        }}
+      />
+      <Stack.Screen
+        name='Support'
+        component={Support}
         listeners={{ focus: () => setTint(theme.dark ? 'black' : 'light') }}
         options={{
           headerShown: false

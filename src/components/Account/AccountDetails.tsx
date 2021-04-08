@@ -55,7 +55,7 @@ export default function AccountDetails() {
   return (
     <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
       <BackHeader title='Details' />
-      <View style={styles.box}>
+      <View style={styles.content}>
         <View>
           <Text style={{ marginBottom: 6, color: theme.text }}>Address</Text>
           <View style={{ ...styles.address }}>
@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
   wrap: {
     flex: 1
   },
-  box: {
+  content: {
     marginTop: 40,
     paddingRight: 14,
     paddingLeft: 14

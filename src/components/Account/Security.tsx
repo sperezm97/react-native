@@ -96,7 +96,7 @@ export default function Security() {
           />
         </View>
 
-        <View style={styles.box}>
+        <View style={styles.bottom}>
           <View style={{ ...styles.exportWrap }}>
             <Text style={{ ...styles.exportText, color: theme.text }}>Want to switch devices?</Text>
             <Button accessibilityLabel='onboard-welcome-button' onPress={() => ui.setPinCodeModal(true, null)} style={{ backgroundColor: theme.primary }} size='large'>
@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
     width: '100%',
     flex: 1
   },
-  box: {
+  bottom: {
     flex: 1,
     marginTop: 40,
     paddingRight: 14,
@@ -124,9 +124,9 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end'
   },
   exportWrap: {
-    minHeight: 200,
     display: 'flex',
     justifyContent: 'center',
+    minHeight: 200,
     paddingTop: 20,
     paddingBottom: 20
   },
@@ -144,6 +144,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 15,
     paddingRight: 14
-    // paddingLeft: 16,
   }
 })

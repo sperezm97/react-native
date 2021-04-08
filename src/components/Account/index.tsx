@@ -157,6 +157,13 @@ export default function Account() {
         thumbIcon: 'Moon',
         thumbBgColor: theme.primary,
         action: () => navigation.navigate('Appearance')
+      },
+      {
+        title: 'Support',
+        icon: 'ChevronRight',
+        thumbIcon: 'Mail',
+        thumbBgColor: theme.primary,
+        action: () => navigation.navigate('Support')
       }
     ]
   ]
