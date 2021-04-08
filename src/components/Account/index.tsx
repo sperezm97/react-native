@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useObserver } from 'mobx-react-lite'
-import { View, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native'
+import { StyleSheet, View, Text, TouchableOpacity, Image, ScrollView } from 'react-native'
 import RNFetchBlob from 'rn-fetch-blob'
 import { useNavigation, useFocusEffect } from '@react-navigation/native'
 import { Portal, Dialog, Title } from 'react-native-paper'
@@ -51,6 +51,7 @@ export default function Account() {
       }
     ]
   })
+  const [uploadPercent, setUploadedPercent] = useState(0)
   const navigation = useNavigation()
 
   useFocusEffect(
@@ -97,7 +98,7 @@ export default function Account() {
       ]
     )
       .uploadProgress({ interval: 250 }, (written, total) => {
-        console.log('uploaded', written / total)
+        setUploadedPercent(Math.round((written / total) * 100))
       })
       .then(async resp => {
         let json = resp.json()
@@ -107,10 +108,10 @@ export default function Account() {
         if (json.muid) {
           setPhotoUrl(`https://${server.host}/public/${json.muid}`)
         }
-        setUploading(false)
         await contacts.updateContact(1, {
-          ...(photo_url && { photo_url })
+          photo_url
         })
+        setUploading(false)
       })
       .catch(err => {
         console.log(err)
@@ -179,8 +180,9 @@ export default function Account() {
               >
                 <TouchableOpacity onPress={() => setDialogOpen(true)} style={styles.imgWrap}>
                   <Image resizeMode='cover' source={imgURI ? { uri: imgURI } : avatar.newImage} style={{ ...styles.userImg, borderColor: theme.border }} />
+                  {uploading && <Text style={{ ...styles.uploadPercent, color: theme.white }}>{`${uploadPercent}%`}</Text>}
                   <View style={styles.imgIcon}>
-                    <Icon name='PlusCircle' color={theme.primary} />
+                    <Icon name='PlusCircle' fill={theme.primary} color={theme.white} />
                   </View>
                 </TouchableOpacity>
 
@@ -248,6 +250,13 @@ const styles = StyleSheet.create({
   },
   imgWrap: {
     position: 'relative'
+  },
+  uploadPercent: {
+    position: 'absolute',
+    top: '45%',
+    height: '100%',
+    width: '100%',
+    textAlign: 'center'
   },
   imgIcon: {
     position: 'absolute',
