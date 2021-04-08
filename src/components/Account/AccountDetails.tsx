@@ -9,6 +9,7 @@ import { useStores, useTheme } from '../../store'
 import { TOAST_DURATION } from '../../constants'
 import BackHeader from './BackHeader'
 import Button from '../common/Button'
+import { type } from 'process'
 
 export default function AccountDetails() {
   const { user, contacts } = useStores()
@@ -56,7 +57,7 @@ export default function AccountDetails() {
       <BackHeader title='Details' />
       <View style={styles.box}>
         <View>
-          <Text style={{ marginBottom: 4, color: theme.subtitle }}>Address</Text>
+          <Text style={{ marginBottom: 6, color: theme.text }}>Address</Text>
           <View style={{ ...styles.address }}>
             <View
               style={{
@@ -70,7 +71,7 @@ export default function AccountDetails() {
                 </Text>
               </TouchableOpacity>
             </View>
-            <TouchableOpacity onPress={() => navigation.navigate('Account')}>
+            <TouchableOpacity onPress={() => navigation.navigate('QRCode')}>
               <IconButton icon='qrcode-scan' size={26} color={theme.primary} />
             </TouchableOpacity>
           </View>
@@ -81,12 +82,14 @@ export default function AccountDetails() {
           <Switch trackColor={{ false: theme.grey, true: theme.primary }} thumbColor={theme.white} ios_backgroundColor={theme.grey} onValueChange={toggleSwitch} value={isEnabled} />
         </View>
 
-        <Text style={{ marginBottom: 6, color: theme.subtitle }}>Tip Amount</Text>
+        <Text style={{ color: theme.text }}>Tip Amount</Text>
         <TextInput
+          returnKeyType='done'
+          keyboardType='number-pad'
           placeholder='Default Tip Amount'
           value={tipAmount + ''}
           onChangeText={tipAmountChange}
-          style={{ backgroundColor: theme.bg }}
+          style={{ height: 50, backgroundColor: theme.bg }}
           placeholderTextColor={theme.subtitle}
           underlineColor={theme.border}
         />
@@ -134,7 +137,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 22
+    marginBottom: 26
   },
   btnWrap: {
     display: 'flex',

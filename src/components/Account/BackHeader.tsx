@@ -6,13 +6,13 @@ import { useNavigation } from '@react-navigation/native'
 import { useTheme } from '../../store'
 import Icon from '../common/Icon'
 
-export default function BackHeader({ title }) {
+export default function BackHeader({ title, action, screen }) {
   const theme = useTheme()
   const navigation = useNavigation()
 
   function onBack() {
     requestAnimationFrame(() => {
-      navigation.navigate('Account')
+      navigation.navigate(screen)
     })
   }
 
@@ -24,8 +24,14 @@ export default function BackHeader({ title }) {
       <View>
         <Text style={{ ...styles.title, color: theme.text }}>{title}</Text>
       </View>
+      {action && action}
     </Appbar.Header>
   )
+}
+
+BackHeader.defaultProps = {
+  screen: 'Account',
+  action: null
 }
 
 const styles = StyleSheet.create({
