@@ -45,10 +45,9 @@ export default function ActionMenu({ items }) {
 
 const styles = StyleSheet.create({
   wrap: {
-    marginRight: 16,
-    marginLeft: 16,
-    borderRadius: 10
-    // paddingRight: 14
+    borderRadius: 10,
+    paddingRight: 14,
+    paddingLeft: 14
   },
   row: {
     flexDirection: 'row',

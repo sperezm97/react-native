@@ -19,9 +19,9 @@ export default function Network() {
   }
 
   return useObserver(() => (
-    <View style={{ ...styles.wrap, backgroundColor: theme.main }}>
+    <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
       <BackHeader title='Appearance' />
-      <View style={{ ...styles.box, backgroundColor: theme.bg }}>
+      <View style={{ ...styles.box }}>
         <RadioButton.Group onValueChange={value => selectAppearance(value)} value={theme.mode}>
           <RadioButton.Item label='Dark' value='Dark' />
           <Border />

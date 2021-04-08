@@ -2,10 +2,8 @@ import React from 'react'
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
 import { Appbar } from 'react-native-paper'
 import { useObserver } from 'mobx-react-lite'
-import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons'
-import Toast from 'react-native-simple-toast'
 
-import { useStores, useTheme } from '../../store'
+import { useTheme } from '../../store'
 
 export default function Header(props) {
   const theme = useTheme()
@@ -14,7 +12,7 @@ export default function Header(props) {
     return (
       <Appbar.Header style={{ ...styles.appBar, backgroundColor: theme.bg }}>
         <View style={{ ...styles.flex, ...styles.content }}>
-          <View style={{ ...styles.flex, ...styles.left }}>{/* <Image source={require('../../assets/n2n2-text.png')} style={styles.brand} resizeMode={'contain'} /> */}</View>
+          <View style={{ ...styles.flex, ...styles.left }}></View>
           <View style={{ ...styles.flex, ...styles.right }}>
             <TouchableOpacity onPress={props.onEdit}>
               <Text style={{ ...styles.edit, color: theme.primary }}>Edit</Text>

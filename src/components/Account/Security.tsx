@@ -78,7 +78,7 @@ export default function Security() {
       <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
         <BackHeader title='Security' />
         <ActionMenu items={items} />
-        <View style={{ padding: 20 }}>
+        <View style={{ padding: 14 }}>
           <View style={styles.pinTimeoutTextWrap}>
             <Text style={{ color: theme.subtitle }}>PIN Timeout</Text>
             <Text style={{ color: theme.title }}>{pinTimeout ? pinTimeout : 'Always Require PIN'}</Text>
@@ -119,12 +119,12 @@ const styles = StyleSheet.create({
   box: {
     flex: 1,
     marginTop: 40,
-    paddingRight: 20,
-    paddingLeft: 20,
+    paddingRight: 14,
+    paddingLeft: 14,
     justifyContent: 'flex-end'
   },
   exportWrap: {
-    minHeight: 190,
+    minHeight: 200,
     display: 'flex',
     justifyContent: 'center',
     paddingTop: 20,
@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 15,
-    paddingRight: 16
+    paddingRight: 14
     // paddingLeft: 16,
   }
 })

@@ -130,6 +130,13 @@ export default function Account() {
   const items = [
     [
       {
+        title: 'Account',
+        icon: 'ChevronRight',
+        thumbIcon: 'Settings',
+        thumbBgColor: theme.primary,
+        action: () => navigation.navigate('Settings')
+      },
+      {
         title: 'Network',
         icon: 'ChevronRight',
         thumbIcon: 'Network',

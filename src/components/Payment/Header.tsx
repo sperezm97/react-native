@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, StyleSheet, Image, TouchableOpacity } from 'react-native'
+import { View, StyleSheet, TouchableOpacity } from 'react-native'
 import { Appbar, IconButton, ActivityIndicator } from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native'
 import { useObserver } from 'mobx-react-lite'
@@ -7,12 +7,11 @@ import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import Toast from 'react-native-simple-toast'
 
 import { useStores, useTheme } from '../../store'
-import Balance from '../common/Balance'
 import Pushable from '../common/Pushable'
 
 export default function Header() {
   const navigation = useNavigation()
-  const { details, ui } = useStores()
+  const { ui } = useStores()
   const theme = useTheme()
 
   const showStatusHandler = () => {

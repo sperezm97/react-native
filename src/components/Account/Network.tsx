@@ -60,8 +60,8 @@ const styles = StyleSheet.create({
   },
   box: {
     marginTop: 40,
-    paddingRight: 20,
-    paddingLeft: 20
+    paddingRight: 14,
+    paddingLeft: 14
   },
   btnWrap: {
     display: 'flex',
