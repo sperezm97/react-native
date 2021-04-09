@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, ScrollView } from 'react-native'
 
 import { useStores, useTheme } from '../../store/'
 import TabBar from '../common/TabBar'
@@ -14,23 +14,25 @@ export default function Payment() {
   return (
     <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
       <Header />
-      <View style={{ ...styles.headerActions }}>
-        <View style={styles.wallet}>
-          <Text style={{ marginBottom: 10, fontSize: 26, fontWeight: '500', color: theme.text }}>My Wallet</Text>
-          <Text style={{ fontSize: 16, color: theme.title }}>
-            {details.balance} <Text style={{ color: theme.subtitle }}>sat</Text>
-          </Text>
+      <ScrollView>
+        <View style={{ ...styles.headerActions }}>
+          <View style={styles.wallet}>
+            <Text style={{ marginBottom: 10, fontSize: 26, fontWeight: '500', color: theme.text }}>My Wallet</Text>
+            <Text style={{ fontSize: 16, color: theme.text }}>
+              {details.balance} <Text style={{ color: theme.subtitle }}> sat</Text>
+            </Text>
+          </View>
+          <View style={styles.buttonWrap}>
+            <Button mode='outlined' icon='arrow-bottom-left' style={{ width: 130, borderColor: theme.border }} btnHeight={45} onPress={() => ui.setPayMode('invoice', null)}>
+              RECEIVE
+            </Button>
+            <Button mode='outlined' icon='arrow-top-right' style={{ width: 130, borderColor: theme.border, borderLeftWidth: 0 }} btnHeight={45} onPress={() => ui.setPayMode('payment', null)}>
+              SEND
+            </Button>
+          </View>
         </View>
-        <View style={styles.buttonWrap}>
-          <Button mode='outlined' icon='arrow-bottom-left' style={{ width: 130, borderColor: theme.border }} btnHeight={45} onPress={() => ui.setPayMode('invoice', null)}>
-            RECEIVE
-          </Button>
-          <Button mode='outlined' icon='arrow-top-right' style={{ width: 130, borderColor: theme.border, borderLeftWidth: 0 }} btnHeight={45} onPress={() => ui.setPayMode('payment', null)}>
-            SEND
-          </Button>
-        </View>
-      </View>
-      <Transactions />
+        <Transactions />
+      </ScrollView>
       <TabBar />
     </View>
   )

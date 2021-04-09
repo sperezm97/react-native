@@ -1,4 +1,5 @@
 import React from 'react'
+import { View, Text } from 'react-native'
 import { TextInput } from 'react-native-paper'
 import { inputStyles } from './shared'
 
@@ -12,15 +13,17 @@ export default function TheTextInput({ name, label, required, error, handleChang
   }
   if (displayOnly) lab = label.en
   return (
-    <TextInput
-      accessibilityLabel={accessibilityLabel}
-      error={error}
-      label={lab}
-      style={{ ...inputStyles, backgroundColor: theme.bg }}
-      onChangeText={handleChange(name)}
-      onBlur={handleBlur(name)}
-      value={value}
-      placeholderTextColor={theme.blue}
-    />
+    <View style={{ flex: 1 }}>
+      <Text style={{ color: theme.text }}>{lab}</Text>
+      <TextInput
+        accessibilityLabel={accessibilityLabel}
+        error={error}
+        style={{ ...inputStyles, backgroundColor: theme.bg }}
+        onChangeText={handleChange(name)}
+        onBlur={handleBlur(name)}
+        value={value}
+        placeholderTextColor={theme.blue}
+      />
+    </View>
   )
 }
