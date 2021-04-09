@@ -151,7 +151,7 @@ export default function Chat() {
       <Header chat={chat} appMode={appMode} setAppMode={setAppMode} status={status} tribeParams={tribeParams} earned={earned} spent={spent} pricePerMinute={pricePerMinute} />
 
       <View style={{ ...styles.content }}>
-        <KeyboardAvoidingView style={styles.keyboardAvoidContainer} behavior='padding' keyboardVerticalOffset={headerHeight}>
+        <KeyboardAvoidingView style={{ flex: 1 }} behavior='padding' keyboardVerticalOffset={headerHeight}>
           {(appURL ? true : false) && (
             <View style={{ ...styles.layer, zIndex: appMode ? 100 : 99 }} accessibilityLabel='chat-application-frame'>
               <Frame url={appURL} />
@@ -181,9 +181,6 @@ const styles = StyleSheet.create({
     flex: 1
   },
   content: {
-    flex: 1
-  },
-  keyboardAvoidContainer: {
     flex: 1
   },
   main: {

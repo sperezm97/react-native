@@ -185,7 +185,7 @@ function ImageViewer(props) {
 
         {showInput && (
           <KeyboardAvoidingView style={{ position: 'absolute', left: 0, right: 0, bottom: 0 }} behavior='position' keyboardVerticalOffset={headerHeight}>
-            <View style={styles.send}>
+            <View style={styles.inputWrap}>
               <TextInput
                 placeholder='Message...'
                 ref={inputRef}
@@ -226,7 +226,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
-  send: {
+  inputWrap: {
     position: 'absolute',
     width: '100%',
     left: 0,

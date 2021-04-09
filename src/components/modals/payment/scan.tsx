@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, StyleSheet, Dimensions, Text } from 'react-native'
+import { View, StyleSheet, Dimensions, Text, KeyboardAvoidingView } from 'react-native'
 import { TextInput, Button } from 'react-native-paper'
 
 import Scanner from '../../utils/scanner'
@@ -22,12 +22,14 @@ export default function Scan({ pay, loading, isLoopout, error }) {
   }
   const w = Dimensions.get('screen').width
   const h = Dimensions.get('screen').height
+  const headerHeight = 50
 
   const boxHeight = h
   const hasAddy = addy ? true : false
+
   return (
-    <View style={{ ...styles.wrap, height: h - 125 }}>
-      <View style={styles.top}>
+    <View style={{ ...styles.wrap, height: h - 126 }}>
+      <View style={styles.content}>
         <View style={{ ...styles.scannerWrap, width: w, height: boxHeight, maxWidth: w, maxHeight: boxHeight }}>
           <Scanner height={w} scanned={hasAddy} handleBarCodeScanned={scanned} />
         </View>
@@ -36,25 +38,26 @@ export default function Scan({ pay, loading, isLoopout, error }) {
             <Text style={{ color: theme.error, ...styles.error }}>{error}</Text>
           </View>
         )}
+        {/* <KeyboardAvoidingView style={{ flex: 1 }} behavior='padding' keyboardVerticalOffset={headerHeight}> */}
         <View style={styles.inputWrap}>
           <TextInput
             label={isLoopout ? 'Scan or Enter Bitcoin Address' : 'Scan or Enter Public Key'}
-            style={styles.input}
+            style={{ ...styles.input, backgroundColor: theme.bg }}
             onChangeText={e => setAddy(e)}
             value={addy}
-            mode='outlined'
             onBlur={() => setFocused(false)}
             onFocus={() => setFocused(true)}
           />
         </View>
+        {/* </KeyboardAvoidingView> */}
+        {!focused && hasAddy && (
+          <View style={styles.confirmWrap}>
+            <Button style={styles.confirm} loading={loading} onPress={() => pay(addy)} mode='contained' dark={true}>
+              CONFIRM
+            </Button>
+          </View>
+        )}
       </View>
-      {!focused && hasAddy && (
-        <View style={styles.confirmWrap}>
-          <Button style={styles.confirm} loading={loading} onPress={() => pay(addy)} mode='contained' dark={true}>
-            CONFIRM
-          </Button>
-        </View>
-      )}
     </View>
   )
 }
@@ -65,7 +68,7 @@ const styles = StyleSheet.create({
     width: '100%',
     position: 'relative'
   },
-  top: {
+  content: {
     flex: 1,
     width: '100%',
     position: 'relative'
@@ -84,22 +87,18 @@ const styles = StyleSheet.create({
   },
   inputWrap: {
     width: '100%',
-    height: 150,
     display: 'flex',
-    alignItems: 'center'
+    flexDirection: 'row',
+    alignItems: 'center',
+    height: 150
   },
   input: {
-    height: 58,
-    maxHeight: 58,
-    flex: 1,
-    width: '80%'
+    height: 60,
+    maxHeight: 60,
+    flex: 1
   },
   confirmWrap: {
     width: '100%',
-    position: 'absolute',
-    bottom: 32,
-    left: 0,
-    right: 0,
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',

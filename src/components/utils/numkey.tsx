@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
   },
   keyText: {
     fontSize: 24,
-    fontWeight: 'bold'
+    fontWeight: '500'
   },
   empty: {
     width: '33.33%'
