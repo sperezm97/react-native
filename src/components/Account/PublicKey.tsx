@@ -9,7 +9,7 @@ import { useStores, useTheme } from '../../store'
 import { TOAST_DURATION } from '../../constants'
 import QRCode from '../utils/qrcode'
 import Button from '../common/Button'
-import BackHeader from './BackHeader'
+import BackHeader from '../common/BackHeader'
 
 export default function PubKey() {
   const { user } = useStores()

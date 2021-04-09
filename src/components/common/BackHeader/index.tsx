@@ -3,8 +3,8 @@ import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
 import { Appbar } from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native'
 
-import { useTheme } from '../../store'
-import Icon from '../common/Icon'
+import { useTheme } from '../../../store'
+import Icon from '../Icon'
 
 export default function BackHeader({ title, action, screen }) {
   const theme = useTheme()

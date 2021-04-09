@@ -4,7 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack'
 
 import Chats from '../chat/Navigation'
 import Account from '../Account/Navigation'
-import Payment from '../Payment'
+import Payment from '../Payment/Navigation'
 import Home from '../Home'
 
 const RootStack = createStackNavigator()

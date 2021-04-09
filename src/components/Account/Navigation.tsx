@@ -3,7 +3,6 @@ import { createStackNavigator } from '@react-navigation/stack'
 
 import { useTheme } from '../../store'
 import { setTint } from '../common/StatusBar'
-import Header from '../common/Header'
 import Account from './index'
 import AccountDetails from './AccountDetails'
 import Network from './Network'

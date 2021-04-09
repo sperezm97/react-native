@@ -13,9 +13,9 @@ import { getPinTimeout, updatePinTimeout } from '../utils/pin'
 import * as rsa from '../../crypto/rsa'
 import * as e2e from '../../crypto/e2e'
 import { userPinCode } from '../utils/pin'
-import BackHeader from './BackHeader'
 import Button from '../common/Button'
 import ActionMenu from '../common/ActionMenu'
+import BackHeader from '../common/BackHeader'
 
 export default function Security() {
   const [pinTimeout, setPinTimeout] = useState(12)

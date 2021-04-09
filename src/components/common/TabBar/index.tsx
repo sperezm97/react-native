@@ -11,7 +11,7 @@ export default function TabBar() {
   const navigation = useNavigation()
   const current = useRoute()
   const { width } = Dimensions.get('window')
-  const tabbarWidth = width - 32
+  const tabbarWidth = width - 22
 
   const routes = [
     {
@@ -61,8 +61,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     height: 60,
-    paddingLeft: 16,
-    paddingRight: 16
+    paddingLeft: 10,
+    paddingRight: 10
   },
   iconWrapper: {
     height: 40,

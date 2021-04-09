@@ -4,8 +4,8 @@ import { useNavigation } from '@react-navigation/native'
 import { TextInput } from 'react-native-paper'
 
 import { useStores, useTheme } from '../../store'
-import BackHeader from './BackHeader'
 import Button from '../common/Button'
+import BackHeader from '../common/BackHeader'
 
 export default function Network() {
   const [serverURL, setServerURL] = useState('')

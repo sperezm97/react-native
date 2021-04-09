@@ -7,8 +7,8 @@ import Toast from 'react-native-simple-toast'
 
 import { useStores, useTheme } from '../../store'
 import { TOAST_DURATION } from '../../constants'
-import BackHeader from './BackHeader'
 import Button from '../common/Button'
+import BackHeader from '../common/BackHeader'
 
 export default function Support() {
   const { details } = useStores()

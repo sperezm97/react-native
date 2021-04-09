@@ -5,7 +5,7 @@ import { useObserver } from 'mobx-react-lite'
 import { RadioButton } from 'react-native-paper'
 
 import { useTheme } from '../../store'
-import BackHeader from './BackHeader'
+import BackHeader from '../common/BackHeader'
 
 export default function Network() {
   const theme = useTheme()

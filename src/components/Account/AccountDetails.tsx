@@ -7,9 +7,8 @@ import Toast from 'react-native-simple-toast'
 
 import { useStores, useTheme } from '../../store'
 import { TOAST_DURATION } from '../../constants'
-import BackHeader from './BackHeader'
+import BackHeader from '../common/BackHeader'
 import Button from '../common/Button'
-import { type } from 'process'
 
 export default function AccountDetails() {
   const { user, contacts } = useStores()
@@ -61,7 +60,7 @@ export default function AccountDetails() {
           <View style={{ ...styles.address }}>
             <View
               style={{
-                ...styles.addressBar,
+                ...styles.addressInput,
                 backgroundColor: theme.main
               }}
             >
@@ -121,7 +120,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 26
   },
-  addressBar: {
+  addressInput: {
     display: 'flex',
     flex: 1,
     flexDirection: 'row',
