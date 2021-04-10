@@ -99,7 +99,7 @@ function Do({ app }) {
       </View> */}
       <View style={styles.stuffWrap}>
         <Text style={{ color: theme.text, marginBottom: 8 }}>Address</Text>
-        <TextInput placeholder='Bitcoin Address' value={addy} editable={false} style={{ ...styles.addressInput, backgroundColor: theme.main }} />
+        <TextInput placeholder='Bitcoin Address' value={addy} editable={false} style={{ ...styles.addressInput, backgroundColor: theme.main }} underlineColor={theme.border} />
         <Button mode='text' onPress={copyAddy} disabled={!addy ? true : false} loading={loading}>
           Tap to Copy
         </Button>

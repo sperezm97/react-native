@@ -45,7 +45,7 @@ export default function Form(props) {
                 </Button>
               </View>
             )}
-            {props.action && <Action onSave={handleSubmit} loading={props.loading} disabled={!props.forceEnable && (!dirty || !isValid)} accessibilityLabel={'form-button'} />}
+            {props.action && <Action type={props.actionType} onSave={handleSubmit} loading={props.loading} disabled={!props.forceEnable && (!dirty || !isValid)} accessibilityLabel={'form-button'} />}
           </View>
         )
       }}
@@ -54,6 +54,8 @@ export default function Form(props) {
 }
 
 function Action(props) {
+  console.log('props', props.type)
+
   return (
     <Dialog.Actions>
       <Button mode='text' btnHeight={40} onPress={props.onSave} loading={props.loading} disabled={props.disabled} accessibilityLabel={'form-button'}>

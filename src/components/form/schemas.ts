@@ -50,6 +50,16 @@ const me = [
   // }
 ]
 
+const pubKey = [
+  {
+    name: 'public_key',
+    type: 'pubkey',
+    label: { en: 'Address', es: 'Address' },
+    required: true,
+    validator: Yup.string().required(rq)
+  }
+]
+
 const subscribe = [
   {
     name: 'amount',
@@ -170,7 +180,7 @@ const tribe = [
   }
 ]
 
-export { contact, me, tribe, subscribe }
+export { contact, me, pubKey, tribe, subscribe }
 
 function emptyStringToNull(value, originalValue) {
   if (typeof originalValue === 'string' && originalValue === '') {

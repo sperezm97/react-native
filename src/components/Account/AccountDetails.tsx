@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, View, Text, Switch, TouchableOpacity } from 'react-native'
-import { useNavigation } from '@react-navigation/native'
-import { TextInput, IconButton } from 'react-native-paper'
-import Clipboard from '@react-native-community/clipboard'
-import Toast from 'react-native-simple-toast'
+import { StyleSheet, View, Text, Switch } from 'react-native'
+import { TextInput } from 'react-native-paper'
 
 import { useStores, useTheme } from '../../store'
-import { TOAST_DURATION } from '../../constants'
 import BackHeader from '../common/BackHeader'
-import Button from '../common/Button'
+import InputAccessoryView from '../common/InputAccessoryView'
+import * as schemas from '../form/schemas'
+import Form from '../form'
 
 export default function AccountDetails() {
   const { user, contacts } = useStores()
@@ -16,13 +14,13 @@ export default function AccountDetails() {
   const [loading, setLoading] = useState(false)
   const [isEnabled, setIsEnabled] = useState(false)
   const me = contacts.contacts.find(c => c.id === 1)
+  const nativeID = 'tipAmount'
 
   useEffect(() => {
     setIsEnabled(me?.private_photo || false)
   }, [])
 
   const theme = useTheme()
-  const navigation = useNavigation()
 
   function tipAmountChange(ta) {
     const int = parseInt(ta)
@@ -46,34 +44,26 @@ export default function AccountDetails() {
     await contacts.updateContact(1, { contact_key })
   }
 
-  function copyAddress() {
-    Clipboard.setString(user.publicKey)
-    Toast.showWithGravity('Address copid to clipboard', TOAST_DURATION, Toast.CENTER)
-  }
-
   return (
     <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
       <BackHeader title='Details' />
       <View style={styles.content}>
         <View>
-          <Text style={{ marginBottom: 6, color: theme.text }}>Address</Text>
-          <View style={{ ...styles.address }}>
-            <View
-              style={{
-                ...styles.addressInput,
-                backgroundColor: theme.main
-              }}
-            >
-              <TouchableOpacity style={{ alignSelf: 'center' }} onPress={copyAddress}>
-                <Text numberOfLines={1} ellipsizeMode='tail' style={{ color: theme.placeholder }}>
-                  {user.publicKey}
-                </Text>
-              </TouchableOpacity>
-            </View>
-            <TouchableOpacity onPress={() => navigation.navigate('QRCode')}>
-              <IconButton icon='qrcode-scan' size={26} color={theme.primary} />
-            </TouchableOpacity>
-          </View>
+          <Form
+            nopad
+            displayOnly
+            schema={schemas.pubKey}
+            loading={loading}
+            buttonText='Save'
+            initialValues={
+              user
+                ? {
+                    public_key: user.publicKey
+                  }
+                : {}
+            }
+            readOnlyFields={'public_key'}
+          />
         </View>
 
         <View style={styles.shareWrap}>
@@ -83,7 +73,8 @@ export default function AccountDetails() {
 
         <Text style={{ color: theme.text }}>Tip Amount</Text>
         <TextInput
-          returnKeyType='done'
+          // returnKeyType='done'
+          inputAccessoryViewID={nativeID}
           keyboardType='number-pad'
           placeholder='Default Tip Amount'
           value={tipAmount + ''}
@@ -91,14 +82,7 @@ export default function AccountDetails() {
           style={{ height: 50, backgroundColor: theme.bg }}
           underlineColor={theme.border}
         />
-        <View style={styles.btnWrap}>
-          <Button onPress={() => navigation.navigate('Account')} size='small' style={{ ...styles.button, marginRight: 20 }}>
-            Cancel
-          </Button>
-          <Button onPress={save} size='small' style={{ ...styles.button }} loading={loading}>
-            Save
-          </Button>
-        </View>
+        <InputAccessoryView nativeID={nativeID} done={save} />
       </View>
     </View>
   )
@@ -113,38 +97,11 @@ const styles = StyleSheet.create({
     paddingRight: 14,
     paddingLeft: 14
   },
-  address: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 26
-  },
-  addressInput: {
-    display: 'flex',
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    height: 40,
-    width: '100%',
-    paddingLeft: 6,
-    paddingRight: 6
-  },
   shareWrap: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 26
-  },
-  btnWrap: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    marginTop: 20
-  },
-  button: {
-    minWidth: 90
+    marginBottom: 36
   }
 })

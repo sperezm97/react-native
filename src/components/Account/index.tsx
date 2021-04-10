@@ -164,17 +164,7 @@ export default function Account() {
         icon: 'ChevronRight',
         thumbIcon: <AntDesign name='contacts' color={theme.white} size={18} />,
         thumbBgColor: theme.primary,
-
-        action: () =>
-          navigation.navigate('Contacts', {
-            // screen: 'Chat'
-            // params: {
-            //   screen: 'Sound',
-            //   params: {
-            //     screen: 'Media'
-            //   }
-            // }
-          })
+        action: () => navigation.navigate('Contacts')
       },
       {
         title: 'Support',
@@ -242,6 +232,7 @@ export default function Account() {
                     }}
                     onSubmit={values => saveUser(values)}
                     action
+                    actionType='Dialog'
                   />
                 </Dialog.Content>
               </Dialog>

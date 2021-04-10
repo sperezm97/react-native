@@ -1,8 +1,11 @@
 import React from 'react'
 import { Button as PaperButton } from 'react-native-paper'
 
+import { useTheme } from '../../../store'
+
 export default function Button(props) {
-  let { mode, accessibilityLabel, style, btnHeight, loading, disabled, onPress, dark, icon, children, size } = props
+  const theme = useTheme()
+  let { mode, accessibilityLabel, color = theme.primary, style, btnHeight, loading, disabled, onPress, dark, icon, children, size } = props
 
   if (size === 'large') {
     btnHeight = 60
@@ -23,6 +26,7 @@ export default function Button(props) {
       contentStyle={{ height: btnHeight }}
       dark={dark}
       icon={icon}
+      color={color}
     >
       {children}
     </PaperButton>
