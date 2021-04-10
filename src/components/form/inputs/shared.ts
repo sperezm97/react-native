@@ -1,7 +1,6 @@
 const inputStyles = {
   height: 50,
   maxHeight: 50,
-  flex: 1,
   marginBottom: 25
 }
 

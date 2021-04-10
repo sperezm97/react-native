@@ -21,7 +21,7 @@ export default function Network() {
   return useObserver(() => (
     <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
       <BackHeader title='Appearance' />
-      <View style={{ ...styles.box }}>
+      <View style={{ ...styles.content }}>
         <RadioButton.Group onValueChange={value => selectAppearance(value)} value={theme.mode}>
           <RadioButton.Item label='Dark' value='Dark' />
           <Border />
@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
   wrap: {
     flex: 1
   },
-  box: {
+  content: {
     marginTop: 40
   },
   borderBottom: {

@@ -61,16 +61,17 @@ export class UiStore {
     this.redeemModalParams = o
   }
 
-  @observable editContactModal: boolean = false
-  @observable editContactParams: Contact
-  @action setEditContactModal(p: Contact) {
-    this.editContactModal = true
-    this.editContactParams = p
+  @observable contactSubscribeModal: boolean = false
+  @observable contactSubscribeParams: Contact
+  @action setContactSubscribeModal(b: boolean, p: Contact) {
+    this.contactSubscribeModal = b
+    this.contactSubscribeParams = p
   }
+
   @action closeEditContactModal() {
-    this.editContactModal = false
+    this.contactSubscribeModal = false
     setTimeout(() => {
-      this.editContactParams = null
+      this.contactSubscribeParams = null
     }, 500)
   }
 

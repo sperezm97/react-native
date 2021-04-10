@@ -13,7 +13,7 @@ export default function Search(props) {
     color: theme.input,
     fontSize: 15
   }
-  const placeholderTextColor = theme.title
+  const placeholderTextColor = theme.placeholder
 
   return <Searchbar placeholder={placeholder} value={value} onChangeText={onChangeText} style={styles} inputStyle={inputStyle} iconColor={iconColor} placeholderTextColor={placeholderTextColor} />
 }

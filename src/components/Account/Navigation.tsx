@@ -59,14 +59,6 @@ export default function Navigation() {
         }}
       />
       <Stack.Screen
-        name='Contacts'
-        component={Appearance}
-        listeners={{ focus: () => setTint(theme.dark ? 'black' : 'light') }}
-        options={{
-          headerShown: false
-        }}
-      />
-      <Stack.Screen
         name='QRCode'
         component={PublicKey}
         listeners={{ focus: () => setTint(theme.dark ? 'black' : 'light') }}

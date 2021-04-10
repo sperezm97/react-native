@@ -39,7 +39,7 @@ export default function Form(props) {
               })}
             </View>
             {!props.displayOnly && (
-              <View style={styles.buttonWrap}>
+              <View style={{ ...styles.buttonWrap, padding: props.nopad ? 0 : 25 }}>
                 <Button mode='contained' accessibilityLabel={'form-button'} onPress={handleSubmit} disabled={!props.forceEnable && (!dirty || !isValid)} style={styles.button} loading={props.loading}>
                   {props.buttonText || 'Submit'}
                 </Button>
@@ -76,9 +76,9 @@ function validator(config) {
 const styles = StyleSheet.create({
   wrap: {
     // flex: 1,
-    // width: '100%'
+    // width: '100%',
     // height: '100%',
-    // justifyContent: 'space-between',
+    // justifyContent: 'space-between'
     // position: 'relative'
     // minHeight:420
   },
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     // width: '100%',
     // flex: 1,
     // paddingBottom: 75,
-    minHeight: 100
+    // minHeight: 100
   },
   buttonWrap: {
     // width: '100%'
@@ -100,11 +100,11 @@ const styles = StyleSheet.create({
     // right: 0
   },
   button: {
-    borderRadius: 30,
-    height: 60,
-    display: 'flex',
-    justifyContent: 'center',
-    zIndex: 999,
-    position: 'relative'
+    // borderRadius: 30,
+    // height: 60,
+    // display: 'flex',
+    // justifyContent: 'center'
+    // zIndex: 999,
+    // position: 'relative'
   }
 })

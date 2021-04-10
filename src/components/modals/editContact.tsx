@@ -18,11 +18,11 @@ export default function EditContactWrap({ visible }) {
   const { ui } = useStores()
 
   function close() {
-    ui.closeEditContactModal()
+    // ui.closeEditContactModal()
   }
 
   return (
-    <ModalWrap onClose={close} visible={visible} propagateSwipe={true} noSwipe>
+    <ModalWrap onClose={close} visible={visible}>
       {visible && <EditContact visible={visible} close={close} />}
     </ModalWrap>
   )
@@ -134,8 +134,9 @@ function EditContact({ visible, close }) {
   }
 
   const subPaused = existingSub && existingSub.paused ? true : false
+
   return useObserver(() => (
-    <Portal.Host>
+    <View style={{ flex: 1 }}>
       <View style={styles.header}>
         <View style={styles.headerLefty}>
           <IconButton
@@ -215,7 +216,7 @@ function EditContact({ visible, close }) {
           setExistingSub(null)
         }}
       />
-    </Portal.Host>
+    </View>
   ))
 }
 

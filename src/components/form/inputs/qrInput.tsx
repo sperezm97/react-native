@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
 import { IconButton, TextInput, Portal } from 'react-native-paper'
-import { View } from 'react-native'
+import Clipboard from '@react-native-community/clipboard'
+import Toast from 'react-native-simple-toast'
 
-import { inputStyles } from './shared'
-import QR from '../../utils/qr'
 import { useTheme } from '../../../store'
+import { TOAST_DURATION } from '../../../constants'
+import QR from '../../utils/qr'
 import PubKey from '../../modals/pubkey'
 
 export default function QrInput({ name, label, required, handleChange, handleBlur, setValue, value, displayOnly, accessibilityLabel }) {
@@ -18,19 +20,43 @@ export default function QrInput({ name, label, required, handleChange, handleBlu
 
   let lab = `${label.en}${required ? ' *' : ''}`
   if (displayOnly) lab = label.en
+
+  function copyAddress(value) {
+    Clipboard.setString(value)
+    Toast.showWithGravity('Address copid to clipboard', TOAST_DURATION, Toast.CENTER)
+  }
+
   return (
-    <View style={{ ...inputStyles, ...styles.wrap }}>
-      <TextInput
-        accessibilityLabel={accessibilityLabel}
-        disabled={displayOnly}
-        label={lab}
-        onChangeText={handleChange(name)}
-        onBlur={handleBlur(name)}
-        value={value}
-        style={{ backgroundColor: theme.bg, paddingRight: 32 }}
-        placeholderTextColor={theme.subtitle}
-      />
-      <IconButton icon='qrcode-scan' color='#888' size={25} style={{ position: 'absolute', right: 0, top: 10 }} onPress={() => setScanning(true)} />
+    <View style={{ ...styles.wrap }}>
+      <Text style={{ marginBottom: 12 }}>{lab}</Text>
+      <View style={{ ...styles.inputWrap }}>
+        {displayOnly ? (
+          <View
+            style={{
+              ...styles.inputStyles,
+              backgroundColor: theme.main
+            }}
+          >
+            <TouchableOpacity onPress={() => copyAddress(value)}>
+              <Text numberOfLines={1} ellipsizeMode='tail' style={{ color: theme.placeholder }}>
+                {value}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <TextInput
+            accessibilityLabel={accessibilityLabel}
+            disabled={displayOnly}
+            onChangeText={handleChange(name)}
+            onBlur={handleBlur(name)}
+            value={value}
+            style={{ ...styles.inputStyles, backgroundColor: theme.main }}
+            placeholderTextColor={theme.subtitle}
+          />
+        )}
+
+        <IconButton icon='qrcode-scan' color={theme.primary} size={23} style={{ width: '10%' }} onPress={() => setScanning(true)} />
+      </View>
 
       {scanning && !displayOnly && (
         <Portal>
@@ -45,8 +71,26 @@ export default function QrInput({ name, label, required, handleChange, handleBlu
   )
 }
 
-const styles = {
+const styles = StyleSheet.create({
   wrap: {
-    flex: 1
+    // flex: 1
+  },
+  inputWrap: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 26
+  },
+  inputStyles: {
+    display: 'flex',
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 50,
+    width: '100%',
+    paddingLeft: 6,
+    paddingRight: 6
   }
-}
+})

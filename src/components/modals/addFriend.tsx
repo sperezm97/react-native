@@ -42,7 +42,7 @@ function AddFriend({ close }) {
   }
 
   return useObserver(() => (
-    <Portal.Host>
+    <View style={{ flex: 1 }}>
       <Header title='Add Friend' onClose={close} />
 
       <FadeView opacity={hideButtons ? 0 : 1} style={styles.content}>
@@ -86,7 +86,7 @@ function AddFriend({ close }) {
       <FadeView opacity={inviteNewUser ? 1 : 0} style={styles.content}>
         {inviteNewUser && <InviteNewUser done={close} />}
       </FadeView>
-    </Portal.Host>
+    </View>
   ))
 }
 

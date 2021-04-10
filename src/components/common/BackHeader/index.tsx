@@ -6,32 +6,38 @@ import { useNavigation } from '@react-navigation/native'
 import { useTheme } from '../../../store'
 import Icon from '../Icon'
 
-export default function BackHeader({ title, action, screen }) {
+export default function BackHeader({ title, screen, action, navigate }) {
   const theme = useTheme()
   const navigation = useNavigation()
 
   function onBack() {
     requestAnimationFrame(() => {
+      if (navigate) {
+        return navigate()
+      }
+
       navigation.navigate(screen)
     })
   }
 
   return (
     <Appbar.Header style={{ ...styles.appBar, backgroundColor: theme.bg, borderBottomColor: theme.border }}>
-      <TouchableOpacity onPress={onBack} style={{ ...styles.backIcon }}>
+      <TouchableOpacity onPress={onBack} style={{ ...styles.left }}>
         <Icon name='ChevronLeft' size={28} color={theme.icon} />
       </TouchableOpacity>
       <View>
         <Text style={{ ...styles.title, color: theme.text }}>{title}</Text>
       </View>
-      {action && action}
+
+      {action && <View style={{ ...styles.right }}>{action}</View>}
     </Appbar.Header>
   )
 }
 
 BackHeader.defaultProps = {
   screen: 'Account',
-  action: null
+  action: null,
+  navigate: null
 }
 
 const styles = StyleSheet.create({
@@ -41,9 +47,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     position: 'relative'
   },
-  backIcon: {
+  left: {
     position: 'absolute',
     left: 10
+  },
+  right: {
+    position: 'absolute',
+    right: 10
   },
   title: {
     fontSize: 17,

@@ -1,6 +1,7 @@
 import React from 'react'
-import { View, Text } from 'react-native'
+import { StyleSheet, View, Text } from 'react-native'
 import { TextInput } from 'react-native-paper'
+
 import { inputStyles } from './shared'
 
 import { useTheme } from '../../../store'
@@ -11,19 +12,30 @@ export default function TheTextInput({ name, label, required, error, handleChang
   if (error) {
     lab = `${label.en} - ${error}`
   }
+
   if (displayOnly) lab = label.en
+
   return (
-    <View style={{ flex: 1 }}>
+    <>
       <Text style={{ color: theme.text }}>{lab}</Text>
       <TextInput
         accessibilityLabel={accessibilityLabel}
         error={error}
-        style={{ ...inputStyles, backgroundColor: theme.bg }}
+        style={{ ...styles.inputStyles, backgroundColor: theme.bg }}
         onChangeText={handleChange(name)}
         onBlur={handleBlur(name)}
         value={value}
-        placeholderTextColor={theme.blue}
+        placeholderTextColor={theme.placeholder}
+        underlineColor={theme.border}
       />
-    </View>
+    </>
   )
 }
+
+const styles = StyleSheet.create({
+  inputStyles: {
+    height: 50,
+    maxHeight: 50,
+    marginBottom: 25
+  }
+})

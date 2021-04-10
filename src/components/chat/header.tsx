@@ -49,7 +49,12 @@ export default function Header({
 
     function clickTitle() {
       if (chat.type === conversation) {
-        if (contact) ui.setEditContactModal(contact)
+        if (contact)
+          navigation.navigate('Contacts', {
+            screen: 'Contact',
+            params: { contact }
+          })
+        // ui.setEditContactModal(contact)
       } else {
         ui.setGroupModal({ ...chat, ...tribeParams, pricePerMinute })
       }
