@@ -4,6 +4,7 @@ import { StyleSheet, View, Text, TouchableOpacity, Image, ScrollView } from 'rea
 import RNFetchBlob from 'rn-fetch-blob'
 import { useNavigation, useFocusEffect } from '@react-navigation/native'
 import { Portal, Dialog, Title } from 'react-native-paper'
+import AntDesign from 'react-native-vector-icons/AntDesign'
 
 import { useStores, useTheme } from '../../store'
 import Header from './Header'
@@ -157,6 +158,13 @@ export default function Account() {
         thumbIcon: 'Moon',
         thumbBgColor: theme.primary,
         action: () => navigation.navigate('Appearance')
+      },
+      {
+        title: 'Contacts',
+        icon: 'ChevronRight',
+        thumbIcon: <AntDesign name='contacts' color={theme.white} size={18} />,
+        thumbBgColor: theme.primary,
+        action: () => navigation.navigate('Contacts')
       },
       {
         title: 'Support',

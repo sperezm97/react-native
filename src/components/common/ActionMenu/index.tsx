@@ -11,32 +11,36 @@ export default function ActionMenu({ items }) {
     <>
       {items.map((subItems, index) => (
         <View key={index} style={{ ...styles.wrap, backgroundColor: theme.bg }}>
-          {subItems.map((item, i) => (
-            <TouchableOpacity
-              key={`${item.title}${i}`}
-              style={{
-                ...styles.row,
-                borderTopWidth: i !== 0 ? 0.5 : 0,
-                borderColor: theme.border
-              }}
-              onPress={item.action}
-              disabled={item.disabled}
-            >
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                {item.thumbIcon && (
-                  <View style={{ ...styles.thumbWrapper, backgroundColor: item.thumbBgColor }}>
-                    <Icon name={item.thumbIcon} size={18} color={item.thumbColor} />
-                  </View>
-                )}
-                {item.thumbImage && <Image source={typeof item.thumbImage === 'string' ? { uri: item.thumbImage } : item.thumbImage} style={{ ...styles.thumbImage }} />}
-                <Text style={{ fontSize: 16, color: theme.text }}>{item.title}</Text>
-              </View>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                {item.preview && <Text style={{ ...styles.previewText, color: theme.accent }}>{item.preview}</Text>}
-                <Icon name={item.icon} color={theme.icon} size={25} />
-              </View>
-            </TouchableOpacity>
-          ))}
+          {subItems.map((item, i) => {
+            const iconProp = React.isValidElement(item.thumbIcon)
+
+            return (
+              <TouchableOpacity
+                key={`${item.title}${i}`}
+                style={{
+                  ...styles.row,
+                  borderTopWidth: i !== 0 ? 0.5 : 0,
+                  borderColor: theme.border
+                }}
+                onPress={item.action}
+                disabled={item.disabled}
+              >
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  {item.thumbIcon && (
+                    <View style={{ ...styles.thumbWrapper, backgroundColor: item.thumbBgColor }}>
+                      {iconProp ? <>{item.thumbIcon}</> : <Icon name={item.thumbIcon} size={18} color={item.thumbColor} />}
+                    </View>
+                  )}
+                  {item.thumbImage && <Image source={typeof item.thumbImage === 'string' ? { uri: item.thumbImage } : item.thumbImage} style={{ ...styles.thumbImage }} />}
+                  <Text style={{ fontSize: 16, color: theme.text }}>{item.title}</Text>
+                </View>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  {item.preview && <Text style={{ ...styles.previewText, color: theme.accent }}>{item.preview}</Text>}
+                  <Icon name={item.icon} color={theme.icon} size={25} />
+                </View>
+              </TouchableOpacity>
+            )
+          })}
         </View>
       ))}
     </>

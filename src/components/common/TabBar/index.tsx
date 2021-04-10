@@ -56,7 +56,7 @@ export default function TabBar() {
 
   const currentIndex = routes.findIndex(r => r.name === current.name)
 
-  console.log('currentIndex', currentIndex)
+  // console.log('currentIndex', currentIndex)
 
   useEffect(() => {
     Animated.spring(switchAnim, {
