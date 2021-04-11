@@ -10,7 +10,7 @@ import Main from './src/components/main'
 import Onboard from './src/components/onboard'
 import { useStores, useTheme } from './src/store'
 import { instantiateRelay } from './src/api'
-import Loading from './src/components/common/Loading'
+import Splash from './src/components/common/Splash'
 import * as utils from './src/components/utils/utils'
 
 import { qrActions } from './src/qrActions'
@@ -90,8 +90,8 @@ export default function Wrap() {
   }, [])
 
   return useObserver(() => {
-    if (ui.ready && wrapReady) return <App /> // hydrated and checked for deeplinks!
-    return <Loading /> // full screen loading
+    // if (ui.ready && wrapReady) return <App /> // hydrated and checked for deeplinks!
+    return <Splash /> // full screen loading
   })
 }
 
