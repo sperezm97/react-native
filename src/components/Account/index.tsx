@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useObserver } from 'mobx-react-lite'
-import { StyleSheet, View, Text, TouchableOpacity, Image, ScrollView } from 'react-native'
+import { StyleSheet, View, Text, TouchableOpacity, Image, ScrollView, ActionSheetIOS } from 'react-native'
 import RNFetchBlob from 'rn-fetch-blob'
 import { useNavigation, useFocusEffect } from '@react-navigation/native'
 import { Portal, Dialog, Title } from 'react-native-paper'
@@ -8,10 +8,9 @@ import AntDesign from 'react-native-vector-icons/AntDesign'
 
 import { useStores, useTheme } from '../../store'
 import Header from './Header'
-import Cam from '../utils/cam'
-import ImgSrcDialog from '../utils/imgSrcDialog'
 import { usePicSrc } from '../utils/picSrc'
 import ActionMenu from '../common/ActionMenu'
+import ImageDialog from '../common/Dialogs/ImageDialog'
 import TabBar from '../common/TabBar'
 import Icon from '../common/Icon'
 import Form from '../form'
@@ -21,9 +20,8 @@ export default function Account() {
   const { user, contacts, meme } = useStores()
   const theme = useTheme()
   const [uploading, setUploading] = useState(false)
-  const [dialogOpen, setDialogOpen] = useState(false)
   const [userDialog, setUserDialog] = React.useState(false)
-  const [takingPhoto, setTakingPhoto] = useState(false)
+  const [imageDialog, setImageDialog] = useState(false)
   const [photo_url, setPhotoUrl] = useState('')
   const [saving, setSaving] = useState(false)
   const [avatar, setAvatar] = useState({
@@ -62,8 +60,6 @@ export default function Account() {
   )
 
   async function tookPic(img) {
-    setDialogOpen(false)
-    setTakingPhoto(false)
     setUploading(true)
     try {
       await upload(img.uri)
@@ -193,9 +189,9 @@ export default function Account() {
                   ...styles.userInfoContent
                 }}
               >
-                <TouchableOpacity onPress={() => setDialogOpen(true)} style={styles.imgWrap}>
+                <TouchableOpacity onPress={() => setImageDialog(true)} style={styles.imgWrap}>
                   <Image resizeMode='cover' source={imgURI ? { uri: imgURI } : avatar.newImage} style={{ ...styles.userImg, borderColor: theme.border }} />
-                  {uploading && <Text style={{ ...styles.uploadPercent, color: theme.white }}>{`${uploadPercent}%`}</Text>}
+                  {uploading && <Text style={{ ...styles.uploadPercent, color: theme.primary }}>{`${uploadPercent}%`}</Text>}
                   <View style={styles.imgIcon}>
                     <Icon name='PlusCircle' fill={theme.primary} color={theme.white} />
                   </View>
@@ -209,13 +205,7 @@ export default function Account() {
 
             <ActionMenu items={items} />
 
-            <ImgSrcDialog open={dialogOpen} onClose={() => setDialogOpen(false)} onPick={res => tookPic(res)} onChooseCam={() => setTakingPhoto(true)} />
-
-            {takingPhoto && (
-              <Portal>
-                <Cam onCancel={() => setTakingPhoto(false)} onSnap={pic => tookPic(pic)} />
-              </Portal>
-            )}
+            <ImageDialog visible={imageDialog} onCancel={() => setImageDialog(false)} onPick={tookPic} onSnap={tookPic} setImageDialog={setImageDialog} />
 
             <Portal>
               <Dialog visible={userDialog} onDismiss={() => setUserDialog(false)} style={{ backgroundColor: theme.bg }}>
@@ -272,7 +262,8 @@ const styles = StyleSheet.create({
     top: '45%',
     height: '100%',
     width: '100%',
-    textAlign: 'center'
+    textAlign: 'center',
+    fontWeight: '500'
   },
   imgIcon: {
     position: 'absolute',

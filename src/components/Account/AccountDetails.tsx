@@ -4,7 +4,7 @@ import { TextInput } from 'react-native-paper'
 
 import { useStores, useTheme } from '../../store'
 import BackHeader from '../common/BackHeader'
-import InputAccessoryView from '../common/InputAccessoryView'
+import InputAccessoryView from '../common/Accessories/InputAccessoryView'
 import * as schemas from '../form/schemas'
 import Form from '../form'
 

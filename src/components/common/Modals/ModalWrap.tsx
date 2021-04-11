@@ -6,7 +6,7 @@ import { useTheme } from '../../../store'
 
 export default function ModalWrap(props) {
   const theme = useTheme()
-  const { visible, onClose, noSwipe, swipeDirection, animationOutTiming, coverScreen, fullscreen, animationIn, animationOut, children } = props
+  const { visible, onClose, noSwipe, swipeDirection, animationInTiming, animationOutTiming, coverScreen, fullscreen, animationIn, animationOut, children } = props
 
   // const h = Dimensions.get('screen').height - headerHeight
 
@@ -17,8 +17,10 @@ export default function ModalWrap(props) {
       onSwipeComplete={() => onClose()}
       swipeDirection={noSwipe ? null : swipeDirection}
       onBackButtonPress={() => onClose()}
+      hasBackdrop={fullscreen ? false : true}
       animationIn={animationIn}
       animationOut={animationOut}
+      animationInTiming={animationInTiming}
       animationOutTiming={animationOutTiming}
       propagateSwipe={props.propagateSwipe ? true : false}
       swipeThreshold={20}
@@ -33,7 +35,8 @@ export default function ModalWrap(props) {
 }
 
 ModalWrap.defaultProps = {
-  animationOutTiming: 400,
+  animationInTiming: 500,
+  animationOutTiming: 500,
   animationIn: 'slideInUp',
   animationOut: 'slideOutDown',
   swipeDirection: 'down',
