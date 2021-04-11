@@ -213,9 +213,9 @@ export default function Account() {
                 <Dialog.Content>
                   <Form
                     nopad
-                    displayOnly
                     schema={me}
                     loading={saving}
+                    buttonMode='text'
                     buttonText='Save'
                     initialValues={{
                       alias: user.alias

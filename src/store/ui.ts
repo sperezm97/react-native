@@ -46,9 +46,19 @@ export class UiStore {
     this.qrModal = b
   }
 
-  @observable addFriendModal: boolean = false
-  @action setAddFriendModal(b) {
-    this.addFriendModal = b
+  @observable addFriendDialog: boolean = false
+  @action setAddFriendDialog(b) {
+    this.addFriendDialog = b
+  }
+
+  @observable inviteFriendModal: boolean = false
+  @action setInviteFriendModal(b) {
+    this.inviteFriendModal = b
+  }
+
+  @observable addContactModal: boolean = false
+  @action setAddContactModal(b) {
+    this.addContactModal = b
   }
 
   @observable subModalParams: { [k: string]: any } = null
@@ -159,11 +169,6 @@ export class UiStore {
     this.viewContact = c
   }
 
-  @observable paymentHistory: boolean
-  @action setPaymentHistory(b: boolean) {
-    this.paymentHistory = b
-  }
-
   @observable rawInvoiceModal: boolean = false
   @observable rawInvoiceModalParams: { [k: string]: string } = null
   @action setRawInvoiceModal(params) {
@@ -228,11 +233,6 @@ export class UiStore {
   @observable oauthParams: { [k: string]: any } = null
   @action setOauthParams(obj: { [k: string]: any }) {
     this.oauthParams = obj
-  }
-
-  @observable supportModal: boolean = false
-  @action setSupportModal(b: boolean) {
-    this.supportModal = b
   }
 
   @observable connected: boolean = false

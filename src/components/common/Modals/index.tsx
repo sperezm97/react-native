@@ -3,6 +3,8 @@ import { useObserver } from 'mobx-react-lite'
 
 import PinCode from './PinCode'
 import ContactSubscribe from './ContactSubscribe'
+import AddContact from './AddContact'
+import InviteNewUser from './InviteNewUser'
 
 export default function Modals() {
   return useObserver(() => {
@@ -10,6 +12,8 @@ export default function Modals() {
       <>
         <PinCode />
         <ContactSubscribe />
+        <AddContact />
+        <InviteNewUser />
       </>
     )
   })

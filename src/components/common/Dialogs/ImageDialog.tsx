@@ -23,7 +23,7 @@ export default function ImageDialog({ visible, onCancel, onSnap, onPick, setImag
     )
   }
 
-  const actionItems = [
+  const items = [
     {
       id: 1,
       label: 'Camera',
@@ -50,7 +50,7 @@ export default function ImageDialog({ visible, onCancel, onSnap, onPick, setImag
 
   return (
     <>
-      <ActionSheet visible={visible} items={actionItems} onCancel={onCancel} />
+      <ActionSheet visible={visible} items={items} onCancel={onCancel} />
       <Camera visible={cameraOpen} onSnap={handleOnSnap} onCancel={() => setCameraOpen(false)} />
     </>
   )

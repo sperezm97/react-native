@@ -18,6 +18,8 @@ export default function QrInput({ name, label, required, handleChange, handleBlu
     setScanning(false)
   }
 
+  console.log('scanning', scanning)
+
   let lab = `${label.en}${required ? ' *' : ''}`
   if (displayOnly) lab = label.en
 
@@ -28,7 +30,7 @@ export default function QrInput({ name, label, required, handleChange, handleBlu
 
   return (
     <View style={{ ...styles.wrap }}>
-      <Text style={{ marginBottom: 12 }}>{lab}</Text>
+      <Text style={{ marginBottom: 16, color: theme.text }}>{lab}</Text>
       <View style={{ ...styles.inputWrap }}>
         {displayOnly ? (
           <View
@@ -59,9 +61,9 @@ export default function QrInput({ name, label, required, handleChange, handleBlu
       </View>
 
       {scanning && !displayOnly && (
-        <Portal>
+        <Portal.Host>
           <QR onCancel={() => setScanning(false)} onScan={data => scan(data)} showPaster={false} />
-        </Portal>
+        </Portal.Host>
       )}
 
       <Portal>

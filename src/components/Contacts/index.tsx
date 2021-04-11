@@ -13,7 +13,7 @@ export default function Contacts() {
   const { ui } = useStores()
   const theme = useTheme()
 
-  const setAddFriendModalHandler = () => ui.setAddFriendModal(true)
+  const setAddFriendModalHandler = () => ui.setAddFriendDialog(true)
   const onChangeTextHandler = (txt: string) => ui.setContactsSearchTerm(txt)
 
   const AddContact = <IconButton icon={({ size, color }) => <AntDesign name='adduser' color={color} size={size} />} color={theme.primary} size={22} onPress={setAddFriendModalHandler} />

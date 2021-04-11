@@ -42,7 +42,7 @@ export default function ChatList() {
     return <ChatRow key={chatID} {...item} />
   }
 
-  const setAddFriendModalHandler = () => ui.setAddFriendModal(true)
+  const setAddFriendModalHandler = () => ui.setAddFriendDialog(true)
   const setNewGroupModalHandler = () => ui.setNewGroupModal(true)
 
   const footerComponent: any = () => (

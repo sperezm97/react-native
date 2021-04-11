@@ -90,7 +90,7 @@ export default function Wrap() {
   }, [])
 
   return useObserver(() => {
-    // if (ui.ready && wrapReady) return <App /> // hydrated and checked for deeplinks!
+    if (ui.ready && wrapReady) return <App /> // hydrated and checked for deeplinks!
     return <Splash /> // full screen loading
   })
 }
@@ -147,7 +147,7 @@ function App() {
   }
 
   return useObserver(() => {
-    if (loading) return <Loading />
+    if (loading) return <Splash />
     if (signedUp && !pinned) {
       // checking if the pin was entered recently
       return (

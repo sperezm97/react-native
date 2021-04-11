@@ -9,6 +9,7 @@ import Button from '../common/Button'
 
 export default function Form(props) {
   if (!props.schema) return <Text>please provide schema</Text>
+
   return (
     <Formik
       initialValues={props.initialValues || {}}
@@ -20,7 +21,7 @@ export default function Form(props) {
       {({ handleChange, handleBlur, handleSubmit, values, setFieldValue, errors, dirty, isValid }) => {
         return (
           <View style={styles.wrap}>
-            <View style={{ ...styles.topper, padding: props.nopad ? 0 : 25 }}>
+            <View style={{ padding: props.nopad ? 0 : 25 }}>
               {props.schema.map(item => {
                 const readOnly = props.readOnlyFields && props.readOnlyFields.includes(item.name)
                 return (
@@ -34,18 +35,26 @@ export default function Form(props) {
                     handleBlur={handleBlur}
                     setValue={data => setFieldValue(item.name, data)}
                     error={errors[item.name]}
+                    numberOfLines={item.numberOfLines}
                   />
                 )
               })}
             </View>
+
             {!props.displayOnly && (
-              <View style={{ ...styles.buttonWrap, padding: props.nopad ? 0 : 25 }}>
-                <Button mode='contained' accessibilityLabel={'form-button'} onPress={handleSubmit} disabled={!props.forceEnable && (!dirty || !isValid)} style={styles.button} loading={props.loading}>
+              <Action type={props.actionType} nopad={props.nopad} rowContent={props.rowContent}>
+                <Button
+                  mode={props.buttonMode}
+                  accessibilityLabel={props.buttonAccessibilityLabel || 'form-button'}
+                  onPress={handleSubmit}
+                  disabled={!props.forceEnable && (!dirty || !isValid)}
+                  style={{ ...styles.button, ...props.buttonStyles }}
+                  loading={props.loading}
+                >
                   {props.buttonText || 'Submit'}
                 </Button>
-              </View>
+              </Action>
             )}
-            {props.action && <Action type={props.actionType} onSave={handleSubmit} loading={props.loading} disabled={!props.forceEnable && (!dirty || !isValid)} accessibilityLabel={'form-button'} />}
           </View>
         )
       }}
@@ -53,16 +62,27 @@ export default function Form(props) {
   )
 }
 
-function Action(props) {
-  console.log('props', props.type)
+function Action({ type, nopad, rowContent, children }) {
+  switch (type) {
+    case 'Wide':
+      return <View style={{ padding: nopad ? 0 : 25 }}>{children}</View>
+    case 'Row':
+      return (
+        <View style={{ ...styles.rowWrap, padding: nopad ? 0 : 25 }}>
+          {rowContent}
+          {children}
+        </View>
+      )
+    case 'Dialog':
+      return <Dialog.Actions>{children}</Dialog.Actions>
+    default:
+      break
+  }
+}
 
-  return (
-    <Dialog.Actions>
-      <Button mode='text' btnHeight={40} onPress={props.onSave} loading={props.loading} disabled={props.disabled} accessibilityLabel={'form-button'}>
-        Save
-      </Button>
-    </Dialog.Actions>
-  )
+Form.defaultProps = {
+  actionType: 'Wide',
+  buttonMode: 'contained'
 }
 
 function validator(config) {
@@ -76,37 +96,15 @@ function validator(config) {
 }
 
 const styles = StyleSheet.create({
-  wrap: {
-    // flex: 1,
-    // width: '100%',
-    // height: '100%',
-    // justifyContent: 'space-between'
-    // position: 'relative'
-    // minHeight:420
+  wrap: {},
+  button: {},
+  rowWrap: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
   },
-  topper: {
-    // width: '100%',
-    // flex: 1,
-    // paddingBottom: 75,
-    // minHeight: 100
-  },
-  buttonWrap: {
-    // width: '100%'
-    // maxHeight: 60
-    // flexDirection: 'row-reverse',
-    // justifyContent: 'center'
-    // zIndex: 1000,
-    // position: 'absolute',
-    // bottom: 10,
-    // left: 0,
-    // right: 0
-  },
-  button: {
-    // borderRadius: 30,
-    // height: 60,
-    // display: 'flex',
-    // justifyContent: 'center'
-    // zIndex: 999,
-    // position: 'relative'
+  rightButton: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end'
   }
 })

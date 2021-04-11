@@ -30,7 +30,7 @@ export class ThemeStore {
     this.selected = d ? '#3b4681' : '#ddddff'
     this.deep = d ? '#292c33' : '#ccc'
     this.primary = d ? '#0067ff' : '#0067ff'
-    this.secondary = d ? '#131c27' : '#055deb'
+    this.secondary = d ? '#131c27' : '#0fb17d'
     this.gradient = d ? '#212b35' : '#4889e8'
   }
 
@@ -48,7 +48,8 @@ export class ThemeStore {
   @observable selected: string = '#ddddff'
   @observable deep: string = '#ccc'
   @observable primary: string = '#0067ff'
-  @observable secondary: string = '#055deb'
+  @observable secondary: string = '#0fb17d'
+  // @observable secondary: string = '#055deb'
   @observable white: string = '#fff'
   @observable lightGrey: string = '#f5f6f8'
   @observable grey: string = '#d0d0d0'

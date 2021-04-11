@@ -7,7 +7,7 @@ const PRIMARY_COLOR = 'rgb(0,98,255)'
 const WHITE = '#ffffff'
 const BORDER_COLOR = '#DBDBDB'
 
-const ActionSheet = props => {
+export default function ActionSheet(props) {
   const { visible, items } = props
   const actionSheetItems = [
     ...items,
@@ -107,5 +107,3 @@ ActionSheet.defaultProps = {
   onCancel: () => {},
   actionTextColor: null
 }
-
-export default ActionSheet

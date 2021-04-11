@@ -102,8 +102,7 @@ export default function EditContact({ route }) {
             contact
               ? {
                   alias: contact.alias,
-                  public_key: contact.public_key,
-                  photo: uri || ''
+                  public_key: contact.public_key
                 }
               : {}
           }

@@ -59,6 +59,23 @@ const pubKey = [
     validator: Yup.string().required(rq)
   }
 ]
+const inviteFriend = [
+  {
+    name: 'nickname',
+    type: 'text',
+    label: { en: 'Nickname', es: 'Nombre' },
+    required: true,
+    validator: Yup.string().required(rq)
+  },
+  {
+    name: 'welcome_message',
+    type: 'text',
+    label: { en: 'Welcome Message', es: 'Nombre' },
+    required: false,
+    numberOfLines: 3,
+    multiline: true
+  }
+]
 
 const subscribe = [
   {
@@ -180,7 +197,7 @@ const tribe = [
   }
 ]
 
-export { contact, me, pubKey, tribe, subscribe }
+export { contact, me, pubKey, tribe, subscribe, inviteFriend }
 
 function emptyStringToNull(value, originalValue) {
   if (typeof originalValue === 'string' && originalValue === '') {

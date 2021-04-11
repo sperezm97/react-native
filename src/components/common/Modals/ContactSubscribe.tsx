@@ -20,10 +20,6 @@ export default function ContactSubscribe() {
 
   const contact = ui.contactSubscribeParams
 
-  function close() {
-    ui.setContactSubscribeModal(false, null)
-  }
-
   function chatForContact() {
     const cfc = chats.chats.find(c => {
       return c.type === conversation && c.contact_ids.includes(contact.id)
@@ -85,8 +81,12 @@ export default function ContactSubscribe() {
     setLoading(false)
   }
 
+  function close() {
+    ui.setContactSubscribeModal(false, null)
+  }
+
   return useObserver(() => (
-    <ModalWrap onClose={close} visible={ui.contactSubscribeModal} nopad animationIn={'slideInRight'} animationOut={'slideOutRight'} swipeDirection='right'>
+    <ModalWrap onClose={close} visible={ui.contactSubscribeModal} nopad animationIn={'slideInRight'} animationOut={'slideOutRight'} swipeDirection='right' hasBackdrop={false}>
       <ModalHeader title='Recurring' onClose={close} leftArrow />
 
       <View style={{ flex: 1 }}>
