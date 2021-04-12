@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { StyleSheet, View, BackHandler, Modal } from 'react-native'
-import { TextInput, Button, Portal } from 'react-native-paper'
+import { TextInput, Button } from 'react-native-paper'
 
-import { useTheme } from '../../store'
-import Header from '../modals/modalHeader'
-import Scanner from './scanner'
+import { useTheme } from '../../../store'
+import ModalHeader from '../Modals/ModalHeader'
+import Scanner from './Scanner'
 
 export default function QR({ visible, onCancel, onScan, showPaster }) {
   const theme = useTheme()
@@ -39,10 +39,9 @@ export default function QR({ visible, onCancel, onScan, showPaster }) {
 
   return (
     <Modal visible={visible} animationType='slide' presentationStyle='pageSheet'>
-      <View style={styles.wrap}>
-        {/* <Header title='Scan QR Code' onClose={() => onCancel()} background={theme.main} /> */}
-        <View style={{ ...styles.content }}></View>
-        <Scanner scanned={scanned ? true : false} handleBarCodeScanned={handleBarCodeScanned} smaller />
+      <ModalHeader title='Scan QR Code' onClose={() => onCancel()} />
+      <View style={{ ...styles.content }}>
+        <Scanner scanned={scanned ? true : false} handleBarCodeScanned={handleBarCodeScanned} />
         {showPaster && (
           <View style={{ ...styles.bottom, backgroundColor: theme.main }}>
             <View style={styles.textInputWrap}>
@@ -73,26 +72,8 @@ export default function QR({ visible, onCancel, onScan, showPaster }) {
 }
 
 const styles = StyleSheet.create({
-  wrap: {
-    flex: 1
-    // flexDirection: 'column',
-    // justifyContent: 'flex-start',
-    // position: 'relative',
-    // borderTopLeftRadius: 20,
-    // borderTopRightRadius: 20,
-    // overflow: 'hidden',
-    // width: '100%',
-    // backgroundColor: 'black'
-  },
   content: {
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
-    position: 'relative',
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    overflow: 'hidden',
-    width: '100%',
-    backgroundColor: 'black'
+    flex: 1
   },
   bottom: {
     width: '100%',

@@ -13,7 +13,6 @@ import Oauth from './oauth'
 import Subscribe from './subscribe'
 import ShareTribe from './shareTribe'
 import Redeem from './redeem'
-import AddSats from './addSats'
 import ImageViewer from './imgViewer'
 import VideoViewer from './vidViewer'
 
@@ -42,7 +41,6 @@ export default function Modals() {
         <ConfirmPayInvoice visible={showConfirmPayInvoice} />
         <RawInvoiceModal visible={showRawInvoiceModal} />
         <NewGroupModal visible={showNewGroupModal} />
-        <AddSats visible={showAddSats} />
         <Oauth visible={showOauth} />
         <Subscribe visible={showSubModal} />
         <GroupModal visible={ui.groupModal} />

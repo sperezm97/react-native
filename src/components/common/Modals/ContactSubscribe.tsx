@@ -88,7 +88,6 @@ export default function ContactSubscribe() {
   return useObserver(() => (
     <ModalWrap onClose={close} visible={ui.contactSubscribeModal} nopad animationIn={'slideInRight'} animationOut={'slideOutRight'} swipeDirection='right' hasBackdrop={false}>
       <ModalHeader title='Recurring' onClose={close} leftArrow />
-
       <View style={{ flex: 1 }}>
         <ScrollView style={styles.scroller} contentContainerStyle={styles.container}>
           <Form

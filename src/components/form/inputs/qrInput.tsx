@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
-import { IconButton, TextInput, Portal } from 'react-native-paper'
+import { IconButton, TextInput } from 'react-native-paper'
 import Clipboard from '@react-native-community/clipboard'
 import Toast from 'react-native-simple-toast'
 
 import { useTheme } from '../../../store'
 import { TOAST_DURATION } from '../../../constants'
-import QR from '../../utils/qr'
-import PubKey from '../../modals/pubkey'
+import QR from '../../common/Accessories/QR'
+import PublicKey from '../../common/Modals/PublicKey'
 
 export default function QrInput({ name, label, required, handleChange, handleBlur, setValue, value, displayOnly, accessibilityLabel }) {
   const theme = useTheme()
@@ -18,8 +18,6 @@ export default function QrInput({ name, label, required, handleChange, handleBlu
     setScanning(false)
   }
 
-  console.log('scanning', scanning)
-
   let lab = `${label.en}${required ? ' *' : ''}`
   if (displayOnly) lab = label.en
 
@@ -29,7 +27,7 @@ export default function QrInput({ name, label, required, handleChange, handleBlu
   }
 
   return (
-    <View style={{ ...styles.wrap }}>
+    <View>
       <Text style={{ marginBottom: 16, color: theme.text }}>{lab}</Text>
       <View style={{ ...styles.inputWrap }}>
         {displayOnly ? (
@@ -54,29 +52,21 @@ export default function QrInput({ name, label, required, handleChange, handleBlu
             value={value}
             style={{ ...styles.inputStyles, backgroundColor: theme.main }}
             placeholderTextColor={theme.subtitle}
+            underlineColor={theme.border}
           />
         )}
 
-        <IconButton icon='qrcode-scan' color={theme.primary} size={23} style={{ width: '10%' }} onPress={() => setScanning(true)} />
+        <IconButton icon={displayOnly ? 'qrcode-scan' : 'scan-helper'} color={theme.primary} size={23} style={{ width: '10%' }} onPress={() => setScanning(true)} />
       </View>
 
-      {scanning && !displayOnly && (
-        <Portal.Host>
-          <QR onCancel={() => setScanning(false)} onScan={data => scan(data)} showPaster={false} />
-        </Portal.Host>
-      )}
+      <QR visible={scanning && !displayOnly} onCancel={() => setScanning(false)} onScan={data => scan(data)} showPaster={false} />
 
-      <Portal>
-        <PubKey pubkey={value} visible={scanning && displayOnly} close={() => setScanning(false)} />
-      </Portal>
+      <PublicKey pubkey={value} visible={scanning && displayOnly} close={() => setScanning(false)} />
     </View>
   )
 }
 
 const styles = StyleSheet.create({
-  wrap: {
-    // flex: 1
-  },
   inputWrap: {
     display: 'flex',
     flexDirection: 'row',

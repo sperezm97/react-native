@@ -34,8 +34,13 @@ export default function Menu(props) {
       }}
       hasBackdrop={hasBackdrop}
       onSwipeComplete={onCancel}
+      onBackdropPress={onCancel}
       swipeDirection={swipeDirection}
     >
+      <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+        <View style={styles.headLine} />
+      </View>
+
       <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
         {actionItems.map((item, i) => {
           const iconProp = React.isValidElement(item.thumbIcon)
@@ -114,5 +119,12 @@ const styles = StyleSheet.create({
     height: 70,
     width: 70,
     marginRight: 20
+  },
+  headLine: {
+    height: 6,
+    width: 55,
+    borderRadius: 5,
+    marginBottom: 5,
+    backgroundColor: '#eaeaea'
   }
 })

@@ -1,27 +1,18 @@
 import React from 'react'
 import { useObserver } from 'mobx-react-lite'
-import { View, Text, StyleSheet } from 'react-native'
-import { Portal } from 'react-native-paper'
-import QRCode from '../utils/qrcode'
-import Header from './modalHeader'
+import { StyleSheet, View, Text } from 'react-native'
 import Share from 'react-native-share'
 import Clipboard from '@react-native-community/clipboard'
 import Toast from 'react-native-simple-toast'
 
-import { useTheme } from '../../store'
-import { TOAST_DURATION } from '../../constants'
-import ModalWrap from './modalWrap'
-import Button from '../common/Button'
+import { useTheme } from '../../../store'
+import { TOAST_DURATION } from '../../../constants'
+import ModalWrap from './ModalWrap'
+import ModalHeader from './ModalHeader'
+import QRCode from '../../utils/qrcode'
+import Button from '../Button'
 
-export default function PubKeyWrap({ visible, pubkey, close }) {
-  return (
-    <ModalWrap onClose={close} visible={visible}>
-      {visible && <PubKey pubkey={pubkey} close={close} />}
-    </ModalWrap>
-  )
-}
-
-function PubKey({ pubkey, close }) {
+export default function PubKey({ visible, pubkey, close }) {
   const theme = useTheme()
 
   function copy() {
@@ -36,8 +27,8 @@ function PubKey({ pubkey, close }) {
   }
 
   return useObserver(() => (
-    <Portal.Host>
-      <Header title='Public Key' onClose={close} />
+    <ModalWrap onClose={close} visible={visible}>
+      <ModalHeader title='Public Key' onClose={close} />
       <View style={styles.qrWrap}>
         <QRCode value={pubkey} size={720} />
       </View>
@@ -50,7 +41,7 @@ function PubKey({ pubkey, close }) {
           Copy
         </Button>
       </View>
-    </Portal.Host>
+    </ModalWrap>
   ))
 }
 
