@@ -10,7 +10,7 @@ export default function Header(props) {
   return (
     <View style={{ ...styles.header, ...(props.background && { backgroundColor: props.background }) }}>
       <View style={styles.headerLefty}>{leftArrow && <IconButton icon='arrow-left' color={theme.icon} size={22} style={{ marginRight: 14, marginTop: 8 }} onPress={() => onClose()} />}</View>
-      <Text style={{ ...styles.headerTitle, color: theme.title }}>{title}</Text>
+      <Text style={{ ...styles.headerTitle, color: theme.text }}>{title}</Text>
       <View style={styles.headerLefty}>{!leftArrow && <IconButton icon='close' color={theme.icon} size={22} style={{ marginRight: 14, marginTop: 8 }} onPress={() => onClose()} />}</View>
     </View>
   )

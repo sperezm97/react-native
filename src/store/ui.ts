@@ -46,9 +46,19 @@ export class UiStore {
     this.qrModal = b
   }
 
-  @observable addFriendModal: boolean = false
-  @action setAddFriendModal(b) {
-    this.addFriendModal = b
+  @observable addFriendDialog: boolean = false
+  @action setAddFriendDialog(b) {
+    this.addFriendDialog = b
+  }
+
+  @observable inviteFriendModal: boolean = false
+  @action setInviteFriendModal(b) {
+    this.inviteFriendModal = b
+  }
+
+  @observable addContactModal: boolean = false
+  @action setAddContactModal(b) {
+    this.addContactModal = b
   }
 
   @observable subModalParams: { [k: string]: any } = null
@@ -61,16 +71,17 @@ export class UiStore {
     this.redeemModalParams = o
   }
 
-  @observable editContactModal: boolean = false
-  @observable editContactParams: Contact
-  @action setEditContactModal(p: Contact) {
-    this.editContactModal = true
-    this.editContactParams = p
+  @observable contactSubscribeModal: boolean = false
+  @observable contactSubscribeParams: Contact
+  @action setContactSubscribeModal(b: boolean, p: Contact) {
+    this.contactSubscribeModal = b
+    this.contactSubscribeParams = p
   }
+
   @action closeEditContactModal() {
-    this.editContactModal = false
+    this.contactSubscribeModal = false
     setTimeout(() => {
-      this.editContactParams = null
+      this.contactSubscribeParams = null
     }, 500)
   }
 
@@ -158,11 +169,6 @@ export class UiStore {
     this.viewContact = c
   }
 
-  @observable paymentHistory: boolean
-  @action setPaymentHistory(b: boolean) {
-    this.paymentHistory = b
-  }
-
   @observable rawInvoiceModal: boolean = false
   @observable rawInvoiceModalParams: { [k: string]: string } = null
   @action setRawInvoiceModal(params) {
@@ -229,11 +235,6 @@ export class UiStore {
     this.oauthParams = obj
   }
 
-  @observable supportModal: boolean = false
-  @action setSupportModal(b: boolean) {
-    this.supportModal = b
-  }
-
   @observable connected: boolean = false
   @action setConnected(b: boolean) {
     this.connected = b
@@ -292,6 +293,13 @@ export class UiStore {
   @observable paymentRequest: boolean
   @action setPaymentRequest(b: boolean) {
     this.paymentRequest = b
+  }
+
+  @observable pinCodeModal: boolean = false
+  @observable pinCodeParams: { [k: string]: string } = null
+  @action setPinCodeModal(b, params) {
+    this.pinCodeModal = b
+    this.pinCodeParams = params
   }
 }
 

@@ -56,12 +56,26 @@ export default function Main({ contact, loading, confirmOrContinue, contactless 
 
       <View style={styles.amtWrap}>
         <View style={styles.amtInnerWrap}>
-          <Text style={{ ...styles.amt, color: theme.title }}>{amt}</Text>
-          <Text style={styles.sat}>sat</Text>
+          <Text style={{ ...styles.amt, color: theme.text }}>{amt}</Text>
+          <Text style={{ ...styles.sat, color: theme.subtitle }}>sat</Text>
         </View>
       </View>
 
       <View style={styles.bottom}>
+        {ui.payMode === 'invoice' && (
+          <View style={styles.memoWrap}>
+            <TextInput
+              value={text}
+              placeholder='Add Message'
+              onChangeText={v => setText(v)}
+              style={{ ...styles.input, backgroundColor: theme.bg }}
+              underlineColor={theme.border}
+              onFocus={() => setInputFocused(true)}
+              onBlur={() => setInputFocused(false)}
+            />
+          </View>
+        )}
+        <NumKey onKeyPress={v => go(v)} onBackspace={() => backspace()} squish />
         <View style={styles.confirmWrap}>
           {amt !== '0' && (
             <Button style={{ ...styles.confirm }} loading={loading} onPress={() => confirmOrContinue(parseInt(amt), text)}>
@@ -69,22 +83,6 @@ export default function Main({ contact, loading, confirmOrContinue, contactless 
             </Button>
           )}
         </View>
-
-        <NumKey onKeyPress={v => go(v)} onBackspace={() => backspace()} squish />
-
-        {ui.payMode === 'invoice' && (
-          <View style={styles.memoWrap}>
-            <TextInput
-              value={text}
-              placeholder='Add Message'
-              // mode='flat'
-              onChangeText={v => setText(v)}
-              style={{ ...styles.input, backgroundColor: theme.bg }}
-              onFocus={() => setInputFocused(true)}
-              onBlur={() => setInputFocused(false)}
-            />
-          </View>
-        )}
       </View>
     </View>
   )
@@ -134,15 +132,14 @@ const styles = StyleSheet.create({
   sat: {
     position: 'absolute',
     right: 25,
-    fontSize: 23,
-    color: '#ccc'
+    fontSize: 23
   },
   confirmWrap: {
     width: '100%',
     display: 'flex',
     alignItems: 'center',
     height: 80,
-    marginTop: 12
+    marginTop: 14
   },
   confirm: {
     height: 45,
@@ -157,20 +154,19 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 10
+    marginTop: 14,
+    marginBottom: 14
   },
   input: {
-    height: 42,
-    maxHeight: 42,
+    height: 50,
+    maxHeight: 50,
     flex: 1,
-    marginBottom: 10,
     textAlign: 'center',
-    fontSize: 16
+    fontSize: 18
   },
   bottom: {
     width: '100%',
     flex: 1,
-    maxHeight: 390,
-    flexDirection: 'column-reverse'
+    maxHeight: 390
   }
 })

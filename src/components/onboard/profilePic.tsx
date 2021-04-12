@@ -51,7 +51,7 @@ export default function ProfilePic({ z, show, onDone, onBack }) {
 
       RNFetchBlob.fetch(
         'POST',
-        `http://${server.host}/public`,
+        `https://${server.host}/public`,
         {
           Authorization: `Bearer ${server.token}`,
           'Content-Type': 'multipart/form-data'
@@ -72,7 +72,7 @@ export default function ProfilePic({ z, show, onDone, onBack }) {
         .then(async resp => {
           let json = resp.json()
           if (json.muid) {
-            resolve(`http://${server.host}/public/${json.muid}`)
+            resolve(`https://${server.host}/public/${json.muid}`)
           }
           setUploading(false)
           return

@@ -44,10 +44,11 @@ export function instantiateRelay(ip: string, authToken?: string, connectedCallba
 export function composeAPI(host: string, authToken?: string) {
   let api = null
   if (authToken) {
-    api = new API(`{http://${host}/}`, 'Authorization', `Bearer ${authToken}`)
+    api = new API(`https://${host}/`, 'Authorization', `Bearer ${authToken}`)
   } else {
-    api = new API(`http://${host}/`)
+    api = new API(`https://${host}/`)
   }
+
   return api
 }
 

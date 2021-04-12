@@ -49,7 +49,12 @@ export default function Header({
 
     function clickTitle() {
       if (chat.type === conversation) {
-        if (contact) ui.setEditContactModal(contact)
+        if (contact)
+          navigation.navigate('Contacts', {
+            screen: 'Contact',
+            params: { contact }
+          })
+        // ui.setEditContactModal(contact)
       } else {
         ui.setGroupModal({ ...chat, ...tribeParams, pricePerMinute })
       }
@@ -71,7 +76,7 @@ export default function Header({
       requestAnimationFrame(() => {
         // msg.seeChat(chat.id)
         details.getBalance()
-        navigation.navigate('Home', { params: { rnd: Math.random() } })
+        navigation.navigate('Chats', { params: { rnd: Math.random() } })
       })
     }
 
@@ -103,7 +108,7 @@ export default function Header({
 
 const styles = StyleSheet.create({
   wrap: {
-    height: 60,
+    height: 64,
     width: '100%',
     elevation: 0,
     borderBottomWidth: 1,

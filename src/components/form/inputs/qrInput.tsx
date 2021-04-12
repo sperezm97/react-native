@@ -1,11 +1,13 @@
 import React, { useState } from 'react'
-import { IconButton, TextInput, Portal } from 'react-native-paper'
-import { View } from 'react-native'
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
+import { IconButton, TextInput } from 'react-native-paper'
+import Clipboard from '@react-native-community/clipboard'
+import Toast from 'react-native-simple-toast'
 
-import { inputStyles } from './shared'
-import QR from '../../utils/qr'
 import { useTheme } from '../../../store'
-import PubKey from '../../modals/pubkey'
+import { TOAST_DURATION } from '../../../constants'
+import QR from '../../common/Accessories/QR'
+import PublicKey from '../../common/Modals/PublicKey'
 
 export default function QrInput({ name, label, required, handleChange, handleBlur, setValue, value, displayOnly, accessibilityLabel }) {
   const theme = useTheme()
@@ -18,35 +20,69 @@ export default function QrInput({ name, label, required, handleChange, handleBlu
 
   let lab = `${label.en}${required ? ' *' : ''}`
   if (displayOnly) lab = label.en
+
+  function copyAddress(value) {
+    Clipboard.setString(value)
+    Toast.showWithGravity('Address copid to clipboard', TOAST_DURATION, Toast.CENTER)
+  }
+
   return (
-    <View style={{ ...inputStyles, ...styles.wrap }}>
-      <TextInput
-        accessibilityLabel={accessibilityLabel}
-        disabled={displayOnly}
-        label={lab}
-        onChangeText={handleChange(name)}
-        onBlur={handleBlur(name)}
-        value={value}
-        style={{ backgroundColor: theme.bg, paddingRight: 32 }}
-        placeholderTextColor={theme.subtitle}
-      />
-      <IconButton icon='qrcode-scan' color='#888' size={25} style={{ position: 'absolute', right: 0, top: 10 }} onPress={() => setScanning(true)} />
+    <View>
+      <Text style={{ marginBottom: 16, color: theme.text }}>{lab}</Text>
+      <View style={{ ...styles.inputWrap }}>
+        {displayOnly ? (
+          <View
+            style={{
+              ...styles.inputStyles,
+              backgroundColor: theme.main
+            }}
+          >
+            <TouchableOpacity onPress={() => copyAddress(value)}>
+              <Text numberOfLines={1} ellipsizeMode='tail' style={{ color: theme.placeholder }}>
+                {value}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <TextInput
+            accessibilityLabel={accessibilityLabel}
+            disabled={displayOnly}
+            onChangeText={handleChange(name)}
+            onBlur={handleBlur(name)}
+            value={value}
+            style={{ ...styles.inputStyles, backgroundColor: theme.main }}
+            placeholderTextColor={theme.subtitle}
+            underlineColor={theme.border}
+          />
+        )}
 
-      {scanning && !displayOnly && (
-        <Portal>
-          <QR onCancel={() => setScanning(false)} onScan={data => scan(data)} showPaster={false} />
-        </Portal>
-      )}
+        <IconButton icon={displayOnly ? 'qrcode-scan' : 'scan-helper'} color={theme.primary} size={23} style={{ width: '10%' }} onPress={() => setScanning(true)} />
+      </View>
 
-      <Portal>
-        <PubKey pubkey={value} visible={scanning && displayOnly} close={() => setScanning(false)} />
-      </Portal>
+      <QR visible={scanning && !displayOnly} onCancel={() => setScanning(false)} onScan={data => scan(data)} showPaster={false} />
+
+      <PublicKey pubkey={value} visible={scanning && displayOnly} close={() => setScanning(false)} />
     </View>
   )
 }
 
-const styles = {
-  wrap: {
-    flex: 1
+const styles = StyleSheet.create({
+  inputWrap: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 26
+  },
+  inputStyles: {
+    display: 'flex',
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 50,
+    width: '100%',
+    paddingLeft: 6,
+    paddingRight: 6
   }
-}
+})

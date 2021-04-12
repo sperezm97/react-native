@@ -395,6 +395,9 @@ class MsgStore {
         amount: amount,
         media_token: media_token
       }
+
+      console.log('v----', v)
+
       const r = await relay.post('purchase', v)
       console.log('r::::', r)
     } catch (e) {

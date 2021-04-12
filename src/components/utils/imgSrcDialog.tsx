@@ -1,9 +1,12 @@
 import React from 'react'
 import { Portal, Button, Dialog } from 'react-native-paper'
-// import ImagePicker from 'react-native-image-picker'
 import * as ImagePicker from 'react-native-image-picker'
 
+import { useTheme } from '../../store'
+
 export default function ImgSrcDialog({ open, onClose, onPick, onChooseCam }) {
+  const theme = useTheme()
+
   async function pickImage() {
     ImagePicker.launchImageLibrary(
       {
@@ -18,10 +21,11 @@ export default function ImgSrcDialog({ open, onClose, onPick, onChooseCam }) {
       }
     )
   }
+
   return (
     <Portal>
       <Dialog visible={open} style={{ bottom: 10 }} onDismiss={() => onClose()}>
-        <Dialog.Title>Choose Image Source</Dialog.Title>
+        <Dialog.Title style={{ color: theme.text }}>Choose Image Source</Dialog.Title>
         <Dialog.Actions style={{ justifyContent: 'space-between' }}>
           <Button icon='camera' onPress={() => onChooseCam()}>
             Camera

@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>N2N2</string>
+	<string>N2N2 (Staging)</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -26,10 +26,10 @@
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLName</key>
-			<string>n2n2.chat</string>
+			<string>staging.n2n2.chat</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>n2n2.chat</string>
+				<string>staging.n2n2.chat</string>
 			</array>
 		</dict>
 	</array>
@@ -97,6 +97,6 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
-	<false/>
+	<string>YES</string>
 </dict>
 </plist>

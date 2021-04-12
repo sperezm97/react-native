@@ -1,4 +1,5 @@
 import React from 'react'
+
 import TextInput from './textInput'
 import QrInput from './qrInput'
 import Photo from './photo'
@@ -8,7 +9,7 @@ import PhotoURI from './photoURI'
 import Radio from './radio'
 import MultiBox from './multiBox'
 
-export default function Input(props){
+export default function Input(props) {
   switch (props.type) {
     case 'text':
       return <TextInput {...props} />

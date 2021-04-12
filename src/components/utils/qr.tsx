@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, View, BackHandler } from 'react-native'
-import { TextInput, Button } from 'react-native-paper'
+import { StyleSheet, View, BackHandler, Modal } from 'react-native'
+import { TextInput, Button, Portal } from 'react-native-paper'
 
 import { useTheme } from '../../store'
 import Header from '../modals/modalHeader'
 import Scanner from './scanner'
 
-export default function QR({ onCancel, onScan, showPaster }) {
+export default function QR({ visible, onCancel, onScan, showPaster }) {
   const theme = useTheme()
   const [hasPermission, setHasPermission] = useState(null)
   const [scanned, setScanned] = useState(false)
@@ -38,40 +38,53 @@ export default function QR({ onCancel, onScan, showPaster }) {
   }
 
   return (
-    <View style={styles.wrap}>
-      <Header title='Scan QR Code' onClose={() => onCancel()} background={theme.main} />
-      <Scanner scanned={scanned ? true : false} handleBarCodeScanned={handleBarCodeScanned} smaller />
-      {showPaster && (
-        <View style={{ ...styles.bottom, backgroundColor: theme.main }}>
-          <View style={styles.textInputWrap}>
-            <TextInput value={text} onChangeText={e => setText(e)} label='Paste invoice or Sphinx code' mode='outlined' />
+    <Modal visible={visible} animationType='slide' presentationStyle='pageSheet'>
+      <View style={styles.wrap}>
+        {/* <Header title='Scan QR Code' onClose={() => onCancel()} background={theme.main} /> */}
+        <View style={{ ...styles.content }}></View>
+        <Scanner scanned={scanned ? true : false} handleBarCodeScanned={handleBarCodeScanned} smaller />
+        {showPaster && (
+          <View style={{ ...styles.bottom, backgroundColor: theme.main }}>
+            <View style={styles.textInputWrap}>
+              <TextInput value={text} onChangeText={e => setText(e)} label='Paste invoice or Sphinx code' mode='outlined' />
+            </View>
+            <View style={styles.confirmWrap}>
+              {(text ? true : false) && (
+                <Button
+                  style={styles.confirm}
+                  onPress={() =>
+                    handleBarCodeScanned({
+                      data: text,
+                      type: 'text'
+                    })
+                  }
+                  mode='contained'
+                  dark={true}
+                >
+                  CONFIRM
+                </Button>
+              )}
+            </View>
           </View>
-          <View style={styles.confirmWrap}>
-            {(text ? true : false) && (
-              <Button
-                style={styles.confirm}
-                onPress={() =>
-                  handleBarCodeScanned({
-                    data: text,
-                    type: 'text'
-                  })
-                }
-                mode='contained'
-                dark={true}
-              >
-                CONFIRM
-              </Button>
-            )}
-          </View>
-        </View>
-      )}
-    </View>
+        )}
+      </View>
+    </Modal>
   )
 }
 
 const styles = StyleSheet.create({
   wrap: {
-    flex: 1,
+    flex: 1
+    // flexDirection: 'column',
+    // justifyContent: 'flex-start',
+    // position: 'relative',
+    // borderTopLeftRadius: 20,
+    // borderTopRightRadius: 20,
+    // overflow: 'hidden',
+    // width: '100%',
+    // backgroundColor: 'black'
+  },
+  content: {
     flexDirection: 'column',
     justifyContent: 'flex-start',
     position: 'relative',

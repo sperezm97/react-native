@@ -45,8 +45,6 @@ export default function MediaMsg(props) {
       contact_id = chat.contact_ids && chat.contact_ids.find(cid => cid !== 1)
     }
 
-    console.log('chat.id,', chat.id)
-
     await msg.purchaseMedia({
       chat_id: chat.id,
       media_token,

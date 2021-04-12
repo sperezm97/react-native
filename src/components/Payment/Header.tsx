@@ -1,18 +1,18 @@
 import React from 'react'
-import { View, StyleSheet, Image, TouchableOpacity } from 'react-native'
+import { View, StyleSheet, TouchableOpacity, Text } from 'react-native'
 import { Appbar, IconButton, ActivityIndicator } from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native'
 import { useObserver } from 'mobx-react-lite'
-import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import Toast from 'react-native-simple-toast'
+import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 import { useStores, useTheme } from '../../store'
-import Balance from '../common/Balance'
 import Pushable from '../common/Pushable'
+import Button from '../common/Button'
 
 export default function Header() {
   const navigation = useNavigation()
-  const { details, ui } = useStores()
+  const { ui } = useStores()
   const theme = useTheme()
 
   const showStatusHandler = () => {
@@ -31,13 +31,19 @@ export default function Header() {
             </Pushable>
           </View>
           <View style={{ ...styles.flex, ...styles.right }}>
-            {ui.loadingHistory ? (
+            {/* {ui.loadingHistory ? (
               <ActivityIndicator animating={true} color={theme.grey} size={18} style={{}} />
             ) : (
-              <TouchableOpacity onPress={showStatusHandler} style={{ ...styles.status }}>
+              <TouchableOpacity onPress={showStatusHandler}>
                 <MaterialIcon name='lightning-bolt' size={20} color={ui.connected ? '#49ca97' : '#febd59'} />
               </TouchableOpacity>
-            )}
+            )} */}
+
+            <TouchableOpacity onPress={() => navigation.navigate('AddSats')}>
+              <Button mode='text' icon='plus' size='small'>
+                Add Sats
+              </Button>
+            </TouchableOpacity>
           </View>
         </View>
       </Appbar.Header>
@@ -60,18 +66,11 @@ const styles = StyleSheet.create({
   },
   left: {
     justifyContent: 'space-between',
-    width: 50
+    width: 50,
+    marginLeft: 0
   },
   right: {
-    marginRight: 12,
+    // marginRight: 12,
     justifyContent: 'flex-end'
-  },
-  brand: {
-    width: 65,
-    height: 65,
-    maxWidth: 65
-  },
-  status: {
-    width: 20
   }
 })

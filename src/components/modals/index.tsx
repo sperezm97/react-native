@@ -1,23 +1,18 @@
 import React from 'react'
 import { useObserver } from 'mobx-react-lite'
 
-import AddFriend from './addFriend'
 import Payment from './payment'
 import ConfirmPayInvoice from './confirmPayInvoice'
 import ShareInvite from './shareInvite'
 import RawInvoiceModal from './rawInvoiceModal'
 import { useStores } from '../../store'
 import NewGroupModal from './newGroupModal'
-import EditContactModal from './editContact'
 import GroupModal from './newGroupModal/groupInfo'
-import PaymentHistory from './paymentHistory'
 import JoinTribe from './joinTribe'
 import Oauth from './oauth'
-import Support from './support'
 import Subscribe from './subscribe'
 import ShareTribe from './shareTribe'
 import Redeem from './redeem'
-import AddSats from './addSats'
 import ImageViewer from './imgViewer'
 import VideoViewer from './vidViewer'
 
@@ -39,18 +34,13 @@ export default function Modals() {
 
     return (
       <>
-        <AddFriend visible={ui.addFriendModal} />
         <Payment visible={ui.showPayModal} />
         <JoinTribe visible={showJoinTribe} />
         <ShareTribe visible={showShareTribeUUID} />
-        <Support visible={ui.supportModal} />
         <ShareInvite visible={ui.shareInviteModal} />
         <ConfirmPayInvoice visible={showConfirmPayInvoice} />
         <RawInvoiceModal visible={showRawInvoiceModal} />
         <NewGroupModal visible={showNewGroupModal} />
-        <EditContactModal visible={ui.editContactModal} />
-        <AddSats visible={showAddSats} />
-        <PaymentHistory visible={ui.paymentHistory} />
         <Oauth visible={showOauth} />
         <Subscribe visible={showSubModal} />
         <GroupModal visible={ui.groupModal} />

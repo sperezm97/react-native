@@ -1,95 +1,110 @@
-import React, {useEffect} from 'react'
+import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import { Formik } from 'formik'
-import { Button } from 'react-native-paper'
-import Input from './inputs'
 import * as Yup from 'yup'
+import { Dialog } from 'react-native-paper'
+
+import Input from './inputs'
+import Button from '../common/Button'
 
 export default function Form(props) {
-  if(!props.schema) return <Text>please provide schema</Text>
+  if (!props.schema) return <Text>please provide schema</Text>
+
   return (
     <Formik
-      initialValues={props.initialValues||{}}
-      onSubmit={values=> {
+      initialValues={props.initialValues || {}}
+      onSubmit={values => {
         props.onSubmit(values)
       }}
       validationSchema={validator(props.schema)}
-      // validateOnChange={false}
-      >
+    >
       {({ handleChange, handleBlur, handleSubmit, values, setFieldValue, errors, dirty, isValid }) => {
-        // console.log('============================')
-        // console.log("VALUES",values)
-        // console.log("ERRORS",errors,isValid)
-        return (<View style={styles.wrap}>
-          <View style={{...styles.topper,padding:props.nopad?0:25}}>
-            {props.schema.map(item=>{
-              const readOnly = props.readOnlyFields && props.readOnlyFields.includes(item.name)
-              return <Input key={item.name} {...item} 
-                accessibilityLabel={`form-input-${item.name}`}
-                value={values[item.name]}
-                displayOnly={props.displayOnly||readOnly}
-                handleChange={handleChange} 
-                handleBlur={handleBlur} 
-                setValue={data=> setFieldValue(item.name,data)} 
-                error={errors[item.name]}
-              />
-            })}
+        return (
+          <View style={styles.wrap}>
+            <View style={{ padding: props.nopad ? 0 : 25 }}>
+              {props.schema.map(item => {
+                const readOnly = props.readOnlyFields && props.readOnlyFields.includes(item.name)
+                return (
+                  <Input
+                    key={item.name}
+                    {...item}
+                    accessibilityLabel={`form-input-${item.name}`}
+                    value={values[item.name]}
+                    displayOnly={props.displayOnly || readOnly}
+                    handleChange={handleChange}
+                    handleBlur={handleBlur}
+                    setValue={data => setFieldValue(item.name, data)}
+                    error={errors[item.name]}
+                    numberOfLines={item.numberOfLines}
+                  />
+                )
+              })}
+            </View>
+
+            {!props.displayOnly && (
+              <Action type={props.actionType} nopad={props.nopad} rowContent={props.rowContent}>
+                <Button
+                  mode={props.buttonMode}
+                  accessibilityLabel={props.buttonAccessibilityLabel || 'form-button'}
+                  onPress={handleSubmit}
+                  disabled={!props.forceEnable && (!dirty || !isValid)}
+                  style={{ ...styles.button, ...props.buttonStyles }}
+                  loading={props.loading}
+                >
+                  {props.buttonText || 'Submit'}
+                </Button>
+              </Action>
+            )}
           </View>
-          {/* <View style={{height:1,backgroundColor:'#ddd'}}></View> */}
-          {!props.displayOnly && <View style={styles.buttonWrap}>
-            <Button mode="contained"
-              accessibilityLabel={'form-button'}
-              onPress={handleSubmit} 
-              disabled={!props.forceEnable && (!dirty || !isValid)}
-              dark={true} style={styles.button} loading={props.loading}>
-              {props.buttonText||'Submit'}
-            </Button>
-          </View>}
-        </View>)
+        )
       }}
     </Formik>
   )
 }
 
-function validator(config){
+function Action({ type, nopad, rowContent, children }) {
+  switch (type) {
+    case 'Wide':
+      return <View style={{ padding: nopad ? 0 : 25 }}>{children}</View>
+    case 'Row':
+      return (
+        <View style={{ ...styles.rowWrap, padding: nopad ? 0 : 25 }}>
+          {rowContent}
+          {children}
+        </View>
+      )
+    case 'Dialog':
+      return <Dialog.Actions>{children}</Dialog.Actions>
+    default:
+      break
+  }
+}
+
+Form.defaultProps = {
+  actionType: 'Wide',
+  buttonMode: 'contained'
+}
+
+function validator(config) {
   const shape = {}
-  config.forEach((field)=>{
-    if(typeof field === 'object') {
+  config.forEach(field => {
+    if (typeof field === 'object') {
       shape[field.name] = field.validator
     }
   })
   return Yup.object().shape(shape)
 }
 
-const styles=StyleSheet.create({
-  wrap:{
-    flex:1,
-    width:'100%',height:'100%',
-    justifyContent:'space-between',
-    position:'relative',
-    // minHeight:420
+const styles = StyleSheet.create({
+  wrap: {},
+  button: {},
+  rowWrap: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
   },
-  topper:{
-    width:'100%',
-    flex:1,
-    paddingBottom:75,
-  },
-  buttonWrap:{
-    width:'100%',
-    maxHeight:60,
-    flexDirection:'row-reverse',
-    justifyContent:'center',
-    zIndex:1000,
-    position:'absolute',
-    bottom:10,left:0,right:0,
-  },
-  button:{
-    borderRadius:30,
-    width:'80%',
-    height:60,
-    display:'flex',
-    justifyContent:'center',
-    zIndex:999,
-    position:'relative',
+  rightButton: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end'
   }
 })
