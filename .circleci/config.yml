@@ -1,18 +1,22 @@
 ---
 jobs:
   production_ios:
-    working_directory: ~/production_ios/ios
+    working_directory: ~/production_ios
 
     macos:
       xcode: '12.4.0'
 
     steps:
-      - checkout:
-          path: ~/production_ios
+      - checkout
 
       - run:
           command: 'bundle install'
           name: Build
+
+      - run:
+          name: Update package.json file
+          command: |
+            sed -i 's/chat.n2n2.Chat.staging/chat.n2n2.Chat/g' package.json
 
       - run:
           name: Install yarn
@@ -20,30 +24,52 @@ jobs:
             curl -o- -L https://yarnpkg.com/install.sh | bash
             echo 'export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"' >> $BASH_ENV
 
-      - run:
-          name: Install node_modules
-          command: |
-            cd ..
-            yarn install && ls node_modules
-            ls -la
+      - restore_cache:
+          name: Restore Yarn Package Cache
+          keys:
+            - yarn-packages-{{ checksum "yarn.lock" }}
 
-      # - run:
-      #     name: Update .env file
-      #     command: |
-      #       cd ..
-      #       mv .env.production .env
+      - run:
+          name: Install Dependencies
+          command: |
+            yarn install --immutable
+
+      - save_cache:
+          name: Save Yarn Package Cache
+          key: yarn-packages-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/yarn
+
+      - run:
+          name: Update config file
+          command: |
+            cd src/config
+            mv index.ts index.staging.ts
+            mv index.production.ts index.ts
+
+      - run:
+          name: Update plist file
+          command: |
+            cd ios/Chat
+            mv Info.plist Info.staging.plist
+            mv Info.production.plist Info.plist
+
+      - run:
+          name: Update plist file
+          command: |
+            cd ios/Chat.xcodeproj
+            sed -i 's/chat.n2n2.Chat.staging/chat.n2n2.Chat/g' project.pbxproj
 
       - run:
           name: Install pods
           command: |
-            cd ../ios
+            cd ios  
             pod install
 
-      # - run:
-      #     name: Build
-      #     command: |
-      #       cd ..
-      #       bundle exec fastlane ios production_circle
+      - run:
+          name: Build
+          command: |
+            bundle exec fastlane ios upload_testflight_production --verbose
 
   staging_ios:
     working_directory: ~/staging_ios
@@ -80,152 +106,27 @@ jobs:
           paths:
             - ~/.cache/yarn
 
-      # - run:
-      #     name: Update .env file
-      #     command: |
-      #       cd ..
-      #       mv .env.staging .env
-      #       # mv .env.storybook .env
-
       - run:
           name: Install pods
           command: |
             cd ios  
             pod install
 
-      # - run:
-      #     name: Build
-      #     command: |
-      #       cd ..
-      #       bundle exec fastlane ios staging_circle
-
       - run:
           name: Build
           command: |
             bundle exec fastlane ios upload_testflight_staging --verbose
 
-  # production_android:
-  #   working_directory: ~/production_android/android
-
-  #   macos:
-  #     xcode: "10.2.1"
-
-  #   environment:
-  #     ANDROID_HOME: "/usr/local/share/android-sdk"
-
-  #   steps:
-  #     - checkout:
-  #         path: ~/production_android
-
-  #     - run:
-  #         command: "bundle install"
-  #         name: Build
-
-  #     - run:
-  #         name: Install Android Studio
-  #         command: cd .. && bash scripts/circle-install-android.sdk.sh
-
-  #     - run:
-  #         name: "Check current version of node"
-  #         command: |
-  #           which node
-  #           node -v
-
-  #     - run:
-  #         name: Install Android Studio
-  #         command: |
-  #           cd ..
-  #           mv android android.staging
-  #           mv android.production android
-
-  #     - run:
-  #         name: Install node_modules
-  #         command: cd .. && npm install && ls node_modules
-
-  #     - run:
-  #         command: "cd .. && bundle exec fastlane android production_beta_track_version_update"
-  #         name: "Get version and increment"
-
-  #     - run:
-  #         name: Gradle Build
-  #         command: ENVFILE=.env.production ./gradlew task build --debug --no-daemon --scan --max-workers=1 -PMYAPP_RELEASE_STORE_FILE=${MYAPP_RELEASE_STORE_FILE} -PMYAPP_RELEASE_STORE_PASSWORD=${MYAPP_RELEASE_STORE_PASSWORD} -PMYAPP_RELEASE_KEY_ALIAS=${MYAPP_RELEASE_KEY_ALIAS} -PMYAPP_RELEASE_KEY_PASSWORD=${MYAPP_RELEASE_KEY_PASSWORD} | grep .apk
-
-  #     - run:
-  #         name: Check build
-  #         command: cp app/build/outputs/apk/release/app-release.apk ../
-
-  #     - run:
-  #         command: "cd .. && bundle exec fastlane android production_beta_track_release build_path:app-release.apk"
-  #         name: Deploy to AppStore
-
-  # staging_android:
-  #   working_directory: ~/staging_android/android
-
-  #   macos:
-  #     xcode: "10.2.1"
-
-  #   environment:
-  #     ANDROID_HOME: "/usr/local/share/android-sdk"
-  #     BABEL_ENV: "development"
-
-  #   steps:
-  #     - checkout:
-  #         path: ~/staging_android
-
-  #     - run:
-  #         command: "bundle install"
-  #         name: Build
-
-  #     - run:
-  #         name: Install Android Studio
-  #         command: cd .. && bash scripts/circle-install-android.sdk.sh
-
-  #     - run:
-  #         name: "Check current version of node"
-  #         command: |
-  #           which node
-  #           node -v
-
-  #     - run:
-  #         name: Install node_modules
-  #         command: cd .. && npm install && ls node_modules
-
-  #     - run:
-  #         command: "cd .. && bundle exec fastlane android staging_beta_track_version_update"
-  #         name: "Get version and increment"
-
-  #     - run:
-  #         name: Gradle Build
-  #         command: ENVFILE=.env.staging ./gradlew task build --debug --no-daemon --scan --max-workers=1 -PMYAPP_RELEASE_STORE_FILE_STAGING=${MYAPP_RELEASE_STORE_FILE_STAGING} -PMYAPP_RELEASE_STORE_PASSWORD_STAGING=${MYAPP_RELEASE_STORE_PASSWORD_STAGING} -PMYAPP_RELEASE_KEY_ALIAS_STAGING=${MYAPP_RELEASE_KEY_ALIAS_STAGING} -PMYAPP_RELEASE_KEY_PASSWORD_STAGING=${MYAPP_RELEASE_KEY_PASSWORD_STAGING} | grep .apk
-
-  #     - run:
-  #         name: Check build
-  #         command: cp app/build/outputs/apk/release/app-release.apk ../
-
-  #     - run:
-  #         command: "cd .. && bundle exec fastlane android staging_beta_track_release build_path:app-release.apk"
-  #         name: Deploy to AppStore
-
 version: 2.1
 workflows:
   build_all:
     jobs:
-      # - production_android:
-      #     filters:
-      #       branches:
-      #         only: main
-
-      # - staging_android:
-      #     filters:
-      #       branches:
-      #         only: main
-
-      # # - production_ios:
-      # #     filters:
-      # #       branches:
-      # #         only: main
-
-      - staging_ios:
+      - production_ios:
           filters:
             branches:
-              only: staging
+              only: main
+
+      # - staging_ios:
+      #     filters:
+      #       branches:
+      #         only: staging
