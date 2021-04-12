@@ -40,10 +40,6 @@ platform :ios do
   #  )
  end
 
-  for_lane :upload_testflight_production do
-    app_identifier "chat.n2n2.Chat" 
-  end
-
  desc "Upload to Testflight (Production)"
  lane :upload_testflight_production do  
 
