@@ -16,7 +16,7 @@ jobs:
       - run:
           name: Update package.json file
           command: |
-            sed -i 's/chat.n2n2.Chat.staging/chat.n2n2.Chat/g' package.json
+            sed -i '' 's/chat.n2n2.Chat.staging/chat.n2n2.Chat/g' package.json
 
       - run:
           name: Install yarn
@@ -58,7 +58,7 @@ jobs:
           name: Update plist file
           command: |
             cd ios/Chat.xcodeproj
-            sed -i 's/chat.n2n2.Chat.staging/chat.n2n2.Chat/g' project.pbxproj
+            sed -i '' 's/chat.n2n2.Chat.staging/chat.n2n2.Chat/g' project.pbxproj
 
       - run:
           name: Install pods
