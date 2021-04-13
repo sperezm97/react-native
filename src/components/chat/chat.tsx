@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, StyleSheet, InteractionManager, BackHandler, KeyboardAvoidingView, Dimensions, Text, Platform } from 'react-native'
+import { View, StyleSheet, InteractionManager, BackHandler, KeyboardAvoidingView, Platform } from 'react-native'
 import { useRoute, useNavigation } from '@react-navigation/native'
 import { ActivityIndicator } from 'react-native-paper'
 import Toast from 'react-native-simple-toast'

@@ -1,21 +1,22 @@
 import React from 'react'
 import { View, Text, StyleSheet, Dimensions, Modal } from 'react-native'
-import { Button } from 'react-native-paper'
 import Share from 'react-native-share'
 import Clipboard from '@react-native-community/clipboard'
 import Toast from 'react-native-simple-toast'
 
 import { useTheme } from '../../../../store'
+import { TOAST_DURATION } from '../../../../constants'
 import ModalWrap from '../ModalWrap'
 import ModalHeader from '../ModalHeader'
 import QRCode from '../../../utils/qrcode'
+import Button from '../../Button'
 
 export default function RawInvoice({ visible, onClose, amount, payreq, paid }) {
   const theme = useTheme()
 
   function copy() {
     Clipboard.setString(payreq)
-    Toast.showWithGravity('Payment Request Copied', Toast.SHORT, Toast.TOP)
+    Toast.showWithGravity('Payment Request Copied', TOAST_DURATION, Toast.CENTER)
   }
 
   async function share() {
@@ -46,10 +47,10 @@ export default function RawInvoice({ visible, onClose, amount, payreq, paid }) {
         </View>
         <Text style={{ ...styles.payreqText, color: theme.title }}>{payreq}</Text>
         <View style={styles.buttonsWrap}>
-          <Button mode='contained' dark={true} onPress={() => share()} style={styles.button}>
+          <Button onPress={() => share()} style={styles.button}>
             Share
           </Button>
-          <Button mode='contained' dark={true} onPress={() => copy()} style={styles.button}>
+          <Button onPress={() => copy()} style={styles.button}>
             Copy
           </Button>
         </View>
@@ -96,12 +97,11 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around'
   },
   button: {
-    height: 46,
     borderRadius: 23,
-    width: 120,
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'center'
+    height: 46,
+    width: 120
   },
   paidWrap: {
     position: 'absolute',

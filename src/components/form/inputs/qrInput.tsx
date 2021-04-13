@@ -34,7 +34,10 @@ export default function QrInput({ name, label, required, handleChange, handleBlu
           <View
             style={{
               ...styles.inputStyles,
-              backgroundColor: theme.main
+              backgroundColor: theme.main,
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'center'
             }}
           >
             <TouchableOpacity onPress={() => copyAddress(value)}>
@@ -77,9 +80,6 @@ const styles = StyleSheet.create({
   inputStyles: {
     display: 'flex',
     flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
     height: 50,
     width: '100%',
     paddingLeft: 6,

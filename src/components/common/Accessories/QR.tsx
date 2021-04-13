@@ -63,7 +63,7 @@ export default function QR({ visible, onCancel, onScan, showPaster, inputPlaceho
         {showPaster && (
           <View style={{ ...styles.bottom, backgroundColor: theme.main }}>
             <View style={styles.textInputWrap}>
-              <TextInput placeholder={inputPlaceholder} value={text} onChangeText={e => setText(e)} style={{ backgroundColor: theme.bg }} underlineColor={theme.border} />
+              <TextInput placeholder={inputPlaceholder} value={text} onChangeText={e => setText(e)} style={{ backgroundColor: theme.main }} underlineColor={theme.border} />
             </View>
             <View style={styles.confirmWrap}>
               {(text ? true : false) && (
@@ -81,7 +81,8 @@ export default function QR({ visible, onCancel, onScan, showPaster, inputPlaceho
 
 QR.defaultProps = {
   inputPlaceholder: 'Enter Address',
-  onScan: () => {}
+  onScan: () => {},
+  confirm: () => {}
 }
 
 const styles = StyleSheet.create({

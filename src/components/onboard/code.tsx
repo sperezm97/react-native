@@ -1,13 +1,14 @@
 import React, { useState } from 'react'
-import { View, StyleSheet, Text, TextInput, TouchableOpacity, Linking } from 'react-native'
+import { View, StyleSheet, Text, TextInput, TouchableOpacity, Linking, Platform, KeyboardAvoidingView } from 'react-native'
 import { Title, IconButton, ActivityIndicator } from 'react-native-paper'
 import RadialGradient from 'react-native-radial-gradient'
 import { decode as atob } from 'base-64'
+import { ifIphoneX } from 'react-native-iphone-x-helper'
 
-import QR from '../utils/qr'
 import { useStores, useTheme } from '../../store'
 import * as e2e from '../../crypto/e2e'
 import * as rsa from '../../crypto/rsa'
+import QR from '../common/Accessories/QR'
 import PINCode, { setPinCode } from '../utils/pin'
 import { isLN, parseLightningInvoice } from '../utils/ln'
 import { DEFAULT_HOST } from '../../config'
@@ -152,33 +153,40 @@ export default function Code(props) {
     )
   }
 
+  const isIOS = Platform.OS === 'ios'
+  const statusBarHeight = isIOS ? ifIphoneX(50, 20) : 0
+  const headerHeight = statusBarHeight + 64
+
   return (
     <View style={{ ...styles.wrap, zIndex: z }} accessibilityLabel='onboard-code'>
       <RadialGradient style={styles.gradient} colors={[theme.gradient, theme.secondary]} stops={[0.1, 1]} center={[80, 40]} radius={400}>
-        <Title style={styles.welcome}>Welcome</Title>
-        <Text style={styles.msg}>Paste the invitation text or scan the QR code</Text>
-        <View style={styles.inputWrap} accessibilityLabel='onboard-code-input-wrap'>
-          <TextInput
-            autoCorrect={false}
-            accessibilityLabel='onboard-code-input'
-            placeholder='Enter Code ...'
-            style={styles.input}
-            value={code}
-            onChangeText={text => setCode(text)}
-            onBlur={() => checkInvite(code)}
-            onFocus={() => {
-              if (wrong) setWrong('')
-            }}
-          />
-          <IconButton
-            accessibilityLabel='onboard-code-qr-button'
-            icon='qrcode-scan'
-            color={theme.grey}
-            size={28}
-            style={{ position: 'absolute', right: 12, top: 38 }}
-            onPress={() => setScanning(true)}
-          />
-        </View>
+        <KeyboardAvoidingView style={{ alignItems: 'center' }} behavior='padding' keyboardVerticalOffset={headerHeight}>
+          <Title style={styles.welcome}>Welcome</Title>
+          <Text style={styles.msg}>Paste the invitation text or scan the QR code</Text>
+          <View style={styles.inputWrap} accessibilityLabel='onboard-code-input-wrap'>
+            <TextInput
+              autoCorrect={false}
+              accessibilityLabel='onboard-code-input'
+              placeholder='Enter Code ...'
+              style={styles.input}
+              value={code}
+              onChangeText={text => setCode(text)}
+              onBlur={() => checkInvite(code)}
+              onFocus={() => {
+                if (wrong) setWrong('')
+              }}
+            />
+            <IconButton
+              accessibilityLabel='onboard-code-qr-button'
+              icon='qrcode-scan'
+              color={theme.grey}
+              size={28}
+              style={{ position: 'absolute', right: 12, top: 38 }}
+              onPress={() => setScanning(true)}
+            />
+          </View>
+        </KeyboardAvoidingView>
+
         <View style={styles.spinWrap}>{checking && <ActivityIndicator animating={true} color='white' />}</View>
         {(wrong ? true : false) && (
           <View style={styles.wrong}>
@@ -189,11 +197,7 @@ export default function Code(props) {
           </View>
         )}
       </RadialGradient>
-      {scanning && (
-        <View style={styles.qrWrap}>
-          <QR showPaster={false} onCancel={() => setScanning(false)} onScan={data => scan(data)} />
-        </View>
-      )}
+      {scanning && <QR visible={scanning} onCancel={() => setScanning(false)} onScan={data => scan(data)} showPaster={false} />}
     </View>
   )
 }
@@ -206,16 +210,6 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0
-  },
-  qrWrap: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    zIndex: 99,
-    width: '100%',
-    backgroundColor: 'black'
   },
   gradient: {
     flex: 1,

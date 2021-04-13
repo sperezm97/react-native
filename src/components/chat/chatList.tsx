@@ -96,6 +96,8 @@ function ChatRow(props) {
   return useObserver(() => {
     let uri = useChatPicSrc(props)
     const hasImg = uri ? true : false
+    // TODO : this is a emporary fix and will be removed
+    uri = uri.replace('http', 'https')
 
     const { lastMsgText, hasLastMsg, unseenCount, hasUnseen } = useChatRow(props.id)
 
@@ -121,7 +123,7 @@ function ChatRow(props) {
           )}
         </View>
         <View style={styles.chatContent}>
-          <Text style={{ ...styles.chatName, color: theme.title }}>{name}</Text>
+          <Text style={{ ...styles.chatName, color: theme.text }}>{name}</Text>
           {hasLastMsg && (
             <Text
               numberOfLines={1}
