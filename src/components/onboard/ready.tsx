@@ -35,7 +35,7 @@ export default function Ready(props) {
 
   return (
     <Slider z={z} show={show} accessibilityLabel='onboard-ready'>
-      <RadialGradient style={styles.gradient} colors={[theme.gradient, theme.secondary]} stops={[0.1, 1]} center={[80, 40]} radius={400}>
+      <RadialGradient style={styles.gradient} colors={[theme.gradient, theme.gradient2]} stops={[0.1, 1]} center={[80, 40]} radius={400}>
         <View style={styles.titleWrap} accessibilityLabel='onboard-ready-title'>
           <View style={styles.titleRow}>
             <Text style={styles.title}>You're</Text>

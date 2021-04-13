@@ -30,8 +30,9 @@ export class ThemeStore {
     this.selected = d ? '#3b4681' : '#ddddff'
     this.deep = d ? '#292c33' : '#ccc'
     this.primary = d ? '#0067ff' : '#0067ff'
-    this.secondary = d ? '#131c27' : '#0fb17d'
-    this.gradient = d ? '#212b35' : '#4889e8'
+    this.secondary = d ? '#0fb17d' : '#0fb17d'
+    this.gradient = d ? '#192531' : '#4889e8'
+    this.gradient2 = d ? '#141d26' : '#055deb'
   }
 
   @observable bg: string = '#fff'
@@ -49,6 +50,7 @@ export class ThemeStore {
   @observable deep: string = '#ccc'
   @observable primary: string = '#0067ff'
   @observable secondary: string = '#0fb17d'
+
   // @observable secondary: string = '#055deb'
   @observable white: string = '#fff'
   @observable lightGrey: string = '#f5f6f8'
@@ -56,6 +58,7 @@ export class ThemeStore {
   @observable darkGrey: string = '#777'
   @observable black: string = '#000000'
   @observable gradient: string = '#4889e8'
+  @observable gradient2: string = '#055deb'
   @observable disabled: string = '#d9dce0'
   @observable clay: string = '#212932'
   @observable blue: string = '#0067ff'

@@ -187,7 +187,7 @@ export const styles = StyleSheet.create({
   chatName: {
     marginRight: 12,
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: '500',
     marginBottom: 4
   },
   chatMsgWrap: {

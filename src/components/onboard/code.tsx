@@ -159,7 +159,7 @@ export default function Code(props) {
 
   return (
     <View style={{ ...styles.wrap, zIndex: z }} accessibilityLabel='onboard-code'>
-      <RadialGradient style={styles.gradient} colors={[theme.gradient, theme.secondary]} stops={[0.1, 1]} center={[80, 40]} radius={400}>
+      <RadialGradient style={styles.gradient} colors={[theme.gradient, theme.gradient2]} stops={[0.1, 1]} center={[80, 40]} radius={400}>
         <KeyboardAvoidingView style={{ alignItems: 'center' }} behavior='padding' keyboardVerticalOffset={headerHeight}>
           <Title style={styles.welcome}>Welcome</Title>
           <Text style={styles.msg}>Paste the invitation text or scan the QR code</Text>
