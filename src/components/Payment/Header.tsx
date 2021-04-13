@@ -10,7 +10,7 @@ import { useStores, useTheme } from '../../store'
 import Pushable from '../common/Pushable'
 import Button from '../common/Button'
 
-export default function Header() {
+export default function Header({ onScanClick }) {
   const navigation = useNavigation()
   const { ui } = useStores()
   const theme = useTheme()
@@ -26,7 +26,7 @@ export default function Header() {
       <Appbar.Header style={{ ...styles.appBar, backgroundColor: theme.bg }}>
         <View style={{ ...styles.flex, ...styles.content }}>
           <View style={{ ...styles.flex, ...styles.left }}>
-            <Pushable onPress={() => console.log('click')}>
+            <Pushable onPress={onScanClick}>
               <IconButton icon='qrcode-scan' size={22} color={theme.icon} />
             </Pushable>
           </View>

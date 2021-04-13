@@ -6,7 +6,7 @@ import { useStores } from '../../../store'
 import Form from '../../form'
 import { contact } from '../../form/schemas'
 import ModalWrap from './ModalWrap'
-import Header from './ModalHeader'
+import ModalHeader from './ModalHeader'
 
 export default function AddContact() {
   const { ui, contacts } = useStores()
@@ -18,7 +18,7 @@ export default function AddContact() {
 
   return useObserver(() => (
     <ModalWrap onClose={close} visible={ui.addContactModal} noSwipe>
-      <Header title='Add Contact' onClose={close} />
+      <ModalHeader title='Add Contact' onClose={close} />
       <View style={styles.content}>
         <Form
           schema={contact}

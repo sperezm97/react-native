@@ -56,12 +56,12 @@ export default function QrInput({ name, label, required, handleChange, handleBlu
           />
         )}
 
-        <IconButton icon={displayOnly ? 'qrcode-scan' : 'scan-helper'} color={theme.primary} size={23} style={{ width: '10%' }} onPress={() => setScanning(true)} />
+        <IconButton icon={displayOnly ? 'qrcode' : 'qrcode-scan'} color={theme.primary} size={26} style={{ width: '10%' }} onPress={() => setScanning(true)} />
       </View>
 
       <QR visible={scanning && !displayOnly} onCancel={() => setScanning(false)} onScan={data => scan(data)} showPaster={false} />
 
-      <PublicKey pubkey={value} visible={scanning && displayOnly} close={() => setScanning(false)} />
+      <PublicKey visible={scanning && displayOnly} pubkey={value} close={() => setScanning(false)} />
     </View>
   )
 }

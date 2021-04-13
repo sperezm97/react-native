@@ -1,7 +1,6 @@
 import React from 'react'
 import { useObserver } from 'mobx-react-lite'
 
-import Payment from './payment'
 import ConfirmPayInvoice from './confirmPayInvoice'
 import ShareInvite from './shareInvite'
 import RawInvoiceModal from './rawInvoiceModal'
@@ -30,11 +29,9 @@ export default function Modals() {
     const showShareTribeUUID = ui.shareTribeUUID ? true : false
     const showRedeemModal = ui.redeemModalParams ? true : false
     const showVid = ui.vidViewerParams ? true : false
-    const showAddSats = ui.addSatsModal ? true : false
 
     return (
       <>
-        <Payment visible={ui.showPayModal} />
         <JoinTribe visible={showJoinTribe} />
         <ShareTribe visible={showShareTribeUUID} />
         <ShareInvite visible={ui.shareInviteModal} />

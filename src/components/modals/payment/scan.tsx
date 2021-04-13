@@ -9,6 +9,7 @@ export default function Scan({ pay, loading, isLoopout, error }) {
   const theme = useTheme()
   const [addy, setAddy] = useState('')
   const [focused, setFocused] = useState(false)
+
   function scanned({ type, data }) {
     if (isLoopout) {
       if (data.startsWith('bitcoin:')) {
@@ -20,6 +21,7 @@ export default function Scan({ pay, loading, isLoopout, error }) {
     }
     if (data.length === 66) setAddy(data)
   }
+
   const w = Dimensions.get('screen').width
   const h = Dimensions.get('screen').height
   const headerHeight = 50
@@ -41,7 +43,7 @@ export default function Scan({ pay, loading, isLoopout, error }) {
         {/* <KeyboardAvoidingView style={{ flex: 1 }} behavior='padding' keyboardVerticalOffset={headerHeight}> */}
         <View style={styles.inputWrap}>
           <TextInput
-            label={isLoopout ? 'Scan or Enter Bitcoin Address' : 'Scan or Enter Public Key'}
+            // label={isLoopout ? 'Scan or Enter Bitcoin Address' : 'Scan or Enter Public Key'}
             style={{ ...styles.input, backgroundColor: theme.bg }}
             onChangeText={e => setAddy(e)}
             value={addy}
