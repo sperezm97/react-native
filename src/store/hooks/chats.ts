@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import moment from 'moment'
+import moment, { months } from 'moment'
 
 import { useStores } from '../index'
 import { DEFAULT_DOMAIN } from '../../config'
@@ -17,6 +17,7 @@ export function useChats() {
 
 export function useChatRow(id) {
   const { msg } = useStores()
+
   const msgs = msg.messages[id || '_']
   const lastMsg = msgs && msgs[0]
   const lastMsgText = lastMessageText(lastMsg)
@@ -27,7 +28,35 @@ export function useChatRow(id) {
   const unseenCount = countUnseen(msgs, lastSeen)
   const hasUnseen = unseenCount > 0 ? true : false
 
-  return { lastMsgText, hasLastMsg, unseenCount, hasUnseen }
+  const lastMsgDate = lastMessageDate(lastMsg)
+
+  return { lastMsgText, lastMsgDate, hasLastMsg, unseenCount, hasUnseen }
+}
+
+function lastMessageDate(msg) {
+  if (!msg || !msg.date) return ''
+
+  const diff = moment(new Date()).utc().diff(msg.date, 'days')
+
+  if (diff === 0) {
+    return moment(msg.date).format('hh:mm A')
+  } else {
+    const yesterday = moment().utc().add(-24, 'hours')
+    const isYesterday = moment(msg.date || new Date())
+      .utc()
+      .isBefore(yesterday)
+
+    if (isYesterday) {
+      return moment(msg.date).calendar(null, {
+        lastDay: '[Yesterday]'
+      })
+      // return moment(msg.date).format('dddd')
+    } else {
+      return moment(msg.date).format('dddd')
+    }
+  }
+
+  // return moment(msg.date).format('dd MMM DD, hh:mm A')
 }
 
 function lastMessageText(msg) {

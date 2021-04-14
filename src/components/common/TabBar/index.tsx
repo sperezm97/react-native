@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { View, StyleSheet, Dimensions, Animated } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
 import { useNavigation, useRoute, useNavigationState } from '@react-navigation/native'
-import { useSafeArea } from 'react-native-safe-area-context'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import { useTheme } from '../../../store'
 import Pushable from '../Pushable'
@@ -41,7 +41,7 @@ export default function TabBar() {
   const theme = useTheme()
   const navigation = useNavigation()
   const current = useRoute()
-  const insets = useSafeArea()
+  const insets = useSafeAreaInsets()
   const { width } = Dimensions.get('window')
   const tabbarWidth = width - 32
 
@@ -68,9 +68,8 @@ export default function TabBar() {
 
   return useObserver(() => {
     return (
-      <View style={{ backgroundColor: theme.bg }}>
-        {/* marginBottom: insets.bottom  */}
-        <View style={{ ...styles.tabBar }}>
+      <View style={{ ...styles.wrap, backgroundColor: theme.bg, borderTopColor: theme.border }}>
+        <View style={{ ...styles.tabBar, height: 40 + insets.bottom }}>
           {routes.map(route => {
             return (
               <Pushable
@@ -79,7 +78,7 @@ export default function TabBar() {
                   navigation.navigate(route.name)
                 }}
               >
-                <View style={{ ...styles.iconWrap, width: tabbarWidth / 5 }}>
+                <View style={{ ...styles.iconWrap, width: tabbarWidth / 5, height: 40 + insets.bottom }}>
                   <Icon name={route.name} color={route.name === current.name ? theme.primary : theme.icon} size={24} />
                 </View>
               </Pushable>
@@ -105,6 +104,9 @@ export default function TabBar() {
 }
 
 const styles = StyleSheet.create({
+  wrap: {
+    borderTopWidth: 1
+  },
   tabBar: {
     flexDirection: 'row',
     alignItems: 'center',

@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { TouchableOpacity, View, Text, StyleSheet, Image } from 'react-native'
 import { Dialog, Portal, Button } from 'react-native-paper'
-
+import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import moment from 'moment'
 import Toast from 'react-native-simple-toast'
 
@@ -56,7 +55,7 @@ export default function InviteRow(props) {
   return (
     <TouchableOpacity style={{ ...styles.chatRow, backgroundColor: theme.main }} activeOpacity={0.5} onPress={doAction}>
       <View style={styles.inviteQR}>
-        <Image style={{ height: 40, width: 40 }} source={require('../../../android_assets/invite_qr.png')} />
+        <Image style={{ height: 40, width: 40 }} source={require('../../assets/invite-qr.png')} />
       </View>
       <View style={styles.chatContent}>
         <View style={styles.chatContentTop}>
@@ -74,7 +73,7 @@ export default function InviteRow(props) {
           <Dialog.Title>{`Pay for invitation?`}</Dialog.Title>
           <Dialog.Actions style={{ justifyContent: 'space-between' }}>
             <Button onPress={setDialogOpenToFalseHandler} labelStyle={{ color: 'grey' }}>
-              <Icon name='cancel' size={14} color='grey' />
+              <MaterialIcon name='cancel' size={14} color='grey' />
               <View style={{ width: 4, height: 6 }}></View>
               <Text>Cancel</Text>
             </Button>
@@ -91,15 +90,16 @@ export default function InviteRow(props) {
 function inviteIcon(statusString) {
   switch (statusString) {
     case 'payment_pending':
-      return <Icon name='credit-card' size={14} color='grey' style={{ marginRight: 4 }} />
+      return <MaterialIcon name='credit-card' size={14} color='grey' style={{ marginRight: 4 }} />
     case 'ready':
-      return <Icon name='check' size={14} color='#64C684' style={{ marginRight: 4 }} />
+      return <MaterialIcon name='check' size={14} color='#64C684' style={{ marginRight: 4 }} />
     case 'delivered':
-      return <Icon name='check' size={14} color='#64C684' style={{ marginRight: 4 }} />
+      return <MaterialIcon name='check' size={14} color='#64C684' style={{ marginRight: 4 }} />
     default:
       return <></>
   }
 }
+
 function inviteMsg(statusString: string, name: string, confirmed?: boolean) {
   switch (statusString) {
     case 'pending':
@@ -157,7 +157,6 @@ export const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     flexDirection: 'row'
-    // borderBottomWidth: 1
   },
   chatContent: {
     display: 'flex',
@@ -189,6 +188,9 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '500',
     marginBottom: 4
+  },
+  chatDate: {
+    marginRight: 12
   },
   chatMsgWrap: {
     display: 'flex',

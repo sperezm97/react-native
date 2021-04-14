@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react'
 import { useObserver } from 'mobx-react-lite'
-import { TouchableOpacity, FlatList, View, Text, StyleSheet, Dimensions } from 'react-native'
+import { StyleSheet, View, Text, TouchableOpacity, FlatList, Dimensions } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback'
 
@@ -79,15 +79,14 @@ export default function ChatList() {
 }
 
 function ChatRow(props) {
-  const { id, name, contact_ids } = props
+  const { id, name, date, contact_ids } = props
   const navigation = useNavigation()
   const { msg, user } = useStores()
 
   const onSeeChatHandler = () => {
     requestAnimationFrame(() => {
       msg.seeChat(props.id)
-      // msg.getMessages()
-
+      msg.getMessages()
       navigation.navigate('Chat', { ...props })
     })
   }
@@ -96,10 +95,10 @@ function ChatRow(props) {
   return useObserver(() => {
     let uri = useChatPicSrc(props)
     const hasImg = uri ? true : false
-    // TODO : this is a emporary fix and will be removed
+    // TODO : this is a temporary fix and will be removed
     uri = uri.replace('http', 'https')
 
-    const { lastMsgText, hasLastMsg, unseenCount, hasUnseen } = useChatRow(props.id)
+    const { lastMsgText, lastMsgDate, hasLastMsg, unseenCount, hasUnseen } = useChatRow(props.id)
 
     const w = Math.round(Dimensions.get('window').width)
     return (
@@ -107,7 +106,6 @@ function ChatRow(props) {
         style={{
           ...styles.chatRow,
           backgroundColor: theme.bg
-          // borderBottomColor: theme.dark ? '#0d1319' : '#e5e5e5'
         }}
         activeOpacity={0.5}
         onPress={onSeeChatHandler}
@@ -123,20 +121,25 @@ function ChatRow(props) {
           )}
         </View>
         <View style={styles.chatContent}>
-          <Text style={{ ...styles.chatName, color: theme.text }}>{name}</Text>
-          {hasLastMsg && (
-            <Text
-              numberOfLines={1}
-              style={{
-                ...styles.chatMsg,
-                fontWeight: hasUnseen ? 'bold' : 'normal',
-                maxWidth: w - 105,
-                color: theme.subtitle
-              }}
-            >
-              {lastMsgText}
-            </Text>
-          )}
+          <View style={styles.chatContentTop}>
+            <Text style={{ ...styles.chatName, color: theme.text }}>{name}</Text>
+            <Text style={{ ...styles.chatDate, color: theme.subtitle }}>{lastMsgDate}</Text>
+          </View>
+          <View style={styles.chatMsgWrap}>
+            {hasLastMsg && (
+              <Text
+                numberOfLines={1}
+                style={{
+                  ...styles.chatMsg,
+                  fontWeight: hasUnseen ? 'bold' : 'normal',
+                  maxWidth: w - 105,
+                  color: theme.subtitle
+                }}
+              >
+                {lastMsgText}
+              </Text>
+            )}
+          </View>
         </View>
       </TouchableOpacity>
     )
