@@ -6,6 +6,7 @@ import ContactSubscribe from './ContactSubscribe'
 import AddContact from './AddContact'
 import InviteNewUser from './InviteNewUser'
 import Payment from './Payment'
+import ShareGroup from './ShareGroup'
 
 export default function Modals() {
   return useObserver(() => {
@@ -16,6 +17,7 @@ export default function Modals() {
         <AddContact />
         <InviteNewUser />
         <Payment />
+        <ShareGroup />
       </>
     )
   })

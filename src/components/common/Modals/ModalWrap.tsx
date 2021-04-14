@@ -5,10 +5,13 @@ import Modal from 'react-native-modal'
 import { useTheme } from '../../../store'
 
 export default function ModalWrap(props) {
+  const { visible, onClose, noHeader, noSwipe, swipeDirection, hasBackdrop, animationInTiming, animationOutTiming, coverScreen, fullscreen, animationIn, animationOut, children } = props
   const theme = useTheme()
-  const { visible, onClose, noSwipe, swipeDirection, hasBackdrop, animationInTiming, animationOutTiming, coverScreen, fullscreen, animationIn, animationOut, children } = props
 
+  // const headerHeight = 60
   // const h = Dimensions.get('screen').height - headerHeight
+
+  const paddingTop = noHeader ? 0 : fullscreen ? 45 : 0
 
   return (
     <Modal
@@ -25,11 +28,11 @@ export default function ModalWrap(props) {
       propagateSwipe={props.propagateSwipe ? true : false}
       swipeThreshold={20}
       coverScreen={coverScreen}
-      // deviceHeight={Dimensions.get('screen').height}
+      // deviceHeight={h}
       // useNativeDriver={true}
       // statusBarTranslucent={true}
     >
-      <View style={{ ...styles.main, backgroundColor: theme.bg, height: fullscreen ? '100%' : 200, paddingTop: fullscreen ? 45 : 0 }}>{children}</View>
+      <View style={{ ...styles.main, backgroundColor: theme.bg, height: fullscreen ? '100%' : 200, paddingTop }}>{children}</View>
     </Modal>
   )
 }
@@ -42,7 +45,8 @@ ModalWrap.defaultProps = {
   swipeDirection: 'down',
   coverScreen: true,
   fullscreen: true,
-  hasBackdrop: true
+  hasBackdrop: true,
+  noHeader: false
 }
 
 const styles = StyleSheet.create({
@@ -52,7 +56,6 @@ const styles = StyleSheet.create({
   },
   main: {
     borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    backgroundColor: 'white'
+    borderTopRightRadius: 20
   }
 })

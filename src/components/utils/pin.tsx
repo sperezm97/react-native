@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, StyleSheet, Text } from 'react-native'
+import { StyleSheet, View, Text, Dimensions } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { ActivityIndicator, Colors } from 'react-native-paper'
 import EncryptedStorage from 'react-native-encrypted-storage'
@@ -104,9 +104,11 @@ export default function PIN(props) {
   }
   if (err) txt = 'TRY AGAIN!'
 
+  const h = Dimensions.get('screen').height
+
   return (
     <View style={{ ...styles.wrap, backgroundColor: theme.blue }}>
-      <View style={styles.top}>
+      <View style={{ ...styles.top, height: h / 2 }}>
         <View style={styles.lock}>
           <Icon name='lock-outline' size={25} color={theme.white} />
           <Text style={{ ...styles.choose, color: theme.white }}>{txt}</Text>

@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { createStackNavigator } from '@react-navigation/stack'
-import { getFocusedRouteNameFromRoute } from '@react-navigation/native'
+import { TransitionSpecs, TransitionPresets } from '@react-navigation/stack'
 
 import Chats from '../chat/Navigation'
 import Account from '../Account/Navigation'
@@ -13,7 +13,7 @@ const RootStack = createStackNavigator()
 
 export default function Root() {
   return (
-    <RootStack.Navigator initialRouteName='Chat'>
+    <RootStack.Navigator initialRouteName='Chats'>
       <RootStack.Screen
         name='Home'
         component={Home}
@@ -56,3 +56,24 @@ export default function Root() {
     </RootStack.Navigator>
   )
 }
+
+// export default function Root() {
+//   return (
+//     <RootStack.Navigator
+//       mode='modal'
+//       // screenOptions={{
+//       //   headerShown: true
+//       // }}
+//       screenOptions={({ route, navigation }) => ({
+//         headerShown: false,
+//         gestureEnabled: true,
+//         cardOverlayEnabled: true,
+//         headerStatusBarHeight: navigation.dangerouslyGetState().routes.findIndex(r => r.key === route.key) > 0 ? 0 : undefined
+//         // ...TransitionPresets.ModalPresentationIOS
+//       })}
+//     >
+//       <RootStack.Screen name='Main' component={MainStackScreen} options={{ headerShown: false }} />
+//       <RootStack.Screen name='MyModal' component={ModalScreen} />
+//     </RootStack.Navigator>
+//   )
+// }
