@@ -155,6 +155,8 @@ export default function ChatDetails({ route }) {
   function handleSharePress() {
     setEditDialog(false)
 
+    console.log('group.uuid', group.uuid)
+
     setTimeout(() => {
       ui.setShareTribeUUID(group.uuid)
     }, 400)

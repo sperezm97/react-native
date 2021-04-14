@@ -6,12 +6,12 @@ import { decode as atob } from 'base-64'
 import { ifIphoneX } from 'react-native-iphone-x-helper'
 
 import { useStores, useTheme } from '../../store'
+import { DEFAULT_HOST } from '../../config'
 import * as e2e from '../../crypto/e2e'
 import * as rsa from '../../crypto/rsa'
 import QR from '../common/Accessories/QR'
-import PINCode, { setPinCode } from '../utils/pin'
+import PIN, { setPinCode } from '../utils/pin'
 import { isLN, parseLightningInvoice } from '../utils/ln'
-import { DEFAULT_HOST } from '../../config'
 
 export default function Code(props) {
   const { onDone, z, onRestore } = props
@@ -143,7 +143,7 @@ export default function Code(props) {
 
   if (showPin) {
     return (
-      <PINCode
+      <PIN
         forceEnterMode
         onFinish={async pin => {
           await sleep(240)

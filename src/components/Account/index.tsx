@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { useObserver } from 'mobx-react-lite'
-import { StyleSheet, View, Text, TouchableOpacity, Image, ScrollView, ActionSheetIOS } from 'react-native'
+import { StyleSheet, View, Text, TouchableOpacity, ScrollView } from 'react-native'
 import RNFetchBlob from 'rn-fetch-blob'
-import { useNavigation, useFocusEffect } from '@react-navigation/native'
+import { useNavigation } from '@react-navigation/native'
 import { Portal, Dialog, Title } from 'react-native-paper'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 
@@ -13,6 +13,7 @@ import ActionMenu from '../common/ActionMenu'
 import ImageDialog from '../common/Dialogs/ImageDialog'
 import TabBar from '../common/TabBar'
 import Icon from '../common/Icon'
+import Avatar from '../common/Avatar'
 import Form from '../form'
 import { me } from '../form/schemas'
 
@@ -24,40 +25,8 @@ export default function Account() {
   const [imageDialog, setImageDialog] = useState(false)
   const [photo_url, setPhotoUrl] = useState('')
   const [saving, setSaving] = useState(false)
-  const [avatar, setAvatar] = useState({
-    newImage: require('../../assets/avatars/balvin.png'),
-    randomImages: [
-      {
-        image: require('../../assets/avatars/balvin.png')
-      },
-      {
-        image: require('../../assets/avatars/bieber.png')
-      },
-      {
-        image: require('../../assets/avatars/blu.png')
-      },
-      {
-        image: require('../../assets/avatars/cardi.png')
-      },
-      {
-        image: require('../../assets/avatars/cardi2.png')
-      },
-      {
-        image: require('../../assets/avatars/guy.png')
-      },
-      {
-        image: require('../../assets/avatars/kittle.png')
-      }
-    ]
-  })
   const [uploadPercent, setUploadedPercent] = useState(0)
   const navigation = useNavigation()
-
-  useFocusEffect(
-    React.useCallback(() => {
-      setAvatar({ ...avatar, newImage: avatar.randomImages[Math.floor(Math.random() * 3)].image })
-    }, [])
-  )
 
   async function tookPic(img) {
     setUploading(true)
@@ -190,7 +159,7 @@ export default function Account() {
                 }}
               >
                 <TouchableOpacity onPress={() => setImageDialog(true)} style={styles.imgWrap}>
-                  <Image resizeMode='cover' source={imgURI ? { uri: imgURI } : avatar.newImage} style={{ ...styles.userImg, borderColor: theme.border }} />
+                  <Avatar size={100} uri={imgURI && { uri: imgURI }} borderless={false} />
                   {uploading && <Text style={{ ...styles.uploadPercent, color: theme.primary }}>{`${uploadPercent}%`}</Text>}
                   <View style={styles.imgIcon}>
                     <Icon name='PlusCircle' fill={theme.primary} color={theme.white} />
@@ -269,12 +238,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: -5,
     top: '50%'
-  },
-  userImg: {
-    width: 90,
-    height: 90,
-    borderRadius: 50,
-    borderWidth: 1
   },
   title: {
     fontWeight: '600',

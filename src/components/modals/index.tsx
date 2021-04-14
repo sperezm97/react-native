@@ -10,7 +10,6 @@ import GroupModal from './newGroupModal/groupInfo'
 import JoinTribe from './joinTribe'
 import Oauth from './oauth'
 import Subscribe from './subscribe'
-import ShareTribe from './shareTribe'
 import Redeem from './redeem'
 import ImageViewer from './imgViewer'
 import VideoViewer from './vidViewer'
@@ -26,14 +25,12 @@ export default function Modals() {
     const showJoinTribe = ui.joinTribeParams ? true : false
     const showOauth = ui.oauthParams ? true : false
     const showSubModal = ui.subModalParams ? true : false
-    const showShareTribeUUID = ui.shareTribeUUID ? true : false
     const showRedeemModal = ui.redeemModalParams ? true : false
     const showVid = ui.vidViewerParams ? true : false
 
     return (
       <>
         <JoinTribe visible={showJoinTribe} />
-        <ShareTribe visible={showShareTribeUUID} />
         <ShareInvite visible={ui.shareInviteModal} />
         <ConfirmPayInvoice visible={showConfirmPayInvoice} />
         <RawInvoiceModal visible={showRawInvoiceModal} />

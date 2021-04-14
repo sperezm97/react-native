@@ -85,7 +85,7 @@ export default function Chat() {
       if (params) {
         const price = params.price_per_message + params.escrow_amount
         setPricePerMessage(price)
-        Toast.showWithGravity('Price Per Message: ' + price + ' sat', 0.3, Toast.CENTER)
+        // Toast.showWithGravity('Price Per Message: ' + price + ' sat', 0.3, Toast.CENTER)
 
         if (!isTribeAdmin) {
           if (chat.name !== params.name || chat.photo_url !== params.img) {
