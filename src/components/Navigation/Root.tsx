@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { createStackNavigator } from '@react-navigation/stack'
-import { TransitionSpecs, TransitionPresets } from '@react-navigation/stack'
 
 import Chats from '../chat/Navigation'
 import Account from '../Account/Navigation'
