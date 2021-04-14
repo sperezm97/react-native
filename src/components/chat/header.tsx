@@ -12,8 +12,8 @@ import { useChatPicSrc } from '../utils/picSrc'
 import { constants } from '../../constants'
 import { randAscii } from '../../crypto/rand'
 import { RouteStatus } from './chat'
-import Avatar from './msg/avatar'
 import Icon from '../common/Icon'
+import Avatar from '../common/Avatar'
 
 const conversation = constants.chat_types.conversation
 const tribe = constants.chat_types.tribe
@@ -114,7 +114,7 @@ export default function Header({
 
         <TouchableOpacity onPress={clickTitle} style={{ ...styles.detailsWrap }}>
           <View style={{ marginRight: 10 }}>
-            <Avatar big={false} alias={name} photo={uri || ''} />
+            <Avatar alias={name} photo={uri || ''} size={38} big aliasSize={15} />
           </View>
           <View style={{ height: 45 }}>
             <View style={{ ...styles.title }}>

@@ -36,25 +36,39 @@ export function useChatRow(id) {
 function lastMessageDate(msg) {
   if (!msg || !msg.date) return ''
 
-  const diff = moment(new Date()).utc().diff(msg.date, 'days')
+  return moment(msg.date).calendar(null, {
+    lastDay: '[Yesterday]',
+    sameDay: 'hh:mm A',
+    nextDay: '[Tomorrow]',
+    lastWeek: 'dddd',
+    nextWeek: 'dddd',
+    sameElse: 'L'
+  })
 
-  if (diff === 0) {
-    return moment(msg.date).format('hh:mm A')
-  } else {
-    const yesterday = moment().utc().add(-24, 'hours')
-    const isYesterday = moment(msg.date || new Date())
-      .utc()
-      .isBefore(yesterday)
+  // const diff = moment(new Date()).utc().diff(msg.date, 'days')
 
-    if (isYesterday) {
-      return moment(msg.date).calendar(null, {
-        lastDay: '[Yesterday]'
-      })
-      // return moment(msg.date).format('dddd')
-    } else {
-      return moment(msg.date).format('dddd')
-    }
-  }
+  // if (diff === 0) {
+  //   return moment(msg.date).format('hh:mm A')
+  // } else {
+  //   const yesterday = moment().utc().add(-24, 'hours')
+  //   const isYesterday = moment(msg.date || new Date())
+  //     .utc()
+  //     .isBefore(yesterday)
+
+  //   if (isYesterday) {
+  //     return moment(msg.date).calendar(null, {
+  //       lastDay: '[Yesterday]',
+  //       sameDay: '[Today]',
+  //       nextDay: '[Tomorrow]',
+  //       lastWeek: '[last] dddd',
+  //       nextWeek: 'dddd',
+  //       sameElse: 'L'
+  //     })
+  //     // return moment(msg.date).format('dddd')
+  //   } else {
+  //     return moment(msg.date).format('dddd')
+  //   }
+  // }
 
   // return moment(msg.date).format('dd MMM DD, hh:mm A')
 }

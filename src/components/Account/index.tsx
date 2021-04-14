@@ -159,7 +159,7 @@ export default function Account() {
                 }}
               >
                 <TouchableOpacity onPress={() => setImageDialog(true)} style={styles.imgWrap}>
-                  <Avatar size={100} uri={imgURI && { uri: imgURI }} borderless={false} />
+                  <Avatar size={100} photo={imgURI} />
                   {uploading && <Text style={{ ...styles.uploadPercent, color: theme.primary }}>{`${uploadPercent}%`}</Text>}
                   <View style={styles.imgIcon}>
                     <Icon name='PlusCircle' fill={theme.primary} color={theme.white} />

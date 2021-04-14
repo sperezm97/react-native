@@ -1,13 +1,14 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react'
 import { View, StyleSheet, Animated } from 'react-native'
-import LottieView from 'lottie-react-native';
+import LottieView from 'lottie-react-native'
 import EE, { PLAY_ANIMATION } from '../../utils/ee'
 import { useStores } from '../../../store'
 import { usePicSrc } from '../../utils/picSrc'
-import FastImage from 'react-native-fast-image';
+import FastImage from 'react-native-fast-image'
 import Boost from './boost'
 
-const lens = { // min 1000
+const lens = {
+  // min 1000
   confetti: {
     time: 3000
   }
@@ -20,7 +21,7 @@ export default function Anim({ dark, myid }) {
   const meContact = contacts.contacts.find(c => c.id === myid)
   let meIMG = usePicSrc(meContact)
 
-  const opacity = useRef(new Animated.Value(0)).current;
+  const opacity = useRef(new Animated.Value(0)).current
 
   const confetti = useRef<LottieView>()
 
@@ -29,7 +30,7 @@ export default function Anim({ dark, myid }) {
       Animated.timing(opacity, {
         toValue: 1,
         duration: 75,
-        useNativeDriver: true,
+        useNativeDriver: true
       }),
       Animated.timing(opacity, {
         toValue: 0,
@@ -37,7 +38,7 @@ export default function Anim({ dark, myid }) {
         useNativeDriver: true,
         delay: Math.max(len - 1000, 0)
       })
-    ]).start();
+    ]).start()
   }
   function play() {
     const name = 'confetti'
@@ -45,7 +46,7 @@ export default function Anim({ dark, myid }) {
     fade(len)
     requestAnimationFrame(async () => {
       setShow(true)
-      confetti.current.play();
+      confetti.current.play()
       await sleep(len)
       setShow(false)
     })
@@ -59,42 +60,51 @@ export default function Anim({ dark, myid }) {
   }, [])
 
   const zIndex = show ? 151 : 99
-  return <Animated.View style={{
-    ...styles.wrap, zIndex, opacity
-  }}>
-    <View style={{
-      ...styles.backdrop,
-      backgroundColor: dark ? 'rgba(0,0,0,0.5)' : 'rgba(255,255,255,0.5)',
-    }} />
+  return (
+    <Animated.View
+      style={{
+        ...styles.wrap,
+        zIndex,
+        opacity
+      }}
+    >
+      <View
+        style={{
+          ...styles.backdrop,
+          backgroundColor: dark ? 'rgba(0,0,0,0.5)' : 'rgba(255,255,255,0.5)'
+        }}
+      />
 
-    <View style={styles.content}>
-      {(meIMG ? true : false) && <FastImage resizeMode="cover"
-        source={{ uri: meIMG }}
-        style={{ width: 120, height: 120, borderRadius: 60, zIndex: 102 }}
-      />}
-      <Boost inert={true} style={{ marginTop: -40, zIndex: 104 }} onPress={() => { }} />
-    </View>
+      <View style={styles.content}>
+        {(meIMG ? true : false) && <FastImage resizeMode='cover' source={{ uri: meIMG }} style={{ width: 120, height: 120, borderRadius: 60, zIndex: 102 }} />}
+        <Boost inert={true} style={{ marginTop: -40, zIndex: 104 }} onPress={() => {}} />
+      </View>
 
-    <LottieView
-      ref={confetti} loop={false}
-      style={{ width: 300, height: 400, position: 'absolute' }}
-      source={require('../../../animations/confetti.json')}
-    />
-  </Animated.View>
+      <LottieView ref={confetti} loop={false} style={{ width: 300, height: 400, position: 'absolute' }} source={require('../../../animations/confetti.json')} />
+    </Animated.View>
+  )
 }
 
 const styles = StyleSheet.create({
   wrap: {
-    display: 'flex', flex: 1,
+    display: 'flex',
+    flex: 1,
     position: 'absolute',
-    top: 0, left: 0, bottom: 0, right: 0,
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
     alignItems: 'center',
     justifyContent: 'center'
   },
   backdrop: {
-    display: 'flex', flex: 1,
+    display: 'flex',
+    flex: 1,
     position: 'absolute',
-    top: 0, left: 0, bottom: 0, right: 0,
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0
   },
   content: {
     display: 'flex',

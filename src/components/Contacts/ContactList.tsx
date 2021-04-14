@@ -1,13 +1,13 @@
 import React from 'react'
 import { useObserver } from 'mobx-react-lite'
-import { TouchableOpacity, SectionList, View, Text, StyleSheet } from 'react-native'
+import { StyleSheet, View, Text, TouchableOpacity, SectionList } from 'react-native'
 import { SwipeRow } from 'react-native-swipe-list-view'
 import { IconButton } from 'react-native-paper'
-import FastImage from 'react-native-fast-image'
 import { useNavigation } from '@react-navigation/native'
 
 import { useStores, useTheme } from '../../store'
 import { usePicSrc } from '../utils/picSrc'
+import Avatar from '../common/Avatar'
 
 export default function ContactList() {
   const navigation = useNavigation()
@@ -49,9 +49,6 @@ function Item({ contact, onPress }) {
   let uri = usePicSrc(contact)
   const hasImg = uri ? true : false
 
-  // TODO : this is a emporary fix and will be removed
-  uri = uri.replace('http', 'https')
-
   return (
     <SwipeRow disableRightSwipe={true} friction={100} rightOpenValue={-80} stopRightSwipe={-80}>
       <View style={styles.backSwipeRow}>
@@ -59,9 +56,7 @@ function Item({ contact, onPress }) {
       </View>
       <View style={{ ...styles.frontSwipeRow, backgroundColor: theme.bg }}>
         <TouchableOpacity style={styles.contactTouch} activeOpacity={0.5} onPress={() => onPress(contact)}>
-          <View style={styles.avatar}>
-            <FastImage source={hasImg ? { uri } : require('../../../android_assets/avatar.png')} style={{ width: 44, height: 44 }} resizeMode={FastImage.resizeMode.cover} />
-          </View>
+          <Avatar size={40} aliasSize={16} big alias={contact.alias} photo={uri} />
           <View style={styles.contactContent}>
             <Text style={{ ...styles.contactName, color: theme.text }}>{contact.alias}</Text>
           </View>
@@ -103,20 +98,6 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontWeight: '600'
   },
-  avatar: {
-    width: 44,
-    height: 44,
-    borderRadius: 23,
-    overflow: 'hidden',
-    backgroundColor: 'transparent',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 18,
-    marginLeft: 18,
-    borderWidth: 1,
-    borderColor: '#eee'
-  },
   contactTouch: {
     flex: 1,
     flexDirection: 'row',
@@ -125,7 +106,8 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   contactContent: {
-    flex: 1
+    flex: 1,
+    marginLeft: 10
   },
   contactName: {
     fontSize: 16,

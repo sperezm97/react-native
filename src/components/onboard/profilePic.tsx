@@ -95,7 +95,7 @@ export default function ProfilePic({ z, show, onDone, onBack }) {
           <Text style={{ ...styles.nickname, color: theme.text }}>{user.alias}</Text>
         </View>
         <View style={styles.mid} accessibilityLabel='onboard-profile-middle'>
-          <Avatar size={200} uri={img ? img.uri : ''} />
+          <Avatar size={200} photo={img && img.uri} round={100} />
           <Button accessibilityLabel='onboard-profile-choose-image' onPress={() => setDialogOpen(true)} style={{ ...styles.selectButton, backgroundColor: theme.lightGrey }}>
             <Text style={{ color: theme.black }}>Select Image</Text>
           </Button>

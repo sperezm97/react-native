@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, Image } from 'react-native'
+import { StyleSheet, View, Text, Image } from 'react-native'
 import { Avatar as PaperAvatar } from 'react-native-paper'
+import FastImage from 'react-native-fast-image'
 
 import { useStores, useTheme } from '../../../store'
+import { useAvatarColor } from '../../../store/hooks/msg'
 
-export default function Avatar({ uri, size, borderless }) {
+export default function Avatar(props) {
+  let { photo, alias, size, borderless } = props
+
   const theme = useTheme()
   const [avatar, setAvatar] = useState({
     newImage: require('../../../assets/avatars/balvin.png'),
@@ -42,20 +46,86 @@ export default function Avatar({ uri, size, borderless }) {
     borderColor: theme.border
   }
 
-  if (uri) {
-    return <Image resizeMode='cover' source={uri ? { uri } : avatar.newImage} style={{ ...borderStyles }} />
+  const borderRadius = props.round ? props.round : props.big ? 26 : 16
+
+  if (photo) {
+    if (!photo.startsWith('https')) {
+      photo = photo.replace('http', 'https')
+    }
+
+    return (
+      <View style={{ ...styles.avatar, height: size, width: size, borderRadius, opacity: props.hide ? 0 : 1 }}>
+        <FastImage source={{ uri: photo }} style={{ width: size, height: size }} resizeMode={FastImage.resizeMode.cover} />
+      </View>
+    )
+  } else if (alias) {
+    let initial = ''
+    const arr = alias.split(' ')
+    arr.forEach((str, i) => {
+      if (i < 2) initial += str.substring(0, 1).toUpperCase()
+    })
+
+    return (
+      <View
+        style={{
+          ...styles.aliasWrap,
+          height: size,
+          width: size,
+          borderRadius,
+          opacity: props.hide ? 0 : 1,
+          backgroundColor: useAvatarColor(alias)
+        }}
+      >
+        <Text
+          style={{
+            ...styles.initial,
+            letterSpacing: props.big ? 2 : 0,
+            fontSize: props.aliasSize
+          }}
+        >
+          {initial}
+        </Text>
+      </View>
+    )
   } else {
-    return <PaperAvatar.Image size={size} source={avatar.newImage} style={{ ...borderStyles, backgroundColor: 'transparent' }} />
+    return (
+      <View style={{ ...styles.avatar, height: size, width: size, borderRadius, opacity: props.hide ? 0 : 1 }}>
+        <PaperAvatar.Image size={size} source={avatar.newImage} style={{ ...borderStyles, backgroundColor: 'transparent' }} />
+      </View>
+    )
   }
 }
 
 Avatar.defaultProps = {
-  uri: '',
-  borderless: true
+  photo: '',
+  borderless: true,
+  aliasSize: 15
 }
 
 const styles = StyleSheet.create({
   image: {
     borderWidth: 1
+  },
+  aliasWrap: {
+    marginLeft: 8,
+    backgroundColor: 'black',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  initial: {
+    color: 'white',
+    marginLeft: 1
+    // marginBottom: 1
+    // marginRight: 1
+  },
+  avatar: {
+    marginLeft: 8,
+    backgroundColor: 'transparent',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'relative',
+    overflow: 'hidden'
   }
 })

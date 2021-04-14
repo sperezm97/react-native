@@ -7,9 +7,9 @@ import ReactNativeHapticFeedback from 'react-native-haptic-feedback'
 import { useStores, hooks, useTheme } from '../../store'
 import InviteRow, { styles } from './inviteRow'
 import { chatPicSrc, useChatPicSrc } from '../utils/picSrc'
-import Avatar from './msg/avatar'
 import PushableButton from '../common/Button/PushableButton'
 import RefreshLoading from '../common/RefreshLoading'
+import Avatar from '../common/Avatar'
 
 const { useChats, useChatRow } = hooks
 
@@ -96,7 +96,7 @@ function ChatRow(props) {
     let uri = useChatPicSrc(props)
     const hasImg = uri ? true : false
     // TODO : this is a temporary fix and will be removed
-    uri = uri.replace('http', 'https')
+    // uri = uri.replace('http', 'https')
 
     const { lastMsgText, lastMsgDate, hasLastMsg, unseenCount, hasUnseen } = useChatRow(props.id)
 
@@ -111,11 +111,12 @@ function ChatRow(props) {
         onPress={onSeeChatHandler}
       >
         <View style={styles.avatarWrap}>
-          <Avatar big alias={name} photo={uri || ''} />
+          <Avatar alias={name} photo={uri && uri} size={50} aliasSize={18} big />
+          {/* <Avatar big alias={name} photo={uri || ''} /> */}
           {hasUnseen && (
             <View style={moreStyles.badgeWrap}>
-              <View style={moreStyles.badge}>
-                <Text style={moreStyles.badgeText}>{unseenCount}</Text>
+              <View style={{ ...moreStyles.badge, backgroundColor: theme.badge }}>
+                <Text style={{ ...moreStyles.badgeText, color: theme.white }}>{unseenCount}</Text>
               </View>
             </View>
           )}
@@ -172,7 +173,6 @@ const moreStyles = StyleSheet.create({
     position: 'absolute',
     right: 0,
     bottom: 0,
-    backgroundColor: '#DB5554',
     width: 18,
     height: 18,
     display: 'flex',
@@ -181,8 +181,8 @@ const moreStyles = StyleSheet.create({
     borderRadius: 10
   },
   badgeText: {
-    color: 'white',
-    fontSize: 10
+    fontSize: 11,
+    fontWeight: '500'
   }
 })
 

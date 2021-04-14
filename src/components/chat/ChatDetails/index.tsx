@@ -12,12 +12,12 @@ import { constants } from '../../../constants'
 import FadeView from '../../utils/fadeView'
 import { useChatPicSrc, createChatPic } from '../../utils/picSrc'
 import EE, { LEFT_GROUP } from '../../utils/ee'
-import Avatar from '../../chat/msg/avatar'
 import People from './People'
 import { Contact, DeletableContact, PendingContact } from './Items'
 import BackHeader from '../../common/BackHeader'
 import ExitGroup from '../../common/Dialogs/ExitGroup'
 import EditGroup from '../../common/Dialogs/EditGroup'
+import Avatar from '../../common/Avatar'
 
 export default function ChatDetails({ route }) {
   const { ui, contacts, chats, user, msg } = useStores()
@@ -194,7 +194,7 @@ export default function ChatDetails({ route }) {
           {hasGroup && (
             <View style={styles.groupInfo}>
               <View style={styles.groupInfoLeft}>
-                <TouchableOpacity onPress={changePic}>{group && <Avatar big alias={group.name} photo={uri || ''} />}</TouchableOpacity>
+                <TouchableOpacity onPress={changePic}>{group && <Avatar size={50} aliasSize={18} big alias={group.name} photo={uri} />}</TouchableOpacity>
                 <View style={styles.groupInfoText}>
                   <Text style={{ fontSize: 16, marginBottom: 6, color: theme.text }}>{group.name}</Text>
                   <Text style={{ fontSize: 12, marginBottom: 6, color: theme.title }}>{`Created on ${moment(group.created_at).format('ll')}`}</Text>

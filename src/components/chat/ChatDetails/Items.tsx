@@ -8,23 +8,25 @@ import { IconButton } from 'react-native-paper'
 import { useTheme } from '../../../store'
 import { usePicSrc } from '../../utils/picSrc'
 import { ApproveButton, RejectButton } from '../../chat/msg/memberRequest'
+import Avatar from '../../common/Avatar'
 
 export function DeletableContact(props) {
   const theme = useTheme()
   const { contact, onDelete } = props
   const uri = usePicSrc(contact)
   const hasImg = uri ? true : false
+
   return (
     <SwipeRow disableRightSwipe={true} friction={100} rightOpenValue={-80} stopRightSwipe={-80}>
       <View style={styles.backSwipeRow}>
         <IconButton icon='trash-can-outline' color='white' size={25} onPress={() => onDelete(contact.id)} style={{ marginRight: 20 }} />
       </View>
       <View style={{ ...styles.frontSwipeRow, backgroundColor: theme.bg }}>
-        <View style={{ ...styles.avatar, borderColor: theme.border }}>
-          {/* <Image source={hasImg ? { uri } : require('../../../../android_assets/avatar.png')} style={{ width: 44, height: 44 }} resizeMode={'cover'} /> */}
+        <View style={{ ...styles.avatarWrap }}>
+          <Avatar size={40} photo={uri} big alias={contact.alias} aliasSize={20} />
         </View>
         <View style={styles.contactContent}>
-          <Text style={{ ...styles.contactName, color: theme.title }}>{contact.alias}</Text>
+          <Text style={{ ...styles.contactName, color: theme.text }}>{contact.alias}</Text>
         </View>
       </View>
     </SwipeRow>
@@ -38,7 +40,7 @@ export function Contact(props) {
   const hasImg = uri ? true : false
   return (
     <TouchableOpacity style={{ ...styles.contactTouch, backgroundColor: theme.bg }} activeOpacity={1} onPress={onPress}>
-      <View style={{ ...styles.avatar, borderColor: theme.border }}>
+      <View style={{ ...styles.avatarWrap, borderColor: theme.border }}>
         {/* <Image source={hasImg ? { uri } : require('../../../../android_assets/avatar.png')} style={{ width: 44, height: 44 }} resizeMode={'cover'} /> */}
       </View>
       <View style={styles.contactContent}>
@@ -63,7 +65,7 @@ export function PendingContact(props) {
   }
   return (
     <TouchableOpacity style={{ ...styles.contactTouch, backgroundColor: theme.bg }} activeOpacity={1} onPress={onPress}>
-      <View style={{ ...styles.avatar, borderColor: theme.border }}>
+      <View style={{ ...styles.avatarWrap, borderColor: theme.border }}>
         {/* <Image source={hasImg ? { uri } : require('../../../../android_assets/avatar.png')} style={{ width: 44, height: 44 }} resizeMode={'cover'} /> */}
       </View>
       <View style={styles.contactContent}>
@@ -97,19 +99,9 @@ export function SelectedContact({ contact, onPress, removable }) {
 }
 
 const styles = StyleSheet.create({
-  avatar: {
-    width: 44,
-    height: 44,
-    borderRadius: 23,
-    overflow: 'hidden',
-    backgroundColor: 'transparent',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+  avatarWrap: {
     marginRight: 18,
-    marginLeft: 18,
-    borderWidth: 1,
-    borderColor: '#eee'
+    marginLeft: 18
   },
   contactTouch: {
     flex: 1,
@@ -125,8 +117,7 @@ const styles = StyleSheet.create({
   contactName: {
     marginRight: 12,
     fontSize: 16,
-    fontWeight: 'bold',
-    color: '#666'
+    fontWeight: '500'
   },
   checker: {
     width: 60,
