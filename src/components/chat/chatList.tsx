@@ -10,6 +10,7 @@ import { chatPicSrc, useChatPicSrc } from '../utils/picSrc'
 import PushableButton from '../common/Button/PushableButton'
 import RefreshLoading from '../common/RefreshLoading'
 import Avatar from '../common/Avatar'
+import Typography from '../common/Typography'
 
 const { useChats, useChatRow } = hooks
 
@@ -121,8 +122,12 @@ function ChatRow(props) {
         </View>
         <View style={styles.chatContent}>
           <View style={styles.chatContentTop}>
-            <Text style={{ ...styles.chatName, color: theme.text, fontFamily: 'Proxima Nova Regular', fontWeight: '400' }}>{name}</Text>
-            <Text style={{ ...styles.chatDate, color: theme.subtitle }}>{lastMsgDate}</Text>
+            <Typography style={{ ...styles.chatName }} color={theme.text} size={16} fw='500'>
+              {name}
+            </Typography>
+            <Typography style={{ ...styles.chatDate }} color={theme.subtitle}>
+              {lastMsgDate}
+            </Typography>
           </View>
           <View style={styles.chatMsgWrap}>
             {hasLastMsg && (

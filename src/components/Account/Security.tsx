@@ -52,7 +52,6 @@ export default function Security() {
 
     Clipboard.setString(final)
     Toast.showWithGravity('Export Keys Copied.', TOAST_DURATION, Toast.CENTER)
-    ui.setPinCodeModal(false, null)
   }
 
   function pinTimeoutValueUpdated(v) {

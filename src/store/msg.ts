@@ -212,6 +212,7 @@ class MsgStore {
       v.sort((a, b) => moment(b.date).unix() - moment(a.date).unix())
       final[k] = v
     })
+
     this.messages = final
   }
 

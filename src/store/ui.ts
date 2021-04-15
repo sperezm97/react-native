@@ -296,10 +296,8 @@ export class UiStore {
   }
 
   @observable pinCodeModal: boolean = false
-  @observable pinCodeParams: { [k: string]: string } = null
-  @action setPinCodeModal(b, params) {
+  @action setPinCodeModal(b) {
     this.pinCodeModal = b
-    this.pinCodeParams = params
   }
 }
 

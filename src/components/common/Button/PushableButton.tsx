@@ -1,24 +1,16 @@
 import React from 'react'
-import { Button as PaperButton } from 'react-native-paper'
 
 import Pushable from '../Pushable'
+import Button from './index'
 
 export default function PushableButton(props) {
-  let { mode, accessibilityLabel, style, loading, disabled, onPress, dark, icon, scale, children, btnHeight, size } = props
-
-  if (size === 'large') {
-    btnHeight = 60
-  } else if (size === 'small') {
-    btnHeight = 35
-  } else {
-    btnHeight = 50
-  }
+  let { onPress, scale, children } = props
 
   return (
     <Pushable onPress={onPress} scale={scale}>
-      <PaperButton mode={mode} accessibilityLabel={accessibilityLabel} loading={loading} disabled={disabled} style={style} dark={dark} icon={icon} contentStyle={{ height: btnHeight }}>
+      <Button {...props} pushable>
         {children}
-      </PaperButton>
+      </Button>
     </Pushable>
   )
 }

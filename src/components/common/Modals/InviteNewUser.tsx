@@ -18,6 +18,7 @@ export default function InviteNewUser() {
     setLoading(true)
     await contacts.createInvite(values.nickname, values.welcome_message)
     setLoading(false)
+    close()
   }
 
   useEffect(() => {

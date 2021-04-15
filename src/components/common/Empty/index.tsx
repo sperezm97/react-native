@@ -10,7 +10,7 @@ export default function Empty(props) {
 
   return (
     <View style={{ ...styles.wrap, ...style }}>
-      <Text style={{ color: theme.dark ? theme.white : theme.grey }}>{text}</Text>
+      <Text style={{ color: theme.dark ? theme.white : theme.darkGrey }}>{text}</Text>
     </View>
   )
 }

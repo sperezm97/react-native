@@ -11,8 +11,9 @@ import ModalWrap from './ModalWrap'
 import ModalHeader from './ModalHeader'
 import QRCode from '../../utils/qrcode'
 import Button from '../Button'
+import Empty from '../Empty'
 
-export default function PubKey({ visible, pubkey, close }) {
+export default function PubKey({ visible, close, pubkey }) {
   const theme = useTheme()
 
   function copy() {
@@ -30,7 +31,8 @@ export default function PubKey({ visible, pubkey, close }) {
     <ModalWrap onClose={close} visible={visible}>
       <ModalHeader title='Public Key' onClose={close} />
       <View style={styles.qrWrap}>
-        <QRCode value={pubkey} size={720} />
+        {pubkey && <QRCode value={pubkey} size={720} />}
+        {!pubkey && <Empty text='No Public Address found' />}
       </View>
       <Text style={{ ...styles.pubkeyText, color: theme.title }}>{pubkey}</Text>
       <View style={styles.buttonsWrap}>

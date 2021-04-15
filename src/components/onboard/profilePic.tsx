@@ -1,22 +1,19 @@
 import React, { useState } from 'react'
 import { View, StyleSheet, Text } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
-import { IconButton, Portal } from 'react-native-paper'
-import * as ImagePicker from 'react-native-image-picker'
+import { IconButton } from 'react-native-paper'
 import RNFetchBlob from 'rn-fetch-blob'
 
 import { useStores, useTheme } from '../../store'
 import Slider from '../utils/slider'
 import Button from '../common/Button'
-import ImgSrcDialog from '../utils/imgSrcDialog'
-import Cam from '../utils/cam'
+import ImageDialog from '../common/Dialogs/ImageDialog'
 import Avatar from '../common/Avatar'
 
 export default function ProfilePic({ z, show, onDone, onBack }) {
   const { contacts, user, meme } = useStores()
   const [uploading, setUploading] = useState(false)
   const [dialogOpen, setDialogOpen] = useState(false)
-  const [takingPhoto, setTakingPhoto] = useState(false)
   const [img, setImg] = useState(null)
   const theme = useTheme()
 
@@ -28,6 +25,8 @@ export default function ProfilePic({ z, show, onDone, onBack }) {
     if (img) {
       setUploading(true)
       const url = await uploadSync(img.uri)
+      console.log('url', url)
+
       if (url) {
         await contacts.updateContact(1, {
           photo_url: url
@@ -106,13 +105,7 @@ export default function ProfilePic({ z, show, onDone, onBack }) {
           </Button>
         </View>
 
-        <ImgSrcDialog open={dialogOpen} onClose={() => setDialogOpen(false)} onPick={img => pickImage(img)} onChooseCam={() => setTakingPhoto(true)} />
-
-        {takingPhoto && (
-          <Portal>
-            <Cam onCancel={() => setTakingPhoto(false)} onSnap={img => pickImage(img)} />
-          </Portal>
-        )}
+        <ImageDialog visible={dialogOpen} onCancel={() => setDialogOpen(false)} onPick={pickImage} onSnap={pickImage} setImageDialog={setDialogOpen} />
       </Slider>
     )
   })

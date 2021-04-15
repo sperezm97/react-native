@@ -4,7 +4,7 @@ import { useStores, useTheme } from '../store'
 import { Font } from '../types'
 
 const fontConfig = {
-  ios: {
+  default: {
     regular: <Font>{
       fontFamily: 'Proxima Nova Regular',
       fontWeight: '400'

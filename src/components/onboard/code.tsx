@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import { View, StyleSheet, Text, TextInput, TouchableOpacity, Linking, Platform, KeyboardAvoidingView } from 'react-native'
 import { Title, IconButton, ActivityIndicator } from 'react-native-paper'
 import RadialGradient from 'react-native-radial-gradient'
@@ -10,6 +10,7 @@ import { DEFAULT_HOST } from '../../config'
 import * as e2e from '../../crypto/e2e'
 import * as rsa from '../../crypto/rsa'
 import QR from '../common/Accessories/QR'
+import PinCodeModal from '../common/Modals/PinCode'
 import PIN, { setPinCode } from '../utils/pin'
 import { isLN, parseLightningInvoice } from '../utils/ln'
 
@@ -81,6 +82,7 @@ export default function Code(props) {
       const codeString = atob(theCode)
       if (codeString.startsWith('keys::')) {
         setShowPin(true)
+
         return
       }
       if (codeString.startsWith('ip::')) {
@@ -136,21 +138,10 @@ export default function Code(props) {
       } else {
         // wrong PIN
         setShowPin(false)
+
         setChecking(false)
       }
     }
-  }
-
-  if (showPin) {
-    return (
-      <PIN
-        forceEnterMode
-        onFinish={async pin => {
-          await sleep(240)
-          pinEntered(pin)
-        }}
-      />
-    )
   }
 
   const isIOS = Platform.OS === 'ios'
@@ -198,6 +189,15 @@ export default function Code(props) {
         )}
       </RadialGradient>
       {scanning && <QR visible={scanning} onCancel={() => setScanning(false)} onScan={data => scan(data)} showPaster={false} />}
+      <PinCodeModal visible={showPin}>
+        <PIN
+          forceEnterMode
+          onFinish={async pin => {
+            await sleep(240)
+            pinEntered(pin)
+          }}
+        />
+      </PinCodeModal>
     </View>
   )
 }

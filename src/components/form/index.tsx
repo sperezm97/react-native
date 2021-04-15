@@ -4,10 +4,13 @@ import { Formik } from 'formik'
 import * as Yup from 'yup'
 import { Dialog } from 'react-native-paper'
 
+import { useTheme } from '../../store'
 import Input from './inputs'
 import Button from '../common/Button'
 
 export default function Form(props) {
+  const theme = useTheme()
+  const { labelColor = theme.white } = props
   if (!props.schema) return <Text>please provide schema</Text>
 
   return (
@@ -19,6 +22,7 @@ export default function Form(props) {
       validationSchema={validator(props.schema)}
     >
       {({ handleChange, handleBlur, handleSubmit, values, setFieldValue, errors, dirty, isValid }) => {
+        const d = !props.forceEnable && (!dirty || !isValid)
         return (
           <View style={styles.wrap}>
             <View style={{ padding: props.nopad ? 0 : 25 }}>
@@ -49,6 +53,7 @@ export default function Form(props) {
                   onPress={handleSubmit}
                   disabled={!props.forceEnable && (!dirty || !isValid)}
                   style={{ ...styles.button, ...props.buttonStyles }}
+                  labelStyle={{ color: labelColor, opacity: d ? 0.5 : 1 }}
                   loading={props.loading}
                 >
                   {props.buttonText || 'Submit'}

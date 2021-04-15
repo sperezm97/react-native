@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { View, StyleSheet, Animated } from 'react-native'
+import React from 'react'
+import { View, StyleSheet } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
 
 import Code from './code'

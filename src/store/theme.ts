@@ -51,7 +51,6 @@ export class ThemeStore {
   @observable primary: string = '#0067ff'
   @observable secondary: string = '#0fb17d'
 
-  // @observable secondary: string = '#055deb'
   @observable white: string = '#fff'
   @observable lightGrey: string = '#f5f6f8'
   @observable grey: string = '#d0d0d0'
@@ -63,6 +62,7 @@ export class ThemeStore {
   @observable clay: string = '#212932'
   @observable blue: string = '#0067ff'
   @observable red: string = '#f50057'
+  @observable mirage: string = '#141d26'
 
   @observable badge: string = '#f50057'
   @observable accent: string = '#0a84ff'
