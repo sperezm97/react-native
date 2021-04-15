@@ -11,6 +11,7 @@ import Video from 'react-native-video'
 import FileMsg from './fileMsg'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import BoostRow from './boostRow'
+import Typography from '../../common/Typography'
 
 export default function MediaMsg(props) {
   const { meme, ui, msg } = useStores()
@@ -147,7 +148,9 @@ export default function MediaMsg(props) {
 
         {hasContent && (
           <View style={shared.innerPad}>
-            <Text style={{ ...styles.text, color: theme.title }}>{message_content}</Text>
+            <Typography color={props.isMe ? theme.white : theme.text} size={16}>
+              {message_content}
+            </Typography>
           </View>
         )}
 
@@ -205,9 +208,6 @@ function VideoPlayer(props) {
 }
 
 const styles = StyleSheet.create({
-  text: {
-    fontSize: 16
-  },
   wrap: {
     // flex:1,
     width: 200,

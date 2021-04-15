@@ -22,7 +22,6 @@ export default function AddFriend() {
       thumbBgColor: theme.primary,
       action: () => {
         close()
-
         setTimeout(() => {
           ui.setInviteFriendModal(true)
         }, 400)

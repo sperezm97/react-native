@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { StyleSheet, View, BackHandler, Modal } from 'react-native'
-import { TextInput, Button } from 'react-native-paper'
+import { TextInput } from 'react-native-paper'
 
 import { useTheme } from '../../../store'
 import ModalHeader from '../Modals/ModalHeader'
 import Scanner from './Scanner'
+import Button from '../Button'
 
-export default function QR({ visible, onCancel, onScan, showPaster }) {
+export default function QR({ visible, onCancel, onScan, showPaster, inputPlaceholder, isLoopout = false, confirm }) {
   const theme = useTheme()
   const [hasPermission, setHasPermission] = useState(null)
   const [scanned, setScanned] = useState(false)
@@ -32,34 +33,41 @@ export default function QR({ visible, onCancel, onScan, showPaster }) {
   //   })()
   // }, [])
 
-  function handleBarCodeScanned({ type, data }) {
+  function handleBarCodeScanned(data) {
     setScanned(true)
-    onScan(data)
+
+    if (showPaster) {
+      setScannedInput(data)
+    } else {
+      onScan(data)
+    }
+  }
+
+  function setScannedInput(data) {
+    if (isLoopout) {
+      if (data.startsWith('bitcoin:')) {
+        const arr = data.split(':')
+        if (arr.length > 1) setText(arr[1])
+      } else {
+        setText(data)
+      }
+    }
+    if (data.length === 66) setText(data)
   }
 
   return (
     <Modal visible={visible} animationType='slide' presentationStyle='pageSheet'>
-      <ModalHeader title='Scan QR Code' onClose={() => onCancel()} />
+      <ModalHeader title='Scan QR Code' onClose={onCancel} />
       <View style={{ ...styles.content }}>
         <Scanner scanned={scanned ? true : false} handleBarCodeScanned={handleBarCodeScanned} />
         {showPaster && (
           <View style={{ ...styles.bottom, backgroundColor: theme.main }}>
             <View style={styles.textInputWrap}>
-              <TextInput value={text} onChangeText={e => setText(e)} label='Paste invoice or Sphinx code' mode='outlined' />
+              <TextInput placeholder={inputPlaceholder} value={text} onChangeText={e => setText(e)} style={{ backgroundColor: theme.main }} underlineColor={theme.border} />
             </View>
             <View style={styles.confirmWrap}>
               {(text ? true : false) && (
-                <Button
-                  style={styles.confirm}
-                  onPress={() =>
-                    handleBarCodeScanned({
-                      data: text,
-                      type: 'text'
-                    })
-                  }
-                  mode='contained'
-                  dark={true}
-                >
+                <Button style={styles.confirm} onPress={() => confirm(text)}>
                   CONFIRM
                 </Button>
               )}
@@ -69,6 +77,12 @@ export default function QR({ visible, onCancel, onScan, showPaster }) {
       </View>
     </Modal>
   )
+}
+
+QR.defaultProps = {
+  inputPlaceholder: 'Enter Address',
+  onScan: () => {},
+  confirm: () => {}
 }
 
 const styles = StyleSheet.create({
@@ -88,17 +102,10 @@ const styles = StyleSheet.create({
   confirmWrap: {
     width: '100%',
     display: 'flex',
-    alignItems: 'center',
-    height: 50
+    alignItems: 'center'
   },
   confirm: {
-    backgroundColor: '#6289FD',
-    height: 35,
-    width: 150,
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
+    width: 160,
     borderRadius: 20
   }
 })

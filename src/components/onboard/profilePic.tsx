@@ -1,21 +1,19 @@
 import React, { useState } from 'react'
-import { View, StyleSheet, Text, Image } from 'react-native'
+import { View, StyleSheet, Text } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
-import { IconButton, Portal } from 'react-native-paper'
-import * as ImagePicker from 'react-native-image-picker'
+import { IconButton } from 'react-native-paper'
 import RNFetchBlob from 'rn-fetch-blob'
 
 import { useStores, useTheme } from '../../store'
 import Slider from '../utils/slider'
 import Button from '../common/Button'
-import ImgSrcDialog from '../utils/imgSrcDialog'
-import Cam from '../utils/cam'
+import ImageDialog from '../common/Dialogs/ImageDialog'
+import Avatar from '../common/Avatar'
 
 export default function ProfilePic({ z, show, onDone, onBack }) {
   const { contacts, user, meme } = useStores()
   const [uploading, setUploading] = useState(false)
   const [dialogOpen, setDialogOpen] = useState(false)
-  const [takingPhoto, setTakingPhoto] = useState(false)
   const [img, setImg] = useState(null)
   const theme = useTheme()
 
@@ -27,6 +25,8 @@ export default function ProfilePic({ z, show, onDone, onBack }) {
     if (img) {
       setUploading(true)
       const url = await uploadSync(img.uri)
+      console.log('url', url)
+
       if (url) {
         await contacts.updateContact(1, {
           photo_url: url
@@ -88,31 +88,24 @@ export default function ProfilePic({ z, show, onDone, onBack }) {
 
   return useObserver(() => {
     return (
-      <Slider z={z} show={show} style={{ backgroundColor: theme.lightGrey }} accessibilityLabel='onboard-profile'>
+      <Slider z={z} show={show} style={{ backgroundColor: theme.bg }} accessibilityLabel='onboard-profile'>
         <IconButton icon='arrow-left' style={styles.backArrow} color={theme.grey} onPress={onBack} accessibilityLabel='onboard-profile-back' />
         <View style={styles.nicknameWrap} accessibilityLabel='onboard-profile-nickname-wrap'>
-          <Text style={styles.nickname}>{user.alias}</Text>
+          <Text style={{ ...styles.nickname, color: theme.text }}>{user.alias}</Text>
         </View>
         <View style={styles.mid} accessibilityLabel='onboard-profile-middle'>
-          {img && <Image source={{ uri: img.uri }} style={{ width: 180, height: 180, borderRadius: 90 }} resizeMode={'cover'} />}
-          {!img && <Image source={require('../../../android_assets/avatar3x.png')} style={{ width: 180, height: 180 }} resizeMode={'cover'} />}
+          <Avatar size={200} photo={img && img.uri} round={100} />
           <Button accessibilityLabel='onboard-profile-choose-image' onPress={() => setDialogOpen(true)} style={{ ...styles.selectButton, backgroundColor: theme.lightGrey }}>
             <Text style={{ color: theme.black }}>Select Image</Text>
           </Button>
         </View>
         <View style={styles.buttonWrap} accessibilityLabel='onboard-profile-button-wrap'>
-          <Button accessibilityLabel='onboard-profile-button' loading={uploading} onPress={finish} style={{ ...styles.button, backgroundColor: theme.primary }}>
+          <Button accessibilityLabel='onboard-profile-button' loading={uploading} onPress={finish} style={{ ...styles.button, backgroundColor: theme.primary }} size='large'>
             <Text style={{ color: theme.white }}> {img ? 'Next' : 'Skip'}</Text>
           </Button>
         </View>
 
-        <ImgSrcDialog open={dialogOpen} onClose={() => setDialogOpen(false)} onPick={img => pickImage(img)} onChooseCam={() => setTakingPhoto(true)} />
-
-        {takingPhoto && (
-          <Portal>
-            <Cam onCancel={() => setTakingPhoto(false)} onSnap={img => pickImage(img)} />
-          </Portal>
-        )}
+        <ImageDialog visible={dialogOpen} onCancel={() => setDialogOpen(false)} onPick={pickImage} onSnap={pickImage} setImageDialog={setDialogOpen} />
       </Slider>
     )
   })
@@ -152,15 +145,12 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 42,
     width: '100%',
-    height: 60,
     display: 'flex',
     flexDirection: 'row-reverse'
   },
   button: {
     width: 150,
     marginRight: '12.5%',
-    borderRadius: 30,
-    display: 'flex',
-    justifyContent: 'center'
+    borderRadius: 30
   }
 })

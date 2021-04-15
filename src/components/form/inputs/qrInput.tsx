@@ -34,7 +34,10 @@ export default function QrInput({ name, label, required, handleChange, handleBlu
           <View
             style={{
               ...styles.inputStyles,
-              backgroundColor: theme.main
+              backgroundColor: theme.main,
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'center'
             }}
           >
             <TouchableOpacity onPress={() => copyAddress(value)}>
@@ -56,12 +59,12 @@ export default function QrInput({ name, label, required, handleChange, handleBlu
           />
         )}
 
-        <IconButton icon={displayOnly ? 'qrcode-scan' : 'scan-helper'} color={theme.primary} size={23} style={{ width: '10%' }} onPress={() => setScanning(true)} />
+        <IconButton icon={displayOnly ? 'qrcode' : 'qrcode-scan'} color={theme.primary} size={26} style={{ width: '10%' }} onPress={() => setScanning(true)} />
       </View>
 
       <QR visible={scanning && !displayOnly} onCancel={() => setScanning(false)} onScan={data => scan(data)} showPaster={false} />
 
-      <PublicKey pubkey={value} visible={scanning && displayOnly} close={() => setScanning(false)} />
+      <PublicKey visible={scanning && displayOnly} pubkey={value} close={() => setScanning(false)} />
     </View>
   )
 }
@@ -77,9 +80,6 @@ const styles = StyleSheet.create({
   inputStyles: {
     display: 'flex',
     flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
     height: 50,
     width: '100%',
     paddingLeft: 6,

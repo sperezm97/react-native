@@ -15,8 +15,6 @@ export default function Ready(props) {
   const [loading, setLoading] = useState(false)
   const theme = useTheme()
 
-  console.log('user::', user)
-
   async function finish() {
     setLoading(true)
     await Promise.all([
@@ -35,7 +33,7 @@ export default function Ready(props) {
 
   return (
     <Slider z={z} show={show} accessibilityLabel='onboard-ready'>
-      <RadialGradient style={styles.gradient} colors={[theme.gradient, theme.secondary]} stops={[0.1, 1]} center={[80, 40]} radius={400}>
+      <RadialGradient style={styles.gradient} colors={[theme.gradient, theme.gradient2]} stops={[0.1, 1]} center={[80, 40]} radius={400}>
         <View style={styles.titleWrap} accessibilityLabel='onboard-ready-title'>
           <View style={styles.titleRow}>
             <Text style={styles.title}>You're</Text>
@@ -60,9 +58,9 @@ export default function Ready(props) {
           </View>
         </View>
         <View style={styles.buttonWrap} accessibilityLabel='onboard-ready-button-wrap'>
-          <Button accessibilityLabel='onboard-ready-button' onPress={finish} style={{ ...styles.button, backgroundColor: theme.white }}>
+          <Button accessibilityLabel='onboard-ready-button' onPress={finish} style={{ ...styles.button, backgroundColor: theme.white }} size='large'>
             {loading && <ActivityIndicator animating={loading} color={theme.grey} size={18} />}
-            <View style={{ width: 12, height: 1 }}></View>
+            {loading && <View style={{ width: 12, height: 1 }}></View>}
             <Text style={{ fontSize: 16, fontWeight: '600', color: theme.black }}>Finish</Text>
           </Button>
         </View>

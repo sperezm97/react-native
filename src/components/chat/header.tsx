@@ -3,15 +3,17 @@ import { TouchableOpacity, Text, View, StyleSheet } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
 import { Appbar } from 'react-native-paper'
 import { useNavigation, useRoute } from '@react-navigation/native'
-import { Chat } from '../../store/chats'
+import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons'
+
 import { useStores, useTheme } from '../../store'
+import { Chat } from '../../store/chats'
 import { contactForConversation } from './utils'
+import { useChatPicSrc } from '../utils/picSrc'
 import { constants } from '../../constants'
 import { randAscii } from '../../crypto/rand'
 import { RouteStatus } from './chat'
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
-import { useChatPicSrc } from '../utils/picSrc'
-import Avatar from './msg/avatar'
+import Icon from '../common/Icon'
+import Avatar from '../common/Avatar'
 
 const conversation = constants.chat_types.conversation
 const tribe = constants.chat_types.tribe
@@ -40,24 +42,41 @@ export default function Header({
   const isPodcast = tribeParams && tribeParams.feed_url ? true : false
   const theme = useTheme()
   const navigation = useNavigation()
+
   return useObserver(() => {
     const theChat = chats.chats.find(c => c.id === chat.id)
+
     let contact
     if (chat && chat.type === conversation) {
       contact = contactForConversation(chat, contacts.contacts)
     }
 
-    function clickTitle() {
+    function handleChatInfoClick() {
       if (chat.type === conversation) {
         if (contact)
           navigation.navigate('Contacts', {
             screen: 'Contact',
             params: { contact }
           })
-        // ui.setEditContactModal(contact)
       } else {
-        ui.setGroupModal({ ...chat, ...tribeParams, pricePerMinute })
+        navigation.navigate('ChatDetails', {
+          group: { ...chat, ...tribeParams, pricePerMinute }
+        })
       }
+    }
+
+    function clickTitle() {
+      // TODO: This will go to tribe community screen
+      // if (chat.type === conversation) {
+      //   if (contact)
+      //     navigation.navigate('Contacts', {
+      //       screen: 'Contact',
+      //       params: { contact }
+      //     })
+      //   // ui.setEditContactModal(contact)
+      // } else {
+      //   ui.setGroupModal({ ...chat, ...tribeParams, pricePerMinute })
+      // }
     }
 
     async function launchVideo() {
@@ -83,23 +102,38 @@ export default function Header({
     function setAppModeHandler() {
       setAppMode(!appMode)
     }
+
     let uri = useChatPicSrc(chat)
     const appURL = tribeParams && tribeParams.app_url
+
     return (
-      <Appbar.Header style={{ ...styles.wrap, backgroundColor: theme.main, borderBottomColor: theme.border }}>
-        <Appbar.BackAction onPress={onBackHandler} color={theme.icon} size={20} />
-        <View>
-          <Avatar big={false} alias={name} photo={uri || ''} />
-        </View>
-        <View style={styles.textWrap}>
-          <TouchableOpacity onPress={clickTitle} style={styles.title}>
-            <Text style={{ fontSize: 18, color: theme.title }}>{name}</Text>
-            {status !== null && <Icon name='lock' style={{ marginLeft: 16 }} size={13} color={status === 'active' ? theme.active : theme.inactive} />}
-          </TouchableOpacity>
-          {isPodcast && <Text style={{ ...styles.stats, color: theme.title }}>{isTribeAdmin ? `Earned: ${earned} sats` : `Contributed: ${spent} sats`}</Text>}
-        </View>
-        {/* <Appbar.Action icon="video" onPress={launchVideo} color="grey" /> */}
-        {theChat && <Appbar.Action icon={isMuted ? 'bell-off' : 'bell'} onPress={muteChat} color={theme.icon} style={{ position: 'absolute', right: 10 }} />}
+      <Appbar.Header style={{ ...styles.wrap, backgroundColor: theme.bg, borderBottomColor: theme.border }}>
+        <TouchableOpacity onPress={onBackHandler} style={{ marginLeft: 6, marginRight: 6 }}>
+          <Icon name='ChevronLeft' size={28} color={theme.icon} />
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={clickTitle} style={{ ...styles.detailsWrap }}>
+          <View style={{ marginRight: 10 }}>
+            <Avatar alias={name} photo={uri || ''} size={38} big aliasSize={15} />
+          </View>
+          <View style={{ height: 45 }}>
+            <View style={{ ...styles.title }}>
+              <Text style={{ fontSize: 18, color: theme.text }}>{name}</Text>
+              {status !== null && <MaterialIcon name='lock' style={{ marginLeft: 16 }} size={13} color={status === 'active' ? theme.active : theme.inactive} />}
+            </View>
+            {isPodcast && <Text style={{ ...styles.stats, color: theme.subtitle }}>{isTribeAdmin ? `Earned: ${earned} sats` : `Contributed: ${spent} sats`}</Text>}
+          </View>
+        </TouchableOpacity>
+
+        {/* <Appbar.Action icon='video' onPress={launchVideo} color='grey' /> */}
+        {/* {theChat && (
+        )} */}
+
+        {/* <Appbar.Action icon={isMuted ? 'bell-off' : 'bell'} onPress={muteChat} color={theme.icon} /> */}
+
+        <TouchableOpacity style={{ position: 'absolute', right: 16 }} onPress={handleChatInfoClick}>
+          <Icon name='Info' size={24} color={theme.icon} />
+        </TouchableOpacity>
         {theChat && theChat.type === tribe && (appURL ? true : false) && <Appbar.Action color={theme.icon} icon={appMode ? 'android-messages' : 'open-in-app'} onPress={setAppModeHandler} />}
       </Appbar.Header>
     )
@@ -118,6 +152,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center'
   },
+  detailsWrap: {
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
   title: {
     display: 'flex',
     flexDirection: 'row',
@@ -126,11 +164,12 @@ const styles = StyleSheet.create({
   },
   textWrap: {
     display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
     marginLeft: 13
   },
   stats: {
-    color: 'white',
-    fontSize: 10,
-    marginBottom: 7
+    fontSize: 12
   }
 })

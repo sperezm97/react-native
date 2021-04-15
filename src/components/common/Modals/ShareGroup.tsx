@@ -6,27 +6,13 @@ import Share from 'react-native-share'
 import Clipboard from '@react-native-community/clipboard'
 import Toast from 'react-native-simple-toast'
 
-import { useStores, useTheme } from '../../store'
-import { DEFAULT_DOMAIN } from '../../config'
-import ModalWrap from './modalWrap'
-import QRCode from '../utils/qrcode'
-import Header from './modalHeader'
+import { useStores, useTheme } from '../../../store'
+import { DEFAULT_DOMAIN } from '../../../config'
+import QRCode from '../../utils/qrcode'
+import ModalWrap from './ModalWrap'
+import Header from './ModalHeader'
 
-export default function ShareTribeWrap({ visible }) {
-  const { ui } = useStores()
-
-  function close() {
-    ui.setShareTribeUUID(null)
-  }
-
-  return (
-    <ModalWrap onClose={close} visible={visible}>
-      {visible && <ShareTribe close={close} />}
-    </ModalWrap>
-  )
-}
-
-function ShareTribe({ close }) {
+export default function ShareGroup() {
   const { ui, chats } = useStores()
   const theme = useTheme()
   function copy() {
@@ -40,11 +26,16 @@ function ShareTribe({ close }) {
     } catch (e) {}
   }
 
+  function close() {
+    ui.setShareTribeUUID(null)
+  }
+
   const uuid = ui.shareTribeUUID
   const host = chats.getDefaultTribeServer().host
   const qr = `${DEFAULT_DOMAIN}://?action=tribe&uuid=${uuid}&host=${host}`
+
   return useObserver(() => (
-    <Portal.Host>
+    <ModalWrap visible={ui.shareTribeUUID ? true : false}>
       <Header title='Join Group QR Code' onClose={close} />
       <View style={styles.qrWrap}>
         <QRCode value={qr} size={250} />
@@ -58,7 +49,7 @@ function ShareTribe({ close }) {
           Copy
         </Button>
       </View>
-    </Portal.Host>
+    </ModalWrap>
   ))
 }
 

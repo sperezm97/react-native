@@ -1,12 +1,12 @@
 import React from 'react'
 
 import { createStackNavigator } from '@react-navigation/stack'
-import { getFocusedRouteNameFromRoute } from '@react-navigation/native'
 
 import Chats from '../chat/Navigation'
 import Account from '../Account/Navigation'
 import Payment from '../Payment/Navigation'
 import Contacts from '../Contacts/Navigation'
+import Tribes from '../Tribes/Navigation'
 import Home from '../Home'
 
 const RootStack = createStackNavigator()
@@ -41,6 +41,14 @@ export default function Root() {
       <RootStack.Screen
         name='Account'
         component={Account}
+        options={{
+          headerShown: false,
+          animationEnabled: false
+        }}
+      />
+      <RootStack.Screen
+        name='Tribes'
+        component={Tribes}
         options={{
           headerShown: false,
           animationEnabled: false

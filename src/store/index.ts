@@ -24,12 +24,12 @@ import { DEBOUNCE_TIME, persistMsgLocalForage } from './storage'
 const strg = {
   ios: AsyncStorage,
   android: AsyncStorage,
-  web: localForage,
+  web: localForage
 }
 
 const hydrate = create({
   storage: strg[Platform.OS] || localStorage,
-  debounce: DEBOUNCE_TIME,
+  debounce: DEBOUNCE_TIME
 })
 
 async function testAsyncStorage() {
@@ -50,7 +50,7 @@ async function hydrateMessageStoreFromLocalforage() {
       msgStore.lastSeen = rs.lastSeen
       msgStore.lastFetched = rs.lastFetched
     } catch (e) {
-      console.log("LOCALFORAGE ERROR", e)
+      console.log('LOCALFORAGE ERROR', e)
     }
   } else {
     await hydrate('msg', msgStore)
@@ -76,14 +76,7 @@ async function hydrateMessageStoreFromRealm() {
   }
 }
 function initAndroid() {
-  console.log('=> initialize store')
-  Promise.all([
-    hydrate('user', userStore),
-    hydrate('details', detailsStore),
-    hydrate('contacts', contactStore),
-    hydrate('chats', chatStore),
-    hydrate('meme', memeStore),
-  ]).then(() => {
+  Promise.all([hydrate('user', userStore), hydrate('details', detailsStore), hydrate('contacts', contactStore), hydrate('chats', chatStore), hydrate('meme', memeStore)]).then(() => {
     console.log('=> store initialized')
     uiStore.setReady(true)
     testAsyncStorage()
@@ -93,7 +86,6 @@ function initAndroid() {
 }
 
 function initWeb() {
-  console.log('=> initialize store')
   Promise.all([
     hydrate('user', userStore),
     hydrate('details', detailsStore),
@@ -103,22 +95,13 @@ function initWeb() {
     // hydrate('msg', msgStore)
     hydrateMessageStoreFromLocalforage()
   ]).then(() => {
-    console.log('=> store initialized')
     uiStore.setReady(true)
   })
   hydrate('theme', themeStore)
 }
 
 function initIOS() {
-  console.log('=> initialize store')
-  Promise.all([
-    hydrate('user', userStore),
-    hydrate('details', detailsStore),
-    hydrate('contacts', contactStore),
-    hydrate('chats', chatStore),
-    hydrate('meme', memeStore),
-  ]).then(() => {
-    console.log('=> store initialized')
+  Promise.all([hydrate('user', userStore), hydrate('details', detailsStore), hydrate('contacts', contactStore), hydrate('chats', chatStore), hydrate('meme', memeStore)]).then(() => {
     uiStore.setReady(true)
     testAsyncStorage()
     hydrateMessageStoreFromRealm()
@@ -160,4 +143,3 @@ export const hooks = hookz
 async function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms))
 }
-

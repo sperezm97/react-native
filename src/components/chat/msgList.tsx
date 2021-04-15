@@ -209,7 +209,9 @@ function ListItem({ m, chat, isGroup, isTribe, onDelete, myPubkey, myAlias, send
   if (m.dateLine) {
     return <DateLine dateString={m.dateLine} />
   }
+
   const msg = m
+
   if (!m.chat) msg.chat = chat
   return useMemo(
     () => (

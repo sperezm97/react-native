@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { useObserver } from 'mobx-react-lite'
-import { TouchableOpacity, View, Text, TextInput, StyleSheet, PanResponder, Animated, KeyboardAvoidingView } from 'react-native'
+import { StyleSheet, View, Text, TextInput, TouchableOpacity, PanResponder, Animated, KeyboardAvoidingView, Platform } from 'react-native'
 import { IconButton, Portal, ActivityIndicator } from 'react-native-paper'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import AudioRecorderPlayer from 'react-native-audio-recorder-player'
@@ -309,12 +309,26 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
     }
   }
 
-  let fullHeight = textInputHeight + 20
+  const barHeight = inputFocused ? 20 : 40
+
+  let fullHeight = textInputHeight + barHeight
   if (hasReplyContent) fullHeight += 48
+
   return useObserver(() => (
-    <>
-      {/* <View style={{ ...styles.spacer, height: fullHeight }} /> */}
-      <View style={{ ...styles.bar, height: fullHeight, bottom: 0, backgroundColor: theme.bg, borderColor: theme.border }} accessibilityLabel='chat-bottombar'>
+    <View
+      style={{
+        backgroundColor: theme.bg
+      }}
+    >
+      <View
+        style={{
+          ...styles.bar,
+          height: fullHeight,
+          borderColor: theme.border
+          // alignItems: inputFocused ? 'center' : 'center'
+        }}
+        accessibilityLabel='chat-bottombar'
+      >
         {(hasReplyContent ? true : false) && (
           <ReplyContent
             showClose={true}
@@ -336,14 +350,14 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
               textAlignVertical='top'
               accessibilityLabel='message-input'
               blurOnSubmit={true}
-              onContentSizeChange={e => {
-                let h = e.nativeEvent.contentSize.height
-                if (h < 44) h = 44
-                if (h < 108) setTextInputHeight(h)
-              }}
+              // onContentSizeChange={e => {
+              //   let h = e.nativeEvent.contentSize.height
+              //   if (h < 44) h = 44
+              //   if (h < 108) setTextInputHeight(h)
+              // }}
               placeholder='Message...'
               ref={inputRef}
-              style={{ ...styles.input, marginLeft: hideMic ? 15 : 0, height: textInputHeight, maxHeight: 98, backgroundColor: theme.inputBg, borderColor: theme.border, color: theme.input }}
+              style={{ ...styles.input, marginLeft: hideMic ? 15 : 0, height: textInputHeight, backgroundColor: theme.inputBg, borderColor: theme.border, color: theme.input }}
               placeholderTextColor={theme.subtitle}
               onFocus={e => setInputFocused(true)}
               onBlur={() => setInputFocused(false)}
@@ -377,8 +391,6 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
             </Animated.View>
           )}
 
-          {recordingStartTime && <View style={styles.recordingCircle}></View>}
-
           {hideMic && (
             <View style={styles.sendButtonWrap}>
               <TouchableOpacity activeOpacity={0.5} style={{ ...styles.sendButton, backgroundColor: theme.primary }} onPress={() => sendMessage()} accessibilityLabel='send-message'>
@@ -386,6 +398,8 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
               </TouchableOpacity>
             </View>
           )}
+
+          {recordingStartTime && <View style={styles.recordingCircle}></View>}
 
           <AttachmentDialog
             hasLoopout={hasLoopout}
@@ -426,7 +440,7 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
           </Portal>
         )}
       </View>
-    </>
+    </View>
   ))
 }
 
@@ -439,10 +453,8 @@ const styles = StyleSheet.create({
     width: '100%',
     maxWidth: '100%',
     height: 20,
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: 'column',
     justifyContent: 'center',
-    elevation: 5,
     borderWidth: 1,
     borderBottomWidth: 0,
     borderLeftWidth: 0,

@@ -4,6 +4,7 @@ import { useParsedJsonOrClipMsg } from '../../../store/hooks/msg'
 import { useTheme } from '../../../store'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import CustomIcon from '../../utils/customIcons'
+import Typography from '../../common/Typography'
 
 export default function BoostMessage(props) {
   const theme = useTheme()
@@ -17,8 +18,14 @@ export default function BoostMessage(props) {
       <View style={{ ...styles.rocketWrap, backgroundColor: theme.accent }}>
         <CustomIcon color='white' size={20} name='fireworks' />
       </View>
-      <Text style={{ color: theme.title, fontWeight: 'bold' }}>{amount}</Text>
-      <Text style={{ color: theme.title, opacity: 0.5, marginLeft: 6 }}>sat</Text>
+      <Typography color={props.isMe ? theme.white : theme.title} fw='500'>
+        {amount}
+      </Typography>
+      <Typography color={props.isMe ? theme.white : theme.subtitle} style={{ opacity: 0.5, marginLeft: 6 }}>
+        sat
+      </Typography>
+      {/* <Text style={{ color: theme.title, fontWeight: 'bold' }}>{amount}</Text> */}
+      {/* <Text style={{ color: theme.title, opacity: 0.5, marginLeft: 6 }}>sat</Text> */}
     </View>
   )
 }

@@ -5,7 +5,7 @@ import { useTheme } from '../../../store'
 
 export default function Button(props) {
   const theme = useTheme()
-  let { mode, accessibilityLabel, color = theme.primary, style, btnHeight, loading, disabled, onPress, dark, icon, children, size } = props
+  let { pushable, mode, accessibilityLabel, color = theme.primary, style, labelStyle, btnHeight, loading, disabled, onPress, dark, icon, children, size } = props
 
   if (size === 'large') {
     btnHeight = 60
@@ -21,8 +21,9 @@ export default function Button(props) {
       accessibilityLabel={accessibilityLabel}
       loading={loading}
       disabled={disabled}
-      onPress={onPress}
+      onPress={!pushable && onPress}
       style={{ ...style }}
+      labelStyle={{ ...labelStyle }}
       contentStyle={{ height: btnHeight }}
       dark={dark}
       icon={icon}

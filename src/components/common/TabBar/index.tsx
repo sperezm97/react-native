@@ -1,76 +1,55 @@
-import React, { useEffect, useState } from 'react'
-import { View, StyleSheet, Dimensions, Animated } from 'react-native'
+import React from 'react'
+import { View, StyleSheet, Dimensions } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
-import { useNavigation, useRoute, useNavigationState } from '@react-navigation/native'
-import { useSafeArea } from 'react-native-safe-area-context'
+import { useNavigation, useRoute } from '@react-navigation/native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import AntDesignIcon from 'react-native-vector-icons/AntDesign'
+import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
 
 import { useTheme } from '../../../store'
 import Pushable from '../Pushable'
 import Icon from '../Icon'
 
-const routes = [
-  {
-    name: 'Home',
-    icon: 'home',
-    key: 'home'
-  },
-  {
-    name: 'Chats',
-    icon: 'chat',
-    key: 'chat'
-  },
-  {
-    name: 'Search',
-    icon: 'search',
-    key: 'search'
-  },
-  {
-    name: 'Payment',
-    icon: 'wallet',
-    key: 'payment'
-  },
-  {
-    name: 'Account',
-    icon: 'account',
-    key: 'account'
-  }
-]
-
 export default function TabBar() {
-  const [switchAnim] = useState(new Animated.Value(0))
   const theme = useTheme()
   const navigation = useNavigation()
   const current = useRoute()
-  const insets = useSafeArea()
+  const insets = useSafeAreaInsets()
   const { width } = Dimensions.get('window')
   const tabbarWidth = width - 32
 
-  const navigationState = useNavigationState(state => state)
-  // let index = navigationState.index
-  // let routes = navigationState.routes.length
-
-  const indicatorPosition = switchAnim.interpolate({
-    inputRange: [0, routes.length - 1],
-    outputRange: [0, tabbarWidth - tabbarWidth / 5]
-  })
-
-  const currentIndex = routes.findIndex(r => r.name === current.name)
-
-  // console.log('currentIndex', currentIndex)
-
-  useEffect(() => {
-    Animated.spring(switchAnim, {
-      toValue: currentIndex,
-      // duration: 250,
-      useNativeDriver: true
-    }).start()
-  }, [switchAnim])
+  const routes = [
+    {
+      name: 'Home',
+      icon: 'home',
+      key: 'home'
+    },
+    {
+      name: 'Chats',
+      icon: 'chat',
+      key: 'chats'
+    },
+    {
+      name: 'Tribes',
+      icon: color => <FontAwesome5Icon name='users' color={color} size={18} />,
+      key: 'tribes'
+    },
+    {
+      name: 'Payment',
+      icon: 'wallet',
+      key: 'payment'
+    },
+    {
+      name: 'Account',
+      icon: 'account',
+      key: 'account'
+    }
+  ]
 
   return useObserver(() => {
     return (
-      <View style={{ backgroundColor: theme.bg }}>
-        {/* marginBottom: insets.bottom  */}
-        <View style={{ ...styles.tabBar }}>
+      <View style={{ ...styles.wrap, backgroundColor: theme.bg, borderTopColor: theme.border }}>
+        <View style={{ ...styles.tabBar, height: 40 + insets.bottom }}>
           {routes.map(route => {
             return (
               <Pushable
@@ -79,32 +58,34 @@ export default function TabBar() {
                   navigation.navigate(route.name)
                 }}
               >
-                <View style={{ ...styles.iconWrap, width: tabbarWidth / 5 }}>
-                  <Icon name={route.name} color={route.name === current.name ? theme.primary : theme.icon} size={24} />
-                </View>
+                <View style={{ ...styles.iconWrap, width: tabbarWidth / 5, height: 40 + insets.bottom }}>{renderIcon(route, current, theme)}</View>
               </Pushable>
             )
           })}
         </View>
-        {/* <Animated.View  
-          style={{
-            ...styles.tabIndicatorWrap,
-            transform: [
-              {
-                translateX: indicatorPosition
-              }
-            ],
-            width: tabbarWidth / 5
-          }}
-        >
-          <View style={{ ...styles.tabIndicator, backgroundColor: theme.primary }} />
-        </Animated.View> */}
       </View>
     )
   })
 }
 
+function renderIcon(route, current, theme) {
+  const iconElement = typeof route.icon === 'function'
+
+  return (
+    <>
+      {iconElement ? (
+        <>{route.icon(route.name === current.name ? theme.primary : theme.icon)}</>
+      ) : (
+        <Icon name={route.name} color={route.name === current.name ? theme.primary : theme.icon} size={24} />
+      )}
+    </>
+  )
+}
+
 const styles = StyleSheet.create({
+  wrap: {
+    borderTopWidth: 1
+  },
   tabBar: {
     flexDirection: 'row',
     alignItems: 'center',

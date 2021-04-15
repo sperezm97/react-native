@@ -100,6 +100,7 @@ export function orgMsgs(messages: Msg[]) {
 
 export function orgMsgsFromExisting(allMsgs: { [k: number]: Msg[] }, messages: Msg[]) {
   const allms: { [k: number]: Msg[] } = JSON.parse(JSON.stringify(allMsgs))
+
   messages.forEach(msg => {
     if (msg.chat_id || msg.chat_id === 0) {
       putIn(allms, msg, msg.chat_id) // THIS IS TOO HEAVY in a for each

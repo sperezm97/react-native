@@ -60,7 +60,7 @@ export default function Camera({ visible, onCancel, onSnap }) {
           // }}
         />
         <View style={styles.toolbar}>
-          <Button icon='cancel' onPress={() => onCancel()} color='white'>
+          <Button icon='cancel' onPress={onCancel} color='white'>
             Cancel
           </Button>
           <Snapper snap={() => takePic()} />

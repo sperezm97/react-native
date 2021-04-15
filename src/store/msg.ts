@@ -13,6 +13,7 @@ import { persistMsgLocalForage } from './storage'
 
 const DAYS = Platform.OS === 'android' ? 7 : 7
 export const MAX_MSGS_PER_CHAT = Platform.OS === 'android' ? 100 : 1000
+export const MAX_MSGS_RESTORE = Platform.OS === 'android' ? 5000 : 50000
 
 export interface Msg {
   id: number
@@ -126,21 +127,23 @@ class MsgStore {
       const dateq = moment.utc(0).format('YYYY-MM-DD%20HH:mm:ss')
       let msgs: { [k: number]: Msg[] } = ({} = {})
 
-      const r = await relay.get(`msgs?limit=200&offset=${offset}&date=${dateq}`)
-
-      if (r.new_messages.length <= 0) return
-
       while (!done) {
+        const r = await relay.get(`msgs?limit=200&offset=${offset}&date=${dateq}`)
+
         if (r.new_messages && r.new_messages.length) {
           const decodedMsgs = await decodeMessages(r.new_messages)
           msgs = orgMsgsFromExisting(msgs, decodedMsgs)
-          if (r.new_messages.length < 200) {
+          if (r && r.new_messages.length < 200) {
             done = true
           }
+        } else {
+          done = true
         }
+
         offset += 200
+        if (offset >= MAX_MSGS_RESTORE) done = true
       }
-      console.log('RESTORE DONE!')
+
       this.sortAllMsgs(msgs)
       this.lastFetched = new Date().getTime()
       this.persister()
@@ -152,7 +155,6 @@ class MsgStore {
   @action
   async getMessages(forceMore: boolean = false) {
     const len = this.lengthOfAllMessages()
-
     if (len === 0) {
       return this.restoreMessages()
     }
@@ -210,6 +212,7 @@ class MsgStore {
       v.sort((a, b) => moment(b.date).unix() - moment(a.date).unix())
       final[k] = v
     })
+
     this.messages = final
   }
 

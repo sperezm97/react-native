@@ -1,7 +1,6 @@
 import React from 'react'
 import { StyleSheet, Text, TouchableHighlight, View } from 'react-native'
 import Modal from 'react-native-modal'
-import { Portal } from 'react-native-paper'
 
 const PRIMARY_COLOR = 'rgb(0,98,255)'
 const WHITE = '#ffffff'
@@ -17,9 +16,11 @@ export default function ActionSheet(props) {
       onPress: props?.onCancel
     }
   ]
+
   return (
     <Modal
       isVisible={visible}
+      onBackdropPress={props.onCancel}
       style={{
         margin: 0,
         justifyContent: 'flex-end'

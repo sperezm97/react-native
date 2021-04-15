@@ -1,5 +1,5 @@
-import {Chat} from './store/chats'
-import {Contact} from './store/contacts'
+import { Chat } from './store/chats'
+import { Contact } from './store/contacts'
 import { RouteProp } from '@react-navigation/native'
 
 export type DashStackParamList = {
@@ -13,3 +13,8 @@ export type ContactsStackParamList = {
 }
 
 export type ChatRouteProp = RouteProp<DashStackParamList, 'Chat'>
+
+export declare type Font = {
+  fontFamily: string
+  fontWeight?: 'normal' | 'bold' | '100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900'
+}

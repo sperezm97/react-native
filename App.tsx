@@ -1,24 +1,22 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { DefaultTheme, Provider as PaperProvider, configureFonts } from 'react-native-paper'
+import { Provider as PaperProvider } from 'react-native-paper'
 import { useDarkMode } from 'react-native-dynamic'
 import { is24HourFormat } from 'react-native-device-time-format'
 import { useObserver } from 'mobx-react-lite'
 import { NavigationContainer } from '@react-navigation/native'
 import { Linking, AppState } from 'react-native'
 
-import Main from './src/components/main'
-import Onboard from './src/components/onboard'
 import { useStores, useTheme } from './src/store'
 import { instantiateRelay } from './src/api'
-import Splash from './src/components/common/Splash'
 import * as utils from './src/components/utils/utils'
-
-import { qrActions } from './src/qrActions'
-// import AsyncStorage from '@react-native-community/async-storage'
-import PINCode, { wasEnteredRecently } from './src/components/utils/pin'
-
-// import TrackPlayer from "react-native-track-player";
+import PIN, { wasEnteredRecently } from './src/components/utils/pin'
 import EE, { RESET_IP_FINISHED } from './src/components/utils/ee'
+import { qrActions } from './src/qrActions'
+import { paperTheme } from './src/theme'
+import Main from './src/components/main'
+import Onboard from './src/components/onboard'
+import Splash from './src/components/common/Splash'
+import PinCodeModal from './src/components/common/Modals/PinCode'
 
 declare var global: { HermesInternal: null | {} }
 
@@ -32,39 +30,7 @@ export default function Wrap() {
     Linking.addEventListener('url', gotLink)
   }, [isBack])
 
-  useEffect(() => {
-    // AppState.addEventListener('change', handleAppStateChange)
-    AppState.addEventListener('change', state => {
-      if (state === 'active') {
-        // console.log('state active')
-        setBack(true)
-
-        // Linking.getInitialURL()
-        //   .then(e => {
-        //     console.log('Initial Url then ', e)
-        //     if (e) {
-        //       console.log('Initial Url ', e)
-        //     }
-        //   })
-        //   .catch(error => console.log(error))
-      }
-
-      if (state === 'background') {
-        // console.log('background')
-        setBack(false)
-      }
-    })
-
-    Linking.addEventListener('url', gotLink)
-
-    // return () => {
-    //   AppState.removeEventListener('change', handleAppStateChange)
-    // }
-  }, [])
-
   async function gotLink(e) {
-    console.log('got link called')
-
     if (e && typeof e === 'string') {
       const j = utils.jsonFromUrl(e)
       if (j['action']) await qrActions(j, ui, chats)
@@ -75,22 +41,19 @@ export default function Wrap() {
     // rsa.testSecure()
     // rsa.getPublicKey()
 
-    console.log('=> check for deeplink')
     Linking.getInitialURL()
       .then(e => {
-        console.log('e------- deep link', e)
-
         if (e) gotLink(e).then(() => setWrapReady(true))
-        // start with initial url
-        else setWrapReady(true) // cold start
+        else setWrapReady(true)
       })
-      .catch(() => setWrapReady(true)) // this should not happen?
+      .catch(() => setWrapReady(true))
     Linking.addEventListener('url', gotLink)
     // RNWebRTC.registerGlobals()
   }, [])
 
   return useObserver(() => {
     if (ui.ready && wrapReady) return <App /> // hydrated and checked for deeplinks!
+
     return <Splash /> // full screen loading
   })
 }
@@ -127,10 +90,12 @@ function App() {
     ;(async () => {
       const isSignedUp = user.currentIP && user.authToken && !user.onboardStep ? true : false
       setSignedUp(isSignedUp)
+
       if (isSignedUp) {
         instantiateRelay(user.currentIP, user.authToken, connectedHandler, disconnectedHandler, resetIP)
       }
       const pinWasEnteredRecently = await wasEnteredRecently()
+
       if (pinWasEnteredRecently) setPinned(true)
 
       setLoading(false)
@@ -149,35 +114,23 @@ function App() {
   return useObserver(() => {
     if (loading) return <Splash />
     if (signedUp && !pinned) {
-      // checking if the pin was entered recently
       return (
-        <PINCode
-          onFinish={async () => {
-            await sleep(240)
-            setPinned(true)
-          }}
-        />
+        <PinCodeModal visible={signedUp && !pinned}>
+          <PIN
+            onFinish={async () => {
+              await sleep(240)
+              setPinned(true)
+            }}
+          />
+        </PinCodeModal>
       )
     }
 
-    const paperTheme = {
-      ...DefaultTheme,
-      roundness: 2,
-      colors: {
-        ...DefaultTheme.colors,
-        primary: theme.primary,
-        accent: theme.accent,
-        text: theme.title,
-        // placeholder: theme.placeholder,
-        background: theme.bg,
-        surface: theme.main
-      },
-      dark: theme.dark
-    }
+    const pTheme = paperTheme(theme)
 
     return (
       <>
-        <PaperProvider theme={paperTheme}>
+        <PaperProvider theme={pTheme}>
           <NavigationContainer>
             {signedUp && <Main />}
             {!signedUp && (

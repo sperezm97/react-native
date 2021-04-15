@@ -5,9 +5,9 @@ import { IconButton } from 'react-native-paper'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 
 import { useStores, useTheme } from '../../store'
-import ContactList from './ContactList'
 import BackHeader from '../common/BackHeader'
 import Search from '../common/Search'
+import ContactList from './ContactList'
 
 export default function Contacts() {
   const { ui } = useStores()

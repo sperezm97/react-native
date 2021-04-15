@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { useStores, useTheme } from '../../store'
 import Slider from '../utils/slider'
 import Button from '../common/Button'
+import Avatar from '../common/Avatar'
 
 export default function Welcome(props) {
   const { onDone, z, show } = props
@@ -22,11 +23,11 @@ export default function Welcome(props) {
         <View style={styles.wrap}>
           <View style={styles.center} accessibilityLabel='onboard-welcome-center'>
             <Text style={{ ...styles.top, color: theme.dark ? theme.white : theme.black }}>A message from your friend...</Text>
-            <Image source={require('../../../android_assets/avatar.png')} style={{ width: 120, height: 120 }} resizeMode={'cover'} />
+            <Avatar size={200} />
             <Text style={{ ...styles.name, color: theme.dark ? theme.white : theme.black }}>{user.invite.inviterNickname || 'Inviter'}</Text>
             <Text style={{ ...styles.message, color: theme.title }}>{`"${user.invite.welcomeMessage || 'Welcome to N2N2!'}"`}</Text>
           </View>
-          <Button accessibilityLabel='onboard-welcome-button' onPress={go} style={{ ...styles.button, backgroundColor: theme.primary }} btnHeight={70}>
+          <Button accessibilityLabel='onboard-welcome-button' onPress={go} style={{ ...styles.button, backgroundColor: theme.primary }} size='large'>
             <Text style={{ fontSize: 16, fontWeight: '600', color: theme.white }}>Get Started</Text>
             <View style={{ width: 12, height: 1 }}></View>
             <Icon name='arrow-right' color={theme.white} size={18} />

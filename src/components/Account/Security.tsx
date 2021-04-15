@@ -1,15 +1,17 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { useObserver } from 'mobx-react-lite'
-import { StyleSheet, View, Text } from 'react-native'
+import { StyleSheet, View, Text, Dimensions } from 'react-native'
 import Icon from 'react-native-vector-icons/AntDesign'
 import Clipboard from '@react-native-community/clipboard'
 import Toast from 'react-native-simple-toast'
 import Slider from '@react-native-community/slider'
 import { encode as btoa } from 'base-64'
+import { Modalize } from 'react-native-modalize'
 
 import { useStores, useTheme } from '../../store'
 import { TOAST_DURATION } from '../../constants'
 import { getPinTimeout, updatePinTimeout } from '../utils/pin'
+import PIN from '../utils/pin'
 import * as rsa from '../../crypto/rsa'
 import * as e2e from '../../crypto/e2e'
 import { userPinCode } from '../utils/pin'
@@ -18,6 +20,7 @@ import ActionMenu from '../common/ActionMenu'
 import BackHeader from '../common/BackHeader'
 
 export default function Security() {
+  const modalizeRef = useRef<Modalize>(null)
   const [pinTimeout, setPinTimeout] = useState(12)
   const [initialPinTimeout, setInitialPinTimeout] = useState(12)
   const theme = useTheme()
@@ -49,7 +52,6 @@ export default function Security() {
 
     Clipboard.setString(final)
     Toast.showWithGravity('Export Keys Copied.', TOAST_DURATION, Toast.CENTER)
-    ui.setPinCodeModal(false, null)
   }
 
   function pinTimeoutValueUpdated(v) {
@@ -69,11 +71,12 @@ export default function Security() {
     ]
   ]
 
-  return useObserver(() => {
-    if (ui.pinCodeParams) {
-      exportKeys(ui.pinCodeParams)
-    }
+  function finish(pin) {
+    exportKeys(pin)
+    modalizeRef.current.close()
+  }
 
+  return useObserver(() => {
     return (
       <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
         <BackHeader title='Security' />
@@ -99,13 +102,27 @@ export default function Security() {
         <View style={styles.bottom}>
           <View style={{ ...styles.exportWrap }}>
             <Text style={{ ...styles.exportText, color: theme.text }}>Want to switch devices?</Text>
-            <Button accessibilityLabel='onboard-welcome-button' onPress={() => ui.setPinCodeModal(true, null)} style={{ backgroundColor: theme.primary }} size='large'>
+            <Button accessibilityLabel='onboard-welcome-button' onPress={() => modalizeRef.current?.open()} style={{ backgroundColor: theme.primary }} size='large'>
               <Text>Export keys</Text>
               <View style={{ width: 12, height: 1 }}></View>
               <Icon name='key' color={theme.white} size={18} />
             </Button>
           </View>
         </View>
+
+        <Modalize
+          scrollViewProps={{
+            showsVerticalScrollIndicator: false,
+            stickyHeaderIndices: [0]
+          }}
+          ref={modalizeRef}
+          adjustToContentHeight={true}
+          openAnimationConfig={{
+            timing: { duration: 300 }
+          }}
+        >
+          <PIN forceEnterMode={true} onFinish={pin => finish(pin)} />
+        </Modalize>
       </View>
     )
   })

@@ -19,12 +19,6 @@
     "dist:win": "./node_modules/.bin/electron-builder --win",
     "xcode": "open ios/Chat.xcworkspace"
   },
-  "rnpm": {
-    "assets": [
-      "./android_assets/fonts",
-      "./resources/fonts"
-    ]
-  },
   "build": {
     "appId": "n2n2.chat",
     "productName": "N2N2 Chat",
@@ -160,6 +154,7 @@
     "react-native-level-fs": "^3.0.1",
     "react-native-media-metadata-retriever": "git+https://github.com/ishwortimilsina/react-native-media-metadata-retriever.git",
     "react-native-modal": "^11.9.0",
+    "react-native-modalize": "^2.0.8",
     "react-native-os": "^1.2.6",
     "react-native-paper": "^4.4.0",
     "react-native-peerjs": "^1.0.4",
@@ -168,11 +163,11 @@
     "react-native-qrcode": "^0.2.7",
     "react-native-radial-gradient": "^1.0.6",
     "react-native-randombytes": "^3.5.3",
-    "react-native-reanimated": "^1.7.0",
+    "react-native-reanimated": "^2.0.0",
     "react-native-render-html": "^4.2.3",
     "react-native-rncryptor": "git+https://github.com/masterial/react-native-rncryptor.git",
     "react-native-rsa-native": "^1.1.4",
-    "react-native-safe-area-context": "^0.7.3",
+    "react-native-safe-area-context": "^3.2.0",
     "react-native-screens": "^2.0.0-beta.11",
     "react-native-secure-key-store": "^2.0.5",
     "react-native-share": "^3.0.0",

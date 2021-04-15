@@ -1,20 +1,22 @@
 import React, { useState, useCallback } from 'react'
 import { useObserver } from 'mobx-react-lite'
-import { TouchableOpacity, FlatList, View, Text, StyleSheet, Dimensions } from 'react-native'
+import { StyleSheet, View, Text, TouchableOpacity, FlatList, Dimensions } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback'
 
 import { useStores, hooks, useTheme } from '../../store'
 import InviteRow, { styles } from './inviteRow'
 import { chatPicSrc, useChatPicSrc } from '../utils/picSrc'
-import Avatar from './msg/avatar'
 import PushableButton from '../common/Button/PushableButton'
 import RefreshLoading from '../common/RefreshLoading'
+import Avatar from '../common/Avatar'
+import Typography from '../common/Typography'
 
 const { useChats, useChatRow } = hooks
 
 export default function ChatList() {
   const { ui, contacts, msg, details, chats } = useStores()
+  const theme = useTheme()
 
   const [refreshing, setRefreshing] = useState(false)
   const onRefresh = useCallback(async () => {
@@ -47,7 +49,7 @@ export default function ChatList() {
 
   const footerComponent: any = () => (
     <View style={moreStyles.buttonsWrap}>
-      <PushableButton dark={true} icon='plus' accessibilityLabel='add-friend-button' onPress={setAddFriendModalHandler} style={{ ...moreStyles.button, backgroundColor: '#55D1A9' }}>
+      <PushableButton dark={true} icon='plus' accessibilityLabel='add-friend-button' onPress={setAddFriendModalHandler} style={{ ...moreStyles.button, backgroundColor: theme.secondary }}>
         Friend
       </PushableButton>
       <PushableButton dark={true} icon='plus' accessibilityLabel='new-group-button' onPress={setNewGroupModalHandler} style={moreStyles.button}>
@@ -79,15 +81,14 @@ export default function ChatList() {
 }
 
 function ChatRow(props) {
-  const { id, name, contact_ids } = props
+  const { id, name, date, contact_ids } = props
   const navigation = useNavigation()
   const { msg, user } = useStores()
 
   const onSeeChatHandler = () => {
     requestAnimationFrame(() => {
       msg.seeChat(props.id)
-      // msg.getMessages()
-
+      msg.getMessages()
       navigation.navigate('Chat', { ...props })
     })
   }
@@ -97,7 +98,7 @@ function ChatRow(props) {
     let uri = useChatPicSrc(props)
     const hasImg = uri ? true : false
 
-    const { lastMsgText, hasLastMsg, unseenCount, hasUnseen } = useChatRow(props.id)
+    const { lastMsgText, lastMsgDate, hasLastMsg, unseenCount, hasUnseen } = useChatRow(props.id)
 
     const w = Math.round(Dimensions.get('window').width)
     return (
@@ -105,36 +106,44 @@ function ChatRow(props) {
         style={{
           ...styles.chatRow,
           backgroundColor: theme.bg
-          // borderBottomColor: theme.dark ? '#0d1319' : '#e5e5e5'
         }}
         activeOpacity={0.5}
         onPress={onSeeChatHandler}
       >
         <View style={styles.avatarWrap}>
-          <Avatar big alias={name} photo={uri || ''} />
+          <Avatar alias={name} photo={uri && uri} size={50} aliasSize={18} big />
           {hasUnseen && (
             <View style={moreStyles.badgeWrap}>
-              <View style={moreStyles.badge}>
-                <Text style={moreStyles.badgeText}>{unseenCount}</Text>
+              <View style={{ ...moreStyles.badge, backgroundColor: theme.badge }}>
+                <Text style={{ ...moreStyles.badgeText, color: theme.white }}>{unseenCount}</Text>
               </View>
             </View>
           )}
         </View>
         <View style={styles.chatContent}>
-          <Text style={{ ...styles.chatName, color: theme.title }}>{name}</Text>
-          {hasLastMsg && (
-            <Text
-              numberOfLines={1}
-              style={{
-                ...styles.chatMsg,
-                fontWeight: hasUnseen ? 'bold' : 'normal',
-                maxWidth: w - 105,
-                color: theme.subtitle
-              }}
-            >
-              {lastMsgText}
-            </Text>
-          )}
+          <View style={styles.chatContentTop}>
+            <Typography style={{ ...styles.chatName }} color={theme.text} size={16} fw='500'>
+              {name}
+            </Typography>
+            <Typography style={{ ...styles.chatDate }} color={theme.subtitle}>
+              {lastMsgDate}
+            </Typography>
+          </View>
+          <View style={styles.chatMsgWrap}>
+            {hasLastMsg && (
+              <Text
+                numberOfLines={1}
+                style={{
+                  ...styles.chatMsg,
+                  fontWeight: hasUnseen ? 'bold' : 'normal',
+                  maxWidth: w - 105,
+                  color: theme.subtitle
+                }}
+              >
+                {lastMsgText}
+              </Text>
+            )}
+          </View>
         </View>
       </TouchableOpacity>
     )
@@ -151,12 +160,8 @@ const moreStyles = StyleSheet.create({
     justifyContent: 'space-around'
   },
   button: {
-    height: 46,
-    borderRadius: 23,
-    width: 140,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center'
+    borderRadius: 25,
+    width: 140
   },
   badgeWrap: {
     position: 'absolute',
@@ -167,7 +172,6 @@ const moreStyles = StyleSheet.create({
     position: 'absolute',
     right: 0,
     bottom: 0,
-    backgroundColor: '#DB5554',
     width: 18,
     height: 18,
     display: 'flex',
@@ -176,8 +180,8 @@ const moreStyles = StyleSheet.create({
     borderRadius: 10
   },
   badgeText: {
-    color: 'white',
-    fontSize: 10
+    fontSize: 11,
+    fontWeight: '500'
   }
 })
 

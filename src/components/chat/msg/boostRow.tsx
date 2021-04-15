@@ -2,6 +2,7 @@ import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 
 import { useTheme } from '../../../store'
+import Typography from '../../common/Typography'
 import CustomIcon from '../../utils/customIcons'
 import AvatarsRow from './avatarsRow'
 
@@ -29,8 +30,14 @@ export default function BoostRow(props) {
         <View style={{ ...styles.rocketWrap, backgroundColor: theme.accent }}>
           <CustomIcon color='white' size={15} name='fireworks' />
         </View>
-        <Text style={{ ...styles.amt, color: theme.title }}>{props.boosts_total_sats}</Text>
-        <Text style={{ ...styles.sats, color: theme.subtitle }}>sats</Text>
+        <Typography color={isMe ? theme.white : theme.title} style={{ ...styles.amt }}>
+          {props.boosts_total_sats}
+        </Typography>
+        <Typography color={isMe ? theme.white : theme.subtitle} style={{ ...styles.sats }}>
+          sats
+        </Typography>
+        {/* <Text style={{ ...styles.amt, color: theme.title }}>{props.boosts_total_sats}</Text> */}
+        {/* <Text style={{ ...styles.sats, color: theme.subtitle }}>sats</Text> */}
       </View>
       <View style={{ ...styles.right, marginLeft: 8, marginBottom: padn, marginRight: padn }}>
         {hasBoosts && (
@@ -53,7 +60,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    height: 25,
+    height: 35,
     marginTop: 6,
     width: '100%'
   },

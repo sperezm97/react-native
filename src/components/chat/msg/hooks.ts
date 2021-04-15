@@ -34,11 +34,7 @@ export function useCachedEncryptedFile(props, ldat) {
       return
     }
 
-    console.log('ldat.sig', ldat)
-
     if (!ldat.sig) {
-      console.log('here', ldat)
-
       return
     }
 
