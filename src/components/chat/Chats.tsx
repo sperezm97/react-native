@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
   },
   searchWrap: {
     paddingRight: 14,
-    paddingLeft: 14
-    // marginBottom: 14
+    paddingLeft: 14,
+    marginBottom: 14
   }
 })

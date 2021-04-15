@@ -59,11 +59,11 @@ export default function InviteRow(props) {
       </View>
       <View style={styles.chatContent}>
         <View style={styles.chatContentTop}>
-          <Text style={{ ...styles.chatName, color: theme.title }}>{`Invite: ${name}`}</Text>
+          <Text style={{ ...styles.chatName, color: theme.text }}>{`Invite: ${name}`}</Text>
           {invite.price && <Text style={styles.invitePrice}>{invite.price}</Text>}
         </View>
         <View style={styles.chatMsgWrap}>
-          {inviteIcon(statusString)}
+          {inviteIcon(statusString, theme)}
           <Text style={{ ...styles.chatMsg, color: theme.subtitle }}>{inviteMsg(statusString, name, confirmed)}</Text>
         </View>
       </View>
@@ -73,7 +73,7 @@ export default function InviteRow(props) {
           <Dialog.Title>{`Pay for invitation?`}</Dialog.Title>
           <Dialog.Actions style={{ justifyContent: 'space-between' }}>
             <Button onPress={setDialogOpenToFalseHandler} labelStyle={{ color: 'grey' }}>
-              <MaterialIcon name='cancel' size={14} color='grey' />
+              <MaterialIcon name='cancel' size={14} color={theme.icon} />
               <View style={{ width: 4, height: 6 }}></View>
               <Text>Cancel</Text>
             </Button>
@@ -87,14 +87,14 @@ export default function InviteRow(props) {
   )
 }
 
-function inviteIcon(statusString) {
+function inviteIcon(statusString, theme) {
   switch (statusString) {
     case 'payment_pending':
-      return <MaterialIcon name='credit-card' size={14} color='grey' style={{ marginRight: 4 }} />
+      return <MaterialIcon name='credit-card' size={14} color={theme.icon} style={{ marginRight: 4 }} />
     case 'ready':
-      return <MaterialIcon name='check' size={14} color='#64C684' style={{ marginRight: 4 }} />
+      return <MaterialIcon name='check' size={14} color={theme.icon} style={{ marginRight: 4 }} />
     case 'delivered':
-      return <MaterialIcon name='check' size={14} color='#64C684' style={{ marginRight: 4 }} />
+      return <MaterialIcon name='check' size={14} color={theme.icon} style={{ marginRight: 4 }} />
     default:
       return <></>
   }
@@ -186,7 +186,7 @@ export const styles = StyleSheet.create({
   chatName: {
     marginRight: 12,
     fontSize: 16,
-    fontWeight: '500',
+    // fontWeight: '500',
     marginBottom: 4
   },
   chatDate: {

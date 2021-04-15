@@ -15,6 +15,7 @@ const { useChats, useChatRow } = hooks
 
 export default function ChatList() {
   const { ui, contacts, msg, details, chats } = useStores()
+  const theme = useTheme()
 
   const [refreshing, setRefreshing] = useState(false)
   const onRefresh = useCallback(async () => {
@@ -47,7 +48,7 @@ export default function ChatList() {
 
   const footerComponent: any = () => (
     <View style={moreStyles.buttonsWrap}>
-      <PushableButton dark={true} icon='plus' accessibilityLabel='add-friend-button' onPress={setAddFriendModalHandler} style={{ ...moreStyles.button, backgroundColor: '#55D1A9' }}>
+      <PushableButton dark={true} icon='plus' accessibilityLabel='add-friend-button' onPress={setAddFriendModalHandler} style={{ ...moreStyles.button, backgroundColor: theme.secondary }}>
         Friend
       </PushableButton>
       <PushableButton dark={true} icon='plus' accessibilityLabel='new-group-button' onPress={setNewGroupModalHandler} style={moreStyles.button}>
@@ -95,8 +96,6 @@ function ChatRow(props) {
   return useObserver(() => {
     let uri = useChatPicSrc(props)
     const hasImg = uri ? true : false
-    // TODO : this is a temporary fix and will be removed
-    // uri = uri.replace('http', 'https')
 
     const { lastMsgText, lastMsgDate, hasLastMsg, unseenCount, hasUnseen } = useChatRow(props.id)
 
@@ -112,7 +111,6 @@ function ChatRow(props) {
       >
         <View style={styles.avatarWrap}>
           <Avatar alias={name} photo={uri && uri} size={50} aliasSize={18} big />
-          {/* <Avatar big alias={name} photo={uri || ''} /> */}
           {hasUnseen && (
             <View style={moreStyles.badgeWrap}>
               <View style={{ ...moreStyles.badge, backgroundColor: theme.badge }}>
@@ -123,7 +121,7 @@ function ChatRow(props) {
         </View>
         <View style={styles.chatContent}>
           <View style={styles.chatContentTop}>
-            <Text style={{ ...styles.chatName, color: theme.text }}>{name}</Text>
+            <Text style={{ ...styles.chatName, color: theme.text, fontFamily: 'Proxima Nova Regular', fontWeight: '400' }}>{name}</Text>
             <Text style={{ ...styles.chatDate, color: theme.subtitle }}>{lastMsgDate}</Text>
           </View>
           <View style={styles.chatMsgWrap}>
@@ -157,12 +155,8 @@ const moreStyles = StyleSheet.create({
     justifyContent: 'space-around'
   },
   button: {
-    height: 46,
-    borderRadius: 23,
-    width: 140,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center'
+    borderRadius: 25,
+    width: 140
   },
   badgeWrap: {
     position: 'absolute',

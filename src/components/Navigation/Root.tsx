@@ -55,24 +55,3 @@ export default function Root() {
     </RootStack.Navigator>
   )
 }
-
-// export default function Root() {
-//   return (
-//     <RootStack.Navigator
-//       mode='modal'
-//       // screenOptions={{
-//       //   headerShown: true
-//       // }}
-//       screenOptions={({ route, navigation }) => ({
-//         headerShown: false,
-//         gestureEnabled: true,
-//         cardOverlayEnabled: true,
-//         headerStatusBarHeight: navigation.dangerouslyGetState().routes.findIndex(r => r.key === route.key) > 0 ? 0 : undefined
-//         // ...TransitionPresets.ModalPresentationIOS
-//       })}
-//     >
-//       <RootStack.Screen name='Main' component={MainStackScreen} options={{ headerShown: false }} />
-//       <RootStack.Screen name='MyModal' component={ModalScreen} />
-//     </RootStack.Navigator>
-//   )
-// }

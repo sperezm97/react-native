@@ -19,12 +19,6 @@
     "dist:win": "./node_modules/.bin/electron-builder --win",
     "xcode": "open ios/Chat.xcworkspace"
   },
-  "rnpm": {
-    "assets": [
-      "./android_assets/fonts",
-      "./resources/fonts"
-    ]
-  },
   "build": {
     "appId": "n2n2.chat",
     "productName": "N2N2 Chat",

@@ -12,13 +12,10 @@ import { useStores, useTheme } from './src/store'
 import { instantiateRelay } from './src/api'
 import Splash from './src/components/common/Splash'
 import * as utils from './src/components/utils/utils'
-
 import { qrActions } from './src/qrActions'
-// import AsyncStorage from '@react-native-community/async-storage'
 import PINCode, { wasEnteredRecently } from './src/components/utils/pin'
-
-// import TrackPlayer from "react-native-track-player";
 import EE, { RESET_IP_FINISHED } from './src/components/utils/ee'
+import { paperTheme } from './src/theme'
 
 declare var global: { HermesInternal: null | {} }
 
@@ -115,6 +112,8 @@ function App() {
 
   const isDarkMode = useDarkMode()
   useEffect(() => {
+    console.log('theme.mode', theme.mode)
+
     if (theme.mode === 'System') {
       theme.setDark(isDarkMode)
     } else {
@@ -160,24 +159,11 @@ function App() {
       )
     }
 
-    const paperTheme = {
-      ...DefaultTheme,
-      roundness: 2,
-      colors: {
-        ...DefaultTheme.colors,
-        primary: theme.primary,
-        accent: theme.accent,
-        text: theme.title,
-        // placeholder: theme.placeholder,
-        background: theme.bg,
-        surface: theme.main
-      },
-      dark: theme.dark
-    }
+    const pTheme = paperTheme(theme)
 
     return (
       <>
-        <PaperProvider theme={paperTheme}>
+        <PaperProvider theme={pTheme}>
           <NavigationContainer>
             {signedUp && <Main />}
             {!signedUp && (
