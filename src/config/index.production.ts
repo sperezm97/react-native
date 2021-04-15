@@ -6,7 +6,7 @@ const config = {
   },
   tribes: {
     server: 'tribes.n2n2.chat',
-    uuid: ''
+    uuid: 'YHiUtB-9mp5X8Fetn6xBA9y4MSM9LzLsewgw29btcOsTi0zToSOwUryHWzslCUc6dSKhlNK6zJrCxJP_b-OdJzfxF-P5'
   },
   memes: {
     server: 'memes.n2n2.chat'
@@ -15,7 +15,7 @@ const config = {
     server: 'auth.n2n2.chat'
   },
   inviter: {
-    key: ''
+    key: '02584a6540f8e4028c8f3372df069fbacf7e68bb95dbfc192e0310d481e46df298'
   }
 }
 
