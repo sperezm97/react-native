@@ -10,6 +10,7 @@ import ClipMessage from './clipMsg'
 import BoostMessage from './boostMsg'
 import BoostRow from './boostRow'
 import TribeMsg from './tribeMsg'
+import Typography from '../../common/Typography'
 
 export default function TextMsg(props) {
   const theme = useTheme()
@@ -65,7 +66,9 @@ export default function TextMsg(props) {
           <RNUrlPreview {...linkStyles(theme)} text={message_content} />
         </View>
       ) : (
-        <Text style={{ ...styles.text, color: theme.title }}>{message_content}</Text>
+        <Typography color={props.isMe ? theme.white : theme.text} size={16}>
+          {message_content}
+        </Typography>
       )}
       {showBoostRow && <BoostRow {...props} myAlias={props.myAlias} marginTop={8} />}
     </TouchableOpacity>
@@ -108,9 +111,6 @@ const styles = StyleSheet.create({
   link: {
     padding: 10,
     color: '#6289FD'
-  },
-  text: {
-    fontSize: 16
   },
   column: {
     display: 'flex',

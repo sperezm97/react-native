@@ -113,14 +113,14 @@ function MsgBubble(props) {
   const isPaid = props.status === constants.statuses.confirmed
   const [showPopover, setShowPopover] = useState(false)
 
-  let dashed = false
-  let backgroundColor = isMe ? (theme.dark ? '#3d6188' : 'whitesmoke') : theme.dark ? '#202a36' : 'white'
-  let borderColor = theme.dark ? '#202a36' : '#DADFE2'
+  // let dashed = false
+  let backgroundColor = isMe ? theme.primary : theme.main
+  let borderColor = theme.border
   if (isInvoice && !isPaid) {
     backgroundColor = theme.dark ? '#202a36' : 'white'
-    dashed = true
-    borderColor = '#777'
-    if (!isMe) borderColor = '#4AC998'
+    // dashed = true
+    // borderColor = '#777'
+    // if (!isMe) borderColor = '#4AC998'
   }
 
   const isDeleted = props.status === constants.statuses.deleted
@@ -163,13 +163,13 @@ function MsgBubble(props) {
             alignSelf: isMe ? 'flex-end' : 'flex-start',
             backgroundColor,
             borderColor,
-            borderStyle: dashed ? 'dashed' : 'solid',
+            // borderStyle: dashed ? 'dashed' : 'solid',
             overflow: 'hidden'
           }}
         >
           {isDeleted && <DeletedMsg />}
           {!isDeleted && (props.reply_message_content ? true : false) && <ReplyContent content={props.reply_message_content} senderAlias={props.reply_message_sender_alias} />}
-          {!isDeleted && <Message {...props} onLongPress={onLongPressHandler} myAlias={props.myAlias} />}
+          {!isDeleted && <Message {...props} onLongPress={onLongPressHandler} myAlias={props.myAlias} isMe={isMe} />}
         </View>
       }
     >
