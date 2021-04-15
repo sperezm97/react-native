@@ -4,7 +4,7 @@ import { StyleSheet, View, Text, TouchableOpacity, ScrollView } from 'react-nati
 import RNFetchBlob from 'rn-fetch-blob'
 import { useNavigation } from '@react-navigation/native'
 import { Portal, Dialog, Title } from 'react-native-paper'
-import AntDesign from 'react-native-vector-icons/AntDesign'
+import AntDesignIcon from 'react-native-vector-icons/AntDesign'
 
 import { useStores, useTheme } from '../../store'
 import Header from './Header'
@@ -127,7 +127,7 @@ export default function Account() {
       {
         title: 'Contacts',
         icon: 'ChevronRight',
-        thumbIcon: <AntDesign name='contacts' color={theme.white} size={18} />,
+        thumbIcon: <AntDesignIcon name='contacts' color={theme.white} size={18} />,
         thumbBgColor: theme.primary,
         action: () => navigation.navigate('Contacts')
       },
@@ -150,8 +150,8 @@ export default function Account() {
     return (
       <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
         <Header onEdit={() => setUserDialog(true)} />
-        <View style={{ flex: 1, backgroundColor: theme.bg }}>
-          <ScrollView>
+        <ScrollView>
+          <View style={{ flex: 1, backgroundColor: theme.bg }}>
             <View style={{ ...styles.userInfoSection, borderBottomColor: theme.border }}>
               <View
                 style={{
@@ -196,8 +196,8 @@ export default function Account() {
                 </Dialog.Content>
               </Dialog>
             </Portal>
-          </ScrollView>
-        </View>
+          </View>
+        </ScrollView>
 
         <TabBar />
       </View>

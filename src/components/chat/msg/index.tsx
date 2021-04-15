@@ -199,6 +199,7 @@ function MsgBubble(props) {
 function Message(props) {
   const typ = constantCodes['message_types'][props.type]
   // console.log('props.type', props.type)
+  // console.log('message_content', props.message_content)
 
   switch (typ) {
     case 'message':

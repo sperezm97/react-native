@@ -62,6 +62,7 @@ export class ChatStore {
   @persist('list')
   @observable
   chats: Chat[] = []
+  tribes = []
 
   @persist('object')
   @observable
@@ -172,8 +173,6 @@ export class ChatStore {
       app_url: app_url || '',
       feed_url: feed_url || ''
     })
-
-    console.log('r after creating a tribe', r)
 
     if (!r) return
     this.gotChat(r)

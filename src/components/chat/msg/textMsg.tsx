@@ -31,7 +31,11 @@ export default function TextMsg(props) {
     return (
       <TouchableOpacity style={{ ...styles.column, maxWidth: 200 }} onLongPress={onLongPressHandler}>
         <Image source={{ uri: url }} style={{ width: 200, height: 200 / (aspectRatio || 1) }} resizeMode={'cover'} />
-        {(text ? true : false) && <Text style={{ ...styles.textPad, color: theme.title }}>{text}</Text>}
+        {(text ? true : false) && (
+          <Typography color={props.isMe ? theme.white : theme.text} size={16} styles={styles.textPad}>
+            {text}
+          </Typography>
+        )}
         {showBoostRow && <BoostRow {...props} myAlias={props.myAlias} pad marginTop={14} />}
       </TouchableOpacity>
     )
@@ -61,7 +65,9 @@ export default function TextMsg(props) {
       {isLink ? (
         <View style={styles.linkWrap}>
           <TouchableOpacity onPress={openLink}>
-            <Text style={styles.link}>{message_content}</Text>
+            <Typography color={props.isMe ? theme.white : theme.blue} size={16}>
+              {message_content}
+            </Typography>
           </TouchableOpacity>
           <RNUrlPreview {...linkStyles(theme)} text={message_content} />
         </View>
@@ -117,8 +123,8 @@ const styles = StyleSheet.create({
     maxWidth: '100%'
   },
   textPad: {
-    color: '#333',
-    fontSize: 16,
+    // color: '#333',
+    // fontSize: 16,
     paddingTop: 10,
     paddingBottom: 10,
     paddingLeft: 12,
