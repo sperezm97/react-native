@@ -5,9 +5,6 @@ import { useObserver } from 'mobx-react-lite'
 
 import { useStores, useTheme, hooks } from '../../store'
 import { useOwnedTribes } from '../../store/hooks/tribes'
-import Typography from '../common/Typography'
-import Avatar from '../common/Avatar'
-import Button from '../common/Button'
 import List from './List'
 
 const { useSearchTribes, useTribes } = hooks

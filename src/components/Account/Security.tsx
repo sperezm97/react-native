@@ -39,7 +39,8 @@ export default function Security() {
   async function exportKeys(pin) {
     if (!pin) return
     const thePIN = await userPinCode()
-    // if (pin !== thePIN) return
+
+    if (pin !== thePIN) return
     const priv = await rsa.getPrivateKey()
     const me = contacts.contacts.find(c => c.id === 1)
     const pub = me && me.contact_key

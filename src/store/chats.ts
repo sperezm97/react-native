@@ -253,7 +253,7 @@ export class ChatStore {
   @action
   async joinDefaultTribe() {
     const params = await this.getTribeDetails(DEFAULT_TRIBE_SERVER, config.tribes.uuid)
-    await this.joinTribe({
+    const r = await this.joinTribe({
       name: params.name,
       group_key: params.group_key,
       owner_alias: params.owner_alias,

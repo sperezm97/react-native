@@ -16,23 +16,28 @@ export default function Ready(props) {
   const theme = useTheme()
 
   async function finish() {
-    setLoading(true)
-    await Promise.all([
-      user.finishInvite(),
-      contacts.addContact({
-        alias: user.invite.inviterNickname,
-        public_key: user.invite.inviterPubkey,
-        status: constants.contact_statuses.confirmed
-      }),
-      actions(user.invite.action),
-      chats.joinDefaultTribe()
-    ])
-    setLoading(false)
-    onDone()
+    try {
+      setLoading(true)
+      await Promise.all([
+        user.finishInvite(),
+        contacts.addContact({
+          alias: user.invite.inviterNickname,
+          public_key: user.invite.inviterPubkey,
+          status: constants.contact_statuses.confirmed
+        }),
+        actions(user.invite.action),
+        chats.joinDefaultTribe()
+      ])
+
+      setLoading(false)
+      onDone()
+    } catch (error) {
+      console.log('error', error)
+    }
   }
 
   return (
-    <Slider z={z} show={true} accessibilityLabel='onboard-ready'>
+    <Slider z={z} show={show} accessibilityLabel='onboard-ready'>
       <RadialGradient style={styles.gradient} colors={[theme.gradient, theme.gradient2]} stops={[0.1, 1]} center={[80, 40]} radius={400}>
         <View style={styles.titleWrap} accessibilityLabel='onboard-ready-title'>
           <View style={styles.titleRow}>

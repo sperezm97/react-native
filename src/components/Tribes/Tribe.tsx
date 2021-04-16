@@ -1,36 +1,46 @@
-import React, { useState } from 'react'
-import { View, StyleSheet, ScrollView } from 'react-native'
+import React from 'react'
+import { View, StyleSheet } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
+import { useNavigation } from '@react-navigation/native'
 
-import { useStores, useTheme } from '../../store'
-import TabBar from '../common/TabBar'
-import Header from './Header'
-import Search from '../common/Search'
-import TribesList from './TribesList'
+import { useStores, useTheme, hooks } from '../../store'
+import BackHeader from '../common/BackHeader'
+import Typography from '../common/Typography'
+import List from './List'
 
-export default function Tribe() {
+const { useTribes } = hooks
+
+export default function Tribe({ route }) {
   const { ui } = useStores()
   const theme = useTheme()
+  const navigation = useNavigation()
 
-  const onTribesSearch = (txt: string) => ui.setTribesSearchTerm(txt)
+  const tribe = route.params.tribe
 
-  return useObserver(() => (
-    <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
-      <Header />
-      <View style={styles.searchWrap}>
-        <Search placeholder='Search' value={ui.tribesSearchTerm} onChangeText={onTribesSearch} h={50} />
+  return useObserver(() => {
+    // const tribes = useTribes()
+
+    return (
+      <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
+        <BackHeader title={tribe.name} navigate={() => navigation.goBack()} />
+        <View style={styles.content}>
+          <Typography color={theme.text} size={20}>
+            Hello {tribe.name}!
+          </Typography>
+          {/* <List data={tribesToShow} /> */}
+        </View>
       </View>
-    </View>
-  ))
+    )
+  })
 }
 
 const styles = StyleSheet.create({
   wrap: {
     flex: 1
   },
-  searchWrap: {
+  content: {
+    flex: 1,
     paddingTop: 18,
-    paddingBottom: 18,
     paddingRight: 14,
     paddingLeft: 14
   }

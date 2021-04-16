@@ -7,6 +7,9 @@ import Account from '../Account/Navigation'
 import Payment from '../Payment/Navigation'
 import Contacts from '../Contacts/Navigation'
 import Tribes from '../Tribes/Navigation'
+import OwnedTribes from '../Tribes/OwnedTribes'
+import JoinedTribes from '../Tribes/JoinedTribes'
+import Tribe from '../Tribes/Tribe'
 import Home from '../Home'
 
 const RootStack = createStackNavigator()
@@ -57,6 +60,27 @@ export default function Root() {
       <RootStack.Screen
         name='Contacts'
         component={Contacts}
+        options={{
+          headerShown: false
+        }}
+      />
+      <RootStack.Screen
+        name='OwnedTribes'
+        component={OwnedTribes}
+        options={{
+          headerShown: false
+        }}
+      />
+      <RootStack.Screen
+        name='JoinedTribes'
+        component={JoinedTribes}
+        options={{
+          headerShown: false
+        }}
+      />
+      <RootStack.Screen
+        name='Tribe'
+        component={Tribe}
         options={{
           headerShown: false
         }}

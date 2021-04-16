@@ -23,6 +23,7 @@ export default function Code(props) {
   const [checking, setChecking] = useState(false)
   const [showPin, setShowPin] = useState(false)
   const [wrong, setWrong] = useState('')
+  const [error, setError] = useState('')
   const theme = useTheme()
 
   async function scan(data) {
@@ -124,23 +125,31 @@ export default function Code(props) {
   }
 
   async function pinEntered(pin) {
-    const restoreString = atob(code)
-    if (restoreString.startsWith('keys::')) {
-      const enc = restoreString.substr(6)
-      const dec = await e2e.decrypt(enc, pin)
-      if (dec) {
-        await setPinCode(pin)
-        const priv = await user.restore(dec)
-        if (priv) {
-          rsa.setPrivateKey(priv)
-          return onRestore()
-        }
-      } else {
-        // wrong PIN
-        setShowPin(false)
+    try {
+      const restoreString = atob(code)
 
-        setChecking(false)
+      if (restoreString.startsWith('keys::')) {
+        const enc = restoreString.substr(6)
+        const dec = await e2e.decrypt(enc, pin)
+
+        if (dec) {
+          await setPinCode(pin)
+          const priv = await user.restore(dec)
+
+          if (priv) {
+            rsa.setPrivateKey(priv)
+            return onRestore()
+          }
+        } else {
+          // wrong PIN
+          setShowPin(false)
+          setError('You entered a wrong pin')
+
+          setChecking(false)
+        }
       }
+    } catch (error) {
+      setError('You entered a wrong pin')
     }
   }
 
@@ -180,11 +189,17 @@ export default function Code(props) {
 
         <View style={styles.spinWrap}>{checking && <ActivityIndicator animating={true} color='white' />}</View>
         {(wrong ? true : false) && (
-          <View style={styles.wrong}>
+          <View style={{ ...styles.message, ...styles.wrong }}>
             <Text style={styles.wrongText}>{wrong}</Text>
             <TouchableOpacity onPress={() => Linking.openURL(DEFAULT_HOST)}>
               <Text style={styles.linkText}>{DEFAULT_HOST}</Text>
             </TouchableOpacity>
+          </View>
+        )}
+
+        {(error ? true : false) && (
+          <View style={{ ...styles.message, ...styles.error }}>
+            <Text style={styles.errorText}>{error}</Text>
           </View>
         )}
       </RadialGradient>
@@ -253,16 +268,27 @@ const styles = StyleSheet.create({
   spinWrap: {
     height: 20
   },
-  wrong: {
+  message: {
     position: 'absolute',
     bottom: 32,
     width: '80%',
     left: '10%',
     borderRadius: 10,
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    backgroundColor: 'rgba(0,0,0,0.5)'
+  },
+  wrong: {
     height: 145
   },
   wrongText: {
+    color: 'white',
+    margin: 24,
+    fontSize: 15,
+    textAlign: 'center'
+  },
+  error: {
+    height: 70
+  },
+  errorText: {
     color: 'white',
     margin: 24,
     fontSize: 15,

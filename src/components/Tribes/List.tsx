@@ -2,8 +2,10 @@ import React from 'react'
 import { StyleSheet, View, FlatList, TouchableOpacity } from 'react-native'
 
 import { useObserver } from 'mobx-react-lite'
+import { useNavigation } from '@react-navigation/native'
 
-import { useTheme } from '../../store'
+import { useStores, useTheme } from '../../store'
+import { DEFAULT_TRIBE_SERVER } from '../../config'
 import Typography from '../common/Typography'
 import Avatar from '../common/Avatar'
 import Button from '../common/Button'
@@ -24,8 +26,18 @@ export default function List(props) {
 }
 
 function Item(props) {
-  const { name, description, img, joined } = props
+  const { name, description, img, joined, uuid } = props
+  const { ui, chats } = useStores()
   const theme = useTheme()
+  const navigation = useNavigation()
+
+  const onItemPress = () => navigation.navigate('Tribe', { tribe: { ...props } })
+
+  async function onJoinPress() {
+    const host = chats.getDefaultTribeServer().host
+    const tribeParams = await chats.getTribeDetails(host, uuid)
+    ui.setJoinTribeParams(tribeParams)
+  }
 
   return (
     <TouchableOpacity
@@ -34,7 +46,7 @@ function Item(props) {
         backgroundColor: theme.main
       }}
       activeOpacity={0.5}
-      onPress={() => console.log('ss')}
+      onPress={onItemPress}
     >
       <View style={styles.avatarWrap}>
         <Avatar photo={img} size={70} />
@@ -47,11 +59,11 @@ function Item(props) {
           </Typography>
           <View style={{ marginRight: 4 }}>
             {joined ? (
-              <Typography size={13} color={theme.primary}>
+              <Typography size={13} color={theme.primary} ls={0.5}>
                 Joined
               </Typography>
             ) : (
-              <Button size='small' labelStyle={{ textTransform: 'capitalize' }} onPress={() => console.log('join pressed')}>
+              <Button size='small' labelStyle={{ textTransform: 'capitalize' }} onPress={onJoinPress}>
                 Join
               </Button>
             )}

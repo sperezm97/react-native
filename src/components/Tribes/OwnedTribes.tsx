@@ -8,6 +8,7 @@ import { useOwnedTribes } from '../../store/hooks/tribes'
 import BackHeader from '../common/BackHeader'
 import Typography from '../common/Typography'
 import List from './List'
+import Button from '../common/Button'
 
 const { useTribes } = hooks
 
