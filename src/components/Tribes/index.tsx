@@ -1,35 +1,39 @@
 import React, { useState } from 'react'
 import { View, StyleSheet, ScrollView } from 'react-native'
+import { useObserver } from 'mobx-react-lite'
 
 import { useStores, useTheme } from '../../store'
 import TabBar from '../common/TabBar'
 import Header from './Header'
+import Search from '../common/Search'
 import TribesList from './TribesList'
 
 export default function Tribes() {
+  const { ui } = useStores()
   const theme = useTheme()
 
-  return (
+  const onTribesSearch = (txt: string) => ui.setTribesSearchTerm(txt)
+
+  return useObserver(() => (
     <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
       <Header />
-      <ScrollView>
-        <View style={{ ...styles.content, backgroundColor: theme.bg }}>
-          <TribesList />
-        </View>
-      </ScrollView>
+      <View style={styles.searchWrap}>
+        <Search placeholder='Search' value={ui.tribesSearchTerm} onChangeText={onTribesSearch} h={50} />
+      </View>
+      <TribesList />
       <TabBar />
     </View>
-  )
+  ))
 }
 
 const styles = StyleSheet.create({
   wrap: {
     flex: 1
   },
-  content: {
-    flex: 1,
+  searchWrap: {
     paddingTop: 18,
-    paddingRight: 18,
-    paddingLeft: 18
+    paddingBottom: 18,
+    paddingRight: 14,
+    paddingLeft: 14
   }
 })

@@ -21,8 +21,8 @@ export default function Header({}) {
       <Appbar.Header style={{ ...styles.appBar, backgroundColor: theme.bg }}>
         <View style={{ ...styles.flex, ...styles.content }}>
           <View style={{ ...styles.flex, ...styles.left }}>
-            <Typography color={theme.text} size={28} fw='500'>
-              Communities
+            <Typography color={theme.text} size={28} fw='500' ls={1.5}>
+              Tribes
             </Typography>
           </View>
           <View style={{ ...styles.flex, ...styles.right }}>

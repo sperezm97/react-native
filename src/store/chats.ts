@@ -62,6 +62,8 @@ export class ChatStore {
   @persist('list')
   @observable
   chats: Chat[] = []
+
+  @observable
   tribes = []
 
   @persist('object')
@@ -332,6 +334,19 @@ export class ChatStore {
     const idx = this.chats.findIndex(c => c.id === chat_id)
     if (idx > -1) {
       this.chats[idx].meta = meta
+    }
+  }
+
+  @action
+  async getTribes() {
+    try {
+      const r = await fetch(`https://${DEFAULT_TRIBE_SERVER}/tribes`)
+      const j = await r.json()
+
+      this.tribes = j
+      return j
+    } catch (e) {
+      console.log(e)
     }
   }
 

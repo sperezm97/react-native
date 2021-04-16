@@ -55,7 +55,7 @@ export default function Avatar(props) {
 
     return (
       <View style={{ ...styles.avatar, height: size, width: size, borderRadius, opacity: props.hide ? 0 : 1 }}>
-        <FastImage source={{ uri: photo }} style={{ width: size, height: size }} resizeMode={FastImage.resizeMode.cover} />
+        <FastImage source={{ uri: photo }} style={{ width: size, height: size }} resizeMode={FastImage.resizeMode.contain} />
       </View>
     )
   } else if (alias) {
@@ -120,12 +120,12 @@ const styles = StyleSheet.create({
     // marginRight: 1
   },
   avatar: {
-    marginLeft: 8,
-    backgroundColor: 'transparent',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'relative',
-    overflow: 'hidden'
+    // marginLeft: 28,
+    // backgroundColor: 'transparent',
+    // display: 'flex',
+    // alignItems: 'center',
+    // justifyContent: 'center',
+    // position: 'relative',
+    // overflow: 'hidden'
   }
 })

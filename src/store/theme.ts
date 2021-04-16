@@ -31,6 +31,7 @@ export class ThemeStore {
     this.deep = d ? '#292c33' : '#ccc'
     this.primary = d ? '#0067ff' : '#0067ff'
     this.secondary = d ? '#0fb17d' : '#0fb17d'
+    // this.secondary = d ? '#0fb17d' : '#0fb17d'
     this.gradient = d ? '#1c252e' : '#4889e8'
     this.gradient2 = d ? '#141d26' : '#055deb'
   }
@@ -50,6 +51,7 @@ export class ThemeStore {
   @observable deep: string = '#ccc'
   @observable primary: string = '#0067ff'
   @observable secondary: string = '#0fb17d'
+  @observable special: string = '#DEE4E9'
 
   @observable white: string = '#fff'
   @observable lightGrey: string = '#f5f6f8'
@@ -73,5 +75,4 @@ export class ThemeStore {
 
 export const themeStore = new ThemeStore()
 
-// themeStore.setDark(true)
-// main light color => #f4f6f6
+themeStore.setDark(true)
