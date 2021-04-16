@@ -46,7 +46,7 @@ export default function Avatar(props) {
     borderColor: theme.border
   }
 
-  const borderRadius = props.round ? props.round : props.big ? 26 : 16
+  const borderRadius = props.round ? props.round : 25
 
   if (photo) {
     if (!photo.startsWith('https')) {

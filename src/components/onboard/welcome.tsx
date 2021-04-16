@@ -27,8 +27,8 @@ export default function Welcome(props) {
             <Text style={{ ...styles.name, color: theme.dark ? theme.white : theme.black }}>{user.invite.inviterNickname || 'Inviter'}</Text>
             <Text style={{ ...styles.message, color: theme.title }}>{`"${user.invite.welcomeMessage || 'Welcome to N2N2!'}"`}</Text>
           </View>
-          <Button accessibilityLabel='onboard-welcome-button' onPress={go} style={{ ...styles.button, backgroundColor: theme.primary }} size='large'>
-            <Text style={{ fontSize: 16, fontWeight: '600', color: theme.white }}>Get Started</Text>
+          <Button accessibilityLabel='onboard-welcome-button' onPress={go} style={{ ...styles.button, backgroundColor: theme.primary }} size='large' w='75%' h={55} fs={16}>
+            Get Started
             <View style={{ width: 12, height: 1 }}></View>
             <Icon name='arrow-right' color={theme.white} size={18} />
           </Button>
@@ -68,8 +68,6 @@ const styles = StyleSheet.create({
     marginTop: 20
   },
   button: {
-    borderRadius: 30,
-    width: '75%',
     marginTop: 28,
     marginBottom: 42
   }

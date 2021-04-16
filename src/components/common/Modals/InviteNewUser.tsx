@@ -58,7 +58,8 @@ export default function InviteNewUser() {
           schema={schemas.inviteFriend}
           loading={loading}
           buttonText='Create Invitation'
-          buttonStyles={{ ...styles.button, backgroundColor: theme.secondary }}
+          btnColor={theme.secondary}
+          btnFs={13}
           actionType='Row'
           rowContent={RowContent}
           onSubmit={values => invite(values)}
@@ -91,9 +92,5 @@ const styles = StyleSheet.create({
   estimatedCostSat: {
     fontSize: 20,
     color: '#888'
-  },
-  button: {
-    width: 200,
-    borderRadius: 30
   }
 })

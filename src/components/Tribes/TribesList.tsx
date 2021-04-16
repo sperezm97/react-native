@@ -55,21 +55,23 @@ function TribeItem(props) {
 
       <View style={styles.tribeContent}>
         <View style={styles.tribeContentTop}>
-          <Typography color={theme.text} size={18} fw='500'>
+          <Typography color={theme.text} size={16} fw='500'>
             {name}
           </Typography>
-          {joined ? (
-            <Typography size={14} color={theme.primary} fw='500'>
-              Joined
-            </Typography>
-          ) : (
-            <Button size='small' round={8} labelStyle={{ textTransform: 'capitalize' }} onPress={() => console.log('join pressed')}>
-              Join
-            </Button>
-          )}
+          <View style={{ marginRight: 4 }}>
+            {joined ? (
+              <Typography size={13} color={theme.primary}>
+                Joined
+              </Typography>
+            ) : (
+              <Button size='small' labelStyle={{ textTransform: 'capitalize' }} onPress={() => console.log('join pressed')}>
+                Join
+              </Button>
+            )}
+          </View>
         </View>
         <View>
-          <Typography color={theme.subtitle} size={14}>
+          <Typography color={theme.subtitle} size={13}>
             {description}
           </Typography>
         </View>
@@ -89,7 +91,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    height: 100,
+    height: 90,
     marginVertical: 8,
     marginHorizontal: 14,
     padding: 12,

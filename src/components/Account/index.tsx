@@ -241,7 +241,8 @@ const styles = StyleSheet.create({
   },
   title: {
     fontWeight: '600',
-    marginTop: 10
+    marginTop: 20,
+    marginBottom: 10
   },
   spinner: {
     position: 'absolute',

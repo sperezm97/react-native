@@ -102,7 +102,7 @@ export default function Security() {
         <View style={styles.bottom}>
           <View style={{ ...styles.exportWrap }}>
             <Text style={{ ...styles.exportText, color: theme.text }}>Want to switch devices?</Text>
-            <Button accessibilityLabel='onboard-welcome-button' onPress={() => modalizeRef.current?.open()} style={{ backgroundColor: theme.primary }} size='large'>
+            <Button accessibilityLabel='onboard-welcome-button' onPress={() => modalizeRef.current?.open()} size='large' h={60}>
               <Text>Export keys</Text>
               <View style={{ width: 12, height: 1 }}></View>
               <Icon name='key' color={theme.white} size={18} />

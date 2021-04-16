@@ -33,7 +33,16 @@ export default function NameAndKey(props) {
     <Slider z={z} show={show} style={{ backgroundColor: theme.lightGrey }} accessibilityLabel='onboard-name'>
       <TextInput value={text} ref={inputRef} accessibilityLabel='onboard-name-input' placeholder='Set Nickname' style={styles.input} onChangeText={text => setText(text)} />
       <View style={styles.buttonWrap} accessibilityLabel='onboard-name-button-wrap'>
-        <Button accessibilityLabel='onboard-name-button' loading={updating} onPress={ok} disabled={!text} style={{ ...styles.button, backgroundColor: text ? theme.primary : theme.disabled }}>
+        <Button
+          accessibilityLabel='onboard-name-button'
+          loading={updating}
+          onPress={ok}
+          disabled={!text}
+          style={{ ...styles.button }}
+          color={text ? theme.primary : theme.disabled}
+          w={150}
+          size='large'
+        >
           <Text style={{ color: text ? theme.white : theme.black }}>Next</Text>
         </Button>
       </View>
@@ -50,10 +59,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row-reverse'
   },
   button: {
-    borderRadius: 30,
-    display: 'flex',
-    justifyContent: 'center',
-    width: 150,
     marginRight: '12.5%'
   },
   input: {

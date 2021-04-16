@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
-import { View, StyleSheet, ScrollView } from 'react-native'
+import React from 'react'
+import { View, StyleSheet } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
 import { useNavigation } from '@react-navigation/native'
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
+import SimpleLineIcon from 'react-native-vector-icons/SimpleLineIcons'
 
 import { useStores, useTheme } from '../../store'
 import TabBar from '../common/TabBar'
@@ -17,7 +18,6 @@ export default function Tribes() {
   const navigation = useNavigation()
 
   const onTribesSearch = (txt: string) => ui.setTribesSearchTerm(txt)
-
   const ownedTribesPress = () => navigation.navigate('OwnedTribes')
   const joinedTribesPress = () => navigation.navigate('JoinedTribes')
 
@@ -29,7 +29,7 @@ export default function Tribes() {
           <Button icon={() => <FontAwesome5Icon name='users' color={theme.black} size={16} />} color={theme.special} onPress={ownedTribesPress}>
             Owned Tribes
           </Button>
-          <Button icon={() => <FontAwesome5Icon name='users' color={theme.black} size={16} />} color={theme.special} style={{ marginLeft: 10 }} onPress={joinedTribesPress}>
+          <Button icon={() => <SimpleLineIcon name='user-following' color={theme.black} size={16} />} color={theme.special} style={{ marginLeft: 10 }} onPress={joinedTribesPress}>
             Joined Tribes
           </Button>
         </View>
@@ -38,7 +38,6 @@ export default function Tribes() {
         </View>
         <TribesList />
       </View>
-
       <TabBar />
     </View>
   ))
@@ -61,7 +60,7 @@ const styles = StyleSheet.create({
     paddingBottom: 18
   },
   searchWrap: {
-    paddingBottom: 18,
+    paddingBottom: 12,
     paddingRight: 14,
     paddingLeft: 14
   }

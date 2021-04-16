@@ -32,7 +32,7 @@ export default function Ready(props) {
   }
 
   return (
-    <Slider z={z} show={show} accessibilityLabel='onboard-ready'>
+    <Slider z={z} show={true} accessibilityLabel='onboard-ready'>
       <RadialGradient style={styles.gradient} colors={[theme.gradient, theme.gradient2]} stops={[0.1, 1]} center={[80, 40]} radius={400}>
         <View style={styles.titleWrap} accessibilityLabel='onboard-ready-title'>
           <View style={styles.titleRow}>
@@ -58,10 +58,10 @@ export default function Ready(props) {
           </View>
         </View>
         <View style={styles.buttonWrap} accessibilityLabel='onboard-ready-button-wrap'>
-          <Button accessibilityLabel='onboard-ready-button' onPress={finish} style={{ ...styles.button, backgroundColor: theme.white }} size='large'>
+          <Button accessibilityLabel='onboard-ready-button' onPress={finish} color={theme.white} size='large' w='75%' h={55} round={40} fs={15}>
             {loading && <ActivityIndicator animating={loading} color={theme.grey} size={18} />}
             {loading && <View style={{ width: 12, height: 1 }}></View>}
-            <Text style={{ fontSize: 16, fontWeight: '600', color: theme.black }}>Finish</Text>
+            Finish
           </Button>
         </View>
       </RadialGradient>
@@ -127,15 +127,9 @@ const styles = StyleSheet.create({
   buttonWrap: {
     position: 'absolute',
     bottom: 42,
-    width: '100%',
-    height: 60,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center'
-  },
-  button: {
-    width: '75%',
-    borderRadius: 30
   }
 })
 
