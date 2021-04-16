@@ -23,6 +23,9 @@ export function useJoinedTribes(tribes) {
 }
 
 export function useOwnedTribes(tribes) {
+  tribes.map(t => {
+    console.log('t', t.owner)
+  })
   return tribes.filter(t => t.owner)
 }
 
@@ -44,6 +47,8 @@ export function allTribes(tribes, chats, user) {
         tribe.joined = true
       }
       if (c.type === constants.chat_types.tribe && c.owner_pubkey === user.publicKey) {
+        console.log('c.owner_pubkey', c.owner_pubkey, 'user.publicKey', user.publicKey)
+
         tribe.owner = true
       }
     })

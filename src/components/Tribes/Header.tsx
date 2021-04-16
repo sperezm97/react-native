@@ -26,9 +26,7 @@ export default function Header({}) {
             </Typography>
           </View>
           <View style={{ ...styles.flex, ...styles.right }}>
-            <TouchableOpacity>{/* <Button mode='text' icon='plus' size='small'>
-                Create Tribe
-              </Button> */}</TouchableOpacity>
+            <IconButton icon='plus' color={theme.primary} size={24} onPress={() => console.log('Pressed')} style={{ backgroundColor: theme.lightGrey }} />
           </View>
         </View>
       </Appbar.Header>

@@ -26,10 +26,10 @@ export default function Tribes() {
       <Header />
       <View style={styles.content}>
         <View style={styles.buttonWrap}>
-          <Button icon={() => <FontAwesome5Icon name='users' color={theme.black} size={16} />} color={theme.special} onPress={ownedTribesPress}>
+          <Button icon={() => <FontAwesome5Icon name='users' color={theme.icon} size={16} />} color={theme.special} onPress={ownedTribesPress}>
             Owned Tribes
           </Button>
-          <Button icon={() => <SimpleLineIcon name='user-following' color={theme.black} size={16} />} color={theme.special} style={{ marginLeft: 10 }} onPress={joinedTribesPress}>
+          <Button icon={() => <SimpleLineIcon name='user-following' color={theme.icon} size={16} />} color={theme.special} style={{ marginLeft: 10 }} onPress={joinedTribesPress}>
             Joined Tribes
           </Button>
         </View>
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     paddingBottom: 18
   },
   searchWrap: {
-    paddingBottom: 12,
+    paddingBottom: 10,
     paddingRight: 14,
     paddingLeft: 14
   }
