@@ -22,11 +22,13 @@ export default function Header({}) {
         <View style={{ ...styles.flex, ...styles.content }}>
           <View style={{ ...styles.flex, ...styles.left }}>
             <Typography color={theme.text} size={28} fw='500' ls={1.5}>
-              Tribes
+              Communities
             </Typography>
           </View>
           <View style={{ ...styles.flex, ...styles.right }}>
-            <IconButton icon='plus' color={theme.primary} size={24} onPress={() => console.log('Pressed')} style={{ backgroundColor: theme.lightGrey }} />
+            <Pushable onPress={() => console.log('Pressed')}>
+              <IconButton icon='plus' color={theme.primary} size={24} style={{ backgroundColor: theme.lightGrey }} />
+            </Pushable>
           </View>
         </View>
       </Appbar.Header>

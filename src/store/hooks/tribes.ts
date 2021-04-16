@@ -7,13 +7,11 @@ export function useTribes() {
   const chatsToShow = useChats()
 
   const theTribes = allTribes(chats.tribes, chatsToShow, user)
-  //   sortTribes(theTribes)
   return theTribes
 }
 
-export function useSearchTribes() {
+export function useSearchTribes(tribes) {
   const { ui } = useStores()
-  const tribes = useTribes()
 
   return searchTribes(tribes, ui.tribesSearchTerm)
 }
@@ -23,38 +21,61 @@ export function useJoinedTribes(tribes) {
 }
 
 export function useOwnedTribes(tribes) {
-  tribes.map(t => {
-    console.log('t', t.owner)
-  })
+  // tribes.map(t => console.log('s', t.owner))
+
   return tribes.filter(t => t.owner)
 }
 
-export function searchTribes(theTribes, searchTerm) {
-  return theTribes.filter(c => {
+export function searchTribes(tribes, searchTerm) {
+  return tribes.filter(c => {
     if (!searchTerm) return true
 
     return c.description.toLowerCase().includes(searchTerm.toLowerCase()) || c.name.toLowerCase().includes(searchTerm.toLowerCase())
   })
 }
 
-export function allTribes(tribes, chats, user) {
-  tribes.map(tribe => {
-    tribe.joined = false
-    tribe.owner = false
+// tribes.map(tribe => {
+//   tribe.joined = false
+//   tribe.owner = false
 
+// chats.map(c => {
+//   if (c.uuid === tribe.uuid) {
+//     tribe.joined = true
+//   }
+//   if (c.type === constants.chat_types.tribe && c.owner_pubkey === user.publicKey) {
+//     // console.log('c.owner_pubkey', c.owner_pubkey, 'user.publicKey', user.publicKey)
+
+//     tribe.owner = true
+//   }
+// })
+
+export function allTribes(tribes, chats, user) {
+  const merged = tribes.map((tribe, index) => {
+    // let joined = chats.find(c => c.uuid === tribe.uuid)
+    // let owner = chats.find(c => c.type === constants.chat_types.tribe && c.owner_pubkey === user.publicKey)
+
+    // console.log('joined', joined)
+    // console.log('owner', owner)
+
+    let joined = false
+    let owner = false
     chats.map(c => {
       if (c.uuid === tribe.uuid) {
-        tribe.joined = true
+        joined = true
       }
       if (c.type === constants.chat_types.tribe && c.owner_pubkey === user.publicKey) {
-        console.log('c.owner_pubkey', c.owner_pubkey, 'user.publicKey', user.publicKey)
-
-        tribe.owner = true
+        owner = true
       }
     })
+
+    return {
+      ...tribe,
+      joined,
+      owner
+    }
   })
 
-  return tribes
+  return merged
 }
 
 export function sortTribes(tribes) {

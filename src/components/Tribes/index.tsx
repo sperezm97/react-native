@@ -1,42 +1,41 @@
-import React from 'react'
-import { View, StyleSheet } from 'react-native'
+import React, { useEffect } from 'react'
+import { StyleSheet, View } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
 import { useNavigation } from '@react-navigation/native'
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
-import SimpleLineIcon from 'react-native-vector-icons/SimpleLineIcons'
+import AntDesignIcon from 'react-native-vector-icons/AntDesign'
 
 import { useStores, useTheme } from '../../store'
 import TabBar from '../common/TabBar'
 import Header from './Header'
 import Button from '../common/Button'
-import Search from '../common/Search'
-import TribesList from './TribesList'
+import OwnedTribes from './OwnedTribes'
 
 export default function Tribes() {
-  const { ui } = useStores()
+  const { ui, chats } = useStores()
   const theme = useTheme()
   const navigation = useNavigation()
 
-  const onTribesSearch = (txt: string) => ui.setTribesSearchTerm(txt)
+  useEffect(() => {
+    chats.getTribes()
+  }, [])
+
   const ownedTribesPress = () => navigation.navigate('OwnedTribes')
-  const joinedTribesPress = () => navigation.navigate('JoinedTribes')
+  const discoverTribesPress = () => navigation.navigate('DiscoverTribes')
 
   return useObserver(() => (
     <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
       <Header />
       <View style={styles.content}>
         <View style={styles.buttonWrap}>
-          <Button icon={() => <FontAwesome5Icon name='users' color={theme.icon} size={16} />} color={theme.special} onPress={ownedTribesPress}>
+          {/* <Button icon={() => <FontAwesome5Icon name='users' color={theme.icon} size={16} />} color={theme.special} onPress={ownedTribesPress}>
             Owned Tribes
-          </Button>
-          <Button icon={() => <SimpleLineIcon name='user-following' color={theme.icon} size={16} />} color={theme.special} style={{ marginLeft: 10 }} onPress={joinedTribesPress}>
-            Joined Tribes
+          </Button> */}
+          <Button icon={() => <AntDesignIcon name='find' color={theme.icon} size={18} />} color={theme.special} style={{ marginLeft: 10 }} onPress={discoverTribesPress}>
+            Discover
           </Button>
         </View>
-        <View style={styles.searchWrap}>
-          <Search placeholder='Search' value={ui.tribesSearchTerm} onChangeText={onTribesSearch} h={50} />
-        </View>
-        <TribesList />
+        <OwnedTribes />
       </View>
       <TabBar />
     </View>
@@ -58,10 +57,5 @@ const styles = StyleSheet.create({
     paddingRight: 14,
     paddingLeft: 14,
     paddingBottom: 18
-  },
-  searchWrap: {
-    paddingBottom: 10,
-    paddingRight: 14,
-    paddingLeft: 14
   }
 })

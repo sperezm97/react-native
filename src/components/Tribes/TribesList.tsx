@@ -4,14 +4,9 @@ import { StyleSheet, View } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
 
 import { useStores, useTheme, hooks } from '../../store'
-import { useOwnedTribes } from '../../store/hooks/tribes'
 import List from './List'
 
-const { useSearchTribes, useTribes } = hooks
-
-// const tribes = useTribes()
-
-//     const ownedTribes = useOwnedTribes(tribes)
+const { useSearchTribes } = hooks
 
 export default function TribesList() {
   const theme = useTheme()
@@ -22,13 +17,9 @@ export default function TribesList() {
   }, [])
 
   return useObserver(() => {
-    const tribesToShow = useSearchTribes()
+    // const tribesToShow = useSearchTribes()
 
-    return (
-      <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
-        <List data={tribesToShow} />
-      </View>
-    )
+    return <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>{/* <List data={tribesToShow} /> */}</View>
   })
 }
 

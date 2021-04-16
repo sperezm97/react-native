@@ -4,29 +4,31 @@ import { useObserver } from 'mobx-react-lite'
 import { useNavigation } from '@react-navigation/native'
 
 import { useStores, useTheme, hooks } from '../../store'
-import { useOwnedTribes } from '../../store/hooks/tribes'
+import { useTribes } from '../../store/hooks'
 import BackHeader from '../common/BackHeader'
-import Typography from '../common/Typography'
+import Search from '../common/Search'
 import List from './List'
-import Button from '../common/Button'
 
-const { useTribes } = hooks
+const { useSearchTribes } = hooks
 
-export default function OwnedTribes() {
+export default function Discover() {
   const { ui } = useStores()
   const theme = useTheme()
   const navigation = useNavigation()
 
+  const onTribesSearch = (txt: string) => ui.setTribesSearchTerm(txt)
+
   return useObserver(() => {
     const tribes = useTribes()
-    const tribesToShow = useOwnedTribes(tribes)
+    const tribesToShow = useSearchTribes(tribes)
 
     return (
       <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
-        {/* <BackHeader title='Owned Tribes' navigate={() => navigation.goBack()} /> */}
-        <View style={styles.content}>
-          <List data={tribesToShow} />
+        <BackHeader title='Discover' navigate={() => navigation.goBack()} />
+        <View style={styles.searchWrap}>
+          <Search placeholder='Search' value={ui.tribesSearchTerm} onChangeText={onTribesSearch} h={50} />
         </View>
+        <List data={tribesToShow} />
       </View>
     )
   })
@@ -36,7 +38,9 @@ const styles = StyleSheet.create({
   wrap: {
     flex: 1
   },
-  content: {
-    flex: 1
+  searchWrap: {
+    paddingBottom: 10,
+    paddingRight: 14,
+    paddingLeft: 14
   }
 })

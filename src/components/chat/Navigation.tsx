@@ -13,7 +13,7 @@ export default function Navigation() {
   const theme = useTheme()
 
   return (
-    <Stack.Navigator initialRouteName='Chats'>
+    <Stack.Navigator initialRouteName='Tribes'>
       <Stack.Screen
         name='Chats'
         component={Chats}
