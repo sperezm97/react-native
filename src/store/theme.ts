@@ -51,7 +51,7 @@ export class ThemeStore {
   @observable deep: string = '#ccc'
   @observable primary: string = '#0067ff'
   @observable secondary: string = '#0fb17d'
-  @observable special: string = '#DEE4E9'
+  @observable special: string = '#f8fafb'
 
   @observable white: string = '#fff'
   @observable lightGrey: string = '#f5f6f8'
@@ -75,4 +75,4 @@ export class ThemeStore {
 
 export const themeStore = new ThemeStore()
 
-themeStore.setDark(true)
+// themeStore.setDark(true)

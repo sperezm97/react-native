@@ -4,11 +4,16 @@ import { StyleSheet, View, Text, FlatList, TouchableOpacity } from 'react-native
 import { useObserver } from 'mobx-react-lite'
 
 import { useStores, useTheme, hooks } from '../../store'
+import { useOwnedTribes } from '../../store/hooks/tribes'
 import Typography from '../common/Typography'
 import Avatar from '../common/Avatar'
 import Button from '../common/Button'
 
-const { useTribes } = hooks
+const { useSearchTribes, useTribes } = hooks
+
+// const tribes = useTribes()
+
+//     const ownedTribes = useOwnedTribes(tribes)
 
 export default function TribesList() {
   const theme = useTheme()
@@ -21,9 +26,7 @@ export default function TribesList() {
   const renderItem = ({ index, item }) => <TribeItem {...item} />
 
   return useObserver(() => {
-    const tribesToShow = useTribes()
-
-    console.log('tribesToShow', tribesToShow)
+    const tribesToShow = useSearchTribes()
 
     return (
       <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
@@ -34,10 +37,8 @@ export default function TribesList() {
 }
 
 function TribeItem(props) {
-  const { name, description, img } = props
+  const { name, description, img, joined } = props
   const theme = useTheme()
-
-  console.log('props', props)
 
   return (
     <TouchableOpacity
@@ -57,9 +58,15 @@ function TribeItem(props) {
           <Typography color={theme.text} size={18} fw='500'>
             {name}
           </Typography>
-          <Button size='small' style={{ borderRadius: 8 }} labelStyle={{ fontSize: 14, textTransform: 'capitalize' }} onPress={() => console.log('join pressed')}>
-            Join
-          </Button>
+          {joined ? (
+            <Typography size={14} color={theme.primary} fw='500'>
+              Joined
+            </Typography>
+          ) : (
+            <Button size='small' round={8} labelStyle={{ textTransform: 'capitalize' }} onPress={() => console.log('join pressed')}>
+              Join
+            </Button>
+          )}
         </View>
         <View>
           <Typography color={theme.subtitle} size={14}>

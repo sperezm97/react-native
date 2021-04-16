@@ -55,7 +55,7 @@ export default function Avatar(props) {
 
     return (
       <View style={{ ...styles.avatar, height: size, width: size, borderRadius, opacity: props.hide ? 0 : 1 }}>
-        <FastImage source={{ uri: photo }} style={{ width: size, height: size }} resizeMode={FastImage.resizeMode.contain} />
+        <FastImage source={{ uri: photo }} style={{ width: size, height: size, borderRadius }} resizeMode={FastImage.resizeMode.cover} />
       </View>
     )
   } else if (alias) {

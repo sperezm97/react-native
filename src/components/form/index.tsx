@@ -53,7 +53,7 @@ export default function Form(props) {
                   onPress={handleSubmit}
                   disabled={!props.forceEnable && (!dirty || !isValid)}
                   style={{ ...styles.button, ...props.buttonStyles }}
-                  labelStyle={{ color: labelColor, opacity: d ? 0.5 : 1 }}
+                  // labelStyle={{ color: labelColor, opacity: d ? 0.5 : 1 }}
                   loading={props.loading}
                 >
                   {props.buttonText || 'Submit'}

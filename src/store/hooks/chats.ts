@@ -12,6 +12,7 @@ export function useChats() {
   const theChats = allChats(chats.chats, contacts.contacts)
   const chatsToShow = filterChats(theChats, ui.searchTerm)
   sortChats(chatsToShow, msg.messages)
+
   return chatsToShow
 }
 

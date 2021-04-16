@@ -5,11 +5,13 @@ import { useTheme } from '../../../store'
 import Icon from '../Icon'
 
 export default function Search(props) {
-  const { placeholder, value, onChangeText, style, h } = props
+  const { placeholder, value, onChangeText, style, h, round } = props
 
   const theme = useTheme()
 
-  const styles = { ...style, elevation: 0, height: h, backgroundColor: theme.inputBg, borderRadius: 5 }
+  const borderRadius = round ? round : 8
+
+  const styles = { ...style, elevation: 0, height: h, backgroundColor: theme.inputBg, borderRadius }
   const iconColor = theme.icon
   const inputStyle = {
     color: theme.input,
