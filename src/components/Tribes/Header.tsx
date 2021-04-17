@@ -21,14 +21,14 @@ export default function Header({}) {
       <Appbar.Header style={{ ...styles.appBar, backgroundColor: theme.bg }}>
         <View style={{ ...styles.flex, ...styles.content }}>
           <View style={{ ...styles.flex, ...styles.left }}>
-            <Typography color={theme.text} size={28} fw='500'>
+            <Typography color={theme.text} size={28} fw='500' ls={1.5}>
               Communities
             </Typography>
           </View>
           <View style={{ ...styles.flex, ...styles.right }}>
-            <TouchableOpacity>{/* <Button mode='text' icon='plus' size='small'>
-                Create Tribe
-              </Button> */}</TouchableOpacity>
+            <Pushable onPress={() => console.log('Pressed')}>
+              <IconButton icon='plus' color={theme.primary} size={24} style={{ backgroundColor: theme.lightGrey }} />
+            </Pushable>
           </View>
         </View>
       </Appbar.Header>

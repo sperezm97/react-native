@@ -56,7 +56,7 @@ function Item({ contact, onPress }) {
       </View>
       <View style={{ ...styles.frontSwipeRow, backgroundColor: theme.bg }}>
         <TouchableOpacity style={styles.contactTouch} activeOpacity={0.5} onPress={() => onPress(contact)}>
-          <Avatar size={40} aliasSize={16} big alias={contact.alias} photo={uri} />
+          <Avatar size={40} aliasSize={16} alias={contact.alias} photo={uri} />
           <View style={styles.contactContent}>
             <Text style={{ ...styles.contactName, color: theme.text }}>{contact.alias}</Text>
           </View>
@@ -122,6 +122,7 @@ const styles = StyleSheet.create({
   },
   frontSwipeRow: {
     flex: 1,
-    height: 80
+    height: 80,
+    paddingLeft: 12
   }
 })

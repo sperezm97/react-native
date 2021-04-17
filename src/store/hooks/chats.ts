@@ -7,20 +7,12 @@ import { Chat } from '../chats'
 import { Contact } from '../contacts'
 import { constants } from '../../constants'
 
-export function useTribes() {
-  const {
-    chats: { tribes }
-  } = useStores()
-  if (!tribes) return
-
-  return tribes
-}
-
 export function useChats() {
   const { chats, msg, contacts, ui } = useStores()
   const theChats = allChats(chats.chats, contacts.contacts)
   const chatsToShow = filterChats(theChats, ui.searchTerm)
   sortChats(chatsToShow, msg.messages)
+
   return chatsToShow
 }
 

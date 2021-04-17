@@ -25,10 +25,10 @@ export default function InputAccessoryView(props) {
   return (
     <ReactInputAccessoryView nativeID={nativeID} backgroundColor={theme.bg}>
       <View style={styles.btnWrap}>
-        <Button onPress={_cancel} size='small' style={{ ...styles.button, width: '70%' }} color={theme.bg}>
+        <Button onPress={_cancel} size='small' style={{ ...styles.button }} w='70%' round={0} color={theme.bg}>
           {cancelText}
         </Button>
-        <Button onPress={_done} size='small' style={{ ...styles.button, width: '30%' }}>
+        <Button onPress={_done} size='small' style={{ ...styles.button }} w='30%' round={0}>
           {doneText}
         </Button>
       </View>

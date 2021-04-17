@@ -4,7 +4,7 @@ import { StyleSheet, View, Text, TouchableOpacity, FlatList, Dimensions } from '
 import { useNavigation } from '@react-navigation/native'
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback'
 
-import { useStores, hooks, useTheme } from '../../store'
+import { useStores, useTheme, hooks } from '../../store'
 import InviteRow, { styles } from './inviteRow'
 import { chatPicSrc, useChatPicSrc } from '../utils/picSrc'
 import PushableButton from '../common/Button/PushableButton'
@@ -49,10 +49,10 @@ export default function ChatList() {
 
   const footerComponent: any = () => (
     <View style={moreStyles.buttonsWrap}>
-      <PushableButton dark={true} icon='plus' accessibilityLabel='add-friend-button' onPress={setAddFriendModalHandler} style={{ ...moreStyles.button, backgroundColor: theme.secondary }}>
+      <PushableButton icon='plus' color={theme.secondary} size='large' w={140} accessibilityLabel='add-friend-button' onPress={setAddFriendModalHandler}>
         Friend
       </PushableButton>
-      <PushableButton dark={true} icon='plus' accessibilityLabel='new-group-button' onPress={setNewGroupModalHandler} style={moreStyles.button}>
+      <PushableButton icon='plus' size='large' w={140} accessibilityLabel='new-group-button' onPress={setNewGroupModalHandler}>
         Tribe
       </PushableButton>
     </View>
@@ -158,10 +158,6 @@ const moreStyles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     justifyContent: 'space-around'
-  },
-  button: {
-    borderRadius: 25,
-    width: 140
   },
   badgeWrap: {
     position: 'absolute',

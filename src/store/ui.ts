@@ -41,6 +41,11 @@ export class UiStore {
     this.contactsSearchTerm = term
   }
 
+  @observable tribesSearchTerm: string = ''
+  @action setTribesSearchTerm(term) {
+    this.tribesSearchTerm = term
+  }
+
   @observable qrModal: boolean = false
   @action setQrModal(b) {
     this.qrModal = b

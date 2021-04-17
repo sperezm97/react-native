@@ -10,6 +10,7 @@ import Header from './Header'
 import Transactions from './Transactions'
 import Button from '../common/Button'
 import QR from '../common/Accessories/QR'
+import Typography from '../common/Typography'
 
 export default function Payment() {
   const [scanning, setScanning] = useState(false)
@@ -50,16 +51,18 @@ export default function Payment() {
       <ScrollView>
         <View style={{ ...styles.headerActions }}>
           <View style={styles.wallet}>
-            <Text style={{ marginBottom: 10, fontSize: 26, fontWeight: '500', color: theme.text }}>My Wallet</Text>
-            <Text style={{ fontSize: 16, color: theme.text }}>
-              {details.balance} <Text style={{ color: theme.subtitle }}> sat</Text>
-            </Text>
+            <Typography size={26} fw='500' color={theme.text} style={{ marginBottom: 10 }}>
+              My Wallet
+            </Typography>
+            <Typography size={16} fw='500' color={theme.text}>
+              {details.balance} <Typography color={theme.subtitle}> sat</Typography>
+            </Typography>
           </View>
           <View style={styles.buttonWrap}>
-            <Button mode='outlined' icon='arrow-bottom-left' style={{ width: 130, borderColor: theme.border }} btnHeight={45} onPress={() => ui.setPayMode('invoice', null)}>
+            <Button mode='outlined' icon='arrow-bottom-left' w={130} h={45} round={0} style={{ borderColor: theme.border }} onPress={() => ui.setPayMode('invoice', null)}>
               RECEIVE
             </Button>
-            <Button mode='outlined' icon='arrow-top-right' style={{ width: 130, borderColor: theme.border, borderLeftWidth: 0 }} btnHeight={45} onPress={() => ui.setPayMode('payment', null)}>
+            <Button mode='outlined' icon='arrow-top-right' w={130} h={45} round={0} style={{ borderColor: theme.border, borderLeftWidth: 0 }} onPress={() => ui.setPayMode('payment', null)}>
               SEND
             </Button>
           </View>
@@ -76,7 +79,6 @@ const styles = StyleSheet.create({
   wrap: {
     flex: 1
   },
-
   headerActions: {
     width: '100%',
     height: 250,

@@ -1,33 +1,33 @@
-import React, { useEffect, useState } from 'react'
-import { View, StyleSheet, ScrollView } from 'react-native'
+import React, { useEffect } from 'react'
+import { StyleSheet, View } from 'react-native'
+
 import { useObserver } from 'mobx-react-lite'
 
 import { useStores, useTheme, hooks } from '../../store'
-import Typography from '../common/Typography'
+import List from './List'
 
-// const { useTribes } = hooks
+const { useSearchTribes } = hooks
 
 export default function TribesList() {
   const theme = useTheme()
   const { chats } = useStores()
 
   useEffect(() => {
-    // chats.getTribes()
+    chats.getTribes()
   }, [])
 
-  //   const TribesToShow = useTribes()
-
   return useObserver(() => {
-    return (
-      <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
-        <Typography size={20}>My Tribes</Typography>
-      </View>
-    )
+    // const tribesToShow = useSearchTribes()
+
+    return <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>{/* <List data={tribesToShow} /> */}</View>
   })
 }
 
 const styles = StyleSheet.create({
   wrap: {
+    flex: 1
+  },
+  container: {
     flex: 1
   }
 })

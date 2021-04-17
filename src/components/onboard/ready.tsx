@@ -16,19 +16,24 @@ export default function Ready(props) {
   const theme = useTheme()
 
   async function finish() {
-    setLoading(true)
-    await Promise.all([
-      user.finishInvite(),
-      contacts.addContact({
-        alias: user.invite.inviterNickname,
-        public_key: user.invite.inviterPubkey,
-        status: constants.contact_statuses.confirmed
-      }),
-      actions(user.invite.action),
-      chats.joinDefaultTribe()
-    ])
-    setLoading(false)
-    onDone()
+    try {
+      setLoading(true)
+      await Promise.all([
+        user.finishInvite(),
+        contacts.addContact({
+          alias: user.invite.inviterNickname,
+          public_key: user.invite.inviterPubkey,
+          status: constants.contact_statuses.confirmed
+        }),
+        actions(user.invite.action),
+        chats.joinDefaultTribe()
+      ])
+
+      setLoading(false)
+      onDone()
+    } catch (error) {
+      console.log('error', error)
+    }
   }
 
   return (
@@ -58,10 +63,10 @@ export default function Ready(props) {
           </View>
         </View>
         <View style={styles.buttonWrap} accessibilityLabel='onboard-ready-button-wrap'>
-          <Button accessibilityLabel='onboard-ready-button' onPress={finish} style={{ ...styles.button, backgroundColor: theme.white }} size='large'>
+          <Button accessibilityLabel='onboard-ready-button' onPress={finish} color={theme.white} size='large' w='75%' h={55} round={40} fs={15}>
             {loading && <ActivityIndicator animating={loading} color={theme.grey} size={18} />}
             {loading && <View style={{ width: 12, height: 1 }}></View>}
-            <Text style={{ fontSize: 16, fontWeight: '600', color: theme.black }}>Finish</Text>
+            Finish
           </Button>
         </View>
       </RadialGradient>
@@ -127,15 +132,9 @@ const styles = StyleSheet.create({
   buttonWrap: {
     position: 'absolute',
     bottom: 42,
-    width: '100%',
-    height: 60,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center'
-  },
-  button: {
-    width: '75%',
-    borderRadius: 30
   }
 })
 

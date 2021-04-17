@@ -66,10 +66,10 @@ export default function Support() {
 
       <View style={styles.bottom}>
         <View style={styles.buttonWrap}>
-          <Button disabled={!details.logs} onPress={() => email()} style={styles.button}>
+          <Button disabled={!details.logs} onPress={() => email()} w={160}>
             Send Message
           </Button>
-          <Button disabled={!details.logs} onPress={() => copy()} style={styles.button}>
+          <Button disabled={!details.logs} onPress={() => copy()} w={160}>
             Copy Logs
           </Button>
         </View>
@@ -99,12 +99,6 @@ const styles = StyleSheet.create({
     minHeight: 200,
     paddingTop: 20,
     paddingBottom: 20
-  },
-  button: {
-    borderRadius: 30,
-    width: 160,
-    display: 'flex',
-    justifyContent: 'center'
   },
   input: {
     flex: 1,

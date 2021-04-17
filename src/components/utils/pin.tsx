@@ -11,9 +11,6 @@ import moment from 'moment'
 import { useTheme } from '../../store'
 import NumKey from './numkey'
 
-// const ssConfig = { service: 'sphinx_pin' }
-// removeItem
-
 const ns = [1, 2, 3, 4, 5, 6]
 export default function PIN(props) {
   const [pin, setPin] = useState('')
@@ -29,10 +26,7 @@ export default function PIN(props) {
         setMode('enter')
         return
       }
-      // await SecureStorage.removeItem('pin',ssConfig)
-      // const storedPin = await SecureStorage.getItem("pin", ssConfig);
 
-      await EncryptedStorage.removeItem('pin')
       const storedPin = await EncryptedStorage.getItem('pin')
 
       if (storedPin) setMode('enter')

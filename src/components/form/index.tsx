@@ -52,8 +52,11 @@ export default function Form(props) {
                   accessibilityLabel={props.buttonAccessibilityLabel || 'form-button'}
                   onPress={handleSubmit}
                   disabled={!props.forceEnable && (!dirty || !isValid)}
-                  style={{ ...styles.button, ...props.buttonStyles }}
-                  labelStyle={{ color: labelColor, opacity: d ? 0.5 : 1 }}
+                  color={props.btnColor}
+                  fs={props.btnFs}
+                  size={props.btnSize}
+                  style={{ ...props.btnStyles }}
+                  // labelStyle={{ color: labelColor, opacity: d ? 0.5 : 1 }}
                   loading={props.loading}
                 >
                   {props.buttonText || 'Submit'}
@@ -87,7 +90,8 @@ function Action({ type, nopad, rowContent, children }) {
 
 Form.defaultProps = {
   actionType: 'Wide',
-  buttonMode: 'contained'
+  buttonMode: 'contained',
+  btnSize: 'large'
 }
 
 function validator(config) {
@@ -102,7 +106,6 @@ function validator(config) {
 
 const styles = StyleSheet.create({
   wrap: {},
-  button: {},
   rowWrap: {
     flexDirection: 'row',
     justifyContent: 'space-between',

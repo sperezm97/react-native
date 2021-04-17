@@ -25,7 +25,6 @@ export default function ProfilePic({ z, show, onDone, onBack }) {
     if (img) {
       setUploading(true)
       const url = await uploadSync(img.uri)
-      console.log('url', url)
 
       if (url) {
         await contacts.updateContact(1, {
@@ -95,12 +94,12 @@ export default function ProfilePic({ z, show, onDone, onBack }) {
         </View>
         <View style={styles.mid} accessibilityLabel='onboard-profile-middle'>
           <Avatar size={200} photo={img && img.uri} round={100} />
-          <Button accessibilityLabel='onboard-profile-choose-image' onPress={() => setDialogOpen(true)} style={{ ...styles.selectButton, backgroundColor: theme.lightGrey }}>
+          <Button accessibilityLabel='onboard-profile-choose-image' onPress={() => setDialogOpen(true)} style={{ ...styles.selectButton }} color={theme.lightGrey} w={200}>
             <Text style={{ color: theme.black }}>Select Image</Text>
           </Button>
         </View>
         <View style={styles.buttonWrap} accessibilityLabel='onboard-profile-button-wrap'>
-          <Button accessibilityLabel='onboard-profile-button' loading={uploading} onPress={finish} style={{ ...styles.button, backgroundColor: theme.primary }} size='large'>
+          <Button accessibilityLabel='onboard-profile-button' loading={uploading} onPress={finish} style={{ ...styles.button }} size='large' w={150}>
             <Text style={{ color: theme.white }}> {img ? 'Next' : 'Skip'}</Text>
           </Button>
         </View>
@@ -135,11 +134,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   selectButton: {
-    borderRadius: 30,
-    width: 200,
-    marginTop: 20,
-    display: 'flex',
-    justifyContent: 'center'
+    marginTop: 20
   },
   buttonWrap: {
     position: 'absolute',
@@ -149,8 +144,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row-reverse'
   },
   button: {
-    width: 150,
-    marginRight: '12.5%',
-    borderRadius: 30
+    marginRight: '12.5%'
   }
 })

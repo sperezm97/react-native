@@ -5,15 +5,27 @@ import { useTheme } from '../../../store'
 
 export default function Button(props) {
   const theme = useTheme()
-  let { pushable, mode, accessibilityLabel, color = theme.primary, style, labelStyle, btnHeight, loading, disabled, onPress, dark, icon, children, size } = props
+  let { pushable, mode, accessibilityLabel, color = theme.primary, style, round, fs, fw, h, w, labelStyle, btnHeight, loading, disabled, onPress, dark, icon, children, size } = props
+
+  let defaultFs = 13
+  let defaultHeight = 45
+  let defaultFw = '500'
 
   if (size === 'large') {
     btnHeight = 60
+    defaultFs = 14
+    defaultHeight = 50
   } else if (size === 'small') {
     btnHeight = 35
+    defaultHeight = 35
   } else {
-    btnHeight = 50
+    btnHeight = 40
   }
+
+  const height = h ? h : defaultHeight
+  const fontSize = fs ? fs : defaultFs
+  const fontWeight = fw ? fw : defaultFw
+  const borderRadius = round === 0 ? 0 : round ? round : 25
 
   return (
     <PaperButton
@@ -22,9 +34,9 @@ export default function Button(props) {
       loading={loading}
       disabled={disabled}
       onPress={!pushable && onPress}
-      style={{ ...style }}
-      labelStyle={{ ...labelStyle }}
-      contentStyle={{ height: btnHeight }}
+      style={{ ...style, borderRadius, width: w }}
+      labelStyle={{ ...labelStyle, fontSize, fontWeight }}
+      contentStyle={{ height }}
       dark={dark}
       icon={icon}
       color={color}
