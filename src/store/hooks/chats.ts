@@ -45,33 +45,6 @@ function lastMessageDate(msg) {
     nextWeek: 'dddd',
     sameElse: 'L'
   })
-
-  // const diff = moment(new Date()).utc().diff(msg.date, 'days')
-
-  // if (diff === 0) {
-  //   return moment(msg.date).format('hh:mm A')
-  // } else {
-  //   const yesterday = moment().utc().add(-24, 'hours')
-  //   const isYesterday = moment(msg.date || new Date())
-  //     .utc()
-  //     .isBefore(yesterday)
-
-  //   if (isYesterday) {
-  //     return moment(msg.date).calendar(null, {
-  //       lastDay: '[Yesterday]',
-  //       sameDay: '[Today]',
-  //       nextDay: '[Tomorrow]',
-  //       lastWeek: '[last] dddd',
-  //       nextWeek: 'dddd',
-  //       sameElse: 'L'
-  //     })
-  //     // return moment(msg.date).format('dddd')
-  //   } else {
-  //     return moment(msg.date).format('dddd')
-  //   }
-  // }
-
-  // return moment(msg.date).format('dd MMM DD, hh:mm A')
 }
 
 function lastMessageText(msg) {

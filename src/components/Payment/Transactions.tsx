@@ -31,7 +31,7 @@ export default function Transactions() {
 
       setLoading(false)
       if (!isMsgs(ps)) return
-      setPayments(ps)
+      // setPayments(ps)
     })()
   }, [])
 
@@ -47,7 +47,7 @@ export default function Transactions() {
     <View style={styles.wrap}>
       <Title style={{ ...styles.title, color: theme.text }}>Transactions</Title>
       {!loading && payments.map((item, index) => <Payment key={index} {...item} />)}
-      {!loading && payments.length <= 0 && <Empty text='No transactions found' style={{ alignItems: 'center' }} />}
+      {!loading && payments.length <= 0 && <Empty text='No transactions found' />}
       {loading && (
         <View style={styles.loading}>
           <ActivityIndicator animating color={theme.darkGrey} />

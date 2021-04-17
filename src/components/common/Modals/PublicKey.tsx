@@ -32,7 +32,7 @@ export default function PubKey({ visible, close, pubkey }) {
       <ModalHeader title='Public Key' onClose={close} />
       <View style={styles.qrWrap}>
         {pubkey && <QRCode value={pubkey} size={720} />}
-        {!pubkey && <Empty text='No Public Address found' />}
+        {!pubkey && <Empty text='No Public Address found' h={30} />}
       </View>
       <Text style={{ ...styles.pubkeyText, color: theme.title }}>{pubkey}</Text>
       <View style={styles.buttonsWrap}>

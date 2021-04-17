@@ -1,6 +1,9 @@
+import moment from 'moment'
+
 import { useStores } from '../index'
 import { useChats } from './chats'
 import { constants } from '../../constants'
+import { calendarDate } from '../utils/date'
 
 export function useTribes() {
   const { chats, user } = useStores()
@@ -13,6 +16,8 @@ export function useTribes() {
 export function useSearchTribes(tribes) {
   const { ui } = useStores()
 
+  // tribes = tribes.filter(t => !t.joined)
+
   return searchTribes(tribes, ui.tribesSearchTerm)
 }
 
@@ -21,8 +26,6 @@ export function useJoinedTribes(tribes) {
 }
 
 export function useOwnedTribes(tribes) {
-  // tribes.map(t => console.log('s', t.owner))
-
   return tribes.filter(t => t.owner)
 }
 
@@ -34,50 +37,26 @@ export function searchTribes(tribes, searchTerm) {
   })
 }
 
-// tribes.map(tribe => {
-//   tribe.joined = false
-//   tribe.owner = false
-
-// chats.map(c => {
-//   if (c.uuid === tribe.uuid) {
-//     tribe.joined = true
-//   }
-//   if (c.type === constants.chat_types.tribe && c.owner_pubkey === user.publicKey) {
-//     // console.log('c.owner_pubkey', c.owner_pubkey, 'user.publicKey', user.publicKey)
-
-//     tribe.owner = true
-//   }
-// })
-
 export function allTribes(tribes, chats, user) {
-  const merged = tribes.map((tribe, index) => {
-    // let joined = chats.find(c => c.uuid === tribe.uuid)
-    // let owner = chats.find(c => c.type === constants.chat_types.tribe && c.owner_pubkey === user.publicKey)
+  const chatsuids = chats.map(c => c.uuid)
+  const ownedChats = chats.find(c => c.type === constants.chat_types.tribe && c.owner_pubkey === user.publicKey)
 
-    // console.log('joined', joined)
-    // console.log('owner', owner)
-
-    let joined = false
-    let owner = false
-    chats.map(c => {
-      if (c.uuid === tribe.uuid) {
-        joined = true
-      }
-      if (c.type === constants.chat_types.tribe && c.owner_pubkey === user.publicKey) {
-        owner = true
-      }
-    })
-
+  return tribes.map(tribe => {
     return {
       ...tribe,
-      joined,
-      owner
+      joined: chatsuids.find(uuid => uuid === tribe.uuid),
+      owner: [ownedChats].find(c => c.uuid === tribe.uuid)
     }
   })
-
-  return merged
 }
 
 export function sortTribes(tribes) {
   return tribes
+}
+
+export function useTribeHistory(created, lastActive) {
+  const createdDate = calendarDate(moment(created), 'MMM DD, YYYY')
+  const lastActiveDate = calendarDate(moment.unix(lastActive))
+
+  return { createdDate, lastActiveDate }
 }

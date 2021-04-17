@@ -5,7 +5,6 @@ import { useObserver } from 'mobx-react-lite'
 import { useNavigation } from '@react-navigation/native'
 
 import { useStores, useTheme } from '../../store'
-import { DEFAULT_TRIBE_SERVER } from '../../config'
 import Typography from '../common/Typography'
 import Avatar from '../common/Avatar'
 import Button from '../common/Button'
@@ -26,7 +25,7 @@ export default function List(props) {
 }
 
 function Item(props) {
-  const { name, description, img, joined, uuid } = props
+  const { name, description, img, joined, uuid, owner } = props
   const { ui, chats } = useStores()
   const theme = useTheme()
   const navigation = useNavigation()
@@ -49,27 +48,31 @@ function Item(props) {
       onPress={onItemPress}
     >
       <View style={styles.avatarWrap}>
-        <Avatar photo={img} size={70} />
+        <Avatar size={60} photo={img} />
       </View>
 
       <View style={styles.itemContent}>
-        <View style={styles.itemContentTop}>
-          <Typography color={theme.text} size={16} fw='500'>
+        <View style={{ ...styles.row, ...styles.itemContentTop }}>
+          <Typography color={theme.text} size={17} fw='500'>
             {name}
           </Typography>
           <View style={{ marginRight: 4 }}>
-            {joined ? (
-              <Typography size={13} color={theme.primary} ls={0.5}>
-                Joined
-              </Typography>
-            ) : (
-              <Button size='small' labelStyle={{ textTransform: 'capitalize' }} onPress={onJoinPress}>
-                Join
-              </Button>
+            {!owner && (
+              <>
+                {joined ? (
+                  <Typography size={13} color={theme.primary} ls={0.5}>
+                    Joined
+                  </Typography>
+                ) : (
+                  <Button size='small' tf='capitalize' onPress={onJoinPress}>
+                    Join
+                  </Button>
+                )}
+              </>
             )}
           </View>
         </View>
-        <View>
+        <View style={{ ...styles.row, ...styles.itemContentBottom }}>
           <Typography color={theme.subtitle} size={13}>
             {description}
           </Typography>
@@ -90,34 +93,32 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    height: 90,
+    height: 100,
     marginVertical: 8,
     marginHorizontal: 14,
     padding: 12,
     borderRadius: 5
-    // width: '100%'
   },
   avatarWrap: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    width: 52,
-    height: 52,
-    marginRight: 18
-    // marginLeft: 10
+    width: 60,
+    height: 60,
+    marginRight: 18,
+    paddingLeft: 4
   },
-  itemContent: {
-    display: 'flex',
-    flexDirection: 'column',
-    flex: 1
-  },
-  itemContentTop: {
+  row: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    flex: 1
+  },
+  itemContent: {
     flex: 1,
-    maxHeight: 38,
-    paddingBottom: 5
-  }
+    height: 60
+  },
+  itemContentTop: {},
+  itemContentBottom: {}
 })

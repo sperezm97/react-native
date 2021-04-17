@@ -26,7 +26,7 @@ export default function Discover() {
       <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
         <BackHeader title='Discover' navigate={() => navigation.goBack()} />
         <View style={styles.searchWrap}>
-          <Search placeholder='Search' value={ui.tribesSearchTerm} onChangeText={onTribesSearch} h={50} />
+          <Search placeholder='Search Communities' value={ui.tribesSearchTerm} onChangeText={onTribesSearch} h={45} />
         </View>
         <List data={tribesToShow} />
       </View>

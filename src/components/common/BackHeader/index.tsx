@@ -5,8 +5,9 @@ import { useNavigation } from '@react-navigation/native'
 
 import { useTheme } from '../../../store'
 import Icon from '../Icon'
+import Typography from '../Typography'
 
-export default function BackHeader({ title, screen, action, navigate }) {
+export default function BackHeader({ title, screen, action, navigate, border }) {
   const theme = useTheme()
   const navigation = useNavigation()
 
@@ -21,12 +22,14 @@ export default function BackHeader({ title, screen, action, navigate }) {
   }
 
   return (
-    <Appbar.Header style={{ ...styles.appBar, backgroundColor: theme.bg, borderBottomColor: theme.border }}>
+    <Appbar.Header style={{ ...styles.appBar, backgroundColor: theme.bg, borderBottomColor: theme.border, borderBottomWidth: border ? 1 : 0 }}>
       <TouchableOpacity onPress={onBack} style={{ ...styles.left }}>
         <Icon name='ChevronLeft' size={28} color={theme.icon} />
       </TouchableOpacity>
       <View>
-        <Text style={{ ...styles.title, color: theme.text }}>{title}</Text>
+        <Typography color={theme.text} size={16} fw='500'>
+          {title}
+        </Typography>
       </View>
 
       {action && <View style={{ ...styles.right }}>{action}</View>}
@@ -37,7 +40,9 @@ export default function BackHeader({ title, screen, action, navigate }) {
 BackHeader.defaultProps = {
   screen: 'Account',
   action: null,
-  navigate: null
+  navigate: null,
+  title: '',
+  border: false
 }
 
 const styles = StyleSheet.create({
@@ -54,9 +59,5 @@ const styles = StyleSheet.create({
   right: {
     position: 'absolute',
     right: 10
-  },
-  title: {
-    fontSize: 17,
-    fontWeight: '500'
   }
 })

@@ -66,6 +66,7 @@ export class ThemeStore {
   @observable blue: string = '#0067ff'
   @observable red: string = '#f50057'
   @observable mirage: string = '#141d26'
+  @observable yellow: string = '#FFDF00'
 
   @observable badge: string = '#f50057'
   @observable accent: string = '#0a84ff'

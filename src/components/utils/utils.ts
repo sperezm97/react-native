@@ -1,5 +1,7 @@
 import { decode as atob } from 'base-64'
 
+import tags from './tags.json'
+
 const base64Fields = ['imgurl']
 
 export function jsonFromUrl(url): { [k: string]: any } {
@@ -17,4 +19,19 @@ export function jsonFromUrl(url): { [k: string]: any } {
     }
   })
   return result
+}
+
+export function getTags(num = 6) {
+  const newTags = []
+  for (let i = 0; i < num; i++) {
+    const random = Math.floor(Math.random() * tags.length)
+
+    if (newTags.indexOf(tags[random]) !== -1) {
+      continue
+    }
+
+    newTags.push(tags[random])
+  }
+
+  return newTags
 }
