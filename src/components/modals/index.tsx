@@ -19,10 +19,10 @@ export default function Modals() {
 
   return useObserver(() => {
     const showConfirmPayInvoice = ui.confirmInvoiceMsg && ui.confirmInvoiceMsg.payment_request ? true : false
-    const showNewGroupModal = ui.newGroupModal || ui.editTribeParams ? true : false
+    // const showNewGroupModal = ui.newGroupModal || ui.editTribeParams ? true : false
     const showRawInvoiceModal = ui.rawInvoiceModal
     const showImageViewer = ui.imgViewerParams && (ui.imgViewerParams.data || ui.imgViewerParams.uri || ui.imgViewerParams.msg) ? true : false
-    const showJoinTribe = ui.joinTribeParams ? true : false
+    // const showJoinTribe = ui.joinTribeParams ? true : false
     const showOauth = ui.oauthParams ? true : false
     const showSubModal = ui.subModalParams ? true : false
     const showRedeemModal = ui.redeemModalParams ? true : false
@@ -30,11 +30,11 @@ export default function Modals() {
 
     return (
       <>
-        <JoinTribe visible={showJoinTribe} />
+        {/* <JoinTribe visible={showJoinTribe} /> */}
         <ShareInvite visible={ui.shareInviteModal} />
         <ConfirmPayInvoice visible={showConfirmPayInvoice} />
         <RawInvoiceModal visible={showRawInvoiceModal} />
-        <NewGroupModal visible={showNewGroupModal} />
+        {/* <NewGroupModal visible={showNewGroupModal} /> */}
         <Oauth visible={showOauth} />
         <Subscribe visible={showSubModal} />
         <GroupModal visible={ui.groupModal} />

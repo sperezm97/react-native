@@ -26,7 +26,7 @@ export default function Header({}) {
             </Typography>
           </View>
           <View style={{ ...styles.flex, ...styles.right }}>
-            <Pushable onPress={() => console.log('Pressed')}>
+            <Pushable onPress={() => ui.setNewTribeModal(true)}>
               <IconButton icon='plus' color={theme.primary} size={24} style={{ backgroundColor: theme.lightGrey }} />
             </Pushable>
           </View>

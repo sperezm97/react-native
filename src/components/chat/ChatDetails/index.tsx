@@ -186,7 +186,7 @@ export default function ChatDetails({ route }) {
     const showSelectedContacts = selectedContacts.length > 0
     return (
       <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
-        <BackHeader title='Details' navigate={() => navigation.goBack()} />
+        <BackHeader title='Details' navigate={() => navigation.goBack()} border={true} />
 
         {/* <Header title={addPeople ? 'Add Contacts' : 'Group'} showNext={addPeople && showSelectedContacts} onClose={close} nextButtonText='Add' next={addGroupMembers} loading={loading} /> */}
 
@@ -281,7 +281,8 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'flex-start',
-    marginBottom: 40
+    marginBottom: 40,
+    paddingTop: 30
   },
   groupInfo: {
     display: 'flex',

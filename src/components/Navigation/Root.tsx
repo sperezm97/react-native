@@ -9,6 +9,7 @@ import Contacts from '../Contacts/Navigation'
 import Tribes from '../Tribes/Navigation'
 import DiscoverTribes from '../Tribes/Discover'
 import Tribe from '../Tribes/Tribe'
+import EditTribe from '../Tribes/Tribe/EditTribe'
 import Home from '../Home'
 
 const RootStack = createStackNavigator()
@@ -73,6 +74,13 @@ export default function Root() {
       <RootStack.Screen
         name='Tribe'
         component={Tribe}
+        options={{
+          headerShown: false
+        }}
+      />
+      <RootStack.Screen
+        name='EditTribe'
+        component={EditTribe}
         options={{
           headerShown: false
         }}

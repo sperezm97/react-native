@@ -45,14 +45,14 @@ export default function ChatList() {
   }
 
   const setAddFriendModalHandler = () => ui.setAddFriendDialog(true)
-  const setNewGroupModalHandler = () => ui.setNewGroupModal(true)
+  const setNewTribeModalHandler = () => ui.setNewTribeModal(true)
 
   const footerComponent: any = () => (
     <View style={moreStyles.buttonsWrap}>
       <PushableButton icon='plus' color={theme.secondary} size='large' w={140} accessibilityLabel='add-friend-button' onPress={setAddFriendModalHandler}>
         Friend
       </PushableButton>
-      <PushableButton icon='plus' size='large' w={140} accessibilityLabel='new-group-button' onPress={setNewGroupModalHandler}>
+      <PushableButton icon='plus' size='large' w={140} accessibilityLabel='new-group-button' onPress={setNewTribeModalHandler}>
         Tribe
       </PushableButton>
     </View>

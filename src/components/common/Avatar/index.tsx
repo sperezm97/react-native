@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
     borderWidth: 1
   },
   aliasWrap: {
-    marginLeft: 8,
+    // marginLeft: 8,
     backgroundColor: 'black',
     display: 'flex',
     alignItems: 'center',

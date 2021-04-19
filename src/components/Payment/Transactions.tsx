@@ -31,7 +31,7 @@ export default function Transactions() {
 
       setLoading(false)
       if (!isMsgs(ps)) return
-      // setPayments(ps)
+      setPayments(ps)
     })()
   }, [])
 

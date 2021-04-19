@@ -90,6 +90,11 @@ export class UiStore {
     }, 500)
   }
 
+  @observable newTribeModal: boolean = false
+  @action setNewTribeModal(b) {
+    this.newTribeModal = b
+  }
+
   @observable newGroupModal: boolean = false
   @action setNewGroupModal(b) {
     this.newGroupModal = b

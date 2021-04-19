@@ -6,16 +6,16 @@ import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 
-import { useStores, useTheme, hooks } from '../../store'
-import { useTribeHistory } from '../../store/hooks/tribes'
-import BackHeader from '../common/BackHeader'
-import Typography from '../common/Typography'
-import Avatar from '../common/Avatar'
-import Button from '../common/Button'
-import Divider from '../common/Layout/Divider'
-import LabelBadge from '../common/Layout/LabelBadge'
-import BoxHeader from '../common/Layout/BoxHeader'
-import Empty from '../common/Empty'
+import { useStores, useTheme, hooks } from '../../../store'
+import { useTribeHistory } from '../../../store/hooks/tribes'
+import BackHeader from '../../common/BackHeader'
+import Typography from '../../common/Typography'
+import Avatar from '../../common/Avatar'
+import Button from '../../common/Button'
+import Divider from '../../common/Layout/Divider'
+import LabelBadge from '../../common/Layout/LabelBadge'
+import BoxHeader from '../../common/Layout/BoxHeader'
+import Empty from '../../common/Empty'
 
 const { useTribes } = hooks
 
@@ -118,16 +118,17 @@ export default function Tribe({ route }) {
 }
 
 function TribeActions({ tribe }) {
+  const { chats, ui } = useStores()
   const theme = useTheme()
   const navigation = useNavigation()
 
   async function onJoinPress() {
-    // const host = chats.getDefaultTribeServer().host
-    // const tribeParams = await chats.getTribeDetails(host, uuid)
-    // ui.setJoinTribeParams(tribeParams)
+    const host = chats.getDefaultTribeServer().host
+    const tribeParams = await chats.getTribeDetails(host, tribe.uuid)
+    ui.setJoinTribeParams(tribeParams)
   }
 
-  async function onExitTribePress() {}
+  //   async function onExitTribePress() {}
   async function onChatPress() {}
 
   return (
@@ -136,10 +137,10 @@ function TribeActions({ tribe }) {
         <>
           {tribe.joined ? (
             <View style={{ ...styles.tribeActions }}>
-              <Button color={theme.primary} onPress={onExitTribePress} w='35%'>
+              {/* <Button color={theme.primary} onPress={onExitTribePress} w='35%'>
                 Joined
-              </Button>
-              <Button icon={() => <MaterialCommunityIcon name='chat-outline' color={theme.white} size={20} />} onPress={onChatPress} w='60%' style={{ marginLeft: 10 }}>
+              </Button> */}
+              <Button icon={() => <MaterialCommunityIcon name='chat-outline' color={theme.white} size={20} />} onPress={onChatPress} w='60%'>
                 Play Wall
               </Button>
             </View>
