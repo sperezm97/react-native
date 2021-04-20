@@ -1,48 +1,55 @@
 import React, { useState } from 'react'
-import { View, ScrollView, StyleSheet } from 'react-native'
+import { StyleSheet, View, ScrollView } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
 
-import { useStores } from '../../../store'
+import { useStores, useTheme } from '../../../store'
 import Form from '../../form'
-import { tribe } from '../../form/schemas'
+import * as schemas from '../../form/schemas'
+import BackHeader from '../../common/BackHeader'
 
-export default function EditTribe() {
-  const { ui, chats } = useStores()
+export default function EditTribe({ route }) {
+  const { chats } = useStores()
   const [loading, setLoading] = useState(false)
-  const [img, setImg] = useState(null)
+  const theme = useTheme()
+  const navigation = useNavigation()
+
+  const tribe = route.params.tribe
+
+  tribe.escrow_time = tribe.escrow_millis ? Math.floor(tribe.escrow_millis / (60 * 60 * 1000)) : 0
 
   async function finish(v) {
     setLoading(true)
-    // await chats.editTribe({
-    //   ...v,
-    //   id: ui.editTribeParams.id
-    // })
+
+    await chats.editTribe({
+      ...v,
+      id: tribe.chat.id
+    })
+
+    setTimeout(() => {
+      setLoading(false)
+    }, 150)
 
     // if(img && img.uri) {
     //   await createChatPic(group.id, img.uri)
     //   chats.updateChatPhotoURI(group.id, img.uri)
     // }
-    // setTimeout(() => {
-    //   onFinish()
-    //   setLoading(false)
-    // }, 150)
   }
 
   return (
     <>
-      <View style={styles.wrap}>
+      <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
+        <BackHeader title={`Edit ${tribe.name}`} navigate={() => navigation.goBack()} />
         <ScrollView style={styles.scroller} contentContainerStyle={styles.container}>
           <Form
-            schema={tribe}
+            schema={schemas.tribe}
             loading={loading}
-            // buttonAccessibilityLabel="tribe-form-button"
-            buttonText='Edit'
+            buttonAccessibilityLabel='edit-tribe-form-button'
+            buttonText='Save'
             onSubmit={finish}
-            initialValues={
-              {
-                // ...ui.editTribeParams,
-                // is_private: ui.editTribeParams.private
-              }
-            }
+            initialValues={{
+              ...tribe,
+              is_private: tribe.private
+            }}
           />
         </ScrollView>
       </View>
@@ -52,12 +59,12 @@ export default function EditTribe() {
 
 const styles = StyleSheet.create({
   wrap: {
-    display: 'flex',
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '100%',
-    minHeight: 400
+    // display: 'flex',
+    flex: 1
+    // justifyContent: 'center',
+    // alignItems: 'center',
+    // width: '100%',
+    // minHeight: 400
   },
   scroller: {
     width: '100%',

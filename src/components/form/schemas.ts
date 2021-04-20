@@ -132,23 +132,23 @@ const tribe = [
     validator: Yup.string().required(rq)
   },
   {
-    name: 'img',
-    type: 'photoURI',
-    label: { en: 'Group Image', es: 'Group Image' }
-  },
-  {
     name: 'description',
     type: 'text',
     label: { en: 'Description', es: 'Description' },
     required: true,
     validator: Yup.string().required(rq)
   },
-  {
-    name: 'tags',
-    type: 'tags',
-    label: { en: 'Tags', es: 'Tags' },
-    validator: Yup.array()
-  },
+  // {
+  //   name: 'img',
+  //   type: 'photo',
+  //   label: { en: 'Group Image', es: 'Group Image' }
+  // },
+  // {
+  //   name: 'tags',
+  //   type: 'tags',
+  //   label: { en: 'Tags', es: 'Tags' },
+  //   validator: Yup.array()
+  // },
   {
     name: 'price_to_join',
     type: 'number',
@@ -180,21 +180,20 @@ const tribe = [
     label: { en: 'Time to Stake (Hours)', es: 'Time to Stake (Hours)' },
     validator: Yup.number(),
     description: 'The number of hours before the Escrow Amount is returned to the subscriber'
-  },
-
-  {
-    name: 'unlisted',
-    type: 'radio',
-    // inverted:true,
-    label: { en: 'Unlisted (do not show on tribes registry)' },
-    required: false
-  },
-  {
-    name: 'is_private',
-    type: 'radio',
-    label: { en: 'Private (requires permission to join)' },
-    required: false
   }
+  // {
+  //   name: 'unlisted',
+  //   type: 'radio',
+  //   // inverted:true,
+  //   label: { en: 'Unlisted (do not show on tribes registry)' },
+  //   required: false
+  // },
+  // {
+  //   name: 'is_private',
+  //   type: 'radio',
+  //   label: { en: 'Private (requires permission to join)' },
+  //   required: false
+  // }
 ]
 
 export { contact, me, pubKey, tribe, subscribe, inviteFriend }

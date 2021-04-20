@@ -27,7 +27,7 @@ export default function TribeSettings({ visible, onCancel, onEditPress, onMember
       }
     },
     {
-      title: 'Memebers',
+      title: 'Members',
       thumbIcon: <IconButton icon={({ size, color }) => <FeatherIcon name='users' color={color} size={size} />} color={theme.white} size={18} />,
       thumbBgColor: theme.primary,
       action: () => {

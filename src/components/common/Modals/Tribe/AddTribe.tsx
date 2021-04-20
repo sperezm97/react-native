@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { StyleSheet, View, ScrollView, Modal } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
 
-import { useStores } from '../../../../store'
+import { useStores, useTheme } from '../../../../store'
 import ModalHeader from '../ModalHeader'
 import Form from '../../../form'
 import { tribe } from '../../../form/schemas'
@@ -10,6 +10,7 @@ import { tribe } from '../../../form/schemas'
 export default function AddTribe() {
   const { ui, chats } = useStores()
   const [loading, setLoading] = useState(false)
+  const theme = useTheme()
 
   async function finish(v) {
     setLoading(true)
@@ -24,12 +25,12 @@ export default function AddTribe() {
     <Modal visible={ui.newTribeModal} animationType='slide' presentationStyle='pageSheet' onDismiss={close}>
       <ModalHeader title='Add Community' onClose={close} />
 
-      <View style={styles.wrap}>
+      <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
         <ScrollView style={styles.scroller} contentContainerStyle={styles.container}>
           <Form
             schema={tribe}
             loading={loading}
-            // buttonAccessibilityLabel="tribe-form-button"
+            buttonAccessibilityLabel='add-tribe-form-button'
             buttonText='Create Community'
             onSubmit={finish}
             initialValues={{

@@ -10,9 +10,15 @@ import { constants } from '../../constants'
 export function useChats() {
   const { chats, msg, contacts, ui } = useStores()
   const theChats = allChats(chats.chats, contacts.contacts)
-  const chatsToShow = filterChats(theChats, ui.searchTerm)
+  const chatsToShow = theChats
   sortChats(chatsToShow, msg.messages)
 
+  return chatsToShow
+}
+
+export function useSearchChats(chats) {
+  const { ui } = useStores()
+  const chatsToShow = filterChats(chats, ui.searchTerm)
   return chatsToShow
 }
 

@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native'
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback'
 
 import { useStores, useTheme, hooks } from '../../store'
+import { useSearchChats } from '../../store/hooks/chats'
 import InviteRow, { styles } from './inviteRow'
 import { chatPicSrc, useChatPicSrc } from '../utils/picSrc'
 import PushableButton from '../common/Button/PushableButton'
@@ -59,7 +60,8 @@ export default function ChatList() {
   )
 
   return useObserver(() => {
-    const chatsToShow = useChats()
+    const chats = useChats()
+    const chatsToShow = useSearchChats(chats)
     return (
       <View style={{ width: '100%', flex: 1 }} accessibilityLabel='chatlist'>
         <FlatList<any>

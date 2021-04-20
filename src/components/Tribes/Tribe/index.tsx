@@ -31,7 +31,7 @@ export default function Tribe({ route }) {
   const tribe = route.params.tribe
 
   function handleEditTribePress() {
-    // navigation.navigate('EditTribe', {})
+    navigation.navigate('EditTribe', { tribe })
   }
 
   function handleTribeMembersPress() {

@@ -5,13 +5,13 @@ import { useNavigation } from '@react-navigation/native'
 import { IconButton } from 'react-native-paper'
 
 import { useStores, useTheme, hooks } from '../../store'
-import { useTribes } from '../../store/hooks'
+import { useSearchTribes } from '../../store/hooks/tribes'
 import BackHeader from '../common/BackHeader'
 import Pushable from '../common/Pushable'
 import Search from '../common/Search'
 import List from './List'
 
-const { useSearchTribes } = hooks
+const { useTribes } = hooks
 
 export default function Discover() {
   const { ui } = useStores()
