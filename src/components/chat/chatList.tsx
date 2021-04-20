@@ -99,7 +99,6 @@ function ChatRow(props) {
   return useObserver(() => {
     let uri = useChatPicSrc(props)
     const hasImg = uri ? true : false
-    console.log('uri', uri)
 
     const { lastMsgText, lastMsgDate, hasLastMsg, unseenCount, hasUnseen } = useChatRow(props.id)
 

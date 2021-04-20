@@ -32,8 +32,6 @@ export default function ChatDetails({ route }) {
 
   const group = route.params.group
 
-  console.log('group', group)
-
   const [alias, setAlias] = useState((group && group['my_alias']) || '')
   function maybeUpdateAlias() {
     if (!(group && group.id)) return
@@ -157,8 +155,6 @@ export default function ChatDetails({ route }) {
   function handleSharePress() {
     setEditDialog(false)
 
-    console.log('group.uuid', group.uuid)
-
     setTimeout(() => {
       ui.setShareTribeUUID(group.uuid)
     }, 400)
@@ -170,8 +166,6 @@ export default function ChatDetails({ route }) {
 
     setEditDialog(false)
     setLoadingTribe(false)
-
-    console.log('group.id', group.id)
 
     setTimeout(() => {
       if (params) ui.setEditTribeParams({ id: group.id, ...params })

@@ -48,7 +48,7 @@ function Item(props) {
       onPress={onItemPress}
     >
       <View style={styles.avatarWrap}>
-        <Avatar size={60} photo={img} />
+        <Avatar size={60} photo={img} round={50} />
       </View>
 
       <View style={styles.itemContent}>

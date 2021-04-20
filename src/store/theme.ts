@@ -27,7 +27,7 @@ export class ThemeStore {
     this.inputBg = d ? '#1c252e' : '#f0f2f5'
     this.placeholder = d ? '#8b98b4' : '#90949c'
     this.border = d ? '#212e39' : '#f0f2f5'
-    this.selected = d ? '#3b4681' : '#ddddff'
+    this.selected = d ? '#0067ff' : '#0067ff'
     this.deep = d ? '#292c33' : '#ccc'
     this.primary = d ? '#0067ff' : '#0067ff'
     this.secondary = d ? '#0fb17d' : '#0fb17d'
@@ -48,7 +48,7 @@ export class ThemeStore {
   @observable inputBg: string = '#f0f2f5'
   @observable placeholder: string = '#90949c'
   @observable border: string = '#f0f2f5'
-  @observable selected: string = '#ddddff'
+  @observable selected: string = '#0067ff'
   @observable deep: string = '#ccc'
   @observable primary: string = '#0067ff'
   @observable secondary: string = '#0fb17d'
@@ -77,4 +77,4 @@ export class ThemeStore {
 
 export const themeStore = new ThemeStore()
 
-// themeStore.setDark(true)
+themeStore.setDark(true)

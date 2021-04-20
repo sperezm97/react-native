@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
+import { StyleSheet, View, ScrollView } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
-import { StyleSheet, View, Text, TouchableOpacity, ScrollView } from 'react-native'
 import RNFetchBlob from 'rn-fetch-blob'
 import { useNavigation } from '@react-navigation/native'
 import { Portal, Dialog, Title } from 'react-native-paper'
@@ -12,8 +12,9 @@ import { usePicSrc } from '../utils/picSrc'
 import ActionMenu from '../common/ActionMenu'
 import ImageDialog from '../common/Dialogs/ImageDialog'
 import TabBar from '../common/TabBar'
-import Icon from '../common/Icon'
 import Avatar from '../common/Avatar'
+import AvatarEdit from '../common/Avatar/AvatarEdit'
+import DialogWrap from '../common/Dialogs/DialogWrap'
 import Form from '../form'
 import { me } from '../form/schemas'
 
@@ -21,11 +22,11 @@ export default function Account() {
   const { user, contacts, meme } = useStores()
   const theme = useTheme()
   const [uploading, setUploading] = useState(false)
-  const [userDialog, setUserDialog] = React.useState(false)
+  const [uploadPercent, setUploadedPercent] = useState(0)
+  const [userDialog, setUserDialog] = useState(false)
   const [imageDialog, setImageDialog] = useState(false)
   const [photo_url, setPhotoUrl] = useState('')
   const [saving, setSaving] = useState(false)
-  const [uploadPercent, setUploadedPercent] = useState(0)
   const navigation = useNavigation()
 
   async function tookPic(img) {
@@ -68,8 +69,6 @@ export default function Account() {
       })
       .then(async resp => {
         let json = resp.json()
-
-        console.log('json:', json)
 
         if (json.muid) {
           setPhotoUrl(`https://${server.host}/public/${json.muid}`)
@@ -158,14 +157,9 @@ export default function Account() {
                   ...styles.userInfoContent
                 }}
               >
-                <TouchableOpacity onPress={() => setImageDialog(true)} style={styles.imgWrap}>
+                <AvatarEdit onPress={() => setImageDialog(true)} uploading={uploading} uploadPercent={uploadPercent}>
                   <Avatar size={100} photo={imgURI} round={50} />
-                  {uploading && <Text style={{ ...styles.uploadPercent, color: theme.primary }}>{`${uploadPercent}%`}</Text>}
-                  <View style={styles.imgIcon}>
-                    <Icon name='PlusCircle' fill={theme.primary} color={theme.white} />
-                  </View>
-                </TouchableOpacity>
-
+                </AvatarEdit>
                 <View style={{ display: 'flex', flexDirection: 'column' }}>
                   <Title style={{ ...styles.title, color: theme.text }}>{user.alias}</Title>
                 </View>
@@ -176,26 +170,21 @@ export default function Account() {
 
             <ImageDialog visible={imageDialog} onCancel={() => setImageDialog(false)} onPick={tookPic} onSnap={tookPic} setImageDialog={setImageDialog} />
 
-            <Portal>
-              <Dialog visible={userDialog} onDismiss={() => setUserDialog(false)} style={{ backgroundColor: theme.bg }}>
-                <Dialog.Title style={{ color: theme.primary, marginBottom: 30, fontWeight: '400' }}>Edit Name</Dialog.Title>
-                <Dialog.Content>
-                  <Form
-                    nopad
-                    schema={me}
-                    loading={saving}
-                    buttonMode='text'
-                    buttonText='Save'
-                    initialValues={{
-                      alias: user.alias
-                    }}
-                    onSubmit={values => saveUser(values)}
-                    action
-                    actionType='Dialog'
-                  />
-                </Dialog.Content>
-              </Dialog>
-            </Portal>
+            <DialogWrap title='Edit Name' visible={userDialog} onDismiss={() => setUserDialog(false)}>
+              <Form
+                nopad
+                schema={me}
+                loading={saving}
+                buttonMode='text'
+                buttonText='Save'
+                initialValues={{
+                  alias: user.alias
+                }}
+                onSubmit={values => saveUser(values)}
+                action
+                actionType='Dialog'
+              />
+            </DialogWrap>
           </View>
         </ScrollView>
 
@@ -222,22 +211,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center'
-  },
-  imgWrap: {
-    position: 'relative'
-  },
-  uploadPercent: {
-    position: 'absolute',
-    top: '45%',
-    height: '100%',
-    width: '100%',
-    textAlign: 'center',
-    fontWeight: '500'
-  },
-  imgIcon: {
-    position: 'absolute',
-    right: -5,
-    top: '50%'
   },
   title: {
     fontWeight: '600',

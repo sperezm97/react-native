@@ -10,8 +10,6 @@ export default function PhotoInput({ name, label, required, setValue, value, acc
   const [takingPhoto, setTakingPhoto] = useState(false)
 
   function tookPic(uri) {
-    console.log('uri', uri)
-
     // setDialogOpen(false)
     // setTakingPhoto(false)
     setValue(uri)

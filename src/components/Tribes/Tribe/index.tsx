@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
-import { View, StyleSheet, ScrollView } from 'react-native'
+import { StyleSheet, View, ScrollView } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
 import { useNavigation } from '@react-navigation/native'
+import RNFetchBlob from 'rn-fetch-blob'
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
@@ -15,20 +16,84 @@ import Typography from '../../common/Typography'
 import Avatar from '../../common/Avatar'
 import Button from '../../common/Button'
 import Divider from '../../common/Layout/Divider'
-import LabelBadge from '../../common/Layout/LabelBadge'
 import BoxHeader from '../../common/Layout/BoxHeader'
 import Empty from '../../common/Empty'
 import TribeSettings from '../../common/Dialogs/TribeSettings'
+import DialogWrap from '../../common/Dialogs/DialogWrap'
+import ImageDialog from '../../common/Dialogs/ImageDialog'
+import AvatarEdit from '../../common/Avatar/AvatarEdit'
+import TribeTags from './TribeTags'
 
 const { useTribes } = hooks
 
 export default function Tribe({ route }) {
-  const { ui } = useStores()
+  const { chats, meme, ui } = useStores()
   const theme = useTheme()
   const navigation = useNavigation()
+  const [uploading, setUploading] = useState(false)
+  const [uploadPercent, setUploadedPercent] = useState(0)
   const [tribeDialog, setTribeDialog] = useState(false)
+  const [imageDialog, setImageDialog] = useState(false)
+  const [tribePhoto, setTribePhoto] = useState('')
 
   const tribe = route.params.tribe
+
+  async function tookPic(img) {
+    setUploading(true)
+    try {
+      await upload(img.uri)
+    } catch (e) {
+      setUploading(false)
+    }
+  }
+
+  async function upload(uri) {
+    const type = 'image/jpg'
+    const name = 'Image.jpg'
+    const server = meme.getDefaultServer()
+    if (!server) return
+
+    uri = uri.replace('file://', '')
+
+    RNFetchBlob.fetch(
+      'POST',
+      `https://${server.host}/public`,
+      {
+        Authorization: `Bearer ${server.token}`,
+        'Content-Type': 'multipart/form-data'
+      },
+      [
+        {
+          name: 'file',
+          filename: name,
+          type: type,
+          data: RNFetchBlob.wrap(uri)
+        },
+        { name: 'name', data: name }
+      ]
+    )
+      .uploadProgress({ interval: 250 }, (written, total) => {
+        setUploadedPercent(Math.round((written / total) * 100))
+      })
+      .then(async resp => {
+        let json = resp.json()
+
+        if (json.muid) {
+          setTribePhoto(`https://${server.host}/public/${json.muid}`)
+
+          await chats.editTribe({
+            ...tribe,
+            id: tribe.chat.id
+          })
+        }
+
+        setUploading(false)
+      })
+      .catch(err => {
+        console.log(err)
+        setUploading(false)
+      })
+  }
 
   function handleEditTribePress() {
     navigation.navigate('EditTribe', { tribe })
@@ -40,6 +105,8 @@ export default function Tribe({ route }) {
 
   return useObserver(() => {
     const { createdDate, lastActiveDate } = useTribeHistory(tribe.created, tribe.last_active)
+
+    if (tribePhoto) tribe.img = tribePhoto
 
     return (
       <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
@@ -54,7 +121,13 @@ export default function Tribe({ route }) {
             {/* Start Tribe Header */}
             <View style={{ ...styles.header }}>
               <View style={{ ...styles.avatarWrap }}>
-                <Avatar photo={tribe.img} size={80} />
+                {tribe.owner ? (
+                  <AvatarEdit onPress={() => setImageDialog(true)} uploading={uploading} uploadPercent={uploadPercent}>
+                    <Avatar photo={tribe.img} size={80} round={50} />
+                  </AvatarEdit>
+                ) : (
+                  <Avatar photo={tribe.img} size={80} round={50} />
+                )}
               </View>
 
               <View style={styles.headerContent}>
@@ -121,12 +194,13 @@ export default function Tribe({ route }) {
                 </View>
               </View>
             </View>
-            <TribeTags tags={tribe.tags} owner={tribe.owner} />
+            <Tags tags={tribe.tags} owner={tribe.owner} tribe={tribe} />
           </View>
           {/* End Tribe Content */}
         </ScrollView>
 
         {tribe.owner && <TribeSettings visible={tribeDialog} onCancel={() => setTribeDialog(false)} onEditPress={handleEditTribePress} onMembersPress={handleTribeMembersPress} />}
+        <ImageDialog visible={imageDialog} onCancel={() => setImageDialog(false)} onPick={tookPic} onSnap={tookPic} setImageDialog={setImageDialog} />
       </View>
     )
   })
@@ -180,48 +254,46 @@ function TribeActions({ tribe }) {
   )
 }
 
-function TribeTags({ tags, owner }) {
-  const onEditTopicsPress = () => console.log('s')
+function Tags(props) {
+  const { chats } = useStores()
+  const { tags, owner, tribe } = props
+  const [topicsEdit, setTopicsEdit] = useState(false)
+
+  async function finish(tags) {
+    tribe.tags = tags
+    await chats.editTribe({
+      ...tribe,
+      id: tribe.chat.id
+    })
+
+    setTopicsEdit(false)
+  }
 
   return (
     <>
       {!owner ? (
-        <>
-          {tags.length > 0 && (
-            <View style={{ ...styles.badgeContainer }}>
-              {tags.map(tag => (
-                <TribeTag tag={tag} />
-              ))}
-            </View>
-          )}
-        </>
+        <>{tags.length > 0 && <TribeTags tags={tags} displayOnly={true} containerStyle={{ paddingTop: 18 }} />}</>
       ) : (
         <>
           <BoxHeader title='Topics in this Tribe'>
-            <Button mode='text' onPress={onEditTopicsPress} size='small'>
+            <Button mode='text' onPress={() => setTopicsEdit(true)} size='small'>
               Edit
             </Button>
           </BoxHeader>
-          <>
-            {tags.length > 0 ? (
-              <View style={{ ...styles.badgeContainer }}>
-                {tags.map(tag => (
-                  <TribeTag tag={tag} />
-                ))}
-              </View>
-            ) : (
-              <Empty text='No topics found.' />
-            )}
-          </>
+          <>{tags.length > 0 ? <TribeTags tags={tags} displayOnly={true} containerStyle={{ paddingTop: 18 }} /> : <Empty text='No topics found.' />}</>
         </>
       )}
+
+      <DialogWrap title='Edit Tags' visible={topicsEdit} onDismiss={() => setTopicsEdit(false)}>
+        <TribeTags tags={tags} finish={finish} />
+      </DialogWrap>
     </>
   )
 }
 
-function TribeTag({ tag }) {
-  return <LabelBadge>{tag}</LabelBadge>
-}
+// function Tag({ tag }) {
+//   return <LabelBadge>{tag}</LabelBadge>
+// }
 
 const styles = StyleSheet.create({
   wrap: {
@@ -250,7 +322,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: 80,
     height: 80,
-    marginRight: 18
+    marginRight: 24
   },
   publicText: {
     display: 'flex',
