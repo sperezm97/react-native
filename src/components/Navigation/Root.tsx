@@ -16,7 +16,7 @@ const RootStack = createStackNavigator()
 
 export default function Root() {
   return (
-    <RootStack.Navigator initialRouteName='Tribes'>
+    <RootStack.Navigator initialRouteName='Chats'>
       <RootStack.Screen
         name='Home'
         component={Home}
