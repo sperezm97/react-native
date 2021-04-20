@@ -27,8 +27,6 @@ export default function Code(props) {
   const theme = useTheme()
 
   async function scan(data) {
-    console.log('data', data)
-
     setCode(data)
     setScanning(false)
     setTimeout(() => {

@@ -4,7 +4,7 @@ import { TextInput } from 'react-native-paper'
 
 import { useTheme } from '../../../store'
 import ModalHeader from '../Modals/ModalHeader'
-import Scanner from './Scanner'
+import QRScanner from './QRScanner'
 import Button from '../Button'
 
 export default function QR({ visible, onCancel, onScan, showPaster, inputPlaceholder, isLoopout = false, confirm }) {
@@ -59,7 +59,7 @@ export default function QR({ visible, onCancel, onScan, showPaster, inputPlaceho
     <Modal visible={visible} animationType='slide' presentationStyle='pageSheet'>
       <ModalHeader title='Scan QR Code' onClose={onCancel} />
       <View style={{ ...styles.content }}>
-        <Scanner scanned={scanned ? true : false} handleBarCodeScanned={handleBarCodeScanned} />
+        <QRScanner scanned={scanned ? true : false} handleBarCodeScanned={handleBarCodeScanned} />
         {showPaster && (
           <View style={{ ...styles.bottom, backgroundColor: theme.main }}>
             <View style={styles.textInputWrap}>
