@@ -56,7 +56,7 @@ export default function JoinTribe() {
 
     return (
       <Modal visible={joinTribeVisible} animationType='slide' presentationStyle='pageSheet' onDismiss={close}>
-        <Header title='Join Tribe' onClose={() => close()} />
+        <Header title='Join Community' onClose={() => close()} />
         {params && (
           <View style={styles.content}>
             <Image

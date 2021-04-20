@@ -22,7 +22,7 @@ export default function AddTribe() {
 
   return useObserver(() => (
     <Modal visible={ui.newTribeModal} animationType='slide' presentationStyle='pageSheet' onDismiss={close}>
-      <ModalHeader title='Add Tribe' onClose={close} />
+      <ModalHeader title='Add Community' onClose={close} />
 
       <View style={styles.wrap}>
         <ScrollView style={styles.scroller} contentContainerStyle={styles.container}>
@@ -30,7 +30,7 @@ export default function AddTribe() {
             schema={tribe}
             loading={loading}
             // buttonAccessibilityLabel="tribe-form-button"
-            buttonText='Create Tribe'
+            buttonText='Create Community'
             onSubmit={finish}
             initialValues={{
               feed_url: '',

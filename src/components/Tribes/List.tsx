@@ -10,7 +10,7 @@ import Avatar from '../common/Avatar'
 import Button from '../common/Button'
 
 export default function List(props) {
-  const { data } = props
+  const { data, listHeader } = props
   const theme = useTheme()
 
   const renderItem = ({ index, item }) => <Item {...item} />
@@ -18,7 +18,7 @@ export default function List(props) {
   return useObserver(() => {
     return (
       <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
-        <FlatList data={data} keyExtractor={item => item.uuid} renderItem={renderItem} />
+        <FlatList data={data} keyExtractor={item => item.uuid} renderItem={renderItem} ListHeaderComponent={listHeader} />
       </View>
     )
   })

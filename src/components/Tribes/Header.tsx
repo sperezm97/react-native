@@ -22,7 +22,7 @@ export default function Header({}) {
         <View style={{ ...styles.flex, ...styles.content }}>
           <View style={{ ...styles.flex, ...styles.left }}>
             <Typography size={25} fw='500'>
-              Communities
+              My Communities
             </Typography>
           </View>
           <View style={{ ...styles.flex, ...styles.right }}>

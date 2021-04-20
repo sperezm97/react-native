@@ -1,10 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { View, StyleSheet, ScrollView } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
 import { useNavigation } from '@react-navigation/native'
-import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
+import { IconButton } from 'react-native-paper'
 
 import { useStores, useTheme, hooks } from '../../../store'
 import { useTribeHistory } from '../../../store/hooks/tribes'
@@ -16,6 +18,7 @@ import Divider from '../../common/Layout/Divider'
 import LabelBadge from '../../common/Layout/LabelBadge'
 import BoxHeader from '../../common/Layout/BoxHeader'
 import Empty from '../../common/Empty'
+import TribeSettings from '../../common/Dialogs/TribeSettings'
 
 const { useTribes } = hooks
 
@@ -23,8 +26,17 @@ export default function Tribe({ route }) {
   const { ui } = useStores()
   const theme = useTheme()
   const navigation = useNavigation()
+  const [tribeDialog, setTribeDialog] = useState(false)
 
   const tribe = route.params.tribe
+
+  function handleEditTribePress() {
+    // navigation.navigate('EditTribe', {})
+  }
+
+  function handleTribeMembersPress() {
+    // navigation.navigate('EditTribe', {})
+  }
 
   return useObserver(() => {
     const { createdDate, lastActiveDate } = useTribeHistory(tribe.created, tribe.last_active)
@@ -35,6 +47,7 @@ export default function Tribe({ route }) {
           // title={tribe.name}
           navigate={() => navigation.goBack()}
           border
+          action={tribe.owner && <TribeHeader tribe={tribe} openDialog={() => setTribeDialog(true)} />}
         />
         <ScrollView>
           <View style={styles.content}>
@@ -112,9 +125,17 @@ export default function Tribe({ route }) {
           </View>
           {/* End Tribe Content */}
         </ScrollView>
+
+        {tribe.owner && <TribeSettings visible={tribeDialog} onCancel={() => setTribeDialog(false)} onEditPress={handleEditTribePress} onMembersPress={handleTribeMembersPress} />}
       </View>
     )
   })
+}
+
+function TribeHeader({ tribe, openDialog }) {
+  const theme = useTheme()
+
+  return <IconButton icon={() => <MaterialCommunityIcon name='dots-horizontal' color={theme.white} size={30} />} onPress={openDialog} />
 }
 
 function TribeActions({ tribe }) {
@@ -181,7 +202,17 @@ function TribeTags({ tags, owner }) {
               Edit
             </Button>
           </BoxHeader>
-          <Empty text='No topics found.' />
+          <>
+            {tags.length > 0 ? (
+              <View style={{ ...styles.badgeContainer }}>
+                {tags.map(tag => (
+                  <TribeTag tag={tag} />
+                ))}
+              </View>
+            ) : (
+              <Empty text='No topics found.' />
+            )}
+          </>
         </>
       )}
     </>

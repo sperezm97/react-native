@@ -12,10 +12,10 @@ export default function EditTribe() {
 
   async function finish(v) {
     setLoading(true)
-    await chats.editTribe({
-      ...v,
-      id: ui.editTribeParams.id
-    })
+    // await chats.editTribe({
+    //   ...v,
+    //   id: ui.editTribeParams.id
+    // })
 
     // if(img && img.uri) {
     //   await createChatPic(group.id, img.uri)
@@ -37,10 +37,12 @@ export default function EditTribe() {
             // buttonAccessibilityLabel="tribe-form-button"
             buttonText='Edit'
             onSubmit={finish}
-            initialValues={{
-              ...ui.editTribeParams,
-              is_private: ui.editTribeParams.private
-            }}
+            initialValues={
+              {
+                // ...ui.editTribeParams,
+                // is_private: ui.editTribeParams.private
+              }
+            }
           />
         </ScrollView>
       </View>
