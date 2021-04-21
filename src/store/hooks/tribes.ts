@@ -44,9 +44,9 @@ export function allTribes(tribes, chats, user) {
   return tribes.map(tribe => {
     return {
       ...tribe,
-      chat: chats.find(c => c.uuid === tribe.uuid),
-      joined: chatsuids.find(uuid => uuid === tribe.uuid) ? true : false,
-      owner: [ownedChats].find(c => c.uuid === tribe.uuid) ? true : false
+      chat: chatsuids ? chats.find(c => c.uuid === tribe.uuid) : false,
+      joined: chatsuids ? (chatsuids.find(uuid => uuid === tribe.uuid) ? true : false) : false,
+      owner: ownedChats ? ([ownedChats].find(c => c.uuid === tribe.uuid) ? true : false) : false
     }
   })
 }

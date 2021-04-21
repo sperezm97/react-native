@@ -56,11 +56,10 @@ export default function TribeTags({ containerStyle, tags, displayOnly = false, f
                   key={t}
                   style={{
                     ...styles.chip,
-
                     backgroundColor: selected ? theme.selected : theme.main
                   }}
                   onPress={() => onChipPress(t)}
-                  textStyle={{ color: theme.text }}
+                  textStyle={{ color: selected ? theme.white : theme.text }}
                 >
                   {t}
                 </Chip>

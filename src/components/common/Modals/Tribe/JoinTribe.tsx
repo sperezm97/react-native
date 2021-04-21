@@ -7,6 +7,7 @@ import { DEFAULT_TRIBE_SERVER } from '../../../../config'
 import { useStores, useTheme } from '../../../../store'
 import Header from '../ModalHeader'
 import Button from '../../Button'
+import Avatar from '../../Avatar'
 
 export default function JoinTribe() {
   const { ui, chats } = useStores()
@@ -59,11 +60,7 @@ export default function JoinTribe() {
         <Header title='Join Community' onClose={() => close()} />
         {params && (
           <View style={styles.content}>
-            <Image
-              source={hasImg ? { uri: params.img } : require('../../../../../android_assets/tent.png')}
-              style={{ width: 150, height: 150, borderRadius: 75, marginTop: 15 }}
-              resizeMode={'cover'}
-            />
+            <Avatar photo={hasImg && params.img} size={160} round={90} />
 
             <Text style={{ marginTop: 15, fontWeight: 'bold', fontSize: 22, color: theme.title }}>{params.name}</Text>
 

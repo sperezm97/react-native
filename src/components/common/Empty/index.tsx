@@ -1,16 +1,17 @@
 import React from 'react'
 
-import { View, Text, StyleSheet } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 
 import { useTheme } from '../../../store'
+import Typography from '../Typography'
 
 export default function Empty(props) {
-  const { text, style, h } = props
   const theme = useTheme()
+  const { text, style, h, color = theme.dark ? theme.white : theme.darkGrey, children } = props
 
   const emptyBox = {
     display: 'flex',
-    flexDirection: 'row',
+    flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
     height: h ? h : 100
@@ -18,7 +19,8 @@ export default function Empty(props) {
 
   return (
     <View style={{ ...styles.wrap, ...style, ...emptyBox }}>
-      <Text style={{ color: theme.dark ? theme.white : theme.darkGrey }}>{text}</Text>
+      {text && <Typography color={color}>{text}</Typography>}
+      {children}
     </View>
   )
 }
@@ -28,7 +30,3 @@ const styles = StyleSheet.create({
     flexGrow: 1
   }
 })
-
-Empty.defaultProps = {
-  text: 'Not Found!'
-}

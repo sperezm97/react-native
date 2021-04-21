@@ -256,7 +256,7 @@ function TribeActions({ tribe }) {
 
 function Tags(props) {
   const { chats } = useStores()
-  const { tags, owner, tribe } = props
+  let { tags, owner, tribe } = props
   const [topicsEdit, setTopicsEdit] = useState(false)
 
   async function finish(tags) {
@@ -271,18 +271,14 @@ function Tags(props) {
 
   return (
     <>
-      {!owner ? (
-        <>{tags.length > 0 && <TribeTags tags={tags} displayOnly={true} containerStyle={{ paddingTop: 18 }} />}</>
-      ) : (
-        <>
-          <BoxHeader title='Topics in this Tribe'>
-            <Button mode='text' onPress={() => setTopicsEdit(true)} size='small'>
-              Edit
-            </Button>
-          </BoxHeader>
-          <>{tags.length > 0 ? <TribeTags tags={tags} displayOnly={true} containerStyle={{ paddingTop: 18 }} /> : <Empty text='No topics found.' />}</>
-        </>
-      )}
+      <BoxHeader title='Topics in this Community'>
+        {owner && (
+          <Button mode='text' onPress={() => setTopicsEdit(true)} size='small'>
+            Edit
+          </Button>
+        )}
+      </BoxHeader>
+      <>{tags.length > 0 ? <TribeTags tags={tags} displayOnly={true} containerStyle={{ paddingTop: 18 }} /> : <Empty text='No topics found.' />}</>
 
       <DialogWrap title='Edit Tags' visible={topicsEdit} onDismiss={() => setTopicsEdit(false)}>
         <TribeTags tags={tags} finish={finish} />
@@ -290,10 +286,6 @@ function Tags(props) {
     </>
   )
 }
-
-// function Tag({ tag }) {
-//   return <LabelBadge>{tag}</LabelBadge>
-// }
 
 const styles = StyleSheet.create({
   wrap: {
