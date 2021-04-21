@@ -20,8 +20,6 @@ export default function Pod({ pod, show, chat, onBoost, podError }) {
   const { feed, user, msg, chats, details } = useStores()
   const myid = user.myid
 
-  console.log('podError', podError)
-
   const [loading, setLoading] = useState(false)
   const [playing, setPlaying] = useState(false)
   // const [list,setList] = useState(false)

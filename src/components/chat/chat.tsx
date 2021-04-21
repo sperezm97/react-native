@@ -36,6 +36,7 @@ export default function Chat() {
 
   const route = useRoute<ChatRouteProp>()
   const chatID = route.params.id
+
   const chat = chats.chats.find(c => c.id === chatID) || route.params
 
   const navigation = useNavigation()

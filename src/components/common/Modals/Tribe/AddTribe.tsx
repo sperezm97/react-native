@@ -15,6 +15,8 @@ export default function AddTribe() {
   async function finish(v) {
     setLoading(true)
     await chats.createTribe(v)
+    setLoading(false)
+    close()
   }
 
   function close() {

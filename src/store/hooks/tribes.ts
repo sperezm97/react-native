@@ -10,13 +10,14 @@ export function useTribes() {
   const chatsToShow = useChats()
 
   const theTribes = allTribes(chats.tribes, chatsToShow, user)
+
   return theTribes
 }
 
 export function useSearchTribes(tribes) {
   const { ui } = useStores()
 
-  // tribes = tribes.filter(t => !t.joined)
+  tribes = tribes.filter(t => !t.owner)
 
   return searchTribes(tribes, ui.tribesSearchTerm)
 }
@@ -39,14 +40,14 @@ export function searchTribes(tribes, searchTerm) {
 
 export function allTribes(tribes, chats, user) {
   const chatsuids = chats.map(c => c.uuid)
-  const ownedChats = chats.find(c => c.type === constants.chat_types.tribe && c.owner_pubkey === user.publicKey)
+  const ownedChats = chats.filter(c => c.type === constants.chat_types.tribe && c.owner_pubkey === user.publicKey)
 
   return tribes.map(tribe => {
     return {
       ...tribe,
-      chat: chatsuids ? chats.find(c => c.uuid === tribe.uuid) : false,
+      chat: chatsuids && chats.find(c => c.uuid === tribe.uuid),
       joined: chatsuids ? (chatsuids.find(uuid => uuid === tribe.uuid) ? true : false) : false,
-      owner: ownedChats ? ([ownedChats].find(c => c.uuid === tribe.uuid) ? true : false) : false
+      owner: ownedChats ? (ownedChats.find(c => c.uuid === tribe.uuid) ? true : false) : false
     }
   })
 }

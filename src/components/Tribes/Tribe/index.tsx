@@ -209,7 +209,7 @@ export default function Tribe({ route }) {
 function TribeHeader({ tribe, openDialog }) {
   const theme = useTheme()
 
-  return <IconButton icon={() => <MaterialCommunityIcon name='dots-horizontal' color={theme.white} size={30} />} onPress={openDialog} />
+  return <IconButton icon={() => <MaterialCommunityIcon name='dots-horizontal' color={theme.icon} size={30} />} onPress={openDialog} />
 }
 
 function TribeActions({ tribe }) {
@@ -224,7 +224,9 @@ function TribeActions({ tribe }) {
   }
 
   //   async function onExitTribePress() {}
-  async function onChatPress() {}
+  async function onChatPress() {
+    navigation.navigate('Chat', { ...tribe.chat })
+  }
 
   return (
     <>
@@ -289,7 +291,8 @@ function Tags(props) {
 
 const styles = StyleSheet.create({
   wrap: {
-    flex: 1
+    flex: 1,
+    paddingBottom: 30
   },
   content: {
     flex: 1,
