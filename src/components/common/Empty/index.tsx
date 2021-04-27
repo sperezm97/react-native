@@ -7,14 +7,26 @@ import Typography from '../Typography'
 
 export default function Empty(props) {
   const theme = useTheme()
-  const { text, style, h, color = theme.dark ? theme.white : theme.darkGrey, children } = props
+  const {
+    text,
+    style,
+    h,
+    w,
+    ml,
+    mr,
+    color = theme.dark ? theme.white : theme.darkGrey,
+    children
+  } = props
 
   const emptyBox = {
     display: 'flex',
-    flexDirection: 'column',
+    // flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    height: h ? h : 100
+    height: h ? h : 100,
+    width: w ? w : '100%',
+    marginLeft: w ? 'auto' : ml,
+    marginRight: w ? 'auto' : mr
   }
 
   return (

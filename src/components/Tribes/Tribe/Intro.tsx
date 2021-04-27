@@ -87,7 +87,11 @@ export default function Intro({ tribe }) {
         <View style={{ ...styles.header }}>
           <View style={{ ...styles.avatarWrap }}>
             {tribe.owner ? (
-              <AvatarEdit onPress={() => setImageDialog(true)} uploading={uploading} uploadPercent={uploadPercent}>
+              <AvatarEdit
+                onPress={() => setImageDialog(true)}
+                uploading={uploading}
+                uploadPercent={uploadPercent}
+              >
                 <Avatar photo={tribe.img} size={80} round={50} />
               </AvatarEdit>
             ) : (
@@ -108,7 +112,11 @@ export default function Intro({ tribe }) {
               </View>
               <View style={styles.membersWrap}>
                 <View style={{ ...styles.dot, backgroundColor: theme.text }}></View>
-                <Typography size={14} fw='600' style={{ marginBottom: 16, paddingLeft: 4 }}>
+                <Typography
+                  size={14}
+                  fw='600'
+                  style={{ marginBottom: 16, paddingLeft: 4 }}
+                >
                   {tribe.member_count}
                 </Typography>
                 <Typography size={14}> members</Typography>
@@ -118,7 +126,13 @@ export default function Intro({ tribe }) {
             <TribeActions tribe={tribe} />
           </View>
         </View>
-        <ImageDialog visible={imageDialog} onCancel={() => setImageDialog(false)} onPick={tookPic} onSnap={tookPic} setImageDialog={setImageDialog} />
+        <ImageDialog
+          visible={imageDialog}
+          onCancel={() => setImageDialog(false)}
+          onPick={tookPic}
+          onSnap={tookPic}
+          setImageDialog={setImageDialog}
+        />
       </View>
     )
   })
@@ -149,7 +163,17 @@ function TribeActions({ tribe }) {
               {/* <Button color={theme.primary} onPress={onExitTribePress} w='35%'>
                 Joined
               </Button> */}
-              <Button icon={() => <MaterialCommunityIcon name='chat-outline' color={theme.white} size={20} />} onPress={onChatPress} w='60%'>
+              <Button
+                icon={() => (
+                  <MaterialCommunityIcon
+                    name='chat-outline'
+                    color={theme.white}
+                    size={20}
+                  />
+                )}
+                onPress={onChatPress}
+                w='60%'
+              >
                 Play Wall
               </Button>
             </View>
@@ -160,7 +184,13 @@ function TribeActions({ tribe }) {
           )}
         </>
       ) : (
-        <Button icon={() => <MaterialCommunityIcon name='chat-outline' color={theme.white} size={20} />} onPress={onChatPress} w='60%'>
+        <Button
+          icon={() => (
+            <MaterialCommunityIcon name='chat-outline' color={theme.white} size={20} />
+          )}
+          onPress={onChatPress}
+          w='60%'
+        >
           Play Wall
         </Button>
       )}
@@ -170,7 +200,9 @@ function TribeActions({ tribe }) {
 
 const styles = StyleSheet.create({
   wrap: {
-    flex: 1
+    flex: 1,
+    paddingRight: 14,
+    paddingLeft: 14
   },
   header: {
     display: 'flex',

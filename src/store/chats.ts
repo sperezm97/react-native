@@ -143,7 +143,20 @@ export class ChatStore {
   }
 
   @action
-  async createTribe({ name, description, tags, img, price_per_message, price_to_join, escrow_amount, escrow_time, unlisted, is_private, app_url, feed_url }) {
+  async createTribe({
+    name,
+    description,
+    tags,
+    img,
+    price_per_message,
+    price_to_join,
+    escrow_amount,
+    escrow_time,
+    unlisted,
+    is_private,
+    app_url,
+    feed_url
+  }) {
     console.log('======>', {
       name,
       description,
@@ -182,7 +195,21 @@ export class ChatStore {
   }
 
   @action
-  async editTribe({ id, name, description, tags, img, price_per_message, price_to_join, escrow_amount, escrow_time, unlisted, is_private, app_url, feed_url }) {
+  async editTribe({
+    id,
+    name,
+    description,
+    tags,
+    img,
+    price_per_message,
+    price_to_join,
+    escrow_amount,
+    escrow_time,
+    unlisted,
+    is_private,
+    app_url,
+    feed_url
+  }) {
     const r = await relay.put(`group/${id}`, {
       name,
       description,
@@ -344,7 +371,7 @@ export class ChatStore {
       const j = await r.json()
 
       this.tribes = j
-      return j
+      return true
     } catch (e) {
       console.log(e)
     }

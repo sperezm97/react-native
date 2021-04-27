@@ -14,10 +14,6 @@ export default function Tribes() {
   const { ui, chats } = useStores()
   const theme = useTheme()
 
-  useEffect(() => {
-    chats.getTribes()
-  }, [])
-
   return useObserver(() => (
     <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
       <Header />

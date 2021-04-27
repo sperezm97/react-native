@@ -18,7 +18,9 @@ export function useMsgs(chat, limit?: number) {
   const isTribe = chat.type === tribe
   if (!theID) {
     // for very beginning, where chat doesnt have id
-    const theChat = chats.chats.find(ch => ch.type === 0 && arraysEqual(ch.contact_ids, chat.contact_ids)) // this is the problem
+    const theChat = chats.chats.find(
+      ch => ch.type === 0 && arraysEqual(ch.contact_ids, chat.contact_ids)
+    ) // this is the problem
     if (theChat) theID = theChat.id // new chat pops in, from first message confirmation!
   }
   const msgs = msg.messages[theID]
@@ -55,7 +57,10 @@ function processMsgs(incomingmsgs: Msg[], isTribe: boolean, contacts: Contact[])
         const accepted = msgs.find(m => {
           const mtype = constantCodes['message_types'][m.type]
           const start = urlBase64FromAscii(ldat.host) + '.' + ldat.muid
-          return (mtype === 'purchase_accept' && m.media_token.startsWith(start)) || (isTribe && mtype === 'purchase_accept' && m.original_muid === ldat.muid)
+          return (
+            (mtype === 'purchase_accept' && m.media_token.startsWith(start)) ||
+            (isTribe && mtype === 'purchase_accept' && m.original_muid === ldat.muid)
+          )
         })
         if (accepted) {
           msg.media_token = accepted.media_token
@@ -130,7 +135,11 @@ function getPrevious(msgs: Msg[], i: number) {
   return previous
 }
 
-const msgTypesNoInfoBar = [constants.message_types.member_request, constants.message_types.member_approve, constants.message_types.member_reject]
+const msgTypesNoInfoBar = [
+  constants.message_types.member_request,
+  constants.message_types.member_approve,
+  constants.message_types.member_reject
+]
 // only show info bar if first in a group from contact
 function calcShowInfoBar(msgs: Msg[], msg: Msg, i: number, isTribe: boolean) {
   if (msgTypesNoInfoBar.includes(msg.type)) return false
@@ -138,11 +147,17 @@ function calcShowInfoBar(msgs: Msg[], msg: Msg, i: number, isTribe: boolean) {
   if (!previous) return true
   if (isTribe && msg.sender !== 1) {
     // for self msgs, do normal way
-    if (previous.sender_alias === msg.sender_alias && previous.type !== constants.message_types.group_join) {
+    if (
+      previous.sender_alias === msg.sender_alias &&
+      previous.type !== constants.message_types.group_join
+    ) {
       return false
     }
   } else {
-    if (previous.sender === msg.sender && previous.type !== constants.message_types.group_join) {
+    if (
+      previous.sender === msg.sender &&
+      previous.type !== constants.message_types.group_join
+    ) {
       return false
     }
   }
@@ -238,6 +253,10 @@ export function useParsedGiphyMsg(message_content: string) {
   } catch (e) {
     return {}
   }
+}
+
+export function useOwnerMsgsType(msgs, type) {
+  return msgs.filter(m => m.type === type && m.sender === 1)
 }
 
 const colorz = [

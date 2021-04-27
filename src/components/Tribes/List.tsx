@@ -1,8 +1,8 @@
 import React from 'react'
 import { StyleSheet, View, FlatList, TouchableOpacity } from 'react-native'
-
 import { useObserver } from 'mobx-react-lite'
 import { useNavigation } from '@react-navigation/native'
+import { ActivityIndicator } from 'react-native-paper'
 
 import { useStores, useTheme } from '../../store'
 import Typography from '../common/Typography'
@@ -10,7 +10,7 @@ import Avatar from '../common/Avatar'
 import Button from '../common/Button'
 
 export default function List(props) {
-  const { data, listHeader, listEmpty } = props
+  const { data, loading, listHeader, listEmpty } = props
   const theme = useTheme()
 
   const renderItem = ({ index, item }) => <Item {...item} />
@@ -18,7 +18,19 @@ export default function List(props) {
   return useObserver(() => {
     return (
       <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
-        <FlatList data={data} keyExtractor={item => item.uuid} renderItem={renderItem} ListHeaderComponent={listHeader} ListEmptyComponent={listEmpty} />
+        {loading ? (
+          <View style={{ paddingTop: 30 }}>
+            <ActivityIndicator />
+          </View>
+        ) : (
+          <FlatList
+            data={data}
+            keyExtractor={item => item.uuid}
+            renderItem={renderItem}
+            ListHeaderComponent={listHeader}
+            ListEmptyComponent={listEmpty}
+          />
+        )}
       </View>
     )
   })

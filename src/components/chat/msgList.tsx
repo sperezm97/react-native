@@ -3,7 +3,7 @@ import { useObserver } from 'mobx-react-lite'
 import { VirtualizedList, View, Text, StyleSheet, Keyboard, Dimensions, ActivityIndicator } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 
-import { useStores, hooks, useTheme } from '../../store'
+import { useStores, useTheme, hooks } from '../../store'
 import { Chat } from '../../store/chats'
 import { useMsgSender } from '../../store/hooks/msg'
 import Message from './msg'

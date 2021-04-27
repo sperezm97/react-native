@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
 import { useNavigation } from '@react-navigation/native'
@@ -14,7 +14,13 @@ import List from './List'
 const { useTribes } = hooks
 
 export default function OwnedTribes() {
+  const [loading, setLoading] = useState(true)
+  const { ui, chats } = useStores()
   const theme = useTheme()
+
+  useEffect(() => {
+    chats.getTribes().then(() => setLoading(false))
+  }, [])
 
   return useObserver(() => {
     const tribes = useTribes()
@@ -23,7 +29,12 @@ export default function OwnedTribes() {
     return (
       <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
         <View style={styles.content}>
-          <List data={tribesToShow} listHeader={<ListHeader />} listEmpty={<ListEmpty />} />
+          <List
+            data={tribesToShow}
+            loading={loading}
+            listHeader={<ListHeader />}
+            listEmpty={<ListEmpty />}
+          />
         </View>
       </View>
     )
@@ -39,7 +50,14 @@ function ListHeader() {
   return (
     <>
       <View style={{ ...styles.buttonWrap }}>
-        <Button icon={() => <AntDesignIcon name='find' color={theme.icon} size={18} />} color={theme.special} w={140} size='small' fs={12} onPress={onDiscoverTribesPress}>
+        <Button
+          icon={() => <AntDesignIcon name='find' color={theme.icon} size={18} />}
+          color={theme.special}
+          w={140}
+          size='small'
+          fs={12}
+          onPress={onDiscoverTribesPress}
+        >
           Discover
         </Button>
       </View>
@@ -55,9 +73,15 @@ function ListEmpty() {
   const theme = useTheme()
 
   return (
-    <Empty h={250}>
+    <Empty h={200}>
       <Typography size={16}>You have not created any communities yet.</Typography>
-      <Button icon={() => <AntDesignIcon name='plus' color={theme.white} size={18} />} w={210} fs={12} onPress={() => ui.setNewTribeModal(true)} style={{ marginTop: 20 }}>
+      <Button
+        icon={() => <AntDesignIcon name='plus' color={theme.white} size={18} />}
+        w={210}
+        fs={12}
+        onPress={() => ui.setNewTribeModal(true)}
+        style={{ marginTop: 20 }}
+      >
         Create Community
       </Button>
     </Empty>

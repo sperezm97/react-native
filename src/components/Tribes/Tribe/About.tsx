@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
-
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
 
@@ -14,11 +13,14 @@ import Empty from '../../common/Empty'
 import DialogWrap from '../../common/Dialogs/DialogWrap'
 import TribeTags from './TribeTags'
 
-export default function About({ tribe }) {
+function About({ tribe }) {
   const theme = useTheme()
 
   return useObserver(() => {
-    const { createdDate, lastActiveDate } = useTribeHistory(tribe.created, tribe.last_active)
+    const { createdDate, lastActiveDate } = useTribeHistory(
+      tribe.created,
+      tribe.last_active
+    )
 
     return (
       <>
@@ -81,17 +83,46 @@ function Tags(props) {
 
   return (
     <>
-      <BoxHeader title='Topics in this Community'>
-        {owner && (
-          <Button mode='text' onPress={() => setTopicsEdit(true)} size='small'>
-            Edit
-          </Button>
-        )}
-      </BoxHeader>
-      <>{tags.length > 0 ? <TribeTags tags={tags} displayOnly={true} containerStyle={{ paddingTop: 18 }} /> : <Empty text='No topics found.' />}</>
-      <DialogWrap title='Edit Tags' visible={topicsEdit} onDismiss={() => setTopicsEdit(false)}>
-        <TribeTags tags={tags} finish={finish} />
-      </DialogWrap>
+      {owner ? (
+        <>
+          <BoxHeader title='Topics in this Community'>
+            <Button mode='text' onPress={() => setTopicsEdit(true)} size='small'>
+              Edit
+            </Button>
+          </BoxHeader>
+          <>
+            {tags.length > 0 ? (
+              <TribeTags
+                tags={tags}
+                displayOnly={true}
+                containerStyle={{ paddingTop: 18 }}
+              />
+            ) : (
+              <Empty text='No topics found.' />
+            )}
+          </>
+          <DialogWrap
+            title='Edit Tags'
+            visible={topicsEdit}
+            onDismiss={() => setTopicsEdit(false)}
+          >
+            <TribeTags tags={tags} finish={finish} />
+          </DialogWrap>
+        </>
+      ) : (
+        <>
+          {tags.length > 0 && (
+            <>
+              <BoxHeader title='Topics in this Community' />
+              <TribeTags
+                tags={tags}
+                displayOnly={true}
+                containerStyle={{ paddingTop: 18 }}
+              />
+            </>
+          )}
+        </>
+      )}
     </>
   )
 }
@@ -101,8 +132,8 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 30,
     paddingBottom: 30,
-    paddingRight: 14,
-    paddingLeft: 14
+    paddingRight: 18,
+    paddingLeft: 18
   },
   description: {
     display: 'flex',
@@ -124,3 +155,5 @@ const styles = StyleSheet.create({
     width: '100%'
   }
 })
+
+export default React.memo(About)
