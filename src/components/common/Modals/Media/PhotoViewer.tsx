@@ -75,7 +75,8 @@ function SwipeItem(props) {
         style={{
           ...styles.photo,
           width: w,
-          height: h
+          height: h,
+          maxHeight: h - 100
         }}
       />
     </View>

@@ -1,5 +1,4 @@
 import React from 'react'
-import { Text } from 'react-native'
 import { TabBar } from 'react-native-tab-view'
 
 import { useTheme } from '../../../store'
@@ -12,10 +11,10 @@ export default function Tabs(props) {
     <TabBar
       {...props}
       tabStyle={{ borderBottomWidth: 1, borderBottomColor: theme.border }}
-      indicatorStyle={{ backgroundColor: theme.primary }}
+      indicatorStyle={{ backgroundColor: theme.primary, height: 3 }}
       pressOpacity={0.5}
       style={{ backgroundColor: theme.bg }}
-      renderLabel={({ route }) => <Typography>{route.title}</Typography>}
+      renderLabel={({ route }) => <Typography size={15}>{route.title}</Typography>}
     />
   )
 }

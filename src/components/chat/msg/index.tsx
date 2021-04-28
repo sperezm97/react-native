@@ -42,7 +42,9 @@ export default function MsgRow(props) {
     }
   }, [swipeRowRef])
 
-  const isGroupNotification = props.type === constants.message_types.group_join || props.type === constants.message_types.group_leave
+  const isGroupNotification =
+    props.type === constants.message_types.group_join ||
+    props.type === constants.message_types.group_leave
   if (isGroupNotification) {
     return <GroupNotification {...props} />
   }
@@ -55,10 +57,20 @@ export default function MsgRow(props) {
     isTribeOwner = chat.owner_pubkey === props.myPubkey
   }
 
-  const memberReqTypes = [constants.message_types.member_request, constants.message_types.member_approve, constants.message_types.member_reject]
+  const memberReqTypes = [
+    constants.message_types.member_request,
+    constants.message_types.member_approve,
+    constants.message_types.member_reject
+  ]
   const isMemberRequest = memberReqTypes.includes(props.type)
   if (isMemberRequest) {
-    return <MemberRequest {...props} isTribeOwner={isTribeOwner} onDeleteChat={props.onDeleteChat} />
+    return (
+      <MemberRequest
+        {...props}
+        isTribeOwner={isTribeOwner}
+        onDeleteChat={props.onDeleteChat}
+      />
+    )
   }
 
   const isMe = props.sender === 1
@@ -84,7 +96,11 @@ export default function MsgRow(props) {
         marginTop: props.showInfoBar ? 20 : 0
       }}
     >
-      <Avatar alias={props.senderAlias} photo={props.senderPic ? `${props.senderPic}?thumb=true` : null} hide={!props.showInfoBar || isMe} />
+      <Avatar
+        alias={props.senderAlias}
+        photo={props.senderPic ? `${props.senderPic}?thumb=true` : null}
+        hide={!props.showInfoBar || isMe}
+      />
       <View style={{ display: 'flex', width: w - 40 }}>
         {props.showInfoBar && <InfoBar {...props} senderAlias={props.senderAlias} />}
         <SwipeRow
@@ -97,8 +113,22 @@ export default function MsgRow(props) {
           onRowOpen={onRowOpenHandler}
           onRowClose={onRowCloseHandler}
         >
-          <View style={styles.replyWrap}>{showReply && <IconButton icon='reply' size={32} color='#aaa' style={{ marginLeft: 0, marginRight: 15 }} />}</View>
-          <MsgBubble {...props} isTribe={isTribe} isTribeOwner={isTribeOwner} myAlias={props.myAlias} />
+          <View style={styles.replyWrap}>
+            {showReply && (
+              <IconButton
+                icon='reply'
+                size={32}
+                color='#aaa'
+                style={{ marginLeft: 0, marginRight: 15 }}
+              />
+            )}
+          </View>
+          <MsgBubble
+            {...props}
+            isTribe={isTribe}
+            isTribeOwner={isTribeOwner}
+            myAlias={props.myAlias}
+          />
         </SwipeRow>
       </View>
     </View>
@@ -168,8 +198,20 @@ function MsgBubble(props) {
           }}
         >
           {isDeleted && <DeletedMsg />}
-          {!isDeleted && (props.reply_message_content ? true : false) && <ReplyContent content={props.reply_message_content} senderAlias={props.reply_message_sender_alias} />}
-          {!isDeleted && <Message {...props} onLongPress={onLongPressHandler} myAlias={props.myAlias} isMe={isMe} />}
+          {!isDeleted && (props.reply_message_content ? true : false) && (
+            <ReplyContent
+              content={props.reply_message_content}
+              senderAlias={props.reply_message_sender_alias}
+            />
+          )}
+          {!isDeleted && (
+            <Message
+              {...props}
+              onLongPress={onLongPressHandler}
+              myAlias={props.myAlias}
+              isMe={isMe}
+            />
+          )}
         </View>
       }
     >
@@ -177,14 +219,26 @@ function MsgBubble(props) {
         <Text style={{ textAlign: 'center' }}>Copy</Text>
       </TouchableOpacity>
       {allowBoost && (
-        <TouchableOpacity onPress={onBoostHandler} style={{ padding: 10, minWidth: 99, borderTopWidth: 1, borderTopColor: '#ddd' }}>
+        <TouchableOpacity
+          onPress={onBoostHandler}
+          style={{ padding: 10, minWidth: 99, borderTopWidth: 1, borderTopColor: '#ddd' }}
+        >
           <Text style={{ textAlign: 'center' }}>Boost</Text>
         </TouchableOpacity>
       )}
       {(isMe || props.isTribeOwner) && (
         <TouchableOpacity
           onPress={onDeleteHandler}
-          style={{ padding: 10, borderTopWidth: 1, borderTopColor: '#ddd', display: 'flex', alignItems: 'center', flexDirection: 'row', justifyContent: 'center', minWidth: 99 }}
+          style={{
+            padding: 10,
+            borderTopWidth: 1,
+            borderTopColor: '#ddd',
+            display: 'flex',
+            alignItems: 'center',
+            flexDirection: 'row',
+            justifyContent: 'center',
+            minWidth: 99
+          }}
         >
           {deleting && <ActivityIndicator color='#888' size={10} />}
           <Text style={{ textAlign: 'center', marginLeft: 6 }}>Delete</Text>
@@ -225,7 +279,9 @@ function Message(props) {
 
 function DeletedMsg() {
   return (
-    <View style={{ padding: 10, display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+    <View
+      style={{ padding: 10, display: 'flex', flexDirection: 'row', alignItems: 'center' }}
+    >
       <Icon color='#aaa' size={12} name='cancel' />
       <Text style={{ color: '#aaa', marginLeft: 5 }}>This message has been deleted</Text>
     </View>

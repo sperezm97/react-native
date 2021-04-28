@@ -1,15 +1,17 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { View, Text, StyleSheet, Image } from 'react-native'
+import { TouchableOpacity } from 'react-native-gesture-handler'
+import { ActivityIndicator, Button, IconButton } from 'react-native-paper'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+import Video from 'react-native-video'
+import FastImage from 'react-native-fast-image'
+
 import { useStores, useTheme } from '../../../store'
 import shared from './sharedStyles'
-import { TouchableOpacity } from 'react-native-gesture-handler'
 import { useCachedEncryptedFile } from './hooks'
-import { ActivityIndicator, Button, IconButton } from 'react-native-paper'
 import AudioPlayer from './audioPlayer'
 import { parseLDAT } from '../../utils/ldat'
-import Video from 'react-native-video'
 import FileMsg from './fileMsg'
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import BoostRow from './boostRow'
 import Typography from '../../common/Typography'
 
@@ -29,7 +31,10 @@ export default function MediaMsg(props) {
     if (ldat.sig) purchased = true
   }
 
-  let { data, uri, loading, trigger, paidMessageText } = useCachedEncryptedFile(props, ldat)
+  let { data, uri, loading, trigger, paidMessageText } = useCachedEncryptedFile(
+    props,
+    ldat
+  )
 
   // useEffect(() => {
   //   if (props.viewable) trigger()
@@ -132,13 +137,22 @@ export default function MediaMsg(props) {
             )}
             {showPayToUnlockMessage && (
               <View style={{ ...styles.paidAttachmentText, alignItems: 'center' }}>
-                <Text style={{ ...styles.payToUnlockMessage, color: theme.subtitle }}>Pay to unlock message</Text>
+                <Text style={{ ...styles.payToUnlockMessage, color: theme.subtitle }}>
+                  Pay to unlock message
+                </Text>
               </View>
             )}
           </View>
         )}
 
-        {hasImgData && <Media type={media_type} data={data} uri={uri} filename={meme.filenameCache[props.id]} />}
+        {hasImgData && (
+          <Media
+            type={media_type}
+            data={data}
+            uri={uri}
+            filename={meme.filenameCache[props.id]}
+          />
+        )}
 
         {isImg && showPurchaseButton && !purchased && (
           <View style={styles.imgIconWrap}>
@@ -157,8 +171,17 @@ export default function MediaMsg(props) {
         {showBoostRow && <BoostRow {...props} pad myAlias={props.myAlias} />}
       </TouchableOpacity>
       {showPurchaseButton && (
-        <Button style={styles.payButton} mode='contained' dark={true} onPress={onButtonPressHandler} loading={buying} icon={purchased ? 'check' : 'arrow-top-right'}>
-          <Text style={{ fontSize: 11 }}>{purchased ? 'Purchased' : `Pay ${amt} sat`}</Text>
+        <Button
+          style={styles.payButton}
+          mode='contained'
+          dark={true}
+          onPress={onButtonPressHandler}
+          loading={buying}
+          icon={purchased ? 'check' : 'arrow-top-right'}
+        >
+          <Text style={{ fontSize: 11 }}>
+            {purchased ? 'Purchased' : `Pay ${amt} sat`}
+          </Text>
         </Button>
       )}
     </View>
@@ -169,7 +192,9 @@ function Media({ type, data, uri, filename }) {
   // console.log("MEDIA:",type,uri)
   if (type === 'sphinx/text') return <></>
   if (type.startsWith('image')) {
-    return <Image style={styles.img} resizeMode='cover' source={{ uri: uri || data }} />
+    return (
+      <FastImage style={styles.img} resizeMode='cover' source={{ uri: uri || data }} />
+    )
   }
   if (type.startsWith('audio')) {
     return <AudioPlayer source={uri || data} />
@@ -202,7 +227,13 @@ function VideoPlayer(props) {
           zIndex: 100
         }}
       />
-      <IconButton icon='play' size={55} color='white' style={{ position: 'absolute', top: 50, left: 50, zIndex: 101 }} onPress={onPlay} />
+      <IconButton
+        icon='play'
+        size={55}
+        color='white'
+        style={{ position: 'absolute', top: 50, left: 50, zIndex: 101 }}
+        onPress={onPlay}
+      />
     </>
   )
 }

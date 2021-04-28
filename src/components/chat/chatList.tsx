@@ -1,6 +1,13 @@
 import React, { useState, useCallback } from 'react'
 import { useObserver } from 'mobx-react-lite'
-import { StyleSheet, View, Text, TouchableOpacity, FlatList, Dimensions } from 'react-native'
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  FlatList,
+  Dimensions
+} from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback'
 
@@ -50,10 +57,23 @@ export default function ChatList() {
 
   const footerComponent: any = () => (
     <View style={moreStyles.buttonsWrap}>
-      <PushableButton icon='plus' color={theme.secondary} size='large' w={140} accessibilityLabel='add-friend-button' onPress={setAddFriendModalHandler}>
+      <PushableButton
+        icon='plus'
+        color={theme.secondary}
+        size='large'
+        w={140}
+        accessibilityLabel='add-friend-button'
+        onPress={setAddFriendModalHandler}
+      >
         Friend
       </PushableButton>
-      <PushableButton icon='plus' size='large' w={140} accessibilityLabel='new-group-button' onPress={setNewTribeModalHandler}>
+      <PushableButton
+        icon='plus'
+        size='large'
+        w={140}
+        accessibilityLabel='new-group-button'
+        onPress={setNewTribeModalHandler}
+      >
         Tribe
       </PushableButton>
     </View>
@@ -61,7 +81,9 @@ export default function ChatList() {
 
   return useObserver(() => {
     const chats = useChats()
+
     const chatsToShow = useSearchChats(chats)
+
     return (
       <View style={{ width: '100%', flex: 1 }} accessibilityLabel='chatlist'>
         <FlatList<any>
@@ -74,7 +96,9 @@ export default function ChatList() {
             }
             return String(item.id)
           }}
-          refreshControl={<RefreshLoading refreshing={refreshing} onRefresh={onRefresh} />}
+          refreshControl={
+            <RefreshLoading refreshing={refreshing} onRefresh={onRefresh} />
+          }
           ListFooterComponent={footerComponent}
         />
       </View>
@@ -100,7 +124,9 @@ function ChatRow(props) {
     let uri = useChatPicSrc(props)
     const hasImg = uri ? true : false
 
-    const { lastMsgText, lastMsgDate, hasLastMsg, unseenCount, hasUnseen } = useChatRow(props.id)
+    const { lastMsgText, lastMsgDate, hasLastMsg, unseenCount, hasUnseen } = useChatRow(
+      props.id
+    )
 
     const w = Math.round(Dimensions.get('window').width)
     return (
@@ -117,14 +143,21 @@ function ChatRow(props) {
           {hasUnseen && (
             <View style={moreStyles.badgeWrap}>
               <View style={{ ...moreStyles.badge, backgroundColor: theme.badge }}>
-                <Text style={{ ...moreStyles.badgeText, color: theme.white }}>{unseenCount}</Text>
+                <Text style={{ ...moreStyles.badgeText, color: theme.white }}>
+                  {unseenCount}
+                </Text>
               </View>
             </View>
           )}
         </View>
         <View style={styles.chatContent}>
           <View style={styles.chatContentTop}>
-            <Typography style={{ ...styles.chatName }} color={theme.text} size={16} fw='500'>
+            <Typography
+              style={{ ...styles.chatName }}
+              color={theme.text}
+              size={16}
+              fw='500'
+            >
               {name}
             </Typography>
             <Typography style={{ ...styles.chatDate }} color={theme.subtitle}>

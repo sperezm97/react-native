@@ -68,7 +68,7 @@ function Item(props) {
           <Typography color={theme.text} size={17} fw='500'>
             {name}
           </Typography>
-          <View style={{ marginRight: 4 }}>
+          <View style={{ paddingRight: 4 }}>
             {!owner && (
               <>
                 {joined ? (
@@ -105,20 +105,20 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    height: 100,
+    // height: 100,
     marginVertical: 8,
     marginHorizontal: 14,
-    padding: 12,
+    padding: 16,
     borderRadius: 5
   },
   avatarWrap: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    width: 60,
-    height: 60,
-    marginRight: 18,
-    paddingLeft: 4
+    paddingRight: 18
+    // width: 60,
+    // height: 60,
+    // paddingLeft: 4
   },
   row: {
     display: 'flex',
@@ -128,8 +128,7 @@ const styles = StyleSheet.create({
     flex: 1
   },
   itemContent: {
-    flex: 1,
-    height: 60
+    flex: 1
   },
   itemContentTop: {},
   itemContentBottom: {}

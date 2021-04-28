@@ -1,5 +1,14 @@
 import React, { useState, useRef } from 'react'
-import { View, StyleSheet, Text, TextInput, TouchableOpacity, Linking, Platform, KeyboardAvoidingView } from 'react-native'
+import {
+  View,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  Linking,
+  Platform,
+  KeyboardAvoidingView
+} from 'react-native'
 import { Title, IconButton, ActivityIndicator } from 'react-native-paper'
 import RadialGradient from 'react-native-radial-gradient'
 import { decode as atob } from 'base-64'
@@ -44,6 +53,7 @@ export default function Code(props) {
     await user.signupWithIP(ip)
     await sleep(200)
     const token = await user.generateToken(pwd)
+
     if (token) {
       onDone()
     } else {
@@ -62,7 +72,9 @@ export default function Code(props) {
     if (isLN(s)) {
       const inv = parseLightningInvoice(s)
       if (inv) {
-        setWrong("This looks like an invoice, to sign up you'll need an invite code from:")
+        setWrong(
+          "This looks like an invoice, to sign up you'll need an invite code from:"
+        )
         correct = false
       }
     }
@@ -94,7 +106,9 @@ export default function Code(props) {
 
     const isCorrect = theCode.length === 40 && theCode.match(/[0-9a-fA-F]+/g)
     if (!isCorrect) {
-      setWrong("We don't recognize this code, to sign up you'll need an invite code from:")
+      setWrong(
+        "We don't recognize this code, to sign up you'll need an invite code from:"
+      )
       setTimeout(() => setWrong(''), 10000)
       setChecking(false)
       return
@@ -159,8 +173,18 @@ export default function Code(props) {
 
   return (
     <View style={{ ...styles.wrap, zIndex: z }} accessibilityLabel='onboard-code'>
-      <RadialGradient style={styles.gradient} colors={[theme.gradient, theme.gradient2]} stops={[0.1, 1]} center={[80, 40]} radius={400}>
-        <KeyboardAvoidingView style={{ alignItems: 'center' }} behavior='padding' keyboardVerticalOffset={headerHeight}>
+      <RadialGradient
+        style={styles.gradient}
+        colors={[theme.gradient, theme.gradient2]}
+        stops={[0.1, 1]}
+        center={[80, 40]}
+        radius={400}
+      >
+        <KeyboardAvoidingView
+          style={{ alignItems: 'center' }}
+          behavior='padding'
+          keyboardVerticalOffset={headerHeight}
+        >
           <Title style={styles.welcome}>Welcome</Title>
           <Text style={styles.msg}>Paste the invitation text or scan the QR code</Text>
           <View style={styles.inputWrap} accessibilityLabel='onboard-code-input-wrap'>
@@ -187,7 +211,9 @@ export default function Code(props) {
           </View>
         </KeyboardAvoidingView>
 
-        <View style={styles.spinWrap}>{checking && <ActivityIndicator animating={true} color='white' />}</View>
+        <View style={styles.spinWrap}>
+          {checking && <ActivityIndicator animating={true} color='white' />}
+        </View>
         {(wrong ? true : false) && (
           <View style={{ ...styles.message, ...styles.wrong }}>
             <Text style={styles.wrongText}>{wrong}</Text>
@@ -203,7 +229,14 @@ export default function Code(props) {
           </View>
         )}
       </RadialGradient>
-      {scanning && <QR visible={scanning} onCancel={() => setScanning(false)} onScan={data => scan(data)} showPaster={false} />}
+      {scanning && (
+        <QR
+          visible={scanning}
+          onCancel={() => setScanning(false)}
+          onScan={data => scan(data)}
+          showPaster={false}
+        />
+      )}
       <PinCodeModal visible={showPin}>
         <PIN
           forceEnterMode

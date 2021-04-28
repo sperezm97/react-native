@@ -68,7 +68,9 @@ export default function ChatDetails({ route }) {
     // find msgId
     const msgs = msg.messages[group.id]
     if (!msgs) return
-    const theMsg = msgs.find(m => m.sender === contactId && m.type === constants.message_types.member_request)
+    const theMsg = msgs.find(
+      m => m.sender === contactId && m.type === constants.message_types.member_request
+    )
     if (!theMsg) return
     await msg.approveOrRejectMember(contactId, status, theMsg.id)
   }
@@ -111,7 +113,13 @@ export default function ChatDetails({ route }) {
   /**
    * RenderPendingContactsToShow
    */
-  const renderPendingContactsToShow: any = ({ item, index }: any) => <PendingContact key={index} contact={item} onApproveOrDenyMember={onApproveOrDenyMember} />
+  const renderPendingContactsToShow: any = ({ item, index }: any) => (
+    <PendingContact
+      key={index}
+      contact={item}
+      onApproveOrDenyMember={onApproveOrDenyMember}
+    />
+  )
 
   const dotsVerticalHandler = () => {
     if (isTribeAdmin) setEditDialog(true)
@@ -150,7 +158,8 @@ export default function ChatDetails({ route }) {
   let sliderValue = fuzzyIndexOf(ppms, ppm)
   if (sliderValue < 0) sliderValue = 2
 
-  const showValueSlider = isTribe && !isTribeAdmin && group && group.feed_url ? true : false
+  const showValueSlider =
+    isTribe && !isTribeAdmin && group && group.feed_url ? true : false
 
   function handleSharePress() {
     setEditDialog(false)
@@ -178,7 +187,12 @@ export default function ChatDetails({ route }) {
     })
     const pendingContactsToShow =
       contacts.contacts.filter(c => {
-        return c.id > 1 && group && group.pending_contact_ids && group.pending_contact_ids.includes(c.id)
+        return (
+          c.id > 1 &&
+          group &&
+          group.pending_contact_ids &&
+          group.pending_contact_ids.includes(c.id)
+        )
       }) || []
     const selectedContacts = contacts.contacts.filter(c => selected.includes(c.id))
     const showSelectedContacts = selectedContacts.length > 0
@@ -192,21 +206,39 @@ export default function ChatDetails({ route }) {
           {hasGroup && (
             <View style={styles.groupInfo}>
               <View style={styles.groupInfoLeft}>
-                <TouchableOpacity onPress={changePic}>{group && <Avatar size={50} aliasSize={18} big alias={group.name} photo={uri} />}</TouchableOpacity>
+                <TouchableOpacity onPress={changePic}>
+                  {group && (
+                    <Avatar size={50} aliasSize={18} big alias={group.name} photo={uri} />
+                  )}
+                </TouchableOpacity>
                 <View style={styles.groupInfoText}>
-                  <Text style={{ fontSize: 16, marginBottom: 6, color: theme.text }}>{group.name}</Text>
-                  <Text style={{ fontSize: 12, marginBottom: 6, color: theme.title }}>{`Created on ${moment(group.created_at).format('ll')}`}</Text>
-                  <Text style={{ fontSize: 11, color: theme.subtitle }}>{`Price per message: ${group.price_per_message}, Amount to stake: ${group.escrow_amount}`}</Text>
+                  <Text style={{ fontSize: 16, marginBottom: 6, color: theme.text }}>
+                    {group.name}
+                  </Text>
+                  <Text
+                    style={{ fontSize: 12, marginBottom: 6, color: theme.title }}
+                  >{`Created on ${moment(group.created_at).format('ll')}`}</Text>
+                  <Text
+                    style={{ fontSize: 11, color: theme.subtitle }}
+                  >{`Price per message: ${group.price_per_message}, Amount to stake: ${group.escrow_amount}`}</Text>
                 </View>
               </View>
-              <IconButton icon='dots-vertical' size={25} color={theme.icon} style={{ marginLeft: 0, marginRight: 0, position: 'absolute', right: 8 }} onPress={dotsVerticalHandler} />
+              <IconButton
+                icon='dots-vertical'
+                size={25}
+                color={theme.icon}
+                style={{ marginLeft: 0, marginRight: 0, position: 'absolute', right: 8 }}
+                onPress={dotsVerticalHandler}
+              />
             </View>
           )}
 
           {showValueSlider && (
             <View style={styles.slideWrap}>
               <View style={styles.slideText}>
-                <Text style={{ ...styles.slideLabel, color: theme.subtitle }}>Podcast: sats per minute</Text>
+                <Text style={{ ...styles.slideLabel, color: theme.subtitle }}>
+                  Podcast: sats per minute
+                </Text>
                 <Text style={{ ...styles.slideValue, color: theme.subtitle }}>{ppm}</Text>
               </View>
               <Slider
@@ -225,7 +257,9 @@ export default function ChatDetails({ route }) {
           )}
 
           <View style={styles.inputWrap}>
-            <Text style={{ ...styles.inputLabel, color: theme.subtitle }}>My Name in this tribe</Text>
+            <Text style={{ ...styles.inputLabel, color: theme.subtitle }}>
+              My Name in this tribe
+            </Text>
             <TextInput
               mode='outlined'
               placeholder='Your Name in this Tribe'
@@ -242,17 +276,33 @@ export default function ChatDetails({ route }) {
               {contactsToShow && contactsToShow.length > 0 && (
                 <>
                   <Text style={styles.membersTitle}>GROUP MEMBERS</Text>
-                  <FlatList style={styles.scroller} data={contactsToShow} renderItem={renderContact} keyExtractor={item => String(item.id)} />
+                  <FlatList
+                    style={styles.scroller}
+                    data={contactsToShow}
+                    renderItem={renderContact}
+                    keyExtractor={item => String(item.id)}
+                  />
                 </>
               )}
               {isTribeAdmin && pendingContactsToShow.length > 0 && (
                 <>
                   <Text style={styles.membersTitle}>PENDING GROUP MEMBERS</Text>
-                  <FlatList style={styles.scroller} data={pendingContactsToShow} renderItem={renderPendingContactsToShow} keyExtractor={item => String(item.id)} />
+                  <FlatList
+                    style={styles.scroller}
+                    data={pendingContactsToShow}
+                    renderItem={renderPendingContactsToShow}
+                    keyExtractor={item => String(item.id)}
+                  />
                 </>
               )}
               {!isTribeAdmin && (
-                <Button mode='contained' dark={true} icon='plus' onPress={onSetAddPeopleHandler} style={styles.addPeople}>
+                <Button
+                  mode='contained'
+                  dark={true}
+                  icon='plus'
+                  onPress={onSetAddPeopleHandler}
+                  style={styles.addPeople}
+                >
                   Add People
                 </Button>
               )}
@@ -261,11 +311,23 @@ export default function ChatDetails({ route }) {
         </FadeView>
 
         <FadeView opacity={addPeople ? 1 : 0} style={styles.content}>
-          <People setSelected={setSelected} initialContactIds={(group && group.contact_ids) || []} />
+          <People
+            setSelected={setSelected}
+            initialContactIds={(group && group.contact_ids) || []}
+          />
         </FadeView>
 
-        <ExitGroup visible={leaveDialog} onCancel={setLeaveDialogToFalseHandler} exitGroup={onExitGroupHandler} />
-        <EditGroup visible={editDialog} onCancel={setEditDialogToFalseHandler} editGroup={handleEditGroupPress} shareGroup={handleSharePress} />
+        <ExitGroup
+          visible={leaveDialog}
+          onCancel={setLeaveDialogToFalseHandler}
+          exitGroup={onExitGroupHandler}
+        />
+        <EditGroup
+          visible={editDialog}
+          onCancel={setEditDialogToFalseHandler}
+          editGroup={handleEditGroupPress}
+          shareGroup={handleSharePress}
+        />
       </View>
     )
   })

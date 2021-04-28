@@ -213,15 +213,15 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     width: '100%',
-    flex: 1
+    flex: 1,
+    marginLeft: 34
   },
   avatarWrap: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     width: 80,
-    height: 80,
-    marginRight: 24
+    height: 80
   },
   publicText: {
     display: 'flex',

@@ -43,7 +43,16 @@ export default function Invite({ onFinish }) {
         {steps.map((C, i) => {
           const render = i === step - 1 || i === step || i === step + 1
           if (!render) return <View key={i} />
-          return <C key={i} z={i} show={step > i - 1} onDone={stepForward} onBack={stepBack} onRestore={onFinish} />
+          return (
+            <C
+              key={i}
+              z={i}
+              show={step > i - 1}
+              onDone={stepForward}
+              onBack={stepBack}
+              onRestore={onFinish}
+            />
+          )
         })}
       </View>
     )

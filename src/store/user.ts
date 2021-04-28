@@ -117,6 +117,7 @@ class UserStore {
     const ip = arr[2]
     const token = arr[3]
     this.setCurrentIP(ip)
+
     this.setAuthToken(token)
     console.log('RESTORE NOW!')
     api.instantiateRelay(
@@ -188,6 +189,8 @@ class UserStore {
 
   @action
   async generateToken(pwd: string) {
+    console.log('is  generating-------')
+
     if (api.relay === null && this.currentIP) {
       api.instantiateRelay(this.currentIP)
       await sleep(1)

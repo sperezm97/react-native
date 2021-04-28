@@ -8,8 +8,8 @@ import { Contact } from '../contacts'
 import { constants } from '../../constants'
 
 export function useChats() {
-  const { chats, msg, contacts, ui } = useStores()
-  const theChats = allChats(chats.chats, contacts.contacts)
+  const { chats, msg, contacts, user } = useStores()
+  const theChats = allChats(chats.chats, contacts.contacts, user)
   const chatsToShow = theChats
   sortChats(chatsToShow, msg.messages)
 
@@ -66,7 +66,8 @@ function lastMessageText(msg) {
     if (msg.message_content.startsWith('giphy::')) return 'GIF ' + verb
     if (msg.message_content.startsWith('clip::')) return 'Clip ' + verb
     if (msg.message_content.startsWith('boost::')) return 'Boost ' + verb
-    if (msg.message_content.startsWith(`${DEFAULT_DOMAIN}://?action=tribe`)) return 'Tribe Link ' + verb
+    if (msg.message_content.startsWith(`${DEFAULT_DOMAIN}://?action=tribe`))
+      return 'Tribe Link ' + verb
     if (msg.message_content.startsWith('https://jitsi.sphinx.chat/')) return 'Join Call'
     return msg.message_content
   }
@@ -103,7 +104,7 @@ const conversation = constants.chat_types.conversation
 const group = constants.chat_types.conversation
 const expiredInvite = constants.invite_statuses.expired
 
-export function allChats(chats: Chat[], contacts: Contact[]): Chat[] {
+export function allChats(chats: Chat[], contacts: Contact[], user): Chat[] {
   const groupChats = chats.filter(c => c.type !== conversation).map(c => ({ ...c }))
   const conversations = []
   contacts.forEach(contact => {
@@ -127,8 +128,19 @@ export function allChats(chats: Chat[], contacts: Contact[]): Chat[] {
       }
     }
   })
-  const convs = conversations.filter(c => !(c.invite && c.invite.status === expiredInvite))
+  const convs = conversations.filter(
+    c => !(c.invite && c.invite.status === expiredInvite)
+  )
   const all = groupChats.concat(convs)
+
+  // return all.map(chat => {
+  //   return {
+  //     ...chat,
+  //     joined: true,
+  //     owner: chat.owner_pubkey === user.publicKey
+  //   }
+  // })
+
   return all
 }
 
@@ -160,6 +172,8 @@ export function sortChats(chatsToShow, messages) {
 export function filterChats(theChats, searchTerm) {
   return theChats.filter(c => {
     if (!searchTerm) return true
-    return (c.invite ? true : false) || c.name.toLowerCase().includes(searchTerm.toLowerCase())
+    return (
+      (c.invite ? true : false) || c.name.toLowerCase().includes(searchTerm.toLowerCase())
+    )
   })
 }

@@ -1,6 +1,14 @@
 import React, { useRef, useMemo, useState, useCallback, useEffect } from 'react'
 import { useObserver } from 'mobx-react-lite'
-import { VirtualizedList, View, Text, StyleSheet, Keyboard, Dimensions, ActivityIndicator } from 'react-native'
+import {
+  VirtualizedList,
+  View,
+  Text,
+  StyleSheet,
+  Keyboard,
+  Dimensions,
+  ActivityIndicator
+} from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 
 import { useStores, useTheme, hooks } from '../../store'
@@ -9,13 +17,20 @@ import { useMsgSender } from '../../store/hooks/msg'
 import Message from './msg'
 import { constants } from '../../constants'
 import EE, { SHOW_REFRESHER } from '../utils/ee'
+import Typography from '../common/Typography'
 
 const { useMsgs } = hooks
 
 const group = constants.chat_types.group
 const tribe = constants.chat_types.tribe
 
-export default function MsgListWrap({ chat, pricePerMessage }: { chat: Chat; pricePerMessage: number }) {
+export default function MsgListWrap({
+  chat,
+  pricePerMessage
+}: {
+  chat: Chat
+  pricePerMessage: number
+}) {
   const { msg, ui, user, chats } = useStores()
   const [limit, setLimit] = useState(40)
 
@@ -68,7 +83,18 @@ export default function MsgListWrap({ chat, pricePerMessage }: { chat: Chat; pri
   })
 }
 
-function MsgList({ msgs, msgsLength, chat, onDelete, myPubkey, myAlias, onApproveOrDenyMember, onDeleteChat, onLoadMoreMsgs, onBoostMsg }) {
+function MsgList({
+  msgs,
+  msgsLength,
+  chat,
+  onDelete,
+  myPubkey,
+  myAlias,
+  onApproveOrDenyMember,
+  onDeleteChat,
+  onLoadMoreMsgs,
+  onBoostMsg
+}) {
   const scrollViewRef = useRef(null)
   const theme = useTheme()
   // const [viewableIds, setViewableIds] = useState({})
@@ -106,7 +132,9 @@ function MsgList({ msgs, msgsLength, chat, onDelete, myPubkey, myAlias, onApprov
   if (chat.status === constants.chat_statuses.pending) {
     return (
       <View style={{ display: 'flex', alignItems: 'center' }}>
-        <Text style={{ marginTop: 27, color: theme.subtitle }}>Waiting for admin approval</Text>
+        <Text style={{ marginTop: 27, color: theme.subtitle }}>
+          Waiting for admin approval
+        </Text>
       </View>
     )
   }
@@ -148,7 +176,11 @@ function MsgList({ msgs, msgsLength, chat, onDelete, myPubkey, myAlias, onApprov
           // }, 200)
         }}
         renderItem={({ item, index }) => {
-          const { senderAlias, senderPic } = useMsgSender(item, contacts.contacts, isTribe)
+          const { senderAlias, senderPic } = useMsgSender(
+            item,
+            contacts.contacts,
+            isTribe
+          )
           return (
             <ListItem
               key={item.id}
@@ -200,12 +232,21 @@ function Refresher() {
   )
 }
 
-function ListItem({ m, chat, isGroup, isTribe, onDelete, myPubkey, myAlias, senderAlias, senderPic, windowWidth, onApproveOrDenyMember, onDeleteChat, onBoostMsg }) {
-  // if (!viewable) { /* THESE RENDER FIRST????? AND THEN THE ACTUAL MSGS DO */
-  //   return <View style={{ height: 50, width: 1 }} />
-  // }
-  // console.log('m', m)
-
+function ListItem({
+  m,
+  chat,
+  isGroup,
+  isTribe,
+  onDelete,
+  myPubkey,
+  myAlias,
+  senderAlias,
+  senderPic,
+  windowWidth,
+  onApproveOrDenyMember,
+  onDeleteChat,
+  onBoostMsg
+}) {
   if (m.dateLine) {
     return <DateLine dateString={m.dateLine} />
   }
@@ -237,9 +278,12 @@ function ListItem({ m, chat, isGroup, isTribe, onDelete, myPubkey, myAlias, send
 function DateLine({ dateString }) {
   const theme = useTheme()
   return (
-    <View style={styles.dateLine}>
-      <View style={styles.line}></View>
-      <Text style={{ ...styles.dateString, backgroundColor: theme.dark ? theme.bg : 'white', color: theme.title }}>{dateString}</Text>
+    <View style={{ ...styles.dateLine }}>
+      <View style={{ ...styles.dateString, backgroundColor: theme.main }}>
+        <Typography size={12} color={theme.subtitle}>
+          {dateString}
+        </Typography>
+      </View>
     </View>
   )
 }
@@ -254,20 +298,19 @@ const styles = StyleSheet.create({
     top: 10
   },
   dateLine: {
-    width: '100%',
     display: 'flex',
-    height: 20,
-    marginBottom: 10,
-    marginTop: 10,
     flexDirection: 'row',
     justifyContent: 'center',
-    position: 'relative'
+    position: 'relative',
+    height: 22,
+    width: '100%',
+    marginBottom: 10,
+    marginTop: 10
   },
   dateString: {
-    fontSize: 12,
-    backgroundColor: 'white',
     paddingLeft: 16,
-    paddingRight: 16
+    paddingRight: 16,
+    borderRadius: 15
   },
   refreshingWrap: {
     position: 'absolute',
