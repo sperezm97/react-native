@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -9,15 +9,23 @@ import { SCREEN_WIDTH } from '../../../../constants'
 import MediaItem from './MediaItem'
 import Empty from '../../../common/Empty'
 import Typography from '../../../common/Typography'
+import PhotoViewer from '../../../common/Modals/Media/PhotoViewer'
 
 const { useMsgs } = hooks
 
 function Media({ tribe }) {
+  const [mediaModal, setMediaModal] = useState(false)
+  const [selectedMedia, setSelectedMedia] = useState(null)
   const theme = useTheme()
 
   return useObserver(() => {
     const msgs = useMsgs(tribe.chat) || []
     const mediaMsgs = useOwnerMsgsType(msgs, 6)
+
+    function onMediaPress(id) {
+      setSelectedMedia(id)
+      setMediaModal(true)
+    }
 
     return (
       <>
@@ -25,7 +33,15 @@ function Media({ tribe }) {
           <View style={{ ...styles.mediaContainer }}>
             {mediaMsgs.length > 0 ? (
               mediaMsgs.map((m, index) => {
-                return <MediaItem key={m.id} index={index} {...m} />
+                return (
+                  <MediaItem
+                    key={m.id}
+                    id={m.id}
+                    index={index}
+                    {...m}
+                    onMediaPress={onMediaPress}
+                  />
+                )
                 // return useMemo(() => <MediaItem key={m.id} {...m} />, [
                 //   m.id,
                 //   m.type,
@@ -66,13 +82,19 @@ function Media({ tribe }) {
                       {`No content in ${tribe.name}`}
                     </Typography>
                     <Typography size={14} color={theme.subtitle}>
-                      Owner hasn't shared any content yet
+                      Owner hasn't shared any content yet.
                     </Typography>
                   </View>
                 )}
               </Empty>
             )}
           </View>
+          <PhotoViewer
+            visible={mediaModal}
+            close={() => setMediaModal(false)}
+            photos={mediaMsgs}
+            photoId={selectedMedia}
+          />
         </View>
       </>
     )

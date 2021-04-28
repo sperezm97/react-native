@@ -10,7 +10,15 @@ import { SCREEN_WIDTH } from '../../../../constants'
 function MediaItem(props) {
   //   const [containerWidth, setContainerWidth] = useState<number>(0)
   //   const containerRef = useRef<TouchableOpacity>(null)
-  const { index, message_content, media_type, chat, media_token } = props
+  const {
+    index,
+    id,
+    message_content,
+    media_type,
+    chat,
+    media_token,
+    onMediaPress
+  } = props
 
   const ldat = parseLDAT(media_token)
   let { data, uri, loading, trigger, paidMessageText } = useCachedEncryptedFile(
@@ -25,28 +33,28 @@ function MediaItem(props) {
   const hasImgData = data || uri ? true : false
 
   return (
-    <TouchableOpacity
-      onPress={() => {
-        // navigate('PostDetail', {
-        //     postId: photo.uid
-        // })
-      }}
-      //   ref={containerRef}
-      delayLongPress={150}
-      //   onLongPress={_onLongPressHandler}
-      //   onPressOut={_onPressOutHandler}
-      activeOpacity={0.8}
-      style={{
-        ...styles.photoWrap,
-        marginRight: (index + 1) % 3 === 0 ? 0 : 5
-      }}
-    >
-      {hasImgData ? (
-        <MediaType type={media_type} data={data} uri={uri} />
-      ) : (
-        <ActivityIndicator animating={true} color='grey' />
-      )}
-    </TouchableOpacity>
+    <>
+      <TouchableOpacity
+        onPress={() => {
+          onMediaPress(id)
+        }}
+        //   ref={containerRef}
+        delayLongPress={150}
+        //   onLongPress={_onLongPressHandler}
+        //   onPressOut={_onPressOutHandler}
+        activeOpacity={0.8}
+        style={{
+          ...styles.photoWrap,
+          marginRight: (index + 1) % 3 === 0 ? 0 : 5
+        }}
+      >
+        {hasImgData ? (
+          <MediaType type={media_type} data={data} uri={uri} />
+        ) : (
+          <ActivityIndicator animating={true} color='grey' />
+        )}
+      </TouchableOpacity>
+    </>
   )
 }
 
