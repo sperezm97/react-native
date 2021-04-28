@@ -7,6 +7,7 @@ import AntDesignIcon from 'react-native-vector-icons/AntDesign'
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
 
 import { useTheme } from '../../../store'
+import { isIphoneXorAbove } from '../../utils/utils'
 import Pushable from '../Pushable'
 import Icon from '../Icon'
 
@@ -48,8 +49,14 @@ export default function TabBar() {
 
   return useObserver(() => {
     return (
-      <View style={{ ...styles.wrap, backgroundColor: theme.bg, borderTopColor: theme.border }}>
-        <View style={{ ...styles.tabBar, height: 40 + insets.bottom }}>
+      <View
+        style={{
+          ...styles.wrap,
+          backgroundColor: theme.bg,
+          borderTopColor: theme.border
+        }}
+      >
+        <View style={{ ...styles.tabBar }}>
           {routes.map(route => {
             return (
               <Pushable
@@ -58,7 +65,14 @@ export default function TabBar() {
                   navigation.navigate(route.name)
                 }}
               >
-                <View style={{ ...styles.iconWrap, width: tabbarWidth / 5, height: 40 + insets.bottom }}>{renderIcon(route, current, theme)}</View>
+                <View
+                  style={{
+                    ...styles.iconWrap,
+                    width: tabbarWidth / 5
+                  }}
+                >
+                  {renderIcon(route, current, theme)}
+                </View>
               </Pushable>
             )
           })}
@@ -76,7 +90,11 @@ function renderIcon(route, current, theme) {
       {iconElement ? (
         <>{route.icon(route.name === current.name ? theme.primary : theme.icon)}</>
       ) : (
-        <Icon name={route.name} color={route.name === current.name ? theme.primary : theme.icon} size={24} />
+        <Icon
+          name={route.name}
+          color={route.name === current.name ? theme.primary : theme.icon}
+          size={24}
+        />
       )}
     </>
   )
@@ -89,12 +107,12 @@ const styles = StyleSheet.create({
   tabBar: {
     flexDirection: 'row',
     alignItems: 'center',
-    height: 60,
     paddingLeft: 16,
-    paddingRight: 16
+    paddingRight: 16,
+    height: isIphoneXorAbove() ? 80 : 60
   },
   iconWrap: {
-    height: 40,
+    height: isIphoneXorAbove() ? 80 : 60,
     alignItems: 'center',
     justifyContent: 'center'
   },

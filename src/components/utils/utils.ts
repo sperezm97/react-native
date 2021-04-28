@@ -1,4 +1,5 @@
 import { decode as atob } from 'base-64'
+import { Dimensions, Platform } from 'react-native'
 
 import tags from './tags.json'
 
@@ -34,4 +35,12 @@ export function getTags(num = 6) {
   }
 
   return newTags
+}
+
+export function isIphoneXorAbove() {
+  const d = Dimensions.get('window')
+  return (
+    Platform.OS === 'ios' &&
+    (d.height === 812 || d.width === 812 || d.height === 896 || d.width === 896)
+  )
 }

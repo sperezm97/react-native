@@ -14,9 +14,6 @@ import { useCachedEncryptedFile } from '../../../chat/msg/hooks'
 export default function PhotoViewer({ visible, close, photos, photoId }) {
   const theme = useTheme()
 
-  const h = SCREEN_HEIGHT - STATUS_BAR_HEIGHT - 60
-  const w = SCREEN_WIDTH
-
   function getInitialPhotoIndex() {
     const initialIndex = photos.findIndex(m => m.id === photoId)
 
@@ -31,7 +28,14 @@ export default function PhotoViewer({ visible, close, photos, photoId }) {
       onDismiss={close}
     >
       <View style={{ ...styles.container, backgroundColor: theme.black }}>
+        <IconButton
+          icon={() => <MaterialCommunityIcon name='close' color={theme.icon} size={30} />}
+          onPress={close}
+          style={{ ...styles.closeButton }}
+        />
+
         <Swiper
+          horizontal={false}
           showsButtons={false}
           showsPagination={false}
           index={getInitialPhotoIndex()}
@@ -40,12 +44,6 @@ export default function PhotoViewer({ visible, close, photos, photoId }) {
             <SwipeItem key={index} {...p} />
           ))}
         </Swiper>
-
-        <IconButton
-          icon={() => <MaterialCommunityIcon name='close' color={theme.icon} size={30} />}
-          onPress={close}
-          style={{ ...styles.closeButton }}
-        />
       </View>
     </Modal>
   ))
@@ -66,14 +64,18 @@ function SwipeItem(props) {
 
   //   const hasImgData = data || uri ? true : false
 
+  const h = SCREEN_HEIGHT - STATUS_BAR_HEIGHT - 60
+  const w = SCREEN_WIDTH
+
   return (
     <View style={{ ...styles.swipeItem }}>
       <FastImage
         resizeMode='contain'
         source={{ uri: data || uri }}
         style={{
-          ...styles.photo
-          // width: w, height: h
+          ...styles.photo,
+          width: w,
+          height: h
         }}
       />
     </View>
