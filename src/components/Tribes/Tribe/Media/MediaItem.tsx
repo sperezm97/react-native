@@ -84,12 +84,12 @@ const styles = StyleSheet.create({
     position: 'relative',
     width: SCREEN_WIDTH / 3 - 10 / 3,
     height: SCREEN_WIDTH / 3 - 10 / 3,
-    marginBottom: 2
+    marginBottom: 5
   },
   photo: {
     width: '100%',
-    height: '100%',
-    borderRadius: 5
+    height: '100%'
+    // borderRadius: 5
   }
 })
 

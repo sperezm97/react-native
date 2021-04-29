@@ -100,42 +100,35 @@ export default function Intro({ tribe }) {
           </View>
 
           <View style={styles.headerContent}>
-            <View style={{ ...styles.nameWrap }}>
+            <View style={{ ...styles.row, width: '100%' }}>
               <Typography size={22} fw='600'>
                 {tribe.name}
               </Typography>
-              <View
-                style={{
-                  position: 'relative'
-                }}
-              >
-                {/* <View style={{ ...styles.dot, backgroundColor: theme.text }}></View> */}
-              </View>
-              {/* 
-              <Typography
-                size={14}
-                fw='500'
-                color={theme.subtitle}
-                style={{ paddingLeft: 10 }}
-              >
-                by {tribe.owner_alias}
-              </Typography> */}
+              {!tribe.owner && (
+                <>
+                  <View style={{ ...styles.dot, backgroundColor: theme.text }}></View>
+                  <Typography
+                    size={14}
+                    fw='500'
+                    color={theme.subtitle}
+                    style={{ padding: 0, margin: 0 }}
+                  >
+                    {tribe.owner_alias?.trim()}
+                  </Typography>
+                </>
+              )}
             </View>
 
-            <View style={{ flexDirection: 'row' }}>
-              <View style={{ ...styles.publicText }}>
+            <View style={{ ...styles.row, marginTop: 6, marginBottom: 14 }}>
+              <View style={{ ...styles.row }}>
                 <MaterialIcon name='public' size={18} color={theme.grey} />
-                <Typography size={14} style={{ marginBottom: 16, paddingLeft: 4 }}>
+                <Typography size={14} style={{ paddingLeft: 4 }}>
                   {tribe.private ? 'Private Tribe' : 'Public Tribe'}
                 </Typography>
               </View>
-              <View style={styles.membersWrap}>
+              <View style={{ ...styles.row }}>
                 <View style={{ ...styles.dot, backgroundColor: theme.text }}></View>
-                <Typography
-                  size={14}
-                  fw='600'
-                  style={{ marginBottom: 16, paddingLeft: 4 }}
-                >
+                <Typography size={14} fw='600' style={{ paddingLeft: 4 }}>
                   {tribe.member_count}
                 </Typography>
                 <Typography size={14}> members</Typography>
@@ -191,7 +184,7 @@ function TribeActions({ tribe }) {
                   />
                 )}
                 onPress={onChatPress}
-                w='60%'
+                w='65%'
               >
                 Play Wall
               </Button>
@@ -225,7 +218,8 @@ const styles = StyleSheet.create({
   },
   header: {
     display: 'flex',
-    flexDirection: 'row'
+    flexDirection: 'row',
+    width: '100%'
     // alignItems: 'center'
   },
   headerContent: {
@@ -242,29 +236,16 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80
   },
-  nameWrap: {
+  row: {
     display: 'flex',
     flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 8
-  },
-  publicText: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignContent: 'center'
-  },
-  membersWrap: {
-    display: 'flex',
-    flexDirection: 'row',
-    paddingLeft: 18,
-    position: 'relative'
+    alignItems: 'center'
   },
   dot: {
-    width: 2,
-    height: 2,
-    position: 'absolute',
-    top: '25%',
-    left: 10
+    width: 3,
+    height: 3,
+    borderRadius: 5,
+    marginHorizontal: 10
   },
   headerActions: {
     display: 'flex',

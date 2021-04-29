@@ -36,7 +36,7 @@
      "prettier.jsxSingleQuote": true,
      "prettier.trailingComma": "none",
      "prettier.semi": false,
-     "prettier.printWidth": 200,
+     "prettier.printWidth": 90,
      "javascript.preferences.quoteStyle": "single",
      "typescript.preferences.quoteStyle": "single"
     }

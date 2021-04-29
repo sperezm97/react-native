@@ -6,7 +6,16 @@ import { useTheme } from '../../../store'
 export default function Typography(props) {
   const theme = useTheme()
 
-  let { children, style, color = theme.text, size, fw, ls = 0.5, lh } = props
+  let {
+    children,
+    style,
+    color = theme.text,
+    size,
+    fw,
+    ls = 0.5,
+    lh,
+    numberOfLines
+  } = props
 
   if (size >= 15 && size < 20) {
     lh = 26
@@ -16,7 +25,21 @@ export default function Typography(props) {
     lh = 20
   }
 
-  return <Text style={{ ...style, color, fontSize: size, fontWeight: fw, letterSpacing: ls, lineHeight: lh }}>{children}</Text>
+  return (
+    <Text
+      style={{
+        ...style,
+        color,
+        fontSize: size,
+        fontWeight: fw,
+        letterSpacing: ls,
+        lineHeight: lh
+      }}
+      numberOfLines={numberOfLines}
+    >
+      {children}
+    </Text>
+  )
 }
 
 Typography.defaultProps = {}

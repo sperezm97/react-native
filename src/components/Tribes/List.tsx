@@ -37,7 +37,7 @@ export default function List(props) {
 }
 
 function Item(props) {
-  const { name, description, img, joined, uuid, owner } = props
+  const { name, description, img, joined, uuid, owner, owner_alias } = props
   const { ui, chats } = useStores()
   const theme = useTheme()
   const navigation = useNavigation()
@@ -65,9 +65,18 @@ function Item(props) {
 
       <View style={styles.itemContent}>
         <View style={{ ...styles.row, ...styles.itemContentTop }}>
-          <Typography color={theme.text} size={17} fw='500'>
-            {name}
-          </Typography>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Typography size={17} fw='500'>
+              {name}
+            </Typography>
+            {!owner && (
+              <>
+                <View style={{ ...styles.dot, backgroundColor: theme.text }}></View>
+                <Typography size={12}>{owner_alias?.trim()}</Typography>
+              </>
+            )}
+          </View>
+
           <View style={{ paddingRight: 4 }}>
             {!owner && (
               <>
@@ -115,7 +124,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingRight: 18
+    paddingRight: 14
     // width: 60,
     // height: 60,
     // paddingLeft: 4
@@ -126,6 +135,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     flex: 1
+  },
+  dot: {
+    width: 3,
+    height: 3,
+    borderRadius: 5,
+    marginHorizontal: 10
   },
   itemContent: {
     flex: 1
