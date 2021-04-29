@@ -5,6 +5,8 @@ import { useNavigation, useRoute } from '@react-navigation/native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import AntDesignIcon from 'react-native-vector-icons/AntDesign'
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
+// import { ifIphoneX, } from 'react-native-iphone-x-helper'
+import { isIphoneX, getBottomSpace } from 'react-native-iphone-x-helper'
 
 import { useTheme } from '../../../store'
 import { isIphoneXorAbove } from '../../utils/utils'
@@ -100,6 +102,8 @@ function renderIcon(route, current, theme) {
   )
 }
 
+// console.log(isIphoneX())
+
 const styles = StyleSheet.create({
   wrap: {
     borderTopWidth: 1
@@ -109,10 +113,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingLeft: 16,
     paddingRight: 16,
-    height: isIphoneXorAbove() ? 80 : 60
+    height: isIphoneX() ? 50 + getBottomSpace() : 60
+    // ...ifIphoneX({
+    // height: 50 + getBottomSpace()
+    // })
+    // height: 60 + getBottomSpace()
+    // height: isIphoneXorAbove() ? 80 : 60
   },
   iconWrap: {
-    height: isIphoneXorAbove() ? 80 : 60,
+    height: isIphoneX() ? 50 + getBottomSpace() : 60,
+    // ...ifIphoneX({
+    //   height: 50 + getBottomSpace()
+    // }),
+    // height: 60 + getBottomSpace(),
+    // height: isIphoneXorAbove() ? 80 : 60,
     alignItems: 'center',
     justifyContent: 'center'
   },

@@ -24,6 +24,7 @@ export default function OwnedTribes() {
 
   return useObserver(() => {
     const tribes = useTribes()
+
     const tribesToShow = useOwnedTribes(tribes)
 
     return (
@@ -74,7 +75,7 @@ function ListEmpty() {
 
   return (
     <Empty h={200}>
-      <Typography size={16}>You have not created any communities yet.</Typography>
+      <Typography size={16}>Become a community owner to see it listed here.</Typography>
       <Button
         icon={() => <AntDesignIcon name='plus' color={theme.white} size={18} />}
         w={210}

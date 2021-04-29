@@ -4,7 +4,7 @@ import { useObserver } from 'mobx-react-lite'
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 import { useTheme, hooks } from '../../../../store'
-import { useOwnerMsgsType } from '../../../../store/hooks/msg'
+import { useOwnerMediaType } from '../../../../store/hooks/tribes'
 import { SCREEN_WIDTH } from '../../../../constants'
 import MediaItem from './MediaItem'
 import Empty from '../../../common/Empty'
@@ -18,21 +18,21 @@ function Media({ tribe }) {
   const [selectedMedia, setSelectedMedia] = useState(null)
   const theme = useTheme()
 
+  function onMediaPress(id) {
+    setSelectedMedia(id)
+    setMediaModal(true)
+  }
+
   return useObserver(() => {
     const msgs = useMsgs(tribe.chat) || []
-    const mediaMsgs = useOwnerMsgsType(msgs, 6)
-
-    function onMediaPress(id) {
-      setSelectedMedia(id)
-      setMediaModal(true)
-    }
+    const media = useOwnerMediaType(msgs, 6)
 
     return (
       <>
         <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
           <View style={{ ...styles.mediaContainer }}>
-            {mediaMsgs.length > 0 ? (
-              mediaMsgs.map((m, index) => {
+            {media.length > 0 ? (
+              media.map((m, index) => {
                 return (
                   <MediaItem
                     key={m.id}
@@ -92,7 +92,7 @@ function Media({ tribe }) {
           <PhotoViewer
             visible={mediaModal}
             close={() => setMediaModal(false)}
-            photos={mediaMsgs}
+            photos={media}
             photoId={selectedMedia}
           />
         </View>

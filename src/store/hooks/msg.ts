@@ -255,10 +255,6 @@ export function useParsedGiphyMsg(message_content: string) {
   }
 }
 
-export function useOwnerMsgsType(msgs, type) {
-  return msgs.filter(m => m.type === type && m.sender === 1)
-}
-
 const colorz = [
   '#FF70E9',
   '#7077FF',
