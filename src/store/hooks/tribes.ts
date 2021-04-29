@@ -4,6 +4,7 @@ import { useStores } from '../index'
 import { useChats } from './chats'
 import { constants } from '../../constants'
 import { calendarDate } from '../utils/date'
+import { useMsgs } from './msg'
 
 export function useTribes() {
   const { chats, user } = useStores()
@@ -84,21 +85,26 @@ export function useOwnerMediaType(msgs, type) {
 // feed from joined tribes
 // feed is sorted based on last active
 export function useFeed(tribes) {
-  tribes.filter(t => t.joined)
+  return tribes.filter(t => t.joined && !t.owner)
 
-  return tribes.sort((a, b) => {
-    if (a.last_active > b.last_active) return -1
-    return 0
-  })
+  // return tribes.sort((a, b) => {
+  //   if (a.last_active > b.last_active) return -1
+  //   return 0
+  // })
 }
 
 export function useMediaType(msgs, type) {
   // TODO // m.media_type.startsWith('image') is temporarily
   return msgs.filter(
-    m => m.type === type && m.media_token && m.media_type.startsWith('image')
+    m =>
+      m.type === type &&
+      m.sender !== 1 &&
+      m.media_token &&
+      m.media_type.startsWith('image')
   )
+
+  // return msgs.sort((a, b) => {
+  //   if (a.created_date > b.created_date) return -1
+  //   return 0
+  // })
 }
-
-// b.last_active - a.last_active)
-
-// last_active

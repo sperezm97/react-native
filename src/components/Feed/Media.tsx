@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { StyleSheet, View, ActivityIndicator, TouchableOpacity } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
+import { useNavigation } from '@react-navigation/native'
 import FastImage from 'react-native-fast-image'
 import { IconButton } from 'react-native-paper'
 import Ionicon from 'react-native-vector-icons/Ionicons'
@@ -12,6 +13,7 @@ import { parseLDAT } from '../utils/ldat'
 import { useCachedEncryptedFile } from '../chat/msg/hooks'
 import { SCREEN_WIDTH, SCREEN_HEIGHT, STATUS_BAR_HEIGHT } from '../../constants'
 import Typography from '../common/Typography'
+import Avatar from '../common/Avatar'
 import Divider from '../common/Layout/Divider'
 
 function Media(props) {
@@ -23,9 +25,11 @@ function Media(props) {
     chat,
     media_token,
     onMediaPress,
-    created_at
+    created_at,
+    tribe
   } = props
   const theme = useTheme()
+  const navigation = useNavigation()
 
   const ldat = parseLDAT(media_token)
   let { data, uri, loading, trigger, paidMessageText } = useCachedEncryptedFile(
@@ -46,38 +50,44 @@ function Media(props) {
 
   const hasImgData = data || uri ? true : false
 
-  console.log('loading', loading)
+  // console.log('loading', loading)
+
+  const onTribeOwnerPress = () => navigation.navigate('Tribe', { tribe: { ...tribe } })
 
   return (
     <>
-      <View style={{ ...styles.mediaItem }}>
-        {/* <MediaType type={media_type} data={data} uri={uri} /> */}
-        {!loading ? (
-          hasImgData && <MediaType type={media_type} data={data} uri={uri} />
-        ) : (
-          <ActivityIndicator animating={true} color='grey' />
-        )}
-        {/* {hasImgData ? (
-          <MediaType type={media_type} data={data} uri={uri} />
-        ) : (
-          // <Typography>{media_type}</Typography>
-          <ActivityIndicator animating={true} color='grey' />
-        )} */}
+      {hasImgData && (
+        <View style={{ ...styles.wrap }}>
+          <TouchableOpacity activeOpacity={0.6} onPress={onTribeOwnerPress}>
+            <View style={{ ...styles.header }}>
+              <View style={styles.avatarWrap}>
+                <Avatar size={35} photo={tribe.img} round={50} />
+              </View>
+              <Typography size={14}>{tribe.name}</Typography>
+            </View>
+          </TouchableOpacity>
 
-        <View style={{ ...styles.footer }}>
-          <IconButton
-            icon={() => (
-              <Ionicon name='rocket-outline' color={theme.iconPrimary} size={24} />
-            )}
-            onPress={() => console.log('boost!')}
-          />
-          <Typography size={12} color={theme.subtitle} style={{ paddingRight: 5 }}>
-            {calendarDate(moment(created_at), 'MMM DD, YYYY')}
-          </Typography>
+          {!loading ? (
+            <MediaType type={media_type} data={data} uri={uri} />
+          ) : (
+            <ActivityIndicator animating={true} color='grey' />
+          )}
+
+          <View style={{ ...styles.footer }}>
+            <IconButton
+              icon={() => (
+                <Ionicon name='rocket-outline' color={theme.iconPrimary} size={24} />
+              )}
+              onPress={() => console.log('boost!')}
+            />
+            <Typography size={12} color={theme.subtitle} style={{ paddingRight: 5 }}>
+              {calendarDate(moment(created_at), 'MMM DD, YYYY')}
+            </Typography>
+          </View>
+          {/* {index + 1 !== media.length && <Divider mt={10} mb={10} />} */}
+          <Divider mt={10} mb={10} />
         </View>
-        {/* {index + 1 !== media.length && <Divider mt={10} mb={10} />} */}
-        <Divider mt={10} mb={10} />
-      </View>
+      )}
     </>
   )
 }
@@ -85,7 +95,7 @@ function Media(props) {
 function MediaType({ type, data, uri }) {
   const h = SCREEN_HEIGHT - STATUS_BAR_HEIGHT - 60
   const w = SCREEN_WIDTH
-  const [photoH, setPhotoH] = useState(h)
+  const [photoH, setPhotoH] = useState(0)
 
   if (type === 'n2n2/text') return <></>
   if (type.startsWith('image')) {
@@ -112,8 +122,34 @@ function MediaType({ type, data, uri }) {
 }
 
 const styles = StyleSheet.create({
-  mediaItem: {
+  wrap: {
     // flex: 1
+  },
+  header: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 14
+    // marginBottom: 10
+  },
+  footer: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingTop: 10,
+    paddingRight: 5,
+    paddingLeft: 5
+    // marginBottom: 10
+  },
+  avatarWrap: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingRight: 10
+    // width: 60,
+    // height: 60,
+    // paddingLeft: 4
   },
   photoWrap: {
     position: 'relative',
@@ -125,16 +161,6 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%'
     // borderRadius: 5
-  },
-  footer: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingTop: 10,
-    paddingRight: 5,
-    paddingLeft: 5
-    // marginBottom: 10
   }
 })
 

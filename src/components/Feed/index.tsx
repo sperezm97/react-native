@@ -1,17 +1,15 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
 import { useNavigation } from '@react-navigation/native'
-import AntDesignIcon from 'react-native-vector-icons/AntDesign'
 
-import { useStores, useTheme } from '../../store'
-import Typography from '../common/Typography'
-import Button from '../common/Button'
-import Empty from '../common/Empty'
+import { useTheme, hooks } from '../../store'
+import { useMediaType } from '../../store/hooks/tribes'
+import Media from './Media'
 import Divider from '../common/Layout/Divider'
-import FeedItem from './FeedItem'
+const { useMsgs } = hooks
 
-export default function Feed({ data }) {
+export default function Feed({ feed }) {
   const theme = useTheme()
 
   // return useObserver(() => {
@@ -19,16 +17,43 @@ export default function Feed({ data }) {
     <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
       <Divider mt={5} mb={5} />
 
-      {data.map(tribe => {
-        return <FeedItem key={tribe.uuid} tribe={tribe} />
+      {feed.map(tribe => {
+        return <Item key={tribe.uuid} tribe={tribe} />
       })}
     </View>
   )
   // })
 }
 
+function Item({ tribe }) {
+  return useObserver(() => {
+    const msgs = useMsgs(tribe.chat) || []
+    const media = useMediaType(msgs, 6)
+
+    return (
+      <>
+        {media.length > 0 &&
+          media.map((m, index) => {
+            return (
+              <View key={index} style={{ ...styles.container }}>
+                <Media
+                  key={m.id}
+                  id={m.id}
+                  {...m}
+                  tribe={tribe}
+                  // onMediaPress={onMediaPress}
+                />
+              </View>
+            )
+          })}
+      </>
+    )
+  })
+}
+
 const styles = StyleSheet.create({
   wrap: {
     // flex: 1
-  }
+  },
+  container: {}
 })

@@ -47,7 +47,7 @@ export default function Home() {
           //  onScroll={_onScroll}
           showsVerticalScrollIndicator={false}
         >
-          <Feed data={tribes} />
+          <Feed feed={tribes} />
         </ScrollView>
         <TabBar />
       </View>
