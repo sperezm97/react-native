@@ -100,9 +100,28 @@ export default function Intro({ tribe }) {
           </View>
 
           <View style={styles.headerContent}>
-            <Typography size={22} fw='500' style={{ marginBottom: 8 }}>
-              {tribe.name}
-            </Typography>
+            <View style={{ ...styles.nameWrap }}>
+              <Typography size={22} fw='600'>
+                {tribe.name}
+              </Typography>
+              <View
+                style={{
+                  position: 'relative'
+                }}
+              >
+                {/* <View style={{ ...styles.dot, backgroundColor: theme.text }}></View> */}
+              </View>
+              {/* 
+              <Typography
+                size={14}
+                fw='500'
+                color={theme.subtitle}
+                style={{ paddingLeft: 10 }}
+              >
+                by {tribe.owner_alias}
+              </Typography> */}
+            </View>
+
             <View style={{ flexDirection: 'row' }}>
               <View style={{ ...styles.publicText }}>
                 <MaterialIcon name='public' size={18} color={theme.grey} />
@@ -159,7 +178,7 @@ function TribeActions({ tribe }) {
       {!tribe.owner ? (
         <>
           {tribe.joined ? (
-            <View style={{ ...styles.tribeActions }}>
+            <View style={{ ...styles.headerActions }}>
               {/* <Button color={theme.primary} onPress={onExitTribePress} w='35%'>
                 Joined
               </Button> */}
@@ -223,6 +242,12 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80
   },
+  nameWrap: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 8
+  },
   publicText: {
     display: 'flex',
     flexDirection: 'row',
@@ -241,7 +266,7 @@ const styles = StyleSheet.create({
     top: '25%',
     left: 10
   },
-  tribeActions: {
+  headerActions: {
     display: 'flex',
     flexDirection: 'row',
     flex: 1
