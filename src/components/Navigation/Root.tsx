@@ -9,7 +9,7 @@ import Account from '../Account/Navigation'
 import Payment from '../Payment/Navigation'
 import Contacts from '../Contacts/Navigation'
 import Tribes from '../Tribes/Navigation'
-import DiscoverTribes from '../Tribes/Discover'
+import OwnedTribes from '../Tribes/OwnedTribes'
 import Tribe from '../Tribes/Tribe'
 import EditTribe from '../Tribes/Tribe/EditTribe'
 import Home from '../Home'
@@ -18,7 +18,7 @@ const RootStack = createStackNavigator()
 
 export default function Root() {
   return (
-    <RootStack.Navigator initialRouteName='Home'>
+    <RootStack.Navigator initialRouteName='Tribes'>
       <RootStack.Screen
         name='Home'
         component={Home}
@@ -81,8 +81,8 @@ export default function Root() {
         }}
       />
       <RootStack.Screen
-        name='DiscoverTribes'
-        component={DiscoverTribes}
+        name='OwnedTribes'
+        component={OwnedTribes}
         options={{
           headerShown: false
         }}

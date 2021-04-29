@@ -8,6 +8,7 @@ import { useStores, useTheme } from '../../store'
 import Typography from '../common/Typography'
 import Button from '../common/Button'
 import Empty from '../common/Empty'
+import Divider from '../common/Layout/Divider'
 import FeedItem from './FeedItem'
 
 export default function Feed({ data }) {
@@ -16,6 +17,8 @@ export default function Feed({ data }) {
   // return useObserver(() => {
   return (
     <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
+      <Divider mt={5} mb={5} />
+
       {data.map(tribe => {
         return <FeedItem key={tribe.uuid} tribe={tribe} />
       })}

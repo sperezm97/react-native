@@ -40,7 +40,7 @@ function About({ tribe }) {
                 History
               </Typography>
               <Typography size={13} color={theme.darkGrey}>
-                Tribe created on {createdDate}. Last Active on {lastActiveDate}
+                Tribe created on {createdDate}. Last Active {lastActiveDate}
               </Typography>
             </View>
           </View>

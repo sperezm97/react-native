@@ -14,10 +14,11 @@ export function useTribes() {
   return theTribes
 }
 
+// tribes not joined yet.
 export function useSearchTribes(tribes) {
   const { ui } = useStores()
 
-  tribes = tribes.filter(t => !t.owner)
+  tribes = tribes.filter(t => !t.joined)
 
   return searchTribes(tribes, ui.tribesSearchTerm)
 }
@@ -71,7 +72,7 @@ export function sortTribes(tribes) {
 
 export function useTribeHistory(created, lastActive) {
   const createdDate = calendarDate(moment(created), 'MMM DD, YYYY')
-  const lastActiveDate = calendarDate(moment.unix(lastActive))
+  const lastActiveDate = calendarDate(moment.unix(lastActive), 'MMM DD, YYYY')
 
   return { createdDate, lastActiveDate }
 }

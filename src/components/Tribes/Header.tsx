@@ -1,14 +1,12 @@
 import React from 'react'
-import { View, StyleSheet, TouchableOpacity, Text } from 'react-native'
-import { Appbar, IconButton, ActivityIndicator } from 'react-native-paper'
+import { View, StyleSheet } from 'react-native'
+import { Appbar, IconButton } from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native'
 import { useObserver } from 'mobx-react-lite'
-import Toast from 'react-native-simple-toast'
-import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons'
+import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
 
 import { useStores, useTheme } from '../../store'
 import Pushable from '../common/Pushable'
-import Button from '../common/Button'
 import Typography from '../common/Typography'
 
 export default function Header({}) {
@@ -22,12 +20,25 @@ export default function Header({}) {
         <View style={{ ...styles.flex, ...styles.content }}>
           <View style={{ ...styles.flex, ...styles.left }}>
             <Typography size={25} fw='500'>
-              Communities
+              Discover
             </Typography>
           </View>
           <View style={{ ...styles.flex, ...styles.right }}>
+            <IconButton
+              icon={() => (
+                <FontAwesome5Icon name='users-cog' color={theme.darkGrey} size={18} />
+              )}
+              size={24}
+              style={{ backgroundColor: theme.lightGrey }}
+              onPress={() => navigation.navigate('OwnedTribes')}
+            />
             <Pushable onPress={() => ui.setNewTribeModal(true)}>
-              <IconButton icon='plus' color={theme.primary} size={24} style={{ backgroundColor: theme.lightGrey }} />
+              <IconButton
+                icon='plus'
+                color={theme.primary}
+                size={24}
+                style={{ backgroundColor: theme.lightGrey }}
+              />
             </Pushable>
           </View>
         </View>

@@ -7,6 +7,7 @@ import { useJoinedTribes, useFeed } from '../../store/hooks/tribes'
 import { SCREEN_HEIGHT, STATUS_BAR_HEIGHT } from '../../constants'
 import TabBar from '../common/TabBar'
 import Header from '../common/Header'
+import RefreshLoading from '../common/RefreshLoading'
 import Feed from '../Feed'
 
 const { useTribes } = hooks
@@ -40,7 +41,7 @@ export default function Home() {
             height: SCREEN_HEIGHT - STATUS_BAR_HEIGHT - 44
           }}
           refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={_onRefresh} />
+            <RefreshLoading refreshing={refreshing} onRefresh={_onRefresh} />
           }
           // scrollEventThrottle={10}
           //  onScroll={_onScroll}
