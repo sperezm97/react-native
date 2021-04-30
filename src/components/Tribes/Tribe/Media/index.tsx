@@ -57,8 +57,8 @@ function Media({ tribe }) {
                   <View style={{ ...styles.empty }}>
                     <MaterialIcon
                       name='plus-circle-multiple-outline'
-                      color={theme.icon}
-                      size={60}
+                      color={theme.iconPrimary}
+                      size={50}
                     />
                     <Typography
                       size={17}

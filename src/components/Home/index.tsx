@@ -30,6 +30,7 @@ export default function Home() {
   return useObserver(() => {
     const allTribes = useTribes()
     const tribes = useFeed(allTribes)
+    console.log('tribes', tribes.length)
 
     return (
       <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
