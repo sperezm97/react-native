@@ -45,11 +45,11 @@ export default function AddTribe() {
     await chats.createTribe(newTribe)
     setLoading(false)
     close()
-    setNext(1)
   }
 
   function close() {
     ui.setNewTribeModal(false)
+    setNext(1)
   }
 
   return useObserver(() => (

@@ -174,7 +174,7 @@ class ContactStore {
     try {
       await relay.post('invites', {
         nickname,
-        welcome_message: welcome_message || 'Welcome to Sphinx!'
+        welcome_message: welcome_message || 'Welcome to N2N2!'
       })
       this.getContacts()
     } catch (e) {

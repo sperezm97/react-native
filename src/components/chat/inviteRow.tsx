@@ -53,23 +53,38 @@ export default function InviteRow(props) {
   }
 
   return (
-    <TouchableOpacity style={{ ...styles.chatRow, backgroundColor: theme.main }} activeOpacity={0.5} onPress={doAction}>
+    <TouchableOpacity
+      style={{ ...styles.chatRow, backgroundColor: theme.main }}
+      activeOpacity={0.5}
+      onPress={doAction}
+    >
       <View style={styles.inviteQR}>
-        <Image style={{ height: 40, width: 40 }} source={require('../../assets/invite-qr.png')} />
+        <Image
+          style={{ height: 40, width: 40 }}
+          source={require('../../assets/invite-qr.png')}
+        />
       </View>
       <View style={styles.chatContent}>
         <View style={styles.chatContentTop}>
-          <Text style={{ ...styles.chatName, color: theme.text }}>{`Invite: ${name}`}</Text>
+          <Text
+            style={{ ...styles.chatName, color: theme.text }}
+          >{`Invite: ${name}`}</Text>
           {invite.price && <Text style={styles.invitePrice}>{invite.price}</Text>}
         </View>
         <View style={styles.chatMsgWrap}>
           {inviteIcon(statusString, theme)}
-          <Text style={{ ...styles.chatMsg, color: theme.subtitle }}>{inviteMsg(statusString, name, confirmed)}</Text>
+          <Text style={{ ...styles.chatMsg, color: theme.subtitle }}>
+            {inviteMsg(statusString, name, confirmed)}
+          </Text>
         </View>
       </View>
 
       <Portal>
-        <Dialog visible={dialogOpen} style={{ bottom: 10 }} onDismiss={setDialogOpenToFalseHandler}>
+        <Dialog
+          visible={dialogOpen}
+          style={{ bottom: 10 }}
+          onDismiss={setDialogOpenToFalseHandler}
+        >
           <Dialog.Title>{`Pay for invitation?`}</Dialog.Title>
           <Dialog.Actions style={{ justifyContent: 'space-between' }}>
             <Button onPress={setDialogOpenToFalseHandler} labelStyle={{ color: 'grey' }}>
@@ -90,11 +105,32 @@ export default function InviteRow(props) {
 function inviteIcon(statusString, theme) {
   switch (statusString) {
     case 'payment_pending':
-      return <MaterialIcon name='credit-card' size={14} color={theme.icon} style={{ marginRight: 4 }} />
+      return (
+        <MaterialIcon
+          name='credit-card'
+          size={14}
+          color={theme.icon}
+          style={{ marginRight: 4 }}
+        />
+      )
     case 'ready':
-      return <MaterialIcon name='check' size={14} color={theme.icon} style={{ marginRight: 4 }} />
+      return (
+        <MaterialIcon
+          name='check'
+          size={14}
+          color={theme.icon}
+          style={{ marginRight: 4 }}
+        />
+      )
     case 'delivered':
-      return <MaterialIcon name='check' size={14} color={theme.icon} style={{ marginRight: 4 }} />
+      return (
+        <MaterialIcon
+          name='check'
+          size={14}
+          color={theme.icon}
+          style={{ marginRight: 4 }}
+        />
+      )
     default:
       return <></>
   }
@@ -157,7 +193,8 @@ export const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     flexDirection: 'row',
-    paddingLeft: 8
+    paddingLeft: 8,
+    marginBottom: 14
   },
   chatContent: {
     display: 'flex',

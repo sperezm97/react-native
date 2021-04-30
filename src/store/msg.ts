@@ -7,7 +7,16 @@ import { relay } from '../api'
 import { chatStore, Chat } from './chats'
 import { detailsStore } from './details'
 import { constants } from '../constants'
-import { encryptText, makeRemoteTextMap, decodeSingle, decodeMessages, orgMsgsFromExisting, orgMsgs, putIn, putInReverse } from './msgHelpers'
+import {
+  encryptText,
+  makeRemoteTextMap,
+  decodeSingle,
+  decodeMessages,
+  orgMsgsFromExisting,
+  orgMsgs,
+  putIn,
+  putInReverse
+} from './msgHelpers'
 import { updateRealmMsg } from '../realm/exports'
 import { persistMsgLocalForage } from './storage'
 
@@ -161,7 +170,9 @@ class MsgStore {
     let route = 'messages'
     if (!forceMore && this.lastFetched) {
       const mult = 1
-      const dateq = moment.utc(this.lastFetched - 1000 * mult).format('YYYY-MM-DD%20HH:mm:ss')
+      const dateq = moment
+        .utc(this.lastFetched - 1000 * mult)
+        .format('YYYY-MM-DD%20HH:mm:ss')
       route += `?date=${dateq}`
     } else {
       // else just get last week
@@ -205,7 +216,8 @@ class MsgStore {
 
   sortAllMsgs(allms: { [k: number]: Msg[] }) {
     const final = {}
-    let toSort: { [k: number]: Msg[] } = allms || JSON.parse(JSON.stringify(this.messages))
+    let toSort: { [k: number]: Msg[] } =
+      allms || JSON.parse(JSON.stringify(this.messages))
     Object.entries(toSort).forEach(entries => {
       const k = entries[0]
       const v: Msg[] = entries[1]
@@ -268,11 +280,8 @@ class MsgStore {
       console.log('chat_id', chat_id)
 
       const encryptedText = await encryptText({ contact_id: 1, text })
-      console.log('encryptedText', encryptedText)
 
       const remote_text_map = await makeRemoteTextMap({ contact_id, text, chat_id })
-
-      console.log('remote_text_map', remote_text_map)
 
       const v: { [k: string]: any } = {
         contact_id,
@@ -294,9 +303,26 @@ class MsgStore {
         if (!r) return
         this.gotNewMessage(r)
       } else {
-        const putInMsgType = boost ? constants.message_types.boost : constants.message_types.message
-        const amt = boost && message_price && message_price < amount ? amount - message_price : amount
-        putIn(this.messages, { ...v, id: -1, sender: 1, amount: amt, date: moment().toISOString(), type: putInMsgType, message_content: text }, chat_id)
+        const putInMsgType = boost
+          ? constants.message_types.boost
+          : constants.message_types.message
+        const amt =
+          boost && message_price && message_price < amount
+            ? amount - message_price
+            : amount
+        putIn(
+          this.messages,
+          {
+            ...v,
+            id: -1,
+            sender: 1,
+            amount: amt,
+            date: moment().toISOString(),
+            type: putInMsgType,
+            message_content: text
+          },
+          chat_id
+        )
         const r = await relay.post('messages', v)
         console.log('266 ==============', r)
         if (!r) return
@@ -311,9 +337,21 @@ class MsgStore {
   }
 
   @action
-  async sendAttachment({ contact_id, text, chat_id, muid, media_type, media_key, price, amount }) {
+  async sendAttachment({
+    contact_id,
+    text,
+    chat_id,
+    muid,
+    media_type,
+    media_key,
+    price,
+    amount
+  }) {
     try {
-      const media_key_map = await makeRemoteTextMap({ contact_id, text: media_key, chat_id }, true)
+      const media_key_map = await makeRemoteTextMap(
+        { contact_id, text: media_key, chat_id },
+        true
+      )
       const v: { [k: string]: any } = {
         contact_id,
         chat_id: chat_id || null,
@@ -342,7 +380,8 @@ class MsgStore {
   async setMessageAsReceived(m) {
     if (!m.chat_id) return
     const msgsForChat = this.messages[m.chat_id]
-    const ogMessage = msgsForChat && msgsForChat.find(msg => msg.id === m.id || msg.id === -1)
+    const ogMessage =
+      msgsForChat && msgsForChat.find(msg => msg.id === m.id || msg.id === -1)
     if (ogMessage) {
       ogMessage.status = constants.statuses.received
     } else {

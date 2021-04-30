@@ -1,6 +1,16 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { useObserver } from 'mobx-react-lite'
-import { StyleSheet, View, Text, TextInput, TouchableOpacity, PanResponder, Animated, KeyboardAvoidingView, Platform } from 'react-native'
+import {
+  StyleSheet,
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  PanResponder,
+  Animated,
+  KeyboardAvoidingView,
+  Platform
+} from 'react-native'
 import { IconButton, Portal, ActivityIndicator } from 'react-native-paper'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import AudioRecorderPlayer from 'react-native-audio-recorder-player'
@@ -9,7 +19,12 @@ import Toast from 'react-native-simple-toast'
 
 import { useStores, useTheme } from '../../store'
 import { calcBotPrice, useReplyContent } from '../../store/hooks/chat'
-import EE, { EXTRA_TEXT_CONTENT, REPLY_UUID, CANCEL_REPLY_UUID, CLEAR_REPLY_UUID } from '../utils/ee'
+import EE, {
+  EXTRA_TEXT_CONTENT,
+  REPLY_UUID,
+  CANCEL_REPLY_UUID,
+  CLEAR_REPLY_UUID
+} from '../utils/ee'
 import Cam from '../utils/cam'
 import { constants } from '../../constants'
 import AttachmentDialog from './attachmentDialog'
@@ -48,7 +63,17 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
 
   const inputRef = useRef(null)
 
-  const hasLoopout = tribeBots && tribeBots.length && tribeBots.find(tb => tb.prefix === '/loopout' && tb.commands && tb.commands.find(c => c.command === '*')) ? true : false
+  const hasLoopout =
+    tribeBots &&
+    tribeBots.length &&
+    tribeBots.find(
+      tb =>
+        tb.prefix === '/loopout' &&
+        tb.commands &&
+        tb.commands.find(c => c.command === '*')
+    )
+      ? true
+      : false
 
   const waitingForAdminApproval = chat.status === constants.chat_statuses.pending
 
@@ -70,7 +95,7 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
       }
 
       msg.sendMessage({
-        contact_id: contact_id || null,
+        contact_id: contact_id || 1,
         text: txt,
         chat_id: chat.id || null,
         amount: price + pricePerMessage || 0,
@@ -289,7 +314,11 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
   let theID = chat && chat.id
   const thisChatMsgs = theID && msg.messages[theID]
 
-  const { replyMessageSenderAlias, replyMessageContent, replyColor } = useReplyContent(thisChatMsgs, replyUuid, extraTextContent)
+  const { replyMessageSenderAlias, replyMessageContent, replyColor } = useReplyContent(
+    thisChatMsgs,
+    replyUuid,
+    extraTextContent
+  )
   const hasReplyContent = replyUuid || extraTextContent ? true : false
 
   // const replyMessage = replyUuid&&thisChatMsgs&&thisChatMsgs.find(m=>m.uuid===replyUuid)
@@ -335,13 +364,25 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
             color={replyColor}
             content={replyMessageContent}
             senderAlias={replyMessageSenderAlias}
-            extraStyles={{ width: '100%', marginTop: inputFocused ? 0 : 8, marginBottom: inputFocused ? 6 : 0 }}
+            extraStyles={{
+              width: '100%',
+              marginTop: inputFocused ? 0 : 8,
+              marginBottom: inputFocused ? 6 : 0
+            }}
             onClose={closeReplyContent}
           />
         )}
         <View style={styles.barInner} accessibilityLabel='chat-bottombar-inner'>
           {!recordingStartTime && (
-            <TouchableOpacity style={{ ...styles.img, backgroundColor: theme.bg, borderColor: theme.border }} accessibilityLabel='more-button' onPress={() => setDialogOpen(true)}>
+            <TouchableOpacity
+              style={{
+                ...styles.img,
+                backgroundColor: theme.bg,
+                borderColor: theme.border
+              }}
+              accessibilityLabel='more-button'
+              onPress={() => setDialogOpen(true)}
+            >
               <Icon name='plus' color={theme.icon} size={27} />
             </TouchableOpacity>
           )}
@@ -357,7 +398,14 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
               // }}
               placeholder='Message...'
               ref={inputRef}
-              style={{ ...styles.input, marginLeft: hideMic ? 15 : 0, height: textInputHeight, backgroundColor: theme.inputBg, borderColor: theme.border, color: theme.input }}
+              style={{
+                ...styles.input,
+                marginLeft: hideMic ? 15 : 0,
+                height: textInputHeight,
+                backgroundColor: theme.inputBg,
+                borderColor: theme.border,
+                color: theme.input
+              }}
               placeholderTextColor={theme.subtitle}
               onFocus={e => setInputFocused(true)}
               onBlur={() => setInputFocused(false)}
@@ -370,30 +418,48 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
             <View style={styles.recording}>
               <RecDot />
               <View style={styles.recordSecs}>
-                <Text style={{ ...styles.recordSecsText, color: theme.title }}>{recordSecs}</Text>
+                <Text style={{ ...styles.recordSecsText, color: theme.title }}>
+                  {recordSecs}
+                </Text>
               </View>
-              <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+              <View
+                style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}
+              >
                 <Icon name='rewind' size={16} color='grey' />
-                <Text style={{ marginLeft: 5, color: theme.subtitle }}>Swipe to cancel</Text>
+                <Text style={{ marginLeft: 5, color: theme.subtitle }}>
+                  Swipe to cancel
+                </Text>
               </View>
             </View>
           )}
 
           {!hideMic && (
-            <Animated.View style={{ marginLeft: 0, marginRight: 4, zIndex: 9 }} {...panResponder.panHandlers}>
+            <Animated.View
+              style={{ marginLeft: 0, marginRight: 4, zIndex: 9 }}
+              {...panResponder.panHandlers}
+            >
               {uploading ? (
                 <View style={{ width: 42 }}>
                   <ActivityIndicator size={20} color='grey' />
                 </View>
               ) : (
-                <IconButton icon='microphone-outline' size={32} color={recordingStartTime ? 'white' : '#666'} />
+                <IconButton
+                  icon='microphone-outline'
+                  size={32}
+                  color={recordingStartTime ? 'white' : '#666'}
+                />
               )}
             </Animated.View>
           )}
 
           {hideMic && (
             <View style={styles.sendButtonWrap}>
-              <TouchableOpacity activeOpacity={0.5} style={{ ...styles.sendButton, backgroundColor: theme.primary }} onPress={() => sendMessage()} accessibilityLabel='send-message'>
+              <TouchableOpacity
+                activeOpacity={0.5}
+                style={{ ...styles.sendButton, backgroundColor: theme.primary }}
+                onPress={() => sendMessage()}
+                accessibilityLabel='send-message'
+              >
                 <Icon name='send' size={17} color='white' />
               </TouchableOpacity>
             </View>

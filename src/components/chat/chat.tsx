@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { View, StyleSheet, InteractionManager, BackHandler, KeyboardAvoidingView, Platform } from 'react-native'
+import {
+  View,
+  StyleSheet,
+  InteractionManager,
+  BackHandler,
+  KeyboardAvoidingView,
+  Platform
+} from 'react-native'
 import { useRoute, useNavigation } from '@react-navigation/native'
 import { ActivityIndicator } from 'react-native-paper'
 import Toast from 'react-native-simple-toast'
@@ -51,6 +58,7 @@ export default function Chat() {
   useEffect(() => {
     // check for contact key, exchange if none
     const contact = contactForConversation(chat, contacts.contacts)
+
     if (contact && !contact.contact_key) {
       contacts.exchangeKeys(contact.id)
     }
@@ -149,12 +157,28 @@ export default function Chat() {
 
   return (
     <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
-      <Header chat={chat} appMode={appMode} setAppMode={setAppMode} status={status} tribeParams={tribeParams} earned={earned} spent={spent} pricePerMinute={pricePerMinute} />
+      <Header
+        chat={chat}
+        appMode={appMode}
+        setAppMode={setAppMode}
+        status={status}
+        tribeParams={tribeParams}
+        earned={earned}
+        spent={spent}
+        pricePerMinute={pricePerMinute}
+      />
 
       <View style={{ ...styles.content }}>
-        <KeyboardAvoidingView style={{ flex: 1 }} behavior='padding' keyboardVerticalOffset={headerHeight}>
+        <KeyboardAvoidingView
+          style={{ flex: 1 }}
+          behavior='padding'
+          keyboardVerticalOffset={headerHeight}
+        >
           {(appURL ? true : false) && (
-            <View style={{ ...styles.layer, zIndex: appMode ? 100 : 99 }} accessibilityLabel='chat-application-frame'>
+            <View
+              style={{ ...styles.layer, zIndex: appMode ? 100 : 99 }}
+              accessibilityLabel='chat-application-frame'
+            >
               <Frame url={appURL} />
             </View>
           )}
@@ -167,10 +191,22 @@ export default function Chat() {
 
           {theShow && <MsgList chat={chat} pricePerMessage={pricePerMessage} />}
 
-          <Pod pod={pod} show={feedURL ? true : false} chat={chat} onBoost={onBoost} podError={podError} />
+          <Pod
+            pod={pod}
+            show={feedURL ? true : false}
+            chat={chat}
+            onBoost={onBoost}
+            podError={podError}
+          />
 
           {/* <Anim dark={theme.dark} /> */}
-          {theShow && <BottomBar chat={chat} pricePerMessage={pricePerMessage} tribeBots={tribeBots} />}
+          {theShow && (
+            <BottomBar
+              chat={chat}
+              pricePerMessage={pricePerMessage}
+              tribeBots={tribeBots}
+            />
+          )}
         </KeyboardAvoidingView>
       </View>
     </View>

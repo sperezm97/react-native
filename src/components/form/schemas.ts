@@ -172,14 +172,16 @@ const tribe = [
     type: 'number',
     label: { en: 'Amount to Stake', es: 'Amount to Stake' },
     validator: Yup.number(),
-    description: 'A spam protection mechanism: every subscriber pays this fee for each message, which is returned to them after after the amount of hours specific in Escrow Time'
+    description:
+      'A spam protection mechanism: every subscriber pays this fee for each message, which is returned to them after after the amount of hours specific in Escrow Time'
   },
   {
     name: 'escrow_time',
     type: 'number',
     label: { en: 'Time to Stake (Hours)', es: 'Time to Stake (Hours)' },
     validator: Yup.number(),
-    description: 'The number of hours before the Escrow Amount is returned to the subscriber'
+    description:
+      'The number of hours before the Escrow Amount is returned to the subscriber'
   }
   // {
   //   name: 'unlisted',

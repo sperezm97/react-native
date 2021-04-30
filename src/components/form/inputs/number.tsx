@@ -7,12 +7,24 @@ import InputAccessoryView from '../../common/Accessories/InputAccessoryView'
 import Typography from '../../common/Typography'
 // import QDialog from './qDialog'
 
-export default function NumberInput({ name, label, required, error, handleBlur, setValue, value, displayOnly, description, accessibilityLabel, style }) {
+export default function NumberInput({
+  name,
+  label,
+  required,
+  error,
+  handleBlur,
+  setValue,
+  value,
+  displayOnly,
+  description,
+  accessibilityLabel,
+  style
+}) {
   const theme = useTheme()
   let lab = `${label.en}${required ? ' *' : ''}`
-  if (error) {
-    lab = `${label.en} - ${error}`
-  }
+  // if (error) {
+  //   lab = `${label.en} - ${error}`
+  // }
   if (displayOnly) lab = label.en
 
   return (

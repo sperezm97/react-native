@@ -149,5 +149,7 @@ const styles = StyleSheet.create({
     flex: 1
   },
   itemContentTop: {},
-  itemContentBottom: {}
+  itemContentBottom: {
+    paddingTop: 5
+  }
 })

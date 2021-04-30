@@ -6,12 +6,26 @@ import { useTheme } from '../../../store'
 import InputAccessoryView from '../../common/Accessories/InputAccessoryView'
 import Typography from '../../common/Typography'
 
-export default function TheTextInput({ mode, name, label, required, error, handleChange, handleBlur, value, displayOnly, accessibilityLabel, multiline, numberOfLines, style }) {
+export default function TheTextInput({
+  mode,
+  name,
+  label,
+  required,
+  error,
+  handleChange,
+  handleBlur,
+  value,
+  displayOnly,
+  accessibilityLabel,
+  multiline,
+  numberOfLines,
+  style
+}) {
   const theme = useTheme()
   let lab = `${label.en}${required ? ' *' : ''}`
-  if (error) {
-    lab = `${label.en} - ${error}`
-  }
+  // if (error) {
+  //   lab = `${label.en} - ${error}`
+  // }
 
   if (displayOnly) lab = label.en
 
@@ -30,7 +44,12 @@ export default function TheTextInput({ mode, name, label, required, error, handl
         mode={mode}
         accessibilityLabel={accessibilityLabel}
         error={error}
-        style={{ ...styles.inputStyles, ...style, backgroundColor: theme.bg, ...inputStyles }}
+        style={{
+          ...styles.inputStyles,
+          ...style,
+          backgroundColor: theme.bg,
+          ...inputStyles
+        }}
         onChangeText={handleChange(name)}
         onBlur={handleBlur(name)}
         value={value}
