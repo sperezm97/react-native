@@ -85,9 +85,11 @@ export function useTribeHistory(created, lastActive) {
   return { createdDate, lastActiveDate }
 }
 
-export function useOwnerMediaType(msgs, type) {
-  // return msgs.filter(m => m.type === type && m.sender === 1)
-  return msgs.filter(m => m.type === type)
+export function useOwnerMediaType(msgs, type, owner = true) {
+  return msgs.filter(m => {
+    const ownerCriteria = owner ? m.sender === 1 : m.sender !== 1
+    return m.type === type && ownerCriteria
+  })
 }
 
 // feed from joined tribes

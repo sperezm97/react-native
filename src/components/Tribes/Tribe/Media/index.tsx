@@ -25,7 +25,7 @@ function Media({ tribe }) {
 
   return useObserver(() => {
     const msgs = useMsgs(tribe.chat) || []
-    const media = useOwnerMediaType(msgs, 6)
+    const media = useOwnerMediaType(msgs, 6, tribe.owner)
 
     return (
       <>
