@@ -2,7 +2,7 @@ import { useState } from 'react'
 import moment, { months } from 'moment'
 
 import { useStores } from '../index'
-import { DEFAULT_DOMAIN } from '../../config'
+import { DEFAULT_DOMAIN, INVITER_KEY } from '../../config'
 import { Chat } from '../chats'
 import { Contact } from '../contacts'
 import { constants } from '../../constants'
@@ -20,7 +20,13 @@ export function useSearchChats(chats) {
   const { ui } = useStores()
   const conversation = constants.chat_types.conversation
 
-  chats = chats.filter(c => c.type === conversation)
+  chats = chats.filter(c => {
+    return c.type === conversation && 'owner_pubkey' in c
+  })
+
+  chats.map(c => {
+    console.log('c', c)
+  })
 
   const chatsToShow = searchChats(chats, ui.searchTerm)
   return chatsToShow
