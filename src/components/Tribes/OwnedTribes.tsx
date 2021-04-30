@@ -18,13 +18,24 @@ const { useTribes } = hooks
 
 export default function OwnedTribes() {
   const [loading, setLoading] = useState(true)
+  const [refreshing, setRefreshing] = useState(false)
   const { ui, chats } = useStores()
   const theme = useTheme()
   const navigation = useNavigation()
 
   useEffect(() => {
+    fetchTribes()
+  }, [ui.newTribeModal])
+
+  function fetchTribes() {
     chats.getTribes().then(() => setLoading(false))
-  }, [])
+  }
+
+  function onRefresh() {
+    setRefreshing(true)
+    fetchTribes()
+    setRefreshing(false)
+  }
 
   return useObserver(() => {
     const tribes = useTribes()
@@ -42,6 +53,8 @@ export default function OwnedTribes() {
           <List
             data={tribesToShow}
             loading={loading}
+            refreshing={refreshing}
+            onRefresh={onRefresh}
             // listHeader={<ListHeader />}
             listEmpty={<ListEmpty />}
           />

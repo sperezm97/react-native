@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useObserver } from 'mobx-react-lite'
 import { StyleSheet, View, Modal, Text } from 'react-native'
 import FastImage from 'react-native-fast-image'
@@ -50,6 +50,7 @@ export default function PhotoViewer({ visible, close, photos, photoId }) {
 }
 
 function SwipeItem(props) {
+  const [photoH, setPhotoH] = useState(0)
   const { message_content, media_type, chat, media_token } = props
 
   const ldat = parseLDAT(media_token)
@@ -69,16 +70,26 @@ function SwipeItem(props) {
 
   return (
     <View style={{ ...styles.swipeItem }}>
-      <FastImage
-        resizeMode='contain'
-        source={{ uri: data || uri }}
+      <View
         style={{
-          ...styles.photo,
           width: w,
-          height: h,
-          maxHeight: h - 100
+          height: photoH
         }}
-      />
+      >
+        <FastImage
+          resizeMode='contain'
+          source={{ uri: data || uri }}
+          onLoad={evt => {
+            setPhotoH((evt.nativeEvent.height / evt.nativeEvent.width) * w)
+          }}
+          style={{
+            ...styles.photo
+            // width: w,
+            // height: h,
+            // maxHeight: h - 100
+          }}
+        />
+      </View>
     </View>
   )
 }

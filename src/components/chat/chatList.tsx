@@ -22,7 +22,7 @@ import Typography from '../common/Typography'
 
 const { useChats, useChatRow } = hooks
 
-export default function ChatList() {
+export default function ChatList({ listHeader }) {
   const { ui, contacts, msg, details, chats } = useStores()
   const theme = useTheme()
 
@@ -99,7 +99,8 @@ export default function ChatList() {
           refreshControl={
             <RefreshLoading refreshing={refreshing} onRefresh={onRefresh} />
           }
-          ListFooterComponent={footerComponent}
+          // ListFooterComponent={footerComponent}
+          ListHeaderComponent={listHeader}
         />
       </View>
     )

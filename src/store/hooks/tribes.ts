@@ -29,7 +29,14 @@ export function useJoinedTribes(tribes) {
 }
 
 export function useOwnedTribes(tribes) {
-  return tribes.filter(t => t.owner)
+  tribes = tribes.filter(t => t.joined)
+
+  // return tribes.sort((a, b) => b.joined - a.owner)
+
+  return tribes.sort((a, b) => {
+    if (a.joined > b.owner && b.last_active > a.last_active) return -1
+    return 0
+  })
 }
 
 export function searchTribes(tribes, searchTerm) {
@@ -79,7 +86,8 @@ export function useTribeHistory(created, lastActive) {
 }
 
 export function useOwnerMediaType(msgs, type) {
-  return msgs.filter(m => m.type === type && m.sender === 1)
+  // return msgs.filter(m => m.type === type && m.sender === 1)
+  return msgs.filter(m => m.type === type)
 }
 
 // feed from joined tribes

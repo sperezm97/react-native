@@ -13,17 +13,28 @@ export default function Contacts() {
   const { ui } = useStores()
   const theme = useTheme()
 
-  const setAddFriendModalHandler = () => ui.setAddFriendDialog(true)
+  const onAddFriendPress = () => ui.setAddFriendDialog(true)
   const onChangeTextHandler = (txt: string) => ui.setContactsSearchTerm(txt)
 
-  const AddContact = <IconButton icon={({ size, color }) => <AntDesign name='adduser' color={color} size={size} />} color={theme.primary} size={22} onPress={setAddFriendModalHandler} />
+  const AddContact = (
+    <IconButton
+      icon={({ size, color }) => <AntDesign name='adduser' color={color} size={size} />}
+      color={theme.primary}
+      size={22}
+      onPress={onAddFriendPress}
+    />
+  )
 
   return useObserver(() => (
     <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
       <BackHeader title='Contacts' action={AddContact} />
       <View style={{ ...styles.content }}>
         <View style={{ ...styles.searchWrap }}>
-          <Search placeholder='Search Contacts' onChangeText={onChangeTextHandler} value={ui.contactsSearchTerm} />
+          <Search
+            placeholder='Search Contacts'
+            onChangeText={onChangeTextHandler}
+            value={ui.contactsSearchTerm}
+          />
         </View>
         <ContactList />
       </View>

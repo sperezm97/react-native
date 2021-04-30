@@ -26,20 +26,20 @@ export default function Header({}) {
           <View style={{ ...styles.flex, ...styles.right }}>
             <IconButton
               icon={() => (
-                <FontAwesome5Icon name='users-cog' color={theme.darkGrey} size={18} />
+                <FontAwesome5Icon name='users' color={theme.primary} size={18} />
               )}
               size={24}
-              style={{ backgroundColor: theme.lightGrey }}
+              style={{ backgroundColor: theme.lightGrey, marginRight: 12 }}
               onPress={() => navigation.navigate('OwnedTribes')}
             />
-            <Pushable onPress={() => ui.setNewTribeModal(true)}>
+            {/* <Pushable onPress={() => ui.setNewTribeModal(true)}>
               <IconButton
                 icon='plus'
                 color={theme.primary}
                 size={24}
                 style={{ backgroundColor: theme.lightGrey }}
               />
-            </Pushable>
+            </Pushable> */}
           </View>
         </View>
       </Appbar.Header>

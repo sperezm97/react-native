@@ -105,7 +105,9 @@ export class UiStore {
     this.editTribeParams = o
       ? {
           ...o,
-          escrow_time: o.escrow_millis ? Math.floor(o.escrow_millis / (60 * 60 * 1000)) : 0
+          escrow_time: o.escrow_millis
+            ? Math.floor(o.escrow_millis / (60 * 60 * 1000))
+            : 0
         }
       : null
   }

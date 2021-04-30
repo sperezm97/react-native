@@ -6,7 +6,8 @@ const config = {
   },
   tribes: {
     server: 'tribes-staging.n2n2.chat',
-    uuid: 'YGT2Bx-VzNmGHkGIZqQnD7cBh7I6z6Wb_wNIuRpmOjR_mowtxQnCi4Z250FpyEB_R0BOvE5IDbqaogSOzaZXbCRGCg0s'
+    uuid:
+      'YGT2Bx-VzNmGHkGIZqQnD7cBh7I6z6Wb_wNIuRpmOjR_mowtxQnCi4Z250FpyEB_R0BOvE5IDbqaogSOzaZXbCRGCg0s'
   },
   memes: {
     server: 'memes-staging.n2n2.chat'

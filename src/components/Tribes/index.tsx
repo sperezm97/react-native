@@ -13,12 +13,24 @@ const { useTribes } = hooks
 
 export default function Tribes() {
   const [loading, setLoading] = useState(true)
+  const [refreshing, setRefreshing] = useState(false)
+
   const { chats } = useStores()
   const theme = useTheme()
 
   useEffect(() => {
-    chats.getTribes().then(() => setLoading(false))
+    fetchTribes()
   }, [])
+
+  function fetchTribes() {
+    chats.getTribes().then(() => setLoading(false))
+  }
+
+  function onRefresh() {
+    setRefreshing(true)
+    fetchTribes()
+    setRefreshing(false)
+  }
 
   return useObserver(() => {
     const tribes = useTribes()
@@ -27,7 +39,13 @@ export default function Tribes() {
     return (
       <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
         <Header />
-        <List data={tribesToShow} loading={loading} listHeader={<ListHeader />} />
+        <List
+          data={tribesToShow}
+          loading={loading}
+          listHeader={<ListHeader />}
+          refreshing={refreshing}
+          onRefresh={onRefresh}
+        />
         <TabBar />
       </View>
     )

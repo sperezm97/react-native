@@ -24,6 +24,8 @@ export default function MediaMsg(props) {
 
   const ldat = parseLDAT(media_token)
 
+  console.log('ldat', ldat)
+
   let amt = null
   let purchased = false
   if (ldat.meta && ldat.meta.amt) {
@@ -189,7 +191,8 @@ export default function MediaMsg(props) {
 }
 
 function Media({ type, data, uri, filename }) {
-  // console.log("MEDIA:",type,uri)
+  console.log('MEDIA:', type, uri)
+
   if (type === 'sphinx/text') return <></>
   if (type.startsWith('image')) {
     return (

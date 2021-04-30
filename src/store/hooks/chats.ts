@@ -18,7 +18,11 @@ export function useChats() {
 
 export function useSearchChats(chats) {
   const { ui } = useStores()
-  const chatsToShow = filterChats(chats, ui.searchTerm)
+  const conversation = constants.chat_types.conversation
+
+  chats = chats.filter(c => c.type === conversation)
+
+  const chatsToShow = searchChats(chats, ui.searchTerm)
   return chatsToShow
 }
 
@@ -169,7 +173,7 @@ export function sortChats(chatsToShow, messages) {
   })
 }
 
-export function filterChats(theChats, searchTerm) {
+export function searchChats(theChats, searchTerm) {
   return theChats.filter(c => {
     if (!searchTerm) return true
     return (

@@ -8,9 +8,10 @@ import { useStores, useTheme } from '../../store'
 import Typography from '../common/Typography'
 import Avatar from '../common/Avatar'
 import Button from '../common/Button'
+import RefreshLoading from '../common/RefreshLoading'
 
 export default function List(props) {
-  const { data, loading, listHeader, listEmpty } = props
+  const { data, loading, listHeader, listEmpty, refreshing } = props
   const theme = useTheme()
 
   const renderItem = ({ index, item }) => <Item {...item} />
@@ -29,6 +30,8 @@ export default function List(props) {
             renderItem={renderItem}
             ListHeaderComponent={listHeader}
             ListEmptyComponent={listEmpty}
+            refreshing={refreshing}
+            onRefresh={props.onRefresh && props.onRefresh}
           />
         )}
       </View>
@@ -66,15 +69,15 @@ function Item(props) {
       <View style={styles.itemContent}>
         <View style={{ ...styles.row, ...styles.itemContentTop }}>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Typography size={17} fw='500'>
+            <Typography size={16} fw='500'>
               {name}
             </Typography>
-            {!owner && (
+            {/* {!owner && (
               <>
                 <View style={{ ...styles.dot, backgroundColor: theme.text }}></View>
                 <Typography size={12}>{owner_alias?.trim()}</Typography>
               </>
-            )}
+            )} */}
           </View>
 
           <View style={{ paddingRight: 4 }}>
