@@ -19,19 +19,26 @@ export default function ContactList() {
       if (!ui.contactsSearchTerm) return true
       return c.alias.toLowerCase().includes(ui.contactsSearchTerm.toLowerCase())
     })
-    const contactsNotMe = contactsToShow.filter(c => c.id !== 1).sort((a, b) => (a.alias > b.alias ? 1 : -1))
+    const contactsNotMe = contactsToShow
+      .filter(c => c.id !== 1)
+      .sort((a, b) => (a.alias > b.alias ? 1 : -1))
 
     const contactsNotFromGroups = contactsNotMe.filter(c => !c.from_group)
 
     return (
-      <View style={{ ...styles.container, backgroundColor: theme.bg }}>
+      <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
         <SectionList
           style={styles.list}
           sections={grouper(contactsNotFromGroups)}
           keyExtractor={(item: { [k: string]: any }, index) => {
             return item.alias + index + item.photo_url
           }}
-          renderItem={({ item }) => <Item contact={item} onPress={contact => navigation.navigate('Contact', { contact })} />}
+          renderItem={({ item }) => (
+            <Item
+              contact={item}
+              onPress={contact => navigation.navigate('Contact', { contact })}
+            />
+          )}
           renderSectionHeader={({ section: { title } }) => (
             <View style={{ ...styles.section, backgroundColor: theme.main }}>
               <Text style={{ ...styles.sectionTitle, color: theme.title }}>{title}</Text>
@@ -50,15 +57,32 @@ function Item({ contact, onPress }) {
   const hasImg = uri ? true : false
 
   return (
-    <SwipeRow disableRightSwipe={true} friction={100} rightOpenValue={-80} stopRightSwipe={-80}>
+    <SwipeRow
+      disableRightSwipe={true}
+      friction={100}
+      rightOpenValue={-80}
+      stopRightSwipe={-80}
+    >
       <View style={styles.backSwipeRow}>
-        <IconButton icon='trash-can-outline' color='white' size={25} onPress={() => contacts.deleteContact(contact.id)} style={{ marginRight: 20 }} />
+        <IconButton
+          icon='trash-can-outline'
+          color='white'
+          size={25}
+          onPress={() => contacts.deleteContact(contact.id)}
+          style={{ marginRight: 20 }}
+        />
       </View>
       <View style={{ ...styles.frontSwipeRow, backgroundColor: theme.bg }}>
-        <TouchableOpacity style={styles.contactTouch} activeOpacity={0.5} onPress={() => onPress(contact)}>
+        <TouchableOpacity
+          style={styles.contactTouch}
+          activeOpacity={0.5}
+          onPress={() => onPress(contact)}
+        >
           <Avatar size={40} aliasSize={16} alias={contact.alias} photo={uri} />
           <View style={styles.contactContent}>
-            <Text style={{ ...styles.contactName, color: theme.text }}>{contact.alias}</Text>
+            <Text style={{ ...styles.contactName, color: theme.text }}>
+              {contact.alias}
+            </Text>
           </View>
         </TouchableOpacity>
       </View>
@@ -82,7 +106,7 @@ function grouper(data) {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  wrap: {
     flex: 1
   },
   list: {

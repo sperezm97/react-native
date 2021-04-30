@@ -12,6 +12,7 @@ import Tribes from '../Tribes/Navigation'
 import OwnedTribes from '../Tribes/OwnedTribes'
 import Tribe from '../Tribes/Tribe'
 import EditTribe from '../Tribes/Tribe/EditTribe'
+import TribeMembers from '../Tribes/Members'
 import Home from '../Home'
 
 const RootStack = createStackNavigator()
@@ -97,6 +98,13 @@ export default function Root() {
       <RootStack.Screen
         name='EditTribe'
         component={EditTribe}
+        options={{
+          headerShown: false
+        }}
+      />
+      <RootStack.Screen
+        name='TribeMembers'
+        component={TribeMembers}
         options={{
           headerShown: false
         }}

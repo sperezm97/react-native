@@ -1,0 +1,84 @@
+import React, { useEffect, useState } from 'react'
+import { StyleSheet, View, ScrollView } from 'react-native'
+import { useObserver } from 'mobx-react-lite'
+import { useNavigation } from '@react-navigation/native'
+import { IconButton } from 'react-native-paper'
+import AntDesignIcon from 'react-native-vector-icons/AntDesign'
+
+import { useStores, useTheme } from '../../../store'
+import BackHeader from '../../common/BackHeader'
+import List from './List'
+import Pending from './Pending'
+import AddMembers from './AddMembers'
+import AddMemberModal from '../../common/Modals/Tribe/AddMembers'
+
+export default function Members({ route }) {
+  const [addMember, setAddMember] = useState(false)
+  const { contacts } = useStores()
+  const theme = useTheme()
+  const navigation = useNavigation()
+
+  const tribe = route.params.tribe
+
+  useEffect(() => {
+    contacts.getContacts()
+  })
+
+  const contactsToShow = contacts.contacts.filter(c => {
+    return c.id > 1 && tribe && tribe.chat && tribe.chat.contact_ids.includes(c.id)
+  })
+
+  const pendingContactsToShow =
+    contacts.contacts.filter(c => {
+      return (
+        c.id > 1 &&
+        tribe &&
+        tribe.chat.pending_contact_ids &&
+        tribe.chat.pending_contact_ids.includes(c.id)
+      )
+    }) || []
+
+  return useObserver(() => {
+    return (
+      <>
+        <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
+          <BackHeader
+            // title={`${tribe.name} Members`}
+            title='Members'
+            navigate={() => navigation.goBack()}
+            // action={tribe.owner && <MemberHeader openDialog={() => setAddMember(true)} />}
+          />
+          <View style={styles.content}>
+            <List tribe={tribe} members={contactsToShow} />
+            <Pending tribe={tribe} members={pendingContactsToShow} />
+            {/* <AddMemberModal visible={addMember} close={() => setAddMember(false)}>
+              <AddMembers initialMemberIds={(tribe && tribe.chat.contact_ids) || []} />
+            </AddMemberModal> */}
+          </View>
+        </View>
+      </>
+    )
+  })
+}
+
+// function MemberHeader({ openDialog }) {
+//   const theme = useTheme()
+
+//   return (
+//     <IconButton
+//       icon={() => <AntDesignIcon name='addusergroup' color={theme.white} size={24} />}
+//       style={{ backgroundColor: theme.primary }}
+//       onPress={openDialog}
+//     />
+//   )
+// }
+
+const styles = StyleSheet.create({
+  wrap: {
+    flex: 1
+  },
+  content: {
+    flex: 1,
+    paddingTop: 10
+  }
+})

@@ -22,7 +22,7 @@ import Typography from '../common/Typography'
 
 const { useChats, useChatRow } = hooks
 
-export default function ChatList({ listHeader }) {
+export default function ChatList() {
   const { ui, contacts, msg, details, chats } = useStores()
   const theme = useTheme()
 
@@ -100,7 +100,7 @@ export default function ChatList({ listHeader }) {
             <RefreshLoading refreshing={refreshing} onRefresh={onRefresh} />
           }
           // ListFooterComponent={footerComponent}
-          ListHeaderComponent={listHeader}
+          // ListHeaderComponent={listHeader}
         />
       </View>
     )
@@ -134,7 +134,7 @@ function ChatRow(props) {
       <TouchableOpacity
         style={{
           ...styles.chatRow,
-          backgroundColor: theme.bg
+          backgroundColor: theme.main
         }}
         activeOpacity={0.5}
         onPress={onSeeChatHandler}

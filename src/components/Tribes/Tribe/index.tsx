@@ -27,12 +27,12 @@ export default function Tribe({ route }) {
 
   const tribe = route.params.tribe
 
-  function handleEditTribePress() {
+  function onEditTribePress() {
     navigation.navigate('EditTribe', { tribe })
   }
 
-  function handleTribeMembersPress() {
-    // navigation.navigate('EditTribe', {})
+  function onTribeMembersPress() {
+    navigation.navigate('TribeMembers', { tribe })
   }
 
   const renderScene = ({ route }) => {
@@ -76,8 +76,8 @@ export default function Tribe({ route }) {
           <TribeSettings
             visible={tribeDialog}
             onCancel={() => setTribeDialog(false)}
-            onEditPress={handleEditTribePress}
-            onMembersPress={handleTribeMembersPress}
+            onEditPress={onEditTribePress}
+            onMembersPress={onTribeMembersPress}
           />
         )}
       </SafeAreaView>

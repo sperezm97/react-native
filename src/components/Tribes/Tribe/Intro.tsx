@@ -227,7 +227,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     width: '100%',
     flex: 1,
-    marginLeft: 34
+    marginLeft: 28
   },
   avatarWrap: {
     display: 'flex',

@@ -112,7 +112,7 @@ export default function MediaMsg(props) {
   return (
     <View collapsable={false}>
       <TouchableOpacity
-        style={{ ...styles.wrap, minHeight: wrapHeight }}
+        // style={{ ...styles.wrap, minHeight: wrapHeight }}
         //onPressIn={tap} onPressOut={untap}
         onLongPress={onLongPressHandler}
         onPress={press}
@@ -191,7 +191,7 @@ export default function MediaMsg(props) {
 }
 
 function Media({ type, data, uri, filename }) {
-  console.log('MEDIA:', type, uri)
+  // console.log('MEDIA:', type, uri)
 
   if (type === 'sphinx/text') return <></>
   if (type.startsWith('image')) {

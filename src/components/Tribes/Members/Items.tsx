@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native'
+import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import { RadioButton } from 'react-native-paper'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { SwipeRow } from 'react-native-swipe-list-view'
@@ -9,6 +9,7 @@ import { useTheme } from '../../../store'
 import { usePicSrc } from '../../utils/picSrc'
 import { ApproveButton, RejectButton } from '../../chat/msg/memberRequest'
 import Avatar from '../../common/Avatar'
+import Typography from '../../common/Typography'
 
 export function DeletableContact(props) {
   const theme = useTheme()
@@ -17,16 +18,27 @@ export function DeletableContact(props) {
   const hasImg = uri ? true : false
 
   return (
-    <SwipeRow disableRightSwipe={true} friction={100} rightOpenValue={-80} stopRightSwipe={-80}>
+    <SwipeRow
+      disableRightSwipe={true}
+      friction={100}
+      rightOpenValue={-80}
+      stopRightSwipe={-80}
+    >
       <View style={styles.backSwipeRow}>
-        <IconButton icon='trash-can-outline' color='white' size={25} onPress={() => onDelete(contact.id)} style={{ marginRight: 20 }} />
+        <IconButton
+          icon='trash-can-outline'
+          color='white'
+          size={25}
+          onPress={() => onDelete(contact.id)}
+          style={{ marginRight: 20 }}
+        />
       </View>
       <View style={{ ...styles.frontSwipeRow, backgroundColor: theme.bg }}>
         <View style={{ ...styles.avatarWrap }}>
           <Avatar size={40} photo={uri} big alias={contact.alias} aliasSize={20} />
         </View>
         <View style={styles.contactContent}>
-          <Text style={{ ...styles.contactName, color: theme.text }}>{contact.alias}</Text>
+          <Typography size={16}>{contact.alias}</Typography>
         </View>
       </View>
     </SwipeRow>
@@ -39,14 +51,30 @@ export function Contact(props) {
   const uri = usePicSrc(contact)
   const hasImg = uri ? true : false
   return (
-    <TouchableOpacity style={{ ...styles.contactTouch, backgroundColor: theme.bg }} activeOpacity={1} onPress={onPress}>
+    <TouchableOpacity
+      style={{ ...styles.contactTouch, backgroundColor: theme.bg }}
+      activeOpacity={1}
+      onPress={onPress}
+    >
       <View style={{ ...styles.avatarWrap, borderColor: theme.border }}>
+        <Avatar size={40} aliasSize={16} photo={uri} big alias={contact.alias} />
+
         {/* <Image source={hasImg ? { uri } : require('../../../../android_assets/avatar.png')} style={{ width: 44, height: 44 }} resizeMode={'cover'} /> */}
       </View>
       <View style={styles.contactContent}>
-        <Text style={{ ...styles.contactName, color: theme.title }}>{contact.alias}</Text>
+        <Typography size={16}>{contact.alias}</Typography>
+        {/* <Text style={{ ...styles.contactName, color: theme.title }}>{contact.alias}</Text> */}
       </View>
-      <View style={styles.checker}>{!unselectable && <RadioButton status={selected ? 'checked' : 'unchecked'} value='contact' color='#6289FD' onPress={onPress} />}</View>
+      <View style={styles.checker}>
+        {!unselectable && (
+          <RadioButton
+            status={selected ? 'checked' : 'unchecked'}
+            value='contact'
+            color={theme.primary}
+            onPress={onPress}
+          />
+        )}
+      </View>
     </TouchableOpacity>
   )
 }
@@ -64,16 +92,28 @@ export function PendingContact(props) {
     setLoadingStatus('')
   }
   return (
-    <TouchableOpacity style={{ ...styles.contactTouch, backgroundColor: theme.bg }} activeOpacity={1} onPress={onPress}>
+    <TouchableOpacity
+      style={{ ...styles.contactTouch, backgroundColor: theme.bg }}
+      activeOpacity={1}
+      onPress={onPress}
+    >
       <View style={{ ...styles.avatarWrap, borderColor: theme.border }}>
-        {/* <Image source={hasImg ? { uri } : require('../../../../android_assets/avatar.png')} style={{ width: 44, height: 44 }} resizeMode={'cover'} /> */}
+        <Avatar size={40} photo={uri} big alias={contact.alias} aliasSize={20} />
       </View>
       <View style={styles.contactContent}>
-        <Text style={{ ...styles.contactName, color: theme.title }}>{contact.alias}</Text>
+        <Typography size={16}>{contact.alias}</Typography>
       </View>
       <View style={styles.buttonz}>
-        <ApproveButton disabled={loadingStatus} onPress={() => press('approved')} loading={loadingStatus === 'approved'} />
-        <RejectButton disabled={loadingStatus} onPress={() => press('rejected')} loading={loadingStatus === 'rejected'} />
+        <ApproveButton
+          disabled={loadingStatus}
+          onPress={() => press('approved')}
+          loading={loadingStatus === 'approved'}
+        />
+        <RejectButton
+          disabled={loadingStatus}
+          onPress={() => press('rejected')}
+          loading={loadingStatus === 'rejected'}
+        />
       </View>
     </TouchableOpacity>
   )
@@ -93,7 +133,7 @@ export function SelectedContact({ contact, onPress, removable }) {
           </TouchableOpacity>
         )}
       </View>
-      <Text style={{ ...styles.selName, color: theme.title }}>{contact.alias}</Text>
+      <Typography size={16}>{contact.alias}</Typography>
     </View>
   )
 }

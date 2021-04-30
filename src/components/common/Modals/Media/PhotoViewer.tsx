@@ -27,7 +27,7 @@ export default function PhotoViewer({ visible, close, photos, photoId }) {
       presentationStyle='fullScreen'
       onDismiss={close}
     >
-      <View style={{ ...styles.container, backgroundColor: theme.black }}>
+      <View style={{ ...styles.wrap, backgroundColor: theme.black }}>
         <IconButton
           icon={() => <MaterialCommunityIcon name='close' color={theme.icon} size={30} />}
           onPress={close}
@@ -95,7 +95,7 @@ function SwipeItem(props) {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  wrap: {
     flex: 1,
     height: '100%',
     position: 'relative'

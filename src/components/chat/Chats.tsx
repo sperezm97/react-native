@@ -15,47 +15,70 @@ export default function Chats() {
   const { ui } = useStores()
   const theme = useTheme()
 
+  const onAddFriendPress = () => ui.setAddFriendDialog(true)
+
   return useObserver(() => (
     <View
       style={{ ...styles.main, backgroundColor: theme.bg }}
       accessibilityLabel='dashboard'
     >
       <Header />
-      <ChatList listHeader={<ListHeader />} />
+      <View style={{ ...styles.searchWrap }}>
+        <Search
+          placeholder='Search'
+          value={ui.searchTerm}
+          onChangeText={txt => {
+            ui.setSearchTerm(txt)
+          }}
+          style={{ width: '88%' }}
+        />
+        <View style={{ width: '12%' }}>
+          <IconButton
+            icon={({ size, color }) => (
+              <AntDesign name='adduser' color={color} size={size} />
+            )}
+            color={theme.primary}
+            size={22}
+            onPress={onAddFriendPress}
+          />
+        </View>
+      </View>
+      <ChatList
+
+      // listHeader={<ListHeader />}
+      />
       <TabBar />
     </View>
   ))
 }
 
-function ListHeader() {
-  const { ui } = useStores()
-  const theme = useTheme()
+// function ListHeader() {
+//   const { ui } = useStores()
+//   const theme = useTheme()
 
-  const onAddFriendPress = () => ui.setAddFriendDialog(true)
-
-  return (
-    <View style={{ ...styles.searchWrap }}>
-      <Search
-        placeholder='Search'
-        value={ui.searchTerm}
-        onChangeText={txt => {
-          ui.setSearchTerm(txt)
-        }}
-        style={{ width: '88%' }}
-      />
-      <View style={{ width: '12%' }}>
-        <IconButton
-          icon={({ size, color }) => (
-            <AntDesign name='adduser' color={color} size={size} />
-          )}
-          color={theme.primary}
-          size={22}
-          onPress={onAddFriendPress}
-        />
-      </View>
-    </View>
-  )
-}
+//   return (
+//     <View style={{ ...styles.searchWrap }}>
+//       <Search
+//         placeholder='Search'
+//         value={ui.searchTerm}
+//         onChangeText={txt => {
+//           ui.setSearchTerm(txt)
+//         }}
+//         style={{ width: '88%' }}
+//       />
+//       <View style={{ width: '12%' }}>
+//         <IconButton
+//           icon={({ size, color }) => (
+//             <AntDesign name='adduser' color={color} size={size} />
+//           )}
+//           color={theme.primary}
+//           size={22}
+//           onPress={onAddFriendPress}
+//         />
+//       </View>
+//     </View>
+//   )
+// }
 
 const styles = StyleSheet.create({
   main: {

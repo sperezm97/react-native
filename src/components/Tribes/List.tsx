@@ -11,7 +11,7 @@ import Button from '../common/Button'
 import RefreshLoading from '../common/RefreshLoading'
 
 export default function List(props) {
-  const { data, loading, listHeader, listEmpty, refreshing } = props
+  const { data, loading, listEmpty, refreshing } = props
   const theme = useTheme()
 
   const renderItem = ({ index, item }) => <Item {...item} />
@@ -28,7 +28,7 @@ export default function List(props) {
             data={data}
             keyExtractor={item => item.uuid}
             renderItem={renderItem}
-            ListHeaderComponent={listHeader}
+            // ListHeaderComponent={listHeader}
             ListEmptyComponent={listEmpty}
             refreshing={refreshing}
             onRefresh={props.onRefresh && props.onRefresh}
@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     // height: 100,
     marginVertical: 8,
-    marginHorizontal: 14,
+    // marginHorizontal: 14,
     padding: 16,
     borderRadius: 5
   },

@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react'
 import { useObserver } from 'mobx-react-lite'
 import { View, StyleSheet, Text, FlatList } from 'react-native'
 import { ActivityIndicator, Title } from 'react-native-paper'
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import moment from 'moment'
 
 import { useStores, useTheme } from '../../store'
 import Empty from '../common/Empty'
-import IconSvg from '../common/Icon'
+import Icon from '../common/Icon'
 
 export default function Transactions() {
   const { details } = useStores()
@@ -28,6 +28,8 @@ export default function Transactions() {
     ;(async () => {
       setLoading(true)
       const ps = await details.getPayments()
+
+      console.log(ps)
 
       setLoading(false)
       if (!isMsgs(ps)) return
@@ -97,9 +99,14 @@ function Payment(props) {
     <View style={{ backgroundColor: p.background }}>
       <View style={{ ...styles.paymentBox, borderBottomColor: theme.border }}>
         <View style={{ ...styles.payment }}>
-          <Icon name={p.icon} color={p.color} size={28} style={{ marginLeft: 10 }} />
+          <MaterialCommunityIcon
+            name={p.icon}
+            color={p.color}
+            size={28}
+            style={{ marginLeft: 10 }}
+          />
           <View style={styles.mid}>
-            <IconSvg name='Invoice' fill={theme.icon} size={16} />
+            <Icon name='Invoice' fill={theme.icon} size={16} />
             <Text style={{ ...styles.contact, color: theme.text }} numberOfLines={1}>
               {text}
             </Text>

@@ -155,7 +155,8 @@ export class ChatStore {
     unlisted,
     is_private,
     app_url,
-    feed_url
+    feed_url,
+    contact_ids = []
   }) {
     console.log('======>', {
       name,

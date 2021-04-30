@@ -15,7 +15,7 @@ export default function Tribes() {
   const [loading, setLoading] = useState(true)
   const [refreshing, setRefreshing] = useState(false)
 
-  const { chats } = useStores()
+  const { ui, chats } = useStores()
   const theme = useTheme()
 
   useEffect(() => {
@@ -32,6 +32,8 @@ export default function Tribes() {
     setRefreshing(false)
   }
 
+  const onTribesSearch = (txt: string) => ui.setTribesSearchTerm(txt)
+
   return useObserver(() => {
     const tribes = useTribes()
     const tribesToShow = useSearchTribes(tribes)
@@ -39,10 +41,18 @@ export default function Tribes() {
     return (
       <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
         <Header />
+        <View style={styles.searchWrap}>
+          <Search
+            placeholder='Search Communities'
+            value={ui.tribesSearchTerm}
+            onChangeText={onTribesSearch}
+            h={45}
+          />
+        </View>
         <List
           data={tribesToShow}
           loading={loading}
-          listHeader={<ListHeader />}
+          // listHeader={<ListHeader />}
           refreshing={refreshing}
           onRefresh={onRefresh}
         />
@@ -52,23 +62,23 @@ export default function Tribes() {
   })
 }
 
-function ListHeader() {
-  const theme = useTheme()
-  const { ui, chats } = useStores()
+// function ListHeader() {
+//   const theme = useTheme()
+//   const { ui, chats } = useStores()
 
-  const onTribesSearch = (txt: string) => ui.setTribesSearchTerm(txt)
+//   const onTribesSearch = (txt: string) => ui.setTribesSearchTerm(txt)
 
-  return (
-    <View style={styles.searchWrap}>
-      <Search
-        placeholder='Search Communities'
-        value={ui.tribesSearchTerm}
-        onChangeText={onTribesSearch}
-        h={45}
-      />
-    </View>
-  )
-}
+//   return (
+//     <View style={styles.searchWrap}>
+//       <Search
+//         placeholder='Search Communities'
+//         value={ui.tribesSearchTerm}
+//         onChangeText={onTribesSearch}
+//         h={45}
+//       />
+//     </View>
+//   )
+// }
 
 const styles = StyleSheet.create({
   wrap: {
