@@ -29,8 +29,6 @@ export default function Transactions() {
       setLoading(true)
       const ps = await details.getPayments()
 
-      console.log(ps)
-
       setLoading(false)
       if (!isMsgs(ps)) return
       setPayments(ps)

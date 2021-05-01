@@ -24,10 +24,6 @@ export function useSearchChats(chats) {
     return c.type === conversation && 'owner_pubkey' in c
   })
 
-  chats.map(c => {
-    console.log('c', c)
-  })
-
   const chatsToShow = searchChats(chats, ui.searchTerm)
   return chatsToShow
 }

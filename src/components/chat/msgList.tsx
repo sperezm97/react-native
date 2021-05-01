@@ -66,6 +66,8 @@ export default function MsgListWrap({
   return useObserver(() => {
     const msgs = useMsgs(chat, limit) || []
 
+    console.log('msgs:::', msgs)
+
     return (
       <MsgList
         msgs={msgs}

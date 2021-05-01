@@ -24,8 +24,6 @@ export default function MediaMsg(props) {
 
   const ldat = parseLDAT(media_token)
 
-  console.log('ldat', ldat)
-
   let amt = null
   let purchased = false
   if (ldat.meta && ldat.meta.amt) {
