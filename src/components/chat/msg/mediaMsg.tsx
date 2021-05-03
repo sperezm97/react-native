@@ -77,12 +77,7 @@ export default function MediaMsg(props) {
 
       uri = uri.replace('file://', '')
 
-      console.log('uri', uri)
-      console.log('filename', filename)
-
-      const res = await check(PERMISSIONS.IOS.MEDIA_LIBRARY)
-
-      // console.log('res:', res)
+      const res = await check(PERMISSIONS.IOS.CAMERA)
 
       if (res === RESULTS.GRANTED) {
         await RNFetchBlob.fs.cp(uri, dirs.DownloadDir + '/' + filename)

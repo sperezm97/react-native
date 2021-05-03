@@ -166,7 +166,7 @@ export default function ChatDetails({ route }) {
             </View>
           )}
 
-          {showValueSlider && (
+          {/* {showValueSlider && (
             <View style={styles.slideWrap}>
               <View style={styles.slideText}>
                 <Text style={{ ...styles.slideLabel, color: theme.subtitle }}>
@@ -187,7 +187,7 @@ export default function ChatDetails({ route }) {
                 style={{ width: '90%' }}
               />
             </View>
-          )}
+          )} */}
         </View>
         <ExitGroup
           visible={leaveDialog}
