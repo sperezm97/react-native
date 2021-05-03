@@ -28,6 +28,7 @@ export default function Feed({ feed }) {
 function Item({ tribe }) {
   return useObserver(() => {
     const msgs = useMsgs(tribe.chat) || []
+
     const media = useMediaType(msgs, 6)
 
     return (
@@ -41,6 +42,7 @@ function Item({ tribe }) {
                   id={m.id}
                   {...m}
                   tribe={tribe}
+                  chat={tribe.chat}
                   // onMediaPress={onMediaPress}
                 />
               </View>

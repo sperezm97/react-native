@@ -39,6 +39,7 @@ function Media({ tribe }) {
                     id={m.id}
                     index={index}
                     {...m}
+                    chat={tribe.chat}
                     onMediaPress={onMediaPress}
                   />
                 )
@@ -94,6 +95,7 @@ function Media({ tribe }) {
             close={() => setMediaModal(false)}
             photos={media}
             photoId={selectedMedia}
+            chat={tribe.chat}
           />
         </View>
       </>

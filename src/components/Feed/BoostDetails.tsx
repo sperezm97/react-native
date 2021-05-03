@@ -1,16 +1,14 @@
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
 
-import { useTheme } from '../../../store'
-import CustomIcon from '../../utils/customIcons'
-import shared from './sharedStyles'
-import Typography from '../../common/Typography'
-import AvatarsRow from './avatarsRow'
+import { useTheme } from '../../store'
+import CustomIcon from '../utils/customIcons'
+import Typography from '../common/Typography'
+import AvatarsRow from '../chat/msg/avatarsRow'
 
 export default function BoostRow(props) {
   const theme = useTheme()
   const isMe = props.sender === 1
-  // console.log(props.boosts_total_sats)
 
   const theBoosts = []
   if (props.boosts) {
@@ -25,22 +23,11 @@ export default function BoostRow(props) {
     })
   }
 
-  const paddStyles = props.pad ? { ...shared.innerPad } : {}
-
-  const wrapStyles = {
-    ...styles.row,
-    maxWidth: '100%',
-    height: props.pad ? 50 : 35,
-    ...paddStyles
-  }
-
   const hasBoosts = theBoosts ? true : false
 
-  console.log('asBoosts', hasBoosts)
-
   return (
-    <View style={wrapStyles}>
-      <View style={{ ...styles.left, marginRight: 18 }}>
+    <View style={{ ...styles.wrap }}>
+      <View style={{ ...styles.left, paddingRight: 8 }}>
         <View style={{ ...styles.rocketWrap, backgroundColor: theme.primary }}>
           <CustomIcon color='white' size={15} name='fireworks' />
         </View>
@@ -51,7 +38,7 @@ export default function BoostRow(props) {
           sats
         </Typography>
       </View>
-      <View style={{ ...styles.right, marginLeft: 8 }}>
+      <View style={{ ...styles.right, paddingRight: 5 }}>
         {hasBoosts && (
           <AvatarsRow
             aliases={theBoosts.map(b => {
@@ -67,19 +54,16 @@ export default function BoostRow(props) {
 }
 
 const styles = StyleSheet.create({
-  row: {
+  wrap: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    width: '100%',
-    height: 35
+    justifyContent: 'space-between'
   },
   left: {
     display: 'flex',
     flexDirection: 'row',
-    alignItems: 'center',
-    maxWidth: 99
+    alignItems: 'center'
   },
   right: {
     display: 'flex',

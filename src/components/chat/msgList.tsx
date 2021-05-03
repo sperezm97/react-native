@@ -236,6 +236,9 @@ function ListItem({
   const msg = m
 
   if (!m.chat) msg.chat = chat
+
+  console.log('msg', msg)
+
   return useMemo(
     () => (
       <Message

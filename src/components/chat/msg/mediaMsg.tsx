@@ -61,7 +61,7 @@ export default function MediaMsg(props) {
     setBuying(false)
   }
 
-  function press() {
+  function onMediaPress() {
     if (media_type.startsWith('image')) {
       if (data) ui.setImgViewerParams({ data })
       if (uri) ui.setImgViewerParams({ uri })
@@ -97,6 +97,9 @@ export default function MediaMsg(props) {
   }
 
   const hasImgData = data || uri ? true : false
+
+  console.log('hasImgData', hasImgData, 'data', data, 'uri', uri)
+
   const hasContent = message_content ? true : false
   const showPurchaseButton = amt && !isMe ? true : false
   const showStats = isMe && amt
@@ -131,9 +134,8 @@ export default function MediaMsg(props) {
   return (
     <View collapsable={false}>
       <TouchableOpacity
-        //onPressIn={tap} onPressOut={untap}
         onLongPress={onLongPressHandler}
-        onPress={press}
+        onPress={onMediaPress}
         activeOpacity={0.8}
       >
         {showStats && (
@@ -190,23 +192,39 @@ export default function MediaMsg(props) {
 
         {showBoostRow && <BoostRow {...props} myAlias={props.myAlias} pad />}
       </TouchableOpacity>
+
       {showPurchaseButton && (
-        <Button
-          color={theme.dark ? theme.primary : theme.main}
-          round={0}
-          fs={12}
-          onPress={onButtonPressHandler}
-          loading={buying}
-          icon={() => (
-            <MaterialCommunityIcon
-              name={purchased ? 'check' : 'arrow-top-right'}
-              color={theme.dark ? theme.white : theme.icon}
-              size={20}
-            />
+        <>
+          {purchased ? (
+            <View style={{ ...styles.purchasedWrap, backgroundColor: theme.main }}>
+              <MaterialCommunityIcon
+                name={purchased ? 'check' : 'arrow-top-right'}
+                color={theme.dark ? theme.white : theme.icon}
+                size={20}
+                style={{ paddingRight: 5 }}
+              />
+              <Typography size={15} style={{ paddingRight: 5 }}>
+                {purchased ? 'Purchased' : `Pay ${amt} sat`}
+              </Typography>
+            </View>
+          ) : (
+            <Button
+              color={theme.dark ? theme.primary : theme.main}
+              round={0}
+              onPress={onButtonPressHandler}
+              loading={buying}
+              icon={() => (
+                <MaterialCommunityIcon
+                  name={purchased ? 'check' : 'arrow-top-right'}
+                  color={theme.dark ? theme.white : theme.icon}
+                  size={18}
+                />
+              )}
+            >
+              <Typography size={12}>{`Pay ${amt} sat`}</Typography>
+            </Button>
           )}
-        >
-          {purchased ? 'Purchased' : `Pay ${amt} sat`}
-        </Button>
+        </>
       )}
     </View>
   )
@@ -345,5 +363,12 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center'
+  },
+  purchasedWrap: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 14
   }
 })

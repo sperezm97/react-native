@@ -15,19 +15,24 @@ import { SCREEN_WIDTH, SCREEN_HEIGHT, STATUS_BAR_HEIGHT } from '../../constants'
 import Typography from '../common/Typography'
 import Avatar from '../common/Avatar'
 import Divider from '../common/Layout/Divider'
+import BoostDetails from './BoostDetails'
 
 function Media(props) {
   const {
     index,
     id,
+    uuid,
     message_content,
     media_type,
     chat,
     media_token,
     onMediaPress,
     created_at,
-    tribe
+    tribe,
+    boosts_total_sats
   } = props
+  const [boosted, setBoosted] = useState(false)
+  const { msg, ui, user, chats } = useStores()
   const theme = useTheme()
   const navigation = useNavigation()
 
@@ -50,9 +55,31 @@ function Media(props) {
 
   const hasImgData = data || uri ? true : false
 
-  // console.log('loading', loading)
+  async function onBoostPress() {
+    const pricePerMessage = tribe.price_per_message + tribe.escrow_amount
+
+    if (!uuid) return
+    const amount = (user.tipAmount || 100) + pricePerMessage
+    const r = msg.sendMessage({
+      boost: true,
+      contact_id: null,
+      text: '',
+      amount,
+      chat_id: chat.id || null,
+      reply_uuid: uuid,
+      message_price: pricePerMessage
+    })
+
+    if (r) {
+      setBoosted(true)
+    }
+  }
 
   const onTribeOwnerPress = () => navigation.navigate('Tribe', { tribe: { ...tribe } })
+
+  const showBoostRow = boosts_total_sats ? true : false
+
+  console.log('tribe.img', tribe.img)
 
   return (
     <>
@@ -60,10 +87,15 @@ function Media(props) {
         <View style={{ ...styles.wrap }}>
           <TouchableOpacity activeOpacity={0.6} onPress={onTribeOwnerPress}>
             <View style={{ ...styles.header }}>
-              <View style={styles.avatarWrap}>
-                <Avatar size={35} photo={tribe.img} round={50} />
+              <View style={{ ...styles.headerInfo }}>
+                <View style={styles.avatarWrap}>
+                  <Avatar size={35} photo={tribe.img} alias={tribe.name} round={50} />
+                </View>
+                <Typography size={14}>{tribe.name}</Typography>
               </View>
-              <Typography size={14}>{tribe.name}</Typography>
+              <Typography size={12} color={theme.subtitle} style={{ paddingRight: 5 }}>
+                {calendarDate(moment(created_at), 'MMM DD, YYYY')}
+              </Typography>
             </View>
           </TouchableOpacity>
 
@@ -78,12 +110,14 @@ function Media(props) {
               icon={() => (
                 <Ionicon name='rocket-outline' color={theme.iconPrimary} size={24} />
               )}
-              onPress={() => console.log('boost!')}
+              onPress={onBoostPress}
             />
-            <Typography size={12} color={theme.subtitle} style={{ paddingRight: 5 }}>
-              {calendarDate(moment(created_at), 'MMM DD, YYYY')}
-            </Typography>
+            <View>
+              {showBoostRow && <BoostDetails {...props} myAlias={user.alias} />}
+            </View>
           </View>
+          <View style={{ ...styles.meta }}></View>
+
           {/* {index + 1 !== media.length && <Divider mt={10} mb={10} />} */}
           <Divider mt={10} mb={10} />
         </View>
@@ -129,8 +163,14 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
     padding: 14
     // marginBottom: 10
+  },
+  headerInfo: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center'
   },
   footer: {
     display: 'flex',
@@ -141,6 +181,13 @@ const styles = StyleSheet.create({
     paddingRight: 5,
     paddingLeft: 5
     // marginBottom: 10
+  },
+  meta: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingRight: 5,
+    paddingLeft: 14
   },
   avatarWrap: {
     display: 'flex',
