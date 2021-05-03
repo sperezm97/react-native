@@ -14,6 +14,7 @@ target 'Chat' do
   use_react_native!(:path => config["reactNativePath"])
 
   pod 'Permission-Camera', :path => "#{permissions_path}/Camera"
+  pod 'Permission-MediaLibrary', :path => "#{permissions_path}/MediaLibrary"
 
 
   # target 'ChatTests' do
