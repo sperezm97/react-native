@@ -115,7 +115,6 @@ class ContactStore {
       const r = await relay.put(`contacts/${id}`, v)
       if (!r) return
       const cs = [...this.contacts]
-      console.log('updated contact:', r)
       this.contacts = cs.map(c => {
         if (c.id === id) {
           return { ...c, ...v }

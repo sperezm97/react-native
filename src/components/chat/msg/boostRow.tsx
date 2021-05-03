@@ -36,8 +36,6 @@ export default function BoostRow(props) {
 
   const hasBoosts = theBoosts ? true : false
 
-  console.log('asBoosts', hasBoosts)
-
   return (
     <View style={wrapStyles}>
       <View style={{ ...styles.left, marginRight: 18 }}>

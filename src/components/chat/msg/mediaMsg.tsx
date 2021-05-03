@@ -201,9 +201,9 @@ export default function MediaMsg(props) {
                 name={purchased ? 'check' : 'arrow-top-right'}
                 color={theme.dark ? theme.white : theme.icon}
                 size={20}
-                style={{ paddingRight: 5 }}
+                style={{ paddingRight: 8 }}
               />
-              <Typography size={15} style={{ paddingRight: 5 }}>
+              <Typography size={15} style={{ paddingRight: 10 }}>
                 {purchased ? 'Purchased' : `Pay ${amt} sat`}
               </Typography>
             </View>

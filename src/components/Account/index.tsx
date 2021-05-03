@@ -73,8 +73,9 @@ export default function Account() {
         if (json.muid) {
           setPhotoUrl(`https://${server.host}/public/${json.muid}`)
         }
+
         await contacts.updateContact(1, {
-          photo_url
+          photo_url: `https://${server.host}/public/${json.muid}`
         })
         setUploading(false)
       })
@@ -157,20 +158,36 @@ export default function Account() {
                   ...styles.userInfoContent
                 }}
               >
-                <AvatarEdit onPress={() => setImageDialog(true)} uploading={uploading} uploadPercent={uploadPercent}>
+                <AvatarEdit
+                  onPress={() => setImageDialog(true)}
+                  uploading={uploading}
+                  uploadPercent={uploadPercent}
+                >
                   <Avatar size={100} photo={imgURI} round={50} />
                 </AvatarEdit>
                 <View style={{ display: 'flex', flexDirection: 'column' }}>
-                  <Title style={{ ...styles.title, color: theme.text }}>{user.alias}</Title>
+                  <Title style={{ ...styles.title, color: theme.text }}>
+                    {user.alias}
+                  </Title>
                 </View>
               </View>
             </View>
 
             <ActionMenu items={items} />
 
-            <ImageDialog visible={imageDialog} onCancel={() => setImageDialog(false)} onPick={tookPic} onSnap={tookPic} setImageDialog={setImageDialog} />
+            <ImageDialog
+              visible={imageDialog}
+              onCancel={() => setImageDialog(false)}
+              onPick={tookPic}
+              onSnap={tookPic}
+              setImageDialog={setImageDialog}
+            />
 
-            <DialogWrap title='Edit Name' visible={userDialog} onDismiss={() => setUserDialog(false)}>
+            <DialogWrap
+              title='Edit Name'
+              visible={userDialog}
+              onDismiss={() => setUserDialog(false)}
+            >
               <Form
                 nopad
                 schema={me}
