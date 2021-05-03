@@ -190,14 +190,14 @@ export default function Chat() {
           )}
 
           {theShow && <MsgList chat={chat} pricePerMessage={pricePerMessage} />}
-
+          {/* 
           <Pod
             pod={pod}
             show={feedURL ? true : false}
             chat={chat}
             onBoost={onBoost}
             podError={podError}
-          />
+          /> */}
 
           {/* <Anim dark={theme.dark} /> */}
           {theShow && (

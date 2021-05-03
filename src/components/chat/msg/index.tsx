@@ -1,26 +1,29 @@
 import React, { useState, useRef, useLayoutEffect } from 'react'
+import { View, StyleSheet, Text } from 'react-native'
+import { SwipeRow } from 'react-native-swipe-list-view'
+import { IconButton } from 'react-native-paper'
+import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
+import Ionicon from 'react-native-vector-icons/Ionicons'
+import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
+import ReactNativeHapticFeedback from 'react-native-haptic-feedback'
+import Popover, { PopoverPlacement } from 'react-native-popover-view'
+import Clipboard from '@react-native-community/clipboard'
+
+import { useTheme } from '../../../store'
+import { constantCodes, constants } from '../../../constants'
+import EE, { CANCEL_REPLY_UUID, CLEAR_REPLY_UUID, REPLY_UUID } from '../../utils/ee'
 import TextMsg from './textMsg'
 import PaymentMessage from './paymentMsg'
 import MediaMsg from './mediaMsg'
 import Invoice from './invoice'
-import { View, StyleSheet, Text, TouchableOpacity } from 'react-native'
-import { constantCodes, constants } from '../../../constants'
 import InfoBar from './infoBar'
 import sharedStyles from './sharedStyles'
 import GroupNotification from './groupNotification'
-import ReactNativeHapticFeedback from 'react-native-haptic-feedback'
-import { SwipeRow } from 'react-native-swipe-list-view'
-import { IconButton, ActivityIndicator } from 'react-native-paper'
 import ReplyContent from './replyContent'
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
-import Avatar from './avatar'
+import Avatar from '../../common/Avatar'
 import MemberRequest from './memberRequest'
-import Clipboard from '@react-native-community/clipboard'
 import BotResMsg from './botResMsg'
 import BoostMsg from './boostMsg'
-import Popover from 'react-native-popover-view'
-import { useTheme } from '../../../store'
-import EE, { CANCEL_REPLY_UUID, CLEAR_REPLY_UUID, REPLY_UUID } from '../../utils/ee'
 
 export default function MsgRow(props) {
   const theme = useTheme()
@@ -75,7 +78,6 @@ export default function MsgRow(props) {
 
   const isMe = props.sender === 1
   const w = props.windowWidth
-  // console.log("RERENDER MESG",props.id)
 
   const onRowOpenHandler = () => {
     if (props.message_content) {
@@ -87,22 +89,31 @@ export default function MsgRow(props) {
     EE.emit(CANCEL_REPLY_UUID, '')
     setShowReply(false)
   }
+
   return (
     <View
       style={{
         display: 'flex',
         width: '100%',
         flexDirection: 'row',
-        marginTop: props.showInfoBar ? 20 : 0
+        marginBottom: 30
+        // marginTop: props.showInfoBar ? 20 : 0
       }}
     >
+      {/* <View style={{ paddingLeft: 6 }}> */}
       <Avatar
         alias={props.senderAlias}
         photo={props.senderPic ? `${props.senderPic}?thumb=true` : null}
-        hide={!props.showInfoBar || isMe}
+        size={26}
+        aliasSize={12}
+        // hide={!props.showInfoBar || isMe}
+        hide={isMe}
       />
+      {/* </View> */}
+
       <View style={{ display: 'flex', width: w - 40 }}>
-        {props.showInfoBar && <InfoBar {...props} senderAlias={props.senderAlias} />}
+        {/* {props.showInfoBar && <InfoBar {...props} senderAlias={props.senderAlias} />} */}
+        <InfoBar {...props} senderAlias={props.senderAlias} />
         <SwipeRow
           ref={swipeRowRef}
           disableRightSwipe={true}
@@ -116,10 +127,14 @@ export default function MsgRow(props) {
           <View style={styles.replyWrap}>
             {showReply && (
               <IconButton
-                icon='reply'
-                size={32}
-                color='#aaa'
-                style={{ marginLeft: 0, marginRight: 15 }}
+                icon={() => (
+                  <FontAwesome5Icon name='reply' size={20} color={theme.darkGrey} />
+                )}
+                style={{
+                  marginLeft: 0,
+                  marginRight: 15,
+                  backgroundColor: theme.lightGrey
+                }}
               />
             )}
           </View>
@@ -143,14 +158,9 @@ function MsgBubble(props) {
   const isPaid = props.status === constants.statuses.confirmed
   const [showPopover, setShowPopover] = useState(false)
 
-  // let dashed = false
-  let backgroundColor = isMe ? theme.primary : theme.main
-  let borderColor = theme.border
+  let backgroundColor = isMe ? theme.main : theme.bg
   if (isInvoice && !isPaid) {
     backgroundColor = theme.dark ? '#202a36' : 'white'
-    // dashed = true
-    // borderColor = '#777'
-    // if (!isMe) borderColor = '#4AC998'
   }
 
   const isDeleted = props.status === constants.statuses.deleted
@@ -186,14 +196,16 @@ function MsgBubble(props) {
     <Popover
       isVisible={showPopover}
       onRequestClose={onRequestCloseHandler}
+      placement={PopoverPlacement.BOTTOM}
+      arrowStyle={{ width: 0, height: 0 }}
+      popoverStyle={{ display: 'flex', flexDirection: 'row', borderRadius: 40 }}
       from={
         <View
           style={{
             ...sharedStyles.bubble,
             alignSelf: isMe ? 'flex-end' : 'flex-start',
             backgroundColor,
-            borderColor,
-            // borderStyle: dashed ? 'dashed' : 'solid',
+            borderColor: !isMe ? theme.border : 'transparent',
             overflow: 'hidden'
           }}
         >
@@ -215,41 +227,40 @@ function MsgBubble(props) {
         </View>
       }
     >
-      <TouchableOpacity onPress={onCopyHandler} style={{ padding: 10, minWidth: 99 }}>
-        <Text style={{ textAlign: 'center' }}>Copy</Text>
-      </TouchableOpacity>
       {allowBoost && (
-        <TouchableOpacity
+        <IconButton
           onPress={onBoostHandler}
-          style={{ padding: 10, minWidth: 99, borderTopWidth: 1, borderTopColor: '#ddd' }}
-        >
-          <Text style={{ textAlign: 'center' }}>Boost</Text>
-        </TouchableOpacity>
-      )}
-      {(isMe || props.isTribeOwner) && (
-        <TouchableOpacity
-          onPress={onDeleteHandler}
+          icon={() => <Ionicon name='rocket' color={theme.primary} size={20} />}
           style={{
-            padding: 10,
-            borderTopWidth: 1,
-            borderTopColor: '#ddd',
-            display: 'flex',
-            alignItems: 'center',
-            flexDirection: 'row',
-            justifyContent: 'center',
-            minWidth: 99
+            backgroundColor: theme.lightGrey,
+            marginHorizontal: 10
           }}
-        >
-          {deleting && <ActivityIndicator color='#888' size={10} />}
-          <Text style={{ textAlign: 'center', marginLeft: 6 }}>Delete</Text>
-        </TouchableOpacity>
+        />
+      )}
+
+      <IconButton
+        onPress={onCopyHandler}
+        icon={() => <Ionicon name='copy' color={theme.darkGrey} size={20} />}
+        style={{
+          backgroundColor: theme.lightGrey
+        }}
+      />
+      {(isMe || props.isTribeOwner) && (
+        <IconButton
+          onPress={onDeleteHandler}
+          icon={() => <Ionicon name='trash' color={theme.red} size={20} />}
+          color={theme.red}
+          style={{
+            backgroundColor: theme.lightGrey,
+            marginHorizontal: 10
+          }}
+        />
       )}
     </Popover>
   )
 }
 
-// only show "messages"
-// also "group_join" and "group_leave"
+// Message content component
 function Message(props) {
   const typ = constantCodes['message_types'][props.type]
   // console.log('props.type', props.type)
@@ -277,12 +288,13 @@ function Message(props) {
   }
 }
 
+// Delete Message component
 function DeletedMsg() {
   return (
     <View
       style={{ padding: 10, display: 'flex', flexDirection: 'row', alignItems: 'center' }}
     >
-      <Icon color='#aaa' size={12} name='cancel' />
+      <MaterialCommunityIcon name='cancel' color='#aaa' size={12} />
       <Text style={{ color: '#aaa', marginLeft: 5 }}>This message has been deleted</Text>
     </View>
   )
@@ -292,8 +304,8 @@ const styles = StyleSheet.create({
   replyWrap: {
     width: '100%',
     display: 'flex',
-    justifyContent: 'flex-end',
     flexDirection: 'row',
+    justifyContent: 'flex-end',
     alignItems: 'center'
   },
   content: {

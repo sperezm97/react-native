@@ -1,10 +1,14 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { View, Text, StyleSheet, Image } from 'react-native'
+import { View, Text, StyleSheet } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
-import { ActivityIndicator, Button, IconButton } from 'react-native-paper'
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+import { PERMISSIONS, check, request, RESULTS } from 'react-native-permissions'
+import { ActivityIndicator, IconButton } from 'react-native-paper'
+import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
+import Ionicon from 'react-native-vector-icons/Ionicons'
 import Video from 'react-native-video'
 import FastImage from 'react-native-fast-image'
+import RNFetchBlob from 'rn-fetch-blob'
+import Toast from 'react-native-simple-toast'
 
 import { useStores, useTheme } from '../../../store'
 import shared from './sharedStyles'
@@ -14,12 +18,13 @@ import { parseLDAT } from '../../utils/ldat'
 import FileMsg from './fileMsg'
 import BoostRow from './boostRow'
 import Typography from '../../common/Typography'
+import Button from '../../common/Button'
 
 export default function MediaMsg(props) {
+  const { message_content, media_type, chat, media_token } = props
+  const [buying, setBuying] = useState(false)
   const { meme, ui, msg } = useStores()
   const theme = useTheme()
-  const [buying, setBuying] = useState(false)
-  const { message_content, media_type, chat, media_token } = props
   const isMe = props.sender === 1
 
   const ldat = parseLDAT(media_token)
@@ -36,13 +41,9 @@ export default function MediaMsg(props) {
     ldat
   )
 
-  // useEffect(() => {
-  //   if (props.viewable) trigger()
-  // }, [props.viewable, props.media_token]) // refresh when scroll, or when purchase accepted
-
   useEffect(() => {
     trigger()
-  }, [props.media_token]) // refresh when scroll, or when purchase accepted
+  }, [props.media_token])
 
   async function buy(amount) {
     setBuying(true)
@@ -60,19 +61,37 @@ export default function MediaMsg(props) {
     setBuying(false)
   }
 
-  function showTooltip() {
-    console.log('TOOLTIP')
-  }
   function press() {
-    // console.log('press')
-
     if (media_type.startsWith('image')) {
       if (data) ui.setImgViewerParams({ data })
       if (uri) ui.setImgViewerParams({ uri })
+    } else if (media_type.startsWith('n2n2/text')) {
+      downloadText(uri)
     }
   }
-  function longPress() {
-    console.log('longpress')
+
+  async function downloadText(uri) {
+    try {
+      let dirs = RNFetchBlob.fs.dirs
+      const filename = meme.filenameCache[props.id]
+
+      uri = uri.replace('file://', '')
+
+      console.log('uri', uri)
+      console.log('filename', filename)
+
+      const res = await check(PERMISSIONS.IOS.CAMERA)
+
+      if (res === RESULTS.GRANTED) {
+        await RNFetchBlob.fs.cp(uri, dirs.DownloadDir + '/' + filename)
+        Toast.showWithGravity('File Downloaded', Toast.SHORT, Toast.CENTER)
+      } else {
+        Toast.showWithGravity('Permission Denied', Toast.SHORT, Toast.CENTER)
+      }
+    } catch (err) {
+      // Toast.showWithGravity('Permission Denied', Toast.SHORT, Toast.CENTER)
+      console.warn(err)
+    }
   }
 
   const hasImgData = data || uri ? true : false
@@ -86,7 +105,7 @@ export default function MediaMsg(props) {
   let isImg = false
   let minHeight = 60
   let showPayToUnlockMessage = false
-  if (media_type === 'sphinx/text') {
+  if (media_type === 'n2n2/text') {
     minHeight = isMe ? 72 : 42
     if (!isMe && !loading && !paidMessageText) showPayToUnlockMessage = true
   }
@@ -110,11 +129,10 @@ export default function MediaMsg(props) {
   return (
     <View collapsable={false}>
       <TouchableOpacity
-        // style={{ ...styles.wrap, minHeight: wrapHeight }}
         //onPressIn={tap} onPressOut={untap}
         onLongPress={onLongPressHandler}
         onPress={press}
-        activeOpacity={0.65}
+        activeOpacity={0.8}
       >
         {showStats && (
           <View style={styles.stats}>
@@ -156,7 +174,7 @@ export default function MediaMsg(props) {
 
         {isImg && showPurchaseButton && !purchased && (
           <View style={styles.imgIconWrap}>
-            <Icon name='image' color='grey' size={50} />
+            <Ionicon name='image' color={theme.icon} size={50} />
           </View>
         )}
 
@@ -168,20 +186,24 @@ export default function MediaMsg(props) {
           </View>
         )}
 
-        {showBoostRow && <BoostRow {...props} pad myAlias={props.myAlias} />}
+        {showBoostRow && <BoostRow {...props} myAlias={props.myAlias} pad />}
       </TouchableOpacity>
       {showPurchaseButton && (
         <Button
-          style={styles.payButton}
-          mode='contained'
-          dark={true}
+          color={theme.dark ? theme.primary : theme.main}
+          round={0}
+          fs={12}
           onPress={onButtonPressHandler}
           loading={buying}
-          icon={purchased ? 'check' : 'arrow-top-right'}
+          icon={() => (
+            <MaterialCommunityIcon
+              name={purchased ? 'check' : 'arrow-top-right'}
+              color={theme.dark ? theme.white : theme.icon}
+              size={20}
+            />
+          )}
         >
-          <Text style={{ fontSize: 11 }}>
-            {purchased ? 'Purchased' : `Pay ${amt} sat`}
-          </Text>
+          {purchased ? 'Purchased' : `Pay ${amt} sat`}
         </Button>
       )}
     </View>
@@ -191,7 +213,9 @@ export default function MediaMsg(props) {
 function Media({ type, data, uri, filename }) {
   // console.log('MEDIA:', type, uri)
 
-  if (type === 'sphinx/text') return <></>
+  if (type === 'n2n2/text') {
+    return <FileMsg type={type} uri={uri} filename={filename} />
+  }
   if (type.startsWith('image')) {
     return (
       <FastImage style={styles.img} resizeMode='cover' source={{ uri: uri || data }} />
@@ -203,9 +227,9 @@ function Media({ type, data, uri, filename }) {
   if (type.startsWith('video') && uri) {
     return <VideoPlayer uri={{ uri }} />
   }
-  return <FileMsg type={type} uri={uri} filename={filename} />
 }
 
+// video player component
 function VideoPlayer(props) {
   const { ui } = useStores()
   function onEnd() {}
@@ -251,19 +275,6 @@ const styles = StyleSheet.create({
   img: {
     width: 200,
     height: 200
-  },
-  payButton: {
-    backgroundColor: '#4AC998',
-    width: '100%',
-    borderRadius: 5,
-    borderTopLeftRadius: 0,
-    borderTopRightRadius: 0,
-    height: 38,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center'
-    // position:'absolute',
-    // bottom:0,
   },
   stats: {
     position: 'absolute',

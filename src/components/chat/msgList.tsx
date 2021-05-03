@@ -66,8 +66,6 @@ export default function MsgListWrap({
   return useObserver(() => {
     const msgs = useMsgs(chat, limit) || []
 
-    console.log('msgs:::', msgs)
-
     return (
       <MsgList
         msgs={msgs}
@@ -99,20 +97,14 @@ function MsgList({
 }) {
   const scrollViewRef = useRef(null)
   const theme = useTheme()
-  // const [viewableIds, setViewableIds] = useState({})
   const { contacts } = useStores()
-
-  // const onRefresh = useCallback(() => {
-  //   console.log("ON REFRSH")
-  //   setRefreshing(true)
-  //   wait(2000).then(() => setRefreshing(false))
-  // }, [refreshing])
 
   async function onEndReached() {
     // EE.emit(SHOW_REFRESHER)
     wait(10).then(onLoadMoreMsgs)
   }
 
+  // Keyboard logic
   useEffect(() => {
     const ref = setTimeout(() => {
       if (scrollViewRef && scrollViewRef.current && msgs && msgs.length) {
@@ -166,17 +158,6 @@ function MsgList({
           waitForInteraction: false,
           viewAreaCoveragePercentThreshold: 20
         }}
-        onViewableItemsChanged={({ viewableItems, changed }) => {
-          // debounce(() => {
-          //   const ids = {}
-          //   if (viewableItems) {
-          //     viewableItems.forEach(c => {
-          //       if (c.item.id) ids[c.item.id] = true
-          //     })
-          //   }
-          //   setViewableIds(current => ({ ...current, ...ids }))
-          // }, 200)
-        }}
         renderItem={({ item, index }) => {
           const { senderAlias, senderPic } = useMsgSender(
             item,
@@ -187,7 +168,6 @@ function MsgList({
             <ListItem
               key={item.id}
               windowWidth={windowWidth}
-              // viewable={viewableIds[item.id] === true}
               m={item}
               chat={chat}
               senderAlias={senderAlias}
@@ -277,6 +257,7 @@ function ListItem({
   )
 }
 
+// date label component
 function DateLine({ dateString }) {
   const theme = useTheme()
   return (
@@ -291,14 +272,6 @@ function DateLine({ dateString }) {
 }
 
 const styles = StyleSheet.create({
-  line: {
-    borderBottomWidth: 1,
-    borderColor: '#ddd',
-    width: '90%',
-    position: 'absolute',
-    left: '5%',
-    top: 10
-  },
   dateLine: {
     display: 'flex',
     flexDirection: 'row',
@@ -306,8 +279,7 @@ const styles = StyleSheet.create({
     position: 'relative',
     height: 22,
     width: '100%',
-    marginBottom: 10,
-    marginTop: 10
+    marginBottom: 20
   },
   dateString: {
     paddingLeft: 16,
@@ -346,14 +318,10 @@ function wait(timeout) {
   })
 }
 
-let inDebounce
-function debounce(func, delay) {
-  const context = this
-  const args = arguments
-  clearTimeout(inDebounce)
-  inDebounce = setTimeout(() => func.apply(context, args), delay)
-}
-
-async function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms))
-}
+// let inDebounce
+// function debounce(func, delay) {
+//   const context = this
+//   const args = arguments
+//   clearTimeout(inDebounce)
+//   inDebounce = setTimeout(() => func.apply(context, args), delay)
+// }

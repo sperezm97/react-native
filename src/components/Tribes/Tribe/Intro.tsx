@@ -184,7 +184,7 @@ function TribeActions({ tribe }) {
                   />
                 )}
                 onPress={onChatPress}
-                w='65%'
+                w='70%'
               >
                 Play Wall
               </Button>
@@ -201,7 +201,7 @@ function TribeActions({ tribe }) {
             <MaterialCommunityIcon name='chat-outline' color={theme.white} size={20} />
           )}
           onPress={onChatPress}
-          w='60%'
+          w='70%'
         >
           Play Wall
         </Button>

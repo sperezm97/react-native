@@ -17,12 +17,13 @@ export default function Typography(props) {
     numberOfLines
   } = props
 
+  let lineHeight = 20
   if (size >= 15 && size < 20) {
-    lh = 26
+    lineHeight = 26
   } else if (size >= 20) {
-    lh = 40
+    lineHeight = 40
   } else {
-    lh = 20
+    lineHeight = 20
   }
 
   return (
@@ -33,7 +34,7 @@ export default function Typography(props) {
         fontSize: size,
         fontWeight: fw,
         letterSpacing: ls,
-        lineHeight: lh
+        lineHeight: lh ? lh : lineHeight
       }}
       numberOfLines={numberOfLines}
     >
