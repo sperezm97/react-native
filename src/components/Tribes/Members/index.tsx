@@ -28,11 +28,14 @@ export default function Members({ route }) {
     return c.id > 1 && tribe && tribe.chat && tribe.chat.contact_ids.includes(c.id)
   })
 
+  console.log('contactsToShow', contactsToShow)
+
   const pendingContactsToShow =
     contacts.contacts.filter(c => {
       return (
         c.id > 1 &&
         tribe &&
+        tribe.chat &&
         tribe.chat.pending_contact_ids &&
         tribe.chat.pending_contact_ids.includes(c.id)
       )

@@ -68,16 +68,22 @@ function Media({ tribe }) {
                   </View>
                 ) : (
                   <View style={{ ...styles.empty }}>
-                    <Icon name='Join' size={70} />
+                    {!tribe.joined ? (
+                      <Icon name='Join' size={70} />
+                    ) : (
+                      <Icon name='Empty' size={70} />
+                    )}
                     <Typography
                       size={14}
                       fw='500'
                       color={theme.subtitle}
                       style={{ marginTop: 10, marginBottom: 10 }}
                     >
-                      {`Join ${
-                        tribe.name
-                      } to see what ${tribe.owner_alias?.trim()} has shared.`}
+                      {!tribe.joined
+                        ? `Join ${
+                            tribe.name
+                          } to see what ${tribe.owner_alias?.trim()} has shared.`
+                        : `${tribe.owner_alias?.trim()} has not shared content yet!`}
                     </Typography>
                   </View>
                 )}

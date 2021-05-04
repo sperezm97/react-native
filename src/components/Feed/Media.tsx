@@ -20,6 +20,7 @@ import BoostDetails from './BoostDetails'
 function Media(props) {
   const {
     index,
+    mediaLength,
     id,
     uuid,
     message_content,
@@ -83,19 +84,20 @@ function Media(props) {
     <>
       {hasImgData && (
         <View style={{ ...styles.wrap }}>
-          <TouchableOpacity activeOpacity={0.6} onPress={onTribeOwnerPress}>
-            <View style={{ ...styles.header }}>
+          <View style={{ ...styles.header }}>
+            <TouchableOpacity activeOpacity={0.6} onPress={onTribeOwnerPress}>
               <View style={{ ...styles.headerInfo }}>
                 <View style={styles.avatarWrap}>
                   <Avatar size={35} photo={tribe.img} alias={tribe.name} round={50} />
                 </View>
                 <Typography size={14}>{tribe.name}</Typography>
               </View>
-              <Typography size={12} color={theme.subtitle} style={{ paddingRight: 5 }}>
-                {calendarDate(moment(created_at), 'MMM DD, YYYY')}
-              </Typography>
-            </View>
-          </TouchableOpacity>
+            </TouchableOpacity>
+
+            <Typography size={12} color={theme.subtitle} style={{ paddingRight: 5 }}>
+              {calendarDate(moment(created_at), 'MMM DD, YYYY')}
+            </Typography>
+          </View>
 
           {!loading ? (
             <MediaType type={media_type} data={data} uri={uri} />
@@ -116,8 +118,7 @@ function Media(props) {
           </View>
           <View style={{ ...styles.meta }}></View>
 
-          {/* {index + 1 !== media.length && <Divider mt={10} mb={10} />} */}
-          <Divider mt={10} mb={10} />
+          {index + 1 !== mediaLength && <Divider mt={10} mb={10} />}
         </View>
       )}
     </>

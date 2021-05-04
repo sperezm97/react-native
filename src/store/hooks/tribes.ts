@@ -2,6 +2,7 @@ import moment from 'moment'
 
 import { useStores } from '../index'
 import { useChats } from './chats'
+import config from '../../config'
 import { constants } from '../../constants'
 import { calendarDate } from '../utils/date'
 import { useMsgs } from './msg'
@@ -19,7 +20,7 @@ export function useTribes() {
 export function useSearchTribes(tribes) {
   const { ui } = useStores()
 
-  tribes = tribes.filter(t => !t.joined)
+  tribes = tribes.filter(t => !t.owner).sort((a, b) => a.joined - b.joined)
 
   return searchTribes(tribes, ui.tribesSearchTerm)
 }
@@ -29,9 +30,7 @@ export function useJoinedTribes(tribes) {
 }
 
 export function useOwnedTribes(tribes) {
-  tribes = tribes.filter(t => t.joined)
-
-  // return tribes.sort((a, b) => b.joined - a.owner)
+  tribes = tribes.filter(t => t.owner)
 
   return tribes.sort((a, b) => {
     if (a.joined > b.owner && b.last_active > a.last_active) return -1
@@ -93,18 +92,31 @@ export function useOwnerMediaType(msgs, type, owner = true) {
 }
 
 // feed from joined tribes
-// feed is sorted based on last active
 export function useFeed(tribes) {
-  return tribes.filter(t => t.joined && !t.owner)
+  tribes = tribes.filter(
+    t => t.joined && !t.owner && t.owner_pubkey !== config.inviter.key
+  )
 
-  // return tribes.sort((a, b) => {
-  //   if (a.last_active > b.last_active) return -1
-  //   return 0
-  // })
+  let allTribes = tribes.map(t => processFeed(t, 6))
+
+  let feed = []
+
+  allTribes.map(t => {
+    t.media.map(m => {
+      feed.push({
+        ...m,
+        tribe: { ...t }
+      })
+    })
+  })
+
+  feed = feed.sort((a, b) => moment(b.date).unix() - moment(a.date).unix())
+
+  return feed
 }
 
+// not used temporarily
 export function useMediaType(msgs, type) {
-  // TODO // m.media_type.startsWith('image') is temporarily
   return msgs.filter(
     m =>
       m.type === type &&
@@ -112,9 +124,20 @@ export function useMediaType(msgs, type) {
       m.media_token &&
       m.media_type.startsWith('image')
   )
+}
 
-  // return msgs.sort((a, b) => {
-  //   if (a.created_date > b.created_date) return -1
-  //   return 0
-  // })
+export function processFeed(tribe, type) {
+  let msgs = useMsgs(tribe.chat)
+
+  msgs = msgs.filter(
+    m =>
+      m.type === type &&
+      m.sender !== 1 &&
+      m.media_token &&
+      m.media_type.startsWith('image')
+  )
+
+  tribe.media = msgs
+
+  return tribe
 }

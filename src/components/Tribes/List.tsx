@@ -11,7 +11,7 @@ import Button from '../common/Button'
 import RefreshLoading from '../common/RefreshLoading'
 
 export default function List(props) {
-  const { data, loading, listEmpty, refreshing } = props
+  const { data, loading, listEmpty, refreshing, onRefresh } = props
   const theme = useTheme()
 
   const renderItem = ({ index, item }) => <Item {...item} />
@@ -31,7 +31,10 @@ export default function List(props) {
             // ListHeaderComponent={listHeader}
             ListEmptyComponent={listEmpty}
             refreshing={refreshing}
-            onRefresh={props.onRefresh && props.onRefresh}
+            onRefresh={onRefresh && onRefresh}
+            refreshControl={
+              <RefreshLoading refreshing={refreshing} onRefresh={onRefresh} />
+            }
           />
         )}
       </View>

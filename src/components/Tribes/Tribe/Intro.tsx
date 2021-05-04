@@ -1,9 +1,8 @@
 import React, { useState } from 'react'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
 import { useNavigation } from '@react-navigation/native'
 import RNFetchBlob from 'rn-fetch-blob'
-
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 
@@ -21,6 +20,7 @@ export default function Intro({ tribe }) {
   const [uploadPercent, setUploadedPercent] = useState(0)
   const [imageDialog, setImageDialog] = useState(false)
   const [tribePhoto, setTribePhoto] = useState('')
+  const navigation = useNavigation()
 
   async function tookPic(img) {
     setUploading(true)
@@ -79,6 +79,10 @@ export default function Intro({ tribe }) {
       })
   }
 
+  function onTribeMembersPress() {
+    navigation.navigate('TribeMembers', { tribe })
+  }
+
   return useObserver(() => {
     if (tribePhoto) tribe.img = tribePhoto
 
@@ -100,7 +104,12 @@ export default function Intro({ tribe }) {
           </View>
 
           <View style={styles.headerContent}>
-            <View style={{ ...styles.row, width: '100%' }}>
+            <View
+              style={{
+                ...styles.row,
+                flexWrap: 'wrap'
+              }}
+            >
               <Typography size={22} fw='600'>
                 {tribe.name}
               </Typography>
@@ -123,15 +132,29 @@ export default function Intro({ tribe }) {
               <View style={{ ...styles.row }}>
                 <MaterialIcon name='public' size={18} color={theme.grey} />
                 <Typography size={14} style={{ paddingLeft: 4 }}>
-                  {tribe.private ? 'Private Tribe' : 'Public Tribe'}
+                  {tribe.private ? 'Private Community' : 'Public Community'}
                 </Typography>
               </View>
               <View style={{ ...styles.row }}>
                 <View style={{ ...styles.dot, backgroundColor: theme.text }}></View>
-                <Typography size={14} fw='600' style={{ paddingLeft: 4 }}>
-                  {tribe.member_count}
-                </Typography>
-                <Typography size={14}> members</Typography>
+                {tribe.owner ? (
+                  <TouchableOpacity
+                    style={{ ...styles.row }}
+                    onPress={onTribeMembersPress}
+                  >
+                    <Typography size={14} fw='600' style={{ paddingLeft: 4 }}>
+                      {tribe.member_count}
+                    </Typography>
+                    <Typography size={14}> members</Typography>
+                  </TouchableOpacity>
+                ) : (
+                  <>
+                    <Typography size={14} fw='600' style={{ paddingLeft: 4 }}>
+                      {tribe.member_count}
+                    </Typography>
+                    <Typography size={14}> members</Typography>
+                  </>
+                )}
               </View>
             </View>
 

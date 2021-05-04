@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, View, Text, ScrollView, RefreshControl } from 'react-native'
+import { StyleSheet, View, ScrollView } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
 
 import { useStores, useTheme, hooks } from '../../store'
-import { useJoinedTribes, useFeed } from '../../store/hooks/tribes'
+import { useFeed } from '../../store/hooks/tribes'
 import { SCREEN_HEIGHT, STATUS_BAR_HEIGHT } from '../../constants'
 import TabBar from '../common/TabBar'
 import Header from '../common/Header'
@@ -19,18 +19,21 @@ export default function Home() {
   const theme = useTheme()
 
   useEffect(() => {
-    setRefreshing(true)
-    chats.getTribes().then(() => setRefreshing(false))
+    fetchTribes()
   }, [])
 
-  function _onRefresh() {
-    console.log('refreshing...')
+  function fetchTribes() {
+    chats.getTribes().then(() => setRefreshing(false))
+  }
+
+  function onRefresh() {
+    setRefreshing(true)
+    fetchTribes()
   }
 
   return useObserver(() => {
     const allTribes = useTribes()
-    const tribes = useFeed(allTribes)
-    console.log('tribes', tribes.length)
+    const feed = useFeed(allTribes)
 
     return (
       <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
@@ -42,13 +45,13 @@ export default function Home() {
             height: SCREEN_HEIGHT - STATUS_BAR_HEIGHT - 44
           }}
           refreshControl={
-            <RefreshLoading refreshing={refreshing} onRefresh={_onRefresh} />
+            <RefreshLoading refreshing={refreshing} onRefresh={onRefresh} />
           }
           // scrollEventThrottle={10}
           //  onScroll={_onScroll}
           showsVerticalScrollIndicator={false}
         >
-          <Feed feed={tribes} />
+          <Feed feed={feed} />
         </ScrollView>
         <TabBar />
       </View>

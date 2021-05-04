@@ -438,8 +438,6 @@ class MsgStore {
         media_token: media_token
       }
 
-      console.log('v', v)
-
       await relay.post('purchase', v)
     } catch (e) {
       console.log(e)
