@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -7,6 +7,7 @@ import { useTheme, hooks } from '../../../../store'
 import { useOwnerMediaType } from '../../../../store/hooks/tribes'
 import { SCREEN_WIDTH } from '../../../../constants'
 import MediaItem from './MediaItem'
+import Icon from '../../../common/Icon'
 import Empty from '../../../common/Empty'
 import Typography from '../../../common/Typography'
 import PhotoViewer from '../../../common/Modals/Media/PhotoViewer'
@@ -43,17 +44,9 @@ function Media({ tribe }) {
                     onMediaPress={onMediaPress}
                   />
                 )
-                // return useMemo(() => <MediaItem key={m.id} {...m} />, [
-                //   m.id,
-                //   m.type,
-                //   m.media_token,
-                //   m.status,
-                //   m.sold,
-                //   m.boosts_total_sats
-                // ])
               })
             ) : (
-              <Empty h={200} w='60%'>
+              <Empty h={200}>
                 {tribe.owner ? (
                   <View style={{ ...styles.empty }}>
                     <MaterialIcon
@@ -75,15 +68,16 @@ function Media({ tribe }) {
                   </View>
                 ) : (
                   <View style={{ ...styles.empty }}>
+                    <Icon name='Join' size={70} />
                     <Typography
-                      size={17}
+                      size={14}
                       fw='500'
+                      color={theme.subtitle}
                       style={{ marginTop: 10, marginBottom: 10 }}
                     >
-                      {`No content in ${tribe.name}`}
-                    </Typography>
-                    <Typography size={14} color={theme.subtitle}>
-                      Owner hasn't shared any content yet.
+                      {`Join ${
+                        tribe.name
+                      } to see what ${tribe.owner_alias?.trim()} has shared.`}
                     </Typography>
                   </View>
                 )}
@@ -117,6 +111,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     width: '90%',
+    paddingHorizontal: 14,
     marginRight: 'auto',
     marginLeft: 'auto'
   }

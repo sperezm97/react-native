@@ -14,7 +14,7 @@ platform :ios do
       target: "Chat"
     )
   ) + 1
-  build_number=23
+  # build_number=23
 
   increment_build_number(
     build_number:build_number,

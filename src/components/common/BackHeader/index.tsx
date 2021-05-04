@@ -2,9 +2,9 @@ import React from 'react'
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
 import { Appbar } from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native'
+import FeatherIcon from 'react-native-vector-icons/Feather'
 
 import { useTheme } from '../../../store'
-import Icon from '../Icon'
 import Typography from '../Typography'
 
 export default function BackHeader({ title, screen, action, navigate, border }) {
@@ -22,9 +22,16 @@ export default function BackHeader({ title, screen, action, navigate, border }) 
   }
 
   return (
-    <Appbar.Header style={{ ...styles.appBar, backgroundColor: theme.bg, borderBottomColor: theme.border, borderBottomWidth: border ? 1 : 0 }}>
+    <Appbar.Header
+      style={{
+        ...styles.appBar,
+        backgroundColor: theme.bg,
+        borderBottomColor: theme.border,
+        borderBottomWidth: border ? 1 : 0
+      }}
+    >
       <TouchableOpacity onPress={onBack} style={{ ...styles.left }}>
-        <Icon name='ChevronLeft' size={28} color={theme.icon} />
+        <FeatherIcon name='chevron-left' size={28} color={theme.icon} />
       </TouchableOpacity>
       <View>
         <Typography color={theme.text} size={16} fw='500'>

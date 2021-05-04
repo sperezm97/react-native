@@ -177,9 +177,7 @@ export default function MediaMsg(props) {
 
         {hasContent && (
           <View style={shared.innerPad}>
-            <Typography color={props.isMe ? theme.white : theme.text} size={16}>
-              {message_content}
-            </Typography>
+            <Typography size={16}>{message_content}</Typography>
           </View>
         )}
 

@@ -9,7 +9,7 @@ import Account from '../Account/Navigation'
 import Payment from '../Payment/Navigation'
 import Contacts from '../Contacts/Navigation'
 import Tribes from '../Tribes/Navigation'
-import OwnedTribes from '../Tribes/OwnedTribes'
+import DiscoverTribes from '../Tribes/Discover'
 import Tribe from '../Tribes/Tribe'
 import EditTribe from '../Tribes/Tribe/EditTribe'
 import TribeMembers from '../Tribes/Members'
@@ -82,8 +82,8 @@ export default function Root() {
         }}
       />
       <RootStack.Screen
-        name='OwnedTribes'
-        component={OwnedTribes}
+        name='DiscoverTribes'
+        component={DiscoverTribes}
         options={{
           headerShown: false
         }}

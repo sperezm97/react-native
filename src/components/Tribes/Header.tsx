@@ -3,7 +3,7 @@ import { View, StyleSheet } from 'react-native'
 import { Appbar, IconButton } from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native'
 import { useObserver } from 'mobx-react-lite'
-import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
+import FeatherIcon from 'react-native-vector-icons/Feather'
 
 import { useStores, useTheme } from '../../store'
 import Pushable from '../common/Pushable'
@@ -20,26 +20,24 @@ export default function Header({}) {
         <View style={{ ...styles.flex, ...styles.content }}>
           <View style={{ ...styles.flex, ...styles.left }}>
             <Typography size={25} fw='500'>
-              Discover
+              My Communities
             </Typography>
           </View>
           <View style={{ ...styles.flex, ...styles.right }}>
             <IconButton
-              icon={() => (
-                <FontAwesome5Icon name='users' color={theme.primary} size={18} />
-              )}
+              icon={() => <FeatherIcon name='search' color={theme.primary} size={18} />}
               size={24}
               style={{ backgroundColor: theme.lightGrey, marginRight: 12 }}
-              onPress={() => navigation.navigate('OwnedTribes')}
+              onPress={() => navigation.navigate('DiscoverTribes')}
             />
-            {/* <Pushable onPress={() => ui.setNewTribeModal(true)}>
+            <Pushable onPress={() => ui.setNewTribeModal(true)}>
               <IconButton
                 icon='plus'
                 color={theme.primary}
                 size={24}
                 style={{ backgroundColor: theme.lightGrey }}
               />
-            </Pushable> */}
+            </Pushable>
           </View>
         </View>
       </Appbar.Header>

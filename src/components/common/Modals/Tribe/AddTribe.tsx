@@ -38,7 +38,6 @@ export default function AddTribe() {
 
     const newTribe = {
       ...form,
-      test: '',
       contact_ids
     }
 
