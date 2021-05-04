@@ -188,12 +188,11 @@ export const styles = StyleSheet.create({
     overflow: 'hidden'
   },
   chatRow: {
-    height: 80,
     width: '100%',
     display: 'flex',
     alignItems: 'center',
     flexDirection: 'row',
-    paddingLeft: 8,
+    padding: 16,
     marginBottom: 14
   },
   chatContent: {

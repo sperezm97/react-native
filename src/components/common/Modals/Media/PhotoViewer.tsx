@@ -153,7 +153,9 @@ function SwipeItem(props) {
               setPhotoH((evt.nativeEvent.height / evt.nativeEvent.width) * w)
             }}
             style={{
-              ...styles.photo
+              ...styles.photo,
+              width: w,
+              height: photoH
               // width: w,
               // height: h,
               // maxHeight: h - 100

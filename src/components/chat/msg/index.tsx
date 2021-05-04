@@ -97,10 +97,8 @@ export default function MsgRow(props) {
         width: '100%',
         flexDirection: 'row',
         marginBottom: 30
-        // marginTop: props.showInfoBar ? 20 : 0
       }}
     >
-      {/* <View style={{ paddingLeft: 6 }}> */}
       <Avatar
         alias={props.senderAlias}
         photo={props.senderPic ? `${props.senderPic}?thumb=true` : null}
@@ -108,6 +106,7 @@ export default function MsgRow(props) {
         aliasSize={12}
         // hide={!props.showInfoBar || isMe}
         hide={isMe}
+        style={{ marginLeft: !isMe ? 10 : 0 }}
       />
       {/* </View> */}
 

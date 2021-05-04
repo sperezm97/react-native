@@ -360,7 +360,7 @@ export default function Pod({ pod, show, chat, onBoost, podError }) {
         style={{
           ...styles.episode,
           borderBottomColor: theme.border,
-          backgroundColor: selected ? theme.deep : theme.bg
+          backgroundColor: selected ? theme.main : theme.bg
         }}
         onPress={() => selectEpisode(item)}
       >
@@ -509,12 +509,12 @@ const styles = StyleSheet.create({
     position: 'absolute',
     maxWidth: '100%',
     minWidth: '100%',
+    height: '100%',
     zIndex: 150,
-    top: 50,
-    flex: 1,
+    top: 0,
+    bottom: 0,
     display: 'flex',
-    backgroundColor: 'black',
-    height: '100%'
+    flex: 1
   },
   imgWrap: {
     width: '100%',

@@ -66,7 +66,7 @@ export default function MediaMsg(props) {
       if (data) ui.setImgViewerParams({ data })
       if (uri) ui.setImgViewerParams({ uri })
     } else if (media_type.startsWith('n2n2/text')) {
-      downloadText(uri)
+      // downloadText(uri)
     }
   }
 
@@ -153,10 +153,8 @@ export default function MediaMsg(props) {
               </View>
             )}
             {showPayToUnlockMessage && (
-              <View style={{ ...styles.paidAttachmentText, alignItems: 'center' }}>
-                <Text style={{ ...styles.payToUnlockMessage, color: theme.subtitle }}>
-                  Pay to unlock message
-                </Text>
+              <View style={{ ...styles.paidAttachmentText }}>
+                <Typography color={theme.subtitle}>Pay to unlock message</Typography>
               </View>
             )}
           </View>
@@ -322,16 +320,9 @@ const styles = StyleSheet.create({
     width: '100%',
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'flex-end',
-    paddingLeft: 10,
-    paddingBottom: 13,
-    paddingTop: 13
-  },
-  payToUnlockMessage: {
-    fontSize: 12,
-    fontWeight: 'bold',
-    minHeight: 18
+    justifyContent: 'center',
+    alignItems: 'center',
+    ...shared.innerPad
   },
   loading: {
     width: 200,
@@ -364,6 +355,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 14
+    // padding: 14
+    ...shared.innerPad
   }
 })

@@ -7,7 +7,7 @@ import { useStores, useTheme } from '../../../store'
 import { useAvatarColor } from '../../../store/hooks/msg'
 
 export default function Avatar(props) {
-  let { photo, alias, size, avatarSize, borderless } = props
+  let { style, photo, alias, size, avatarSize, borderless } = props
 
   const theme = useTheme()
   const [avatar, setAvatar] = useState({
@@ -59,6 +59,7 @@ export default function Avatar(props) {
     return (
       <View
         style={{
+          ...style,
           ...styles.avatar,
           height: size,
           width: size,
@@ -83,6 +84,7 @@ export default function Avatar(props) {
     return (
       <View
         style={{
+          ...style,
           ...styles.aliasWrap,
           height: size,
           width: size,
@@ -106,6 +108,7 @@ export default function Avatar(props) {
     return (
       <View
         style={{
+          ...style,
           ...styles.avatar,
           height: size,
           width: size,

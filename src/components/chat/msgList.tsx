@@ -280,7 +280,7 @@ const styles = StyleSheet.create({
     position: 'relative',
     height: 22,
     width: '100%',
-    marginBottom: 20
+    marginBottom: 30
   },
   dateString: {
     paddingLeft: 16,

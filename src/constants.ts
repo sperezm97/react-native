@@ -93,6 +93,8 @@ export const TOAST_DURATION = 0.5
 export const STACK_HEADER_HEIGHT = 50
 export const TAB_HEIGHT = 50
 
+console.log('getStatusBarHeight', getStatusBarHeight())
+
 export const SCREEN_HEIGHT: number = Math.round(Dimensions.get('window').height)
 export const SCREEN_WIDTH: number = Math.round(Dimensions.get('window').width)
 export const STATUS_BAR_HEIGHT: number = getStatusBarHeight()
