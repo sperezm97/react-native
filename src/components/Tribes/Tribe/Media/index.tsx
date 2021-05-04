@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useMemo } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -90,7 +90,7 @@ function Media({ tribe }) {
               </Empty>
             )}
           </View>
-          <PhotoViewer
+          <Viewer
             visible={mediaModal}
             close={() => setMediaModal(false)}
             photos={media}
@@ -101,6 +101,10 @@ function Media({ tribe }) {
       </>
     )
   })
+}
+
+function Viewer(props) {
+  return useMemo(() => <PhotoViewer {...props} />, [props.visible, props.photos])
 }
 
 const styles = StyleSheet.create({

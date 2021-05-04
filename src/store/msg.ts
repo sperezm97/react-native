@@ -277,8 +277,6 @@ class MsgStore {
     message_price?: number
   }) {
     try {
-      console.log('chat_id', chat_id)
-
       const encryptedText = await encryptText({ contact_id: 1, text })
 
       const remote_text_map = await makeRemoteTextMap({ contact_id, text, chat_id })
@@ -296,10 +294,7 @@ class MsgStore {
       // const r = await relay.post('messages', v)
       // this.gotNewMessage(r)
       if (!chat_id) {
-        console.log('no chat_id')
-
         const r = await relay.post('messages', v)
-        console.log('257 ==============', r)
         if (!r) return
         this.gotNewMessage(r)
       } else {
@@ -324,7 +319,6 @@ class MsgStore {
           chat_id
         )
         const r = await relay.post('messages', v)
-        console.log('266 ==============', r)
         if (!r) return
         // console.log("RESULT")
         this.messagePosted(r)

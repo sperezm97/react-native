@@ -11,6 +11,7 @@ import Typography from '../../common/Typography'
 import Avatar from '../../common/Avatar'
 import Button from '../../common/Button'
 import ImageDialog from '../../common/Dialogs/ImageDialog'
+import PhotoModal from '../../common/Modals/Media/Photo'
 import AvatarEdit from '../../common/Avatar/AvatarEdit'
 
 export default function Intro({ tribe }) {
@@ -19,6 +20,7 @@ export default function Intro({ tribe }) {
   const [uploading, setUploading] = useState(false)
   const [uploadPercent, setUploadedPercent] = useState(0)
   const [imageDialog, setImageDialog] = useState(false)
+  const [photoModal, setPhotoModal] = useState(false)
   const [tribePhoto, setTribePhoto] = useState('')
   const navigation = useNavigation()
 
@@ -90,17 +92,16 @@ export default function Intro({ tribe }) {
       <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
         <View style={{ ...styles.header }}>
           <View style={{ ...styles.avatarWrap }}>
-            {tribe.owner ? (
-              <AvatarEdit
-                onPress={() => setImageDialog(true)}
-                uploading={uploading}
-                uploadPercent={uploadPercent}
-              >
-                <Avatar photo={tribe.img} size={80} round={50} />
-              </AvatarEdit>
-            ) : (
+            <AvatarEdit
+              onPress={() =>
+                tribe.owner ? setImageDialog(true) : tribe.img && setPhotoModal(true)
+              }
+              uploading={uploading}
+              uploadPercent={uploadPercent}
+              display={!tribe.owner}
+            >
               <Avatar photo={tribe.img} size={80} round={50} />
-            )}
+            </AvatarEdit>
           </View>
 
           <View style={styles.headerContent}>
@@ -167,6 +168,11 @@ export default function Intro({ tribe }) {
           onPick={tookPic}
           onSnap={tookPic}
           setImageDialog={setImageDialog}
+        />
+        <PhotoModal
+          visible={photoModal}
+          close={() => setPhotoModal(false)}
+          photo={tribe.img}
         />
       </View>
     )

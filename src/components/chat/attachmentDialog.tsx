@@ -19,8 +19,6 @@ export default function AttachmentDialog({
 
   async function pickImage() {
     ImagePicker.launchImageLibrary({}, result => {
-      console.log('result:', result)
-
       if (!result.didCancel) {
         onPick(result)
       } else {

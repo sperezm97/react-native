@@ -218,6 +218,7 @@ function MsgBubble(props) {
           {!isDeleted && (
             <Message
               {...props}
+              id={props.id}
               onLongPress={onLongPressHandler}
               myAlias={props.myAlias}
               isMe={isMe}

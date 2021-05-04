@@ -11,6 +11,7 @@ import RNFetchBlob from 'rn-fetch-blob'
 import Toast from 'react-native-simple-toast'
 
 import { useStores, useTheme } from '../../../store'
+import { useTribeMediaType } from '../../../store/hooks/tribes'
 import shared from './sharedStyles'
 import { useCachedEncryptedFile } from './hooks'
 import AudioPlayer from './audioPlayer'
@@ -19,10 +20,15 @@ import FileMsg from './fileMsg'
 import BoostRow from './boostRow'
 import Typography from '../../common/Typography'
 import Button from '../../common/Button'
+import PhotoViewer from '../../common/Modals/Media/PhotoViewer'
 
 export default function MediaMsg(props) {
-  const { message_content, media_type, chat, media_token } = props
+  const { id, message_content, media_type, chat, media_token, msgs } = props
   const [buying, setBuying] = useState(false)
+  const [mediaModal, setMediaModal] = useState(false)
+  const [selectedMedia, setSelectedMedia] = useState(null)
+  const photos = useTribeMediaType(msgs, 6)
+
   const { meme, ui, msg } = useStores()
   const theme = useTheme()
   const isMe = props.sender === 1
@@ -63,8 +69,11 @@ export default function MediaMsg(props) {
 
   function onMediaPress() {
     if (media_type.startsWith('image')) {
-      if (data) ui.setImgViewerParams({ data })
-      if (uri) ui.setImgViewerParams({ uri })
+      setSelectedMedia(id)
+      setMediaModal(true)
+
+      // if (data) ui.setImgViewerParams({ data })
+      // if (uri) ui.setImgViewerParams({ uri })
     } else if (media_type.startsWith('n2n2/text')) {
       // downloadText(uri)
     }
@@ -92,8 +101,6 @@ export default function MediaMsg(props) {
   }
 
   const hasImgData = data || uri ? true : false
-
-  console.log('hasImgData', hasImgData, 'data', data, 'uri', uri)
 
   const hasContent = message_content ? true : false
   const showPurchaseButton = amt && !isMe ? true : false
@@ -217,6 +224,13 @@ export default function MediaMsg(props) {
           )}
         </>
       )}
+      <PhotoViewer
+        visible={mediaModal}
+        close={() => setMediaModal(false)}
+        photos={photos}
+        photoId={selectedMedia}
+        chat={chat}
+      />
     </View>
   )
 }

@@ -11,6 +11,8 @@ import List from './List'
 import Pending from './Pending'
 import AddMembers from './AddMembers'
 import AddMemberModal from '../../common/Modals/Tribe/AddMembers'
+import Typography from '../../common/Typography'
+import Empty from '../../common/Empty'
 
 export default function Members({ route }) {
   const [addMember, setAddMember] = useState(false)
@@ -27,8 +29,6 @@ export default function Members({ route }) {
   const contactsToShow = contacts.contacts.filter(c => {
     return c.id > 1 && tribe && tribe.chat && tribe.chat.contact_ids.includes(c.id)
   })
-
-  console.log('contactsToShow', contactsToShow)
 
   const pendingContactsToShow =
     contacts.contacts.filter(c => {
@@ -52,7 +52,11 @@ export default function Members({ route }) {
             // action={tribe.owner && <MemberHeader openDialog={() => setAddMember(true)} />}
           />
           <View style={styles.content}>
-            <List tribe={tribe} members={contactsToShow} />
+            {contactsToShow && contactsToShow.length > 0 ? (
+              <List tribe={tribe} members={contactsToShow} />
+            ) : (
+              <EmptyMembers tribe={tribe} />
+            )}
             <Pending tribe={tribe} members={pendingContactsToShow} />
             {/* <AddMemberModal visible={addMember} close={() => setAddMember(false)}>
               <AddMembers initialMemberIds={(tribe && tribe.chat.contact_ids) || []} />
@@ -62,6 +66,18 @@ export default function Members({ route }) {
       </>
     )
   })
+}
+
+function EmptyMembers({ tribe }) {
+  const theme = useTheme()
+
+  return (
+    <Empty>
+      <Typography color={theme.subtitle} size={14}>
+        {`There are no members in ${tribe.name}.`}
+      </Typography>
+    </Empty>
+  )
 }
 
 // function MemberHeader({ openDialog }) {

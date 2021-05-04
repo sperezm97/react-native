@@ -126,6 +126,12 @@ export function useMediaType(msgs, type) {
   )
 }
 
+export function useTribeMediaType(msgs, type) {
+  return msgs.filter(
+    m => m.type === type && m.media_token && m.media_type.startsWith('image')
+  )
+}
+
 export function processFeed(tribe, type) {
   let msgs = useMsgs(tribe.chat)
 

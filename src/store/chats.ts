@@ -270,7 +270,6 @@ export class ChatStore {
       my_alias: my_alias || '',
       my_photo_url: my_photo_url || ''
     })
-    console.log('r from join tribe', r)
 
     if (!r) return
     this.gotChat(r)
@@ -423,8 +422,6 @@ export class ChatStore {
     if (!host || !url) return
     const theHost = host.includes('localhost') ? DEFAULT_TRIBE_SERVER : host
     try {
-      console.log('theHost', `https://${theHost}/podcast?url=${url}`)
-
       const r = await fetch(`https://${theHost}/podcast?url=${url}`)
       const j = await r.json()
 
