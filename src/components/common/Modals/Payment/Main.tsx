@@ -43,12 +43,21 @@ export default function Main({ contact, loading, confirmOrContinue, contactless 
   const isLoopout = ui.payMode === 'loopout'
   const nameColor = contact && useAvatarColor(contact.alias)
   return (
-    <View style={{ ...styles.wrap, maxHeight: height, minHeight: height, justifyContent: contact ? 'space-around' : 'center' }}>
+    <View
+      style={{
+        ...styles.wrap,
+        maxHeight: height,
+        minHeight: height,
+        justifyContent: contact ? 'space-around' : 'center'
+      }}
+    >
       {contact && (
         <View style={styles.contactWrap}>
           {/* <Avatar.Image source={hasImg ? { uri } : require('../../../../../android_assets/avatar.png')} size={42} /> */}
           <View style={styles.contactAliasWrap}>
-            <Text style={styles.contactAliasLabel}>{ui.payMode === 'invoice' ? 'From' : 'To'}</Text>
+            <Text style={styles.contactAliasLabel}>
+              {ui.payMode === 'invoice' ? 'From' : 'To'}
+            </Text>
             <Text style={{ color: nameColor }}>{contact.alias}</Text>
           </View>
         </View>
@@ -78,7 +87,11 @@ export default function Main({ contact, loading, confirmOrContinue, contactless 
         <NumKey onKeyPress={v => go(v)} onBackspace={() => backspace()} squish />
         <View style={styles.confirmWrap}>
           {amt !== '0' && (
-            <Button style={{ ...styles.confirm }} loading={loading} onPress={() => confirmOrContinue(parseInt(amt), text)}>
+            <Button
+              style={{ ...styles.confirm }}
+              loading={loading}
+              onPress={() => confirmOrContinue(parseInt(amt), text)}
+            >
               {contactless || isLoopout ? 'CONTINUE' : 'CONFIRM'}
             </Button>
           )}

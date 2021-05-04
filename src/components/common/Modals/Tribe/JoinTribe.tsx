@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { StyleSheet, View, Text, Image, Dimensions, Modal } from 'react-native'
+import { StyleSheet, View, Text, Dimensions, Modal } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
 import { TextInput } from 'react-native-paper'
 
@@ -8,13 +8,13 @@ import { useStores, useTheme } from '../../../../store'
 import Header from '../ModalHeader'
 import Button from '../../Button'
 import Avatar from '../../Avatar'
+import Typography from '../../Typography'
 
 export default function JoinTribe() {
   const { ui, chats } = useStores()
   const theme = useTheme()
   const [loading, setLoading] = useState(false)
   const [alias, setAlias] = useState('')
-  const [key, setKey] = useState(false)
 
   const params = ui.joinTribeParams
 
@@ -56,41 +56,82 @@ export default function JoinTribe() {
     const joinTribeVisible = ui.joinTribeParams ? true : false
 
     return (
-      <Modal visible={joinTribeVisible} animationType='slide' presentationStyle='pageSheet' onDismiss={close}>
+      <Modal
+        visible={joinTribeVisible}
+        animationType='slide'
+        presentationStyle='pageSheet'
+        onDismiss={close}
+      >
         <Header title='Join Community' onClose={() => close()} />
         {params && (
-          <View style={styles.content}>
+          <View style={{ ...styles.content, backgroundColor: theme.bg }}>
             <Avatar photo={hasImg && params.img} size={160} round={90} />
+            <Typography
+              size={20}
+              fw='500'
+              style={{
+                marginTop: 10
+              }}
+            >
+              {params.name}
+            </Typography>
 
-            <Text style={{ marginTop: 15, fontWeight: 'bold', fontSize: 22, color: theme.title }}>{params.name}</Text>
+            <Typography
+              color={theme.subtitle}
+              style={{
+                marginTop: 10,
+                marginBottom: 10
+              }}
+            >
+              {params.description}
+            </Typography>
 
-            <Text style={{ marginTop: 10, marginBottom: 10, paddingLeft: 15, paddingRight: 15, color: theme.title }}>{params.description}</Text>
+            <View style={{ ...styles.table, borderColor: theme.border }}>
+              {prices &&
+                prices.map((p, i) => {
+                  return (
+                    <View
+                      key={i}
+                      style={{
+                        ...styles.tableRow,
+                        borderBottomColor: theme.border,
+                        borderBottomWidth: i === prices.length - 1 ? 0 : 1
+                      }}
+                    >
+                      <Typography style={{ ...styles.tableRowLabel }} color={theme.title}>
+                        {`${p.label}:`}
+                      </Typography>
 
-            {!key && (
-              <View style={styles.table}>
-                {prices &&
-                  prices.map((p, i) => {
-                    return (
-                      <View key={i} style={{ ...styles.tableRow, borderBottomWidth: i === prices.length - 1 ? 0 : 1 }}>
-                        <Text style={{ ...styles.tableRowLabel, color: theme.title }}>{`${p.label}:`}</Text>
-                        <Text style={{ ...styles.tableRowValue, color: theme.title }}>{p.value || 0}</Text>
-                      </View>
-                    )
-                  })}
-              </View>
-            )}
+                      <Typography
+                        style={{ ...styles.tableRowValue }}
+                        color={theme.subtitle}
+                      >
+                        {p.value || 0}
+                      </Typography>
+                    </View>
+                  )
+                })}
+            </View>
 
             <TextInput
-              mode='outlined'
               placeholder='Your Name in this Tribe'
               onChangeText={e => setAlias(e)}
               value={alias}
-              style={styles.input}
-              onFocus={() => setKey(true)}
-              onBlur={() => setKey(false)}
+              style={{
+                ...styles.input,
+                backgroundColor: theme.bg,
+                color: theme.placeholder
+              }}
+              underlineColor={theme.border}
             />
 
-            <Button onPress={joinTribe} loading={loading} size='large' w='80%' style={{ ...styles.button, top: h - 250 }}>
+            <Button
+              onPress={joinTribe}
+              loading={loading}
+              size='large'
+              w='80%'
+              style={{ ...styles.button, top: h - 250 }}
+            >
               Join
             </Button>
           </View>
@@ -108,22 +149,20 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'flex-start',
-    width: '100%',
-    paddingBottom: 20
+    width: '100%'
   },
   button: {
     position: 'absolute'
   },
   table: {
     borderWidth: 1,
-    borderColor: '#ccc',
     borderRadius: 5,
-    marginTop: 15,
-    width: 240
+    width: 240,
+    marginTop: 25,
+    marginBottom: 25
   },
   tableRow: {
     borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
     paddingLeft: 10,
     paddingRight: 10,
     paddingTop: 5,
@@ -143,8 +182,8 @@ const styles = StyleSheet.create({
     textAlign: 'right'
   },
   input: {
-    maxHeight: 65,
-    marginTop: 15,
+    height: 50,
+    maxHeight: 50,
     minWidth: 240
   }
 })

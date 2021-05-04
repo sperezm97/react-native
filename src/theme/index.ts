@@ -1,4 +1,8 @@
-import { DefaultTheme, Provider as PaperProvider, configureFonts } from 'react-native-paper'
+import {
+  DefaultTheme,
+  Provider as PaperProvider,
+  configureFonts
+} from 'react-native-paper'
 
 import { useStores, useTheme } from '../store'
 import { Font } from '../types'
@@ -34,7 +38,7 @@ export function paperTheme(theme) {
       primary: theme.primary,
       accent: theme.accent,
       text: theme.title,
-      // placeholder: theme.placeholder,
+      placeholder: theme.placeholder,
       background: theme.bg,
       surface: theme.main
     },

@@ -79,8 +79,6 @@ function Media(props) {
 
   const showBoostRow = boosts_total_sats ? true : false
 
-  console.log('tribe.img', tribe.img)
-
   return (
     <>
       {hasImgData && (
