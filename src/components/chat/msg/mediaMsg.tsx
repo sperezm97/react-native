@@ -69,11 +69,11 @@ export default function MediaMsg(props) {
 
   function onMediaPress() {
     if (media_type.startsWith('image')) {
-      setSelectedMedia(id)
-      setMediaModal(true)
+      // setSelectedMedia(id)
+      // setMediaModal(true)
 
-      // if (data) ui.setImgViewerParams({ data })
-      // if (uri) ui.setImgViewerParams({ uri })
+      if (data) ui.setImgViewerParams({ data })
+      if (uri) ui.setImgViewerParams({ uri })
     } else if (media_type.startsWith('n2n2/text')) {
       // downloadText(uri)
     }
@@ -224,13 +224,13 @@ export default function MediaMsg(props) {
           )}
         </>
       )}
-      <PhotoViewer
+      {/* <PhotoViewer
         visible={mediaModal}
         close={() => setMediaModal(false)}
         photos={photos}
         photoId={selectedMedia}
         chat={chat}
-      />
+      /> */}
     </View>
   )
 }
