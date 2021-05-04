@@ -1,5 +1,12 @@
 import React, { useState } from 'react'
-import { StyleSheet, View, Text, Dimensions, Modal } from 'react-native'
+import {
+  StyleSheet,
+  View,
+  Modal,
+  SafeAreaView,
+  ScrollView,
+  KeyboardAvoidingView
+} from 'react-native'
 import { useObserver } from 'mobx-react-lite'
 import { TextInput } from 'react-native-paper'
 
@@ -49,7 +56,6 @@ export default function JoinTribe() {
     ui.setJoinTribeParams(null)
   }
 
-  const h = Dimensions.get('screen').height
   const hasImg = params && params.img ? true : false
 
   return useObserver(() => {
@@ -59,100 +65,105 @@ export default function JoinTribe() {
       <Modal
         visible={joinTribeVisible}
         animationType='slide'
-        presentationStyle='pageSheet'
+        presentationStyle='fullScreen'
         onDismiss={close}
       >
-        <Header title='Join Community' onClose={() => close()} />
-        {params && (
-          <View style={{ ...styles.content, backgroundColor: theme.bg }}>
-            <Avatar photo={hasImg && params.img} size={160} round={90} />
-            <Typography
-              size={20}
-              fw='500'
-              style={{
-                marginTop: 10
-              }}
-            >
-              {params.name}
-            </Typography>
+        <SafeAreaView style={{ ...styles.wrap, backgroundColor: theme.bg }}>
+          <KeyboardAvoidingView
+            behavior='padding'
+            style={{ flex: 1 }}
+            keyboardVerticalOffset={1}
+          >
+            <Header title='Join Community' onClose={() => close()} />
+            <ScrollView>
+              {params && (
+                <View style={{ ...styles.content }}>
+                  <Avatar photo={hasImg && params.img} size={160} round={90} />
+                  <Typography
+                    size={20}
+                    fw='500'
+                    style={{
+                      marginTop: 10
+                    }}
+                  >
+                    {params.name}
+                  </Typography>
 
-            <Typography
-              color={theme.subtitle}
-              style={{
-                marginTop: 10,
-                marginBottom: 10
-              }}
-            >
-              {params.description}
-            </Typography>
+                  <Typography
+                    color={theme.subtitle}
+                    style={{
+                      marginTop: 10,
+                      marginBottom: 10
+                    }}
+                  >
+                    {params.description}
+                  </Typography>
+                  <View style={{ ...styles.table, borderColor: theme.border }}>
+                    {prices &&
+                      prices.map((p, i) => {
+                        return (
+                          <View
+                            key={i}
+                            style={{
+                              ...styles.tableRow,
+                              borderBottomColor: theme.border,
+                              borderBottomWidth: i === prices.length - 1 ? 0 : 1
+                            }}
+                          >
+                            <Typography
+                              style={{ ...styles.tableRowLabel }}
+                              color={theme.title}
+                            >
+                              {`${p.label}:`}
+                            </Typography>
 
-            <View style={{ ...styles.table, borderColor: theme.border }}>
-              {prices &&
-                prices.map((p, i) => {
-                  return (
-                    <View
-                      key={i}
-                      style={{
-                        ...styles.tableRow,
-                        borderBottomColor: theme.border,
-                        borderBottomWidth: i === prices.length - 1 ? 0 : 1
-                      }}
-                    >
-                      <Typography style={{ ...styles.tableRowLabel }} color={theme.title}>
-                        {`${p.label}:`}
-                      </Typography>
-
-                      <Typography
-                        style={{ ...styles.tableRowValue }}
-                        color={theme.subtitle}
-                      >
-                        {p.value || 0}
-                      </Typography>
-                    </View>
-                  )
-                })}
-            </View>
-
-            <TextInput
-              placeholder='Your Name in this Tribe'
-              onChangeText={e => setAlias(e)}
-              value={alias}
-              style={{
-                ...styles.input,
-                backgroundColor: theme.bg,
-                color: theme.placeholder
-              }}
-              underlineColor={theme.border}
-            />
-
-            <Button
-              onPress={joinTribe}
-              loading={loading}
-              size='large'
-              w='80%'
-              style={{ ...styles.button, top: h - 250 }}
-            >
-              Join
-            </Button>
-          </View>
-        )}
+                            <Typography
+                              style={{ ...styles.tableRowValue }}
+                              color={theme.subtitle}
+                            >
+                              {p.value || 0}
+                            </Typography>
+                          </View>
+                        )
+                      })}
+                  </View>
+                  <TextInput
+                    placeholder='Your Name in this Tribe'
+                    onChangeText={e => setAlias(e)}
+                    value={alias}
+                    style={{
+                      ...styles.input,
+                      backgroundColor: theme.bg,
+                      color: theme.placeholder
+                    }}
+                    underlineColor={theme.border}
+                  />
+                  <Button onPress={joinTribe} loading={loading} size='large' w={240}>
+                    Join
+                  </Button>
+                </View>
+              )}
+            </ScrollView>
+          </KeyboardAvoidingView>
+        </SafeAreaView>
       </Modal>
     )
   })
 }
 
 const styles = StyleSheet.create({
-  modal: {
-    margin: 0
+  wrap: {
+    flex: 1,
+    height: '100%',
+    width: '100%'
   },
   content: {
     flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
     alignItems: 'center',
-    justifyContent: 'flex-start',
+    height: '100%',
     width: '100%'
-  },
-  button: {
-    position: 'absolute'
   },
   table: {
     borderWidth: 1,
@@ -184,6 +195,7 @@ const styles = StyleSheet.create({
   input: {
     height: 50,
     maxHeight: 50,
-    minWidth: 240
+    minWidth: 240,
+    marginBottom: 40
   }
 })
