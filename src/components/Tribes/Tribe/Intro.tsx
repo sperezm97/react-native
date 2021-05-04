@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
 import { useNavigation } from '@react-navigation/native'
@@ -111,7 +111,7 @@ export default function Intro({ tribe }) {
                 flexWrap: 'wrap'
               }}
             >
-              <Typography size={22} fw='600'>
+              <Typography size={22} fw='600' numberOfLines={1}>
                 {tribe.name}
               </Typography>
               {!tribe.owner && (
@@ -143,14 +143,14 @@ export default function Intro({ tribe }) {
                     style={{ ...styles.row }}
                     onPress={onTribeMembersPress}
                   >
-                    <Typography size={14} fw='600' style={{ paddingLeft: 4 }}>
+                    <Typography size={14} fw='600'>
                       {tribe.member_count}
                     </Typography>
                     <Typography size={14}> members</Typography>
                   </TouchableOpacity>
                 ) : (
                   <>
-                    <Typography size={14} fw='600' style={{ paddingLeft: 4 }}>
+                    <Typography size={14} fw='600'>
                       {tribe.member_count}
                     </Typography>
                     <Typography size={14}> members</Typography>
