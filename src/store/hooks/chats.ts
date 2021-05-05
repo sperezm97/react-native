@@ -21,7 +21,7 @@ export function useSearchChats(chats) {
   const conversation = constants.chat_types.conversation
 
   chats = chats.filter(c => {
-    return c.type === conversation && 'owner_pubkey' in c
+    return c.type === conversation && c.name !== 'N2N2 Root'
   })
 
   const chatsToShow = searchChats(chats, ui.searchTerm)
