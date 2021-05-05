@@ -20,7 +20,9 @@ export function useTribes() {
 export function useSearchTribes(tribes) {
   const { ui } = useStores()
 
-  tribes = tribes.filter(t => !t.owner).sort((a, b) => a.joined - b.joined)
+  // tribes = tribes.filter(t => !t.owner).sort((a, b) => a.joined - b.joined)
+
+  tribes = tribes.filter(t => !t.joined)
 
   return searchTribes(tribes, ui.tribesSearchTerm)
 }
@@ -30,12 +32,18 @@ export function useJoinedTribes(tribes) {
 }
 
 export function useOwnedTribes(tribes) {
-  tribes = tribes.filter(t => t.owner)
+  // tribes = tribes.filter(t => t.owner)
+  tribes = tribes.filter(t => t.joined)
 
   return tribes.sort((a, b) => {
-    if (a.joined > b.owner && b.last_active > a.last_active) return -1
+    if (a.owner > b.owner) return -1
     return 0
   })
+
+  // return tribes.sort((a, b) => {
+  //   if (a.joined > b.owner && b.last_active > a.last_active) return -1
+  //   return 0
+  // })
 }
 
 export function searchTribes(tribes, searchTerm) {

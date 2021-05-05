@@ -1,21 +1,19 @@
 import React from 'react'
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, TouchableOpacity } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
 import { useNavigation } from '@react-navigation/native'
-import { IconButton } from 'react-native-paper'
-import AntDesign from 'react-native-vector-icons/AntDesign'
+import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 import { useStores, useTheme } from '../../store'
 import ChatList from './chatList'
 import Search from '../common/Search'
 import Header from '../common/Header'
 import TabBar from '../common/TabBar'
+import Button from '../common/Button'
 
 export default function Chats() {
   const { ui } = useStores()
   const theme = useTheme()
-
-  const onAddFriendPress = () => ui.setAddFriendDialog(true)
 
   return useObserver(() => (
     <View
@@ -30,67 +28,65 @@ export default function Chats() {
           onChangeText={txt => {
             ui.setSearchTerm(txt)
           }}
-          style={{ width: '88%' }}
+          h={45}
+          style={{ width: '100%' }}
         />
-        <View style={{ width: '12%' }}>
-          <IconButton
-            icon={({ size, color }) => (
-              <AntDesign name='adduser' color={color} size={size} />
-            )}
-            color={theme.primary}
-            size={22}
-            onPress={onAddFriendPress}
-          />
-        </View>
       </View>
-      <ChatList
-
-      // listHeader={<ListHeader />}
-      />
+      <ChatList listHeader={<ListHeader />} />
       <TabBar />
     </View>
   ))
 }
 
-// function ListHeader() {
-//   const { ui } = useStores()
-//   const theme = useTheme()
+function ListHeader() {
+  const { ui } = useStores()
+  const theme = useTheme()
+  const navigation = useNavigation()
 
-//   return (
-//     <View style={{ ...styles.searchWrap }}>
-//       <Search
-//         placeholder='Search'
-//         value={ui.searchTerm}
-//         onChangeText={txt => {
-//           ui.setSearchTerm(txt)
-//         }}
-//         style={{ width: '88%' }}
-//       />
-//       <View style={{ width: '12%' }}>
-//         <IconButton
-//           icon={({ size, color }) => (
-//             <AntDesign name='adduser' color={color} size={size} />
-//           )}
-//           color={theme.primary}
-//           size={22}
-//           onPress={onAddFriendPress}
-//         />
-//       </View>
-//     </View>
-//   )
-// }
+  const onAddFriendPress = () => ui.setAddFriendDialog(true)
+
+  return (
+    <View style={{ ...styles.listHeader }}>
+      <TouchableOpacity
+        onPress={() => navigation.navigate('Contacts')}
+        activeOpacity={0.6}
+      >
+        <Button mode='text' fs={13}>
+          Contacts
+        </Button>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={onAddFriendPress} activeOpacity={0.6}>
+        <Button
+          mode='text'
+          icon={() => <MaterialIcon name='plus' color={theme.primary} size={16} />}
+          fs={13}
+        >
+          Add Friend
+        </Button>
+      </TouchableOpacity>
+    </View>
+  )
+}
 
 const styles = StyleSheet.create({
   main: {
     width: '100%',
     flex: 1
   },
+  listHeader: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: '100%',
+    paddingBottom: 10
+  },
   searchWrap: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
     width: '100%',
-    // paddingRight: 14,
+    paddingRight: 14,
     paddingLeft: 14,
     paddingBottom: 10
   }

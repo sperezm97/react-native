@@ -22,9 +22,8 @@ import Typography from '../common/Typography'
 
 const { useChats, useChatRow } = hooks
 
-export default function ChatList() {
+export default function ChatList(props) {
   const { ui, contacts, msg, details, chats } = useStores()
-  const theme = useTheme()
 
   const [refreshing, setRefreshing] = useState(false)
   const onRefresh = useCallback(async () => {
@@ -55,30 +54,6 @@ export default function ChatList() {
   const setAddFriendModalHandler = () => ui.setAddFriendDialog(true)
   const setNewTribeModalHandler = () => ui.setNewTribeModal(true)
 
-  const footerComponent: any = () => (
-    <View style={moreStyles.buttonsWrap}>
-      <PushableButton
-        icon='plus'
-        color={theme.secondary}
-        size='large'
-        w={140}
-        accessibilityLabel='add-friend-button'
-        onPress={setAddFriendModalHandler}
-      >
-        Friend
-      </PushableButton>
-      <PushableButton
-        icon='plus'
-        size='large'
-        w={140}
-        accessibilityLabel='new-group-button'
-        onPress={setNewTribeModalHandler}
-      >
-        Tribe
-      </PushableButton>
-    </View>
-  )
-
   return useObserver(() => {
     const chats = useChats()
 
@@ -99,8 +74,7 @@ export default function ChatList() {
           refreshControl={
             <RefreshLoading refreshing={refreshing} onRefresh={onRefresh} />
           }
-          // ListFooterComponent={footerComponent}
-          // ListHeaderComponent={listHeader}
+          ListHeaderComponent={props.listHeader}
         />
       </View>
     )

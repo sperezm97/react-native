@@ -100,7 +100,7 @@ function Item(props) {
           </View>
         </View>
         <View style={{ ...styles.row, ...styles.itemContentBottom }}>
-          <Typography color={theme.subtitle} size={13}>
+          <Typography color={theme.subtitle} size={13} numberOfLines={1}>
             {description}
           </Typography>
         </View>

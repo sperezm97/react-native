@@ -1,5 +1,6 @@
 import React from 'react'
 import { Searchbar } from 'react-native-paper'
+import FeatherIcon from 'react-native-vector-icons/Feather'
 
 import { useTheme } from '../../../store'
 import Icon from '../Icon'
@@ -11,7 +12,13 @@ export default function Search(props) {
 
   const borderRadius = round ? round : 8
 
-  const styles = { ...style, elevation: 0, height: h, backgroundColor: theme.inputBg, borderRadius }
+  const styles = {
+    ...style,
+    elevation: 0,
+    height: h,
+    backgroundColor: theme.inputBg,
+    borderRadius
+  }
   const iconColor = theme.icon
   const inputStyle = {
     color: theme.input,
@@ -30,6 +37,7 @@ export default function Search(props) {
       iconColor={iconColor}
       placeholderTextColor={placeholderTextColor}
       clearIcon={props => <ClearIcon value={value} />}
+      icon={props => <FeatherIcon name='search' color={theme.icon} size={18} />}
     />
   )
 }

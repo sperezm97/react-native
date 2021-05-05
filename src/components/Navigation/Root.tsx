@@ -7,7 +7,8 @@ import Chat from '../chat/chat'
 import ChatDetails from '../chat/ChatDetails'
 import Account from '../Account/Navigation'
 import Payment from '../Payment/Navigation'
-import Contacts from '../Contacts/Navigation'
+import Contacts from '../Contacts'
+import Contact from '../Contacts/Contact'
 import Tribes from '../Tribes/Navigation'
 import DiscoverTribes from '../Tribes/Discover'
 import Tribe from '../Tribes/Tribe'
@@ -77,6 +78,13 @@ export default function Root() {
       <RootStack.Screen
         name='Contacts'
         component={Contacts}
+        options={{
+          headerShown: false
+        }}
+      />
+      <RootStack.Screen
+        name='Contact'
+        component={Contact}
         options={{
           headerShown: false
         }}

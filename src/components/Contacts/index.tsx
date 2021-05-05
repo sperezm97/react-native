@@ -1,6 +1,7 @@
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
+import { useNavigation } from '@react-navigation/native'
 import { IconButton } from 'react-native-paper'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 
@@ -12,6 +13,7 @@ import ContactList from './ContactList'
 export default function Contacts() {
   const { ui } = useStores()
   const theme = useTheme()
+  const navigation = useNavigation()
 
   const onAddFriendPress = () => ui.setAddFriendDialog(true)
   const onChangeTextHandler = (txt: string) => ui.setContactsSearchTerm(txt)
@@ -27,13 +29,18 @@ export default function Contacts() {
 
   return useObserver(() => (
     <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
-      <BackHeader title='Contacts' action={AddContact} />
+      <BackHeader
+        title='Contacts'
+        action={AddContact}
+        navigate={() => navigation.goBack()}
+      />
       <View style={{ ...styles.content }}>
         <View style={{ ...styles.searchWrap }}>
           <Search
             placeholder='Search Contacts'
             onChangeText={onChangeTextHandler}
             value={ui.contactsSearchTerm}
+            h={45}
           />
         </View>
         <ContactList />

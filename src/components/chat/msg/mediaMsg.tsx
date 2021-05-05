@@ -229,11 +229,13 @@ export default function MediaMsg(props) {
             )}
           </>
         )}
-        <Viewer
+        <PhotoViewer
           visible={mediaModal}
           close={() => setMediaModal(false)}
-          photos={photos}
-          initialIndex={photos && photos.findIndex(m => m.id === selectedMedia)}
+          // photos={photos}
+          photos={photos && photos.filter(m => m.id === selectedMedia)}
+          // initialIndex={photos && photos.findIndex(m => m.id === selectedMedia)}
+          initialIndex={0}
           chat={chat}
         />
       </View>
@@ -242,7 +244,7 @@ export default function MediaMsg(props) {
 }
 
 function Viewer(props) {
-  return useMemo(() => <PhotoViewer {...props} />, [props.visible, props.photos])
+  return useMemo(() => <PhotoViewer {...props} />, [props.visible])
 }
 
 function Media({ type, data, uri, filename }) {

@@ -93,8 +93,9 @@ function Media({ tribe }) {
           <Viewer
             visible={mediaModal}
             close={() => setMediaModal(false)}
-            photos={media}
-            initialIndex={media && media.findIndex(m => m.id === selectedMedia)}
+            photos={media && media.filter(m => m.id === selectedMedia)}
+            // initialIndex={media && media.findIndex(m => m.id === selectedMedia)}
+            initialIndex={0}
             chat={tribe.chat}
           />
         </View>
@@ -104,7 +105,7 @@ function Media({ tribe }) {
 }
 
 function Viewer(props) {
-  return useMemo(() => <PhotoViewer {...props} />, [props.visible, props.photos])
+  return useMemo(() => <PhotoViewer {...props} />, [props.visible])
 }
 
 const styles = StyleSheet.create({

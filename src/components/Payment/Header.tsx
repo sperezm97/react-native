@@ -39,8 +39,15 @@ export default function Header({ onScanClick }) {
               </TouchableOpacity>
             )} */}
 
-            <TouchableOpacity onPress={() => navigation.navigate('AddSats')}>
-              <Button mode='text' icon={() => <MaterialIcon name='plus' color={theme.primary} size={20} />} fs={14}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('AddSats')}
+              activeOpacity={0.6}
+            >
+              <Button
+                mode='text'
+                icon={() => <MaterialIcon name='plus' color={theme.primary} size={20} />}
+                fs={14}
+              >
                 Add Sats
               </Button>
             </TouchableOpacity>
