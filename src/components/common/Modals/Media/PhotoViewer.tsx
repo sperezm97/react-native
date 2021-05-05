@@ -267,7 +267,7 @@ const styles = StyleSheet.create({
   footer: {
     position: 'absolute',
     // bottom: 0,
-    bottom: isIphoneX() ? getBottomSpace() : 5,
+    bottom: isIphoneX() ? getBottomSpace() : 15,
     width: '100%',
     // height: isIphoneX() ? 100 + getBottomSpace() : 90,
     paddingTop: 10,

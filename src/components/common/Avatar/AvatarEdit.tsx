@@ -15,7 +15,7 @@ export default function AvatarEdit({
   const theme = useTheme()
 
   return (
-    <TouchableOpacity onPress={onPress} style={styles.imgWrap} activeOpacity={0.9}>
+    <TouchableOpacity onPress={onPress} style={styles.imgWrap} activeOpacity={0.6}>
       {children}
       {!display && (
         <>

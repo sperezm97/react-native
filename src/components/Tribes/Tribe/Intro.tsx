@@ -100,7 +100,7 @@ export default function Intro({ tribe }) {
               uploadPercent={uploadPercent}
               display={!tribe.owner}
             >
-              <Avatar photo={tribe.img} size={80} round={50} />
+              <Avatar photo={tribe.img} size={70} round={50} />
             </AvatarEdit>
           </View>
 
@@ -116,13 +116,8 @@ export default function Intro({ tribe }) {
               </Typography>
               {!tribe.owner && (
                 <>
-                  <View style={{ ...styles.dot, backgroundColor: theme.text }}></View>
-                  <Typography
-                    size={14}
-                    fw='500'
-                    color={theme.subtitle}
-                    style={{ padding: 0, margin: 0 }}
-                  >
+                  <View style={{ ...styles.dot, backgroundColor: theme.black }}></View>
+                  <Typography size={14} fw='500' color={theme.subtitle} numberOfLines={1}>
                     {tribe.owner_alias?.trim()}
                   </Typography>
                 </>
@@ -137,23 +132,25 @@ export default function Intro({ tribe }) {
                 </Typography>
               </View>
               <View style={{ ...styles.row }}>
-                <View style={{ ...styles.dot, backgroundColor: theme.text }}></View>
+                <View style={{ ...styles.dot, backgroundColor: theme.black }}></View>
                 {tribe.owner ? (
                   <TouchableOpacity
                     style={{ ...styles.row }}
                     onPress={onTribeMembersPress}
                   >
                     <Typography size={14} fw='600'>
-                      {tribe.member_count}
+                      {tribe.member_count}{' '}
                     </Typography>
-                    <Typography size={14}> members</Typography>
+                    <Typography size={14} numberOfLines={1}>
+                      members
+                    </Typography>
                   </TouchableOpacity>
                 ) : (
                   <>
                     <Typography size={14} fw='600'>
-                      {tribe.member_count}
+                      {tribe.member_count}{' '}
                     </Typography>
-                    <Typography size={14}> members</Typography>
+                    <Typography size={14}>members</Typography>
                   </>
                 )}
               </View>
@@ -213,7 +210,7 @@ function TribeActions({ tribe }) {
                   />
                 )}
                 onPress={onChatPress}
-                w='70%'
+                w='60%'
               >
                 Play Wall
               </Button>
@@ -230,7 +227,7 @@ function TribeActions({ tribe }) {
             <MaterialCommunityIcon name='chat-outline' color={theme.white} size={20} />
           )}
           onPress={onChatPress}
-          w='70%'
+          w='60%'
         >
           Play Wall
         </Button>
@@ -254,16 +251,15 @@ const styles = StyleSheet.create({
   headerContent: {
     display: 'flex',
     flexDirection: 'column',
-    width: '100%',
-    flex: 1,
+    width: '75%',
     marginLeft: 28
+    // flex: 1,
   },
   avatarWrap: {
     display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: 80,
-    height: 80
+    width: '20%',
+    alignItems: 'center'
+    // justifyContent: 'center'
   },
   row: {
     display: 'flex',
