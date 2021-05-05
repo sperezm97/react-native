@@ -8,8 +8,8 @@ import Ionicon from 'react-native-vector-icons/Ionicons'
 import { useTheme } from '../../../store'
 import { useAvatarColor } from '../../../store/hooks/msg'
 import { useCachedEncryptedFile } from './hooks'
-import { parseLDAT } from '../../utils/ldat'
 import { constantCodes, constants } from '../../../constants'
+import { parseLDAT } from '../../utils/ldat'
 import Typography from '../../common/Typography'
 
 export default function ReplyContent(props) {
@@ -25,7 +25,14 @@ export default function ReplyContent(props) {
 
   return useObserver(() => {
     return (
-      <View style={{ ...styles.wrap, ...extraStyles }}>
+      <View
+        style={{
+          ...styles.wrap,
+          ...extraStyles,
+          height: props.reply ? 50 : 'auto',
+          paddingTop: props.reply ? 0 : 10
+        }}
+      >
         <View style={{ ...styles.replyBar, backgroundColor: nameColor }} />
         <View style={{ ...styles.replyWrap }}>
           {props.replyMsg && <ReplySource {...props} />}
@@ -39,11 +46,11 @@ export default function ReplyContent(props) {
             </Typography>
           </View>
         </View>
-        {props.showClose && (
+        {props.reply && (
           <IconButton
             icon='close'
             size={18}
-            color='#666'
+            color={theme.icon}
             style={{ ...styles.close }}
             onPress={onCloseHandler}
           />
@@ -61,7 +68,7 @@ function ReplySource(props) {
       return <></>
 
     case 'attachment':
-      return <Media {...props.replyMsg} showClose={props.showClose} />
+      return <Media {...props.replyMsg} reply={props.reply} />
 
     case 'boost':
     default:
@@ -96,7 +103,7 @@ function Media(props) {
   const showPurchaseButton = amt && !isMe ? true : false
 
   return (
-    <View style={{ width: props.showClose ? '15%' : '25%' }}>
+    <View style={{ width: props.reply ? '15%' : '25%' }}>
       {!hasImgData ? (
         <Ionicon name='lock-closed' color={theme.silver} size={30} />
       ) : (
@@ -112,15 +119,14 @@ function Media(props) {
 
 const styles = StyleSheet.create({
   wrap: {
-    height: 50,
     width: '100%',
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingLeft: 20,
-    paddingRight: 40,
-    position: 'relative'
+    position: 'relative',
+    paddingRight: 50,
+    paddingLeft: 20
   },
   replyBar: {
     width: 5,

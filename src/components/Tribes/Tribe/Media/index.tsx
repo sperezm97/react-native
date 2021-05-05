@@ -90,7 +90,7 @@ function Media({ tribe }) {
               </Empty>
             )}
           </View>
-          <Viewer
+          <PhotoViewer
             visible={mediaModal}
             close={() => setMediaModal(false)}
             photos={media && media.filter(m => m.id === selectedMedia)}

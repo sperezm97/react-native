@@ -366,6 +366,7 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
       >
         {(hasReplyContent ? true : false) && (
           <ReplyContent
+            reply={true}
             replyMsg={replyMessage}
             showClose={true}
             color={replyColor}
@@ -469,6 +470,7 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
                 }}
                 onPress={() => sendMessage()}
                 accessibilityLabel='send-message'
+                disabled={!text}
               >
                 <Icon name='send' size={17} color='white' />
               </TouchableOpacity>

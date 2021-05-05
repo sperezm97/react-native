@@ -326,10 +326,7 @@ class MsgStore {
         this.messagePosted(r)
         if (amount) detailsStore.addToBalance(amount * -1)
       }
-      console.log('after')
-    } catch (e) {
-      console.log(e)
-    }
+    } catch (e) {}
   }
 
   @action

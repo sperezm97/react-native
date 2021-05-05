@@ -40,7 +40,6 @@ interface replyContent {
   replyMessageSenderAlias: string
   replyMessageContent: string
   replyColor: string
-  replyMessage: any
 }
 export function useReplyContent(msgs, replyUUID, extraTextContent): replyContent {
   const { contacts } = useStores()
@@ -60,7 +59,7 @@ export function useReplyContent(msgs, replyUUID, extraTextContent): replyContent
     replyMessageContent =
       replyMsg && replyMsg.message_content
         ? replyMsg.message_content
-        : replyMsg.media_type
+        : replyMsg?.media_type
     if (!replyMessageSenderAlias && replyMsg && replyMsg.sender) {
       const sender = contacts.contacts.find(c => c.id === replyMsg.sender)
       if (sender) replyMessageSenderAlias = sender.alias

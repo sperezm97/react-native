@@ -229,7 +229,7 @@ function MsgBubble(props) {
           }}
         >
           {isDeleted && <DeletedMsg />}
-          {!isDeleted && (props.reply_message_content ? true : false) && (
+          {!isDeleted && (props.reply_uuid ? true : false) && (
             <ReplyContent
               replyMsg={replyMessage}
               content={props.reply_message_content}

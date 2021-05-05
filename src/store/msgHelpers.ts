@@ -141,6 +141,8 @@ export function putInReverse(allms, decoded) {
 }
 
 export function putIn(orged, msg, chatID) {
+  console.log('msg', msg)
+
   if (!(chatID || chatID === 0)) return
   if (orged[chatID]) {
     if (!Array.isArray(orged[chatID])) return

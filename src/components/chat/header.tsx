@@ -131,7 +131,11 @@ export default function Header({
           <Icon name='ChevronLeft' size={28} color={theme.icon} />
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={clickTitle} style={{ ...styles.detailsWrap }}>
+        <TouchableOpacity
+          onPress={clickTitle}
+          style={{ ...styles.detailsWrap }}
+          activeOpacity={0.6}
+        >
           <View style={{ marginRight: 10 }}>
             <Avatar alias={name} photo={uri || ''} size={38} big aliasSize={15} />
           </View>
