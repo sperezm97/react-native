@@ -34,6 +34,7 @@ export default function MediaMsg(props) {
   const isMe = props.sender === 1
 
   const ldat = parseLDAT(media_token)
+  // console.log('ldat', ldat, 'message_content', message_content)
 
   let amt = null
   let purchased = false
@@ -101,12 +102,10 @@ export default function MediaMsg(props) {
   }
 
   const hasImgData = data || uri ? true : false
-
   const hasContent = message_content ? true : false
   const showPurchaseButton = amt && !isMe ? true : false
   const showStats = isMe && amt
   const sold = props.sold
-
   const showBoostRow = props.boosts_total_sats ? true : false
 
   let isImg = false
@@ -144,12 +143,12 @@ export default function MediaMsg(props) {
           onPress={onMediaPress}
           activeOpacity={0.8}
         >
-          {showStats && (
+          {/* {showStats && (
             <View style={styles.stats}>
               <Text style={styles.satStats}>{`${amt} sat`}</Text>
               <Text style={{ ...styles.satStats, opacity: sold ? 1 : 0 }}>Purchased</Text>
             </View>
-          )}
+          )} */}
 
           {!hasImgData && (
             <View style={{ minHeight, ...styles.loading }}>
@@ -247,14 +246,12 @@ function Viewer(props) {
 }
 
 function Media({ type, data, uri, filename }) {
-  // console.log('MEDIA:', type, uri)
-
   if (type === 'n2n2/text') {
     return <FileMsg type={type} uri={uri} filename={filename} />
   }
   if (type.startsWith('image')) {
     return (
-      <FastImage style={styles.img} resizeMode='cover' source={{ uri: uri || data }} />
+      <FastImage style={styles.photo} resizeMode='cover' source={{ uri: uri || data }} />
     )
   }
   if (type.startsWith('audio')) {
@@ -308,7 +305,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     paddingTop: 30
   },
-  img: {
+  photo: {
     width: 200,
     height: 200
   },
@@ -384,9 +381,10 @@ const styles = StyleSheet.create({
     width: 200,
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'center',
     alignItems: 'center',
     flexWrap: 'nowrap',
     ...shared.innerPad
+    // paddingTop: shared.innerPad.paddingTop,
+    // paddingBottom: shared.innerPad.paddingBottom
   }
 })

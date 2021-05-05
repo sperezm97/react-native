@@ -9,7 +9,8 @@ import ReactNativeHapticFeedback from 'react-native-haptic-feedback'
 import Popover, { PopoverPlacement } from 'react-native-popover-view'
 import Clipboard from '@react-native-community/clipboard'
 
-import { useTheme } from '../../../store'
+import { useStores, useTheme, hooks } from '../../../store'
+import { useChatReply } from '../../../store/hooks/chat'
 import { constantCodes, constants } from '../../../constants'
 import EE, { CANCEL_REPLY_UUID, CLEAR_REPLY_UUID, REPLY_UUID } from '../../utils/ee'
 import TextMsg from './textMsg'
@@ -24,6 +25,8 @@ import Avatar from '../../common/Avatar'
 import MemberRequest from './memberRequest'
 import BotResMsg from './botResMsg'
 import BoostMsg from './boostMsg'
+
+const { useMsgs } = hooks
 
 export default function MsgRow(props) {
   const theme = useTheme()
@@ -80,10 +83,11 @@ export default function MsgRow(props) {
   const w = props.windowWidth
 
   const onRowOpenHandler = () => {
-    if (props.message_content) {
-      EE.emit(REPLY_UUID, props.uuid)
-      setShowReply(true)
-    }
+    // if (props.message_content) {
+    EE.emit(REPLY_UUID, props.uuid)
+
+    setShowReply(true)
+    // }
   }
   const onRowCloseHandler = () => {
     EE.emit(CANCEL_REPLY_UUID, '')
@@ -117,7 +121,7 @@ export default function MsgRow(props) {
           ref={swipeRowRef}
           disableRightSwipe={true}
           friction={100}
-          disableLeftSwipe={!props.message_content}
+          // disableLeftSwipe={!props.message_content}
           rightOpenValue={-60}
           stopRightSwipe={-60}
           onRowOpen={onRowOpenHandler}
@@ -151,11 +155,18 @@ export default function MsgRow(props) {
 
 function MsgBubble(props) {
   const theme = useTheme()
+  const { msg } = useStores()
   const [deleting, setDeleting] = useState(false)
   const isMe = props.sender === 1
   const isInvoice = props.type === constants.message_types.invoice
   const isPaid = props.status === constants.statuses.confirmed
   const [showPopover, setShowPopover] = useState(false)
+  // console.log(
+  //   'props.reply_message_content ',
+  //   props.reply_message_content,
+  //   'reply_uuid',
+  //   props.reply_uuid
+  // )
 
   let backgroundColor = isMe ? theme.main : theme.bg
   if (isInvoice && !isPaid) {
@@ -191,6 +202,9 @@ function MsgBubble(props) {
 
   const allowBoost = !isMe && !(props.message_content || '').startsWith('boost::')
 
+  const msgs = useMsgs(props.chat) || []
+  const { replyMessage } = useChatReply(msgs, props.reply_uuid)
+
   return (
     <Popover
       isVisible={showPopover}
@@ -217,6 +231,7 @@ function MsgBubble(props) {
           {isDeleted && <DeletedMsg />}
           {!isDeleted && (props.reply_message_content ? true : false) && (
             <ReplyContent
+              replyMsg={replyMessage}
               content={props.reply_message_content}
               senderAlias={props.reply_message_sender_alias}
             />

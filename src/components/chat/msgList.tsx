@@ -241,6 +241,7 @@ function ListItem({
     () => (
       <Message
         {...msg}
+        chat={chat}
         isGroup={isGroup}
         isTribe={isTribe}
         senderAlias={senderAlias}

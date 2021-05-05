@@ -1,12 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native'
-import TrackPlayer from 'react-native-track-player';
+import TrackPlayer from 'react-native-track-player'
 import moment from 'moment'
 import EE, { EXTRA_TEXT_CONTENT } from '../../utils/ee'
-import momentDurationFormatSetup from "moment-duration-format";
-import { StreamPayment } from '../../../store/feed';
-momentDurationFormatSetup(moment);
-import Slider from '@react-native-community/slider';
+import momentDurationFormatSetup from 'moment-duration-format'
+import { StreamPayment } from '../../../store/feed'
+momentDurationFormatSetup(moment)
+import Slider from '@react-native-community/slider'
 import TouchableIcon from '../../utils/touchableIcon'
 import Rocket from './rocket'
 import CustomIcon from '../../utils/customIcons'
@@ -30,7 +30,7 @@ export default function Controls(props) {
 
   async function fastForward() {
     const n = pos + 30
-    await TrackPlayer.seekTo(n);
+    await TrackPlayer.seekTo(n)
     setPosition()
     setPos(n)
   }
@@ -59,14 +59,14 @@ export default function Controls(props) {
     const { duration } = props
     if (duration) {
       const secs = Math.round(duration * (ratio / 100))
-      await TrackPlayer.seekTo(secs);
+      await TrackPlayer.seekTo(secs)
       setPosition()
       setPos(secs)
     }
   }
   function getProgress() {
-    if (!props.duration || !pos) return 0;
-    return pos / props.duration;
+    if (!props.duration || !pos) return 0
+    return pos / props.duration
   }
 
   function doSelectSpeed(s: string) {
@@ -84,14 +84,15 @@ export default function Controls(props) {
   const durationText = moment.duration(duration, 'seconds').format('hh:mm:ss')
   return (
     <View style={styles.progressWrap}>
-
       <View style={styles.barWrap}>
         <View style={styles.progressBarWrap}>
           {/* <ProgressBar color="#6289FD"
               progress={this.getProgress()}
             // buffered={this.getBufferedProgress()}
             /> */}
-          <Slider minimumValue={0} maximumValue={100}
+          <Slider
+            minimumValue={0}
+            maximumValue={100}
             value={getProgress() * 100}
             minimumTrackTintColor={theme.primary}
             maximumTrackTintColor={theme.primary}
@@ -103,73 +104,88 @@ export default function Controls(props) {
         <Text style={{ ...styles.durationText, color: theme.title }}>{durationText}</Text>
       </View>
 
-      {!selectSpeed && <View style={styles.speedWrap}>
-        <View style={styles.speedWrapInner}>
-          <TouchableOpacity style={styles.speedClickable} onPress={() => setSelectSpeed(true)}>
-            <Text style={{ ...styles.speed, color: theme.subtitle }}>
-              {`${props.speed || '1'}x`}
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </View>}
-
-      {selectSpeed && <View style={styles.selectSpeed}>
-        <View style={styles.selectSpeedInner}>
-          {ratez.map(s => {
-            return <TouchableOpacity key={s} onPress={() => doSelectSpeed(s)}
-              style={{ ...styles.speedBubble, backgroundColor: s === props.speed ? theme.primary : theme.deep }}>
-              <Text style={{ color: theme.title, fontSize: 11 }}>{`${s}x`}</Text>
+      {!selectSpeed && (
+        <View style={styles.speedWrap}>
+          <View style={styles.speedWrapInner}>
+            <TouchableOpacity
+              style={styles.speedClickable}
+              onPress={() => setSelectSpeed(true)}
+            >
+              <Text style={{ ...styles.speed, color: theme.subtitle }}>
+                {`${props.speed || '1'}x`}
+              </Text>
             </TouchableOpacity>
-          })}
+          </View>
         </View>
-      </View>}
+      )}
+
+      {selectSpeed && (
+        <View style={styles.selectSpeed}>
+          <View style={styles.selectSpeedInner}>
+            {ratez.map(s => {
+              return (
+                <TouchableOpacity
+                  key={s}
+                  onPress={() => doSelectSpeed(s)}
+                  style={{
+                    ...styles.speedBubble,
+                    backgroundColor: s === props.speed ? theme.primary : theme.deep
+                  }}
+                >
+                  <Text style={{ color: theme.title, fontSize: 11 }}>{`${s}x`}</Text>
+                </TouchableOpacity>
+              )
+            })}
+          </View>
+        </View>
+      )}
 
       <View style={styles.progressWrapBottom}>
-
         <View style={{ height: 48, width: 50 }}>
-          <TouchableIcon
-            rippleColor={theme.title} size={48}
-            onPress={feedClip}>
-            <CustomIcon name="chat-quote" color={theme.title} size={24} />
+          <TouchableIcon rippleColor={theme.title} size={48} onPress={feedClip}>
+            <CustomIcon name='chat-quote' color={theme.title} size={24} />
           </TouchableIcon>
         </View>
 
         <View style={styles.controls}>
-          <TouchableIcon
-            rippleColor={theme.title} size={48}
-            onPress={rewind}>
-            <CustomIcon name="back-15" color={theme.title} size={28} />
+          <TouchableIcon rippleColor={theme.title} size={48} onPress={rewind}>
+            <CustomIcon name='back-15' color={theme.title} size={28} />
           </TouchableIcon>
-          <TouchableOpacity onPress={onToggle} style={{ marginLeft: 18, marginRight: 18 }}>
-            <Icon name={playing ? 'pause-circle' : 'play-circle'} size={52} color={theme.primary} />
+          <TouchableOpacity
+            onPress={onToggle}
+            style={{ marginLeft: 18, marginRight: 18 }}
+          >
+            <Icon
+              name={playing ? 'pause-circle' : 'play-circle'}
+              size={52}
+              color={theme.primary}
+            />
           </TouchableOpacity>
-          <TouchableIcon
-            rippleColor={theme.title} size={48}
-            onPress={fastForward}>
-            <CustomIcon name="forward-30" color={theme.title} size={28} />
+          <TouchableIcon rippleColor={theme.title} size={48} onPress={fastForward}>
+            <CustomIcon name='forward-30' color={theme.title} size={28} />
           </TouchableIcon>
         </View>
 
-        <View style={{ height: 55, width: 50, display: 'flex', justifyContent: 'flex-end' }}>
+        <View
+          style={{ height: 55, width: 50, display: 'flex', justifyContent: 'flex-end' }}
+        >
           <Rocket onPress={props.boost} />
         </View>
-
       </View>
-
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
   controls: {
     display: 'flex',
     alignItems: 'center',
-    flexDirection: 'row',
+    flexDirection: 'row'
   },
   progressWrap: {
     marginTop: 5,
     display: 'flex',
-    width: '100%',
+    width: '100%'
   },
   speedWrap: {
     width: '100%',
@@ -181,15 +197,18 @@ const styles = StyleSheet.create({
   },
   speedWrapInner: {
     position: 'absolute',
-    top: 0, left: 0, right: 0,
+    top: 0,
+    left: 0,
+    right: 0,
     width: '100%',
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   speedClickable: {
-    width: 32, height: 32,
+    width: 32,
+    height: 32,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-start'
@@ -198,7 +217,8 @@ const styles = StyleSheet.create({
     fontSize: 11
   },
   selectSpeed: {
-    height: 50, width: '100%',
+    height: 50,
+    width: '100%',
     position: 'relative',
     paddingTop: 22
   },
@@ -209,7 +229,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   speedBubble: {
-    width: 36, height: 26,
+    width: 36,
+    height: 26,
     borderRadius: 7,
     marginLeft: 3,
     marginRight: 3,

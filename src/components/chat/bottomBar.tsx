@@ -17,8 +17,8 @@ import AudioRecorderPlayer from 'react-native-audio-recorder-player'
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback'
 import Toast from 'react-native-simple-toast'
 
-import { useStores, useTheme } from '../../store'
-import { calcBotPrice, useReplyContent } from '../../store/hooks/chat'
+import { useStores, useTheme, hooks } from '../../store'
+import { calcBotPrice, useReplyContent, useChatReply } from '../../store/hooks/chat'
 import EE, {
   EXTRA_TEXT_CONTENT,
   REPLY_UUID,
@@ -43,6 +43,8 @@ const audioRecorderPlayer = new AudioRecorderPlayer()
 
 let nonStateRecordingStartTime = 0
 let dontRecordActually = false
+
+const { useMsgs } = hooks
 
 export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
   const { ui, msg, meme } = useStores()
@@ -125,6 +127,7 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
   function cancelReplyUUID() {
     setReplyUuid('')
   }
+
   useEffect(() => {
     EE.on(EXTRA_TEXT_CONTENT, gotExtraTextContent)
     EE.on(REPLY_UUID, gotReplyUUID)
@@ -319,6 +322,9 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
     replyUuid,
     extraTextContent
   )
+
+  const msgs = useMsgs(chat) || []
+  const { replyMessage } = useChatReply(msgs, replyUuid)
   const hasReplyContent = replyUuid || extraTextContent ? true : false
 
   // const replyMessage = replyUuid&&thisChatMsgs&&thisChatMsgs.find(m=>m.uuid===replyUuid)
@@ -360,6 +366,7 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
       >
         {(hasReplyContent ? true : false) && (
           <ReplyContent
+            replyMsg={replyMessage}
             showClose={true}
             color={replyColor}
             content={replyMessageContent}
@@ -456,7 +463,10 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
             <View style={styles.sendButtonWrap}>
               <TouchableOpacity
                 activeOpacity={0.5}
-                style={{ ...styles.sendButton, backgroundColor: theme.primary }}
+                style={{
+                  ...styles.sendButton,
+                  backgroundColor: text ? theme.primary : theme.grey
+                }}
                 onPress={() => sendMessage()}
                 accessibilityLabel='send-message'
               >

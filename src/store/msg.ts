@@ -293,6 +293,7 @@ class MsgStore {
       if (message_price) v.message_price = message_price
       // const r = await relay.post('messages', v)
       // this.gotNewMessage(r)
+
       if (!chat_id) {
         const r = await relay.post('messages', v)
         if (!r) return
@@ -301,6 +302,7 @@ class MsgStore {
         const putInMsgType = boost
           ? constants.message_types.boost
           : constants.message_types.message
+
         const amt =
           boost && message_price && message_price < amount
             ? amount - message_price
