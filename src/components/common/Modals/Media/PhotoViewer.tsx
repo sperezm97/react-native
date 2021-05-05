@@ -8,22 +8,18 @@ import Swiper from 'react-native-swiper'
 import Ionicon from 'react-native-vector-icons/Ionicons'
 import { ActivityIndicator } from 'react-native-paper'
 import { isIphoneX, getBottomSpace } from 'react-native-iphone-x-helper'
+import ViewMoreText from 'react-native-view-more-text'
 
 import { useStores, useTheme } from '../../../../store'
 import { SCREEN_WIDTH, SCREEN_HEIGHT, STATUS_BAR_HEIGHT } from '../../../../constants'
 import { parseLDAT } from '../../../utils/ldat'
 import { useCachedEncryptedFile } from '../../../chat/msg/hooks'
 import Button from '../../../common/Button'
+import Typography from '../../../common/Typography'
 import BoostDetails from './BoostDetails'
 
-export default function PhotoViewer({ visible, close, photos, photoId, chat }) {
+export default function PhotoViewer({ visible, close, photos, chat, initialIndex }) {
   const theme = useTheme()
-
-  function getInitialPhotoIndex() {
-    const initialIndex = photos && photos.findIndex(m => m.id === photoId)
-
-    return initialIndex || 0
-  }
 
   // return useObserver(() => (
   return (
@@ -43,7 +39,8 @@ export default function PhotoViewer({ visible, close, photos, photoId, chat }) {
           horizontal={false}
           showsButtons={false}
           showsPagination={false}
-          index={getInitialPhotoIndex()}
+          index={initialIndex}
+          loop={false}
         >
           {photos.map((p, index) => (
             <SwipeItem key={index} {...p} chat={chat} />
@@ -147,12 +144,28 @@ function SwipeItem(props) {
 
   const showBoostRow = boosts_total_sats ? true : false
 
+  function renderViewMore(onPress) {
+    return (
+      <Typography onPress={onPress} color={theme.primary}>
+        View more
+      </Typography>
+    )
+  }
+
+  function renderViewLess(onPress) {
+    return (
+      <Typography onPress={onPress} color={theme.primary}>
+        View less
+      </Typography>
+    )
+  }
+
   return (
     <View style={{ ...styles.swipeItem }}>
       {isImg && showPurchaseButton && !purchased && (
         <View style={{ ...styles.locked }}>
           <>
-            <Ionicon name='image' color={theme.white} size={50} />
+            <Ionicon name='lock-closed' color={theme.silver} size={50} />
             {showPurchaseButton && (
               <Button
                 w='50%'
@@ -192,16 +205,40 @@ function SwipeItem(props) {
       )}
 
       <View style={{ ...styles.footer }}>
-        {!isMe ? (
-          <IconButton
-            icon={() => <Ionicon name='rocket-outline' color={theme.white} size={24} />}
-            onPress={onBoostPress}
-          />
-        ) : (
-          <View></View>
-        )}
+        <View style={{ ...styles.row, marginBottom: 10 }}>
+          {hasContent && (
+            <>
+              {message_content.length > 50 ? (
+                <ViewMoreText
+                  numberOfLines={1}
+                  renderViewMore={renderViewMore}
+                  renderViewLess={renderViewLess}
+                >
+                  <Typography size={16} color={theme.white}>
+                    {message_content}
+                  </Typography>
+                </ViewMoreText>
+              ) : (
+                <Typography size={16} color={theme.white}>
+                  {message_content}
+                </Typography>
+              )}
+            </>
+          )}
+        </View>
 
-        <View>{showBoostRow && <BoostDetails {...props} myAlias={user.alias} />}</View>
+        <View style={styles.row}>
+          {!isMe ? (
+            <IconButton
+              icon={() => <Ionicon name='rocket-outline' color={theme.white} size={24} />}
+              onPress={onBoostPress}
+            />
+          ) : (
+            <View></View>
+          )}
+
+          <View>{showBoostRow && <BoostDetails {...props} myAlias={user.alias} />}</View>
+        </View>
       </View>
     </View>
   )
@@ -220,15 +257,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: '100%'
   },
-  footer: {
-    position: 'absolute',
-    bottom: 0,
-    height: isIphoneX() ? 90 + getBottomSpace() : 80,
+  row: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    width: '100%'
+  },
+  footer: {
+    position: 'absolute',
+    // bottom: 0,
+    bottom: isIphoneX() ? getBottomSpace() : 5,
     width: '100%',
+    // height: isIphoneX() ? 100 + getBottomSpace() : 90,
     paddingTop: 10,
     paddingRight: 16,
     paddingLeft: 16

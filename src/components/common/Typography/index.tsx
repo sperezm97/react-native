@@ -14,7 +14,8 @@ export default function Typography(props) {
     fw,
     ls = 0.5,
     lh,
-    numberOfLines
+    numberOfLines,
+    onPress
   } = props
 
   let lineHeight = 20
@@ -28,6 +29,7 @@ export default function Typography(props) {
 
   return (
     <Text
+      onPress={onPress}
       style={{
         ...style,
         color,

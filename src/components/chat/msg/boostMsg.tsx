@@ -1,43 +1,36 @@
-import React, { useRef } from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import React from 'react'
+import { View, StyleSheet } from 'react-native'
 import { useParsedJsonOrClipMsg } from '../../../store/hooks/msg'
 import { useTheme } from '../../../store'
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+import shared from './sharedStyles'
 import CustomIcon from '../../utils/customIcons'
 import Typography from '../../common/Typography'
 
 export default function BoostMessage(props) {
-  const theme = useTheme()
   const { message_content } = props
+  const theme = useTheme()
 
   const obj = useParsedJsonOrClipMsg(message_content)
   const { ts, feedID, itemID, amount } = obj
 
   return (
-    <View style={{ ...styles.pad }}>
+    <View style={{ ...styles.wrap }}>
       <View style={{ ...styles.rocketWrap, backgroundColor: theme.accent }}>
         <CustomIcon color='white' size={20} name='fireworks' />
       </View>
-      <Typography color={props.isMe ? theme.white : theme.title} fw='500'>
+      <Typography color={theme.text} fw='500'>
         {amount}
       </Typography>
-      <Typography color={props.isMe ? theme.white : theme.subtitle} style={{ opacity: 0.5, marginLeft: 6 }}>
+      <Typography color={theme.subtitle} style={{ marginLeft: 6 }}>
         sat
       </Typography>
-      {/* <Text style={{ color: theme.title, fontWeight: 'bold' }}>{amount}</Text> */}
-      {/* <Text style={{ color: theme.title, opacity: 0.5, marginLeft: 6 }}>sat</Text> */}
     </View>
   )
 }
 
 const styles = StyleSheet.create({
-  pad: {
-    color: '#333',
-    fontSize: 16,
-    paddingTop: 10,
-    paddingBottom: 10,
-    paddingLeft: 12,
-    paddingRight: 12,
+  wrap: {
+    ...shared.innerPad,
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',

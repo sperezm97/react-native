@@ -68,8 +68,8 @@ export default function MsgListWrap({
 
     return (
       <MsgList
-        msgs={msgs}
         msgsLength={(msgs && msgs.length) || 0}
+        msgs={msgs}
         chat={chat}
         onDelete={onDelete}
         myPubkey={user.publicKey}
@@ -84,8 +84,8 @@ export default function MsgListWrap({
 }
 
 function MsgList({
-  msgs,
   msgsLength,
+  msgs,
   chat,
   onDelete,
   myPubkey,
@@ -166,7 +166,6 @@ function MsgList({
           )
           return (
             <ListItem
-              msgs={msgs}
               key={item.id}
               windowWidth={windowWidth}
               m={item}
@@ -217,7 +216,6 @@ function Refresher() {
 
 function ListItem({
   m,
-  msgs,
   chat,
   isGroup,
   isTribe,
@@ -243,7 +241,6 @@ function ListItem({
     () => (
       <Message
         {...msg}
-        msgs={msgs}
         isGroup={isGroup}
         isTribe={isTribe}
         senderAlias={senderAlias}

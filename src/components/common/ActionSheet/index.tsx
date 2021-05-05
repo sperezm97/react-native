@@ -21,6 +21,7 @@ export default function ActionSheet(props) {
     <Modal
       isVisible={visible}
       onBackdropPress={props.onCancel}
+      backdropOpacity={0.2}
       style={{
         margin: 0,
         justifyContent: 'flex-end'

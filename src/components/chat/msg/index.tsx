@@ -101,7 +101,7 @@ export default function MsgRow(props) {
     >
       <Avatar
         alias={props.senderAlias}
-        photo={props.senderPic ? `${props.senderPic}?thumb=true` : null}
+        photo={props.senderPic ? `${props.senderPic}` : null}
         size={26}
         aliasSize={12}
         // hide={!props.showInfoBar || isMe}
@@ -197,7 +197,13 @@ function MsgBubble(props) {
       onRequestClose={onRequestCloseHandler}
       placement={PopoverPlacement.BOTTOM}
       arrowStyle={{ width: 0, height: 0 }}
-      popoverStyle={{ display: 'flex', flexDirection: 'row', borderRadius: 40 }}
+      popoverStyle={{
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        borderRadius: 40,
+        minWidth: 140
+      }}
       from={
         <View
           style={{
@@ -233,7 +239,7 @@ function MsgBubble(props) {
           icon={() => <Ionicon name='rocket' color={theme.primary} size={20} />}
           style={{
             backgroundColor: theme.lightGrey,
-            marginHorizontal: 10
+            marginHorizontal: 14
           }}
         />
       )}
@@ -242,7 +248,8 @@ function MsgBubble(props) {
         onPress={onCopyHandler}
         icon={() => <Ionicon name='copy' color={theme.darkGrey} size={20} />}
         style={{
-          backgroundColor: theme.lightGrey
+          backgroundColor: theme.lightGrey,
+          marginHorizontal: 14
         }}
       />
       {(isMe || props.isTribeOwner) && (
@@ -252,7 +259,7 @@ function MsgBubble(props) {
           color={theme.red}
           style={{
             backgroundColor: theme.lightGrey,
-            marginHorizontal: 10
+            marginHorizontal: 14
           }}
         />
       )}

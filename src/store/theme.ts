@@ -69,6 +69,7 @@ export class ThemeStore {
   @observable red: string = '#f50057'
   @observable mirage: string = '#141d26'
   @observable yellow: string = '#FFDF00'
+  @observable silver: string = '#afb3b1'
 
   @observable badge: string = '#f50057'
   @observable accent: string = '#0a84ff'
@@ -79,4 +80,4 @@ export class ThemeStore {
 
 export const themeStore = new ThemeStore()
 
-themeStore.setDark(true)
+// themeStore.setDark(true)

@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useRef } from 'react'
-import { View, Text, StyleSheet } from 'react-native'
-import { TouchableOpacity } from 'react-native-gesture-handler'
+import React, { useEffect, useState, useMemo } from 'react'
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { useObserver } from 'mobx-react-lite'
 import { PERMISSIONS, check, request, RESULTS } from 'react-native-permissions'
 import { ActivityIndicator, IconButton } from 'react-native-paper'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -10,7 +10,7 @@ import FastImage from 'react-native-fast-image'
 import RNFetchBlob from 'rn-fetch-blob'
 import Toast from 'react-native-simple-toast'
 
-import { useStores, useTheme } from '../../../store'
+import { useStores, useTheme, hooks } from '../../../store'
 import { useTribeMediaType } from '../../../store/hooks/tribes'
 import shared from './sharedStyles'
 import { useCachedEncryptedFile } from './hooks'
@@ -22,13 +22,13 @@ import Typography from '../../common/Typography'
 import Button from '../../common/Button'
 import PhotoViewer from '../../common/Modals/Media/PhotoViewer'
 
+const { useMsgs } = hooks
+
 export default function MediaMsg(props) {
-  const { id, message_content, media_type, chat, media_token, msgs } = props
+  const { id, message_content, media_type, chat, media_token } = props
   const [buying, setBuying] = useState(false)
   const [mediaModal, setMediaModal] = useState(false)
   const [selectedMedia, setSelectedMedia] = useState(null)
-  const photos = useTribeMediaType(msgs, 6)
-
   const { meme, ui, msg } = useStores()
   const theme = useTheme()
   const isMe = props.sender === 1
@@ -69,11 +69,11 @@ export default function MediaMsg(props) {
 
   function onMediaPress() {
     if (media_type.startsWith('image')) {
-      // setSelectedMedia(id)
-      // setMediaModal(true)
+      setSelectedMedia(id)
+      setMediaModal(true)
 
-      if (data) ui.setImgViewerParams({ data })
-      if (uri) ui.setImgViewerParams({ uri })
+      // if (data) ui.setImgViewerParams({ data })
+      // if (uri) ui.setImgViewerParams({ uri })
     } else if (media_type.startsWith('n2n2/text')) {
       // downloadText(uri)
     }
@@ -133,106 +133,117 @@ export default function MediaMsg(props) {
 
   const onLongPressHandler = () => props.onLongPress(props)
 
-  return (
-    <View collapsable={false}>
-      <TouchableOpacity
-        onLongPress={onLongPressHandler}
-        onPress={onMediaPress}
-        activeOpacity={0.8}
-      >
-        {showStats && (
-          <View style={styles.stats}>
-            <Text style={styles.satStats}>{`${amt} sat`}</Text>
-            <Text style={{ ...styles.satStats, opacity: sold ? 1 : 0 }}>Purchased</Text>
-          </View>
-        )}
+  return useObserver(() => {
+    const msgs = useMsgs(chat) || []
+    const photos = useTribeMediaType(msgs, 6)
 
-        {!hasImgData && (
-          <View style={{ minHeight, ...styles.loading }}>
-            {loading && (
-              <View style={{ minHeight, ...styles.loadingWrap }}>
-                <ActivityIndicator animating={true} color='grey' />
-              </View>
-            )}
-            {paidMessageText && (
-              <View style={{ minHeight, ...styles.paidAttachmentText }}>
-                <Text style={{ color: theme.title }}>{paidMessageText}</Text>
-              </View>
-            )}
-            {showPayToUnlockMessage && (
-              <View style={{ ...styles.paidAttachmentText }}>
-                <Typography color={theme.subtitle}>Pay to unlock message</Typography>
-              </View>
-            )}
-          </View>
-        )}
+    return (
+      <View collapsable={false}>
+        <TouchableOpacity
+          onLongPress={onLongPressHandler}
+          onPress={onMediaPress}
+          activeOpacity={0.8}
+        >
+          {showStats && (
+            <View style={styles.stats}>
+              <Text style={styles.satStats}>{`${amt} sat`}</Text>
+              <Text style={{ ...styles.satStats, opacity: sold ? 1 : 0 }}>Purchased</Text>
+            </View>
+          )}
 
-        {hasImgData && (
-          <Media
-            type={media_type}
-            data={data}
-            uri={uri}
-            filename={meme.filenameCache[props.id]}
-          />
-        )}
+          {!hasImgData && (
+            <View style={{ minHeight, ...styles.loading }}>
+              {loading && (
+                <View style={{ minHeight, ...styles.loadingWrap }}>
+                  <ActivityIndicator animating={true} color='grey' />
+                </View>
+              )}
+              {paidMessageText && (
+                <View style={{ minHeight, ...styles.paidAttachmentText }}>
+                  <Text style={{ color: theme.title }}>{paidMessageText}</Text>
+                </View>
+              )}
+              {showPayToUnlockMessage && (
+                <View style={{ ...styles.paidAttachmentText }}>
+                  <Typography color={theme.subtitle}>Pay to unlock message</Typography>
+                </View>
+              )}
+            </View>
+          )}
 
-        {isImg && showPurchaseButton && !purchased && (
-          <View style={styles.imgIconWrap}>
-            <Ionicon name='image' color={theme.icon} size={50} />
-          </View>
-        )}
+          {hasImgData && (
+            <Media
+              type={media_type}
+              data={data}
+              uri={uri}
+              filename={meme.filenameCache[props.id]}
+            />
+          )}
 
-        {hasContent && (
-          <View style={shared.innerPad}>
-            <Typography size={16}>{message_content}</Typography>
-          </View>
-        )}
+          {isImg && showPurchaseButton && !purchased && (
+            <View style={styles.imgIconWrap}>
+              <Ionicon name='image' color={theme.icon} size={50} />
+            </View>
+          )}
 
-        {showBoostRow && <BoostRow {...props} myAlias={props.myAlias} pad />}
-      </TouchableOpacity>
-
-      {showPurchaseButton && (
-        <>
-          {purchased ? (
-            <View style={{ ...styles.purchasedWrap, backgroundColor: theme.main }}>
-              <MaterialCommunityIcon
-                name={purchased ? 'check' : 'arrow-top-right'}
-                color={theme.dark ? theme.white : theme.icon}
-                size={20}
-                style={{ paddingRight: 8 }}
-              />
-              <Typography size={15} style={{ paddingRight: 10 }}>
-                {purchased ? 'Purchased' : `Pay ${amt} sat`}
+          {hasContent && (
+            <View style={styles.msgContentWrap}>
+              <Typography size={14} color={theme.subtitle}>
+                {message_content}
               </Typography>
             </View>
-          ) : (
-            <Button
-              color={theme.dark ? theme.primary : theme.main}
-              round={0}
-              onPress={onButtonPressHandler}
-              loading={buying}
-              icon={() => (
+          )}
+
+          {showBoostRow && <BoostRow {...props} myAlias={props.myAlias} pad />}
+        </TouchableOpacity>
+
+        {showPurchaseButton && (
+          <>
+            {purchased ? (
+              <View style={{ ...styles.purchasedWrap, backgroundColor: theme.main }}>
                 <MaterialCommunityIcon
                   name={purchased ? 'check' : 'arrow-top-right'}
                   color={theme.dark ? theme.white : theme.icon}
-                  size={18}
+                  size={20}
+                  style={{ paddingRight: 8 }}
                 />
-              )}
-            >
-              <Typography size={12}>{`Pay ${amt} sat`}</Typography>
-            </Button>
-          )}
-        </>
-      )}
-      {/* <PhotoViewer
-        visible={mediaModal}
-        close={() => setMediaModal(false)}
-        photos={photos}
-        photoId={selectedMedia}
-        chat={chat}
-      /> */}
-    </View>
-  )
+                <Typography size={15} style={{ paddingRight: 10 }}>
+                  {purchased ? 'Purchased' : `Pay ${amt} sat`}
+                </Typography>
+              </View>
+            ) : (
+              <Button
+                color={theme.dark ? theme.primary : theme.main}
+                round={0}
+                onPress={onButtonPressHandler}
+                loading={buying}
+                icon={() => (
+                  <MaterialCommunityIcon
+                    name={purchased ? 'check' : 'arrow-top-right'}
+                    color={theme.dark ? theme.white : theme.icon}
+                    size={18}
+                  />
+                )}
+              >
+                <Typography size={12}>{`Pay ${amt} sat`}</Typography>
+              </Button>
+            )}
+          </>
+        )}
+        <Viewer
+          visible={mediaModal}
+          close={() => setMediaModal(false)}
+          photos={photos}
+          initialIndex={photos && photos.findIndex(m => m.id === selectedMedia)}
+          chat={chat}
+        />
+      </View>
+    )
+  })
+}
+
+function Viewer(props) {
+  return useMemo(() => <PhotoViewer {...props} />, [props.visible, props.photos])
 }
 
 function Media({ type, data, uri, filename }) {
@@ -367,7 +378,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    // padding: 14
+    ...shared.innerPad
+  },
+  msgContentWrap: {
+    width: 200,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexWrap: 'nowrap',
     ...shared.innerPad
   }
 })

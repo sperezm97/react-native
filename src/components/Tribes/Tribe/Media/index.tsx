@@ -94,7 +94,7 @@ function Media({ tribe }) {
             visible={mediaModal}
             close={() => setMediaModal(false)}
             photos={media}
-            photoId={selectedMedia}
+            initialIndex={media && media.findIndex(m => m.id === selectedMedia)}
             chat={tribe.chat}
           />
         </View>

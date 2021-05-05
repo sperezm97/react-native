@@ -107,10 +107,7 @@ function MediaItem(props) {
                 <ActivityIndicator size='small' />
               ) : (
                 <>
-                  <Ionicon name='image' color={theme.icon} size={30} />
-                  {/* <Typography size={12}>
-                    {purchased ? 'Purchased' : `Pay ${amt} sat`}
-                  </Typography> */}
+                  <Ionicon name='lock-closed' color={theme.silver} size={30} />
                 </>
               )}
             </View>
@@ -122,7 +119,7 @@ function MediaItem(props) {
 }
 
 function MediaType({ type, data, uri }) {
-  if (type === 'sphinx/text') return <></>
+  if (type === 'n2n2/text') return <></>
   if (type.startsWith('image')) {
     return (
       <FastImage
