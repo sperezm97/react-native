@@ -15,7 +15,9 @@ export default function EditTribe({ route }) {
 
   const tribe = route.params.tribe
 
-  tribe.escrow_time = tribe.escrow_millis ? Math.floor(tribe.escrow_millis / (60 * 60 * 1000)) : 0
+  tribe.escrow_time = tribe.escrow_millis
+    ? Math.floor(tribe.escrow_millis / (60 * 60 * 1000))
+    : 0
 
   async function finish(v) {
     setLoading(true)
@@ -27,12 +29,8 @@ export default function EditTribe({ route }) {
 
     setTimeout(() => {
       setLoading(false)
+      navigation.goBack()
     }, 150)
-
-    // if(img && img.uri) {
-    //   await createChatPic(group.id, img.uri)
-    //   chats.updateChatPhotoURI(group.id, img.uri)
-    // }
   }
 
   return (

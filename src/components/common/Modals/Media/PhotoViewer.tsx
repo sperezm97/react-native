@@ -134,9 +134,6 @@ function SwipeItem(props) {
       reply_uuid: uuid,
       message_price: pricePerMessage
     })
-
-    // if (r) {
-    // }
   }
 
   const h = SCREEN_HEIGHT - STATUS_BAR_HEIGHT - 60
@@ -146,7 +143,7 @@ function SwipeItem(props) {
 
   function renderViewMore(onPress) {
     return (
-      <Typography onPress={onPress} color={theme.primary}>
+      <Typography onPress={onPress} color={theme.darkGrey} fw='600'>
         View more
       </Typography>
     )
@@ -154,7 +151,7 @@ function SwipeItem(props) {
 
   function renderViewLess(onPress) {
     return (
-      <Typography onPress={onPress} color={theme.primary}>
+      <Typography onPress={onPress} color={theme.darkGrey} fw='600'>
         View less
       </Typography>
     )

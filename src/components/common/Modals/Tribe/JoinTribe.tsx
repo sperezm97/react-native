@@ -53,7 +53,7 @@ export default function JoinTribe() {
   }
 
   function close() {
-    ui.setJoinTribeParams(null)
+    ui.setJoinTribeModal(false, null)
   }
 
   const hasImg = params && params.img ? true : false
@@ -93,7 +93,10 @@ export default function JoinTribe() {
                     color={theme.subtitle}
                     style={{
                       marginTop: 10,
-                      marginBottom: 10
+                      marginBottom: 10,
+                      maxWidth: 340,
+                      textAlign: 'center',
+                      marginHorizontal: 'auto'
                     }}
                   >
                     {params.description}

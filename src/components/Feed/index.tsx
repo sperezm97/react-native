@@ -11,7 +11,7 @@ export default function Feed({ feed }) {
   // return useObserver(() => {
   return (
     <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
-      <Divider mt={5} mb={5} />
+      {/* <Divider mt={5} mb={5} /> */}
 
       {feed.map((f, index) => {
         return (

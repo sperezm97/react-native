@@ -1,8 +1,25 @@
 import React from 'react'
-import { Text } from 'react-native'
+import { View } from 'react-native'
+
+import Typography from '../Typography'
+import Icon from '../Icon'
 
 export default function Balance(props) {
   const { color, style, balance } = props
 
-  return <Text style={{ ...style, color: color }}>{balance} sat</Text>
+  return (
+    <View
+      style={{
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center'
+      }}
+    >
+      <Icon name='Coins' size={20} />
+      <Typography style={{ ...style, color: color, marginLeft: 10 }}>
+        {balance} sat
+      </Typography>
+    </View>
+  )
 }

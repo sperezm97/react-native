@@ -84,7 +84,7 @@ function Item({ contact, onPress }) {
         >
           <Avatar size={40} aliasSize={16} alias={contact.alias} photo={uri} />
           <View style={styles.contactContent}>
-            <Typography>{contact.alias}</Typography>
+            <Typography size={16}>{contact.alias}</Typography>
           </View>
         </TouchableOpacity>
       </View>

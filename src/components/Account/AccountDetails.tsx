@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, View, Text, Switch } from 'react-native'
+import { StyleSheet, View, Switch } from 'react-native'
 import { TextInput } from 'react-native-paper'
 
 import { useStores, useTheme } from '../../store'
@@ -7,6 +7,7 @@ import BackHeader from '../common/BackHeader'
 import InputAccessoryView from '../common/Accessories/InputAccessoryView'
 import * as schemas from '../form/schemas'
 import Form from '../form'
+import Typography from '../common/Typography'
 
 export default function AccountDetails() {
   const { user, contacts } = useStores()
@@ -48,26 +49,23 @@ export default function AccountDetails() {
     <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
       <BackHeader title='Details' />
       <View style={styles.content}>
-        <View>
-          <Form
-            nopad
-            displayOnly
-            schema={schemas.pubKey}
-            loading={loading}
-            buttonText='Save'
-            initialValues={
-              user
-                ? {
-                    public_key: user.publicKey
-                  }
-                : {}
-            }
-            readOnlyFields={'public_key'}
-          />
-        </View>
-
+        <Form
+          nopad
+          displayOnly
+          schema={schemas.pubKey}
+          loading={loading}
+          buttonText='Save'
+          initialValues={
+            user
+              ? {
+                  public_key: user.publicKey
+                }
+              : {}
+          }
+          readOnlyFields={'public_key'}
+        />
         <View style={styles.shareWrap}>
-          <Text style={{ color: theme.text }}>Share my profile photo with contacts</Text>
+          <Typography size={14}>Share my profile photo with contacts</Typography>
           <Switch
             trackColor={{ false: theme.grey, true: theme.primary }}
             thumbColor={theme.white}
@@ -77,7 +75,7 @@ export default function AccountDetails() {
           />
         </View>
 
-        <Text style={{ color: theme.text }}>Tip Amount</Text>
+        <Typography size={14}>Tip Amount</Typography>
         <TextInput
           // returnKeyType='done'
           inputAccessoryViewID={nativeID}

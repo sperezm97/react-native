@@ -25,6 +25,8 @@ export default function List(props) {
           </View>
         ) : (
           <FlatList
+            showsVerticalScrollIndicator={false}
+            showsHorizontalScrollIndicator={false}
             data={data}
             keyExtractor={item => item.uuid}
             renderItem={renderItem}
@@ -53,7 +55,7 @@ function Item(props) {
   async function onJoinPress() {
     const host = chats.getDefaultTribeServer().host
     const tribeParams = await chats.getTribeDetails(host, uuid)
-    ui.setJoinTribeParams(tribeParams)
+    ui.setJoinTribeModal(true, tribeParams)
   }
 
   return (

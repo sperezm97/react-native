@@ -78,6 +78,7 @@ TheTextInput.defaultProps = {
 
 const styles = StyleSheet.create({
   inputStyles: {
-    marginBottom: 35
+    marginBottom: 35,
+    textAlign: 'auto'
   }
 })

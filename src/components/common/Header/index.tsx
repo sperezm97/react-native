@@ -9,7 +9,7 @@ import Toast from 'react-native-simple-toast'
 import { useStores, useTheme } from '../../../store'
 import Balance from '../Balance'
 
-export default function Header() {
+export default function Header({ border = false }) {
   const navigation = useNavigation()
   const { details, ui } = useStores()
   const theme = useTheme()
@@ -22,18 +22,41 @@ export default function Header() {
 
   return useObserver(() => {
     return (
-      <Appbar.Header style={{ ...styles.appBar, backgroundColor: theme.bg }}>
+      <Appbar.Header
+        style={{
+          ...styles.appBar,
+          backgroundColor: theme.bg,
+          borderBottomWidth: border ? 1 : 0,
+          borderBottomColor: theme.border
+        }}
+      >
         <View style={{ ...styles.flex, ...styles.content }}>
           <View style={{ ...styles.flex, ...styles.left }}>
-            <Image source={require('../../../assets/n2n2-text.png')} style={styles.brand} resizeMode={'contain'} />
+            <Image
+              source={require('../../../assets/n2n2-text.png')}
+              style={styles.brand}
+              resizeMode={'contain'}
+            />
           </View>
-          <Balance balance={details.balance} color={theme.dark ? theme.white : theme.black} />
+          <Balance
+            balance={details.balance}
+            color={theme.dark ? theme.white : theme.black}
+          />
           <View style={{ ...styles.flex, ...styles.right }}>
             {ui.loadingHistory ? (
-              <ActivityIndicator animating={true} color={theme.grey} size={18} style={{}} />
+              <ActivityIndicator
+                animating={true}
+                color={theme.grey}
+                size={18}
+                style={{}}
+              />
             ) : (
               <TouchableOpacity onPress={showStatusHandler} style={{ ...styles.status }}>
-                <MaterialIcon name='lightning-bolt' size={20} color={ui.connected ? '#49ca97' : '#febd59'} />
+                <MaterialIcon
+                  name='lightning-bolt'
+                  size={20}
+                  color={ui.connected ? '#49ca97' : '#febd59'}
+                />
               </TouchableOpacity>
             )}
           </View>
@@ -45,7 +68,8 @@ export default function Header() {
 
 const styles = StyleSheet.create({
   appBar: {
-    elevation: 0
+    elevation: 0,
+    height: 60
   },
   flex: {
     display: 'flex',

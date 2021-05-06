@@ -202,9 +202,23 @@ export class UiStore {
     this.lastPaidInvoice = s
   }
 
+  @observable joinTribeDone: boolean = false
+  @observable joinTribeModal: boolean = false
   @observable joinTribeParams: { [k: string]: any } = null
-  @action setJoinTribeParams(obj: { [k: string]: any }) {
+  @action setJoinTribeModal(b, obj: { [k: string]: any }, callback?: Function) {
     this.joinTribeParams = obj
+    this.joinTribeModal = b
+
+    if (obj === null) {
+      this.joinTribeDone = true
+    }
+    if (callback) {
+      callback()
+    }
+
+    setTimeout(() => {
+      this.joinTribeDone = false
+    }, 1000)
   }
 
   @observable imgViewerParams: { [k: string]: any } = null

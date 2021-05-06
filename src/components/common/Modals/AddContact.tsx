@@ -4,7 +4,7 @@ import { useObserver } from 'mobx-react-lite'
 
 import { useStores } from '../../../store'
 import Form from '../../form'
-import { contact } from '../../form/schemas'
+import * as schemas from '../../form/schemas'
 import ModalWrap from './ModalWrap'
 import ModalHeader from './ModalHeader'
 
@@ -21,7 +21,7 @@ export default function AddContact() {
       <ModalHeader title='Add Contact' onClose={close} />
       <View style={styles.content}>
         <Form
-          schema={contact}
+          schema={schemas.contact}
           loading={loading}
           buttonAccessibilityLabel='add-friend-form-button'
           buttonText='Save'

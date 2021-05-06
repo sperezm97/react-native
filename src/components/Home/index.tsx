@@ -37,7 +37,7 @@ export default function Home() {
 
     return (
       <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
-        <Header />
+        <Header border={true} />
         <ScrollView
           keyboardDismissMode='on-drag'
           //  ref={_scrollRef}

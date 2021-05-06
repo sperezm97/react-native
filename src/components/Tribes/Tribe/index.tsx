@@ -6,7 +6,8 @@ import { IconButton } from 'react-native-paper'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { TabView } from 'react-native-tab-view'
 
-import { useTheme } from '../../../store'
+import { useTheme, hooks } from '../../../store'
+import { useTribe } from '../../../store/hooks/tribes'
 import BackHeader from '../../common/BackHeader'
 import Divider from '../../common/Layout/Divider'
 import TribeSettings from '../../common/Dialogs/TribeSettings'
@@ -14,6 +15,8 @@ import Tabs from '../../common/Tabs'
 import Intro from './Intro'
 import About from './About'
 import Media from './Media'
+
+const { useTribes } = hooks
 
 export default function Tribe({ route }) {
   const theme = useTheme()
@@ -25,7 +28,12 @@ export default function Tribe({ route }) {
     { key: 'second', title: 'About' }
   ])
 
+  // const tribes = useTribes()
+  // const tribe = useTribe(tribes, route.params.tribe.uuid)
+
   const tribe = route.params.tribe
+
+  console.log('tribe', tribe)
 
   function onEditTribePress() {
     navigation.navigate('EditTribe', { tribe })

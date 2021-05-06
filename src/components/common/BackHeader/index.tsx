@@ -57,7 +57,8 @@ const styles = StyleSheet.create({
     elevation: 0,
     flexDirection: 'row',
     justifyContent: 'center',
-    position: 'relative'
+    position: 'relative',
+    height: 60
   },
   left: {
     position: 'absolute',

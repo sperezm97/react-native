@@ -89,7 +89,8 @@ function ListHeader({ tribe, searchText, setSearchText }) {
   return (
     <View style={{ ...styles.searchWrap }}>
       <Search
-        placeholder={`Search ${tribe.name} Members`}
+        // placeholder={`Search ${tribe.name} Members`}
+        placeholder='Search'
         onChangeText={value => setSearchText(value)}
         value={searchText}
         h={45}

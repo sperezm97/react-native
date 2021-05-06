@@ -38,7 +38,7 @@ export function DeletableContact(props) {
           <Avatar size={40} aliasSize={16} photo={uri} alias={contact.alias} />
         </View>
         <View style={styles.contactContent}>
-          <Typography>{contact.alias}</Typography>
+          <Typography size={16}>{contact.alias}</Typography>
         </View>
       </View>
     </SwipeRow>
@@ -62,7 +62,7 @@ export function Contact(props) {
         {/* <Image source={hasImg ? { uri } : require('../../../../android_assets/avatar.png')} style={{ width: 44, height: 44 }} resizeMode={'cover'} /> */}
       </View>
       <View style={styles.contactContent}>
-        <Typography>{contact.alias}</Typography>
+        <Typography size={16}>{contact.alias}</Typography>
         {/* <Text style={{ ...styles.contactName, color: theme.title }}>{contact.alias}</Text> */}
       </View>
       <View style={styles.checker}>
@@ -101,7 +101,7 @@ export function PendingContact(props) {
         <Avatar size={40} photo={uri} big alias={contact.alias} aliasSize={20} />
       </View>
       <View style={styles.contactContent}>
-        <Typography>{contact.alias}</Typography>
+        <Typography size={16}>{contact.alias}</Typography>
       </View>
       <View style={styles.buttonz}>
         <ApproveButton

@@ -4,11 +4,17 @@ import { useObserver } from 'mobx-react-lite'
 import { useNavigation } from '@react-navigation/native'
 import { Appbar } from 'react-native-paper'
 import FeatherIcon from 'react-native-vector-icons/Feather'
+import AntDesignIcon from 'react-native-vector-icons/AntDesign'
 
 import { useStores, useTheme, hooks } from '../../store'
 import { useSearchTribes } from '../../store/hooks/tribes'
+import { SCREEN_HEIGHT, STACK_HEADER_HEIGHT } from '../../constants'
 import TabBar from '../common/TabBar'
 import Search from '../common/Search'
+import Typography from '../common/Typography'
+import Button from '../common/Button'
+import Empty from '../common/Empty'
+import Icon from '../common/Icon'
 import List from './List'
 
 const { useTribes } = hooks
@@ -46,11 +52,32 @@ export default function Discover() {
           loading={loading}
           refreshing={refreshing}
           onRefresh={onRefresh}
+          listEmpty={<ListEmpty />}
         />
         <TabBar />
       </View>
     )
   })
+}
+
+function ListEmpty() {
+  const { ui } = useStores()
+  const theme = useTheme()
+
+  return (
+    <Empty h={SCREEN_HEIGHT - STACK_HEADER_HEIGHT - 60 - 60}>
+      <Icon name='Rocket' size={60} />
+      <Button
+        color={theme.secondary}
+        icon={() => <AntDesignIcon name='plus' color={theme.white} size={18} />}
+        w='60%'
+        onPress={() => ui.setNewTribeModal(true)}
+        style={{ marginTop: 20 }}
+      >
+        Create Community
+      </Button>
+    </Empty>
+  )
 }
 
 function SearchHeader() {

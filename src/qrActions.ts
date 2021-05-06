@@ -1,10 +1,10 @@
-import {setTint} from './components/utils/statusBar'
+import { setTint } from './components/utils/statusBar'
 
-function tint(){
-  setTimeout(()=>setTint('black'),900)
+function tint() {
+  setTimeout(() => setTint('black'), 900)
 }
 
-export async function qrActions(j, ui, chats){
+export async function qrActions(j, ui, chats) {
   const action = j['action']
   switch (action) {
     case 'invoice':
@@ -16,13 +16,13 @@ export async function qrActions(j, ui, chats){
     case 'redeem_sats':
       ui.setRedeemModalParams(j)
     case 'tribe':
-      try{
-        const tribeParams = await chats.getTribeDetails(j.host,j.uuid)
-        ui.setJoinTribeParams(tribeParams)
-      }catch(e){}
+      try {
+        const tribeParams = await chats.getTribeDetails(j.host, j.uuid)
+        ui.setJoinTribeModal(true, tribeParams)
+      } catch (e) {}
     default:
       console.log(action)
-    // set the tint
-    tint()
+      // set the tint
+      tint()
   }
 }

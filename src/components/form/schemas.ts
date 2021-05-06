@@ -71,9 +71,7 @@ const inviteFriend = [
     name: 'welcome_message',
     type: 'text',
     label: { en: 'Welcome Message', es: 'Nombre' },
-    required: false,
-    numberOfLines: 3,
-    multiline: true
+    required: false
   }
 ]
 

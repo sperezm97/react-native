@@ -1,15 +1,27 @@
 import React, { useState } from 'react'
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { IconButton, TextInput } from 'react-native-paper'
 import Clipboard from '@react-native-community/clipboard'
 import Toast from 'react-native-simple-toast'
+import { TouchableOpacity } from 'react-native-gesture-handler'
 
 import { useTheme } from '../../../store'
 import { TOAST_DURATION } from '../../../constants'
 import QR from '../../common/Accessories/QR'
 import PublicKey from '../../common/Modals/PublicKey'
+import Typography from '../../common/Typography'
 
-export default function QrInput({ name, label, required, handleChange, handleBlur, setValue, value, displayOnly, accessibilityLabel }) {
+export default function QrInput({
+  name,
+  label,
+  required,
+  handleChange,
+  handleBlur,
+  setValue,
+  value,
+  displayOnly,
+  accessibilityLabel
+}) {
   const theme = useTheme()
 
   const [scanning, setScanning] = useState(false)
@@ -27,45 +39,57 @@ export default function QrInput({ name, label, required, handleChange, handleBlu
   }
 
   return (
-    <View>
-      <Text style={{ marginBottom: 16, color: theme.text }}>{lab}</Text>
+    <>
+      <Typography style={{ marginBottom: 16 }} size={14}>
+        {lab}
+      </Typography>
       <View style={{ ...styles.inputWrap }}>
         {displayOnly ? (
-          <View
-            style={{
-              ...styles.inputStyles,
-              backgroundColor: theme.main,
-              flexDirection: 'row',
-              justifyContent: 'center',
-              alignItems: 'center'
-            }}
-          >
-            <TouchableOpacity onPress={() => copyAddress(value)}>
-              <Text numberOfLines={1} ellipsizeMode='tail' style={{ color: theme.placeholder }}>
-                {value}
-              </Text>
-            </TouchableOpacity>
-          </View>
+          <TouchableOpacity activeOpacity={0.6} onPress={() => copyAddress(value)}>
+            <TextInput
+              editable={false}
+              disabled={true}
+              accessibilityLabel={accessibilityLabel}
+              onChangeText={handleChange(name)}
+              onBlur={handleBlur(name)}
+              value={value}
+              style={{ ...styles.input, backgroundColor: theme.bg }}
+              underlineColor={theme.border}
+            />
+          </TouchableOpacity>
         ) : (
           <TextInput
             accessibilityLabel={accessibilityLabel}
-            disabled={displayOnly}
             onChangeText={handleChange(name)}
             onBlur={handleBlur(name)}
             value={value}
-            style={{ ...styles.inputStyles, backgroundColor: theme.main }}
-            placeholderTextColor={theme.subtitle}
+            style={{ ...styles.input, backgroundColor: theme.bg }}
             underlineColor={theme.border}
           />
         )}
 
-        <IconButton icon={displayOnly ? 'qrcode' : 'qrcode-scan'} color={theme.primary} size={26} style={{ width: '10%' }} onPress={() => setScanning(true)} />
+        <IconButton
+          icon={displayOnly ? 'qrcode' : 'qrcode-scan'}
+          color={theme.primary}
+          size={displayOnly ? 26 : 22}
+          style={{ ...styles.icon }}
+          onPress={() => setScanning(true)}
+        />
       </View>
 
-      <QR visible={scanning && !displayOnly} onCancel={() => setScanning(false)} onScan={data => scan(data)} showPaster={false} />
+      <QR
+        visible={scanning && !displayOnly}
+        onCancel={() => setScanning(false)}
+        onScan={data => scan(data)}
+        showPaster={false}
+      />
 
-      <PublicKey visible={scanning && displayOnly} pubkey={value} close={() => setScanning(false)} />
-    </View>
+      <PublicKey
+        visible={scanning && displayOnly}
+        pubkey={value}
+        close={() => setScanning(false)}
+      />
+    </>
   )
 }
 
@@ -74,15 +98,20 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 26
+    marginBottom: 26,
+    width: '100%'
   },
-  inputStyles: {
+  input: {
     display: 'flex',
-    flex: 1,
-    height: 50,
+    position: 'relative',
     width: '100%',
-    paddingLeft: 6,
-    paddingRight: 6
+    height: 50,
+    paddingRight: 40,
+    textAlign: 'auto'
+  },
+  icon: {
+    position: 'absolute',
+    top: 0,
+    right: 0
   }
 })

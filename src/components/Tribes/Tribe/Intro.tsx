@@ -25,6 +25,8 @@ export default function Intro({ tribe }) {
   const [tribePhoto, setTribePhoto] = useState('')
   const navigation = useNavigation()
 
+  console.log('tribe intro', tribe)
+
   async function tookPic(img) {
     setUploading(true)
     try {
@@ -118,7 +120,7 @@ export default function Intro({ tribe }) {
               </Typography>
               {!tribe.owner && (
                 <>
-                  <View style={{ ...styles.dot, backgroundColor: theme.black }}></View>
+                  <View style={{ ...styles.dot, backgroundColor: theme.text }}></View>
                   <Typography size={14} fw='500' color={theme.subtitle} numberOfLines={1}>
                     {tribe.owner_alias?.trim()}
                   </Typography>
@@ -142,7 +144,7 @@ export default function Intro({ tribe }) {
                 <Typography size={14} style={{ paddingLeft: 4 }}>
                   {tribe.private ? 'Private Community' : 'Public Community'}
                 </Typography>
-                <View style={{ ...styles.dot, backgroundColor: theme.black }}></View>
+                <View style={{ ...styles.dot, backgroundColor: theme.text }}></View>
               </View>
 
               {tribe.owner ? (
@@ -195,10 +197,19 @@ function TribeActions({ tribe }) {
   const theme = useTheme()
   const navigation = useNavigation()
 
+  // useEffect(() => {
+  //   fetchTribes()
+  // }, [ui.joinTribeModal])
+
+  function fetchTribes() {
+    console.log('called')
+    // chats.getTribes()
+  }
+
   async function onJoinPress() {
     const host = chats.getDefaultTribeServer().host
     const tribeParams = await chats.getTribeDetails(host, tribe.uuid)
-    ui.setJoinTribeParams(tribeParams)
+    ui.setJoinTribeModal(true, tribeParams)
   }
 
   //   async function onExitTribePress() {}
@@ -206,48 +217,54 @@ function TribeActions({ tribe }) {
     navigation.navigate('Chat', { ...tribe.chat })
   }
 
-  return (
-    <>
-      {!tribe.owner ? (
-        <>
-          {tribe.joined ? (
-            <View style={{ ...styles.headerActions }}>
-              {/* <Button color={theme.primary} onPress={onExitTribePress} w='35%'>
+  return useObserver(() => {
+    if (ui.joinTribeDone) {
+      fetchTribes()
+    }
+
+    return (
+      <>
+        {!tribe.owner ? (
+          <>
+            {tribe.joined ? (
+              <View style={{ ...styles.headerActions }}>
+                {/* <Button color={theme.primary} onPress={onExitTribePress} w='35%'>
                 Joined
               </Button> */}
-              <Button
-                icon={() => (
-                  <MaterialCommunityIcon
-                    name='chat-outline'
-                    color={theme.white}
-                    size={20}
-                  />
-                )}
-                onPress={onChatPress}
-                w='60%'
-              >
-                Play Wall
+                <Button
+                  icon={() => (
+                    <MaterialCommunityIcon
+                      name='chat-outline'
+                      color={theme.white}
+                      size={20}
+                    />
+                  )}
+                  onPress={onChatPress}
+                  w='60%'
+                >
+                  Play Wall
+                </Button>
+              </View>
+            ) : (
+              <Button color={theme.primary} onPress={onJoinPress} w='35%'>
+                Join
               </Button>
-            </View>
-          ) : (
-            <Button color={theme.primary} onPress={onJoinPress} w='35%'>
-              Join
-            </Button>
-          )}
-        </>
-      ) : (
-        <Button
-          icon={() => (
-            <MaterialCommunityIcon name='chat-outline' color={theme.white} size={20} />
-          )}
-          onPress={onChatPress}
-          w='60%'
-        >
-          Play Wall
-        </Button>
-      )}
-    </>
-  )
+            )}
+          </>
+        ) : (
+          <Button
+            icon={() => (
+              <MaterialCommunityIcon name='chat-outline' color={theme.white} size={20} />
+            )}
+            onPress={onChatPress}
+            w='60%'
+          >
+            Play Wall
+          </Button>
+        )}
+      </>
+    )
+  })
 }
 
 const styles = StyleSheet.create({
