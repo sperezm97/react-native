@@ -143,13 +143,6 @@ export default function MediaMsg(props) {
           onPress={onMediaPress}
           activeOpacity={0.8}
         >
-          {/* {showStats && (
-            <View style={styles.stats}>
-              <Text style={styles.satStats}>{`${amt} sat`}</Text>
-              <Text style={{ ...styles.satStats, opacity: sold ? 1 : 0 }}>Purchased</Text>
-            </View>
-          )} */}
-
           {!hasImgData && (
             <View style={{ minHeight, ...styles.loading }}>
               {loading && (
@@ -195,6 +188,27 @@ export default function MediaMsg(props) {
 
           {showBoostRow && <BoostRow {...props} myAlias={props.myAlias} pad />}
         </TouchableOpacity>
+
+        {showStats && (
+          <View style={styles.stats}>
+            <Typography
+              size={12}
+              color={theme.white}
+              bg={theme.accent}
+              fw='500'
+              style={{ ...styles.satStats }}
+            >{`${amt} sat`}</Typography>
+            <Typography
+              size={12}
+              color={theme.white}
+              bg={theme.secondary}
+              fw='500'
+              style={{ ...styles.satStats, opacity: sold ? 1 : 0 }}
+            >
+              Purchased
+            </Typography>
+          </View>
+        )}
 
         {showPurchaseButton && (
           <>
@@ -300,9 +314,9 @@ function VideoPlayer(props) {
 
 const styles = StyleSheet.create({
   wrap: {
-    // flex:1,
+    // flex: 1,
     width: 200,
-    // minHeight:200,
+    // minHeight: 200,
     display: 'flex',
     justifyContent: 'flex-end',
     paddingTop: 30
@@ -319,24 +333,22 @@ const styles = StyleSheet.create({
     right: 0,
     display: 'flex',
     flexDirection: 'row',
-    padding: 7,
+    // ...shared.innerPad,
+    padding: 10,
     justifyContent: 'space-between'
   },
   satStats: {
-    color: 'white',
-    backgroundColor: '#55D1A9',
     paddingLeft: 8,
     paddingRight: 8,
     paddingTop: 2,
     paddingBottom: 2,
     position: 'relative',
     zIndex: 9,
-    fontSize: 12,
-    fontWeight: 'bold',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 4
+    borderRadius: 4,
+    overflow: 'hidden'
   },
   paidAttachmentText: {
     width: '100%',

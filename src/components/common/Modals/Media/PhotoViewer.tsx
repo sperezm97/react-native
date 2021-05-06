@@ -53,7 +53,7 @@ export default function PhotoViewer({ visible, close, photos, chat, initialIndex
 }
 
 function SwipeItem(props) {
-  const [photoH, setPhotoH] = useState(0)
+  // const [photoH, setPhotoH] = useState(0)
   const {
     uuid,
     message_content,
@@ -177,25 +177,37 @@ function SwipeItem(props) {
         </View>
       )}
       {hasImgData && (
-        <View
-          style={{
-            width: w,
-            height: photoH
-          }}
-        >
+        <View>
+          {showStats && (
+            <View style={{ ...styles.stats }}>
+              <Typography
+                size={12}
+                color={theme.white}
+                bg={theme.accent}
+                fw='500'
+                style={{ ...styles.satStats }}
+              >{`${amt} sat`}</Typography>
+              <Typography
+                size={12}
+                color={theme.white}
+                bg={theme.secondary}
+                fw='500'
+                style={{ ...styles.satStats, opacity: sold ? 1 : 0 }}
+              >
+                Purchased
+              </Typography>
+            </View>
+          )}
           <FastImage
-            resizeMode='contain'
+            resizeMode='cover'
             source={{ uri: data || uri }}
-            onLoad={evt => {
-              setPhotoH((evt.nativeEvent.height / evt.nativeEvent.width) * w)
-            }}
+            // onLoad={evt => {
+            //   setPhotoH((evt.nativeEvent.height / evt.nativeEvent.width) * w)
+            // }}
             style={{
               ...styles.photo,
               width: w,
-              height: photoH
-              // width: w,
-              // height: h,
-              // maxHeight: h - 100
+              height: w
             }}
           />
         </View>
@@ -252,7 +264,8 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    height: '100%'
+    height: '100%',
+    position: 'relative'
   },
   row: {
     display: 'flex',
@@ -263,13 +276,15 @@ const styles = StyleSheet.create({
   },
   footer: {
     position: 'absolute',
-    // bottom: 0,
     bottom: isIphoneX() ? getBottomSpace() : 15,
-    width: '100%',
     // height: isIphoneX() ? 100 + getBottomSpace() : 90,
+    width: '100%',
     paddingTop: 10,
     paddingRight: 16,
-    paddingLeft: 16
+    paddingLeft: 16,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center'
   },
   closeButton: {
     position: 'absolute',
@@ -277,10 +292,10 @@ const styles = StyleSheet.create({
     right: 0,
     zIndex: 1
   },
-
   photo: {
-    width: '100%',
-    height: '100%'
+    alignSelf: 'center'
+    // width: '100%',
+    // height: '100%'
   },
   locked: {
     height: '100%',
@@ -288,5 +303,30 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center'
+  },
+  stats: {
+    position: 'absolute',
+    width: '100%',
+    zIndex: 1,
+    top: 0,
+    left: 0,
+    right: 0,
+    display: 'flex',
+    flexDirection: 'row',
+    padding: 16,
+    justifyContent: 'space-between'
+  },
+  satStats: {
+    paddingLeft: 8,
+    paddingRight: 8,
+    paddingTop: 2,
+    paddingBottom: 2,
+    position: 'relative',
+    zIndex: 9,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 4,
+    overflow: 'hidden'
   }
 })

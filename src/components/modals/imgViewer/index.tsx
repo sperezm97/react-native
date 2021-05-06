@@ -1,6 +1,16 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { useObserver } from 'mobx-react-lite'
-import { View, StyleSheet, Image, Dimensions, TextInput, Text, TouchableOpacity, BackHandler, KeyboardAvoidingView } from 'react-native'
+import {
+  View,
+  StyleSheet,
+  Image,
+  Dimensions,
+  TextInput,
+  Text,
+  TouchableOpacity,
+  BackHandler,
+  KeyboardAvoidingView
+} from 'react-native'
 import { Portal, IconButton } from 'react-native-paper'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import RNFetchBlob from 'rn-fetch-blob'
@@ -169,7 +179,13 @@ function ImageViewer(props) {
         {/* {showInput && !isTribe && <SetPrice setAmount={amt=> setPrice(amt)} />} */}
         {showInput && <SetPrice setAmount={amt => setPrice(amt)} onShow={onShowAmount} />}
 
-        {showImg && <FastImage resizeMode='contain' source={{ uri: uri || data }} style={{ ...styles.img, ...boxStyles }} />}
+        {showImg && (
+          <FastImage
+            resizeMode='contain'
+            source={{ uri: uri || data }}
+            style={{ ...styles.img, ...boxStyles }}
+          />
+        )}
         {showMsgMessage && !uploading && (
           <View style={{ ...styles.msgMessage, ...boxStyles }}>
             <Text style={styles.msgMessageText}>Set a price and enter your message</Text>
@@ -184,12 +200,20 @@ function ImageViewer(props) {
         )}
 
         {showInput && (
-          <KeyboardAvoidingView style={{ position: 'absolute', left: 0, right: 0, bottom: 0 }} behavior='position' keyboardVerticalOffset={headerHeight}>
+          <KeyboardAvoidingView
+            style={{ position: 'absolute', left: 0, right: 0, bottom: 0 }}
+            behavior='position'
+            keyboardVerticalOffset={headerHeight}
+          >
             <View style={styles.inputWrap}>
               <TextInput
                 placeholder='Message...'
                 ref={inputRef}
-                style={{ ...styles.input, backgroundColor: theme.inputBg, color: theme.input }}
+                style={{
+                  ...styles.input,
+                  backgroundColor: theme.inputBg,
+                  color: theme.input
+                }}
                 placeholderTextColor={theme.subtitle}
                 onFocus={() => setInputFocused(true)}
                 onBlur={() => setInputFocused(false)}
@@ -198,7 +222,12 @@ function ImageViewer(props) {
                 <Text>{text}</Text>
               </TextInput>
               <View style={styles.sendButtonWrap}>
-                <TouchableOpacity activeOpacity={0.5} style={{ ...styles.sendButton, backgroundColor: theme.primary }} onPress={() => sendAttachment()} disabled={disabled}>
+                <TouchableOpacity
+                  activeOpacity={0.5}
+                  style={{ ...styles.sendButton, backgroundColor: theme.primary }}
+                  onPress={() => sendAttachment()}
+                  disabled={disabled}
+                >
                   <Icon name='send' size={17} color={theme.white} />
                 </TouchableOpacity>
               </View>

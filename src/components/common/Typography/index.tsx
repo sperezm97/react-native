@@ -10,6 +10,7 @@ export default function Typography(props) {
     children,
     style,
     color = theme.text,
+    bg,
     size,
     fw,
     ls = 0.5,
@@ -33,6 +34,7 @@ export default function Typography(props) {
       style={{
         ...style,
         color,
+        backgroundColor: bg,
         fontSize: size,
         fontWeight: fw,
         letterSpacing: ls,

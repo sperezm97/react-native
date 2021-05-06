@@ -29,28 +29,19 @@ export default function Photo({ visible, close, photo }) {
           style={{ ...styles.closeButton }}
         />
         <View style={styles.content}>
-          <View
-            style={{
-              width: w,
-              height: photoH
+          <FastImage
+            resizeMode='cover'
+            source={{ uri: photo }}
+            onLoad={evt => {
+              setPhotoH((evt.nativeEvent.height / evt.nativeEvent.width) * w)
             }}
-          >
-            <FastImage
-              resizeMode='contain'
-              source={{ uri: photo }}
-              onLoad={evt => {
-                setPhotoH((evt.nativeEvent.height / evt.nativeEvent.width) * w)
-              }}
-              style={{
-                ...styles.photo,
-                width: w,
-                height: photoH
-                // width: w,
-                // height: h,
-                // maxHeight: h - 100
-              }}
-            />
-          </View>
+            style={{
+              ...styles.photo,
+              width: w,
+              height: w
+              // maxHeight: h - 100
+            }}
+          />
         </View>
       </View>
     </Modal>
@@ -77,8 +68,9 @@ const styles = StyleSheet.create({
     zIndex: 1
   },
   photo: {
-    width: '100%',
-    height: '100%'
+    alignSelf: 'center'
+    // width: '100%',
+    // height: '100%'
   },
   locked: {
     height: '100%',
