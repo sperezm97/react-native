@@ -171,10 +171,8 @@ export const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    width: 52,
-    height: 52,
-    marginRight: 18,
-    marginLeft: 10
+    paddingLeft: 16,
+    paddingVertical: 16
   },
   avatar: {
     width: 52,
@@ -198,7 +196,9 @@ export const styles = StyleSheet.create({
   chatContent: {
     display: 'flex',
     flexDirection: 'column',
-    flex: 1
+    flex: 1,
+    paddingLeft: 16,
+    paddingTop: 16
   },
   chatContentTop: {
     display: 'flex',
@@ -225,7 +225,7 @@ export const styles = StyleSheet.create({
     marginBottom: 4
   },
   chatDate: {
-    marginRight: 12
+    paddingRight: 14
   },
   chatMsgWrap: {
     display: 'flex',

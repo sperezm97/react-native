@@ -68,7 +68,13 @@ export default function AccountDetails() {
 
         <View style={styles.shareWrap}>
           <Text style={{ color: theme.text }}>Share my profile photo with contacts</Text>
-          <Switch trackColor={{ false: theme.grey, true: theme.primary }} thumbColor={theme.white} ios_backgroundColor={theme.grey} onValueChange={toggleSwitch} value={isEnabled} />
+          <Switch
+            trackColor={{ false: theme.grey, true: theme.primary }}
+            thumbColor={theme.white}
+            ios_backgroundColor={theme.grey}
+            onValueChange={toggleSwitch}
+            value={isEnabled}
+          />
         </View>
 
         <Text style={{ color: theme.text }}>Tip Amount</Text>
@@ -94,8 +100,8 @@ const styles = StyleSheet.create({
   },
   content: {
     marginTop: 40,
-    paddingRight: 14,
-    paddingLeft: 14
+    paddingRight: 18,
+    paddingLeft: 18
   },
   shareWrap: {
     display: 'flex',

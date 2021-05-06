@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native'
 import RNFetchBlob from 'rn-fetch-blob'
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
+import { isIphoneX } from 'react-native-iphone-x-helper'
 
 import { useStores, useTheme } from '../../../store'
 import Typography from '../../common/Typography'
@@ -100,7 +101,7 @@ export default function Intro({ tribe }) {
               uploadPercent={uploadPercent}
               display={!tribe.owner}
             >
-              <Avatar photo={tribe.img} size={70} round={50} />
+              <Avatar photo={tribe.img} size={80} round={50} />
             </AvatarEdit>
           </View>
 
@@ -108,6 +109,7 @@ export default function Intro({ tribe }) {
             <View
               style={{
                 ...styles.row,
+                flex: 1,
                 flexWrap: 'wrap'
               }}
             >
@@ -124,36 +126,48 @@ export default function Intro({ tribe }) {
               )}
             </View>
 
-            <View style={{ ...styles.row, marginTop: 6, marginBottom: 14 }}>
-              <View style={{ ...styles.row }}>
+            <View
+              style={{
+                ...styles.row,
+                marginTop: 6,
+                marginBottom: 14
+              }}
+            >
+              <View
+                style={{
+                  ...styles.row
+                }}
+              >
                 <MaterialIcon name='public' size={18} color={theme.grey} />
                 <Typography size={14} style={{ paddingLeft: 4 }}>
                   {tribe.private ? 'Private Community' : 'Public Community'}
                 </Typography>
-              </View>
-              <View style={{ ...styles.row }}>
                 <View style={{ ...styles.dot, backgroundColor: theme.black }}></View>
-                {tribe.owner ? (
-                  <TouchableOpacity
-                    style={{ ...styles.row }}
-                    onPress={onTribeMembersPress}
-                  >
-                    <Typography size={14} fw='600'>
-                      {tribe.member_count}{' '}
-                    </Typography>
-                    <Typography size={14} numberOfLines={1}>
-                      members
-                    </Typography>
-                  </TouchableOpacity>
-                ) : (
-                  <>
-                    <Typography size={14} fw='600'>
-                      {tribe.member_count}{' '}
-                    </Typography>
-                    <Typography size={14}>members</Typography>
-                  </>
-                )}
               </View>
+
+              {tribe.owner ? (
+                <TouchableOpacity
+                  style={{
+                    ...styles.row,
+                    flex: 1
+                  }}
+                  onPress={onTribeMembersPress}
+                >
+                  <Typography size={14} fw='600' numberOfLines={1}>
+                    {tribe.member_count}{' '}
+                  </Typography>
+                  <Typography size={14} numberOfLines={1} style={{ flexShrink: 1 }}>
+                    members
+                  </Typography>
+                </TouchableOpacity>
+              ) : (
+                <>
+                  <Typography size={14} fw='600'>
+                    {tribe.member_count}{' '}
+                  </Typography>
+                  <Typography size={14}>members</Typography>
+                </>
+              )}
             </View>
 
             <TribeActions tribe={tribe} />
@@ -245,20 +259,20 @@ const styles = StyleSheet.create({
   header: {
     display: 'flex',
     flexDirection: 'row',
+    justifyContent: 'space-between',
+    // alignItems: 'center',
+    flexWrap: 'wrap',
     width: '100%'
-    // alignItems: 'center'
   },
   headerContent: {
     display: 'flex',
-    flexDirection: 'column',
-    width: '75%',
-    marginLeft: 28
-    // flex: 1,
+    width: '80%',
+    paddingLeft: 25
   },
   avatarWrap: {
     display: 'flex',
-    width: '20%',
-    alignItems: 'center'
+    alignItems: 'center',
+    width: '20%'
     // justifyContent: 'center'
   },
   row: {

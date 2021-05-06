@@ -107,7 +107,7 @@ function ChatRow(props) {
     return (
       <TouchableOpacity
         style={{
-          ...styles.chatRow,
+          ...moreStyles.itemRow,
           backgroundColor: theme.main
         }}
         activeOpacity={0.5}
@@ -118,14 +118,12 @@ function ChatRow(props) {
           {hasUnseen && (
             <View style={moreStyles.badgeWrap}>
               <View style={{ ...moreStyles.badge, backgroundColor: theme.badge }}>
-                <Text style={{ ...moreStyles.badgeText, color: theme.white }}>
-                  {unseenCount}
-                </Text>
+                <Typography color={theme.white}>{unseenCount}</Typography>
               </View>
             </View>
           )}
         </View>
-        <View style={styles.chatContent}>
+        <View style={{ ...styles.chatContent }}>
           <View style={styles.chatContentTop}>
             <Typography
               style={{ ...styles.chatName }}
@@ -135,25 +133,28 @@ function ChatRow(props) {
             >
               {name}
             </Typography>
-            <Typography style={{ ...styles.chatDate }} color={theme.subtitle}>
+            <Typography size={13} style={{ ...styles.chatDate }} color={theme.subtitle}>
               {lastMsgDate}
             </Typography>
           </View>
           <View style={styles.chatMsgWrap}>
             {hasLastMsg && (
-              <Text
+              <Typography
                 numberOfLines={1}
+                color={theme.subtitle}
+                fw={hasUnseen ? '500' : '400'}
+                size={13}
                 style={{
-                  ...styles.chatMsg,
-                  fontWeight: hasUnseen ? 'bold' : 'normal',
-                  maxWidth: w - 105,
-                  color: theme.subtitle
+                  maxWidth: w - 105
                 }}
               >
                 {lastMsgText}
-              </Text>
+              </Typography>
             )}
           </View>
+          <View
+            style={{ ...moreStyles.borderBottom, borderBottomColor: theme.border }}
+          ></View>
         </View>
       </TouchableOpacity>
     )
@@ -161,6 +162,17 @@ function ChatRow(props) {
 }
 
 const moreStyles = StyleSheet.create({
+  itemRow: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderRadius: 5
+  },
+  borderBottom: {
+    flexDirection: 'row',
+    flex: 1,
+    borderBottomWidth: 1
+  },
   buttonsWrap: {
     marginTop: 40,
     marginBottom: 25,
@@ -184,10 +196,6 @@ const moreStyles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 10
-  },
-  badgeText: {
-    fontSize: 11,
-    fontWeight: '500'
   }
 })
 

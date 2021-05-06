@@ -27,15 +27,37 @@ export default function ActionMenu({ items }) {
               >
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                   {item.thumbIcon && (
-                    <View style={{ ...styles.thumbWrapper, backgroundColor: item.thumbBgColor }}>
-                      {iconProp ? <>{item.thumbIcon}</> : <Icon name={item.thumbIcon} size={18} color={item.thumbColor} />}
+                    <View
+                      style={{
+                        ...styles.thumbWrapper,
+                        backgroundColor: item.thumbBgColor
+                      }}
+                    >
+                      {iconProp ? (
+                        <>{item.thumbIcon}</>
+                      ) : (
+                        <Icon name={item.thumbIcon} size={18} color={item.thumbColor} />
+                      )}
                     </View>
                   )}
-                  {item.thumbImage && <Image source={typeof item.thumbImage === 'string' ? { uri: item.thumbImage } : item.thumbImage} style={{ ...styles.thumbImage }} />}
+                  {item.thumbImage && (
+                    <Image
+                      source={
+                        typeof item.thumbImage === 'string'
+                          ? { uri: item.thumbImage }
+                          : item.thumbImage
+                      }
+                      style={{ ...styles.thumbImage }}
+                    />
+                  )}
                   <Text style={{ fontSize: 16, color: theme.text }}>{item.title}</Text>
                 </View>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  {item.preview && <Text style={{ ...styles.previewText, color: theme.accent }}>{item.preview}</Text>}
+                  {item.preview && (
+                    <Text style={{ ...styles.previewText, color: theme.accent }}>
+                      {item.preview}
+                    </Text>
+                  )}
                   <Icon name={item.icon} color={theme.icon} size={25} />
                 </View>
               </TouchableOpacity>
@@ -50,8 +72,8 @@ export default function ActionMenu({ items }) {
 const styles = StyleSheet.create({
   wrap: {
     borderRadius: 10,
-    paddingRight: 14,
-    paddingLeft: 14
+    paddingRight: 18,
+    paddingLeft: 18
   },
   row: {
     flexDirection: 'row',

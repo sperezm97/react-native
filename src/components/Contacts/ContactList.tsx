@@ -1,6 +1,6 @@
 import React from 'react'
 import { useObserver } from 'mobx-react-lite'
-import { StyleSheet, View, Text, TouchableOpacity, SectionList } from 'react-native'
+import { StyleSheet, View, TouchableOpacity, SectionList } from 'react-native'
 import { SwipeRow } from 'react-native-swipe-list-view'
 import { IconButton } from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native'
@@ -8,8 +8,9 @@ import { useNavigation } from '@react-navigation/native'
 import { useStores, useTheme } from '../../store'
 import { usePicSrc } from '../utils/picSrc'
 import Avatar from '../common/Avatar'
+import Typography from '../common/Typography'
 
-export default function ContactList() {
+export default function ContactList({ listHeader }) {
   const navigation = useNavigation()
   const { ui, contacts } = useStores()
   const theme = useTheme()
@@ -41,9 +42,12 @@ export default function ContactList() {
           )}
           renderSectionHeader={({ section: { title } }) => (
             <View style={{ ...styles.section, backgroundColor: theme.main }}>
-              <Text style={{ ...styles.sectionTitle, color: theme.title }}>{title}</Text>
+              <Typography color={theme.title} fw='500'>
+                {title}
+              </Typography>
             </View>
           )}
+          ListHeaderComponent={listHeader}
         />
       </View>
     )
@@ -80,9 +84,7 @@ function Item({ contact, onPress }) {
         >
           <Avatar size={40} aliasSize={16} alias={contact.alias} photo={uri} />
           <View style={styles.contactContent}>
-            <Text style={{ ...styles.contactName, color: theme.text }}>
-              {contact.alias}
-            </Text>
+            <Typography>{contact.alias}</Typography>
           </View>
         </TouchableOpacity>
       </View>
@@ -119,9 +121,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center'
   },
-  sectionTitle: {
-    fontWeight: '600'
-  },
   contactTouch: {
     flex: 1,
     flexDirection: 'row',
@@ -131,11 +130,7 @@ const styles = StyleSheet.create({
   },
   contactContent: {
     flex: 1,
-    marginLeft: 10
-  },
-  contactName: {
-    fontSize: 16,
-    fontWeight: '500'
+    paddingLeft: 14
   },
   backSwipeRow: {
     backgroundColor: '#DB5554',
@@ -147,6 +142,6 @@ const styles = StyleSheet.create({
   frontSwipeRow: {
     flex: 1,
     height: 80,
-    paddingLeft: 12
+    paddingLeft: 14
   }
 })

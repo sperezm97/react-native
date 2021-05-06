@@ -16,7 +16,6 @@ export default function Contacts() {
   const navigation = useNavigation()
 
   const onAddFriendPress = () => ui.setAddFriendDialog(true)
-  const onChangeTextHandler = (txt: string) => ui.setContactsSearchTerm(txt)
 
   const AddContact = (
     <IconButton
@@ -35,18 +34,27 @@ export default function Contacts() {
         navigate={() => navigation.goBack()}
       />
       <View style={{ ...styles.content }}>
-        <View style={{ ...styles.searchWrap }}>
-          <Search
-            placeholder='Search Contacts'
-            onChangeText={onChangeTextHandler}
-            value={ui.contactsSearchTerm}
-            h={45}
-          />
-        </View>
-        <ContactList />
+        <ContactList listHeader={<ListHeader />} />
       </View>
     </View>
   ))
+}
+
+function ListHeader() {
+  const { ui } = useStores()
+
+  const onChangeTextHandler = (txt: string) => ui.setContactsSearchTerm(txt)
+
+  return (
+    <View style={{ ...styles.searchWrap }}>
+      <Search
+        placeholder='Search Contacts'
+        onChangeText={onChangeTextHandler}
+        value={ui.contactsSearchTerm}
+        h={45}
+      />
+    </View>
+  )
 }
 
 const styles = StyleSheet.create({

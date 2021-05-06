@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { StyleSheet, View, FlatList, ScrollView } from 'react-native'
+import { StyleSheet, View, FlatList, SectionList } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
 import { useNavigation } from '@react-navigation/native'
 
@@ -8,8 +8,9 @@ import { constants } from '../../../constants'
 import { Contact, DeletableContact, PendingContact } from './Items'
 import Typography from '../../common/Typography'
 
-export default function List({ tribe, members }) {
+export default function List({ tribe, members, listHeader }) {
   const { chats } = useStores()
+  const theme = useTheme()
 
   async function onKickContact(cid) {
     await chats.kick(tribe.id, cid)
@@ -24,19 +25,53 @@ export default function List({ tribe, members }) {
 
   return useObserver(() => {
     return (
-      <FlatList
+      <SectionList
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
+        // scrollEnabled={false}
         style={styles.wrap}
-        data={members}
+        sections={grouper(members)}
+        // data={members}
         renderItem={renderItem}
+        renderSectionHeader={({ section: { title } }) => (
+          <View style={{ ...styles.section, backgroundColor: theme.main }}>
+            <Typography color={theme.title} fw='500'>
+              {title}
+            </Typography>
+          </View>
+        )}
+        ListHeaderComponent={listHeader}
         keyExtractor={item => String(item.id)}
       />
     )
   })
 }
 
+function grouper(data) {
+  // takes "alias"
+  const ret = []
+  const groups = data.reduce((r, e) => {
+    let title = e.alias[0]
+    if (!r[title]) r[title] = { title, data: [e] }
+    else r[title].data.push(e)
+    return r
+  }, {})
+  Object.values(groups).forEach(g => {
+    ret.push(g)
+  })
+  return ret
+}
+
 const styles = StyleSheet.create({
   wrap: {
     width: '100%',
     position: 'relative'
+  },
+  section: {
+    paddingLeft: 24,
+    height: 35,
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center'
   }
 })

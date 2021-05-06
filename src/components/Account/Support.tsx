@@ -45,7 +45,7 @@ export default function Support() {
   return useObserver(() => (
     <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
       <BackHeader title='Support' />
-      <View style={{ padding: 14, flex: 1 }}>
+      <View style={{ padding: 18, flex: 1 }}>
         <TextInput
           numberOfLines={4}
           textAlignVertical='top'
@@ -54,7 +54,11 @@ export default function Support() {
           onChangeText={e => setText(e)}
           value={text}
           blurOnSubmit={true}
-          style={{ ...styles.input, backgroundColor: theme.bg, borderColor: theme.border }}
+          style={{
+            ...styles.input,
+            backgroundColor: theme.bg,
+            borderColor: theme.border
+          }}
           placeholderTextColor={theme.placeholder}
         />
         {loading && (
@@ -86,8 +90,8 @@ const styles = StyleSheet.create({
   bottom: {
     flex: 1,
     marginTop: 40,
-    paddingRight: 14,
-    paddingLeft: 14,
+    paddingRight: 18,
+    paddingLeft: 18,
     justifyContent: 'flex-end'
   },
   buttonWrap: {

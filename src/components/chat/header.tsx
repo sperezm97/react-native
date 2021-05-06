@@ -62,11 +62,7 @@ export default function Header({
 
     function handleChatInfoClick() {
       if (chat.type === conversation) {
-        if (contact)
-          navigation.navigate('Contacts', {
-            screen: 'Contact',
-            params: { contact }
-          })
+        if (contact) navigation.navigate('Contact', { contact: { ...contact } })
       } else {
         navigation.navigate('ChatDetails', {
           group: { ...chat, ...tribeParams, pricePerMinute }

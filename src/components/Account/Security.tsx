@@ -82,10 +82,12 @@ export default function Security() {
       <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
         <BackHeader title='Security' />
         <ActionMenu items={items} />
-        <View style={{ padding: 14 }}>
+        <View style={{ padding: 18 }}>
           <View style={styles.pinTimeoutTextWrap}>
             <Text style={{ color: theme.subtitle }}>PIN Timeout</Text>
-            <Text style={{ color: theme.title }}>{pinTimeout ? pinTimeout : 'Always Require PIN'}</Text>
+            <Text style={{ color: theme.title }}>
+              {pinTimeout ? pinTimeout : 'Always Require PIN'}
+            </Text>
           </View>
           <Slider
             minimumValue={0}
@@ -102,8 +104,15 @@ export default function Security() {
 
         <View style={styles.bottom}>
           <View style={{ ...styles.exportWrap }}>
-            <Text style={{ ...styles.exportText, color: theme.text }}>Want to switch devices?</Text>
-            <Button accessibilityLabel='onboard-welcome-button' onPress={() => modalizeRef.current?.open()} size='large' h={60}>
+            <Text style={{ ...styles.exportText, color: theme.text }}>
+              Want to switch devices?
+            </Text>
+            <Button
+              accessibilityLabel='onboard-welcome-button'
+              onPress={() => modalizeRef.current?.open()}
+              size='large'
+              h={60}
+            >
               <Text>Export keys</Text>
               <View style={{ width: 12, height: 1 }}></View>
               <Icon name='key' color={theme.white} size={18} />
@@ -137,8 +146,8 @@ const styles = StyleSheet.create({
   bottom: {
     flex: 1,
     marginTop: 40,
-    paddingRight: 14,
-    paddingLeft: 14,
+    paddingRight: 18,
+    paddingLeft: 18,
     justifyContent: 'flex-end'
   },
   exportWrap: {

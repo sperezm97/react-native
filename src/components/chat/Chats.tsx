@@ -10,6 +10,7 @@ import Search from '../common/Search'
 import Header from '../common/Header'
 import TabBar from '../common/TabBar'
 import Button from '../common/Button'
+import Divider from '../common/Layout/Divider'
 
 export default function Chats() {
   const { ui } = useStores()
@@ -17,7 +18,7 @@ export default function Chats() {
 
   return useObserver(() => (
     <View
-      style={{ ...styles.main, backgroundColor: theme.bg }}
+      style={{ ...styles.wrap, backgroundColor: theme.bg }}
       accessibilityLabel='dashboard'
     >
       <Header />
@@ -46,30 +47,34 @@ function ListHeader() {
   const onAddFriendPress = () => ui.setAddFriendDialog(true)
 
   return (
-    <View style={{ ...styles.listHeader }}>
-      <TouchableOpacity
-        onPress={() => navigation.navigate('Contacts')}
-        activeOpacity={0.6}
-      >
-        <Button mode='text' fs={13}>
-          Contacts
-        </Button>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={onAddFriendPress} activeOpacity={0.6}>
-        <Button
-          mode='text'
-          icon={() => <MaterialIcon name='plus' color={theme.primary} size={16} />}
-          fs={13}
+    <>
+      <View style={{ ...styles.listHeader }}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('Contacts')}
+          activeOpacity={0.6}
         >
-          Add Friend
-        </Button>
-      </TouchableOpacity>
-    </View>
+          <Button mode='text' size='small'>
+            Contacts
+          </Button>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={onAddFriendPress} activeOpacity={0.6}>
+          <Button
+            mode='text'
+            size='small'
+            icon={() => <MaterialIcon name='plus' color={theme.primary} size={16} />}
+            fs={13}
+          >
+            Add Friend
+          </Button>
+        </TouchableOpacity>
+      </View>
+      <Divider mt={8} mb={0} />
+    </>
   )
 }
 
 const styles = StyleSheet.create({
-  main: {
+  wrap: {
     width: '100%',
     flex: 1
   },
@@ -79,7 +84,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     width: '100%',
-    paddingBottom: 10
+    marginTop: 15
   },
   searchWrap: {
     display: 'flex',
@@ -87,7 +92,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     paddingRight: 14,
-    paddingLeft: 14,
-    paddingBottom: 10
+    paddingLeft: 14
   }
 })

@@ -13,12 +13,14 @@ import AddMembers from './AddMembers'
 import AddMemberModal from '../../common/Modals/Tribe/AddMembers'
 import Typography from '../../common/Typography'
 import Empty from '../../common/Empty'
+import Search from '../../common/Search'
 
 export default function Members({ route }) {
   const [addMember, setAddMember] = useState(false)
   const { contacts } = useStores()
   const theme = useTheme()
   const navigation = useNavigation()
+  const [membersSearchText, setMembersSearchText] = useState('')
 
   const tribe = route.params.tribe
 
@@ -28,6 +30,11 @@ export default function Members({ route }) {
 
   const contactsToShow = contacts.contacts.filter(c => {
     return c.id > 1 && tribe && tribe.chat && tribe.chat.contact_ids.includes(c.id)
+  })
+
+  const searchedContacts = contactsToShow.filter(m => {
+    if (!membersSearchText) return true
+    return m.alias.toLowerCase().includes(membersSearchText.toLowerCase())
   })
 
   const pendingContactsToShow =
@@ -53,11 +60,21 @@ export default function Members({ route }) {
           />
           <View style={styles.content}>
             {contactsToShow && contactsToShow.length > 0 ? (
-              <List tribe={tribe} members={contactsToShow} />
+              <List
+                tribe={tribe}
+                members={searchedContacts}
+                listHeader={
+                  <ListHeader
+                    tribe={tribe}
+                    searchText={membersSearchText}
+                    setSearchText={setMembersSearchText}
+                  />
+                }
+              />
             ) : (
               <EmptyMembers tribe={tribe} />
             )}
-            <Pending tribe={tribe} members={pendingContactsToShow} />
+            {/* <Pending tribe={tribe} members={pendingContactsToShow} /> */}
             {/* <AddMemberModal visible={addMember} close={() => setAddMember(false)}>
               <AddMembers initialMemberIds={(tribe && tribe.chat.contact_ids) || []} />
             </AddMemberModal> */}
@@ -66,6 +83,19 @@ export default function Members({ route }) {
       </>
     )
   })
+}
+
+function ListHeader({ tribe, searchText, setSearchText }) {
+  return (
+    <View style={{ ...styles.searchWrap }}>
+      <Search
+        placeholder={`Search ${tribe.name} Members`}
+        onChangeText={value => setSearchText(value)}
+        value={searchText}
+        h={45}
+      />
+    </View>
+  )
 }
 
 function EmptyMembers({ tribe }) {
@@ -97,7 +127,11 @@ const styles = StyleSheet.create({
     flex: 1
   },
   content: {
-    flex: 1,
-    paddingTop: 10
+    flex: 1
+  },
+  searchWrap: {
+    paddingRight: 14,
+    paddingLeft: 14,
+    paddingBottom: 14
   }
 })
