@@ -69,7 +69,7 @@ function About({ tribe }) {
 function Tags(props) {
   const { chats } = useStores()
   let { tags, owner, tribe } = props
-  const [topicsEdit, setTopicsEdit] = useState(false)
+  const [topicsEditDialog, setTopicsEditDialog] = useState(false)
 
   async function finish(tags) {
     tribe.tags = tags
@@ -78,7 +78,7 @@ function Tags(props) {
       id: tribe.chat.id
     })
 
-    setTopicsEdit(false)
+    setTopicsEditDialog(false)
   }
 
   return (
@@ -86,7 +86,7 @@ function Tags(props) {
       {owner ? (
         <>
           <BoxHeader title='Topics in this Community'>
-            <Button mode='text' onPress={() => setTopicsEdit(true)} size='small'>
+            <Button mode='text' onPress={() => setTopicsEditDialog(true)} size='small'>
               Edit
             </Button>
           </BoxHeader>
@@ -103,8 +103,8 @@ function Tags(props) {
           </>
           <DialogWrap
             title='Edit Tags'
-            visible={topicsEdit}
-            onDismiss={() => setTopicsEdit(false)}
+            visible={topicsEditDialog}
+            onDismiss={() => setTopicsEditDialog(false)}
           >
             <TribeTags tags={tags} finish={finish} />
           </DialogWrap>

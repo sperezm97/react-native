@@ -1,11 +1,13 @@
 import React from 'react'
 import { View } from 'react-native'
 
+import { useTheme } from '../../../store'
 import Typography from '../Typography'
 import Icon from '../Icon'
 
 export default function Balance(props) {
   const { color, style, balance } = props
+  const theme = useTheme()
 
   return (
     <View
@@ -18,7 +20,10 @@ export default function Balance(props) {
     >
       <Icon name='Coins' size={20} />
       <Typography style={{ ...style, color: color, marginLeft: 10 }}>
-        {balance} sat
+        {balance}{' '}
+        <Typography color={theme.subtitle} fw='500'>
+          sat
+        </Typography>
       </Typography>
     </View>
   )

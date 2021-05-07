@@ -1,18 +1,17 @@
-import React, { useState, useRef } from 'react'
+import React, { useState } from 'react'
 import {
   View,
   StyleSheet,
-  Text,
   TextInput,
   TouchableOpacity,
   Linking,
-  Platform,
-  KeyboardAvoidingView
+  Platform
 } from 'react-native'
 import { Title, IconButton, ActivityIndicator } from 'react-native-paper'
 import RadialGradient from 'react-native-radial-gradient'
 import { decode as atob } from 'base-64'
 import { ifIphoneX } from 'react-native-iphone-x-helper'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import { useStores, useTheme } from '../../store'
 import { DEFAULT_HOST } from '../../config'
@@ -20,6 +19,7 @@ import * as e2e from '../../crypto/e2e'
 import * as rsa from '../../crypto/rsa'
 import QR from '../common/Accessories/QR'
 import PinCodeModal from '../common/Modals/PinCode'
+import Typography from '../common/Typography'
 import PIN, { setPinCode } from '../utils/pin'
 import { isLN, parseLightningInvoice } from '../utils/ln'
 
@@ -180,13 +180,11 @@ export default function Code(props) {
         center={[80, 40]}
         radius={400}
       >
-        <KeyboardAvoidingView
-          style={{ alignItems: 'center' }}
-          behavior='padding'
-          keyboardVerticalOffset={headerHeight}
-        >
+        <KeyboardAwareScrollView contentContainerStyle={{ ...styles.content }}>
           <Title style={styles.welcome}>Welcome</Title>
-          <Text style={styles.msg}>Paste the invitation text or scan the QR code</Text>
+          <Typography style={styles.msg} size={20} color={theme.white} lh={27}>
+            Paste the invitation text or scan the QR code
+          </Typography>
           <View style={styles.inputWrap} accessibilityLabel='onboard-code-input-wrap'>
             <TextInput
               autoCorrect={false}
@@ -209,26 +207,44 @@ export default function Code(props) {
               onPress={() => setScanning(true)}
             />
           </View>
-        </KeyboardAvoidingView>
+        </KeyboardAwareScrollView>
 
         <View style={styles.spinWrap}>
           {checking && <ActivityIndicator animating={true} color='white' />}
         </View>
         {(wrong ? true : false) && (
-          <View style={{ ...styles.message, ...styles.wrong }}>
-            <Text style={styles.wrongText}>{wrong}</Text>
+          <View
+            style={{
+              ...styles.message,
+              ...styles.wrong,
+              backgroundColor: theme.transparent
+            }}
+          >
+            <Typography style={styles.wrongText} color={theme.white}>
+              {wrong}
+            </Typography>
             <TouchableOpacity onPress={() => Linking.openURL(DEFAULT_HOST)}>
-              <Text style={styles.linkText}>{DEFAULT_HOST}</Text>
+              <Typography style={styles.linkText} size={16} fw='500' color={theme.purple}>
+                {DEFAULT_HOST}
+              </Typography>
             </TouchableOpacity>
           </View>
         )}
-
         {(error ? true : false) && (
-          <View style={{ ...styles.message, ...styles.error }}>
-            <Text style={styles.errorText}>{error}</Text>
+          <View
+            style={{
+              ...styles.message,
+              ...styles.error,
+              backgroundColor: theme.transparent
+            }}
+          >
+            <Typography style={styles.errorText} color={theme.white}>
+              {error}
+            </Typography>
           </View>
         )}
       </RadialGradient>
+
       {scanning && (
         <QR
           visible={scanning}
@@ -262,7 +278,17 @@ const styles = StyleSheet.create({
   gradient: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    height: '100%',
+    width: '100%'
+  },
+  content: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100%',
+    width: '100%'
   },
   welcome: {
     color: 'white',
@@ -306,32 +332,24 @@ const styles = StyleSheet.create({
     bottom: 32,
     width: '80%',
     left: '10%',
-    borderRadius: 10,
-    backgroundColor: 'rgba(0,0,0,0.5)'
+    borderRadius: 10
   },
   wrong: {
     height: 145
   },
   wrongText: {
-    color: 'white',
     margin: 24,
-    fontSize: 15,
     textAlign: 'center'
   },
   error: {
     height: 70
   },
   errorText: {
-    color: 'white',
     margin: 24,
-    fontSize: 15,
     textAlign: 'center'
   },
   linkText: {
-    color: '#6289FD',
-    textAlign: 'center',
-    fontSize: 17,
-    fontWeight: 'bold'
+    textAlign: 'center'
   }
 })
 

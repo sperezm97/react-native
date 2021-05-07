@@ -33,7 +33,7 @@ export default function Tribe({ route }) {
 
   const tribe = route.params.tribe
 
-  console.log('tribe', tribe)
+  // console.log('tribe', tribe)
 
   function onEditTribePress() {
     navigation.navigate('EditTribe', { tribe })

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useObserver } from 'mobx-react-lite'
-import { StyleSheet, View, Modal, Text } from 'react-native'
+import { StyleSheet, View, Modal, Image } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import { IconButton } from 'react-native-paper'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -53,7 +53,7 @@ export default function PhotoViewer({ visible, close, photos, chat, initialIndex
 }
 
 function SwipeItem(props) {
-  // const [photoH, setPhotoH] = useState(0)
+  const [photoH, setPhotoH] = useState(0)
   const {
     uuid,
     message_content,
@@ -144,7 +144,7 @@ function SwipeItem(props) {
   function renderViewMore(onPress) {
     return (
       <Typography onPress={onPress} color={theme.darkGrey} fw='600'>
-        View more
+        more
       </Typography>
     )
   }
@@ -152,7 +152,7 @@ function SwipeItem(props) {
   function renderViewLess(onPress) {
     return (
       <Typography onPress={onPress} color={theme.darkGrey} fw='600'>
-        View less
+        less
       </Typography>
     )
   }
@@ -198,18 +198,29 @@ function SwipeItem(props) {
               </Typography>
             </View>
           )}
+          {/* <View
+            style={{
+              // width: w,
+              // height: photoH,
+              // height: 200,
+              justifyContent: 'center',
+              alignItems: 'center'
+              // height: w
+            }}
+          > */}
           <FastImage
             resizeMode='cover'
             source={{ uri: data || uri }}
-            // onLoad={evt => {
-            //   setPhotoH((evt.nativeEvent.height / evt.nativeEvent.width) * w)
-            // }}
+            onLoad={evt => {
+              setPhotoH((evt.nativeEvent.height / evt.nativeEvent.width) * w)
+            }}
             style={{
               ...styles.photo,
               width: w,
-              height: w
+              height: photoH
             }}
           />
+          {/* </View> */}
         </View>
       )}
 
@@ -293,9 +304,9 @@ const styles = StyleSheet.create({
     zIndex: 1
   },
   photo: {
-    alignSelf: 'center'
-    // width: '100%',
-    // height: '100%'
+    alignSelf: 'center',
+    width: '100%',
+    height: '100%'
   },
   locked: {
     height: '100%',

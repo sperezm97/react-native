@@ -70,12 +70,14 @@ export class ThemeStore {
   @observable mirage: string = '#141d26'
   @observable yellow: string = '#FFDF00'
   @observable silver: string = '#afb3b1'
+  @observable purple: string = '#6289FD'
 
   @observable badge: string = '#f50057'
   @observable accent: string = '#0a84ff'
   @observable active: string = '#49ca97'
   @observable inactive: string = '#febd59'
   @observable error: string = '#DB5554'
+  @observable transparent: string = 'rgba(0,0,0,0.5)'
 }
 
 export const themeStore = new ThemeStore()

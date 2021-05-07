@@ -38,8 +38,7 @@ export default function Photo({ visible, close, photo }) {
             style={{
               ...styles.photo,
               width: w,
-              height: w
-              // maxHeight: h - 100
+              height: photoH
             }}
           />
         </View>
@@ -68,9 +67,9 @@ const styles = StyleSheet.create({
     zIndex: 1
   },
   photo: {
-    alignSelf: 'center'
-    // width: '100%',
-    // height: '100%'
+    alignSelf: 'center',
+    width: '100%',
+    height: '100%'
   },
   locked: {
     height: '100%',

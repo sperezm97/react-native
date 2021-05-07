@@ -25,7 +25,7 @@ export default function Intro({ tribe }) {
   const [tribePhoto, setTribePhoto] = useState('')
   const navigation = useNavigation()
 
-  console.log('tribe intro', tribe)
+  // console.log('tribe intro', tribe)
 
   async function tookPic(img) {
     setUploading(true)
