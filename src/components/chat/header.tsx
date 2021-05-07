@@ -4,6 +4,7 @@ import { useObserver } from 'mobx-react-lite'
 import { Appbar } from 'react-native-paper'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons'
+import FeatherIcon from 'react-native-vector-icons/Feather'
 
 import { useStores, useTheme, hooks } from '../../store'
 import { useJoinedTribes } from '../../store/hooks/tribes'
@@ -13,7 +14,6 @@ import { useChatPicSrc } from '../utils/picSrc'
 import { constants } from '../../constants'
 import { randAscii } from '../../crypto/rand'
 import { RouteStatus } from './chat'
-import Icon from '../common/Icon'
 import Avatar from '../common/Avatar'
 
 const { useTribes } = hooks
@@ -46,7 +46,7 @@ export default function Header({
   const theme = useTheme()
   const navigation = useNavigation()
   const tribes = useTribes()
-  const joinedTribes = useJoinedTribes(tribes)
+  // const joinedTribes = useJoinedTribes(tribes)
 
   useEffect(() => {
     chats.getTribes()
@@ -60,7 +60,7 @@ export default function Header({
       contact = contactForConversation(chat, contacts.contacts)
     }
 
-    function handleChatInfoClick() {
+    function onChatInfoPress() {
       if (chat.type === conversation) {
         if (contact) navigation.navigate('Contact', { contact: { ...contact } })
       } else {
@@ -70,7 +70,7 @@ export default function Header({
       }
     }
 
-    function clickTitle() {
+    function onChatTitlePress() {
       if (chat.type === conversation) {
         if (contact) {
         }
@@ -80,24 +80,14 @@ export default function Header({
         // })
         // ui.setEditContactModal(contact)
       } else {
-        const tribe = joinedTribes.find(t => t.chat.uuid === chat.uuid)
+        const tribe = tribes.find(t => t.chat.uuid === chat.uuid)
         navigation.navigate('Tribe', { tribe: { ...tribe } })
       }
     }
 
-    async function launchVideo() {
-      const id = await randAscii()
-      ui.setRtcParams({ id })
-    }
-
-    const isMuted = (theChat && theChat.is_muted) || false
-    async function muteChat() {
-      chats.muteChat(chat.id, isMuted ? false : true)
-    }
-
     const name = (chat && chat.name) || (contact && contact.alias)
 
-    function onBackHandler() {
+    function onBackPress() {
       requestAnimationFrame(() => {
         // msg.seeChat(chat.id)
         details.getBalance()
@@ -120,15 +110,12 @@ export default function Header({
           borderBottomColor: theme.border
         }}
       >
-        <TouchableOpacity
-          onPress={onBackHandler}
-          style={{ marginLeft: 6, marginRight: 6 }}
-        >
-          <Icon name='ChevronLeft' size={28} color={theme.icon} />
+        <TouchableOpacity onPress={onBackPress} style={{ marginLeft: 6, marginRight: 6 }}>
+          <FeatherIcon name='chevron-left' size={28} color={theme.icon} />
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={clickTitle}
+          onPress={onChatTitlePress}
           style={{ ...styles.detailsWrap }}
           activeOpacity={0.6}
         >
@@ -154,26 +141,12 @@ export default function Header({
             )}
           </View>
         </TouchableOpacity>
-
-        {/* <Appbar.Action icon='video' onPress={launchVideo} color='grey' /> */}
-        {/* {theChat && (
-        )} */}
-
-        {/* <Appbar.Action icon={isMuted ? 'bell-off' : 'bell'} onPress={muteChat} color={theme.icon} /> */}
-
         <TouchableOpacity
           style={{ position: 'absolute', right: 16 }}
-          onPress={handleChatInfoClick}
+          onPress={onChatInfoPress}
         >
-          <Icon name='Info' size={24} color={theme.icon} />
+          <FeatherIcon name='info' size={24} color={theme.icon} />
         </TouchableOpacity>
-        {theChat && theChat.type === tribe && (appURL ? true : false) && (
-          <Appbar.Action
-            color={theme.icon}
-            icon={appMode ? 'android-messages' : 'open-in-app'}
-            onPress={setAppModeHandler}
-          />
-        )}
       </Appbar.Header>
     )
   })

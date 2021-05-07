@@ -99,6 +99,7 @@ export class ChatStore {
       }
       return c
     })
+
     this.chats = chats
   }
 

@@ -147,29 +147,29 @@ export default function Intro({ tribe }) {
                 <View style={{ ...styles.dot, backgroundColor: theme.text }}></View>
               </View>
 
-              {tribe.owner ? (
-                <TouchableOpacity
-                  style={{
-                    ...styles.row,
-                    flex: 1
-                  }}
-                  onPress={onTribeMembersPress}
-                >
-                  <Typography size={14} fw='600' numberOfLines={1}>
-                    {tribe.member_count}{' '}
-                  </Typography>
-                  <Typography size={14} numberOfLines={1} style={{ flexShrink: 1 }}>
-                    members
-                  </Typography>
-                </TouchableOpacity>
-              ) : (
-                <>
+              {/* {tribe.owner ? ( */}
+              <TouchableOpacity
+                style={{
+                  ...styles.row,
+                  flex: 1
+                }}
+                onPress={onTribeMembersPress}
+              >
+                <Typography size={14} fw='600' numberOfLines={1}>
+                  {tribe.member_count}{' '}
+                </Typography>
+                <Typography size={14} numberOfLines={1} style={{ flexShrink: 1 }}>
+                  members
+                </Typography>
+              </TouchableOpacity>
+              {/* ) : ( */}
+              {/* <>
                   <Typography size={14} fw='600'>
                     {tribe.member_count}{' '}
                   </Typography>
                   <Typography size={14}>members</Typography>
-                </>
-              )}
+                </> */}
+              {/* )} */}
             </View>
 
             <TribeActions tribe={tribe} />
@@ -193,7 +193,7 @@ export default function Intro({ tribe }) {
 }
 
 function TribeActions({ tribe }) {
-  const { chats, ui } = useStores()
+  const { chats, msg, ui } = useStores()
   const theme = useTheme()
   const navigation = useNavigation()
 
@@ -212,8 +212,9 @@ function TribeActions({ tribe }) {
     ui.setJoinTribeModal(true, tribeParams)
   }
 
-  //   async function onExitTribePress() {}
   async function onChatPress() {
+    msg.seeChat(tribe.chat.id)
+    msg.getMessages()
     navigation.navigate('Chat', { ...tribe.chat })
   }
 

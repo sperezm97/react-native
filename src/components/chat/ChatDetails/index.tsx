@@ -1,27 +1,27 @@
 import React, { useState } from 'react'
 import { useObserver } from 'mobx-react-lite'
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, StyleSheet, TouchableOpacity } from 'react-native'
 import { IconButton } from 'react-native-paper'
 import ImagePicker from 'react-native-image-picker'
 import Slider from '@react-native-community/slider'
 import { useNavigation } from '@react-navigation/native'
 import moment from 'moment'
+import FeatherIcon from 'react-native-vector-icons/Feather'
 
 import { useStores, useTheme } from '../../../store'
 import { constants } from '../../../constants'
 import { useChatPicSrc, createChatPic } from '../../utils/picSrc'
 import EE, { LEFT_GROUP } from '../../utils/ee'
 import BackHeader from '../../common/BackHeader'
-import ExitGroup from '../../common/Dialogs/ExitGroup'
-import EditGroup from '../../common/Dialogs/EditGroup'
+import GroupSettings from '../../common/Dialogs/GroupSettings'
 import Avatar from '../../common/Avatar'
+import Typography from '../../common/Typography'
 
 export default function ChatDetails({ route }) {
   const { ui, chats, user } = useStores()
   const theme = useTheme()
   const [loading, setLoading] = useState(false)
-  const [leaveDialog, setLeaveDialog] = useState(false)
-  const [editDialog, setEditDialog] = useState(false)
+  const [groupSettingsDialog, setGroupSettingsDialog] = useState(false)
   const [loadingTribe, setLoadingTribe] = useState(false)
   const navigation = useNavigation()
 
@@ -39,15 +39,7 @@ export default function ChatDetails({ route }) {
   if (!(initppm || initppm === 0)) initppm = group.pricePerMinute || 5
   const [ppm, setPpm] = useState(initppm)
 
-  async function exitGroup() {
-    setLoading(true)
-    await chats.exitGroup(group.id)
-    setLoading(false)
-    EE.emit(LEFT_GROUP)
-  }
-
   const uri = useChatPicSrc(group)
-
   const hasGroup = group ? true : false
   const hasImg = uri ? true : false
 
@@ -70,17 +62,6 @@ export default function ChatDetails({ route }) {
 
   const isTribe = group && group.type === constants.chat_types.tribe
   const isTribeAdmin = isTribe && group.owner_pubkey === user.publicKey
-
-  const dotsVerticalHandler = () => {
-    if (isTribeAdmin) setEditDialog(true)
-    else setLeaveDialog(true)
-  }
-
-  const setLeaveDialogToFalseHandler = () => setLeaveDialog(false)
-  const onExitGroupHandler = () => {
-    if (!loading) exitGroup()
-  }
-  const setEditDialogToFalseHandler = () => setEditDialog(false)
 
   function fuzzyIndexOf(arr, n) {
     let smallestDiff = Infinity
@@ -110,30 +91,35 @@ export default function ChatDetails({ route }) {
   const showValueSlider =
     isTribe && !isTribeAdmin && group && group.feed_url ? true : false
 
-  function handleSharePress() {
-    setEditDialog(false)
+  async function exitGroup() {
+    setLoading(true)
+    await chats.exitGroup(group.id)
+    setLoading(false)
+    EE.emit(LEFT_GROUP)
+  }
+
+  function onExitGroup() {
+    setGroupSettingsDialog(false)
+    if (!loading) exitGroup()
+  }
+
+  function onShareGroup() {
+    setGroupSettingsDialog(false)
 
     setTimeout(() => {
       ui.setShareTribeUUID(group.uuid)
-    }, 400)
-  }
-
-  async function handleEditGroupPress() {
-    setLoadingTribe(true)
-    const params = await chats.getTribeDetails(group.host, group.uuid)
-
-    setEditDialog(false)
-    setLoadingTribe(false)
-
-    setTimeout(() => {
-      if (params) ui.setEditTribeParams({ id: group.id, ...params })
-    }, 400)
+    }, 500)
   }
 
   return useObserver(() => {
     return (
       <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
-        <BackHeader title='Details' navigate={() => navigation.goBack()} border={true} />
+        <BackHeader
+          title='Details'
+          navigate={() => navigation.goBack()}
+          border={true}
+          action={<DetailsAction chat={group} />}
+        />
 
         <View style={styles.content}>
           {hasGroup && (
@@ -145,15 +131,18 @@ export default function ChatDetails({ route }) {
                   )}
                 </TouchableOpacity>
                 <View style={styles.groupInfoText}>
-                  <Text style={{ fontSize: 16, marginBottom: 6, color: theme.text }}>
+                  <Typography size={16} style={{ marginBottom: 4 }}>
                     {group.name}
-                  </Text>
-                  <Text
-                    style={{ fontSize: 12, marginBottom: 6, color: theme.title }}
-                  >{`Created on ${moment(group.created_at).format('ll')}`}</Text>
-                  <Text
-                    style={{ fontSize: 11, color: theme.subtitle }}
-                  >{`Price per message: ${group.price_per_message}, Amount to stake: ${group.escrow_amount}`}</Text>
+                  </Typography>
+                  <Typography
+                    color={theme.title}
+                    size={12}
+                    style={{ marginBottom: 4 }}
+                  >{`Created on ${moment(group.created_at).format('ll')}`}</Typography>
+                  <Typography
+                    size={12}
+                    color={theme.subtitle}
+                  >{`Price per message: ${group.price_per_message}, Amount to stake: ${group.escrow_amount}`}</Typography>
                 </View>
               </View>
               <IconButton
@@ -161,7 +150,7 @@ export default function ChatDetails({ route }) {
                 size={25}
                 color={theme.icon}
                 style={{ marginLeft: 0, marginRight: 0, position: 'absolute', right: 8 }}
-                onPress={dotsVerticalHandler}
+                onPress={() => setGroupSettingsDialog(true)}
               />
             </View>
           )}
@@ -189,18 +178,45 @@ export default function ChatDetails({ route }) {
             </View>
           )} */}
         </View>
-        <ExitGroup
-          visible={leaveDialog}
-          onCancel={setLeaveDialogToFalseHandler}
-          exitGroup={onExitGroupHandler}
-        />
-        <EditGroup
-          visible={editDialog}
-          onCancel={setEditDialogToFalseHandler}
-          editGroup={handleEditGroupPress}
-          shareGroup={handleSharePress}
+        <GroupSettings
+          visible={groupSettingsDialog}
+          owner={isTribeAdmin}
+          onCancel={() => setGroupSettingsDialog(false)}
+          shareGroup={onShareGroup}
+          exitGroup={onExitGroup}
         />
       </View>
+    )
+  })
+}
+
+function DetailsAction({ chat }) {
+  const { chats } = useStores()
+  const theme = useTheme()
+
+  return useObserver(() => {
+    const theChat = chats.chats.find(c => c.id === chat.id)
+    const isMuted = (theChat && theChat.is_muted) || false
+
+    async function muteChat() {
+      chats.muteChat(chat.id, isMuted ? false : true)
+    }
+
+    return (
+      <>
+        {chat && (
+          <IconButton
+            icon={() => (
+              <FeatherIcon
+                name={isMuted ? 'bell-off' : 'bell'}
+                size={22}
+                color={theme.icon}
+              />
+            )}
+            onPress={muteChat}
+          />
+        )}
+      </>
     )
   })
 }
@@ -214,7 +230,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-start',
     marginBottom: 40,
-    paddingTop: 30
+    paddingTop: 40
   },
   groupInfo: {
     display: 'flex',

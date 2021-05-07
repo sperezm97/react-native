@@ -62,9 +62,9 @@ export default function Tribe({ route }) {
           navigate={() => navigation.goBack()}
           // border
           action={
-            tribe.owner && (
-              <TribeHeader tribe={tribe} openDialog={() => setTribeDialog(true)} />
-            )
+            // tribe.owner && (
+            <TribeHeader tribe={tribe} openDialog={() => setTribeDialog(true)} />
+            // )
           }
         />
         <ScrollView>
@@ -80,14 +80,15 @@ export default function Tribe({ route }) {
           </View>
         </ScrollView>
 
-        {tribe.owner && (
-          <TribeSettings
-            visible={tribeDialog}
-            onCancel={() => setTribeDialog(false)}
-            onEditPress={onEditTribePress}
-            onMembersPress={onTribeMembersPress}
-          />
-        )}
+        {/* {tribe.owner && ( */}
+        <TribeSettings
+          visible={tribeDialog}
+          owner={tribe.owner}
+          onCancel={() => setTribeDialog(false)}
+          onEditPress={onEditTribePress}
+          onMembersPress={onTribeMembersPress}
+        />
+        {/* )} */}
       </SafeAreaView>
     )
   })
@@ -113,7 +114,7 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    paddingTop: 25
+    paddingTop: 10
     // paddingRight: 14,
     // paddingLeft: 14
   }

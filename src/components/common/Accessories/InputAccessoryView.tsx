@@ -1,5 +1,10 @@
 import React from 'react'
-import { StyleSheet, View, Keyboard, InputAccessoryView as ReactInputAccessoryView } from 'react-native'
+import {
+  StyleSheet,
+  View,
+  Keyboard,
+  InputAccessoryView as ReactInputAccessoryView
+} from 'react-native'
 
 import { useTheme } from '../../../store'
 import Button from '../Button'
@@ -10,14 +15,15 @@ export default function InputAccessoryView(props) {
 
   function _cancel() {
     Keyboard.dismiss()
-    if (cancel === 'function') {
+    if (cancel) {
       return cancel()
     }
   }
 
   function _done() {
     Keyboard.dismiss()
-    if (done === 'function') {
+    console.log('is function', done === 'function')
+    if (done) {
       return done()
     }
   }
@@ -25,10 +31,23 @@ export default function InputAccessoryView(props) {
   return (
     <ReactInputAccessoryView nativeID={nativeID} backgroundColor={theme.bg}>
       <View style={styles.btnWrap}>
-        <Button onPress={_cancel} size='small' style={{ ...styles.button }} w='70%' round={0} color={theme.bg}>
+        <Button
+          onPress={_cancel}
+          size='small'
+          style={{ ...styles.button }}
+          w='70%'
+          round={0}
+          color={theme.bg}
+        >
           {cancelText}
         </Button>
-        <Button onPress={_done} size='small' style={{ ...styles.button }} w='30%' round={0}>
+        <Button
+          onPress={_done}
+          size='small'
+          style={{ ...styles.button }}
+          w='30%'
+          round={0}
+        >
           {doneText}
         </Button>
       </View>
