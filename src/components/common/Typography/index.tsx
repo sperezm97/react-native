@@ -16,6 +16,7 @@ export default function Typography(props) {
     ls = 0.5,
     lh,
     numberOfLines,
+    allowFontScaling,
     onPress
   } = props
 
@@ -30,6 +31,7 @@ export default function Typography(props) {
 
   return (
     <Text
+      allowFontScaling={allowFontScaling}
       onPress={onPress}
       style={{
         ...style,

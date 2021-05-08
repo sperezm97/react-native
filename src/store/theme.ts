@@ -78,6 +78,7 @@ export class ThemeStore {
   @observable inactive: string = '#febd59'
   @observable error: string = '#DB5554'
   @observable transparent: string = 'rgba(0,0,0,0.5)'
+  @observable danger: string = '#fa1616'
 }
 
 export const themeStore = new ThemeStore()

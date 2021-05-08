@@ -1,4 +1,5 @@
 import React from 'react'
+import { useTheme } from '../../../store'
 
 import ActionSheet from '../ActionSheet'
 
@@ -9,11 +10,13 @@ export default function GroupSettings({
   shareGroup,
   exitGroup
 }) {
+  const theme = useTheme()
   const ownerItems = [
     {
       id: 1,
       label: 'Delete Community',
-      onPress: () => exitGroup()
+      onPress: () => exitGroup(),
+      actionTextColor: theme.danger
     }
   ]
 
@@ -21,7 +24,8 @@ export default function GroupSettings({
     {
       id: 1,
       label: 'Exit Community',
-      onPress: () => exitGroup()
+      onPress: () => exitGroup(),
+      actionTextColor: theme.danger
     }
   ]
 

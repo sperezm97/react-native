@@ -1,6 +1,8 @@
 import React from 'react'
-import { StyleSheet, Text, TouchableHighlight, View } from 'react-native'
+import { StyleSheet, TouchableHighlight, View } from 'react-native'
 import Modal from 'react-native-modal'
+
+import Typography from '../Typography'
 
 const PRIMARY_COLOR = 'rgb(0,98,255)'
 const WHITE = '#ffffff'
@@ -55,20 +57,18 @@ export default function ActionSheet(props) {
               key={index}
               onPress={actionItem.onPress}
             >
-              <Text
+              <Typography
                 allowFontScaling={false}
-                style={[
-                  styles.actionSheetText,
-                  props?.actionTextColor && {
-                    color: props?.actionTextColor
-                  },
-                  index === actionSheetItems.length - 1 && {
-                    color: '#fa1616'
-                  }
-                ]}
+                size={18}
+                lh={22}
+                color={
+                  actionItem?.actionTextColor
+                    ? actionItem?.actionTextColor
+                    : PRIMARY_COLOR
+                }
               >
                 {actionItem.label}
-              </Text>
+              </Typography>
             </TouchableHighlight>
           )
         })}
@@ -86,10 +86,6 @@ const styles = StyleSheet.create({
     marginLeft: 8,
     marginRight: 8,
     marginBottom: 20
-  },
-  actionSheetText: {
-    fontSize: 18,
-    color: PRIMARY_COLOR
   },
   actionSheetView: {
     backgroundColor: WHITE,
