@@ -43,6 +43,9 @@ export default function Tribe({ route }) {
     navigation.navigate('TribeMembers', { tribe })
   }
 
+  // function onTribeDeletePress(){
+  // }
+
   const renderScene = ({ route }) => {
     switch (route.key) {
       case 'first':
@@ -87,6 +90,7 @@ export default function Tribe({ route }) {
           onCancel={() => setTribeDialog(false)}
           onEditPress={onEditTribePress}
           onMembersPress={onTribeMembersPress}
+          // onDeletePress={onTribeDeletePress}
         />
         {/* )} */}
       </SafeAreaView>

@@ -3,6 +3,7 @@ import { IconButton } from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native'
 import AntDesignIcon from 'react-native-vector-icons/AntDesign'
 import FeatherIcon from 'react-native-vector-icons/Feather'
+import Ionicon from 'react-native-vector-icons/Ionicons'
 
 import { useStores, useTheme } from '../../../store'
 import Menu from '../ActionSheet/Menu'

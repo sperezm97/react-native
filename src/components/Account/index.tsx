@@ -34,7 +34,6 @@ export default function Account() {
     try {
       await upload(img.uri)
     } catch (e) {
-      console.log(e)
       setUploading(false)
     }
   }
@@ -162,6 +161,9 @@ export default function Account() {
                   onPress={() => setImageDialog(true)}
                   uploading={uploading}
                   uploadPercent={uploadPercent}
+                  display={false}
+                  size={100}
+                  round={50}
                 >
                   <Avatar size={100} photo={imgURI} round={50} />
                 </AvatarEdit>

@@ -9,12 +9,18 @@ export default function GroupSettings({
   shareGroup,
   exitGroup
 }) {
-  const ownerItems = []
+  const ownerItems = [
+    {
+      id: 1,
+      label: 'Delete Community',
+      onPress: () => exitGroup()
+    }
+  ]
 
   const userItems = [
     {
       id: 1,
-      label: 'Exit Group',
+      label: 'Exit Community',
       onPress: () => exitGroup()
     }
   ]
@@ -22,7 +28,7 @@ export default function GroupSettings({
   const commonItems = [
     {
       id: 1,
-      label: 'Share Group',
+      label: 'Share Community',
       onPress: () => shareGroup()
     }
   ]

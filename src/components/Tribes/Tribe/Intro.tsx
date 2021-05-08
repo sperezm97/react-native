@@ -102,6 +102,9 @@ export default function Intro({ tribe }) {
               uploading={uploading}
               uploadPercent={uploadPercent}
               display={!tribe.owner}
+              size={80}
+              round={50}
+              top='40%'
             >
               <Avatar photo={tribe.img} size={80} round={50} />
             </AvatarEdit>

@@ -65,7 +65,7 @@ export default function Header({
         if (contact) navigation.navigate('Contact', { contact: { ...contact } })
       } else {
         navigation.navigate('ChatDetails', {
-          group: { ...chat, ...tribeParams, pricePerMinute }
+          group: { ...theChat, ...tribeParams, pricePerMinute }
         })
       }
     }
@@ -80,7 +80,7 @@ export default function Header({
         // })
         // ui.setEditContactModal(contact)
       } else {
-        const tribe = tribes.find(t => t.chat.uuid === chat.uuid)
+        const tribe = tribes.find(t => t.chat?.uuid === chat?.uuid)
         navigation.navigate('Tribe', { tribe: { ...tribe } })
       }
     }

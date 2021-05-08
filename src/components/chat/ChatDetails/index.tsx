@@ -1,12 +1,13 @@
 import React, { useState } from 'react'
 import { useObserver } from 'mobx-react-lite'
-import { View, StyleSheet, TouchableOpacity } from 'react-native'
-import { IconButton } from 'react-native-paper'
-import ImagePicker from 'react-native-image-picker'
+import { StyleSheet, View, TouchableOpacity } from 'react-native'
+import { IconButton, TextInput } from 'react-native-paper'
 import Slider from '@react-native-community/slider'
 import { useNavigation } from '@react-navigation/native'
+import RNFetchBlob from 'rn-fetch-blob'
 import moment from 'moment'
 import FeatherIcon from 'react-native-vector-icons/Feather'
+import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 import { useStores, useTheme } from '../../../store'
 import { constants } from '../../../constants'
@@ -14,25 +15,90 @@ import { useChatPicSrc, createChatPic } from '../../utils/picSrc'
 import EE, { LEFT_GROUP } from '../../utils/ee'
 import BackHeader from '../../common/BackHeader'
 import GroupSettings from '../../common/Dialogs/GroupSettings'
+import ImageDialog from '../../common/Dialogs/ImageDialog'
 import Avatar from '../../common/Avatar'
+import AvatarEdit from '../../common/Avatar/AvatarEdit'
 import Typography from '../../common/Typography'
+import InputAccessoryView from '../../common/Accessories/InputAccessoryView'
 
 export default function ChatDetails({ route }) {
-  const { ui, chats, user } = useStores()
+  const { ui, chats, user, meme } = useStores()
   const theme = useTheme()
   const [loading, setLoading] = useState(false)
   const [groupSettingsDialog, setGroupSettingsDialog] = useState(false)
+  const [imageDialog, setImageDialog] = useState(false)
   const [loadingTribe, setLoadingTribe] = useState(false)
+  const [photo_url, setPhotoUrl] = useState('')
+  const [uploading, setUploading] = useState(false)
+  const [uploadPercent, setUploadedPercent] = useState(0)
   const navigation = useNavigation()
+  const nativeID = 'alias'
 
   const group = route.params.group
 
   const [alias, setAlias] = useState((group && group['my_alias']) || '')
-  function maybeUpdateAlias() {
+  function updateAlias() {
     if (!(group && group.id)) return
     if (alias !== group['my_alias']) {
-      chats.updateMyInfoInChat(group.id, alias, '')
+      chats.updateMyInfoInChat(group.id, alias, group.my_photo_url)
     }
+  }
+
+  async function tookPic(img) {
+    setUploading(true)
+    try {
+      await upload(img.uri)
+    } catch (e) {
+      setUploading(false)
+    }
+  }
+
+  async function upload(uri) {
+    const type = 'image/jpg'
+    const name = 'Image.jpg'
+    const server = meme.getDefaultServer()
+    if (!server) return
+
+    uri = uri.replace('file://', '')
+
+    RNFetchBlob.fetch(
+      'POST',
+      `https://${server.host}/public`,
+      {
+        Authorization: `Bearer ${server.token}`,
+        'Content-Type': 'multipart/form-data'
+      },
+      [
+        {
+          name: 'file',
+          filename: name,
+          type: type,
+          data: RNFetchBlob.wrap(uri)
+        },
+        { name: 'name', data: name }
+      ]
+    )
+      .uploadProgress({ interval: 250 }, (written, total) => {
+        setUploadedPercent(Math.round((written / total) * 100))
+      })
+      .then(async resp => {
+        let json = resp.json()
+
+        if (json.muid) {
+          setPhotoUrl(`https://${server.host}/public/${json.muid}`)
+        }
+
+        chats.updateMyInfoInChat(
+          group.id,
+          alias,
+          `https://${server.host}/public/${json.muid}`
+        )
+        setUploading(false)
+      })
+      .catch(err => {
+        console.log(err)
+        setUploading(false)
+      })
   }
 
   let initppm = chats.pricesPerMinute[group.id]
@@ -42,23 +108,6 @@ export default function ChatDetails({ route }) {
   const uri = useChatPicSrc(group)
   const hasGroup = group ? true : false
   const hasImg = uri ? true : false
-
-  function changePic() {
-    return
-    ImagePicker.launchImageLibrary(
-      {
-        mediaType: 'photo'
-      },
-      async img => {
-        if (!img.didCancel) {
-          if (group && group.id && img && img.uri) {
-            await createChatPic(group.id, img.uri)
-            chats.updateChatPhotoURI(group.id, img.uri)
-          }
-        }
-      }
-    )
-  }
 
   const isTribe = group && group.type === constants.chat_types.tribe
   const isTribeAdmin = isTribe && group.owner_pubkey === user.publicKey
@@ -112,6 +161,10 @@ export default function ChatDetails({ route }) {
   }
 
   return useObserver(() => {
+    let myPhoto = group.my_photo_url
+
+    if (photo_url) myPhoto = photo_url
+
     return (
       <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
         <BackHeader
@@ -125,11 +178,9 @@ export default function ChatDetails({ route }) {
           {hasGroup && (
             <View style={styles.groupInfo}>
               <View style={styles.groupInfoLeft}>
-                <TouchableOpacity onPress={changePic}>
-                  {group && (
-                    <Avatar size={50} aliasSize={18} big alias={group.name} photo={uri} />
-                  )}
-                </TouchableOpacity>
+                {group && (
+                  <Avatar size={50} aliasSize={18} big alias={group.name} photo={uri} />
+                )}
                 <View style={styles.groupInfoText}>
                   <Typography size={16} style={{ marginBottom: 4 }}>
                     {group.name}
@@ -145,15 +196,61 @@ export default function ChatDetails({ route }) {
                   >{`Price per message: ${group.price_per_message}, Amount to stake: ${group.escrow_amount}`}</Typography>
                 </View>
               </View>
-              <IconButton
-                icon='dots-vertical'
-                size={25}
-                color={theme.icon}
-                style={{ marginLeft: 0, marginRight: 0, position: 'absolute', right: 8 }}
+
+              <TouchableOpacity
+                activeOpacity={0.6}
                 onPress={() => setGroupSettingsDialog(true)}
-              />
+                style={{
+                  marginLeft: 0,
+                  marginRight: 0,
+                  position: 'absolute',
+                  right: 8
+                }}
+              >
+                <MaterialCommunityIcon
+                  name='dots-vertical'
+                  size={25}
+                  color={theme.icon}
+                />
+              </TouchableOpacity>
             </View>
           )}
+
+          <View style={{ ...styles.infoWrap }}>
+            <Typography size={16}>Alias</Typography>
+            <View style={{ position: 'relative' }}>
+              <TextInput
+                inputAccessoryViewID={nativeID}
+                placeholder='Alias'
+                value={alias}
+                onChangeText={setAlias}
+                style={{ ...styles.input, backgroundColor: theme.bg }}
+                underlineColor={theme.border}
+              />
+              {group && (
+                <View style={{ ...styles.infoImg }}>
+                  <AvatarEdit
+                    onPress={() => setImageDialog(true)}
+                    uploading={uploading}
+                    uploadPercent={uploadPercent}
+                    display={true}
+                    size={45}
+                    top='27%'
+                  >
+                    <Avatar
+                      size={45}
+                      aliasSize={18}
+                      big
+                      alias={group.my_alias}
+                      photo={myPhoto}
+                    />
+                  </AvatarEdit>
+                </View>
+              )}
+            </View>
+
+            <InputAccessoryView nativeID={nativeID} done={updateAlias} />
+          </View>
 
           {/* {showValueSlider && (
             <View style={styles.slideWrap}>
@@ -184,6 +281,13 @@ export default function ChatDetails({ route }) {
           onCancel={() => setGroupSettingsDialog(false)}
           shareGroup={onShareGroup}
           exitGroup={onExitGroup}
+        />
+        <ImageDialog
+          visible={imageDialog}
+          onCancel={() => setImageDialog(false)}
+          onPick={tookPic}
+          onSnap={tookPic}
+          setImageDialog={setImageDialog}
         />
       </View>
     )
@@ -240,7 +344,7 @@ const styles = StyleSheet.create({
     width: '100%'
   },
   groupInfoLeft: {
-    marginLeft: 16,
+    paddingLeft: 16,
     display: 'flex',
     flexDirection: 'row'
   },
@@ -250,6 +354,23 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginLeft: 14,
     maxWidth: '77%'
+  },
+  infoWrap: {
+    display: 'flex',
+    width: '100%',
+    paddingTop: 30,
+    paddingLeft: 18,
+    paddingRight: 18
+  },
+  input: {
+    height: 50,
+    paddingRight: 60,
+    textAlign: 'auto'
+  },
+  infoImg: {
+    position: 'absolute',
+    right: 0,
+    top: 0
   },
   scroller: {
     width: '100%',
@@ -279,16 +400,5 @@ const styles = StyleSheet.create({
   slideValue: {
     fontSize: 15,
     fontWeight: 'bold'
-  },
-  inputWrap: {
-    display: 'flex',
-    marginTop: 15
-  },
-  inputLabel: {
-    fontSize: 11
-  },
-  input: {
-    maxHeight: 55,
-    minWidth: 240
   }
 })

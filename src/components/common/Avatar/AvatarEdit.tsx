@@ -1,5 +1,6 @@
 import React from 'react'
 import { StyleSheet, View, TouchableOpacity } from 'react-native'
+import { Portal, Dialog, ActivityIndicator } from 'react-native-paper'
 
 import { useTheme } from '../../../store'
 import Typography from '../Typography'
@@ -10,26 +11,56 @@ export default function AvatarEdit({
   children,
   onPress,
   uploading,
-  uploadPercent
+  uploadPercent,
+  top = '43%',
+  size,
+  round = 25
 }) {
   const theme = useTheme()
 
   return (
     <TouchableOpacity onPress={onPress} style={styles.imgWrap} activeOpacity={0.6}>
       {children}
-      {!display && (
-        <>
-          {uploading && (
-            <Typography
-              style={{ ...styles.uploadPercent }}
-              color={theme.primary}
-            >{`${uploadPercent}%`}</Typography>
-          )}
+
+      <>
+        {uploading && (
+          <Typography
+            style={{ ...styles.uploadPercent, top: top ? top : '43%' }}
+            color={theme.white}
+          >{`${uploadPercent}%`}</Typography>
+        )}
+        {uploading && (
+          <View
+            style={{
+              ...styles.backDrop,
+              backgroundColor: theme.transparent,
+              width: size,
+              height: size,
+              borderRadius: round
+            }}
+          ></View>
+        )}
+        {!display && (
           <View style={styles.imgIcon}>
             <Icon name='PlusCircle' fill={theme.primary} color={theme.white} />
           </View>
-        </>
-      )}
+        )}
+        <Portal>
+          {/* <Dialog visible={uploading} style={{ backgroundColor: 'transparent' }}>
+            <View
+              style={{ minHeight: 90, alignItems: 'center', justifyContent: 'center' }}
+            >
+              <ActivityIndicator color={theme.white} />
+              {uploading && (
+                <Typography
+                  size={20}
+                  color={theme.white}
+                >{`${uploadPercent}%`}</Typography>
+              )}
+            </View>
+          </Dialog> */}
+        </Portal>
+      </>
     </TouchableOpacity>
   )
 }
@@ -38,13 +69,19 @@ const styles = StyleSheet.create({
   imgWrap: {
     position: 'relative'
   },
+  backDrop: {
+    position: 'absolute',
+    height: '100%',
+    width: '100%',
+    fontWeight: '500'
+  },
   uploadPercent: {
     position: 'absolute',
-    top: '45%',
     height: '100%',
     width: '100%',
     textAlign: 'center',
-    fontWeight: '500'
+    fontWeight: '500',
+    zIndex: 1
   },
   imgIcon: {
     position: 'absolute',

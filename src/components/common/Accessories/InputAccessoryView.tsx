@@ -22,7 +22,6 @@ export default function InputAccessoryView(props) {
 
   function _done() {
     Keyboard.dismiss()
-    console.log('is function', done === 'function')
     if (done) {
       return done()
     }
