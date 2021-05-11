@@ -200,15 +200,6 @@ function TribeActions({ tribe }) {
   const theme = useTheme()
   const navigation = useNavigation()
 
-  // useEffect(() => {
-  //   fetchTribes()
-  // }, [ui.joinTribeModal])
-
-  function fetchTribes() {
-    console.log('called')
-    // chats.getTribes()
-  }
-
   async function onJoinPress() {
     const host = chats.getDefaultTribeServer().host
     const tribeParams = await chats.getTribeDetails(host, tribe.uuid)
@@ -222,10 +213,6 @@ function TribeActions({ tribe }) {
   }
 
   return useObserver(() => {
-    if (ui.joinTribeDone) {
-      fetchTribes()
-    }
-
     return (
       <>
         {!tribe.owner ? (

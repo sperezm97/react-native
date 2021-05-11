@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, memo } from 'react'
 import { StyleSheet, View, ScrollView, Modal, Animated, Dimensions } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
 import RNFetchBlob from 'rn-fetch-blob'
 
 import { useStores, useTheme } from '../../../../store'
-import { SCREEN_WIDTH } from '../../../../constants'
+import { SCREEN_HEIGHT, SCREEN_WIDTH } from '../../../../constants'
 import ModalHeader from '../ModalHeader'
 import Form from '../../../form'
 import { tribe } from '../../../form/schemas'
-import AddMembers from '../../../Tribes/Members/AddMembers'
-import Typography from '../../Typography'
 import Avatar from '../../Avatar'
 import Button from '../../Button'
 import ImageDialog from '../../Dialogs/ImageDialog'
 import AvatarEdit from '../../Avatar/AvatarEdit'
+// import AddMembers from '../../../Tribes/Members/AddMembers'
+import TribeTags from '../../../Tribes/Tribe/TribeTags'
 
 export default function AddTribe() {
   const { ui, chats } = useStores()
@@ -33,34 +33,39 @@ export default function AddTribe() {
   })
 
   async function finishForm(v) {
-    // setLoading(true)
+    setLoading(true)
     setNext(2)
     setForm(v)
-    // setLoading(false)
+    setLoading(false)
   }
 
   function finishPhoto(v) {
     setPhoto(v)
-    console.log('vv:::', v)
+    setNext(3)
   }
 
   async function finish(values) {
-    const contact_ids = values
+    const tags = values
     setLoading(true)
 
     const newTribe = {
       ...form,
-      contact_ids
+      tags,
+      img: photo
     }
 
-    await chats.createTribe(newTribe)
     setLoading(false)
     close()
+    await chats.createTribe(newTribe)
+
+    chats.getTribes()
   }
 
   function close() {
     ui.setNewTribeModal(false)
-    setNext(1)
+    setTimeout(() => {
+      setNext(1)
+    }, 300)
   }
 
   function getTitle() {
@@ -68,6 +73,8 @@ export default function AddTribe() {
       return 'Add Community'
     } else if (next === 2) {
       return 'Add Photo'
+    } else if (next === 3) {
+      return 'Add Community Values'
     }
   }
 
@@ -104,7 +111,7 @@ export default function AddTribe() {
               }}
             />
           </ScrollView>
-        ) : (
+        ) : next === 2 ? (
           <Animated.View
             style={{
               transform: [
@@ -115,7 +122,27 @@ export default function AddTribe() {
             }}
           >
             <AddPhoto finish={finishPhoto} />
+
             {/* <AddMembers initialMemberIds={[]} loading={loading} finish={finish} /> */}
+          </Animated.View>
+        ) : (
+          <Animated.View
+            style={{
+              transform: [
+                {
+                  translateX: appearAnim
+                }
+              ]
+            }}
+          >
+            <View
+              style={{
+                marginBottom: 60,
+                paddingHorizontal: 45
+              }}
+            >
+              <TribeTags tags={[]} finish={finish} saveAction={false} saveText='Finish' />
+            </View>
           </Animated.View>
         )}
       </View>
@@ -123,9 +150,10 @@ export default function AddTribe() {
   ))
 }
 
-function AddPhoto({ finish }) {
+const AddPhoto = ({ finish }) => {
   const [imageDialog, setImageDialog] = useState(false)
   const [uploading, setUploading] = useState(false)
+  const [showNext, setShowNext] = useState(false)
   const [uploadPercent, setUploadedPercent] = useState(0)
   const [photo, setPhoto] = useState('')
   const { chats, meme } = useStores()
@@ -172,7 +200,7 @@ function AddPhoto({ finish }) {
 
         if (json.muid) {
           setPhoto(`https://${server.host}/public/${json.muid}`)
-          finish(`https://${server.host}/public/${json.muid}`)
+          setShowNext(true)
           setUploading(false)
         }
       })
@@ -182,15 +210,16 @@ function AddPhoto({ finish }) {
       })
   }
 
-  return useObserver(() => {
-    return (
-      <View
-        style={{
-          flex: 1,
-          justifyContent: 'center',
-          marginBottom: 60
-        }}
-      >
+  return (
+    <View
+      style={{
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginBottom: 60
+      }}
+    >
+      <View>
         <AvatarEdit
           uploading={uploading}
           uploadPercent={uploadPercent}
@@ -205,11 +234,11 @@ function AddPhoto({ finish }) {
         </AvatarEdit>
 
         <Button
-          onPress={() => setImageDialog(true)}
+          onPress={() => (showNext ? finish(photo) : setImageDialog(true))}
           style={{ marginTop: 20 }}
           size='large'
         >
-          Select Photo
+          {showNext ? 'Next' : 'Select Photo'}
         </Button>
         <ImageDialog
           visible={imageDialog}
@@ -219,26 +248,21 @@ function AddPhoto({ finish }) {
           setImageDialog={setImageDialog}
         />
       </View>
-    )
-  })
+    </View>
+  )
 }
 
 const styles = StyleSheet.create({
   wrap: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  content: {
-    flex: 1
+    justifyContent: 'center'
   },
   scroller: {
     width: '100%',
-    flex: 1,
-    display: 'flex'
+    display: 'flex',
+    flex: 1
   },
   container: {
     width: '100%'
-    // paddingBottom: 20
   }
 })

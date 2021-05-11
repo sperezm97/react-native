@@ -15,6 +15,7 @@ import { SCREEN_WIDTH, SCREEN_HEIGHT, STATUS_BAR_HEIGHT } from '../../../../cons
 import { parseLDAT } from '../../../utils/ldat'
 import { useCachedEncryptedFile } from '../../../chat/msg/hooks'
 import Button from '../../../common/Button'
+import Boost from '../../../common/Button/Boost'
 import Typography from '../../../common/Typography'
 import BoostDetails from './BoostDetails'
 
@@ -65,6 +66,7 @@ function SwipeItem(props) {
     boosts_total_sats
   } = props
   const [buying, setBuying] = useState(false)
+  const [tribe, setTribe] = useState(null)
   const { meme, ui, chats, msg, user } = useStores()
   const theme = useTheme()
 
@@ -73,6 +75,15 @@ function SwipeItem(props) {
     props,
     ldat
   )
+
+  useEffect(() => {
+    fetchTribeDetails()
+  }, [])
+
+  async function fetchTribeDetails() {
+    const tribe = await chats.getTribeDetails(chat.host, chat.uuid)
+    setTribe(tribe)
+  }
 
   useEffect(() => {
     trigger()
@@ -122,20 +133,22 @@ function SwipeItem(props) {
   }
 
   async function onBoostPress() {
-    const tribe = await chats.getTribeDetails(chat.host, chat.uuid)
-    const pricePerMessage = tribe.price_per_message + tribe.escrow_amount
+    if (tribe) {
+      // const tribe = await chats.getTribeDetails(chat.host, chat.uuid)
+      const pricePerMessage = tribe.price_per_message + tribe.escrow_amount
 
-    if (!uuid) return
-    const amount = (user.tipAmount || 100) + pricePerMessage
-    const r = msg.sendMessage({
-      boost: true,
-      contact_id: null,
-      text: '',
-      amount,
-      chat_id: chat.id || null,
-      reply_uuid: uuid,
-      message_price: pricePerMessage
-    })
+      if (!uuid) return
+      const amount = (user.tipAmount || 100) + pricePerMessage
+      const r = msg.sendMessage({
+        boost: true,
+        contact_id: null,
+        text: '',
+        amount,
+        chat_id: chat.id || null,
+        reply_uuid: uuid,
+        message_price: pricePerMessage
+      })
+    }
   }
 
   const h = SCREEN_HEIGHT - STATUS_BAR_HEIGHT - 60
@@ -250,14 +263,7 @@ function SwipeItem(props) {
         </View>
 
         <View style={styles.row}>
-          {!isMe ? (
-            <IconButton
-              icon={() => <Ionicon name='rocket-outline' color={theme.white} size={24} />}
-              onPress={onBoostPress}
-            />
-          ) : (
-            <View></View>
-          )}
+          {!isMe ? <Boost onPress={onBoostPress} /> : <View></View>}
 
           <View>{showBoostRow && <BoostDetails {...props} myAlias={user.alias} />}</View>
         </View>

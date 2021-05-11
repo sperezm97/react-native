@@ -4,7 +4,7 @@ import { useObserver } from 'mobx-react-lite'
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
 
-import { useStores, useTheme } from '../../../store'
+import { useStores, useTheme, hooks } from '../../../store'
 import { useTribeHistory } from '../../../store/hooks/tribes'
 import Typography from '../../common/Typography'
 import Button from '../../common/Button'
@@ -12,6 +12,8 @@ import BoxHeader from '../../common/Layout/BoxHeader'
 import Empty from '../../common/Empty'
 import DialogWrap from '../../common/Dialogs/DialogWrap'
 import TribeTags from './TribeTags'
+
+const { useTribes } = hooks
 
 function About({ tribe }) {
   const theme = useTheme()
@@ -59,7 +61,7 @@ function About({ tribe }) {
               </Typography>
             </View>
           </View>
-          <Tags tags={tribe.tags} owner={tribe.owner} tribe={tribe} />
+          <Tags theTribe={tribe} />
         </View>
       </>
     )
@@ -68,63 +70,69 @@ function About({ tribe }) {
 
 function Tags(props) {
   const { chats } = useStores()
-  let { tags, owner, tribe } = props
+  const { theTribe } = props
   const [topicsEditDialog, setTopicsEditDialog] = useState(false)
 
   async function finish(tags) {
-    tribe.tags = tags
+    theTribe.tags = tags
     await chats.editTribe({
-      ...tribe,
-      id: tribe.chat.id
+      ...theTribe,
+      id: theTribe.chat.id
     })
 
+    chats.getTribes()
     setTopicsEditDialog(false)
   }
 
-  return (
-    <>
-      {owner ? (
-        <>
-          <BoxHeader title='Topics in this Community'>
-            <Button mode='text' onPress={() => setTopicsEditDialog(true)} size='small'>
-              Edit
-            </Button>
-          </BoxHeader>
+  return useObserver(() => {
+    const tribes = useTribes()
+    const tribe = tribes.find(t => t.uuid === theTribe.uuid) || theTribe
+
+    return (
+      <>
+        {tribe.owner ? (
           <>
-            {tags.length > 0 ? (
-              <TribeTags
-                tags={tags}
-                displayOnly={true}
-                containerStyle={{ paddingTop: 18 }}
-              />
-            ) : (
-              <Empty text='No topics found.' />
+            <BoxHeader title='Topics in this Community'>
+              <Button mode='text' onPress={() => setTopicsEditDialog(true)} size='small'>
+                Edit
+              </Button>
+            </BoxHeader>
+            <>
+              {tribe.tags.length > 0 ? (
+                <TribeTags
+                  tags={tribe.tags}
+                  displayOnly={true}
+                  containerStyle={{ paddingTop: 18 }}
+                />
+              ) : (
+                <Empty text='No topics found.' />
+              )}
+            </>
+            <DialogWrap
+              title='Edit Tags'
+              visible={topicsEditDialog}
+              onDismiss={() => setTopicsEditDialog(false)}
+            >
+              <TribeTags tags={tribe.tags} finish={finish} />
+            </DialogWrap>
+          </>
+        ) : (
+          <>
+            {tribe.tags.length > 0 && (
+              <>
+                <BoxHeader title='Topics in this Community' />
+                <TribeTags
+                  tags={tribe.tags}
+                  displayOnly={true}
+                  containerStyle={{ paddingTop: 18 }}
+                />
+              </>
             )}
           </>
-          <DialogWrap
-            title='Edit Tags'
-            visible={topicsEditDialog}
-            onDismiss={() => setTopicsEditDialog(false)}
-          >
-            <TribeTags tags={tags} finish={finish} />
-          </DialogWrap>
-        </>
-      ) : (
-        <>
-          {tags.length > 0 && (
-            <>
-              <BoxHeader title='Topics in this Community' />
-              <TribeTags
-                tags={tags}
-                displayOnly={true}
-                containerStyle={{ paddingTop: 18 }}
-              />
-            </>
-          )}
-        </>
-      )}
-    </>
-  )
+        )}
+      </>
+    )
+  })
 }
 
 const styles = StyleSheet.create({
