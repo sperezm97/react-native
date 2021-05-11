@@ -101,7 +101,6 @@ export default function MsgRow(props) {
         display: 'flex',
         width: '100%',
         marginTop: props.showInfoBar ? 30 : 5
-        // marginBottom: props.showInfoBar ? 10 : 0
       }}
     >
       <View
@@ -111,7 +110,6 @@ export default function MsgRow(props) {
           width: '100%'
         }}
       >
-        {/* {props.showInfoBar && <InfoBar {...props} senderAlias={props.senderAlias} />} */}
         <SwipeRow
           ref={swipeRowRef}
           disableRightSwipe={true}
@@ -136,7 +134,6 @@ export default function MsgRow(props) {
                 photo={props.senderPic ? `${props.senderPic}` : null}
                 size={26}
                 aliasSize={12}
-                // hide={!props.showInfoBar || isMe}
                 hide={isMe || !props.showInfoBar}
                 style={{ marginLeft: !isMe ? 10 : 0 }}
               />
@@ -167,7 +164,6 @@ export default function MsgRow(props) {
                   <FontAwesome5Icon name='reply' size={20} color={theme.darkGrey} />
                 )}
                 style={{
-                  // marginLeft: 0,
                   marginRight: 15,
                   backgroundColor: theme.lightGrey
                 }}
@@ -188,12 +184,6 @@ function MsgBubble(props) {
   const isInvoice = props.type === constants.message_types.invoice
   const isPaid = props.status === constants.statuses.confirmed
   const [showPopover, setShowPopover] = useState(false)
-  // console.log(
-  //   'props.reply_message_content ',
-  //   props.reply_message_content,
-  //   'reply_uuid',
-  //   props.reply_uuid
-  // )
 
   let backgroundColor = isMe ? (theme.dark ? theme.main : theme.lightGrey) : theme.bg
   if (isInvoice && !isPaid) {
