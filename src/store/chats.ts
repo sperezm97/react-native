@@ -227,6 +227,7 @@ export class ChatStore {
       app_url: app_url || '',
       feed_url: feed_url || ''
     })
+
     if (!r) return
     this.gotChat(r)
     return r

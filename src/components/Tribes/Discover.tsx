@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useIsFocused } from '@react-navigation/native'
 import { Appbar } from 'react-native-paper'
 import FeatherIcon from 'react-native-vector-icons/Feather'
 import AntDesignIcon from 'react-native-vector-icons/AntDesign'
@@ -22,13 +22,14 @@ const { useTribes } = hooks
 export default function Discover() {
   const [loading, setLoading] = useState(true)
   const [refreshing, setRefreshing] = useState(false)
+  const isFocused = useIsFocused()
 
   const { chats } = useStores()
   const theme = useTheme()
 
   useEffect(() => {
     fetchTribes()
-  }, [])
+  }, [isFocused])
 
   function fetchTribes() {
     chats.getTribes().then(() => setLoading(false))

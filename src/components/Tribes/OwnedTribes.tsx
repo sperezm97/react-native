@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
 import AntDesignIcon from 'react-native-vector-icons/AntDesign'
+import { useIsFocused } from '@react-navigation/native'
 
 import { useStores, useTheme, hooks } from '../../store'
 import { useOwnedTribes } from '../../store/hooks/tribes'
@@ -17,10 +18,12 @@ export default function OwnedTribes() {
   const [refreshing, setRefreshing] = useState(false)
   const { ui, chats } = useStores()
   const theme = useTheme()
+  const isFocused = useIsFocused()
 
   useEffect(() => {
     fetchTribes()
-  }, [ui.newTribeModal])
+    console.log('is fetching')
+  }, [ui.newTribeModal, isFocused])
 
   function fetchTribes() {
     chats.getTribes().then(() => setLoading(false))

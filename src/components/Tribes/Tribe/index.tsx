@@ -1,13 +1,12 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { StyleSheet, View, ScrollView, SafeAreaView } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useIsFocused } from '@react-navigation/native'
 import { IconButton } from 'react-native-paper'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { TabView } from 'react-native-tab-view'
 
-import { useTheme, hooks } from '../../../store'
-import { useTribe } from '../../../store/hooks/tribes'
+import { useStores, useTheme, hooks } from '../../../store'
 import BackHeader from '../../common/BackHeader'
 import Divider from '../../common/Layout/Divider'
 import TribeSettings from '../../common/Dialogs/TribeSettings'
@@ -27,37 +26,41 @@ export default function Tribe({ route }) {
     { key: 'first', title: 'Media' },
     { key: 'second', title: 'About' }
   ])
-
-  // const tribes = useTribes()
-  // const tribe = useTribe(tribes, route.params.tribe.uuid)
-
-  const tribe = route.params.tribe
-
-  // console.log('tribe', tribe)
-
-  function onEditTribePress() {
-    navigation.navigate('EditTribe', { tribe })
-  }
-
-  function onTribeMembersPress() {
-    navigation.navigate('TribeMembers', { tribe })
-  }
-
-  // function onTribeDeletePress(){
-  // }
-
-  const renderScene = ({ route }) => {
-    switch (route.key) {
-      case 'first':
-        return <Media tribe={tribe} />
-      case 'second':
-        return <About tribe={tribe} />
-      default:
-        return null
-    }
-  }
+  const { ui, chats } = useStores()
+  const isFocused = useIsFocused()
 
   return useObserver(() => {
+    const tribes = useTribes()
+    const tribe =
+      tribes.find(t => t.uuid === route.params.tribe.uuid) || route.params.tribe
+
+    function fetchTribes() {
+      chats.getTribes()
+    }
+
+    useEffect(() => {
+      fetchTribes()
+    }, [isFocused])
+
+    function onEditTribePress() {
+      navigation.navigate('EditTribe', { tribe })
+    }
+
+    function onTribeMembersPress() {
+      navigation.navigate('TribeMembers', { tribe })
+    }
+
+    const renderScene = ({ route }) => {
+      switch (route.key) {
+        case 'first':
+          return <Media tribe={tribe} />
+        case 'second':
+          return <About tribe={tribe} />
+        default:
+          return null
+      }
+    }
+
     return (
       <SafeAreaView style={{ ...styles.wrap, backgroundColor: theme.bg }}>
         <BackHeader
@@ -90,7 +93,6 @@ export default function Tribe({ route }) {
           onCancel={() => setTribeDialog(false)}
           onEditPress={onEditTribePress}
           onMembersPress={onTribeMembersPress}
-          // onDeletePress={onTribeDeletePress}
         />
         {/* )} */}
       </SafeAreaView>

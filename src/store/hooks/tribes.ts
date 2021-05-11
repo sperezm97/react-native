@@ -16,10 +16,6 @@ export function useTribes() {
   return theTribes
 }
 
-export function useTribe(tribes, uuid) {
-  return tribes.find(t => t.uuid === uuid)
-}
-
 // tribes not joined yet.
 export function useSearchTribes(tribes) {
   const { ui } = useStores()
