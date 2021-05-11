@@ -18,9 +18,9 @@ import AvatarEdit from '../../common/Avatar/AvatarEdit'
 export default function Intro({ tribe }) {
   const { chats, meme } = useStores()
   const theme = useTheme()
+  const [imageDialog, setImageDialog] = useState(false)
   const [uploading, setUploading] = useState(false)
   const [uploadPercent, setUploadedPercent] = useState(0)
-  const [imageDialog, setImageDialog] = useState(false)
   const [photoModal, setPhotoModal] = useState(false)
   const [tribePhoto, setTribePhoto] = useState('')
   const navigation = useNavigation()

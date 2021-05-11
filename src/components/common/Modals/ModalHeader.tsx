@@ -23,7 +23,6 @@ export default function ModalHeader(props) {
       <View>
         <Text style={{ ...styles.title, color: theme.text }}>{title}</Text>
       </View>
-
       <TouchableOpacity onPress={onClose} style={{ ...styles.right }}>
         {!leftArrow && <Icon name='Close' size={23} color={theme.icon} />}
       </TouchableOpacity>

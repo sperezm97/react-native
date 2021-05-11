@@ -14,7 +14,8 @@ export default function AvatarEdit({
   uploadPercent,
   top = '43%',
   size,
-  round = 25
+  round = 25,
+  percentSize = 14
 }) {
   const theme = useTheme()
 
@@ -26,6 +27,7 @@ export default function AvatarEdit({
         {uploading && (
           <Typography
             style={{ ...styles.uploadPercent, top: top ? top : '43%' }}
+            size={percentSize}
             color={theme.white}
           >{`${uploadPercent}%`}</Typography>
         )}
@@ -80,7 +82,6 @@ const styles = StyleSheet.create({
     height: '100%',
     width: '100%',
     textAlign: 'center',
-    fontWeight: '500',
     zIndex: 1
   },
   imgIcon: {

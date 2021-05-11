@@ -22,7 +22,6 @@ export default function OwnedTribes() {
 
   useEffect(() => {
     fetchTribes()
-    console.log('is fetching')
   }, [ui.newTribeModal, isFocused])
 
   function fetchTribes() {
