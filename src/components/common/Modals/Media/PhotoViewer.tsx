@@ -31,7 +31,9 @@ export default function PhotoViewer({ visible, close, photos, chat, initialIndex
     >
       <View style={{ ...styles.wrap, backgroundColor: theme.black }}>
         <IconButton
-          icon={() => <MaterialCommunityIcon name='close' color={theme.icon} size={30} />}
+          icon={() => (
+            <MaterialCommunityIcon name='close' color={theme.white} size={30} />
+          )}
           onPress={close}
           style={{ ...styles.closeButton }}
         />

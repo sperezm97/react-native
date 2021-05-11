@@ -15,8 +15,6 @@ import Typography from '../../common/Typography'
 export default function ReplyContent(props) {
   const theme = useTheme()
 
-  // console.log('props replyMsg', props.replyMsg)
-
   const extraStyles = props.extraStyles || {}
   const onCloseHandler = () => {
     if (props.onClose) props.onClose()
@@ -28,9 +26,10 @@ export default function ReplyContent(props) {
       <View
         style={{
           ...styles.wrap,
-          ...extraStyles,
-          height: props.reply ? 50 : 'auto',
-          paddingTop: props.reply ? 0 : 10
+          height: props.reply ? 65 : 'auto',
+          paddingTop: props.reply ? 0 : 10,
+          borderTopWidth: props.reply ? 1 : 0,
+          borderTopColor: theme.border
         }}
       >
         <View style={{ ...styles.replyBar, backgroundColor: nameColor }} />
@@ -149,7 +148,7 @@ const styles = StyleSheet.create({
   },
   close: {
     position: 'absolute',
-    top: -5,
+    top: 2,
     right: 5
   }
 })

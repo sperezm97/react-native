@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     position: 'relative',
     height: 22,
     width: '100%',
-    marginBottom: 30
+    marginTop: 30
   },
   content: {
     paddingLeft: 16,

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useLayoutEffect } from 'react'
+import React, { useState, useRef, useLayoutEffect, useEffect } from 'react'
 import { View, StyleSheet, Text } from 'react-native'
 import { SwipeRow } from 'react-native-swipe-list-view'
 import { IconButton } from 'react-native-paper'
@@ -11,7 +11,7 @@ import Clipboard from '@react-native-community/clipboard'
 
 import { useStores, useTheme, hooks } from '../../../store'
 import { useChatReply } from '../../../store/hooks/chat'
-import { constantCodes, constants } from '../../../constants'
+import { constantCodes, constants, SCREEN_WIDTH } from '../../../constants'
 import EE, { CANCEL_REPLY_UUID, CLEAR_REPLY_UUID, REPLY_UUID } from '../../utils/ee'
 import TextMsg from './textMsg'
 import PaymentMessage from './paymentMsg'
@@ -25,6 +25,7 @@ import Avatar from '../../common/Avatar'
 import MemberRequest from './memberRequest'
 import BotResMsg from './botResMsg'
 import BoostMsg from './boostMsg'
+import Typography from '../../common/Typography'
 
 const { useMsgs } = hooks
 
@@ -47,6 +48,18 @@ export default function MsgRow(props) {
       EE.removeListener(CLEAR_REPLY_UUID, clearReplyUUID)
     }
   }, [swipeRowRef])
+
+  function onRowDidOpenHandler() {
+    clearReplyUUID()
+  }
+
+  function onRowOpenHandler() {
+    EE.emit(REPLY_UUID, props.uuid)
+  }
+
+  function onRowCloseHandler() {
+    // EE.emit(CANCEL_REPLY_UUID, '')
+  }
 
   const isGroupNotification =
     props.type === constants.message_types.group_join ||
@@ -82,41 +95,23 @@ export default function MsgRow(props) {
   const isMe = props.sender === 1
   const w = props.windowWidth
 
-  const onRowOpenHandler = () => {
-    // if (props.message_content) {
-    EE.emit(REPLY_UUID, props.uuid)
-
-    setShowReply(true)
-    // }
-  }
-  const onRowCloseHandler = () => {
-    EE.emit(CANCEL_REPLY_UUID, '')
-    setShowReply(false)
-  }
-
   return (
     <View
       style={{
         display: 'flex',
         width: '100%',
-        flexDirection: 'row',
-        marginBottom: 30
+        marginTop: props.showInfoBar ? 30 : 5
+        // marginBottom: props.showInfoBar ? 10 : 0
       }}
     >
-      <Avatar
-        alias={props.senderAlias}
-        photo={props.senderPic ? `${props.senderPic}` : null}
-        size={26}
-        aliasSize={12}
-        // hide={!props.showInfoBar || isMe}
-        hide={isMe}
-        style={{ marginLeft: !isMe ? 10 : 0 }}
-      />
-      {/* </View> */}
-
-      <View style={{ display: 'flex', width: w - 40 }}>
+      <View
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          width: '100%'
+        }}
+      >
         {/* {props.showInfoBar && <InfoBar {...props} senderAlias={props.senderAlias} />} */}
-        <InfoBar {...props} senderAlias={props.senderAlias} />
         <SwipeRow
           ref={swipeRowRef}
           disableRightSwipe={true}
@@ -125,28 +120,60 @@ export default function MsgRow(props) {
           rightOpenValue={-60}
           stopRightSwipe={-60}
           onRowOpen={onRowOpenHandler}
-          onRowClose={onRowCloseHandler}
+          onRowDidOpen={onRowDidOpenHandler}
+          // onRowClose={onRowCloseHandler}
         >
-          <View style={styles.replyWrap}>
-            {showReply && (
+          <View></View>
+          <View
+            style={{
+              flexDirection: 'row',
+              width: SCREEN_WIDTH - 30
+            }}
+          >
+            <View>
+              <Avatar
+                alias={props.senderAlias}
+                photo={props.senderPic ? `${props.senderPic}` : null}
+                size={26}
+                aliasSize={12}
+                // hide={!props.showInfoBar || isMe}
+                hide={isMe || !props.showInfoBar}
+                style={{ marginLeft: !isMe ? 10 : 0 }}
+              />
+            </View>
+            <View
+              style={{
+                marginRight: isMe ? 5 : 0,
+                width: '100%'
+              }}
+            >
+              {props.showInfoBar && (
+                <InfoBar {...props} senderAlias={props.senderAlias} />
+              )}
+              <MsgBubble
+                {...props}
+                isTribe={isTribe}
+                isTribeOwner={isTribeOwner}
+                myAlias={props.myAlias}
+              />
+            </View>
+            <View
+              style={{
+                ...styles.replyWrap
+              }}
+            >
               <IconButton
                 icon={() => (
                   <FontAwesome5Icon name='reply' size={20} color={theme.darkGrey} />
                 )}
                 style={{
-                  marginLeft: 0,
+                  // marginLeft: 0,
                   marginRight: 15,
                   backgroundColor: theme.lightGrey
                 }}
               />
-            )}
+            </View>
           </View>
-          <MsgBubble
-            {...props}
-            isTribe={isTribe}
-            isTribeOwner={isTribeOwner}
-            myAlias={props.myAlias}
-          />
         </SwipeRow>
       </View>
     </View>
@@ -168,7 +195,7 @@ function MsgBubble(props) {
   //   props.reply_uuid
   // )
 
-  let backgroundColor = isMe ? theme.main : theme.bg
+  let backgroundColor = isMe ? (theme.dark ? theme.main : theme.lightGrey) : theme.bg
   if (isInvoice && !isPaid) {
     backgroundColor = theme.dark ? '#202a36' : 'white'
   }
@@ -312,23 +339,34 @@ function Message(props) {
 
 // Delete Message component
 function DeletedMsg() {
+  const theme = useTheme()
+
   return (
     <View
-      style={{ padding: 10, display: 'flex', flexDirection: 'row', alignItems: 'center' }}
+      style={{
+        paddingVertical: 10,
+        paddingHorizontal: 12,
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center'
+      }}
     >
-      <MaterialCommunityIcon name='cancel' color='#aaa' size={12} />
-      <Text style={{ color: '#aaa', marginLeft: 5 }}>This message has been deleted</Text>
+      <MaterialCommunityIcon name='cancel' color={theme.subtitle} size={12} />
+      <Typography style={{ marginLeft: 5 }} size={13} color={theme.subtitle} lh={18}>
+        This message has been deleted
+      </Typography>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
   replyWrap: {
-    width: '100%',
+    // width: '100%',
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'flex-end',
     alignItems: 'center'
+    // position: 'absolute'
   },
   content: {
     backgroundColor: 'white',

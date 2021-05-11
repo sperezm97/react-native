@@ -60,6 +60,7 @@ export class ThemeStore {
   @observable lightGrey: string = '#f5f6f8'
   @observable grey: string = '#d0d0d0'
   @observable darkGrey: string = '#777'
+  @observable greyPrimary: string = '#aaa'
   @observable black: string = '#000000'
   @observable gradient: string = '#4889e8'
   @observable gradient2: string = '#055deb'
@@ -83,4 +84,4 @@ export class ThemeStore {
 
 export const themeStore = new ThemeStore()
 
-// themeStore.setDark(true)
+themeStore.setDark(true)

@@ -101,7 +101,7 @@ function MsgList({
 
   async function onEndReached() {
     // EE.emit(SHOW_REFRESHER)
-    wait(10).then(onLoadMoreMsgs)
+    onLoadMoreMsgs()
   }
 
   // Keyboard logic
@@ -147,7 +147,7 @@ function MsgList({
         inverted
         style={{ zIndex: 100 }}
         contentContainerStyle={{ paddingTop: 20, paddingBottom: 40 }}
-        windowSize={10} // ?
+        windowSize={10}
         ref={scrollViewRef}
         data={msgs}
         initialNumToRender={initialNumToRender}
@@ -193,13 +193,14 @@ function MsgList({
 }
 
 function Refresher() {
+  const theme = useTheme()
   const [show, setShow] = useState(false)
   useEffect(() => {
     function doShow() {
       setShow(true)
       setTimeout(() => {
         setShow(false)
-      }, 1000)
+      }, 100)
     }
     EE.on(SHOW_REFRESHER, doShow)
     return () => EE.removeListener(SHOW_REFRESHER, doShow)
@@ -207,9 +208,7 @@ function Refresher() {
   if (!show) return <></>
   return (
     <View style={{ ...styles.refreshingWrap, height: show ? 60 : 0 }}>
-      <View style={styles.refreshingCircle}>
-        <ActivityIndicator animating={true} color='grey' size={25} />
-      </View>
+      <ActivityIndicator animating={true} color={theme.icon} size={25} />
     </View>
   )
 }
@@ -281,7 +280,7 @@ const styles = StyleSheet.create({
     position: 'relative',
     height: 22,
     width: '100%',
-    marginBottom: 30
+    marginTop: 30
   },
   dateString: {
     paddingLeft: 16,
@@ -298,19 +297,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     overflow: 'hidden'
-  },
-  refreshingCircle: {
-    height: 42,
-    width: 42,
-    borderRadius: 25,
-    backgroundColor: 'white',
-    borderWidth: 1,
-    borderColor: '#ddd',
-    borderStyle: 'solid',
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center'
   }
 })
 

@@ -144,9 +144,13 @@ const msgTypesNoInfoBar = [
 function calcShowInfoBar(msgs: Msg[], msg: Msg, i: number, isTribe: boolean) {
   if (msgTypesNoInfoBar.includes(msg.type)) return false
   const previous = getPrevious(msgs, i)
+
+  // console.log('previous', previous)
+
   if (!previous) return true
   if (isTribe && msg.sender !== 1) {
     // for self msgs, do normal way
+
     if (
       previous.sender_alias === msg.sender_alias &&
       previous.type !== constants.message_types.group_join
@@ -161,6 +165,7 @@ function calcShowInfoBar(msgs: Msg[], msg: Msg, i: number, isTribe: boolean) {
       return false
     }
   }
+
   return true
 }
 
