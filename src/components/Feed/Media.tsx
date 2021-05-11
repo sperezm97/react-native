@@ -15,6 +15,7 @@ import { SCREEN_WIDTH, SCREEN_HEIGHT, STATUS_BAR_HEIGHT } from '../../constants'
 import Typography from '../common/Typography'
 import Avatar from '../common/Avatar'
 import Divider from '../common/Layout/Divider'
+import Boost from '../common/Button/Boost'
 import BoostDetails from './BoostDetails'
 
 function Media(props) {
@@ -58,7 +59,6 @@ function Media(props) {
 
   async function onBoostPress() {
     const pricePerMessage = tribe.price_per_message + tribe.escrow_amount
-
     if (!uuid) return
     const amount = (user.tipAmount || 100) + pricePerMessage
     const r = msg.sendMessage({
@@ -70,7 +70,6 @@ function Media(props) {
       reply_uuid: uuid,
       message_price: pricePerMessage
     })
-
     if (r) {
       setBoosted(true)
     }
@@ -106,11 +105,18 @@ function Media(props) {
           )}
 
           <View style={{ ...styles.footer }}>
-            <IconButton
+            {/* <IconButton
               icon={() => (
                 <Ionicon name='rocket-outline' color={theme.iconPrimary} size={24} />
               )}
+            /> */}
+            <Boost
               onPress={onBoostPress}
+              bg={theme.lightGrey}
+              color={theme.text}
+              rippleColor={theme.lightGrey}
+              circleH={45}
+              circleW={45}
             />
             <View>
               {showBoostRow && <BoostDetails {...props} myAlias={user.alias} />}

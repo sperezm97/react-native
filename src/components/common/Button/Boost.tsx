@@ -6,9 +6,19 @@ import Ionicon from 'react-native-vector-icons/Ionicons'
 import { useTheme } from '../../../store'
 import CustomIcon from '../../utils/customIcons'
 
-export default function Boost({ onPress }) {
+export default function Boost(props) {
   const theme = useTheme()
   const size = useRef(new Animated.Value(1)).current
+  const {
+    onPress,
+    bg = theme.primary,
+    color = theme.white,
+    rippleColor = theme.primary,
+    circleH = 35,
+    circleW = 35,
+    rippleH = 55,
+    rippleW = 55
+  } = props
 
   function go() {
     Animated.sequence([
@@ -28,18 +38,20 @@ export default function Boost({ onPress }) {
 
   return (
     <TouchableRipple
-      style={styles.rocketWrap}
-      rippleColor={theme.accent}
+      style={{ ...styles.rocketWrap, height: rippleH, width: rippleW }}
+      rippleColor={rippleColor}
       onPress={go}
       borderless
     >
-      <View style={{ ...styles.circle, backgroundColor: theme.primary }}>
+      <View
+        style={{ ...styles.circle, backgroundColor: bg, height: circleH, width: circleW }}
+      >
         <Animated.View
           style={{
             transform: [{ scale: size }]
           }}
         >
-          <Ionicon name='rocket-outline' color={theme.white} size={20} />
+          <Ionicon name='rocket-outline' color={color} size={20} />
         </Animated.View>
       </View>
     </TouchableRipple>
@@ -48,8 +60,6 @@ export default function Boost({ onPress }) {
 
 const styles = StyleSheet.create({
   rocketWrap: {
-    height: 55,
-    width: 55,
     borderRadius: 50,
     display: 'flex',
     flexDirection: 'row',
@@ -57,8 +67,6 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   circle: {
-    height: 35,
-    width: 35,
     borderRadius: 50,
     display: 'flex',
     flexDirection: 'row',
