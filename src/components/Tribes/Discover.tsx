@@ -2,19 +2,20 @@ import React, { useEffect, useState } from 'react'
 import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
 import { useNavigation, useIsFocused } from '@react-navigation/native'
-import { Appbar } from 'react-native-paper'
+import { Appbar, IconButton } from 'react-native-paper'
 import FeatherIcon from 'react-native-vector-icons/Feather'
 import AntDesignIcon from 'react-native-vector-icons/AntDesign'
 
 import { useStores, useTheme, hooks } from '../../store'
 import { useSearchTribes } from '../../store/hooks/tribes'
 import { SCREEN_HEIGHT, STACK_HEADER_HEIGHT } from '../../constants'
+import * as utils from '../utils/utils'
 import TabBar from '../common/TabBar'
 import Search from '../common/Search'
-import Typography from '../common/Typography'
 import Button from '../common/Button'
 import Empty from '../common/Empty'
 import Icon from '../common/Icon'
+import QR from '../common/Accessories/QR'
 import List from './List'
 
 const { useTribes } = hooks
@@ -48,6 +49,7 @@ export default function Discover() {
     return (
       <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
         <SearchHeader />
+
         <List
           data={tribesToShow}
           loading={loading}
@@ -82,11 +84,23 @@ function ListEmpty() {
 }
 
 function SearchHeader() {
+  const [scanning, setScanning] = useState(false)
   const theme = useTheme()
   const navigation = useNavigation()
-  const { ui } = useStores()
+  const { ui, chats } = useStores()
 
   const onTribesSearch = (txt: string) => ui.setTribesSearchTerm(txt)
+
+  async function scan(data) {
+    setScanning(false)
+    const j = utils.jsonFromUrl(data)
+
+    if (j['action']) {
+      const tribeParams = await chats.getTribeDetails(j.host, j.uuid)
+
+      ui.setJoinTribeModal(true, tribeParams)
+    }
+  }
 
   return (
     <Appbar.Header
@@ -101,7 +115,7 @@ function SearchHeader() {
           <FeatherIcon name='chevron-left' size={28} color={theme.icon} />
         </TouchableOpacity>
       </View>
-      <View style={{ ...styles.right }}>
+      <View style={{ ...styles.middle }}>
         <Search
           placeholder='Search Communities'
           value={ui.tribesSearchTerm}
@@ -109,6 +123,25 @@ function SearchHeader() {
           h={45}
         />
       </View>
+      <View style={{ ...styles.right }}>
+        <IconButton
+          icon='qrcode-scan'
+          size={22}
+          color={theme.icon}
+          onPress={() => {
+            setScanning(true)
+          }}
+        />
+      </View>
+
+      {scanning && (
+        <QR
+          visible={scanning}
+          onCancel={() => setScanning(false)}
+          onScan={data => scan(data)}
+          showPaster={false}
+        />
+      )}
     </Appbar.Header>
   )
 }
@@ -128,9 +161,12 @@ const styles = StyleSheet.create({
   left: {
     width: '10%'
   },
-  right: {
+  middle: {
     flex: 1,
     width: '80%'
+  },
+  right: {
+    width: '10%'
   },
   searchWrap: {
     paddingTop: 10,

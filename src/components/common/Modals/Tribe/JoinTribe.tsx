@@ -10,12 +10,14 @@ import {
 import { useObserver } from 'mobx-react-lite'
 import { TextInput } from 'react-native-paper'
 
+import { useStores, useTheme, hooks } from '../../../../store'
 import { DEFAULT_TRIBE_SERVER } from '../../../../config'
-import { useStores, useTheme } from '../../../../store'
 import Header from '../ModalHeader'
 import Button from '../../Button'
 import Avatar from '../../Avatar'
 import Typography from '../../Typography'
+
+const { useTribes } = hooks
 
 export default function JoinTribe() {
   const { ui, chats } = useStores()
@@ -23,7 +25,14 @@ export default function JoinTribe() {
   const [loading, setLoading] = useState(false)
   const [alias, setAlias] = useState('')
 
-  const params = ui.joinTribeParams
+  const params = ui.joinTribeParams || {}
+
+  const tribes = useTribes()
+  const tribeToCheck = tribes && tribes.find(t => t.uuid === params.uuid)
+  let joined = false
+  if (tribeToCheck) {
+    joined = tribeToCheck.joined
+  }
 
   async function joinTribe() {
     setLoading(true)
@@ -130,20 +139,36 @@ export default function JoinTribe() {
                         )
                       })}
                   </View>
-                  <TextInput
-                    placeholder='Your Name in this Tribe'
-                    onChangeText={e => setAlias(e)}
-                    value={alias}
-                    style={{
-                      ...styles.input,
-                      backgroundColor: theme.bg,
-                      color: theme.placeholder
-                    }}
-                    underlineColor={theme.border}
-                  />
-                  <Button onPress={joinTribe} loading={loading} size='large' w={240}>
-                    Join
-                  </Button>
+                  {!joined ? (
+                    <>
+                      <TextInput
+                        placeholder='Your Name in this Tribe'
+                        onChangeText={e => setAlias(e)}
+                        value={alias}
+                        style={{
+                          ...styles.input,
+                          backgroundColor: theme.bg,
+                          color: theme.placeholder
+                        }}
+                        underlineColor={theme.border}
+                      />
+                      <Button onPress={joinTribe} loading={loading} size='large' w={240}>
+                        Join
+                      </Button>
+                    </>
+                  ) : (
+                    <Typography
+                      size={16}
+                      color={theme.subtitle}
+                      style={{
+                        marginTop: 10,
+                        maxWidth: 340,
+                        textAlign: 'center'
+                      }}
+                    >
+                      You already joined this community.
+                    </Typography>
+                  )}
                 </View>
               )}
             </ScrollView>

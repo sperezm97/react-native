@@ -90,7 +90,7 @@ const constantCodes = switcher(constants)
 export const TRIBE_SIZE_LIMIT = 20
 
 export const TOAST_DURATION = 0.5
-export const STACK_HEADER_HEIGHT = 50
+export const STACK_HEADER_HEIGHT = 60
 export const TAB_HEIGHT = 50
 
 console.log('getStatusBarHeight', getStatusBarHeight())

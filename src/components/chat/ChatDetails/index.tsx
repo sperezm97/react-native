@@ -28,19 +28,18 @@ export default function ChatDetails({ route }) {
   const [groupSettingsDialog, setGroupSettingsDialog] = useState(false)
   const [imageDialog, setImageDialog] = useState(false)
   const [loadingTribe, setLoadingTribe] = useState(false)
-  const [photo_url, setPhotoUrl] = useState('')
   const [uploading, setUploading] = useState(false)
   const [uploadPercent, setUploadedPercent] = useState(0)
   const navigation = useNavigation()
   const nativeID = 'alias'
 
   const group = route.params.group
-
+  const [photo_url, setPhotoUrl] = useState(group.my_photo_url || '')
   const [alias, setAlias] = useState((group && group['my_alias']) || '')
   function updateAlias() {
     if (!(group && group.id)) return
     if (alias !== group['my_alias']) {
-      chats.updateMyInfoInChat(group.id, alias, group.my_photo_url)
+      chats.updateMyInfoInChat(group.id, alias, photo_url)
     }
   }
 

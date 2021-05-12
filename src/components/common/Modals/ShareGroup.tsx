@@ -65,7 +65,7 @@ export default function ShareGroup() {
 const styles = StyleSheet.create({
   wrap: {
     flex: 1,
-    paddingTop: 60
+    paddingTop: 20
   },
   content: {
     alignSelf: 'center',

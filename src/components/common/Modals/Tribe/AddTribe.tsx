@@ -157,6 +157,7 @@ const AddPhoto = ({ finish }) => {
   const [uploadPercent, setUploadedPercent] = useState(0)
   const [photo, setPhoto] = useState('')
   const { chats, meme } = useStores()
+  const theme = useTheme()
 
   async function tookPic(img) {
     setUploading(true)
@@ -213,32 +214,46 @@ const AddPhoto = ({ finish }) => {
   return (
     <View
       style={{
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
         marginBottom: 60
       }}
     >
-      <View>
-        <AvatarEdit
-          uploading={uploading}
-          uploadPercent={uploadPercent}
-          display={true}
-          onPress={() => setImageDialog(true)}
-          size={250}
-          round={200}
-          top='42%'
-          percentSize={20}
-        >
-          <Avatar size={250} round={200} photo={photo} />
-        </AvatarEdit>
+      <View
+        style={{
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}
+      >
+        <View>
+          <AvatarEdit
+            uploading={uploading}
+            uploadPercent={uploadPercent}
+            display={true}
+            onPress={() => setImageDialog(true)}
+            size={250}
+            round={200}
+            top='42%'
+            percentSize={20}
+          >
+            <Avatar size={250} round={200} photo={photo} />
+          </AvatarEdit>
+        </View>
 
         <Button
+          w={200}
           onPress={() => (showNext ? finish(photo) : setImageDialog(true))}
           style={{ marginTop: 20 }}
           size='large'
         >
           {showNext ? 'Next' : 'Select Photo'}
+        </Button>
+        <Button
+          w={100}
+          color={theme.special}
+          onPress={() => finish(photo)}
+          style={{ marginTop: 20 }}
+          size='large'
+        >
+          Skip
         </Button>
         <ImageDialog
           visible={imageDialog}
