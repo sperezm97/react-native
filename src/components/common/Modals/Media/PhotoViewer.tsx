@@ -9,6 +9,7 @@ import Ionicon from 'react-native-vector-icons/Ionicons'
 import { ActivityIndicator } from 'react-native-paper'
 import { isIphoneX, getBottomSpace } from 'react-native-iphone-x-helper'
 import ViewMoreText from 'react-native-view-more-text'
+import Toast from 'react-native-simple-toast'
 
 import { useStores, useTheme } from '../../../../store'
 import { SCREEN_WIDTH, SCREEN_HEIGHT, STATUS_BAR_HEIGHT } from '../../../../constants'
@@ -66,8 +67,8 @@ function SwipeItem(props) {
     boosts_total_sats
   } = props
   const [buying, setBuying] = useState(false)
-  const [tribe, setTribe] = useState(null)
-  const { meme, ui, chats, msg, user } = useStores()
+  const [pricePerMessage, setPricePerMessage] = useState(0)
+  const { meme, ui, chats, msg, user, details } = useStores()
   const theme = useTheme()
 
   const ldat = parseLDAT(media_token)
@@ -82,7 +83,10 @@ function SwipeItem(props) {
 
   async function fetchTribeDetails() {
     const tribe = await chats.getTribeDetails(chat.host, chat.uuid)
-    setTribe(tribe)
+    if (tribe) {
+      const price = tribe.price_per_message + tribe.escrow_amount
+      setPricePerMessage(price)
+    }
   }
 
   useEffect(() => {
@@ -125,6 +129,7 @@ function SwipeItem(props) {
       amount,
       contact_id
     })
+
     setBuying(false)
   }
 
@@ -133,22 +138,23 @@ function SwipeItem(props) {
   }
 
   async function onBoostPress() {
-    if (tribe) {
-      // const tribe = await chats.getTribeDetails(chat.host, chat.uuid)
-      const pricePerMessage = tribe.price_per_message + tribe.escrow_amount
+    if (!uuid) return
+    const amount = (user.tipAmount || 100) + pricePerMessage
 
-      if (!uuid) return
-      const amount = (user.tipAmount || 100) + pricePerMessage
-      const r = msg.sendMessage({
-        boost: true,
-        contact_id: null,
-        text: '',
-        amount,
-        chat_id: chat.id || null,
-        reply_uuid: uuid,
-        message_price: pricePerMessage
-      })
+    if (amount > details.balance) {
+      Toast.showWithGravity('Not Enough Balance', Toast.SHORT, Toast.TOP)
+      return
     }
+
+    msg.sendMessage({
+      boost: true,
+      contact_id: null,
+      text: '',
+      amount,
+      chat_id: chat.id || null,
+      reply_uuid: uuid,
+      message_price: pricePerMessage
+    })
   }
 
   const h = SCREEN_HEIGHT - STATUS_BAR_HEIGHT - 60

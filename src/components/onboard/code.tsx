@@ -10,7 +10,6 @@ import {
 import { Title, IconButton, ActivityIndicator } from 'react-native-paper'
 import RadialGradient from 'react-native-radial-gradient'
 import { decode as atob } from 'base-64'
-import { ifIphoneX } from 'react-native-iphone-x-helper'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import { useStores, useTheme } from '../../store'
@@ -166,10 +165,6 @@ export default function Code(props) {
       setError('You entered a wrong pin')
     }
   }
-
-  const isIOS = Platform.OS === 'ios'
-  const statusBarHeight = isIOS ? ifIphoneX(50, 20) : 0
-  const headerHeight = statusBarHeight + 64
 
   return (
     <View style={{ ...styles.wrap, zIndex: z }} accessibilityLabel='onboard-code'>

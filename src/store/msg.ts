@@ -290,6 +290,9 @@ class MsgStore {
         reply_uuid,
         boost: boost || false
       }
+
+      console.log('v::', v)
+
       if (message_price) v.message_price = message_price
       // const r = await relay.post('messages', v)
       // this.gotNewMessage(r)
@@ -562,6 +565,7 @@ class MsgStore {
   @action // only if it contains a "chat"
   async gotNewMessageFromWS(m) {
     let newMsg = await decodeSingle(m)
+
     const chatID = newMsg.chat_id
     if (chatID || chatID === 0) {
       msgsBuffer.push(newMsg)

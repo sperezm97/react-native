@@ -29,6 +29,10 @@ class UserStore {
 
   @persist
   @observable
+  myid: number = 0
+
+  @persist
+  @observable
   alias: string = ''
 
   @persist
@@ -54,6 +58,7 @@ class UserStore {
   @action reset() {
     this.code = ''
     this.alias = ''
+    this.myid = 0
     this.publicKey = ''
     this.currentIP = ''
     this.authToken = ''
@@ -70,6 +75,11 @@ class UserStore {
   @action
   setOnboardStep(s) {
     this.onboardStep = s
+  }
+
+  @action
+  setMyID(id) {
+    this.myid = id
   }
 
   @action
@@ -202,6 +212,7 @@ class UserStore {
         token
       })
       if (!r) return console.log('=> FAILED TO REACH RELAY')
+      if (r.id) this.setMyID(r.id)
       this.authToken = token
       api.instantiateRelay(
         this.currentIP,

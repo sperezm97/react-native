@@ -1,15 +1,16 @@
 import React, { useRef, useMemo, useState, useCallback, useEffect } from 'react'
 import { useObserver } from 'mobx-react-lite'
 import {
+  StyleSheet,
   VirtualizedList,
   View,
   Text,
-  StyleSheet,
   Keyboard,
   Dimensions,
   ActivityIndicator
 } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
+import Toast from 'react-native-simple-toast'
 
 import { useStores, useTheme, hooks } from '../../store'
 import { Chat } from '../../store/chats'
@@ -31,7 +32,7 @@ export default function MsgListWrap({
   chat: Chat
   pricePerMessage: number
 }) {
-  const { msg, ui, user, chats } = useStores()
+  const { msg, ui, user, chats, details } = useStores()
   const [limit, setLimit] = useState(40)
 
   function onLoadMoreMsgs() {
@@ -42,6 +43,12 @@ export default function MsgListWrap({
     const { uuid } = m
     if (!uuid) return
     const amount = (user.tipAmount || 100) + pricePerMessage
+
+    if (amount > details.balance) {
+      Toast.showWithGravity('Not Enough Balance', Toast.SHORT, Toast.TOP)
+      return
+    }
+
     msg.sendMessage({
       boost: true,
       contact_id: null,
@@ -305,11 +312,3 @@ function wait(timeout) {
     setTimeout(resolve, timeout)
   })
 }
-
-// let inDebounce
-// function debounce(func, delay) {
-//   const context = this
-//   const args = arguments
-//   clearTimeout(inDebounce)
-//   inDebounce = setTimeout(() => func.apply(context, args), delay)
-// }
