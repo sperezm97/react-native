@@ -401,15 +401,16 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
       >
         {!recordingStartTime && (
           <TouchableOpacity
+            activeOpacity={0.6}
             style={{
-              ...styles.img,
-              backgroundColor: theme.bg,
-              borderColor: theme.border
+              ...styles.attach,
+              borderColor: theme.border,
+              backgroundColor: theme.bg
             }}
             accessibilityLabel='more-button'
             onPress={() => setDialogOpen(true)}
           >
-            <Icon name='plus' color={theme.icon} size={27} />
+            <Icon name='plus' color={theme.primary} size={27} />
           </TouchableOpacity>
         )}
         {!recordingStartTime && (
@@ -421,8 +422,6 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
             ref={inputRef}
             style={{
               ...styles.input,
-              // marginLeft: hideMic ? 15 : 0,
-              // height: textInputHeight,
               height: 45,
               backgroundColor: theme.inputBg,
               borderColor: theme.border,
@@ -465,7 +464,7 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
             ) : (
               <IconButton
                 icon='microphone-outline'
-                size={32}
+                size={28}
                 color={recordingStartTime ? 'white' : '#666'}
               />
             )}
@@ -541,14 +540,6 @@ const styles = StyleSheet.create({
   bar: {
     width: '100%',
     maxWidth: '100%'
-
-    // height: 20,
-    // flexDirection: 'column',
-    // justifyContent: 'center',
-    // borderWidth: 1,
-    // borderBottomWidth: 0,
-    // borderLeftWidth: 0,
-    // borderRightWidth: 0
   },
   barInner: {
     width: '100%',
@@ -584,14 +575,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center'
   },
-  img: {
+  attach: {
     width: 40,
     height: 40,
+    borderWidth: 1,
     borderRadius: 20,
     marginLeft: 8,
-    borderColor: '#ccc',
-    borderWidth: 1,
-    backgroundColor: 'whitesmoke',
     marginRight: 8,
     display: 'flex',
     alignItems: 'center',

@@ -153,7 +153,8 @@ export function processFeed(tribe, type) {
       m.type === type &&
       m.sender !== 1 &&
       m.media_token &&
-      m.media_type.startsWith('image')
+      m.media_type.startsWith('image') &&
+      m.status !== constants.statuses.deleted
   )
 
   tribe.media = msgs

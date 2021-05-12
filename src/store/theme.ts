@@ -84,4 +84,4 @@ export class ThemeStore {
 
 export const themeStore = new ThemeStore()
 
-themeStore.setDark(true)
+// themeStore.setDark(true)

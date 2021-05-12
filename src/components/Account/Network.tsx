@@ -37,7 +37,7 @@ export default function Network() {
           placeholder='Server URL'
           value={serverURL}
           onChangeText={serverURLchange}
-          style={{ height: 50, backgroundColor: theme.bg }}
+          style={{ height: 50, textAlign: 'auto', backgroundColor: theme.bg }}
           placeholderTextColor={theme.placeholder}
           underlineColor={theme.border}
         />
