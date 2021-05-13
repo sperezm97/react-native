@@ -2,7 +2,7 @@ const config = {
   host: 'https://n2n2.chat',
   domain: 'n2n2.chat',
   hub: {
-    api: 'https://hub.n2n2.chat/api/v1/'
+    api: 'https://hub-staging.n2n2.chat/api/v1/'
   },
   tribes: {
     server: 'tribes-staging.n2n2.chat',

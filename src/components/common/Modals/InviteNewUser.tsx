@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
 
 import { useStores, useTheme } from '../../../store'
-import ModalWrap from './ModalWrap'
-import ModalHeader from './ModalHeader'
 import * as schemas from '../../form/schemas'
 import Form from '../../form'
+import ModalWrap from './ModalWrap'
+import ModalHeader from './ModalHeader'
+import Typography from '../Typography'
 
 export default function InviteNewUser() {
   const [price, setPrice] = useState(null)
@@ -40,10 +41,16 @@ export default function InviteNewUser() {
     <>
       {hasPrice && (
         <View style={styles.estimatedCost}>
-          <Text style={{ ...styles.estimatedCostText, color: theme.title }}>ESTIMATED COST</Text>
+          <Typography
+            color={theme.title}
+            fw='500'
+            style={{ ...styles.estimatedCostText }}
+          >
+            ESTIMATED COST
+          </Typography>
           <View style={styles.estimatedCostBottom}>
-            <Text style={{ ...styles.estimatedCostNum, color: theme.title }}>{price}</Text>
-            <Text style={styles.estimatedCostSat}>sat</Text>
+            <Typography style={{ ...styles.estimatedCostNum }}>{price}</Typography>
+            <Typography color={theme.darkGrey}>sat</Typography>
           </View>
         </View>
       )}
@@ -59,7 +66,8 @@ export default function InviteNewUser() {
           loading={loading}
           buttonText='Create Invitation'
           btnColor={theme.secondary}
-          btnFs={13}
+          btnSize='large'
+          btnFs={12}
           actionType='Row'
           rowContent={RowContent}
           onSubmit={values => invite(values)}
@@ -84,13 +92,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row'
   },
   estimatedCostNum: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: 'black',
     marginRight: 5
-  },
-  estimatedCostSat: {
-    fontSize: 20,
-    color: '#888'
   }
 })

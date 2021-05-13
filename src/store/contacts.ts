@@ -63,6 +63,7 @@ class ContactStore {
         const me = r.contacts.find(c => c.id === 1)
         if (me) {
           userStore.setAlias(me.alias)
+          userStore.setDeviceId(me.device_id)
           userStore.setPublicKey(me.public_key)
           if (me.tip_amount || me.tip_amount === 0) {
             userStore.setTipAmount(me.tip_amount)

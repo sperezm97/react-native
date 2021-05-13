@@ -1,3 +1,4 @@
+#import "RNNotifications.h"
 #import "AppDelegate.h"
 
 #import <React/RCTBridge.h>
@@ -50,6 +51,8 @@ static void InitializeFlipper(UIApplication *application) {
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+[RNNotifications startMonitorNotifications]; 
+
 #ifdef FB_SONARKIT_ENABLED
   InitializeFlipper(application);
 #endif
@@ -80,6 +83,14 @@ static void InitializeFlipper(UIApplication *application) {
 //     return extraModules;
 // }
  
+
+ - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+  [RNNotifications didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
+}
+
+- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
+  [RNNotifications didFailToRegisterForRemoteNotificationsWithError:error];
+}
 
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
 {

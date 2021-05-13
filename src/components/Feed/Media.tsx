@@ -105,18 +105,13 @@ function Media(props) {
           )}
 
           <View style={{ ...styles.footer }}>
-            {/* <IconButton
-              icon={() => (
-                <Ionicon name='rocket-outline' color={theme.iconPrimary} size={24} />
-              )}
-            /> */}
             <Boost
               onPress={onBoostPress}
-              bg={theme.lightGrey}
-              color={theme.text}
-              rippleColor={theme.lightGrey}
-              circleH={45}
-              circleW={45}
+              // bg={theme.lightGrey}
+              // color={theme.text}
+              // rippleColor={theme.primary}
+              circleH={40}
+              circleW={40}
             />
             <View>
               {showBoostRow && <BoostDetails {...props} myAlias={user.alias} />}
