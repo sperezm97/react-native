@@ -10,20 +10,20 @@ import { useTheme } from '../../../store'
 import Button from '../Button'
 
 export default function InputAccessoryView(props) {
-  const { nativeID, cancelText, doneText, cancel, done } = props
+  const { nativeID, cancelText, doneText } = props
   const theme = useTheme()
 
   function _cancel() {
     Keyboard.dismiss()
-    if (cancel) {
-      return cancel()
+    if (props.cancel) {
+      return props.cancel()
     }
   }
 
   function _done() {
     Keyboard.dismiss()
-    if (done) {
-      return done()
+    if (props.done) {
+      return props.done()
     }
   }
 

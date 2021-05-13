@@ -60,7 +60,7 @@ export default function TheTextInput({
         textAlignVertical='auto'
         inputAccessoryViewID={name}
       />
-      <InputAccessoryView nativeID={name} done={handleChange(name)} />
+      <InputAccessoryView nativeID={name} />
     </>
   )
 }

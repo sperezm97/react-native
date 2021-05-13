@@ -7,7 +7,7 @@ import { useStores, useTheme } from '../../../../store'
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from '../../../../constants'
 import ModalHeader from '../ModalHeader'
 import Form from '../../../form'
-import { tribe } from '../../../form/schemas'
+import * as schemas from '../../../form/schemas'
 import Avatar from '../../Avatar'
 import Button from '../../Button'
 import ImageDialog from '../../Dialogs/ImageDialog'
@@ -90,8 +90,8 @@ export default function AddTribe() {
         {next === 1 ? (
           <ScrollView style={styles.scroller} contentContainerStyle={styles.container}>
             <Form
-              schema={tribe}
-              // loading={loading}
+              schema={schemas.tribe}
+              loading={loading}
               buttonAccessibilityLabel='add-tribe-form-button'
               buttonText='Next'
               onSubmit={finishForm}
