@@ -22,10 +22,10 @@ platform :ios do
   )
   
 
-  # automatic code signing
-  disable_automatic_code_signing(
-    path: "ios/Chat.xcodeproj"
-  )
+  # # automatic code signing
+  # disable_automatic_code_signing(
+  #   path: "ios/Chat.xcodeproj"
+  # )
   
    # Set up Distribution code signing and build the app
    match(type: "appstore")
