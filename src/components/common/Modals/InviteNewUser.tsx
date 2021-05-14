@@ -68,6 +68,7 @@ export default function InviteNewUser() {
           btnColor={theme.secondary}
           btnSize='large'
           btnFs={12}
+          btnW='50%'
           actionType='Row'
           rowContent={RowContent}
           onSubmit={values => invite(values)}

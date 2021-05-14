@@ -21,13 +21,23 @@ export default function Form(props) {
       }}
       validationSchema={validator(props.schema)}
     >
-      {({ handleChange, handleBlur, handleSubmit, values, setFieldValue, errors, dirty, isValid }) => {
+      {({
+        handleChange,
+        handleBlur,
+        handleSubmit,
+        values,
+        setFieldValue,
+        errors,
+        dirty,
+        isValid
+      }) => {
         const d = !props.forceEnable && (!dirty || !isValid)
         return (
           <View style={styles.wrap}>
             <View style={{ padding: props.nopad ? 0 : 25 }}>
               {props.schema.map(item => {
-                const readOnly = props.readOnlyFields && props.readOnlyFields.includes(item.name)
+                const readOnly =
+                  props.readOnlyFields && props.readOnlyFields.includes(item.name)
                 return (
                   <Input
                     key={item.name}
@@ -46,7 +56,11 @@ export default function Form(props) {
             </View>
 
             {!props.displayOnly && (
-              <Action type={props.actionType} nopad={props.nopad} rowContent={props.rowContent}>
+              <Action
+                type={props.actionType}
+                nopad={props.nopad}
+                rowContent={props.rowContent}
+              >
                 <Button
                   mode={props.buttonMode}
                   accessibilityLabel={props.buttonAccessibilityLabel || 'form-button'}
@@ -55,6 +69,7 @@ export default function Form(props) {
                   color={props.btnColor}
                   fs={props.btnFs}
                   size={props.btnSize}
+                  w={props.btnW}
                   style={{ ...props.btnStyles }}
                   // labelStyle={{ color: labelColor, opacity: d ? 0.5 : 1 }}
                   loading={props.loading}

@@ -2,12 +2,11 @@ const config = {
   host: 'https://n2n2.chat',
   domain: 'n2n2.chat',
   hub: {
-    api: 'https://hub-staging.n2n2.chat/api/v1/'
+    api: 'https://hub.n2n2.chat/api/v1/'
   },
   tribes: {
     server: 'tribes-staging.n2n2.chat',
-    uuid:
-      'YGT2Bx-VzNmGHkGIZqQnD7cBh7I6z6Wb_wNIuRpmOjR_mowtxQnCi4Z250FpyEB_R0BOvE5IDbqaogSOzaZXbCRGCg0s'
+    uuid: 'YGT2Bx-VzNmGHkGIZqQnD7cBh7I6z6Wb_wNIuRpmOjR_mowtxQnCi4Z250FpyEB_R0BOvE5IDbqaogSOzaZXbCRGCg0s'
   },
   memes: {
     server: 'memes-staging.n2n2.chat'

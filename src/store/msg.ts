@@ -291,8 +291,6 @@ class MsgStore {
         boost: boost || false
       }
 
-      console.log('v::', v)
-
       if (message_price) v.message_price = message_price
       // const r = await relay.post('messages', v)
       // this.gotNewMessage(r)
