@@ -34,7 +34,11 @@ platform :ios do
    # Set up Distribution code signing and build the app
    match(type: "appstore")
 
-   gym(scheme: "Chat", workspace: "ios/Chat.xcworkspace")
+   gym(
+     scheme: "Chat",
+     workspace: "ios/Chat.xcworkspace",
+     export_xcargs: "-allowProvisioningUpdates"
+   )
 
    # Upload the binary to TestFlight and automatically publish
    # to the configured beta testing group
