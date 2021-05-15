@@ -22,6 +22,10 @@ platform :ios do
   )
   
 
+  enable_automatic_code_signing(
+     path: "ios/Chat.xcodeproj"
+  )
+
   # # automatic code signing
   # disable_automatic_code_signing(
   #   path: "ios/Chat.xcodeproj"
