@@ -22,7 +22,10 @@ platform :ios do
   )
   
 
-  enable_automatic_code_signing
+  enable_automatic_code_signing(
+     use_automatic_signing: true,
+     path: "ios/Chat.xcodeproj"
+  )
 
    # Set up Distribution code signing and build the app
    match(
@@ -34,7 +37,7 @@ platform :ios do
    gym(
      scheme: "Chat",
      workspace: "ios/Chat.xcworkspace",
-     export_xcargs: "-allowProvisioningUpdates"
+     export_xcargs: "-allowProvisioningUpdates",
    )
 
    # Upload the binary to TestFlight and automatically publish
