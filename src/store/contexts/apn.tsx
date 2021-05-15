@@ -39,7 +39,7 @@ export default function APNManager(props) {
     PushNotification.configure({
       onRegister: function ({ token, os }) {
         user.registerMyDeviceId(token)
-        alert(token)
+        // alert(token)
         setToken(token)
       },
       onNotification: function (notification) {
