@@ -30,6 +30,7 @@ platform :ios do
    # Set up Distribution code signing and build the app
    match(
      type: "appstore",
+     readonly: false
    )
 
    gym(
