@@ -22,17 +22,12 @@ platform :ios do
   )
   
 
-  enable_automatic_code_signing(
-     path: "ios/Chat.xcodeproj"
-  )
+  enable_automatic_code_signing
 
-  # # automatic code signing
-  # disable_automatic_code_signing(
-  #   path: "ios/Chat.xcodeproj"
-  # )
-  
    # Set up Distribution code signing and build the app
-   match(type: "appstore")
+   match(
+     type: "appstore",
+   )
 
    gym(
      scheme: "Chat",
