@@ -123,7 +123,6 @@ export class ChatStore {
 
   @action
   gotChat(chat: Chat) {
-    // console.log("====> GOT CHAT", chat)
     const existingIndex = this.chats.findIndex(ch => ch.id === chat.id)
     if (existingIndex > -1) {
       this.chats[existingIndex] = this.parseChat(chat)

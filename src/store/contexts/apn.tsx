@@ -18,6 +18,14 @@ export default function APNManager(props) {
   // console.log('user', user)
 
   useEffect(() => {
+    // PushNotification.localNotification({
+    //   title: 'Local Notification',
+    //   message: 'My Notification Message',
+    //   playSound: false,
+    //   soundName: 'default',
+    //   actions: '["Yes", "No"]'
+    // })
+
     // Notifications.registerRemoteNotifications()
 
     // Notifications.events().registerRemoteNotificationsRegistered(event => {
@@ -45,14 +53,21 @@ export default function APNManager(props) {
       onNotification: function (notification) {
         // alert(JSON.stringify(notification))
 
-        // notification.data.body
-        // notification.
+        alert(`what's the action? ${JSON.stringify(notification.data.aps.alert.action)}`)
 
-        // notification.finish()
-        notification.finish(PushNotificationIOS.FetchResult.NoData)
+        if (notification.userInteraction && notification.finish) {
+          PushNotificationIOS.setApplicationIconBadgeNumber(0)
+          notification.finish(PushNotificationIOS.FetchResult.NoData)
 
-        // PushNotificationIOS.FetchResult
+          // notification.finish()
+          // PushNotification.setApplicationIconBadgeNumber(0)
+        }
       },
+      // onAction: function (notification) {
+      //   alert(`Action::=> ${notification.action}`)
+
+      //   // process the action
+      // },
       onError: error => {
         console.log('Error configuring notifications', error)
       },
@@ -61,7 +76,7 @@ export default function APNManager(props) {
         badge: true,
         sound: true
       },
-      senderID: '250697568790', // ANDROID ONLY: FCM Sender ID (product_number) (optional - not required for local notifications, but is need to receive remote push notifications)
+      // senderID: '250697568790', // ANDROID ONLY: FCM Sender ID (product_number) (optional - not required for local notifications, but is need to receive remote push notifications)
       popInitialNotification: true,
       requestPermissions: true
     })

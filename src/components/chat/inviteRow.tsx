@@ -65,13 +65,13 @@ export default function InviteRow(props) {
         />
       </View>
       <View style={styles.chatContent}>
-        <View style={styles.chatContentTop}>
+        <View style={styles.top}>
           <Text
             style={{ ...styles.chatName, color: theme.text }}
           >{`Invite: ${name}`}</Text>
           {invite.price && <Text style={styles.invitePrice}>{invite.price}</Text>}
         </View>
-        <View style={styles.chatMsgWrap}>
+        <View style={styles.bottom}>
           {inviteIcon(statusString, theme)}
           <Text style={{ ...styles.chatMsg, color: theme.subtitle }}>
             {inviteMsg(statusString, name, confirmed)}
@@ -200,7 +200,7 @@ export const styles = StyleSheet.create({
     paddingLeft: 16,
     paddingTop: 16
   },
-  chatContentTop: {
+  top: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
@@ -225,12 +225,13 @@ export const styles = StyleSheet.create({
     marginBottom: 4
   },
   chatDate: {
-    paddingRight: 14
+    marginRight: 14
   },
-  chatMsgWrap: {
+  bottom: {
     display: 'flex',
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
+    justifyContent: 'space-between'
   },
   chatMsg: {
     fontSize: 13

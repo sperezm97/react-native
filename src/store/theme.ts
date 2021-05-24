@@ -68,6 +68,7 @@ export class ThemeStore {
   @observable clay: string = '#212932'
   @observable blue: string = '#0067ff'
   @observable red: string = '#f50057'
+  @observable green: string = '#25D366'
   @observable mirage: string = '#141d26'
   @observable yellow: string = '#FFDF00'
   @observable silver: string = '#afb3b1'

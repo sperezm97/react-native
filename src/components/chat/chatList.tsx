@@ -115,16 +115,9 @@ function ChatRow(props) {
       >
         <View style={styles.avatarWrap}>
           <Avatar alias={name} photo={uri && uri} size={50} aliasSize={18} big />
-          {hasUnseen && (
-            <View style={moreStyles.badgeWrap}>
-              <View style={{ ...moreStyles.badge, backgroundColor: theme.badge }}>
-                <Typography color={theme.white}>{unseenCount}</Typography>
-              </View>
-            </View>
-          )}
         </View>
         <View style={{ ...styles.chatContent }}>
-          <View style={styles.chatContentTop}>
+          <View style={styles.top}>
             <Typography
               style={{ ...styles.chatName }}
               color={theme.text}
@@ -137,7 +130,7 @@ function ChatRow(props) {
               {lastMsgDate}
             </Typography>
           </View>
-          <View style={styles.chatMsgWrap}>
+          <View style={styles.bottom}>
             {hasLastMsg && (
               <Typography
                 numberOfLines={1}
@@ -150,6 +143,13 @@ function ChatRow(props) {
               >
                 {lastMsgText}
               </Typography>
+            )}
+            {hasUnseen && (
+              <View style={{ ...moreStyles.badge, backgroundColor: theme.green }}>
+                <Typography color={theme.white} size={12}>
+                  {unseenCount}
+                </Typography>
+              </View>
             )}
           </View>
           <View
@@ -187,15 +187,13 @@ const moreStyles = StyleSheet.create({
     height: '100%'
   },
   badge: {
-    position: 'absolute',
-    right: 0,
-    bottom: 0,
-    width: 18,
-    height: 18,
+    width: 25,
+    height: 25,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 10
+    borderRadius: 15,
+    marginRight: 14
   }
 })
 
