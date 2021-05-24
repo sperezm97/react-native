@@ -53,7 +53,7 @@ export default function APNManager(props) {
       onNotification: function (notification) {
         // alert(JSON.stringify(notification))
 
-        alert(`what's the action? ${JSON.stringify(notification.data.aps.alert.action)}`)
+        // alert(`what's the action? ${JSON.stringify(notification.data.aps.alert.action)}`)
 
         if (notification.userInteraction && notification.finish) {
           PushNotificationIOS.setApplicationIconBadgeNumber(0)

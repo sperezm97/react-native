@@ -1,17 +1,28 @@
 import React, { useState, useEffect } from 'react'
 import { StyleSheet, View, BackHandler, Modal } from 'react-native'
 import { TextInput } from 'react-native-paper'
+import Toast from 'react-native-simple-toast'
 
 import { useTheme } from '../../../store'
 import ModalHeader from '../Modals/ModalHeader'
 import QRScanner from './QRScanner'
 import Button from '../Button'
+import Typography from '../Typography'
 
-export default function QR({ visible, onCancel, onScan, showPaster, inputPlaceholder, isLoopout = false, confirm }) {
+export default function QR({
+  visible,
+  onCancel,
+  onScan,
+  showPaster,
+  inputPlaceholder,
+  isLoopout = false,
+  confirm
+}) {
   const theme = useTheme()
   const [hasPermission, setHasPermission] = useState(null)
   const [scanned, setScanned] = useState(false)
   const [text, setText] = useState('')
+  const [data, setData] = useState('')
 
   useEffect(() => {
     BackHandler.addEventListener('hardwareBackPress', function () {
@@ -52,18 +63,29 @@ export default function QR({ visible, onCancel, onScan, showPaster, inputPlaceho
         setText(data)
       }
     }
-    if (data.length === 66) setText(data)
+    // if (data.length === 66)
+
+    setText(data)
   }
 
   return (
     <Modal visible={visible} animationType='slide' presentationStyle='pageSheet'>
       <ModalHeader title='Scan QR Code' onClose={onCancel} />
       <View style={{ ...styles.content }}>
-        <QRScanner scanned={scanned ? true : false} handleBarCodeScanned={handleBarCodeScanned} />
+        <QRScanner
+          scanned={scanned ? true : false}
+          handleBarCodeScanned={handleBarCodeScanned}
+        />
         {showPaster && (
           <View style={{ ...styles.bottom, backgroundColor: theme.main }}>
             <View style={styles.textInputWrap}>
-              <TextInput placeholder={inputPlaceholder} value={text} onChangeText={e => setText(e)} style={{ backgroundColor: theme.main }} underlineColor={theme.border} />
+              <TextInput
+                placeholder={inputPlaceholder}
+                value={text}
+                onChangeText={e => setText(e)}
+                style={{ backgroundColor: theme.main }}
+                underlineColor={theme.border}
+              />
             </View>
             <View style={styles.confirmWrap}>
               {(text ? true : false) && (

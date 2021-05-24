@@ -174,15 +174,41 @@ function Payment({ visible, close }) {
   const hasRawInvoice = rawInvoice ? true : false
 
   return useObserver(() => {
-    const label = ui.payMode === 'payment' ? 'Send Payment' : isLoopout ? 'Send Bitcoin' : 'Request Payment'
+    const label =
+      ui.payMode === 'payment'
+        ? 'Send Payment'
+        : isLoopout
+        ? 'Send Bitcoin'
+        : 'Request Payment'
 
     return (
       <Portal.Host>
         <ModalHeader title={label} onClose={handleOnClose} />
-        {main && <Main contactless={!chat ? true : false} contact={isLoopout ? null : contact} loading={loading} confirmOrContinue={confirmOrContinue} />}
+        {main && (
+          <Main
+            contactless={!chat ? true : false}
+            contact={isLoopout ? null : contact}
+            loading={loading}
+            confirmOrContinue={confirmOrContinue}
+          />
+        )}
 
-        {hasRawInvoice && <RawInvoice visible={hasRawInvoice} onClose={handleOnClose} amount={rawInvoice.amount} payreq={rawInvoice.invoice} paid={rawInvoice.invoice === ui.lastPaidInvoice} />}
-        <QR visible={next === 'payment' || next === 'loopout'} onCancel={handleOnClose} confirm={payContactless} showPaster={true} />
+        {hasRawInvoice && (
+          <RawInvoice
+            visible={hasRawInvoice}
+            onClose={handleOnClose}
+            amount={rawInvoice.amount}
+            payreq={rawInvoice.invoice}
+            paid={rawInvoice.invoice === ui.lastPaidInvoice}
+          />
+        )}
+        <QR
+          visible={next === 'payment' || next === 'loopout'}
+          onCancel={handleOnClose}
+          confirm={payContactless}
+          isLoopout={isLoopout}
+          showPaster={true}
+        />
       </Portal.Host>
     )
   })
