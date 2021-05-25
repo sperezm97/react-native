@@ -21,14 +21,14 @@ platform :ios do
     xcodeproj: "ios/Chat.xcodeproj",
   )
 
-   disable_automatic_code_signing(
-     path: "ios/Chat.xcodeproj"
-   )
+  #  disable_automatic_code_signing(
+  #    path: "ios/Chat.xcodeproj"
+  #  )
 
    # Set up Distribution code signing and build the app
    match(
      type: "appstore",
-     readonly: false, 
+    #  readonly: false, 
    )
 
   #  sigh(
