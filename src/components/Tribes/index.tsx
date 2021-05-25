@@ -27,7 +27,7 @@ export default function Tribes() {
     return (
       <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
         <Header />
-        <Typography onPress={handlePress}>{apn.token}</Typography>
+        {/* <Typography onPress={handlePress}>{apn.token}</Typography> */}
         <OwnedTribes />
         <TabBar />
       </View>
