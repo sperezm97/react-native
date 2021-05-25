@@ -28,12 +28,22 @@ platform :ios do
    # Set up Distribution code signing and build the app
    match(
      type: "appstore",
-     readonly: true,
    )
+
+  #  sigh(
+  #   development: true,
+  #   team_id: "5ZGU9RL6KG",
+  #   provisioning_name: "match AppStore chat.n2n2.Chat.staging 5ZGU9RL6KG"
+  # )
 
    gym(
      scheme: "Chat",
      workspace: "ios/Chat.xcworkspace",
+     export_options: {
+      provisioningProfiles: {
+          "chat.n2n2.Chat.staging" => "match AppStore chat.n2n2.Chat.staging 5ZGU9RL6KG"
+      }
+    }
    )
 
    # Upload the binary to TestFlight and automatically publish
