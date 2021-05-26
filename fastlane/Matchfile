@@ -1,4 +1,6 @@
-git_url("git@github.com:n2n2dev/certificates.git")
+# git_url("git@github.com:n2n2dev/certificates.git")
+git_url("https://github.com/n2n2dev/certificates.git")
+
 storage_mode("git")
 
 type("appstore")

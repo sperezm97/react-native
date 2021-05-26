@@ -1,10 +1,18 @@
 import React, { useState, useCallback } from 'react'
 import { useObserver } from 'mobx-react-lite'
-import { StyleSheet, View, Text, TouchableOpacity, FlatList, Dimensions } from 'react-native'
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  FlatList,
+  Dimensions
+} from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback'
 
 import { useStores, useTheme, hooks } from '../../store'
+import { useSearchChats } from '../../store/hooks/chats'
 import InviteRow, { styles } from './inviteRow'
 import { chatPicSrc, useChatPicSrc } from '../utils/picSrc'
 import PushableButton from '../common/Button/PushableButton'
@@ -14,9 +22,8 @@ import Typography from '../common/Typography'
 
 const { useChats, useChatRow } = hooks
 
-export default function ChatList() {
+export default function ChatList(props) {
   const { ui, contacts, msg, details, chats } = useStores()
-  const theme = useTheme()
 
   const [refreshing, setRefreshing] = useState(false)
   const onRefresh = useCallback(async () => {
@@ -45,21 +52,13 @@ export default function ChatList() {
   }
 
   const setAddFriendModalHandler = () => ui.setAddFriendDialog(true)
-  const setNewGroupModalHandler = () => ui.setNewGroupModal(true)
-
-  const footerComponent: any = () => (
-    <View style={moreStyles.buttonsWrap}>
-      <PushableButton icon='plus' color={theme.secondary} size='large' w={140} accessibilityLabel='add-friend-button' onPress={setAddFriendModalHandler}>
-        Friend
-      </PushableButton>
-      <PushableButton icon='plus' size='large' w={140} accessibilityLabel='new-group-button' onPress={setNewGroupModalHandler}>
-        Tribe
-      </PushableButton>
-    </View>
-  )
+  const setNewTribeModalHandler = () => ui.setNewTribeModal(true)
 
   return useObserver(() => {
-    const chatsToShow = useChats()
+    const chats = useChats()
+
+    const chatsToShow = useSearchChats(chats)
+
     return (
       <View style={{ width: '100%', flex: 1 }} accessibilityLabel='chatlist'>
         <FlatList<any>
@@ -72,8 +71,10 @@ export default function ChatList() {
             }
             return String(item.id)
           }}
-          refreshControl={<RefreshLoading refreshing={refreshing} onRefresh={onRefresh} />}
-          ListFooterComponent={footerComponent}
+          refreshControl={
+            <RefreshLoading refreshing={refreshing} onRefresh={onRefresh} />
+          }
+          ListHeaderComponent={props.listHeader}
         />
       </View>
     )
@@ -98,52 +99,62 @@ function ChatRow(props) {
     let uri = useChatPicSrc(props)
     const hasImg = uri ? true : false
 
-    const { lastMsgText, lastMsgDate, hasLastMsg, unseenCount, hasUnseen } = useChatRow(props.id)
+    const { lastMsgText, lastMsgDate, hasLastMsg, unseenCount, hasUnseen } = useChatRow(
+      props.id
+    )
 
     const w = Math.round(Dimensions.get('window').width)
     return (
       <TouchableOpacity
         style={{
-          ...styles.chatRow,
-          backgroundColor: theme.bg
+          ...moreStyles.itemRow,
+          backgroundColor: theme.main
         }}
         activeOpacity={0.5}
         onPress={onSeeChatHandler}
       >
         <View style={styles.avatarWrap}>
           <Avatar alias={name} photo={uri && uri} size={50} aliasSize={18} big />
-          {hasUnseen && (
-            <View style={moreStyles.badgeWrap}>
-              <View style={{ ...moreStyles.badge, backgroundColor: theme.badge }}>
-                <Text style={{ ...moreStyles.badgeText, color: theme.white }}>{unseenCount}</Text>
-              </View>
-            </View>
-          )}
         </View>
-        <View style={styles.chatContent}>
-          <View style={styles.chatContentTop}>
-            <Typography style={{ ...styles.chatName }} color={theme.text} size={16} fw='500'>
+        <View style={{ ...styles.chatContent }}>
+          <View style={styles.top}>
+            <Typography
+              style={{ ...styles.chatName }}
+              color={theme.text}
+              size={16}
+              fw='500'
+            >
               {name}
             </Typography>
-            <Typography style={{ ...styles.chatDate }} color={theme.subtitle}>
+            <Typography size={13} style={{ ...styles.chatDate }} color={theme.subtitle}>
               {lastMsgDate}
             </Typography>
           </View>
-          <View style={styles.chatMsgWrap}>
+          <View style={styles.bottom}>
             {hasLastMsg && (
-              <Text
+              <Typography
                 numberOfLines={1}
+                color={theme.subtitle}
+                fw={hasUnseen ? '500' : '400'}
+                size={13}
                 style={{
-                  ...styles.chatMsg,
-                  fontWeight: hasUnseen ? 'bold' : 'normal',
-                  maxWidth: w - 105,
-                  color: theme.subtitle
+                  maxWidth: w - 105
                 }}
               >
                 {lastMsgText}
-              </Text>
+              </Typography>
+            )}
+            {hasUnseen && (
+              <View style={{ ...moreStyles.badge, backgroundColor: theme.green }}>
+                <Typography color={theme.white} size={12}>
+                  {unseenCount}
+                </Typography>
+              </View>
             )}
           </View>
+          <View
+            style={{ ...moreStyles.borderBottom, borderBottomColor: theme.border }}
+          ></View>
         </View>
       </TouchableOpacity>
     )
@@ -151,6 +162,17 @@ function ChatRow(props) {
 }
 
 const moreStyles = StyleSheet.create({
+  itemRow: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderRadius: 5
+  },
+  borderBottom: {
+    flexDirection: 'row',
+    flex: 1,
+    borderBottomWidth: 1
+  },
   buttonsWrap: {
     marginTop: 40,
     marginBottom: 25,
@@ -165,19 +187,13 @@ const moreStyles = StyleSheet.create({
     height: '100%'
   },
   badge: {
-    position: 'absolute',
-    right: 0,
-    bottom: 0,
-    width: 18,
-    height: 18,
+    width: 25,
+    height: 25,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 10
-  },
-  badgeText: {
-    fontSize: 11,
-    fontWeight: '500'
+    borderRadius: 15,
+    marginRight: 14
   }
 })
 

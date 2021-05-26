@@ -1,6 +1,7 @@
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
+import { useNavigation } from '@react-navigation/native'
 import { IconButton } from 'react-native-paper'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 
@@ -12,23 +13,48 @@ import ContactList from './ContactList'
 export default function Contacts() {
   const { ui } = useStores()
   const theme = useTheme()
+  const navigation = useNavigation()
 
-  const setAddFriendModalHandler = () => ui.setAddFriendDialog(true)
-  const onChangeTextHandler = (txt: string) => ui.setContactsSearchTerm(txt)
+  const onAddFriendPress = () => ui.setAddFriendDialog(true)
 
-  const AddContact = <IconButton icon={({ size, color }) => <AntDesign name='adduser' color={color} size={size} />} color={theme.primary} size={22} onPress={setAddFriendModalHandler} />
+  const AddContact = (
+    <IconButton
+      icon={({ size, color }) => <AntDesign name='adduser' color={color} size={size} />}
+      color={theme.primary}
+      size={22}
+      onPress={onAddFriendPress}
+    />
+  )
 
   return useObserver(() => (
     <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
-      <BackHeader title='Contacts' action={AddContact} />
+      <BackHeader
+        title='Contacts'
+        action={AddContact}
+        navigate={() => navigation.goBack()}
+      />
       <View style={{ ...styles.content }}>
-        <View style={{ ...styles.searchWrap }}>
-          <Search placeholder='Search Contacts' onChangeText={onChangeTextHandler} value={ui.contactsSearchTerm} />
-        </View>
-        <ContactList />
+        <ContactList listHeader={<ListHeader />} />
       </View>
     </View>
   ))
+}
+
+function ListHeader() {
+  const { ui } = useStores()
+
+  const onChangeTextHandler = (txt: string) => ui.setContactsSearchTerm(txt)
+
+  return (
+    <View style={{ ...styles.searchWrap }}>
+      <Search
+        placeholder='Search Contacts'
+        onChangeText={onChangeTextHandler}
+        value={ui.contactsSearchTerm}
+        h={45}
+      />
+    </View>
+  )
 }
 
 const styles = StyleSheet.create({

@@ -63,6 +63,7 @@ class ContactStore {
         const me = r.contacts.find(c => c.id === 1)
         if (me) {
           userStore.setAlias(me.alias)
+          userStore.setDeviceId(me.device_id)
           userStore.setPublicKey(me.public_key)
           if (me.tip_amount || me.tip_amount === 0) {
             userStore.setTipAmount(me.tip_amount)
@@ -115,7 +116,6 @@ class ContactStore {
       const r = await relay.put(`contacts/${id}`, v)
       if (!r) return
       const cs = [...this.contacts]
-      console.log('updated contact:', r)
       this.contacts = cs.map(c => {
         if (c.id === id) {
           return { ...c, ...v }
@@ -174,7 +174,7 @@ class ContactStore {
     try {
       await relay.post('invites', {
         nickname,
-        welcome_message: welcome_message || 'Welcome to Sphinx!'
+        welcome_message: welcome_message || 'Welcome to N2N2!'
       })
       this.getContacts()
     } catch (e) {

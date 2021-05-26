@@ -1,9 +1,16 @@
-import React, { useState, useRef } from 'react'
-import { View, StyleSheet, Text, TextInput, TouchableOpacity, Linking, Platform, KeyboardAvoidingView } from 'react-native'
+import React, { useState } from 'react'
+import {
+  View,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  Linking,
+  Platform
+} from 'react-native'
 import { Title, IconButton, ActivityIndicator } from 'react-native-paper'
 import RadialGradient from 'react-native-radial-gradient'
 import { decode as atob } from 'base-64'
-import { ifIphoneX } from 'react-native-iphone-x-helper'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import { useStores, useTheme } from '../../store'
 import { DEFAULT_HOST } from '../../config'
@@ -11,6 +18,7 @@ import * as e2e from '../../crypto/e2e'
 import * as rsa from '../../crypto/rsa'
 import QR from '../common/Accessories/QR'
 import PinCodeModal from '../common/Modals/PinCode'
+import Typography from '../common/Typography'
 import PIN, { setPinCode } from '../utils/pin'
 import { isLN, parseLightningInvoice } from '../utils/ln'
 
@@ -44,6 +52,7 @@ export default function Code(props) {
     await user.signupWithIP(ip)
     await sleep(200)
     const token = await user.generateToken(pwd)
+
     if (token) {
       onDone()
     } else {
@@ -62,7 +71,9 @@ export default function Code(props) {
     if (isLN(s)) {
       const inv = parseLightningInvoice(s)
       if (inv) {
-        setWrong("This looks like an invoice, to sign up you'll need an invite code from:")
+        setWrong(
+          "This looks like an invoice, to sign up you'll need an invite code from:"
+        )
         correct = false
       }
     }
@@ -94,7 +105,9 @@ export default function Code(props) {
 
     const isCorrect = theCode.length === 40 && theCode.match(/[0-9a-fA-F]+/g)
     if (!isCorrect) {
-      setWrong("We don't recognize this code, to sign up you'll need an invite code from:")
+      setWrong(
+        "We don't recognize this code, to sign up you'll need an invite code from:"
+      )
       setTimeout(() => setWrong(''), 10000)
       setChecking(false)
       return
@@ -153,16 +166,20 @@ export default function Code(props) {
     }
   }
 
-  const isIOS = Platform.OS === 'ios'
-  const statusBarHeight = isIOS ? ifIphoneX(50, 20) : 0
-  const headerHeight = statusBarHeight + 64
-
   return (
     <View style={{ ...styles.wrap, zIndex: z }} accessibilityLabel='onboard-code'>
-      <RadialGradient style={styles.gradient} colors={[theme.gradient, theme.gradient2]} stops={[0.1, 1]} center={[80, 40]} radius={400}>
-        <KeyboardAvoidingView style={{ alignItems: 'center' }} behavior='padding' keyboardVerticalOffset={headerHeight}>
+      <RadialGradient
+        style={styles.gradient}
+        colors={[theme.gradient, theme.gradient2]}
+        stops={[0.1, 1]}
+        center={[80, 40]}
+        radius={400}
+      >
+        <KeyboardAwareScrollView contentContainerStyle={{ ...styles.content }}>
           <Title style={styles.welcome}>Welcome</Title>
-          <Text style={styles.msg}>Paste the invitation text or scan the QR code</Text>
+          <Typography style={styles.msg} size={20} color={theme.white} lh={27}>
+            Paste the invitation text or scan the QR code
+          </Typography>
           <View style={styles.inputWrap} accessibilityLabel='onboard-code-input-wrap'>
             <TextInput
               autoCorrect={false}
@@ -185,25 +202,52 @@ export default function Code(props) {
               onPress={() => setScanning(true)}
             />
           </View>
-        </KeyboardAvoidingView>
+        </KeyboardAwareScrollView>
 
-        <View style={styles.spinWrap}>{checking && <ActivityIndicator animating={true} color='white' />}</View>
+        <View style={styles.spinWrap}>
+          {checking && <ActivityIndicator animating={true} color='white' />}
+        </View>
         {(wrong ? true : false) && (
-          <View style={{ ...styles.message, ...styles.wrong }}>
-            <Text style={styles.wrongText}>{wrong}</Text>
+          <View
+            style={{
+              ...styles.message,
+              ...styles.wrong,
+              backgroundColor: theme.transparent
+            }}
+          >
+            <Typography style={styles.wrongText} color={theme.white}>
+              {wrong}
+            </Typography>
             <TouchableOpacity onPress={() => Linking.openURL(DEFAULT_HOST)}>
-              <Text style={styles.linkText}>{DEFAULT_HOST}</Text>
+              <Typography style={styles.linkText} size={16} fw='500' color={theme.purple}>
+                {DEFAULT_HOST}
+              </Typography>
             </TouchableOpacity>
           </View>
         )}
-
         {(error ? true : false) && (
-          <View style={{ ...styles.message, ...styles.error }}>
-            <Text style={styles.errorText}>{error}</Text>
+          <View
+            style={{
+              ...styles.message,
+              ...styles.error,
+              backgroundColor: theme.transparent
+            }}
+          >
+            <Typography style={styles.errorText} color={theme.white}>
+              {error}
+            </Typography>
           </View>
         )}
       </RadialGradient>
-      {scanning && <QR visible={scanning} onCancel={() => setScanning(false)} onScan={data => scan(data)} showPaster={false} />}
+
+      {scanning && (
+        <QR
+          visible={scanning}
+          onCancel={() => setScanning(false)}
+          onScan={data => scan(data)}
+          showPaster={false}
+        />
+      )}
       <PinCodeModal visible={showPin}>
         <PIN
           forceEnterMode
@@ -229,7 +273,17 @@ const styles = StyleSheet.create({
   gradient: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    height: '100%',
+    width: '100%'
+  },
+  content: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100%',
+    width: '100%'
   },
   welcome: {
     color: 'white',
@@ -273,32 +327,24 @@ const styles = StyleSheet.create({
     bottom: 32,
     width: '80%',
     left: '10%',
-    borderRadius: 10,
-    backgroundColor: 'rgba(0,0,0,0.5)'
+    borderRadius: 10
   },
   wrong: {
     height: 145
   },
   wrongText: {
-    color: 'white',
     margin: 24,
-    fontSize: 15,
     textAlign: 'center'
   },
   error: {
     height: 70
   },
   errorText: {
-    color: 'white',
     margin: 24,
-    fontSize: 15,
     textAlign: 'center'
   },
   linkText: {
-    color: '#6289FD',
-    textAlign: 'center',
-    fontSize: 17,
-    fontWeight: 'bold'
+    textAlign: 'center'
   }
 })
 

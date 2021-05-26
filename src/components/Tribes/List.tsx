@@ -1,17 +1,17 @@
 import React from 'react'
 import { StyleSheet, View, FlatList, TouchableOpacity } from 'react-native'
-
 import { useObserver } from 'mobx-react-lite'
 import { useNavigation } from '@react-navigation/native'
+import { ActivityIndicator } from 'react-native-paper'
 
 import { useStores, useTheme } from '../../store'
-import { DEFAULT_TRIBE_SERVER } from '../../config'
 import Typography from '../common/Typography'
 import Avatar from '../common/Avatar'
 import Button from '../common/Button'
+import RefreshLoading from '../common/RefreshLoading'
 
 export default function List(props) {
-  const { data } = props
+  const { data, loading, listEmpty, refreshing, onRefresh } = props
   const theme = useTheme()
 
   const renderItem = ({ index, item }) => <Item {...item} />
@@ -19,14 +19,33 @@ export default function List(props) {
   return useObserver(() => {
     return (
       <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
-        <FlatList data={data} keyExtractor={item => item.uuid} renderItem={renderItem} />
+        {loading ? (
+          <View style={{ paddingTop: 30 }}>
+            <ActivityIndicator />
+          </View>
+        ) : (
+          <FlatList
+            showsVerticalScrollIndicator={false}
+            showsHorizontalScrollIndicator={false}
+            data={data}
+            keyExtractor={item => item.uuid}
+            renderItem={renderItem}
+            // ListHeaderComponent={listHeader}
+            ListEmptyComponent={listEmpty}
+            refreshing={refreshing}
+            onRefresh={onRefresh && onRefresh}
+            refreshControl={
+              <RefreshLoading refreshing={refreshing} onRefresh={onRefresh} />
+            }
+          />
+        )}
       </View>
     )
   })
 }
 
 function Item(props) {
-  const { name, description, img, joined, uuid } = props
+  const { name, description, img, joined, uuid, owner, owner_alias } = props
   const { ui, chats } = useStores()
   const theme = useTheme()
   const navigation = useNavigation()
@@ -36,7 +55,7 @@ function Item(props) {
   async function onJoinPress() {
     const host = chats.getDefaultTribeServer().host
     const tribeParams = await chats.getTribeDetails(host, uuid)
-    ui.setJoinTribeParams(tribeParams)
+    ui.setJoinTribeModal(true, tribeParams)
   }
 
   return (
@@ -49,28 +68,41 @@ function Item(props) {
       onPress={onItemPress}
     >
       <View style={styles.avatarWrap}>
-        <Avatar photo={img} size={70} />
+        <Avatar size={60} photo={img} round={50} />
       </View>
 
       <View style={styles.itemContent}>
-        <View style={styles.itemContentTop}>
-          <Typography color={theme.text} size={16} fw='500'>
-            {name}
-          </Typography>
-          <View style={{ marginRight: 4 }}>
-            {joined ? (
-              <Typography size={13} color={theme.primary} ls={0.5}>
-                Joined
-              </Typography>
-            ) : (
-              <Button size='small' labelStyle={{ textTransform: 'capitalize' }} onPress={onJoinPress}>
-                Join
-              </Button>
+        <View style={{ ...styles.row, ...styles.itemContentTop }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Typography size={16} fw='500'>
+              {name}
+            </Typography>
+            {/* {!owner && (
+              <>
+                <View style={{ ...styles.dot, backgroundColor: theme.text }}></View>
+                <Typography size={12}>{owner_alias?.trim()}</Typography>
+              </>
+            )} */}
+          </View>
+
+          <View style={{ paddingRight: 4 }}>
+            {!owner && (
+              <>
+                {joined ? (
+                  <Typography size={13} color={theme.primary} ls={0.5}>
+                    Joined
+                  </Typography>
+                ) : (
+                  <Button size='small' tf='capitalize' onPress={onJoinPress}>
+                    Join
+                  </Button>
+                )}
+              </>
             )}
           </View>
         </View>
-        <View>
-          <Typography color={theme.subtitle} size={13}>
+        <View style={{ ...styles.row, ...styles.itemContentBottom }}>
+          <Typography color={theme.subtitle} size={13} numberOfLines={1}>
             {description}
           </Typography>
         </View>
@@ -90,34 +122,37 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    height: 90,
     marginVertical: 8,
-    marginHorizontal: 14,
-    padding: 12,
+    padding: 16,
     borderRadius: 5
-    // width: '100%'
   },
   avatarWrap: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    width: 52,
-    height: 52,
-    marginRight: 18
-    // marginLeft: 10
+    paddingRight: 14
+    // width: 60,
+    // height: 60,
+    // paddingLeft: 4
   },
-  itemContent: {
-    display: 'flex',
-    flexDirection: 'column',
-    flex: 1
-  },
-  itemContentTop: {
+  row: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    flex: 1,
-    maxHeight: 38,
-    paddingBottom: 5
+    flex: 1
+  },
+  dot: {
+    width: 3,
+    height: 3,
+    borderRadius: 5,
+    marginHorizontal: 10
+  },
+  itemContent: {
+    flex: 1
+  },
+  itemContentTop: {},
+  itemContentBottom: {
+    paddingTop: 5
   }
 })

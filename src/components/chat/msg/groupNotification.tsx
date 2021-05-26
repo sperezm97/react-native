@@ -1,7 +1,9 @@
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
-import { constants } from '../../../constants'
+
 import { useStores, useTheme } from '../../../store'
+import { constants } from '../../../constants'
+import Typography from '../../common/Typography'
 
 export default function GroupNotification(props) {
   const { contacts } = useStores()
@@ -17,41 +19,35 @@ export default function GroupNotification(props) {
 
   const isJoin = props.type === constants.message_types.group_join
 
-  return <View style={styles.wrap}>
-    <View style={{...styles.content,
-      backgroundColor:theme.dark?'#202a36':'#F9FAFC',
-      borderColor:theme.main
-    }}>
-      <Text style={styles.text}>
-        {`${senderAlias} has ${isJoin ? 'joined' : 'left'} the group`}
-      </Text>
+  return (
+    <View style={styles.wrap}>
+      <View
+        style={{
+          ...styles.content,
+          backgroundColor: theme.main
+        }}
+      >
+        <Typography size={12} color={theme.subtitle}>
+          {`${senderAlias} has ${isJoin ? 'joined' : 'left'} the group`}
+        </Typography>
+      </View>
     </View>
-  </View>
+  )
 }
 
 const styles = StyleSheet.create({
   wrap: {
-    height: 25,
-    width: '100%',
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
-    marginBottom: 10,
+    position: 'relative',
+    height: 22,
+    width: '100%',
+    marginTop: 30
   },
   content: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    borderWidth: 1,
-    paddingLeft: 15,
-    paddingRight: 15,
-    borderRadius: 12,
-    height:23,
-    borderColor: '#DADFE2',
-    marginTop: 5,
-  },
-  text: {
-    fontSize: 12,
-    color: '#777'
+    paddingLeft: 16,
+    paddingRight: 16,
+    borderRadius: 15
   }
 })

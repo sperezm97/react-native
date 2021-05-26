@@ -1,26 +1,40 @@
-import React, { useEffect, useState, useRef } from 'react'
-import { View, Text, StyleSheet, Image } from 'react-native'
-import { useStores, useTheme } from '../../../store'
+import React, { useEffect, useState, useMemo } from 'react'
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { useObserver } from 'mobx-react-lite'
+import { PERMISSIONS, check, request, RESULTS } from 'react-native-permissions'
+import { ActivityIndicator, IconButton } from 'react-native-paper'
+import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
+import Ionicon from 'react-native-vector-icons/Ionicons'
+import Video from 'react-native-video'
+import FastImage from 'react-native-fast-image'
+import RNFetchBlob from 'rn-fetch-blob'
+import Toast from 'react-native-simple-toast'
+
+import { useStores, useTheme, hooks } from '../../../store'
+import { useTribeMediaType } from '../../../store/hooks/tribes'
 import shared from './sharedStyles'
-import { TouchableOpacity } from 'react-native-gesture-handler'
 import { useCachedEncryptedFile } from './hooks'
-import { ActivityIndicator, Button, IconButton } from 'react-native-paper'
 import AudioPlayer from './audioPlayer'
 import { parseLDAT } from '../../utils/ldat'
-import Video from 'react-native-video'
 import FileMsg from './fileMsg'
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import BoostRow from './boostRow'
 import Typography from '../../common/Typography'
+import Button from '../../common/Button'
+import PhotoViewer from '../../common/Modals/Media/PhotoViewer'
+
+const { useMsgs } = hooks
 
 export default function MediaMsg(props) {
+  const { id, message_content, media_type, chat, media_token } = props
+  const [buying, setBuying] = useState(false)
+  const [mediaModal, setMediaModal] = useState(false)
+  const [selectedMedia, setSelectedMedia] = useState(null)
   const { meme, ui, msg } = useStores()
   const theme = useTheme()
-  const [buying, setBuying] = useState(false)
-  const { message_content, media_type, chat, media_token } = props
   const isMe = props.sender === 1
 
   const ldat = parseLDAT(media_token)
+  // console.log('ldat', ldat, 'message_content', message_content)
 
   let amt = null
   let purchased = false
@@ -29,15 +43,14 @@ export default function MediaMsg(props) {
     if (ldat.sig) purchased = true
   }
 
-  let { data, uri, loading, trigger, paidMessageText } = useCachedEncryptedFile(props, ldat)
-
-  // useEffect(() => {
-  //   if (props.viewable) trigger()
-  // }, [props.viewable, props.media_token]) // refresh when scroll, or when purchase accepted
+  let { data, uri, loading, trigger, paidMessageText } = useCachedEncryptedFile(
+    props,
+    ldat
+  )
 
   useEffect(() => {
     trigger()
-  }, [props.media_token]) // refresh when scroll, or when purchase accepted
+  }, [props.media_token])
 
   async function buy(amount) {
     setBuying(true)
@@ -55,19 +68,37 @@ export default function MediaMsg(props) {
     setBuying(false)
   }
 
-  function showTooltip() {
-    console.log('TOOLTIP')
-  }
-  function press() {
-    // console.log('press')
-
+  function onMediaPress() {
     if (media_type.startsWith('image')) {
-      if (data) ui.setImgViewerParams({ data })
-      if (uri) ui.setImgViewerParams({ uri })
+      setSelectedMedia(id)
+      setMediaModal(true)
+
+      // if (data) ui.setImgViewerParams({ data })
+      // if (uri) ui.setImgViewerParams({ uri })
+    } else if (media_type.startsWith('n2n2/text')) {
+      // downloadText(uri)
     }
   }
-  function longPress() {
-    console.log('longpress')
+
+  async function downloadText(uri) {
+    try {
+      let dirs = RNFetchBlob.fs.dirs
+      const filename = meme.filenameCache[props.id]
+
+      uri = uri.replace('file://', '')
+
+      const res = await check(PERMISSIONS.IOS.CAMERA)
+
+      if (res === RESULTS.GRANTED) {
+        await RNFetchBlob.fs.cp(uri, dirs.DownloadDir + '/' + filename)
+        Toast.showWithGravity('File Downloaded', Toast.SHORT, Toast.CENTER)
+      } else {
+        Toast.showWithGravity('Permission Denied', Toast.SHORT, Toast.CENTER)
+      }
+    } catch (err) {
+      // Toast.showWithGravity('Permission Denied', Toast.SHORT, Toast.CENTER)
+      console.warn(err)
+    }
   }
 
   const hasImgData = data || uri ? true : false
@@ -75,13 +106,12 @@ export default function MediaMsg(props) {
   const showPurchaseButton = amt && !isMe ? true : false
   const showStats = isMe && amt
   const sold = props.sold
-
   const showBoostRow = props.boosts_total_sats ? true : false
 
   let isImg = false
   let minHeight = 60
   let showPayToUnlockMessage = false
-  if (media_type === 'sphinx/text') {
+  if (media_type === 'n2n2/text') {
     minHeight = isMe ? 72 : 42
     if (!isMe && !loading && !paidMessageText) showPayToUnlockMessage = true
   }
@@ -102,74 +132,143 @@ export default function MediaMsg(props) {
 
   const onLongPressHandler = () => props.onLongPress(props)
 
-  return (
-    <View collapsable={false}>
-      <TouchableOpacity
-        style={{ ...styles.wrap, minHeight: wrapHeight }}
-        //onPressIn={tap} onPressOut={untap}
-        onLongPress={onLongPressHandler}
-        onPress={press}
-        activeOpacity={0.65}
-      >
+  return useObserver(() => {
+    const msgs = useMsgs(chat) || []
+    const photos = useTribeMediaType(msgs, 6)
+
+    return (
+      <View collapsable={false}>
+        <TouchableOpacity
+          onLongPress={onLongPressHandler}
+          onPress={onMediaPress}
+          activeOpacity={0.8}
+        >
+          {!hasImgData && (
+            <View style={{ minHeight, ...styles.loading }}>
+              {loading && (
+                <View style={{ minHeight, ...styles.loadingWrap }}>
+                  <ActivityIndicator animating={true} color='grey' />
+                </View>
+              )}
+              {paidMessageText && (
+                <View style={{ minHeight, ...styles.paidAttachmentText }}>
+                  <Text style={{ color: theme.title }}>{paidMessageText}</Text>
+                </View>
+              )}
+              {showPayToUnlockMessage && (
+                <View style={{ ...styles.paidAttachmentText }}>
+                  <Typography color={theme.subtitle}>Pay to unlock message</Typography>
+                </View>
+              )}
+            </View>
+          )}
+
+          {hasImgData && (
+            <Media
+              type={media_type}
+              data={data}
+              uri={uri}
+              filename={meme.filenameCache[props.id]}
+            />
+          )}
+
+          {isImg && showPurchaseButton && !purchased && (
+            <View style={styles.imgIconWrap}>
+              <Ionicon name='image' color={theme.icon} size={50} />
+            </View>
+          )}
+
+          {hasContent && (
+            <View style={styles.msgContentWrap}>
+              <Typography size={14} color={theme.subtitle}>
+                {message_content}
+              </Typography>
+            </View>
+          )}
+
+          {showBoostRow && <BoostRow {...props} myAlias={props.myAlias} pad />}
+        </TouchableOpacity>
+
         {showStats && (
           <View style={styles.stats}>
-            <Text style={styles.satStats}>{`${amt} sat`}</Text>
-            <Text style={{ ...styles.satStats, opacity: sold ? 1 : 0 }}>Purchased</Text>
-          </View>
-        )}
-
-        {!hasImgData && (
-          <View style={{ minHeight, ...styles.loading }}>
-            {loading && (
-              <View style={{ minHeight, ...styles.loadingWrap }}>
-                <ActivityIndicator animating={true} color='grey' />
-              </View>
-            )}
-            {paidMessageText && (
-              <View style={{ minHeight, ...styles.paidAttachmentText }}>
-                <Text style={{ color: theme.title }}>{paidMessageText}</Text>
-              </View>
-            )}
-            {showPayToUnlockMessage && (
-              <View style={{ ...styles.paidAttachmentText, alignItems: 'center' }}>
-                <Text style={{ ...styles.payToUnlockMessage, color: theme.subtitle }}>Pay to unlock message</Text>
-              </View>
-            )}
-          </View>
-        )}
-
-        {hasImgData && <Media type={media_type} data={data} uri={uri} filename={meme.filenameCache[props.id]} />}
-
-        {isImg && showPurchaseButton && !purchased && (
-          <View style={styles.imgIconWrap}>
-            <Icon name='image' color='grey' size={50} />
-          </View>
-        )}
-
-        {hasContent && (
-          <View style={shared.innerPad}>
-            <Typography color={props.isMe ? theme.white : theme.text} size={16}>
-              {message_content}
+            <Typography
+              size={12}
+              color={theme.white}
+              bg={theme.accent}
+              fw='500'
+              style={{ ...styles.satStats }}
+            >{`${amt} sat`}</Typography>
+            <Typography
+              size={12}
+              color={theme.white}
+              bg={theme.secondary}
+              fw='500'
+              style={{ ...styles.satStats, opacity: sold ? 1 : 0 }}
+            >
+              Purchased
             </Typography>
           </View>
         )}
 
-        {showBoostRow && <BoostRow {...props} pad myAlias={props.myAlias} />}
-      </TouchableOpacity>
-      {showPurchaseButton && (
-        <Button style={styles.payButton} mode='contained' dark={true} onPress={onButtonPressHandler} loading={buying} icon={purchased ? 'check' : 'arrow-top-right'}>
-          <Text style={{ fontSize: 11 }}>{purchased ? 'Purchased' : `Pay ${amt} sat`}</Text>
-        </Button>
-      )}
-    </View>
-  )
+        {showPurchaseButton && (
+          <>
+            {purchased ? (
+              <View style={{ ...styles.purchasedWrap, backgroundColor: theme.main }}>
+                <MaterialCommunityIcon
+                  name={purchased ? 'check' : 'arrow-top-right'}
+                  color={theme.dark ? theme.white : theme.icon}
+                  size={20}
+                  style={{ paddingRight: 8 }}
+                />
+                <Typography size={15} style={{ paddingRight: 10 }}>
+                  {purchased ? 'Purchased' : `Pay ${amt} sat`}
+                </Typography>
+              </View>
+            ) : (
+              <Button
+                color={theme.dark ? theme.primary : theme.main}
+                round={0}
+                onPress={onButtonPressHandler}
+                loading={buying}
+                icon={() => (
+                  <MaterialCommunityIcon
+                    name={purchased ? 'check' : 'arrow-top-right'}
+                    color={theme.dark ? theme.white : theme.icon}
+                    size={18}
+                  />
+                )}
+              >
+                <Typography size={12}>{`Pay ${amt} sat`}</Typography>
+              </Button>
+            )}
+          </>
+        )}
+        <PhotoViewer
+          visible={mediaModal}
+          close={() => setMediaModal(false)}
+          // photos={photos}
+          photos={photos && photos.filter(m => m.id === selectedMedia)}
+          // initialIndex={photos && photos.findIndex(m => m.id === selectedMedia)}
+          initialIndex={0}
+          chat={chat}
+        />
+      </View>
+    )
+  })
+}
+
+function Viewer(props) {
+  return useMemo(() => <PhotoViewer {...props} />, [props.visible])
 }
 
 function Media({ type, data, uri, filename }) {
-  // console.log("MEDIA:",type,uri)
-  if (type === 'sphinx/text') return <></>
+  if (type === 'n2n2/text') {
+    return <FileMsg type={type} uri={uri} filename={filename} />
+  }
   if (type.startsWith('image')) {
-    return <Image style={styles.img} resizeMode='cover' source={{ uri: uri || data }} />
+    return (
+      <FastImage style={styles.photo} resizeMode='cover' source={{ uri: uri || data }} />
+    )
   }
   if (type.startsWith('audio')) {
     return <AudioPlayer source={uri || data} />
@@ -177,9 +276,9 @@ function Media({ type, data, uri, filename }) {
   if (type.startsWith('video') && uri) {
     return <VideoPlayer uri={{ uri }} />
   }
-  return <FileMsg type={type} uri={uri} filename={filename} />
 }
 
+// video player component
 function VideoPlayer(props) {
   const { ui } = useStores()
   function onEnd() {}
@@ -202,36 +301,29 @@ function VideoPlayer(props) {
           zIndex: 100
         }}
       />
-      <IconButton icon='play' size={55} color='white' style={{ position: 'absolute', top: 50, left: 50, zIndex: 101 }} onPress={onPlay} />
+      <IconButton
+        icon='play'
+        size={55}
+        color='white'
+        style={{ position: 'absolute', top: 50, left: 50, zIndex: 101 }}
+        onPress={onPlay}
+      />
     </>
   )
 }
 
 const styles = StyleSheet.create({
   wrap: {
-    // flex:1,
+    // flex: 1,
     width: 200,
-    // minHeight:200,
+    // minHeight: 200,
     display: 'flex',
     justifyContent: 'flex-end',
     paddingTop: 30
   },
-  img: {
+  photo: {
     width: 200,
     height: 200
-  },
-  payButton: {
-    backgroundColor: '#4AC998',
-    width: '100%',
-    borderRadius: 5,
-    borderTopLeftRadius: 0,
-    borderTopRightRadius: 0,
-    height: 38,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center'
-    // position:'absolute',
-    // bottom:0,
   },
   stats: {
     position: 'absolute',
@@ -241,39 +333,30 @@ const styles = StyleSheet.create({
     right: 0,
     display: 'flex',
     flexDirection: 'row',
-    padding: 7,
+    // ...shared.innerPad,
+    padding: 10,
     justifyContent: 'space-between'
   },
   satStats: {
-    color: 'white',
-    backgroundColor: '#55D1A9',
     paddingLeft: 8,
     paddingRight: 8,
     paddingTop: 2,
     paddingBottom: 2,
     position: 'relative',
     zIndex: 9,
-    fontSize: 12,
-    fontWeight: 'bold',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 4
+    borderRadius: 4,
+    overflow: 'hidden'
   },
   paidAttachmentText: {
     width: '100%',
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'flex-end',
-    paddingLeft: 10,
-    paddingBottom: 13,
-    paddingTop: 13
-  },
-  payToUnlockMessage: {
-    fontSize: 12,
-    fontWeight: 'bold',
-    minHeight: 18
+    justifyContent: 'center',
+    alignItems: 'center',
+    ...shared.innerPad
   },
   loading: {
     width: 200,
@@ -300,5 +383,22 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center'
+  },
+  purchasedWrap: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    ...shared.innerPad
+  },
+  msgContentWrap: {
+    width: 200,
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    flexWrap: 'nowrap',
+    ...shared.innerPad
+    // paddingTop: shared.innerPad.paddingTop,
+    // paddingBottom: shared.innerPad.paddingBottom
   }
 })

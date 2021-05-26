@@ -1,15 +1,31 @@
 import React from 'react'
-import { StyleSheet, View, Text } from 'react-native'
+import { StyleSheet } from 'react-native'
 import { TextInput } from 'react-native-paper'
 
 import { useTheme } from '../../../store'
+import InputAccessoryView from '../../common/Accessories/InputAccessoryView'
+import Typography from '../../common/Typography'
 
-export default function TheTextInput({ mode, name, label, required, error, handleChange, handleBlur, value, displayOnly, accessibilityLabel, multiline, numberOfLines, style }) {
+export default function TheTextInput({
+  mode,
+  name,
+  label,
+  required,
+  error,
+  handleChange,
+  handleBlur,
+  value,
+  displayOnly,
+  accessibilityLabel,
+  multiline,
+  numberOfLines,
+  style
+}) {
   const theme = useTheme()
   let lab = `${label.en}${required ? ' *' : ''}`
-  if (error) {
-    lab = `${label.en} - ${error}`
-  }
+  // if (error) {
+  //   lab = `${label.en} - ${error}`
+  // }
 
   if (displayOnly) lab = label.en
 
@@ -23,12 +39,17 @@ export default function TheTextInput({ mode, name, label, required, error, handl
 
   return (
     <>
-      <Text style={{ color: theme.text }}>{lab}</Text>
+      <Typography size={14}>{lab}</Typography>
       <TextInput
         mode={mode}
         accessibilityLabel={accessibilityLabel}
         error={error}
-        style={{ ...styles.inputStyles, ...style, backgroundColor: theme.bg, ...inputStyles }}
+        style={{
+          ...styles.inputStyles,
+          ...style,
+          backgroundColor: theme.bg,
+          ...inputStyles
+        }}
         onChangeText={handleChange(name)}
         onBlur={handleBlur(name)}
         value={value}
@@ -37,7 +58,9 @@ export default function TheTextInput({ mode, name, label, required, error, handl
         multiline={multiline}
         numberOfLines={numberOfLines}
         textAlignVertical='auto'
+        inputAccessoryViewID={name}
       />
+      <InputAccessoryView nativeID={name} />
     </>
   )
 }
@@ -55,6 +78,7 @@ TheTextInput.defaultProps = {
 
 const styles = StyleSheet.create({
   inputStyles: {
-    marginBottom: 25
+    marginBottom: 35,
+    textAlign: 'auto'
   }
 })

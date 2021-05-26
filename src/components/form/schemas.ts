@@ -71,9 +71,7 @@ const inviteFriend = [
     name: 'welcome_message',
     type: 'text',
     label: { en: 'Welcome Message', es: 'Nombre' },
-    required: false,
-    numberOfLines: 3,
-    multiline: true
+    required: false
   }
 ]
 
@@ -132,23 +130,23 @@ const tribe = [
     validator: Yup.string().required(rq)
   },
   {
-    name: 'img',
-    type: 'photoURI',
-    label: { en: 'Group Image', es: 'Group Image' }
-  },
-  {
     name: 'description',
     type: 'text',
     label: { en: 'Description', es: 'Description' },
     required: true,
     validator: Yup.string().required(rq)
   },
-  {
-    name: 'tags',
-    type: 'tags',
-    label: { en: 'Tags', es: 'Tags' },
-    validator: Yup.array()
-  },
+  // {
+  //   name: 'img',
+  //   type: 'photo',
+  //   label: { en: 'Group Image', es: 'Group Image' }
+  // },
+  // {
+  //   name: 'tags',
+  //   type: 'tags',
+  //   label: { en: 'Tags', es: 'Tags' },
+  //   validator: Yup.array()
+  // },
   {
     name: 'price_to_join',
     type: 'number',
@@ -172,29 +170,30 @@ const tribe = [
     type: 'number',
     label: { en: 'Amount to Stake', es: 'Amount to Stake' },
     validator: Yup.number(),
-    description: 'A spam protection mechanism: every subscriber pays this fee for each message, which is returned to them after after the amount of hours specific in Escrow Time'
+    description:
+      'A spam protection mechanism: every subscriber pays this fee for each message, which is returned to them after after the amount of hours specific in Escrow Time'
   },
   {
     name: 'escrow_time',
     type: 'number',
     label: { en: 'Time to Stake (Hours)', es: 'Time to Stake (Hours)' },
     validator: Yup.number(),
-    description: 'The number of hours before the Escrow Amount is returned to the subscriber'
-  },
-
-  {
-    name: 'unlisted',
-    type: 'radio',
-    // inverted:true,
-    label: { en: 'Unlisted (do not show on tribes registry)' },
-    required: false
-  },
-  {
-    name: 'is_private',
-    type: 'radio',
-    label: { en: 'Private (requires permission to join)' },
-    required: false
+    description:
+      'The number of hours before the Escrow Amount is returned to the subscriber'
   }
+  // {
+  //   name: 'unlisted',
+  //   type: 'radio',
+  //   // inverted:true,
+  //   label: { en: 'Unlisted (do not show on tribes registry)' },
+  //   required: false
+  // },
+  // {
+  //   name: 'is_private',
+  //   type: 'radio',
+  //   label: { en: 'Private (requires permission to join)' },
+  //   required: false
+  // }
 ]
 
 export { contact, me, pubKey, tribe, subscribe, inviteFriend }

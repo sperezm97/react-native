@@ -1,13 +1,12 @@
-import React, { useRef, useEffect, useState } from 'react'
+import React, { useRef, useEffect } from 'react'
 import { AppState } from 'react-native'
 
 import { useStores } from '../store'
+import APNManager from '../store/contexts/apn'
 import { initPicSrc } from './utils/picSrc'
-import * as push from './push'
 import * as rsa from '../crypto/rsa'
-// import * as BadgeAndroid from "react-native-android-badge";
 import EE, { RESET_IP, RESET_IP_FINISHED } from './utils/ee'
-import { check, VersionDialog } from './checkVersion'
+import { check } from './checkVersion'
 import Navigation from './Navigation'
 
 async function createPrivateKeyIfNotExists(contacts) {
@@ -20,20 +19,8 @@ async function createPrivateKeyIfNotExists(contacts) {
   })
 }
 
-let pushToken = ''
-// push.configure(
-//   (t) => {
-//     console.log("PUSH TOKEN:", t && t.token);
-//     pushToken = t.token;
-//   },
-//   (n) => {
-//     // console.log("ON FINISH",n)
-//   }
-// );
-
 export default function Main() {
-  const [showVersionDialog, setShowVersionDialog] = useState(false)
-  const { contacts, msg, details, user, meme, ui } = useStores()
+  const { contacts, msg, details, meme, ui } = useStores()
   const appState = useRef(AppState.currentState)
 
   useEffect(() => {
@@ -64,8 +51,7 @@ export default function Main() {
   }
 
   async function checkVersion() {
-    const showDialog = await check()
-    if (showDialog) setShowVersionDialog(true)
+    await check()
   }
 
   async function loadHistory() {
@@ -83,14 +69,8 @@ export default function Main() {
   useEffect(() => {
     ;(async () => {
       loadHistory()
-      checkVersion()
-
+      // checkVersion()
       initPicSrc()
-
-      if ((pushToken && !user.deviceId) || user.deviceId !== pushToken) {
-        user.registerMyDeviceId(pushToken)
-      }
-
       createPrivateKeyIfNotExists(contacts)
     })()
 
@@ -100,15 +80,11 @@ export default function Main() {
     }
   }, [])
 
-  function onCloseVersionDialog() {
-    setShowVersionDialog(false)
-  }
-
   return (
     <>
-      <Navigation />
-
-      {/* <VersionDialog showVersionDialog={showVersionDialog} onCloseVersionDialog={onCloseVersionDialog} /> */}
+      <APNManager>
+        <Navigation />
+      </APNManager>
     </>
   )
 }

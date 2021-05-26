@@ -25,5 +25,6 @@ export const DEFAULT_HUB_API = config.hub.api
 export const DEFAULT_TRIBE_SERVER = config.tribes.server
 export const DEFAULT_MEME_SERVER = config.memes.server
 export const DEFAULT_AUTH_SERVER = config.auth.server
+export const INVITER_KEY = config.inviter.key
 
 export default config

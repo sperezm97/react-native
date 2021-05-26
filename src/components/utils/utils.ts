@@ -1,4 +1,7 @@
 import { decode as atob } from 'base-64'
+import { Dimensions, Platform } from 'react-native'
+
+import tags from './tags.json'
 
 const base64Fields = ['imgurl']
 
@@ -17,4 +20,27 @@ export function jsonFromUrl(url): { [k: string]: any } {
     }
   })
   return result
+}
+
+export function getTags(num = 6) {
+  const newTags = []
+  for (let i = 0; i < num; i++) {
+    const random = Math.floor(Math.random() * tags.length)
+
+    if (newTags.indexOf(tags[random]) !== -1) {
+      continue
+    }
+
+    newTags.push(tags[random])
+  }
+
+  return newTags
+}
+
+export function isIphoneXorAbove() {
+  const d = Dimensions.get('window')
+  return (
+    Platform.OS === 'ios' &&
+    (d.height === 812 || d.width === 812 || d.height === 896 || d.width === 896)
+  )
 }

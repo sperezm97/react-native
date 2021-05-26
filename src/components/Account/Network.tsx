@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, View, Text } from 'react-native'
 import { TextInput } from 'react-native-paper'
+import Clipboard from '@react-native-community/clipboard'
+import Toast from 'react-native-simple-toast'
 
 import { useStores, useTheme } from '../../store'
+import { TOAST_DURATION } from '../../constants'
 import BackHeader from '../common/BackHeader'
 import InputAccessoryView from '../common/Accessories/InputAccessoryView'
+import Typography from '../common/Typography'
 
 export default function Network() {
   const [serverURL, setServerURL] = useState('')
@@ -27,6 +31,11 @@ export default function Network() {
     setLoading(false)
   }
 
+  function handlePress() {
+    Clipboard.setString(user.authToken)
+    Toast.showWithGravity('Token Copied.', TOAST_DURATION, Toast.CENTER)
+  }
+
   return (
     <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
       <BackHeader title='Network' />
@@ -37,12 +46,16 @@ export default function Network() {
           placeholder='Server URL'
           value={serverURL}
           onChangeText={serverURLchange}
-          style={{ height: 50, backgroundColor: theme.bg }}
+          style={{ height: 50, textAlign: 'auto', backgroundColor: theme.bg }}
           placeholderTextColor={theme.placeholder}
           underlineColor={theme.border}
         />
 
         <InputAccessoryView nativeID={nativeID} done={saveServerURL} />
+
+        <View style={{ marginTop: 20 }}>
+          <Typography onPress={handlePress}>{user.authToken}</Typography>
+        </View>
       </View>
     </View>
   )
@@ -54,7 +67,7 @@ const styles = StyleSheet.create({
   },
   content: {
     marginTop: 40,
-    paddingRight: 14,
-    paddingLeft: 14
+    paddingRight: 18,
+    paddingLeft: 18
   }
 })

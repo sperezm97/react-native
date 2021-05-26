@@ -2,10 +2,10 @@ import React from 'react'
 import { TouchableOpacity, Text, StyleSheet, Image, View, Linking } from 'react-native'
 import RNUrlPreview from 'react-native-url-preview'
 
+import { useTheme } from '../../../store'
+import { useParsedGiphyMsg } from '../../../store/hooks/msg'
 import { DEFAULT_DOMAIN } from '../../../config'
 import shared from './sharedStyles'
-import { useParsedGiphyMsg } from '../../../store/hooks/msg'
-import { useTheme } from '../../../store'
 import ClipMessage from './clipMsg'
 import BoostMessage from './boostMsg'
 import BoostRow from './boostRow'
@@ -15,7 +15,10 @@ import Typography from '../../common/Typography'
 export default function TextMsg(props) {
   const theme = useTheme()
   const { message_content } = props
-  const isLink = message_content && (message_content.toLowerCase().startsWith('http://') || message_content.toLowerCase().startsWith('https://'))
+  const isLink =
+    message_content &&
+    (message_content.toLowerCase().startsWith('http://') ||
+      message_content.toLowerCase().startsWith('https://'))
 
   function openLink() {
     Linking.openURL(message_content)
@@ -29,14 +32,27 @@ export default function TextMsg(props) {
   if (isGiphy) {
     const { url, aspectRatio, text } = useParsedGiphyMsg(message_content)
     return (
-      <TouchableOpacity style={{ ...styles.column, maxWidth: 200 }} onLongPress={onLongPressHandler}>
-        <Image source={{ uri: url }} style={{ width: 200, height: 200 / (aspectRatio || 1) }} resizeMode={'cover'} />
+      <TouchableOpacity
+        style={{ ...styles.column, maxWidth: 200 }}
+        onLongPress={onLongPressHandler}
+      >
+        <Image
+          source={{ uri: url }}
+          style={{ width: 200, height: 200 / (aspectRatio || 1) }}
+          resizeMode={'cover'}
+        />
         {(text ? true : false) && (
-          <Typography color={props.isMe ? theme.white : theme.text} size={16} styles={styles.textPad}>
+          <Typography
+            color={props.isMe ? theme.white : theme.text}
+            size={16}
+            styles={styles.textPad}
+          >
             {text}
           </Typography>
         )}
-        {showBoostRow && <BoostRow {...props} myAlias={props.myAlias} pad marginTop={14} />}
+        {showBoostRow && (
+          <BoostRow {...props} myAlias={props.myAlias} pad marginTop={14} />
+        )}
       </TouchableOpacity>
     )
   }
@@ -46,7 +62,7 @@ export default function TextMsg(props) {
     return (
       <View style={styles.column}>
         <ClipMessage {...props} />
-        {showBoostRow && <BoostRow {...props} myAlias={props.myAlias} pad marginTop={8} />}
+        {showBoostRow && <BoostRow {...props} myAlias={props.myAlias} pad />}
       </View>
     )
   }
@@ -55,28 +71,33 @@ export default function TextMsg(props) {
     return <BoostMessage {...props} />
   }
 
-  const isTribe = message_content && message_content.startsWith(`${DEFAULT_DOMAIN}://?action=tribe`)
+  const isTribe =
+    message_content && message_content.startsWith(`${DEFAULT_DOMAIN}://?action=tribe`)
   if (isTribe) {
     return <TribeMsg {...props} />
   }
 
   return (
-    <TouchableOpacity style={isLink ? { width: 280, paddingLeft: 7, minHeight: 72 } : shared.innerPad} onLongPress={onLongPressHandler}>
+    <TouchableOpacity
+      activeOpacity={0.8}
+      style={isLink ? { width: 280, paddingLeft: 7, minHeight: 72 } : shared.innerPad}
+      onLongPress={onLongPressHandler}
+    >
       {isLink ? (
         <View style={styles.linkWrap}>
           <TouchableOpacity onPress={openLink}>
-            <Typography color={props.isMe ? theme.white : theme.blue} size={16}>
+            <Typography color={theme.text} size={15}>
               {message_content}
             </Typography>
           </TouchableOpacity>
           <RNUrlPreview {...linkStyles(theme)} text={message_content} />
         </View>
       ) : (
-        <Typography color={props.isMe ? theme.white : theme.text} size={16}>
+        <Typography color={theme.text} size={15}>
           {message_content}
         </Typography>
       )}
-      {showBoostRow && <BoostRow {...props} myAlias={props.myAlias} marginTop={8} />}
+      {showBoostRow && <BoostRow {...props} myAlias={props.myAlias} />}
     </TouchableOpacity>
   )
 }

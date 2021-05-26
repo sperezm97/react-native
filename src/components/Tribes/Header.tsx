@@ -1,14 +1,12 @@
 import React from 'react'
-import { View, StyleSheet, TouchableOpacity, Text } from 'react-native'
-import { Appbar, IconButton, ActivityIndicator } from 'react-native-paper'
+import { View, StyleSheet } from 'react-native'
+import { Appbar, IconButton } from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native'
 import { useObserver } from 'mobx-react-lite'
-import Toast from 'react-native-simple-toast'
-import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons'
+import FeatherIcon from 'react-native-vector-icons/Feather'
 
 import { useStores, useTheme } from '../../store'
 import Pushable from '../common/Pushable'
-import Button from '../common/Button'
 import Typography from '../common/Typography'
 
 export default function Header({}) {
@@ -21,13 +19,24 @@ export default function Header({}) {
       <Appbar.Header style={{ ...styles.appBar, backgroundColor: theme.bg }}>
         <View style={{ ...styles.flex, ...styles.content }}>
           <View style={{ ...styles.flex, ...styles.left }}>
-            <Typography color={theme.text} size={28} fw='500' ls={1.5}>
-              Communities
+            <Typography size={25} fw='500'>
+              My Communities
             </Typography>
           </View>
           <View style={{ ...styles.flex, ...styles.right }}>
-            <Pushable onPress={() => console.log('Pressed')}>
-              <IconButton icon='plus' color={theme.primary} size={24} style={{ backgroundColor: theme.lightGrey }} />
+            <IconButton
+              icon={() => <FeatherIcon name='search' color={theme.primary} size={18} />}
+              size={24}
+              style={{ backgroundColor: theme.lightGrey, marginRight: 12 }}
+              onPress={() => navigation.navigate('DiscoverTribes')}
+            />
+            <Pushable onPress={() => ui.setNewTribeModal(true)}>
+              <IconButton
+                icon='plus'
+                color={theme.primary}
+                size={24}
+                style={{ backgroundColor: theme.lightGrey }}
+              />
             </Pushable>
           </View>
         </View>
@@ -50,7 +59,7 @@ const styles = StyleSheet.create({
     width: '100%'
   },
   left: {
-    marginLeft: 12
+    marginLeft: 10
   },
   right: {
     marginRight: 2

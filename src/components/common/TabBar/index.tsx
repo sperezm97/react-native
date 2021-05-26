@@ -5,8 +5,14 @@ import { useNavigation, useRoute } from '@react-navigation/native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import AntDesignIcon from 'react-native-vector-icons/AntDesign'
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
+import MaterialIcon from 'react-native-vector-icons/AntDesign'
+import Ionicon from 'react-native-vector-icons/Ionicons'
+
+// import { ifIphoneX, } from 'react-native-iphone-x-helper'
+import { isIphoneX, getBottomSpace } from 'react-native-iphone-x-helper'
 
 import { useTheme } from '../../../store'
+import { isIphoneXorAbove } from '../../utils/utils'
 import Pushable from '../Pushable'
 import Icon from '../Icon'
 
@@ -26,12 +32,12 @@ export default function TabBar() {
     },
     {
       name: 'Chats',
-      icon: 'chat',
+      icon: color => <Ionicon name='chatbubbles-outline' color={color} size={24} />,
       key: 'chats'
     },
     {
       name: 'Tribes',
-      icon: color => <FontAwesome5Icon name='users' color={color} size={18} />,
+      icon: color => <FontAwesome5Icon name='users' color={color} size={20} />,
       key: 'tribes'
     },
     {
@@ -48,8 +54,14 @@ export default function TabBar() {
 
   return useObserver(() => {
     return (
-      <View style={{ ...styles.wrap, backgroundColor: theme.bg, borderTopColor: theme.border }}>
-        <View style={{ ...styles.tabBar, height: 40 + insets.bottom }}>
+      <View
+        style={{
+          ...styles.wrap,
+          backgroundColor: theme.bg,
+          borderTopColor: theme.border
+        }}
+      >
+        <View style={{ ...styles.tabBar }}>
           {routes.map(route => {
             return (
               <Pushable
@@ -58,7 +70,14 @@ export default function TabBar() {
                   navigation.navigate(route.name)
                 }}
               >
-                <View style={{ ...styles.iconWrap, width: tabbarWidth / 5, height: 40 + insets.bottom }}>{renderIcon(route, current, theme)}</View>
+                <View
+                  style={{
+                    ...styles.iconWrap,
+                    width: tabbarWidth / 5
+                  }}
+                >
+                  {renderIcon(route, current, theme)}
+                </View>
               </Pushable>
             )
           })}
@@ -76,11 +95,17 @@ function renderIcon(route, current, theme) {
       {iconElement ? (
         <>{route.icon(route.name === current.name ? theme.primary : theme.icon)}</>
       ) : (
-        <Icon name={route.name} color={route.name === current.name ? theme.primary : theme.icon} size={24} />
+        <Icon
+          name={route.name}
+          color={route.name === current.name ? theme.primary : theme.icon}
+          size={24}
+        />
       )}
     </>
   )
 }
+
+// console.log(isIphoneX())
 
 const styles = StyleSheet.create({
   wrap: {
@@ -89,12 +114,22 @@ const styles = StyleSheet.create({
   tabBar: {
     flexDirection: 'row',
     alignItems: 'center',
-    height: 60,
     paddingLeft: 16,
-    paddingRight: 16
+    paddingRight: 16,
+    height: isIphoneX() ? 50 + getBottomSpace() : 60
+    // ...ifIphoneX({
+    // height: 50 + getBottomSpace()
+    // })
+    // height: 60 + getBottomSpace()
+    // height: isIphoneXorAbove() ? 80 : 60
   },
   iconWrap: {
-    height: 40,
+    height: isIphoneX() ? 50 + getBottomSpace() : 60,
+    // ...ifIphoneX({
+    //   height: 50 + getBottomSpace()
+    // }),
+    // height: 60 + getBottomSpace(),
+    // height: isIphoneXorAbove() ? 80 : 60,
     alignItems: 'center',
     justifyContent: 'center'
   },

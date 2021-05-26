@@ -1,10 +1,52 @@
 import React from 'react'
 import { Text } from 'react-native'
 
-export default function Typography(props) {
-  const { children, style, color, size, fw, ls } = props
+import { useTheme } from '../../../store'
 
-  return <Text style={{ ...style, color, fontSize: size, fontWeight: fw, letterSpacing: ls }}>{children}</Text>
+export default function Typography(props) {
+  const theme = useTheme()
+
+  let {
+    children,
+    style,
+    color = theme.text,
+    bg,
+    size,
+    fw,
+    ls = 0.5,
+    lh,
+    numberOfLines,
+    allowFontScaling,
+    onPress
+  } = props
+
+  let lineHeight = 20
+  if (size >= 15 && size < 20) {
+    lineHeight = 26
+  } else if (size >= 20) {
+    lineHeight = 40
+  } else {
+    lineHeight = 20
+  }
+
+  return (
+    <Text
+      allowFontScaling={allowFontScaling}
+      onPress={onPress}
+      style={{
+        ...style,
+        color,
+        backgroundColor: bg,
+        fontSize: size,
+        fontWeight: fw,
+        letterSpacing: ls,
+        lineHeight: lh ? lh : lineHeight
+      }}
+      numberOfLines={numberOfLines}
+    >
+      {children}
+    </Text>
+  )
 }
 
 Typography.defaultProps = {}

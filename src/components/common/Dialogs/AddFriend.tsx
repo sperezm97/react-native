@@ -1,7 +1,7 @@
 import React from 'react'
 import { useObserver } from 'mobx-react-lite'
 import { IconButton } from 'react-native-paper'
-import AntDesign from 'react-native-vector-icons/AntDesign'
+import AntDesignIcon from 'react-native-vector-icons/AntDesign'
 
 import { useStores, useTheme } from '../../../store'
 import Menu from '../ActionSheet/Menu'
@@ -29,7 +29,15 @@ export default function AddFriend() {
     },
     {
       title: 'Already on N2N2',
-      thumbIcon: <IconButton icon={({ size, color }) => <AntDesign name='adduser' color={color} size={size} />} color={theme.white} size={18} />,
+      thumbIcon: (
+        <IconButton
+          icon={({ size, color }) => (
+            <AntDesignIcon name='adduser' color={color} size={size} />
+          )}
+          color={theme.white}
+          size={18}
+        />
+      ),
       description: 'Add to your contact',
       thumbBgColor: theme.primary,
       action: () => {
@@ -41,5 +49,7 @@ export default function AddFriend() {
     }
   ]
 
-  return useObserver(() => <Menu visible={ui.addFriendDialog} items={items} onCancel={close} />)
+  return useObserver(() => (
+    <Menu visible={ui.addFriendDialog} items={items} onCancel={close} />
+  ))
 }

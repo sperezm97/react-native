@@ -2,17 +2,29 @@ import { useState } from 'react'
 import moment, { months } from 'moment'
 
 import { useStores } from '../index'
-import { DEFAULT_DOMAIN } from '../../config'
+import { DEFAULT_DOMAIN, INVITER_KEY } from '../../config'
 import { Chat } from '../chats'
 import { Contact } from '../contacts'
 import { constants } from '../../constants'
 
 export function useChats() {
-  const { chats, msg, contacts, ui } = useStores()
-  const theChats = allChats(chats.chats, contacts.contacts)
-  const chatsToShow = filterChats(theChats, ui.searchTerm)
+  const { chats, msg, contacts, user } = useStores()
+  const theChats = allChats(chats.chats, contacts.contacts, user)
+  const chatsToShow = theChats
   sortChats(chatsToShow, msg.messages)
 
+  return chatsToShow
+}
+
+export function useSearchChats(chats) {
+  const { ui } = useStores()
+  const conversation = constants.chat_types.conversation
+
+  chats = chats.filter(c => {
+    return c.type === conversation && c.name !== 'N2N2 Root'
+  })
+
+  const chatsToShow = searchChats(chats, ui.searchTerm)
   return chatsToShow
 }
 
@@ -45,33 +57,6 @@ function lastMessageDate(msg) {
     nextWeek: 'dddd',
     sameElse: 'L'
   })
-
-  // const diff = moment(new Date()).utc().diff(msg.date, 'days')
-
-  // if (diff === 0) {
-  //   return moment(msg.date).format('hh:mm A')
-  // } else {
-  //   const yesterday = moment().utc().add(-24, 'hours')
-  //   const isYesterday = moment(msg.date || new Date())
-  //     .utc()
-  //     .isBefore(yesterday)
-
-  //   if (isYesterday) {
-  //     return moment(msg.date).calendar(null, {
-  //       lastDay: '[Yesterday]',
-  //       sameDay: '[Today]',
-  //       nextDay: '[Tomorrow]',
-  //       lastWeek: '[last] dddd',
-  //       nextWeek: 'dddd',
-  //       sameElse: 'L'
-  //     })
-  //     // return moment(msg.date).format('dddd')
-  //   } else {
-  //     return moment(msg.date).format('dddd')
-  //   }
-  // }
-
-  // return moment(msg.date).format('dd MMM DD, hh:mm A')
 }
 
 function lastMessageText(msg) {
@@ -87,7 +72,8 @@ function lastMessageText(msg) {
     if (msg.message_content.startsWith('giphy::')) return 'GIF ' + verb
     if (msg.message_content.startsWith('clip::')) return 'Clip ' + verb
     if (msg.message_content.startsWith('boost::')) return 'Boost ' + verb
-    if (msg.message_content.startsWith(`${DEFAULT_DOMAIN}://?action=tribe`)) return 'Tribe Link ' + verb
+    if (msg.message_content.startsWith(`${DEFAULT_DOMAIN}://?action=tribe`))
+      return 'Tribe Link ' + verb
     if (msg.message_content.startsWith('https://jitsi.sphinx.chat/')) return 'Join Call'
     return msg.message_content
   }
@@ -124,7 +110,7 @@ const conversation = constants.chat_types.conversation
 const group = constants.chat_types.conversation
 const expiredInvite = constants.invite_statuses.expired
 
-export function allChats(chats: Chat[], contacts: Contact[]): Chat[] {
+export function allChats(chats: Chat[], contacts: Contact[], user): Chat[] {
   const groupChats = chats.filter(c => c.type !== conversation).map(c => ({ ...c }))
   const conversations = []
   contacts.forEach(contact => {
@@ -148,8 +134,19 @@ export function allChats(chats: Chat[], contacts: Contact[]): Chat[] {
       }
     }
   })
-  const convs = conversations.filter(c => !(c.invite && c.invite.status === expiredInvite))
+  const convs = conversations.filter(
+    c => !(c.invite && c.invite.status === expiredInvite)
+  )
   const all = groupChats.concat(convs)
+
+  // return all.map(chat => {
+  //   return {
+  //     ...chat,
+  //     joined: true,
+  //     owner: chat.owner_pubkey === user.publicKey
+  //   }
+  // })
+
   return all
 }
 
@@ -178,9 +175,11 @@ export function sortChats(chatsToShow, messages) {
   })
 }
 
-export function filterChats(theChats, searchTerm) {
+export function searchChats(theChats, searchTerm) {
   return theChats.filter(c => {
     if (!searchTerm) return true
-    return (c.invite ? true : false) || c.name.toLowerCase().includes(searchTerm.toLowerCase())
+    return (
+      (c.invite ? true : false) || c.name.toLowerCase().includes(searchTerm.toLowerCase())
+    )
   })
 }

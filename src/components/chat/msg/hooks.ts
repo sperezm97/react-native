@@ -12,13 +12,13 @@ let dirs = RNFetchBlob.fs.dirs
 
 export function useCachedEncryptedFile(props, ldat) {
   const { meme } = useStores()
-  const { id, media_key, media_type, media_token } = props
+  const { id, media_key, media_type, media_token, message_content } = props
 
   const [data, setData] = useState('')
   const [uri, setURI] = useState('')
   const [loading, setLoading] = useState(false)
   const [paidMessageText, setPaidMessageText] = useState(null)
-  const isPaidMessage = media_type === 'sphinx/text'
+  const isPaidMessage = media_type === 'n2n2/text'
 
   function dispose() {
     RNFetchBlob.session(sess)
@@ -88,7 +88,11 @@ export function useCachedEncryptedFile(props, ldat) {
         }
 
         if (isPaidMessage) {
-          const txt = await aes.decryptFileAndSaveReturningContent(path, media_key, extension)
+          const txt = await aes.decryptFileAndSaveReturningContent(
+            path,
+            media_key,
+            extension
+          )
           setPaidMessageText(txt)
         } else {
           const newpath = await aes.decryptFileAndSave(path, media_key, extension)

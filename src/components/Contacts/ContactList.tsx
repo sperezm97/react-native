@@ -1,6 +1,6 @@
 import React from 'react'
 import { useObserver } from 'mobx-react-lite'
-import { StyleSheet, View, Text, TouchableOpacity, SectionList } from 'react-native'
+import { StyleSheet, View, TouchableOpacity, SectionList } from 'react-native'
 import { SwipeRow } from 'react-native-swipe-list-view'
 import { IconButton } from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native'
@@ -8,8 +8,9 @@ import { useNavigation } from '@react-navigation/native'
 import { useStores, useTheme } from '../../store'
 import { usePicSrc } from '../utils/picSrc'
 import Avatar from '../common/Avatar'
+import Typography from '../common/Typography'
 
-export default function ContactList() {
+export default function ContactList({ listHeader }) {
   const navigation = useNavigation()
   const { ui, contacts } = useStores()
   const theme = useTheme()
@@ -19,24 +20,34 @@ export default function ContactList() {
       if (!ui.contactsSearchTerm) return true
       return c.alias.toLowerCase().includes(ui.contactsSearchTerm.toLowerCase())
     })
-    const contactsNotMe = contactsToShow.filter(c => c.id !== 1).sort((a, b) => (a.alias > b.alias ? 1 : -1))
+    const contactsNotMe = contactsToShow
+      .filter(c => c.id !== 1)
+      .sort((a, b) => (a.alias > b.alias ? 1 : -1))
 
     const contactsNotFromGroups = contactsNotMe.filter(c => !c.from_group)
 
     return (
-      <View style={{ ...styles.container, backgroundColor: theme.bg }}>
+      <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
         <SectionList
           style={styles.list}
           sections={grouper(contactsNotFromGroups)}
           keyExtractor={(item: { [k: string]: any }, index) => {
             return item.alias + index + item.photo_url
           }}
-          renderItem={({ item }) => <Item contact={item} onPress={contact => navigation.navigate('Contact', { contact })} />}
+          renderItem={({ item }) => (
+            <Item
+              contact={item}
+              onPress={contact => navigation.navigate('Contact', { contact })}
+            />
+          )}
           renderSectionHeader={({ section: { title } }) => (
             <View style={{ ...styles.section, backgroundColor: theme.main }}>
-              <Text style={{ ...styles.sectionTitle, color: theme.title }}>{title}</Text>
+              <Typography color={theme.title} fw='500'>
+                {title}
+              </Typography>
             </View>
           )}
+          ListHeaderComponent={listHeader}
         />
       </View>
     )
@@ -50,15 +61,30 @@ function Item({ contact, onPress }) {
   const hasImg = uri ? true : false
 
   return (
-    <SwipeRow disableRightSwipe={true} friction={100} rightOpenValue={-80} stopRightSwipe={-80}>
+    <SwipeRow
+      disableRightSwipe={true}
+      friction={100}
+      rightOpenValue={-80}
+      stopRightSwipe={-80}
+    >
       <View style={styles.backSwipeRow}>
-        <IconButton icon='trash-can-outline' color='white' size={25} onPress={() => contacts.deleteContact(contact.id)} style={{ marginRight: 20 }} />
+        <IconButton
+          icon='trash-can-outline'
+          color='white'
+          size={25}
+          onPress={() => contacts.deleteContact(contact.id)}
+          style={{ marginRight: 20 }}
+        />
       </View>
       <View style={{ ...styles.frontSwipeRow, backgroundColor: theme.bg }}>
-        <TouchableOpacity style={styles.contactTouch} activeOpacity={0.5} onPress={() => onPress(contact)}>
+        <TouchableOpacity
+          style={styles.contactTouch}
+          activeOpacity={0.5}
+          onPress={() => onPress(contact)}
+        >
           <Avatar size={40} aliasSize={16} alias={contact.alias} photo={uri} />
           <View style={styles.contactContent}>
-            <Text style={{ ...styles.contactName, color: theme.text }}>{contact.alias}</Text>
+            <Typography size={16}>{contact.alias}</Typography>
           </View>
         </TouchableOpacity>
       </View>
@@ -82,7 +108,7 @@ function grouper(data) {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  wrap: {
     flex: 1
   },
   list: {
@@ -95,9 +121,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center'
   },
-  sectionTitle: {
-    fontWeight: '600'
-  },
   contactTouch: {
     flex: 1,
     flexDirection: 'row',
@@ -107,11 +130,7 @@ const styles = StyleSheet.create({
   },
   contactContent: {
     flex: 1,
-    marginLeft: 10
-  },
-  contactName: {
-    fontSize: 16,
-    fontWeight: '500'
+    paddingLeft: 14
   },
   backSwipeRow: {
     backgroundColor: '#DB5554',
@@ -123,6 +142,6 @@ const styles = StyleSheet.create({
   frontSwipeRow: {
     flex: 1,
     height: 80,
-    paddingLeft: 12
+    paddingLeft: 14
   }
 })

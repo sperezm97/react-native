@@ -1,34 +1,52 @@
 import React from 'react'
-import { StyleSheet, View, Keyboard, InputAccessoryView as ReactInputAccessoryView } from 'react-native'
+import {
+  StyleSheet,
+  View,
+  Keyboard,
+  InputAccessoryView as ReactInputAccessoryView
+} from 'react-native'
 
 import { useTheme } from '../../../store'
 import Button from '../Button'
 
 export default function InputAccessoryView(props) {
-  const { nativeID, cancelText, doneText, cancel, done } = props
+  const { nativeID, cancelText, doneText } = props
   const theme = useTheme()
 
   function _cancel() {
     Keyboard.dismiss()
-    if (cancel === 'function') {
-      return cancel()
+    if (props.cancel) {
+      return props.cancel()
     }
   }
 
   function _done() {
     Keyboard.dismiss()
-    if (done === 'function') {
-      return done()
+    if (props.done) {
+      return props.done()
     }
   }
 
   return (
     <ReactInputAccessoryView nativeID={nativeID} backgroundColor={theme.bg}>
       <View style={styles.btnWrap}>
-        <Button onPress={_cancel} size='small' style={{ ...styles.button }} w='70%' round={0} color={theme.bg}>
+        <Button
+          onPress={_cancel}
+          size='small'
+          style={{ ...styles.button }}
+          w='70%'
+          round={0}
+          color={theme.bg}
+        >
           {cancelText}
         </Button>
-        <Button onPress={_done} size='small' style={{ ...styles.button }} w='30%' round={0}>
+        <Button
+          onPress={_done}
+          size='small'
+          style={{ ...styles.button }}
+          w='30%'
+          round={0}
+        >
           {doneText}
         </Button>
       </View>

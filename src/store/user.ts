@@ -29,6 +29,10 @@ class UserStore {
 
   @persist
   @observable
+  myid: number = 0
+
+  @persist
+  @observable
   alias: string = ''
 
   @persist
@@ -54,6 +58,7 @@ class UserStore {
   @action reset() {
     this.code = ''
     this.alias = ''
+    this.myid = 0
     this.publicKey = ''
     this.currentIP = ''
     this.authToken = ''
@@ -70,6 +75,16 @@ class UserStore {
   @action
   setOnboardStep(s) {
     this.onboardStep = s
+  }
+
+  @action
+  setDeviceId(deviceId) {
+    this.deviceId = deviceId
+  }
+
+  @action
+  setMyID(id) {
+    this.myid = id
   }
 
   @action
@@ -117,6 +132,7 @@ class UserStore {
     const ip = arr[2]
     const token = arr[3]
     this.setCurrentIP(ip)
+
     this.setAuthToken(token)
     console.log('RESTORE NOW!')
     api.instantiateRelay(
@@ -134,6 +150,7 @@ class UserStore {
   async registerMyDeviceId(device_id) {
     try {
       const r = await api.relay.put(`contacts/1`, { device_id })
+
       if (!r) return
       if (r.device_id) {
         this.deviceId = r.device_id
@@ -188,6 +205,8 @@ class UserStore {
 
   @action
   async generateToken(pwd: string) {
+    console.log('is  generating-------')
+
     if (api.relay === null && this.currentIP) {
       api.instantiateRelay(this.currentIP)
       await sleep(1)
@@ -199,6 +218,7 @@ class UserStore {
         token
       })
       if (!r) return console.log('=> FAILED TO REACH RELAY')
+      if (r.id) this.setMyID(r.id)
       this.authToken = token
       api.instantiateRelay(
         this.currentIP,

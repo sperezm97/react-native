@@ -99,6 +99,7 @@ export class ChatStore {
       }
       return c
     })
+
     this.chats = chats
   }
 
@@ -122,7 +123,6 @@ export class ChatStore {
 
   @action
   gotChat(chat: Chat) {
-    // console.log("====> GOT CHAT", chat)
     const existingIndex = this.chats.findIndex(ch => ch.id === chat.id)
     if (existingIndex > -1) {
       this.chats[existingIndex] = this.parseChat(chat)
@@ -143,7 +143,21 @@ export class ChatStore {
   }
 
   @action
-  async createTribe({ name, description, tags, img, price_per_message, price_to_join, escrow_amount, escrow_time, unlisted, is_private, app_url, feed_url }) {
+  async createTribe({
+    name,
+    description,
+    tags,
+    img,
+    price_per_message,
+    price_to_join,
+    escrow_amount,
+    escrow_time,
+    unlisted,
+    is_private,
+    app_url,
+    feed_url,
+    contact_ids = []
+  }) {
     console.log('======>', {
       name,
       description,
@@ -182,7 +196,21 @@ export class ChatStore {
   }
 
   @action
-  async editTribe({ id, name, description, tags, img, price_per_message, price_to_join, escrow_amount, escrow_time, unlisted, is_private, app_url, feed_url }) {
+  async editTribe({
+    id,
+    name,
+    description,
+    tags,
+    img,
+    price_per_message,
+    price_to_join,
+    escrow_amount,
+    escrow_time,
+    unlisted,
+    is_private,
+    app_url,
+    feed_url
+  }) {
     const r = await relay.put(`group/${id}`, {
       name,
       description,
@@ -198,6 +226,7 @@ export class ChatStore {
       app_url: app_url || '',
       feed_url: feed_url || ''
     })
+
     if (!r) return
     this.gotChat(r)
     return r
@@ -242,7 +271,6 @@ export class ChatStore {
       my_alias: my_alias || '',
       my_photo_url: my_photo_url || ''
     })
-    console.log('r from join tribe', r)
 
     if (!r) return
     this.gotChat(r)
@@ -344,7 +372,7 @@ export class ChatStore {
       const j = await r.json()
 
       this.tribes = j
-      return j
+      return true
     } catch (e) {
       console.log(e)
     }
@@ -395,14 +423,12 @@ export class ChatStore {
     if (!host || !url) return
     const theHost = host.includes('localhost') ? DEFAULT_TRIBE_SERVER : host
     try {
-      console.log('r  url', `https://${theHost}/podcast?url=${url}`)
       const r = await fetch(`https://${theHost}/podcast?url=${url}`)
-
       const j = await r.json()
 
       return j
     } catch (e) {
-      console.log(e)
+      console.log('error loading podcast', e)
       return null
     }
   }

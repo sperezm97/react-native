@@ -7,7 +7,7 @@ import { useStores, useTheme } from '../../../store'
 import { useAvatarColor } from '../../../store/hooks/msg'
 
 export default function Avatar(props) {
-  let { photo, alias, size, borderless } = props
+  let { style, photo, alias, size, avatarSize, borderless } = props
 
   const theme = useTheme()
   const [avatar, setAvatar] = useState({
@@ -38,7 +38,10 @@ export default function Avatar(props) {
   })
 
   useEffect(() => {
-    setAvatar({ ...avatar, newImage: avatar.randomImages[Math.floor(Math.random() * 3)].image })
+    setAvatar({
+      ...avatar,
+      newImage: avatar.randomImages[Math.floor(Math.random() * 3)].image
+    })
   }, [])
 
   const borderStyles = !borderless && {
@@ -54,8 +57,21 @@ export default function Avatar(props) {
     }
 
     return (
-      <View style={{ ...styles.avatar, height: size, width: size, borderRadius, opacity: props.hide ? 0 : 1 }}>
-        <FastImage source={{ uri: photo }} style={{ width: size, height: size, borderRadius }} resizeMode={FastImage.resizeMode.cover} />
+      <View
+        style={{
+          ...style,
+          ...styles.avatar,
+          height: size,
+          width: size,
+          borderRadius,
+          opacity: props.hide ? 0 : 1
+        }}
+      >
+        <FastImage
+          source={{ uri: photo }}
+          style={{ width: size, height: size, borderRadius }}
+          resizeMode={FastImage.resizeMode.cover}
+        />
       </View>
     )
   } else if (alias) {
@@ -68,6 +84,7 @@ export default function Avatar(props) {
     return (
       <View
         style={{
+          ...style,
           ...styles.aliasWrap,
           height: size,
           width: size,
@@ -89,8 +106,21 @@ export default function Avatar(props) {
     )
   } else {
     return (
-      <View style={{ ...styles.avatar, height: size, width: size, borderRadius, opacity: props.hide ? 0 : 1 }}>
-        <PaperAvatar.Image size={size} source={avatar.newImage} style={{ ...borderStyles, backgroundColor: 'transparent' }} />
+      <View
+        style={{
+          ...style,
+          ...styles.avatar,
+          height: size,
+          width: size,
+          borderRadius,
+          opacity: props.hide ? 0 : 1
+        }}
+      >
+        <PaperAvatar.Image
+          size={avatarSize ? avatarSize : size}
+          source={avatar.newImage}
+          style={{ ...borderStyles, backgroundColor: 'transparent' }}
+        />
       </View>
     )
   }
@@ -107,7 +137,7 @@ const styles = StyleSheet.create({
     borderWidth: 1
   },
   aliasWrap: {
-    marginLeft: 8,
+    // marginLeft: 8,
     backgroundColor: 'black',
     display: 'flex',
     alignItems: 'center',

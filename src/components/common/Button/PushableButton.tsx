@@ -18,6 +18,5 @@ export default function PushableButton(props) {
 PushableButton.defaultProps = {
   mode: 'contained',
   scale: 0.9,
-  btnHeight: 60,
   size: 'medium'
 }

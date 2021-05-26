@@ -14,6 +14,7 @@ import Typography from '../common/Typography'
 
 export default function Payment() {
   const [scanning, setScanning] = useState(false)
+
   const { ui, details, chats } = useStores()
   const theme = useTheme()
 
@@ -24,25 +25,28 @@ export default function Payment() {
       if (!(inv && inv.human_readable_part && inv.human_readable_part.amount)) return
       const millisats = parseInt(inv.human_readable_part.amount)
       const sats = millisats && Math.round(millisats / 1000)
-      ui.setConfirmInvoiceMsg({ payment_request: theData, amount: sats })
+      setScanning(false)
+
       setTimeout(() => {
-        setScanning(false)
-      }, 1500)
-    } else if (data.startsWith('n2n2.chat://')) {
-      const j = utils.jsonFromUrl(data)
-      await qrActions(j, ui, chats)
-      setTimeout(() => {
-        setScanning(false)
-      }, 150)
-    } else if (data.startsWith('action=donation')) {
-      // this should be already
-      const nd = 'n2n2.chat://?' + data
-      const j = utils.jsonFromUrl(nd)
-      await qrActions(j, ui, chats)
-      setTimeout(() => {
-        setScanning(false)
+        ui.setConfirmInvoiceMsg({ payment_request: theData, amount: sats })
       }, 150)
     }
+
+    // else if (data.startsWith('n2n2.chat://')) {
+    //   const j = utils.jsonFromUrl(data)
+    //   setScanning(false)
+    //   setTimeout(async () => {
+    //     await qrActions(j, ui, chats)
+    //   }, 150)
+    // } else if (data.startsWith('action=donation')) {
+    //   // this should be already
+    //   const nd = 'n2n2.chat://?' + data
+    //   const j = utils.jsonFromUrl(nd)
+    //   setScanning(false)
+    //   setTimeout(async () => {
+    //     await qrActions(j, ui, chats)
+    //   }, 150)
+    // }
   }
 
   return (
@@ -51,7 +55,12 @@ export default function Payment() {
       <ScrollView>
         <View style={{ ...styles.headerActions }}>
           <View style={styles.wallet}>
-            <Typography size={26} fw='500' color={theme.text} style={{ marginBottom: 10 }}>
+            <Typography
+              size={26}
+              fw='500'
+              color={theme.text}
+              style={{ marginBottom: 10 }}
+            >
               My Wallet
             </Typography>
             <Typography size={16} fw='500' color={theme.text}>
@@ -59,17 +68,39 @@ export default function Payment() {
             </Typography>
           </View>
           <View style={styles.buttonWrap}>
-            <Button mode='outlined' icon='arrow-bottom-left' w={130} h={45} round={0} style={{ borderColor: theme.border }} onPress={() => ui.setPayMode('invoice', null)}>
+            <Button
+              mode='outlined'
+              icon='arrow-bottom-left'
+              w={130}
+              h={45}
+              round={0}
+              style={{ borderColor: theme.border }}
+              onPress={() => ui.setPayMode('invoice', null)}
+            >
               RECEIVE
             </Button>
-            <Button mode='outlined' icon='arrow-top-right' w={130} h={45} round={0} style={{ borderColor: theme.border, borderLeftWidth: 0 }} onPress={() => ui.setPayMode('payment', null)}>
+            <Button
+              mode='outlined'
+              icon='arrow-top-right'
+              w={130}
+              h={45}
+              round={0}
+              style={{ borderColor: theme.border, borderLeftWidth: 0 }}
+              onPress={() => ui.setPayMode('payment', null)}
+            >
               SEND
             </Button>
           </View>
         </View>
         <Transactions />
       </ScrollView>
-      <QR visible={scanning} onCancel={() => setScanning(false)} confirm={scanningDone} showPaster={true} inputPlaceholder='Paste Invoice or Subscription code' />
+      <QR
+        visible={scanning}
+        onCancel={() => setScanning(false)}
+        confirm={scanningDone}
+        showPaster={true}
+        inputPlaceholder='Paste Invoice or Subscription code'
+      />
       <TabBar />
     </View>
   )

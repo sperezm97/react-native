@@ -6,6 +6,7 @@ import android.app.Application;
 import android.webkit.WebView;
 // import com.oney.WebRTCModule.WebRTCModulePackage;
 import com.facebook.react.ReactApplication;
+import org.reactnative.camera.RNCameraPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
 import com.reactnativecommunity.slider.ReactSliderPackage;
@@ -64,6 +65,7 @@ public class MainApplication extends Application implements ReactApplication {
           // new WebRTCModulePackage(),
           // new RNJitsiMeetPackage(),
           new MainReactPackage(),
+            new RNCameraPackage(),
             new RNFetchBlobPackage(),
             new AsyncStoragePackage(),
           new RealmReactPackage(),

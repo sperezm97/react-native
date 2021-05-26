@@ -45,7 +45,7 @@ export default function TribeMessage(props) {
   }, [])
 
   function seeTribe() {
-    ui.setJoinTribeParams(tribe)
+    ui.setJoinTribeModal(true, tribe)
     navigation.navigate('Home', { params: { rnd: Math.random() } })
   }
 
@@ -55,14 +55,17 @@ export default function TribeMessage(props) {
         <ActivityIndicator animating={true} color={theme.subtitle} />
       </View>
     )
-  if (!(tribe && tribe.uuid)) return <View style={styles.wrap}>Could not load tribe...</View>
+  if (!(tribe && tribe.uuid))
+    return <View style={styles.wrap}>Could not load tribe...</View>
 
   const hasImg = tribe.img ? true : false
   return (
     <View style={{ ...styles.wrap }}>
       <View style={styles.tribeWrap}>
         <FastImage
-          source={hasImg ? { uri: tribe.img } : require('../../../../android_assets/tent.png')}
+          source={
+            hasImg ? { uri: tribe.img } : require('../../../../android_assets/tent.png')
+          }
           resizeMode={FastImage.resizeMode.cover}
           style={{ width: 70, height: 70, flexShrink: 0, minWidth: 75 }}
         />
@@ -70,13 +73,22 @@ export default function TribeMessage(props) {
           <Text style={{ ...styles.tribeName, color: theme.title }} numberOfLines={1}>
             {tribe.name}
           </Text>
-          <Text style={{ ...styles.tribeDescription, color: theme.subtitle }} numberOfLines={2}>
+          <Text
+            style={{ ...styles.tribeDescription, color: theme.subtitle }}
+            numberOfLines={2}
+          >
             {tribe.description}
           </Text>
         </View>
       </View>
       {showJoinButton && (
-        <Button mode='contained' icon='arrow-right' onPress={seeTribe} accessibilityLabel='see-tribe-button' style={{ width: '100%', marginTop: 12 }}>
+        <Button
+          mode='contained'
+          icon='arrow-right'
+          onPress={seeTribe}
+          accessibilityLabel='see-tribe-button'
+          style={{ width: '100%', marginTop: 12 }}
+        >
           See Tribe
         </Button>
       )}

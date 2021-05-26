@@ -1,3 +1,6 @@
+import { Dimensions } from 'react-native'
+import { getStatusBarHeight } from 'react-native-status-bar-height'
+
 const constants = {
   invite_statuses: {
     pending: 0,
@@ -84,8 +87,14 @@ function switcher(consts) {
 
 const constantCodes = switcher(constants)
 
+export const TRIBE_SIZE_LIMIT = 20
+
 export const TOAST_DURATION = 0.5
-export const STACK_HEADER_HEIGHT = 50
+export const STACK_HEADER_HEIGHT = 60
 export const TAB_HEIGHT = 50
+
+export const SCREEN_HEIGHT: number = Math.round(Dimensions.get('window').height)
+export const SCREEN_WIDTH: number = Math.round(Dimensions.get('window').width)
+export const STATUS_BAR_HEIGHT: number = getStatusBarHeight()
 
 export { constants, constantCodes }

@@ -11,8 +11,8 @@ const styles = {
   innerPad: {
     paddingLeft: 18,
     paddingRight: 18,
-    paddingTop: 13,
-    paddingBottom: 13
+    paddingTop: 12,
+    paddingBottom: 12
   }
 }
 

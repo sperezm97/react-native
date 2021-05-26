@@ -1,22 +1,38 @@
 import React, { useRef, useMemo, useState, useCallback, useEffect } from 'react'
 import { useObserver } from 'mobx-react-lite'
-import { VirtualizedList, View, Text, StyleSheet, Keyboard, Dimensions, ActivityIndicator } from 'react-native'
+import {
+  StyleSheet,
+  VirtualizedList,
+  View,
+  Text,
+  Keyboard,
+  Dimensions,
+  ActivityIndicator
+} from 'react-native'
 import { useNavigation } from '@react-navigation/native'
+import Toast from 'react-native-simple-toast'
 
-import { useStores, hooks, useTheme } from '../../store'
+import { useStores, useTheme, hooks } from '../../store'
 import { Chat } from '../../store/chats'
 import { useMsgSender } from '../../store/hooks/msg'
 import Message from './msg'
 import { constants } from '../../constants'
 import EE, { SHOW_REFRESHER } from '../utils/ee'
+import Typography from '../common/Typography'
 
 const { useMsgs } = hooks
 
 const group = constants.chat_types.group
 const tribe = constants.chat_types.tribe
 
-export default function MsgListWrap({ chat, pricePerMessage }: { chat: Chat; pricePerMessage: number }) {
-  const { msg, ui, user, chats } = useStores()
+export default function MsgListWrap({
+  chat,
+  pricePerMessage
+}: {
+  chat: Chat
+  pricePerMessage: number
+}) {
+  const { msg, ui, user, chats, details } = useStores()
   const [limit, setLimit] = useState(40)
 
   function onLoadMoreMsgs() {
@@ -27,6 +43,12 @@ export default function MsgListWrap({ chat, pricePerMessage }: { chat: Chat; pri
     const { uuid } = m
     if (!uuid) return
     const amount = (user.tipAmount || 100) + pricePerMessage
+
+    if (amount > details.balance) {
+      Toast.showWithGravity('Not Enough Balance', Toast.SHORT, Toast.TOP)
+      return
+    }
+
     msg.sendMessage({
       boost: true,
       contact_id: null,
@@ -53,8 +75,8 @@ export default function MsgListWrap({ chat, pricePerMessage }: { chat: Chat; pri
 
     return (
       <MsgList
-        msgs={msgs}
         msgsLength={(msgs && msgs.length) || 0}
+        msgs={msgs}
         chat={chat}
         onDelete={onDelete}
         myPubkey={user.publicKey}
@@ -68,23 +90,28 @@ export default function MsgListWrap({ chat, pricePerMessage }: { chat: Chat; pri
   })
 }
 
-function MsgList({ msgs, msgsLength, chat, onDelete, myPubkey, myAlias, onApproveOrDenyMember, onDeleteChat, onLoadMoreMsgs, onBoostMsg }) {
+function MsgList({
+  msgsLength,
+  msgs,
+  chat,
+  onDelete,
+  myPubkey,
+  myAlias,
+  onApproveOrDenyMember,
+  onDeleteChat,
+  onLoadMoreMsgs,
+  onBoostMsg
+}) {
   const scrollViewRef = useRef(null)
   const theme = useTheme()
-  // const [viewableIds, setViewableIds] = useState({})
   const { contacts } = useStores()
-
-  // const onRefresh = useCallback(() => {
-  //   console.log("ON REFRSH")
-  //   setRefreshing(true)
-  //   wait(2000).then(() => setRefreshing(false))
-  // }, [refreshing])
 
   async function onEndReached() {
     // EE.emit(SHOW_REFRESHER)
-    wait(10).then(onLoadMoreMsgs)
+    onLoadMoreMsgs()
   }
 
+  // Keyboard logic
   useEffect(() => {
     const ref = setTimeout(() => {
       if (scrollViewRef && scrollViewRef.current && msgs && msgs.length) {
@@ -106,7 +133,9 @@ function MsgList({ msgs, msgsLength, chat, onDelete, myPubkey, myAlias, onApprov
   if (chat.status === constants.chat_statuses.pending) {
     return (
       <View style={{ display: 'flex', alignItems: 'center' }}>
-        <Text style={{ marginTop: 27, color: theme.subtitle }}>Waiting for admin approval</Text>
+        <Text style={{ marginTop: 27, color: theme.subtitle }}>
+          Waiting for admin approval
+        </Text>
       </View>
     )
   }
@@ -125,7 +154,7 @@ function MsgList({ msgs, msgsLength, chat, onDelete, myPubkey, myAlias, onApprov
         inverted
         style={{ zIndex: 100 }}
         contentContainerStyle={{ paddingTop: 20, paddingBottom: 40 }}
-        windowSize={10} // ?
+        windowSize={10}
         ref={scrollViewRef}
         data={msgs}
         initialNumToRender={initialNumToRender}
@@ -136,24 +165,16 @@ function MsgList({ msgs, msgsLength, chat, onDelete, myPubkey, myAlias, onApprov
           waitForInteraction: false,
           viewAreaCoveragePercentThreshold: 20
         }}
-        onViewableItemsChanged={({ viewableItems, changed }) => {
-          // debounce(() => {
-          //   const ids = {}
-          //   if (viewableItems) {
-          //     viewableItems.forEach(c => {
-          //       if (c.item.id) ids[c.item.id] = true
-          //     })
-          //   }
-          //   setViewableIds(current => ({ ...current, ...ids }))
-          // }, 200)
-        }}
         renderItem={({ item, index }) => {
-          const { senderAlias, senderPic } = useMsgSender(item, contacts.contacts, isTribe)
+          const { senderAlias, senderPic } = useMsgSender(
+            item,
+            contacts.contacts,
+            isTribe
+          )
           return (
             <ListItem
               key={item.id}
               windowWidth={windowWidth}
-              // viewable={viewableIds[item.id] === true}
               m={item}
               chat={chat}
               senderAlias={senderAlias}
@@ -179,13 +200,14 @@ function MsgList({ msgs, msgsLength, chat, onDelete, myPubkey, myAlias, onApprov
 }
 
 function Refresher() {
+  const theme = useTheme()
   const [show, setShow] = useState(false)
   useEffect(() => {
     function doShow() {
       setShow(true)
       setTimeout(() => {
         setShow(false)
-      }, 1000)
+      }, 100)
     }
     EE.on(SHOW_REFRESHER, doShow)
     return () => EE.removeListener(SHOW_REFRESHER, doShow)
@@ -193,19 +215,26 @@ function Refresher() {
   if (!show) return <></>
   return (
     <View style={{ ...styles.refreshingWrap, height: show ? 60 : 0 }}>
-      <View style={styles.refreshingCircle}>
-        <ActivityIndicator animating={true} color='grey' size={25} />
-      </View>
+      <ActivityIndicator animating={true} color={theme.icon} size={25} />
     </View>
   )
 }
 
-function ListItem({ m, chat, isGroup, isTribe, onDelete, myPubkey, myAlias, senderAlias, senderPic, windowWidth, onApproveOrDenyMember, onDeleteChat, onBoostMsg }) {
-  // if (!viewable) { /* THESE RENDER FIRST????? AND THEN THE ACTUAL MSGS DO */
-  //   return <View style={{ height: 50, width: 1 }} />
-  // }
-  // console.log('m', m)
-
+function ListItem({
+  m,
+  chat,
+  isGroup,
+  isTribe,
+  onDelete,
+  myPubkey,
+  myAlias,
+  senderAlias,
+  senderPic,
+  windowWidth,
+  onApproveOrDenyMember,
+  onDeleteChat,
+  onBoostMsg
+}) {
   if (m.dateLine) {
     return <DateLine dateString={m.dateLine} />
   }
@@ -213,10 +242,12 @@ function ListItem({ m, chat, isGroup, isTribe, onDelete, myPubkey, myAlias, send
   const msg = m
 
   if (!m.chat) msg.chat = chat
+
   return useMemo(
     () => (
       <Message
         {...msg}
+        chat={chat}
         isGroup={isGroup}
         isTribe={isTribe}
         senderAlias={senderAlias}
@@ -234,40 +265,34 @@ function ListItem({ m, chat, isGroup, isTribe, onDelete, myPubkey, myAlias, send
   )
 }
 
+// date label component
 function DateLine({ dateString }) {
   const theme = useTheme()
   return (
-    <View style={styles.dateLine}>
-      <View style={styles.line}></View>
-      <Text style={{ ...styles.dateString, backgroundColor: theme.dark ? theme.bg : 'white', color: theme.title }}>{dateString}</Text>
+    <View style={{ ...styles.dateLine }}>
+      <View style={{ ...styles.dateString, backgroundColor: theme.main }}>
+        <Typography size={12} color={theme.subtitle}>
+          {dateString}
+        </Typography>
+      </View>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
-  line: {
-    borderBottomWidth: 1,
-    borderColor: '#ddd',
-    width: '90%',
-    position: 'absolute',
-    left: '5%',
-    top: 10
-  },
   dateLine: {
-    width: '100%',
     display: 'flex',
-    height: 20,
-    marginBottom: 10,
-    marginTop: 10,
     flexDirection: 'row',
     justifyContent: 'center',
-    position: 'relative'
+    position: 'relative',
+    height: 22,
+    width: '100%',
+    marginTop: 30
   },
   dateString: {
-    fontSize: 12,
-    backgroundColor: 'white',
     paddingLeft: 16,
-    paddingRight: 16
+    paddingRight: 16,
+    borderRadius: 15
   },
   refreshingWrap: {
     position: 'absolute',
@@ -279,19 +304,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     overflow: 'hidden'
-  },
-  refreshingCircle: {
-    height: 42,
-    width: 42,
-    borderRadius: 25,
-    backgroundColor: 'white',
-    borderWidth: 1,
-    borderColor: '#ddd',
-    borderStyle: 'solid',
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center'
   }
 })
 
@@ -299,16 +311,4 @@ function wait(timeout) {
   return new Promise(resolve => {
     setTimeout(resolve, timeout)
   })
-}
-
-let inDebounce
-function debounce(func, delay) {
-  const context = this
-  const args = arguments
-  clearTimeout(inDebounce)
-  inDebounce = setTimeout(() => func.apply(context, args), delay)
-}
-
-async function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms))
 }

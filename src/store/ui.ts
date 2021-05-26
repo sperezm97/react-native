@@ -90,6 +90,11 @@ export class UiStore {
     }, 500)
   }
 
+  @observable newTribeModal: boolean = false
+  @action setNewTribeModal(b) {
+    this.newTribeModal = b
+  }
+
   @observable newGroupModal: boolean = false
   @action setNewGroupModal(b) {
     this.newGroupModal = b
@@ -100,7 +105,9 @@ export class UiStore {
     this.editTribeParams = o
       ? {
           ...o,
-          escrow_time: o.escrow_millis ? Math.floor(o.escrow_millis / (60 * 60 * 1000)) : 0
+          escrow_time: o.escrow_millis
+            ? Math.floor(o.escrow_millis / (60 * 60 * 1000))
+            : 0
         }
       : null
   }
@@ -195,9 +202,12 @@ export class UiStore {
     this.lastPaidInvoice = s
   }
 
+  @observable joinTribeDone: boolean = false
+  @observable joinTribeModal: boolean = false
   @observable joinTribeParams: { [k: string]: any } = null
-  @action setJoinTribeParams(obj: { [k: string]: any }) {
+  @action setJoinTribeModal(b, obj: { [k: string]: any }) {
     this.joinTribeParams = obj
+    this.joinTribeModal = b
   }
 
   @observable imgViewerParams: { [k: string]: any } = null

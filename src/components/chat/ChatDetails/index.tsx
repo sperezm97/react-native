@@ -1,129 +1,115 @@
 import React, { useState } from 'react'
 import { useObserver } from 'mobx-react-lite'
-import { View, Text, StyleSheet, Image, TouchableOpacity, FlatList } from 'react-native'
-import { Portal, IconButton, Button, Dialog, TextInput } from 'react-native-paper'
-import ImagePicker from 'react-native-image-picker'
+import { StyleSheet, View, TouchableOpacity } from 'react-native'
+import { IconButton, TextInput } from 'react-native-paper'
 import Slider from '@react-native-community/slider'
 import { useNavigation } from '@react-navigation/native'
+import RNFetchBlob from 'rn-fetch-blob'
 import moment from 'moment'
+import FeatherIcon from 'react-native-vector-icons/Feather'
+import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 import { useStores, useTheme } from '../../../store'
 import { constants } from '../../../constants'
-import FadeView from '../../utils/fadeView'
 import { useChatPicSrc, createChatPic } from '../../utils/picSrc'
 import EE, { LEFT_GROUP } from '../../utils/ee'
-import People from './People'
-import { Contact, DeletableContact, PendingContact } from './Items'
 import BackHeader from '../../common/BackHeader'
-import ExitGroup from '../../common/Dialogs/ExitGroup'
-import EditGroup from '../../common/Dialogs/EditGroup'
+import GroupSettings from '../../common/Dialogs/GroupSettings'
+import ImageDialog from '../../common/Dialogs/ImageDialog'
 import Avatar from '../../common/Avatar'
+import AvatarEdit from '../../common/Avatar/AvatarEdit'
+import Typography from '../../common/Typography'
+import InputAccessoryView from '../../common/Accessories/InputAccessoryView'
 
 export default function ChatDetails({ route }) {
-  const { ui, contacts, chats, user, msg } = useStores()
+  const { ui, chats, user, meme } = useStores()
   const theme = useTheme()
-  const [selected, setSelected] = useState([])
-  const [addPeople, setAddPeople] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [leaveDialog, setLeaveDialog] = useState(false)
-  const [editDialog, setEditDialog] = useState(false)
+  const [groupSettingsDialog, setGroupSettingsDialog] = useState(false)
+  const [imageDialog, setImageDialog] = useState(false)
   const [loadingTribe, setLoadingTribe] = useState(false)
+  const [uploading, setUploading] = useState(false)
+  const [uploadPercent, setUploadedPercent] = useState(0)
   const navigation = useNavigation()
+  const nativeID = 'alias'
 
   const group = route.params.group
-
+  const [photo_url, setPhotoUrl] = useState(group.my_photo_url || '')
   const [alias, setAlias] = useState((group && group['my_alias']) || '')
-  function maybeUpdateAlias() {
+  function updateAlias() {
     if (!(group && group.id)) return
     if (alias !== group['my_alias']) {
-      chats.updateMyInfoInChat(group.id, alias, '')
+      chats.updateMyInfoInChat(group.id, alias, photo_url)
     }
+  }
+
+  async function tookPic(img) {
+    setUploading(true)
+    try {
+      await upload(img.uri)
+    } catch (e) {
+      setUploading(false)
+    }
+  }
+
+  async function upload(uri) {
+    const type = 'image/jpg'
+    const name = 'Image.jpg'
+    const server = meme.getDefaultServer()
+    if (!server) return
+
+    uri = uri.replace('file://', '')
+
+    RNFetchBlob.fetch(
+      'POST',
+      `https://${server.host}/public`,
+      {
+        Authorization: `Bearer ${server.token}`,
+        'Content-Type': 'multipart/form-data'
+      },
+      [
+        {
+          name: 'file',
+          filename: name,
+          type: type,
+          data: RNFetchBlob.wrap(uri)
+        },
+        { name: 'name', data: name }
+      ]
+    )
+      .uploadProgress({ interval: 250 }, (written, total) => {
+        setUploadedPercent(Math.round((written / total) * 100))
+      })
+      .then(async resp => {
+        let json = resp.json()
+
+        if (json.muid) {
+          setPhotoUrl(`https://${server.host}/public/${json.muid}`)
+        }
+
+        chats.updateMyInfoInChat(
+          group.id,
+          alias,
+          `https://${server.host}/public/${json.muid}`
+        )
+        setUploading(false)
+      })
+      .catch(err => {
+        console.log(err)
+        setUploading(false)
+      })
   }
 
   let initppm = chats.pricesPerMinute[group.id]
   if (!(initppm || initppm === 0)) initppm = group.pricePerMinute || 5
   const [ppm, setPpm] = useState(initppm)
 
-  async function onKickContact(cid) {
-    await chats.kick(group.id, cid)
-  }
-
-  async function addGroupMembers() {
-    if (!(selected && selected.length)) {
-      return
-    }
-    setLoading(true)
-    await chats.addGroupMembers(group.id, selected)
-    setLoading(false)
-  }
-
-  async function exitGroup() {
-    setLoading(true)
-    await chats.exitGroup(group.id)
-    setLoading(false)
-    EE.emit(LEFT_GROUP)
-  }
-
-  async function onApproveOrDenyMember(contactId, status) {
-    // find msgId
-    const msgs = msg.messages[group.id]
-    if (!msgs) return
-    const theMsg = msgs.find(m => m.sender === contactId && m.type === constants.message_types.member_request)
-    if (!theMsg) return
-    await msg.approveOrRejectMember(contactId, status, theMsg.id)
-  }
-
   const uri = useChatPicSrc(group)
-
   const hasGroup = group ? true : false
   const hasImg = uri ? true : false
 
-  function changePic() {
-    return
-    ImagePicker.launchImageLibrary(
-      {
-        mediaType: 'photo'
-      },
-      async img => {
-        if (!img.didCancel) {
-          if (group && group.id && img && img.uri) {
-            await createChatPic(group.id, img.uri)
-            chats.updateChatPhotoURI(group.id, img.uri)
-          }
-        }
-      }
-    )
-  }
-
   const isTribe = group && group.type === constants.chat_types.tribe
   const isTribeAdmin = isTribe && group.owner_pubkey === user.publicKey
-
-  /**
-   * RenderContact
-   */
-  const renderContact: any = ({ item, index }: any) => {
-    if (isTribeAdmin) {
-      return <DeletableContact key={index} contact={item} onDelete={onKickContact} />
-    }
-    return <Contact key={index} contact={item} unselectable={true} />
-  }
-
-  /**
-   * RenderPendingContactsToShow
-   */
-  const renderPendingContactsToShow: any = ({ item, index }: any) => <PendingContact key={index} contact={item} onApproveOrDenyMember={onApproveOrDenyMember} />
-
-  const dotsVerticalHandler = () => {
-    if (isTribeAdmin) setEditDialog(true)
-    else setLeaveDialog(true)
-  }
-
-  const onSetAddPeopleHandler = () => setAddPeople(true)
-  const setLeaveDialogToFalseHandler = () => setLeaveDialog(false)
-  const onExitGroupHandler = () => {
-    if (!loading) exitGroup()
-  }
-  const setEditDialogToFalseHandler = () => setEditDialog(false)
 
   function fuzzyIndexOf(arr, n) {
     let smallestDiff = Infinity
@@ -150,65 +136,127 @@ export default function ChatDetails({ route }) {
   let sliderValue = fuzzyIndexOf(ppms, ppm)
   if (sliderValue < 0) sliderValue = 2
 
-  const showValueSlider = isTribe && !isTribeAdmin && group && group.feed_url ? true : false
+  const showValueSlider =
+    isTribe && !isTribeAdmin && group && group.feed_url ? true : false
 
-  function handleSharePress() {
-    setEditDialog(false)
+  async function exitGroup() {
+    setLoading(true)
+    await chats.exitGroup(group.id)
+    setLoading(false)
+    EE.emit(LEFT_GROUP)
+  }
 
-    console.log('group.uuid', group.uuid)
+  function onExitGroup() {
+    setGroupSettingsDialog(false)
+    if (!loading) exitGroup()
+  }
+
+  function onShareGroup() {
+    setGroupSettingsDialog(false)
 
     setTimeout(() => {
       ui.setShareTribeUUID(group.uuid)
-    }, 400)
-  }
-
-  async function handleEditGroupPress() {
-    setLoadingTribe(true)
-    const params = await chats.getTribeDetails(group.host, group.uuid)
-
-    setEditDialog(false)
-    setLoadingTribe(false)
-
-    setTimeout(() => {
-      if (params) ui.setEditTribeParams({ id: group.id, ...params })
-    }, 400)
+    }, 500)
   }
 
   return useObserver(() => {
-    const contactsToShow = contacts.contacts.filter(c => {
-      return c.id > 1 && group && group.contact_ids.includes(c.id)
-    })
-    const pendingContactsToShow =
-      contacts.contacts.filter(c => {
-        return c.id > 1 && group && group.pending_contact_ids && group.pending_contact_ids.includes(c.id)
-      }) || []
-    const selectedContacts = contacts.contacts.filter(c => selected.includes(c.id))
-    const showSelectedContacts = selectedContacts.length > 0
+    let myPhoto = group.my_photo_url
+
+    if (photo_url) myPhoto = photo_url
+
     return (
       <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
-        <BackHeader title='Details' navigate={() => navigation.goBack()} />
+        <BackHeader
+          title='Details'
+          navigate={() => navigation.goBack()}
+          border={true}
+          action={<DetailsAction chat={group} />}
+        />
 
-        {/* <Header title={addPeople ? 'Add Contacts' : 'Group'} showNext={addPeople && showSelectedContacts} onClose={close} nextButtonText='Add' next={addGroupMembers} loading={loading} /> */}
-
-        <FadeView opacity={!addPeople ? 1 : 0} style={styles.content}>
+        <View style={styles.content}>
           {hasGroup && (
             <View style={styles.groupInfo}>
               <View style={styles.groupInfoLeft}>
-                <TouchableOpacity onPress={changePic}>{group && <Avatar size={50} aliasSize={18} big alias={group.name} photo={uri} />}</TouchableOpacity>
+                {group && (
+                  <Avatar size={50} aliasSize={18} big alias={group.name} photo={uri} />
+                )}
                 <View style={styles.groupInfoText}>
-                  <Text style={{ fontSize: 16, marginBottom: 6, color: theme.text }}>{group.name}</Text>
-                  <Text style={{ fontSize: 12, marginBottom: 6, color: theme.title }}>{`Created on ${moment(group.created_at).format('ll')}`}</Text>
-                  <Text style={{ fontSize: 11, color: theme.subtitle }}>{`Price per message: ${group.price_per_message}, Amount to stake: ${group.escrow_amount}`}</Text>
+                  <Typography size={16} style={{ marginBottom: 4 }}>
+                    {group.name}
+                  </Typography>
+                  <Typography
+                    color={theme.title}
+                    size={12}
+                    style={{ marginBottom: 4 }}
+                  >{`Created on ${moment(group.created_at).format('ll')}`}</Typography>
+                  <Typography
+                    size={12}
+                    color={theme.subtitle}
+                  >{`Price per message: ${group.price_per_message}, Amount to stake: ${group.escrow_amount}`}</Typography>
                 </View>
               </View>
-              <IconButton icon='dots-vertical' size={25} color={theme.icon} style={{ marginLeft: 0, marginRight: 0, position: 'absolute', right: 8 }} onPress={dotsVerticalHandler} />
+
+              <TouchableOpacity
+                activeOpacity={0.6}
+                onPress={() => setGroupSettingsDialog(true)}
+                style={{
+                  marginLeft: 0,
+                  marginRight: 0,
+                  position: 'absolute',
+                  right: 8
+                }}
+              >
+                <MaterialCommunityIcon
+                  name='dots-vertical'
+                  size={25}
+                  color={theme.icon}
+                />
+              </TouchableOpacity>
             </View>
           )}
 
-          {showValueSlider && (
+          <View style={{ ...styles.infoWrap }}>
+            <Typography size={16}>Alias</Typography>
+            <View style={{ position: 'relative' }}>
+              <TextInput
+                inputAccessoryViewID={nativeID}
+                placeholder='Alias'
+                value={alias}
+                onChangeText={setAlias}
+                style={{ ...styles.input, backgroundColor: theme.bg }}
+                underlineColor={theme.border}
+              />
+              {group && (
+                <View style={{ ...styles.infoImg }}>
+                  <AvatarEdit
+                    onPress={() => setImageDialog(true)}
+                    uploading={uploading}
+                    uploadPercent={uploadPercent}
+                    display={true}
+                    size={45}
+                    top='27%'
+                  >
+                    <Avatar
+                      size={45}
+                      aliasSize={18}
+                      big
+                      alias={group.my_alias}
+                      photo={myPhoto}
+                    />
+                  </AvatarEdit>
+                </View>
+              )}
+            </View>
+
+            <InputAccessoryView nativeID={nativeID} done={updateAlias} />
+          </View>
+
+          {/* {showValueSlider && (
             <View style={styles.slideWrap}>
               <View style={styles.slideText}>
-                <Text style={{ ...styles.slideLabel, color: theme.subtitle }}>Podcast: sats per minute</Text>
+                <Text style={{ ...styles.slideLabel, color: theme.subtitle }}>
+                  Podcast: sats per minute
+                </Text>
                 <Text style={{ ...styles.slideValue, color: theme.subtitle }}>{ppm}</Text>
               </View>
               <Slider
@@ -224,51 +272,54 @@ export default function ChatDetails({ route }) {
                 style={{ width: '90%' }}
               />
             </View>
-          )}
-
-          <View style={styles.inputWrap}>
-            <Text style={{ ...styles.inputLabel, color: theme.subtitle }}>My Name in this tribe</Text>
-            <TextInput
-              mode='outlined'
-              placeholder='Your Name in this Tribe'
-              onChangeText={e => setAlias(e)}
-              value={alias}
-              style={styles.input}
-              // onFocus={()=> setKey(true)}
-              onBlur={maybeUpdateAlias}
-            />
-          </View>
-
-          {(!isTribe || isTribeAdmin) && (
-            <View style={styles.members}>
-              {contactsToShow && contactsToShow.length > 0 && (
-                <>
-                  <Text style={styles.membersTitle}>GROUP MEMBERS</Text>
-                  <FlatList style={styles.scroller} data={contactsToShow} renderItem={renderContact} keyExtractor={item => String(item.id)} />
-                </>
-              )}
-              {isTribeAdmin && pendingContactsToShow.length > 0 && (
-                <>
-                  <Text style={styles.membersTitle}>PENDING GROUP MEMBERS</Text>
-                  <FlatList style={styles.scroller} data={pendingContactsToShow} renderItem={renderPendingContactsToShow} keyExtractor={item => String(item.id)} />
-                </>
-              )}
-              {!isTribeAdmin && (
-                <Button mode='contained' dark={true} icon='plus' onPress={onSetAddPeopleHandler} style={styles.addPeople}>
-                  Add People
-                </Button>
-              )}
-            </View>
-          )}
-        </FadeView>
-
-        <FadeView opacity={addPeople ? 1 : 0} style={styles.content}>
-          <People setSelected={setSelected} initialContactIds={(group && group.contact_ids) || []} />
-        </FadeView>
-
-        <ExitGroup visible={leaveDialog} onCancel={setLeaveDialogToFalseHandler} exitGroup={onExitGroupHandler} />
-        <EditGroup visible={editDialog} onCancel={setEditDialogToFalseHandler} editGroup={handleEditGroupPress} shareGroup={handleSharePress} />
+          )} */}
+        </View>
+        <GroupSettings
+          visible={groupSettingsDialog}
+          owner={isTribeAdmin}
+          onCancel={() => setGroupSettingsDialog(false)}
+          shareGroup={onShareGroup}
+          exitGroup={onExitGroup}
+        />
+        <ImageDialog
+          visible={imageDialog}
+          onCancel={() => setImageDialog(false)}
+          onPick={tookPic}
+          onSnap={tookPic}
+          setImageDialog={setImageDialog}
+        />
       </View>
+    )
+  })
+}
+
+function DetailsAction({ chat }) {
+  const { chats } = useStores()
+  const theme = useTheme()
+
+  return useObserver(() => {
+    const theChat = chats.chats.find(c => c.id === chat.id)
+    const isMuted = (theChat && theChat.is_muted) || false
+
+    async function muteChat() {
+      chats.muteChat(chat.id, isMuted ? false : true)
+    }
+
+    return (
+      <>
+        {chat && (
+          <IconButton
+            icon={() => (
+              <FeatherIcon
+                name={isMuted ? 'bell-off' : 'bell'}
+                size={22}
+                color={theme.icon}
+              />
+            )}
+            onPress={muteChat}
+          />
+        )}
+      </>
     )
   })
 }
@@ -281,7 +332,8 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'flex-start',
-    marginBottom: 40
+    marginBottom: 40,
+    paddingTop: 40
   },
   groupInfo: {
     display: 'flex',
@@ -291,7 +343,7 @@ const styles = StyleSheet.create({
     width: '100%'
   },
   groupInfoLeft: {
-    marginLeft: 16,
+    paddingLeft: 16,
     display: 'flex',
     flexDirection: 'row'
   },
@@ -302,33 +354,26 @@ const styles = StyleSheet.create({
     marginLeft: 14,
     maxWidth: '77%'
   },
-  members: {
-    marginTop: 19,
+  infoWrap: {
     display: 'flex',
-    flexDirection: 'column',
-    width: '100%'
+    width: '100%',
+    paddingTop: 30,
+    paddingLeft: 18,
+    paddingRight: 18
   },
-  membersTitle: {
-    color: '#888',
-    fontSize: 14,
-    marginLeft: 16
+  input: {
+    height: 50,
+    paddingRight: 60,
+    textAlign: 'auto'
   },
-  membersList: {},
+  infoImg: {
+    position: 'absolute',
+    right: 0,
+    top: 0
+  },
   scroller: {
     width: '100%',
     position: 'relative'
-  },
-  addPeople: {
-    height: 46,
-    borderRadius: 23,
-    width: 160,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#55D1A9',
-    marginLeft: 16,
-    marginTop: 16,
-    zIndex: 8
   },
   slideWrap: {
     width: '100%',
@@ -354,16 +399,5 @@ const styles = StyleSheet.create({
   slideValue: {
     fontSize: 15,
     fontWeight: 'bold'
-  },
-  inputWrap: {
-    display: 'flex',
-    marginTop: 15
-  },
-  inputLabel: {
-    fontSize: 11
-  },
-  input: {
-    maxHeight: 55,
-    minWidth: 240
   }
 })

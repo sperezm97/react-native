@@ -53,23 +53,38 @@ export default function InviteRow(props) {
   }
 
   return (
-    <TouchableOpacity style={{ ...styles.chatRow, backgroundColor: theme.main }} activeOpacity={0.5} onPress={doAction}>
+    <TouchableOpacity
+      style={{ ...styles.chatRow, backgroundColor: theme.main }}
+      activeOpacity={0.5}
+      onPress={doAction}
+    >
       <View style={styles.inviteQR}>
-        <Image style={{ height: 40, width: 40 }} source={require('../../assets/invite-qr.png')} />
+        <Image
+          style={{ height: 40, width: 40 }}
+          source={require('../../assets/invite-qr.png')}
+        />
       </View>
       <View style={styles.chatContent}>
-        <View style={styles.chatContentTop}>
-          <Text style={{ ...styles.chatName, color: theme.text }}>{`Invite: ${name}`}</Text>
+        <View style={styles.top}>
+          <Text
+            style={{ ...styles.chatName, color: theme.text }}
+          >{`Invite: ${name}`}</Text>
           {invite.price && <Text style={styles.invitePrice}>{invite.price}</Text>}
         </View>
-        <View style={styles.chatMsgWrap}>
+        <View style={styles.bottom}>
           {inviteIcon(statusString, theme)}
-          <Text style={{ ...styles.chatMsg, color: theme.subtitle }}>{inviteMsg(statusString, name, confirmed)}</Text>
+          <Text style={{ ...styles.chatMsg, color: theme.subtitle }}>
+            {inviteMsg(statusString, name, confirmed)}
+          </Text>
         </View>
       </View>
 
       <Portal>
-        <Dialog visible={dialogOpen} style={{ bottom: 10 }} onDismiss={setDialogOpenToFalseHandler}>
+        <Dialog
+          visible={dialogOpen}
+          style={{ bottom: 10 }}
+          onDismiss={setDialogOpenToFalseHandler}
+        >
           <Dialog.Title>{`Pay for invitation?`}</Dialog.Title>
           <Dialog.Actions style={{ justifyContent: 'space-between' }}>
             <Button onPress={setDialogOpenToFalseHandler} labelStyle={{ color: 'grey' }}>
@@ -90,11 +105,32 @@ export default function InviteRow(props) {
 function inviteIcon(statusString, theme) {
   switch (statusString) {
     case 'payment_pending':
-      return <MaterialIcon name='credit-card' size={14} color={theme.icon} style={{ marginRight: 4 }} />
+      return (
+        <MaterialIcon
+          name='credit-card'
+          size={14}
+          color={theme.icon}
+          style={{ marginRight: 4 }}
+        />
+      )
     case 'ready':
-      return <MaterialIcon name='check' size={14} color={theme.icon} style={{ marginRight: 4 }} />
+      return (
+        <MaterialIcon
+          name='check'
+          size={14}
+          color={theme.icon}
+          style={{ marginRight: 4 }}
+        />
+      )
     case 'delivered':
-      return <MaterialIcon name='check' size={14} color={theme.icon} style={{ marginRight: 4 }} />
+      return (
+        <MaterialIcon
+          name='check'
+          size={14}
+          color={theme.icon}
+          style={{ marginRight: 4 }}
+        />
+      )
     default:
       return <></>
   }
@@ -135,10 +171,8 @@ export const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    width: 52,
-    height: 52,
-    marginRight: 18,
-    marginLeft: 10
+    paddingLeft: 16,
+    paddingVertical: 16
   },
   avatar: {
     width: 52,
@@ -152,18 +186,21 @@ export const styles = StyleSheet.create({
     overflow: 'hidden'
   },
   chatRow: {
-    height: 80,
     width: '100%',
     display: 'flex',
     alignItems: 'center',
-    flexDirection: 'row'
+    flexDirection: 'row',
+    padding: 16,
+    marginBottom: 14
   },
   chatContent: {
     display: 'flex',
     flexDirection: 'column',
-    flex: 1
+    flex: 1,
+    paddingLeft: 16,
+    paddingTop: 16
   },
-  chatContentTop: {
+  top: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
@@ -188,12 +225,13 @@ export const styles = StyleSheet.create({
     marginBottom: 4
   },
   chatDate: {
-    marginRight: 12
+    marginRight: 14
   },
-  chatMsgWrap: {
+  bottom: {
     display: 'flex',
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
+    justifyContent: 'space-between'
   },
   chatMsg: {
     fontSize: 13

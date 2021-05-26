@@ -1,17 +1,33 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { useObserver } from 'mobx-react-lite'
-import { StyleSheet, View, Text, TextInput, TouchableOpacity, PanResponder, Animated, KeyboardAvoidingView, Platform } from 'react-native'
+import {
+  StyleSheet,
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  PanResponder,
+  Animated,
+  KeyboardAvoidingView,
+  Platform
+} from 'react-native'
 import { IconButton, Portal, ActivityIndicator } from 'react-native-paper'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import AudioRecorderPlayer from 'react-native-audio-recorder-player'
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback'
 import Toast from 'react-native-simple-toast'
+import { isIphoneX, getBottomSpace } from 'react-native-iphone-x-helper'
 
-import { useStores, useTheme } from '../../store'
-import { calcBotPrice, useReplyContent } from '../../store/hooks/chat'
-import EE, { EXTRA_TEXT_CONTENT, REPLY_UUID, CANCEL_REPLY_UUID, CLEAR_REPLY_UUID } from '../utils/ee'
+import { useStores, useTheme, hooks } from '../../store'
+import { calcBotPrice, useReplyContent, useChatReply } from '../../store/hooks/chat'
+import EE, {
+  EXTRA_TEXT_CONTENT,
+  REPLY_UUID,
+  CANCEL_REPLY_UUID,
+  CLEAR_REPLY_UUID
+} from '../utils/ee'
 import Cam from '../utils/cam'
-import { constants } from '../../constants'
+import { constants, SCREEN_HEIGHT } from '../../constants'
 import AttachmentDialog from './attachmentDialog'
 import ReplyContent from './msg/replyContent'
 import RecDot from './recDot'
@@ -29,6 +45,8 @@ const audioRecorderPlayer = new AudioRecorderPlayer()
 let nonStateRecordingStartTime = 0
 let dontRecordActually = false
 
+const { useMsgs } = hooks
+
 export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
   const { ui, msg, meme } = useStores()
   const theme = useTheme()
@@ -37,7 +55,6 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
   const [takingPhoto, setTakingPhoto] = useState(false)
   const [dialogOpen, setDialogOpen] = useState(false)
   const [recordSecs, setRecordSecs] = useState('0:00')
-  const [textInputHeight, setTextInputHeight] = useState(40)
   const [recordingStartTime, setRecordingStartTime] = useState(null)
   const [uploading, setUploading] = useState(false)
   const [gifs, setGifs] = useState([])
@@ -45,12 +62,31 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
   const [showGiphyModal, setShowGiphyModal] = useState(false)
   const [replyUuid, setReplyUuid] = useState('')
   const [extraTextContent, setExtraTextContent] = useState(null)
+  const appearAnim = new Animated.Value(300)
 
   const inputRef = useRef(null)
 
-  const hasLoopout = tribeBots && tribeBots.length && tribeBots.find(tb => tb.prefix === '/loopout' && tb.commands && tb.commands.find(c => c.command === '*')) ? true : false
+  const hasLoopout =
+    tribeBots &&
+    tribeBots.length &&
+    tribeBots.find(
+      tb =>
+        tb.prefix === '/loopout' &&
+        tb.commands &&
+        tb.commands.find(c => c.command === '*')
+    )
+      ? true
+      : false
 
   const waitingForAdminApproval = chat.status === constants.chat_statuses.pending
+
+  useEffect(() => {
+    Animated.timing(appearAnim, {
+      toValue: 0,
+      duration: 400,
+      useNativeDriver: true
+    }).start()
+  })
 
   function sendMessage() {
     try {
@@ -70,7 +106,7 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
       }
 
       msg.sendMessage({
-        contact_id: contact_id || null,
+        contact_id: contact_id || 1,
         text: txt,
         chat_id: chat.id || null,
         amount: price + pricePerMessage || 0,
@@ -91,6 +127,22 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
     }
   }
 
+  function closeReplyContent() {
+    Animated.timing(appearAnim, {
+      toValue: 300,
+      duration: 400,
+      useNativeDriver: true
+    }).start(() => {
+      if (replyUuid) {
+        setReplyUuid('')
+        EE.emit(CLEAR_REPLY_UUID, null)
+      }
+      if (extraTextContent) {
+        setExtraTextContent(null)
+      }
+    })
+  }
+
   function gotExtraTextContent(body) {
     setExtraTextContent(body)
   }
@@ -100,6 +152,7 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
   function cancelReplyUUID() {
     setReplyUuid('')
   }
+
   useEffect(() => {
     EE.on(EXTRA_TEXT_CONTENT, gotExtraTextContent)
     EE.on(REPLY_UUID, gotReplyUUID)
@@ -289,7 +342,14 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
   let theID = chat && chat.id
   const thisChatMsgs = theID && msg.messages[theID]
 
-  const { replyMessageSenderAlias, replyMessageContent, replyColor } = useReplyContent(thisChatMsgs, replyUuid, extraTextContent)
+  const { replyMessageSenderAlias, replyMessageContent, replyColor } = useReplyContent(
+    thisChatMsgs,
+    replyUuid,
+    extraTextContent
+  )
+
+  const msgs = useMsgs(chat) || []
+  const { replyMessage } = useChatReply(msgs, replyUuid)
   const hasReplyContent = replyUuid || extraTextContent ? true : false
 
   // const replyMessage = replyUuid&&thisChatMsgs&&thisChatMsgs.find(m=>m.uuid===replyUuid)
@@ -299,147 +359,175 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
   //   if(sender) replyMessageSenderAlias = sender.alias
   // }
 
-  function closeReplyContent() {
-    if (replyUuid) {
-      setReplyUuid('')
-      EE.emit(CLEAR_REPLY_UUID, null)
-    }
-    if (extraTextContent) {
-      setExtraTextContent(null)
-    }
-  }
-
-  const barHeight = inputFocused ? 20 : 40
-
-  let fullHeight = textInputHeight + barHeight
-  if (hasReplyContent) fullHeight += 48
-
   return useObserver(() => (
     <View
       style={{
+        ...styles.bar,
         backgroundColor: theme.bg
       }}
+      accessibilityLabel='chat-bottombar'
     >
-      <View
+      <Animated.View
         style={{
-          ...styles.bar,
-          height: fullHeight,
-          borderColor: theme.border
-          // alignItems: inputFocused ? 'center' : 'center'
+          zIndex: 1,
+          transform: [
+            {
+              translateY: appearAnim
+            }
+          ]
         }}
-        accessibilityLabel='chat-bottombar'
       >
         {(hasReplyContent ? true : false) && (
           <ReplyContent
+            reply={true}
+            replyMsg={replyMessage}
             showClose={true}
             color={replyColor}
             content={replyMessageContent}
             senderAlias={replyMessageSenderAlias}
-            extraStyles={{ width: '100%', marginTop: inputFocused ? 0 : 8, marginBottom: inputFocused ? 6 : 0 }}
             onClose={closeReplyContent}
           />
         )}
-        <View style={styles.barInner} accessibilityLabel='chat-bottombar-inner'>
-          {!recordingStartTime && (
-            <TouchableOpacity style={{ ...styles.img, backgroundColor: theme.bg, borderColor: theme.border }} accessibilityLabel='more-button' onPress={() => setDialogOpen(true)}>
-              <Icon name='plus' color={theme.icon} size={27} />
-            </TouchableOpacity>
-          )}
-          {!recordingStartTime && (
-            <TextInput
-              textAlignVertical='top'
-              accessibilityLabel='message-input'
-              blurOnSubmit={true}
-              // onContentSizeChange={e => {
-              //   let h = e.nativeEvent.contentSize.height
-              //   if (h < 44) h = 44
-              //   if (h < 108) setTextInputHeight(h)
-              // }}
-              placeholder='Message...'
-              ref={inputRef}
-              style={{ ...styles.input, marginLeft: hideMic ? 15 : 0, height: textInputHeight, backgroundColor: theme.inputBg, borderColor: theme.border, color: theme.input }}
-              placeholderTextColor={theme.subtitle}
-              onFocus={e => setInputFocused(true)}
-              onBlur={() => setInputFocused(false)}
-              onChangeText={e => setText(e)}
-              value={text}
-            />
-          )}
-
-          {recordingStartTime && (
-            <View style={styles.recording}>
-              <RecDot />
-              <View style={styles.recordSecs}>
-                <Text style={{ ...styles.recordSecsText, color: theme.title }}>{recordSecs}</Text>
-              </View>
-              <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                <Icon name='rewind' size={16} color='grey' />
-                <Text style={{ marginLeft: 5, color: theme.subtitle }}>Swipe to cancel</Text>
-              </View>
-            </View>
-          )}
-
-          {!hideMic && (
-            <Animated.View style={{ marginLeft: 0, marginRight: 4, zIndex: 9 }} {...panResponder.panHandlers}>
-              {uploading ? (
-                <View style={{ width: 42 }}>
-                  <ActivityIndicator size={20} color='grey' />
-                </View>
-              ) : (
-                <IconButton icon='microphone-outline' size={32} color={recordingStartTime ? 'white' : '#666'} />
-              )}
-            </Animated.View>
-          )}
-
-          {hideMic && (
-            <View style={styles.sendButtonWrap}>
-              <TouchableOpacity activeOpacity={0.5} style={{ ...styles.sendButton, backgroundColor: theme.primary }} onPress={() => sendMessage()} accessibilityLabel='send-message'>
-                <Icon name='send' size={17} color='white' />
-              </TouchableOpacity>
-            </View>
-          )}
-
-          {recordingStartTime && <View style={styles.recordingCircle}></View>}
-
-          <AttachmentDialog
-            hasLoopout={hasLoopout}
-            isConversation={isConversation}
-            open={dialogOpen}
-            onClose={() => setDialogOpen(false)}
-            onPick={res => tookPic(res)}
-            onChooseCam={() => setTakingPhoto(true)}
-            doPaidMessage={() => doPaidMessage()}
-            request={() => {
-              setDialogOpen(false)
-              ui.setPayMode('invoice', chat)
+      </Animated.View>
+      <View
+        style={{
+          ...styles.barInner,
+          borderColor: theme.border,
+          backgroundColor: theme.bg,
+          paddingTop: isIphoneX() ? (inputFocused ? 10 : 5) : 5,
+          paddingBottom: inputFocused ? 5 : isIphoneX() ? getBottomSpace() : 5
+        }}
+        accessibilityLabel='chat-bottombar-inner'
+      >
+        {!recordingStartTime && (
+          <TouchableOpacity
+            activeOpacity={0.6}
+            style={{
+              ...styles.attach,
+              borderColor: theme.border,
+              backgroundColor: theme.bg
             }}
-            send={() => {
-              setDialogOpen(false)
-              ui.setPayMode('payment', chat)
-            }}
-            loopout={() => {
-              setDialogOpen(false)
-              ui.setPayMode('loopout', chat)
-            }}
-            onGiphyHandler={onGiphyHandler}
-          />
-          <Giphy
-            open={showGiphyModal}
-            onClose={setShowGiphyModal}
-            gifs={gifs}
-            searchGif={searchGif}
-            setSearchGif={setSearchGif}
-            onSendGifHandler={onSendGifHandler}
-            getGifsBySearch={getGifsBySearch}
-          />
-        </View>
-
-        {takingPhoto && (
-          <Portal>
-            <Cam onCancel={() => setTakingPhoto(false)} onSnap={pic => tookPic(pic)} />
-          </Portal>
+            accessibilityLabel='more-button'
+            onPress={() => setDialogOpen(true)}
+          >
+            <Icon name='plus' color={theme.primary} size={27} />
+          </TouchableOpacity>
         )}
+        {!recordingStartTime && (
+          <TextInput
+            textAlignVertical='top'
+            accessibilityLabel='message-input'
+            blurOnSubmit={true}
+            placeholder='Message...'
+            ref={inputRef}
+            style={{
+              ...styles.input,
+              height: 45,
+              backgroundColor: theme.inputBg,
+              borderColor: theme.border,
+              color: theme.input
+            }}
+            placeholderTextColor={theme.subtitle}
+            onFocus={e => setInputFocused(true)}
+            onBlur={() => setInputFocused(false)}
+            onChangeText={e => setText(e)}
+            value={text}
+          />
+        )}
+
+        {recordingStartTime && (
+          <View style={styles.recording}>
+            <RecDot />
+            <View style={styles.recordSecs}>
+              <Text style={{ ...styles.recordSecsText, color: theme.title }}>
+                {recordSecs}
+              </Text>
+            </View>
+            <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+              <Icon name='rewind' size={16} color='grey' />
+              <Text style={{ marginLeft: 5, color: theme.subtitle }}>
+                Swipe to cancel
+              </Text>
+            </View>
+          </View>
+        )}
+
+        {!hideMic && (
+          <Animated.View
+            style={{ marginLeft: 0, marginRight: 4, zIndex: 9 }}
+            {...panResponder.panHandlers}
+          >
+            {uploading ? (
+              <View style={{ width: 42 }}>
+                <ActivityIndicator size={20} color='grey' />
+              </View>
+            ) : (
+              <IconButton
+                icon='microphone-outline'
+                size={28}
+                color={recordingStartTime ? 'white' : '#666'}
+              />
+            )}
+          </Animated.View>
+        )}
+
+        {hideMic && (
+          <View style={styles.sendButtonWrap}>
+            <TouchableOpacity
+              activeOpacity={0.5}
+              style={{
+                ...styles.sendButton,
+                backgroundColor: text ? theme.primary : theme.grey
+              }}
+              onPress={() => sendMessage()}
+              accessibilityLabel='send-message'
+              disabled={!text}
+            >
+              <Icon name='send' size={17} color='white' />
+            </TouchableOpacity>
+          </View>
+        )}
+
+        {recordingStartTime && <View style={styles.recordingCircle}></View>}
+
+        <AttachmentDialog
+          hasLoopout={hasLoopout}
+          isConversation={isConversation}
+          open={dialogOpen}
+          onClose={() => setDialogOpen(false)}
+          onPick={res => tookPic(res)}
+          onChooseCam={() => setTakingPhoto(true)}
+          doPaidMessage={() => doPaidMessage()}
+          request={() => {
+            setDialogOpen(false)
+            ui.setPayMode('invoice', chat)
+          }}
+          send={() => {
+            setDialogOpen(false)
+            ui.setPayMode('payment', chat)
+          }}
+          loopout={() => {
+            setDialogOpen(false)
+            ui.setPayMode('loopout', chat)
+          }}
+          onGiphyHandler={onGiphyHandler}
+        />
+        <Giphy
+          open={showGiphyModal}
+          onClose={setShowGiphyModal}
+          gifs={gifs}
+          searchGif={searchGif}
+          setSearchGif={setSearchGif}
+          onSendGifHandler={onSendGifHandler}
+          getGifsBySearch={getGifsBySearch}
+        />
       </View>
+
+      {takingPhoto && (
+        <Portal>
+          <Cam onCancel={() => setTakingPhoto(false)} onSnap={pic => tookPic(pic)} />
+        </Portal>
+      )}
     </View>
   ))
 }
@@ -451,21 +539,16 @@ const styles = StyleSheet.create({
   },
   bar: {
     width: '100%',
-    maxWidth: '100%',
-    height: 20,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    borderWidth: 1,
-    borderBottomWidth: 0,
-    borderLeftWidth: 0,
-    borderRightWidth: 0
+    maxWidth: '100%'
   },
   barInner: {
     width: '100%',
     maxWidth: '100%',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    borderTopWidth: 1,
+    zIndex: 2
   },
   input: {
     flex: 1,
@@ -492,14 +575,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center'
   },
-  img: {
+  attach: {
     width: 40,
     height: 40,
+    borderWidth: 1,
     borderRadius: 20,
     marginLeft: 8,
-    borderColor: '#ccc',
-    borderWidth: 1,
-    backgroundColor: 'whitesmoke',
     marginRight: 8,
     display: 'flex',
     alignItems: 'center',

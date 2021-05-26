@@ -2,13 +2,23 @@ import React, { useState } from 'react'
 import { Portal, Button, Dialog } from 'react-native-paper'
 import * as ImagePicker from 'react-native-image-picker'
 
-export default function AttachmentDialog({ open, onClose, onPick, onChooseCam, doPaidMessage, request, send, loopout, isConversation, onGiphyHandler, hasLoopout }) {
+export default function AttachmentDialog({
+  open,
+  onClose,
+  onPick,
+  onChooseCam,
+  doPaidMessage,
+  request,
+  send,
+  loopout,
+  isConversation,
+  onGiphyHandler,
+  hasLoopout
+}) {
   const [fetchingGifs, setFetchingGifs] = useState(false)
 
   async function pickImage() {
     ImagePicker.launchImageLibrary({}, result => {
-      console.log('result:', result)
-
       if (!result.didCancel) {
         onPick(result)
       } else {
@@ -45,30 +55,61 @@ export default function AttachmentDialog({ open, onClose, onPick, onChooseCam, d
             alignItems: 'flex-start'
           }}
         >
-          <Button icon='camera' onPress={onChooseCamHandler} style={{ width: '100%', alignItems: 'flex-start' }} accessibilityLabel='dialog-camera-button'>
+          <Button
+            icon='camera'
+            onPress={onChooseCamHandler}
+            style={{ width: '100%', alignItems: 'flex-start' }}
+            accessibilityLabel='dialog-camera-button'
+          >
             Camera
           </Button>
-          <Button icon='image' onPress={pickImageHandler} style={{ width: '100%', alignItems: 'flex-start' }} accessibilityLabel='dialog-photo-button'>
+          <Button
+            icon='image'
+            onPress={pickImageHandler}
+            style={{ width: '100%', alignItems: 'flex-start' }}
+            accessibilityLabel='dialog-photo-button'
+          >
             Photo Library
           </Button>
-          <Button icon='gif' onPress={pickGif} style={{ width: '100%', alignItems: 'flex-start' }} accessibilityLabel='dialog-gif-button' loading={fetchingGifs}>
+          <Button
+            icon='gif'
+            onPress={pickGif}
+            style={{ width: '100%', alignItems: 'flex-start' }}
+            accessibilityLabel='dialog-gif-button'
+            loading={fetchingGifs}
+          >
             Gif
           </Button>
-          <Button icon='message' onPress={doPaidMessageHandler} style={{ width: '100%', alignItems: 'flex-start' }} accessibilityLabel='dialog-paid-msg-button'>
+          {/* <Button icon='message' onPress={doPaidMessageHandler} style={{ width: '100%', alignItems: 'flex-start' }} accessibilityLabel='dialog-paid-msg-button'>
             Paid Message
-          </Button>
+          </Button> */}
           {isConversation && (
-            <Button icon='arrow-bottom-left' onPress={requestHandler} style={{ width: '100%', alignItems: 'flex-start' }} accessibilityLabel='dialog-request-button'>
+            <Button
+              icon='arrow-bottom-left'
+              onPress={requestHandler}
+              style={{ width: '100%', alignItems: 'flex-start' }}
+              accessibilityLabel='dialog-request-button'
+            >
               Request
             </Button>
           )}
           {isConversation && (
-            <Button icon='arrow-top-right' onPress={sendHandler} style={{ width: '100%', alignItems: 'flex-start' }} accessibilityLabel='dialog-send-button'>
+            <Button
+              icon='arrow-top-right'
+              onPress={sendHandler}
+              style={{ width: '100%', alignItems: 'flex-start' }}
+              accessibilityLabel='dialog-send-button'
+            >
               Send
             </Button>
           )}
           {hasLoopout && (
-            <Button icon='arrow-top-right' onPress={loopoutHandler} style={{ width: '100%', alignItems: 'flex-start' }} accessibilityLabel='dialog-loopout-button'>
+            <Button
+              icon='arrow-top-right'
+              onPress={loopoutHandler}
+              style={{ width: '100%', alignItems: 'flex-start' }}
+              accessibilityLabel='dialog-loopout-button'
+            >
               Send OnChain
             </Button>
           )}

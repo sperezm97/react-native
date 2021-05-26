@@ -1,9 +1,10 @@
 import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 
 import { useTheme } from '../../../store'
-import Typography from '../../common/Typography'
 import CustomIcon from '../../utils/customIcons'
+import shared from './sharedStyles'
+import Typography from '../../common/Typography'
 import AvatarsRow from './avatarsRow'
 
 export default function BoostRow(props) {
@@ -11,42 +12,51 @@ export default function BoostRow(props) {
   const isMe = props.sender === 1
   // console.log(props.boosts_total_sats)
 
-  let backgroundColor = isMe ? (theme.dark ? '#3d6188' : 'whitesmoke') : theme.dark ? '#202a36' : 'white'
-
   const theBoosts = []
   if (props.boosts) {
     props.boosts.forEach(b => {
-      if (!theBoosts.find(bb => (bb.sender_alias || bb.sender) === (b.sender_alias || b.sender))) {
+      if (
+        !theBoosts.find(
+          bb => (bb.sender_alias || bb.sender) === (b.sender_alias || b.sender)
+        )
+      ) {
         theBoosts.push(b)
       }
     })
   }
 
+  const paddStyles = props.pad ? { ...shared.innerPad } : {}
+
+  const wrapStyles = {
+    ...styles.row,
+    maxWidth: '100%',
+    height: props.pad ? 50 : 35,
+    ...paddStyles
+  }
+
   const hasBoosts = theBoosts ? true : false
-  const padn = props.pad ? 15 : 0
+
   return (
-    <View style={{ ...styles.row, maxWidth: '100%', marginTop: props.marginTop || 0 }}>
-      <View style={{ ...styles.left, marginRight: 18, marginBottom: padn, marginLeft: padn }}>
-        <View style={{ ...styles.rocketWrap, backgroundColor: theme.accent }}>
+    <View style={wrapStyles}>
+      <View style={{ ...styles.left, marginRight: 18 }}>
+        <View style={{ ...styles.rocketWrap, backgroundColor: theme.primary }}>
           <CustomIcon color='white' size={15} name='fireworks' />
         </View>
-        <Typography color={isMe ? theme.white : theme.title} style={{ ...styles.amt }}>
+        <Typography color={theme.text} style={{ ...styles.amt }}>
           {props.boosts_total_sats}
         </Typography>
-        <Typography color={isMe ? theme.white : theme.subtitle} style={{ ...styles.sats }}>
+        <Typography color={theme.subtitle} style={{ ...styles.sats }}>
           sats
         </Typography>
-        {/* <Text style={{ ...styles.amt, color: theme.title }}>{props.boosts_total_sats}</Text> */}
-        {/* <Text style={{ ...styles.sats, color: theme.subtitle }}>sats</Text> */}
       </View>
-      <View style={{ ...styles.right, marginLeft: 8, marginBottom: padn, marginRight: padn }}>
+      <View style={{ ...styles.right, marginLeft: 8 }}>
         {hasBoosts && (
           <AvatarsRow
             aliases={theBoosts.map(b => {
               if (b.sender === 1) return props.myAlias || 'Me'
               return b.sender_alias
             })}
-            borderColor={backgroundColor}
+            borderColor={theme.border}
           />
         )}
       </View>
@@ -60,16 +70,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    height: 35,
-    marginTop: 6,
-    width: '100%'
+    width: '100%',
+    height: 35
   },
   left: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
     maxWidth: 99
-    // height: 20
   },
   right: {
     display: 'flex',
@@ -79,7 +87,6 @@ const styles = StyleSheet.create({
   rocketWrap: {
     height: 17,
     width: 17,
-    backgroundColor: 'white',
     borderRadius: 3,
     display: 'flex',
     alignItems: 'center',
