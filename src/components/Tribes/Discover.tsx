@@ -49,14 +49,16 @@ export default function Discover() {
     return (
       <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
         <SearchHeader />
+        <View style={styles.content}>
+          <List
+            data={tribesToShow}
+            loading={loading}
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            listEmpty={<ListEmpty />}
+          />
+        </View>
 
-        <List
-          data={tribesToShow}
-          loading={loading}
-          refreshing={refreshing}
-          onRefresh={onRefresh}
-          listEmpty={<ListEmpty />}
-        />
         <TabBar />
       </View>
     )
@@ -149,6 +151,10 @@ function SearchHeader() {
 const styles = StyleSheet.create({
   wrap: {
     flex: 1
+  },
+  content: {
+    flex: 1,
+    marginTop: 14
   },
   appBar: {
     elevation: 0,

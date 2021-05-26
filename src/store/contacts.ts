@@ -198,6 +198,8 @@ class ContactStore {
     try {
       const inv = await relay.post(`invites/${invite_string}/pay`, {})
       if (!inv) return
+      console.log('inv', inv)
+
       this.updateInvite(inv.invite)
     } catch (e) {
       console.log('could not pay invite', e)
