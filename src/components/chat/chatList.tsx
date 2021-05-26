@@ -107,7 +107,7 @@ function ChatRow(props) {
     return (
       <TouchableOpacity
         style={{
-          ...moreStyles.itemRow,
+          ...styles.chatRow,
           backgroundColor: theme.main
         }}
         activeOpacity={0.5}
@@ -118,12 +118,7 @@ function ChatRow(props) {
         </View>
         <View style={{ ...styles.chatContent }}>
           <View style={styles.top}>
-            <Typography
-              style={{ ...styles.chatName }}
-              color={theme.text}
-              size={16}
-              fw='500'
-            >
+            <Typography size={16} fw='500'>
               {name}
             </Typography>
             <Typography size={13} style={{ ...styles.chatDate }} color={theme.subtitle}>
@@ -153,7 +148,7 @@ function ChatRow(props) {
             )}
           </View>
           <View
-            style={{ ...moreStyles.borderBottom, borderBottomColor: theme.border }}
+            style={{ ...styles.borderBottom, borderBottomColor: theme.border }}
           ></View>
         </View>
       </TouchableOpacity>
@@ -162,17 +157,6 @@ function ChatRow(props) {
 }
 
 const moreStyles = StyleSheet.create({
-  itemRow: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderRadius: 5
-  },
-  borderBottom: {
-    flexDirection: 'row',
-    flex: 1,
-    borderBottomWidth: 1
-  },
   buttonsWrap: {
     marginTop: 40,
     marginBottom: 25,

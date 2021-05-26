@@ -79,7 +79,8 @@ const styles = StyleSheet.create({
     flex: 1
   },
   content: {
-    flex: 1
+    flex: 1,
+    marginTop: 14
   },
   buttonWrap: {
     display: 'flex',

@@ -72,7 +72,7 @@ function Item(props) {
       </View>
 
       <View style={styles.itemContent}>
-        <View style={{ ...styles.row, ...styles.itemContentTop }}>
+        <View style={{ ...styles.row }}>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Typography size={16} fw='500'>
               {name}
@@ -101,7 +101,7 @@ function Item(props) {
             )}
           </View>
         </View>
-        <View style={{ ...styles.row, ...styles.itemContentBottom }}>
+        <View style={{ ...styles.row }}>
           <Typography color={theme.subtitle} size={13} numberOfLines={1}>
             {description}
           </Typography>
@@ -122,9 +122,11 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    marginVertical: 8,
-    padding: 16,
-    borderRadius: 5
+    // marginVertical: 8,
+    padding: 16
+  },
+  itemContent: {
+    flex: 1
   },
   avatarWrap: {
     display: 'flex',
@@ -147,12 +149,5 @@ const styles = StyleSheet.create({
     height: 3,
     borderRadius: 5,
     marginHorizontal: 10
-  },
-  itemContent: {
-    flex: 1
-  },
-  itemContentTop: {},
-  itemContentBottom: {
-    paddingTop: 5
   }
 })

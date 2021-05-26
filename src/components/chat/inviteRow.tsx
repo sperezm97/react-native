@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { TouchableOpacity, View, Text, StyleSheet, Image } from 'react-native'
+import React, { useState } from 'react'
+import { TouchableOpacity, View, StyleSheet, Image, Alert } from 'react-native'
 import { Dialog, Portal, Button } from 'react-native-paper'
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import moment from 'moment'
@@ -7,12 +7,12 @@ import Toast from 'react-native-simple-toast'
 
 import { constantCodes } from '../../constants'
 import { useStores, useTheme } from '../../store'
+import Typography from '../common/Typography'
 
 export default function InviteRow(props) {
   const theme = useTheme()
   const { contacts, ui, details } = useStores()
   const { name, invite } = props
-  const [dialogOpen, setDialogOpen] = useState(false)
   const [loading, setLoading] = useState(false)
   const [confirmed, setConfirmed] = useState(false)
   const statusString = constantCodes['invite_statuses'][invite.status]
@@ -26,78 +26,69 @@ export default function InviteRow(props) {
 
   const actions = {
     payment_pending: () => {
-      if (!confirmed) setDialogOpen(true)
+      if (!confirmed) {
+        Alert.alert('Pay for invitation?', '', [
+          {
+            text: 'Cancel',
+            onPress: () => console.log('Cancel Pressed'),
+            style: 'cancel'
+          },
+          { text: 'Confirm', onPress: () => onConfirmHandler() }
+        ])
+      }
     },
     ready: () => ui.setShareInviteModal(invite.invite_string),
     delivered: () => ui.setShareInviteModal(invite.invite_string)
   }
   function doAction() {
+    console.log('statusString', statusString)
+
     if (actions[statusString]) actions[statusString]()
   }
-  function setDialogOpenToFalseHandler() {
-    setDialogOpen(false)
-  }
+
   async function onConfirmHandler() {
     const balance = details.balance
     if (balance < invite.price) {
       Toast.showWithGravity('Not Enough Balance', Toast.SHORT, Toast.TOP)
-
-      setDialogOpen(false)
     } else {
       setLoading(true)
       await contacts.payInvite(invite.invite_string)
       setConfirmed(true)
-      setDialogOpen(false)
       setLoading(false)
     }
   }
 
+  // console.log('props', props)
+
   return (
     <TouchableOpacity
-      style={{ ...styles.chatRow, backgroundColor: theme.main }}
+      style={{
+        ...styles.chatRow,
+        backgroundColor: theme.main,
+        ...styles.borderBottom,
+        borderBottomColor: theme.border
+      }}
       activeOpacity={0.5}
       onPress={doAction}
     >
-      <View style={styles.inviteQR}>
+      <View style={styles.avatarWrap}>
         <Image
           style={{ height: 40, width: 40 }}
           source={require('../../assets/invite-qr.png')}
         />
       </View>
-      <View style={styles.chatContent}>
+      <View style={styles.inviteContent}>
         <View style={styles.top}>
-          <Text
-            style={{ ...styles.chatName, color: theme.text }}
-          >{`Invite: ${name}`}</Text>
-          {invite.price && <Text style={styles.invitePrice}>{invite.price}</Text>}
+          <Typography color={theme.primary} size={16}>{`Invite: ${name}`}</Typography>
+          {invite.price && <Typography>{invite.price}</Typography>}
         </View>
-        <View style={styles.bottom}>
+        <View style={styles.inviteBottom}>
           {inviteIcon(statusString, theme)}
-          <Text style={{ ...styles.chatMsg, color: theme.subtitle }}>
+          <Typography color={theme.subtitle}>
             {inviteMsg(statusString, name, confirmed)}
-          </Text>
+          </Typography>
         </View>
       </View>
-
-      <Portal>
-        <Dialog
-          visible={dialogOpen}
-          style={{ bottom: 10 }}
-          onDismiss={setDialogOpenToFalseHandler}
-        >
-          <Dialog.Title>{`Pay for invitation?`}</Dialog.Title>
-          <Dialog.Actions style={{ justifyContent: 'space-between' }}>
-            <Button onPress={setDialogOpenToFalseHandler} labelStyle={{ color: 'grey' }}>
-              <MaterialIcon name='cancel' size={14} color={theme.icon} />
-              <View style={{ width: 4, height: 6 }}></View>
-              <Text>Cancel</Text>
-            </Button>
-            <Button icon='credit-card' loading={loading} onPress={onConfirmHandler}>
-              Confirm
-            </Button>
-          </Dialog.Actions>
-        </Dialog>
-      </Portal>
     </TouchableOpacity>
   )
 }
@@ -156,42 +147,15 @@ function inviteMsg(statusString: string, name: string, confirmed?: boolean) {
 }
 
 export const styles = StyleSheet.create({
-  inviteQR: {
-    width: 40,
-    height: 40,
-    overflow: 'hidden',
-    backgroundColor: 'transparent',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 18,
-    marginLeft: 18
-  },
-  avatarWrap: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingLeft: 16,
-    paddingVertical: 16
-  },
-  avatar: {
-    width: 52,
-    height: 52,
-    borderRadius: 26,
-    backgroundColor: 'transparent',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'relative',
-    overflow: 'hidden'
-  },
   chatRow: {
-    width: '100%',
     display: 'flex',
-    alignItems: 'center',
     flexDirection: 'row',
-    padding: 16,
-    marginBottom: 14
+    alignItems: 'center'
+  },
+  borderBottom: {
+    flexDirection: 'row',
+    flex: 1,
+    borderBottomWidth: 1
   },
   chatContent: {
     display: 'flex',
@@ -199,6 +163,12 @@ export const styles = StyleSheet.create({
     flex: 1,
     paddingLeft: 16,
     paddingTop: 16
+  },
+  inviteContent: {
+    display: 'flex',
+    flexDirection: 'column',
+    flex: 1,
+    paddingLeft: 16
   },
   top: {
     display: 'flex',
@@ -208,32 +178,29 @@ export const styles = StyleSheet.create({
     flex: 1,
     maxHeight: 28
   },
-  invitePrice: {
-    height: 22,
-    color: 'white',
-    backgroundColor: '#64c684',
-    paddingLeft: 10,
-    paddingRight: 10,
-    paddingTop: 3,
-    paddingBottom: 3,
-    borderRadius: 3,
-    fontSize: 12,
-    marginRight: 20
-  },
-  chatName: {
-    marginRight: 12,
-    marginBottom: 4
-  },
-  chatDate: {
-    marginRight: 14
-  },
   bottom: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between'
   },
-  chatMsg: {
-    fontSize: 13
+  inviteBottom: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  avatarWrap: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingLeft: 16,
+    width: 70,
+    height: 80
+  },
+  chatDate: {
+    marginRight: 14
+  },
+  cancel: {
+    color: 'red'
   }
 })
