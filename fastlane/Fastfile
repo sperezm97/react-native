@@ -28,28 +28,13 @@ platform :ios do
    # Set up Distribution code signing and build the app
    match(
      type: "appstore",
-    #  readonly: is_ci
+     readonly: is_ci
    ) 
    
-
-  #  sigh(
-  #   development: true,
-  #   team_id: "5ZGU9RL6KG",
-  #   provisioning_name: "match AppStore chat.n2n2.Chat.staging 5ZGU9RL6KG"
-  # )
-
-  # disable_automatic_code_signing(code_sign_identity: 'iPhone Distribution')
-  # sync_code_signing
-
    gym(
      scheme: "Chat",
      workspace: "ios/Chat.xcworkspace",
      export_xcargs: "-allowProvisioningUpdates"
-    #  export_options: {
-    #   provisioningProfiles: {
-    #       "chat.n2n2.Chat.staging" => "match AppStore chat.n2n2.Chat.staging 5ZGU9RL6KG"
-    #    }
-    #  }
    )
 
    # Upload the binary to TestFlight and automatically publish
@@ -84,9 +69,16 @@ platform :ios do
   # )
   
    # Set up Distribution code signing and build the app
-   match(type: "appstore")
+   match(
+     type: "appstore",
+     readonly: is_ci
+   )
 
-   gym(scheme: "Chat", workspace: "ios/Chat.xcworkspace")
+   gym(
+     scheme: "Chat",
+     workspace: "ios/Chat.xcworkspace",
+     export_xcargs: "-allowProvisioningUpdates"
+   )
 
    # Upload the binary to TestFlight and automatically publish
    # to the configured beta testing group
