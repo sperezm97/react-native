@@ -97,7 +97,6 @@ export default function JoinTribe() {
                   >
                     {params.name}
                   </Typography>
-
                   <Typography
                     color={theme.subtitle}
                     style={{

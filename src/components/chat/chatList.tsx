@@ -133,7 +133,7 @@ function ChatRow(props) {
                 fw={hasUnseen ? '500' : '400'}
                 size={13}
                 style={{
-                  maxWidth: w - 105
+                  maxWidth: w - 150
                 }}
               >
                 {lastMsgText}
@@ -171,8 +171,8 @@ const moreStyles = StyleSheet.create({
     height: '100%'
   },
   badge: {
-    width: 25,
-    height: 25,
+    width: 22,
+    height: 22,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',

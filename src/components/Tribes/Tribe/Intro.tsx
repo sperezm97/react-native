@@ -233,7 +233,7 @@ function TribeActions({ tribe }) {
                   onPress={onChatPress}
                   w='70%'
                 >
-                  Play Wall
+                  Chat
                 </Button>
               </View>
             ) : (
@@ -250,7 +250,7 @@ function TribeActions({ tribe }) {
             onPress={onChatPress}
             w='70%'
           >
-            Play Wall
+            Chat
           </Button>
         )}
       </>

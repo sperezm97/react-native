@@ -45,10 +45,10 @@ export default function PubKey({ visible, close, pubkey }) {
           </Typography>
           {pubkey && (
             <View style={styles.buttonsWrap}>
-              <Button onPress={() => share()} w={120}>
+              <Button onPress={() => share()} w={130}>
                 Share
               </Button>
-              <Button onPress={() => copy()} w={120}>
+              <Button onPress={() => copy()} w={130}>
                 Copy
               </Button>
             </View>
@@ -62,7 +62,7 @@ export default function PubKey({ visible, close, pubkey }) {
 const styles = StyleSheet.create({
   wrap: {
     flex: 1,
-    paddingTop: 20
+    paddingTop: 40
   },
   content: {
     alignSelf: 'center',

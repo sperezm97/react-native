@@ -31,7 +31,7 @@ export default function Support() {
     let body = text ? `${text}<br/><br/>` : ''
     body += details.logs.replace(/(\n)/g, '<br/>')
     const subject = 'N2N2 Support Request'
-    Linking.openURL(`mailto:support@n2n2.chat?subject=${subject}&body=${body}`)
+    Linking.openURL(`mailto:ci@n2n2.co?subject=${subject}&body=${body}`)
   }
 
   useEffect(() => {

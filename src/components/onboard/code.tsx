@@ -117,6 +117,9 @@ export default function Code(props) {
     let thePassword = ''
     if (!theIP) {
       const codeR = await user.signupWithCode(theCode)
+
+      console.log('codeR', codeR)
+
       if (!codeR) {
         setChecking(false)
         return

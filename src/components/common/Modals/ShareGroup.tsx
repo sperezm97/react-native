@@ -38,7 +38,7 @@ export default function ShareGroup() {
   const qr = `${DEFAULT_DOMAIN}://?action=tribe&uuid=${uuid}&host=${host}`
 
   return useObserver(() => (
-    <ModalWrap visible={ui.shareTribeUUID ? true : false}>
+    <ModalWrap visible={ui.shareTribeUUID ? true : false} onClose={close}>
       <Header title='Community QR Code' onClose={close} />
       <View style={styles.wrap}>
         <View
@@ -49,10 +49,10 @@ export default function ShareGroup() {
           <QRCode value={qr} size={SCREEN_WIDTH / 1.3} />
           {/* <Typography color={theme.subtitle}>{qr}</Typography> */}
           <View style={styles.buttonsWrap}>
-            <Button onPress={() => share()} w={120}>
+            <Button onPress={() => share()} w={130}>
               Share
             </Button>
-            <Button onPress={() => copy()} w={120}>
+            <Button onPress={() => copy()} w={130}>
               Copy
             </Button>
           </View>
@@ -65,7 +65,7 @@ export default function ShareGroup() {
 const styles = StyleSheet.create({
   wrap: {
     flex: 1,
-    paddingTop: 20
+    paddingTop: 40
   },
   content: {
     alignSelf: 'center',

@@ -41,8 +41,6 @@ export default function InviteRow(props) {
     delivered: () => ui.setShareInviteModal(invite.invite_string)
   }
   function doAction() {
-    console.log('statusString', statusString)
-
     if (actions[statusString]) actions[statusString]()
   }
 
@@ -80,7 +78,11 @@ export default function InviteRow(props) {
       <View style={styles.inviteContent}>
         <View style={styles.top}>
           <Typography color={theme.primary} size={16}>{`Invite: ${name}`}</Typography>
-          {invite.price && <Typography>{invite.price}</Typography>}
+          {invite.price && (
+            <Typography style={{ marginRight: 14 }} color={theme.darkGrey}>
+              {invite.price}
+            </Typography>
+          )}
         </View>
         <View style={styles.inviteBottom}>
           {inviteIcon(statusString, theme)}

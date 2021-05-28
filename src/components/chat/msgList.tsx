@@ -6,6 +6,7 @@ import {
   View,
   Text,
   Keyboard,
+  Animated,
   Dimensions,
   ActivityIndicator
 } from 'react-native'
@@ -34,6 +35,7 @@ export default function MsgListWrap({
 }) {
   const { msg, ui, user, chats, details } = useStores()
   const [limit, setLimit] = useState(40)
+  const navigation = useNavigation()
 
   function onLoadMoreMsgs() {
     setLimit(c => c + 40)
@@ -65,7 +67,6 @@ export default function MsgListWrap({
   async function onApproveOrDenyMember(contactId, status, msgId) {
     await msg.approveOrRejectMember(contactId, status, msgId)
   }
-  const navigation = useNavigation()
   async function onDeleteChat() {
     navigation.navigate('Home', { params: { rnd: Math.random() } })
     await chats.exitGroup(chat.id)
