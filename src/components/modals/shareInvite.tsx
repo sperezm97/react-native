@@ -5,11 +5,12 @@ import { Button, Portal } from 'react-native-paper'
 import Share from 'react-native-share'
 import Clipboard from '@react-native-community/clipboard'
 import Toast from 'react-native-simple-toast'
+import QRCode from 'react-native-qrcode-svg'
 
 import { useStores } from '../../store'
+import { SCREEN_WIDTH, TOAST_DURATION } from '../../constants'
 import ModalWrap from './modalWrap'
 import Header from './modalHeader'
-import QRCode from '../utils/qrcode'
 
 export default function ShareInviteWrap({ visible }) {
   const { ui } = useStores()
@@ -30,7 +31,7 @@ function ShareInvite({ close }) {
 
   function copy() {
     Clipboard.setString(ui.shareInviteString)
-    Toast.showWithGravity('Invite Copied!', Toast.SHORT, Toast.TOP)
+    Toast.showWithGravity('Invite Copied!', TOAST_DURATION, Toast.TOP)
   }
 
   async function share() {
@@ -47,10 +48,17 @@ function ShareInvite({ close }) {
       <TouchableWithoutFeedback style={styles.wrap} onPress={copy}>
         <View style={styles.wrap}>
           <View style={styles.tapWrap}>
-            <Image style={{ height: 29, width: 17 }} source={require('../../../android_assets/tap_to_copy.png')} />
+            <Image
+              style={{ height: 29, width: 17 }}
+              source={require('../../../android_assets/tap_to_copy.png')}
+            />
             <Text style={styles.tapToCopy}>TAP TO COPY</Text>
           </View>
-          <View style={styles.qrWrap}>{hasInvite && <QRCode value={ui.shareInviteString} size={210} bgColor='black' fgColor='white' />}</View>
+          <View style={styles.qrWrap}>
+            {hasInvite && (
+              <QRCode value={ui.shareInviteString} size={SCREEN_WIDTH / 1.3} />
+            )}
+          </View>
           {hasInvite && (
             <View style={styles.inviteStringWrap}>
               <Text style={styles.inviteString}>{ui.shareInviteString}</Text>

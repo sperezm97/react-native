@@ -4,6 +4,8 @@ import {
   StyleSheet,
   InteractionManager,
   BackHandler,
+  SafeAreaView,
+  ScrollView,
   KeyboardAvoidingView,
   Platform
 } from 'react-native'
@@ -47,12 +49,12 @@ export default function Chat() {
 
   const navigation = useNavigation()
 
-  function handleBack() {
-    BackHandler.addEventListener('hardwareBackPress', function () {
-      navigation.navigate('Home', { params: { rnd: Math.random() } })
-      return true
-    })
-  }
+  // function handleBack() {
+  //   BackHandler.addEventListener('hardwareBackPress', function () {
+  //     navigation.navigate('Home', { params: { rnd: Math.random() } })
+  //     return true
+  //   })
+  // }
 
   useEffect(() => {
     // check for contact key, exchange if none
@@ -64,14 +66,14 @@ export default function Chat() {
     EE.on(LEFT_GROUP, () => {
       navigation.navigate('Home', { params: { rnd: Math.random() } })
     })
-    EE.on(LEFT_IMAGE_VIEWER, () => {
-      handleBack()
-    })
+    // EE.on(LEFT_IMAGE_VIEWER, () => {
+    //   handleBack()
+    // })
     InteractionManager.runAfterInteractions(() => {
       setShow(true)
     })
 
-    handleBack()
+    // handleBack()
 
     fetchTribeParams()
 
@@ -155,7 +157,18 @@ export default function Chat() {
   }
 
   return (
-    <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
+    // <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
+
+    //   <View style={{ ...styles.content }}>
+    // <SafeAreaView style={{ ...styles.wrap, backgroundColor: theme.bg }}>
+    <KeyboardAvoidingView
+      // style={{ flex: 1 }}
+      // behavior='padding'
+      // keyboardVerticalOffset={headerHeight}
+      behavior='padding'
+      style={{ flex: 1, backgroundColor: theme.bg }}
+      keyboardVerticalOffset={1}
+    >
       <Header
         chat={chat}
         appMode={appMode}
@@ -166,55 +179,41 @@ export default function Chat() {
         spent={spent}
         pricePerMinute={pricePerMinute}
       />
+      {/* <ScrollView> */}
+      {theShow && <MsgList chat={chat} pricePerMessage={pricePerMessage} />}
+      {/* </ScrollView> */}
 
-      <View style={{ ...styles.content }}>
-        <KeyboardAvoidingView
-          style={{ flex: 1 }}
-          behavior='padding'
-          keyboardVerticalOffset={headerHeight}
-        >
-          {(appURL ? true : false) && (
-            <View
-              style={{ ...styles.layer, zIndex: appMode ? 100 : 99 }}
-              accessibilityLabel='chat-application-frame'
-            >
-              <Frame url={appURL} />
-            </View>
-          )}
+      {!theShow && (
+        <View style={{ ...styles.loadWrap, backgroundColor: theme.bg }}>
+          <ActivityIndicator animating={true} color={theme.subtitle} />
+        </View>
+      )}
 
-          {!theShow && (
-            <View style={{ ...styles.loadWrap, backgroundColor: theme.bg }}>
-              <ActivityIndicator animating={true} color={theme.subtitle} />
-            </View>
-          )}
+      <Pod
+        pod={pod}
+        show={feedURL ? true : false}
+        chat={chat}
+        onBoost={onBoost}
+        podError={podError}
+      />
 
-          {theShow && <MsgList chat={chat} pricePerMessage={pricePerMessage} />}
+      {/* <Anim dark={theme.dark} /> */}
+      {theShow && (
+        <BottomBar chat={chat} pricePerMessage={pricePerMessage} tribeBots={tribeBots} />
+      )}
+    </KeyboardAvoidingView>
 
-          <Pod
-            pod={pod}
-            show={feedURL ? true : false}
-            chat={chat}
-            onBoost={onBoost}
-            podError={podError}
-          />
+    // </SafeAreaView>
 
-          {/* <Anim dark={theme.dark} /> */}
-          {theShow && (
-            <BottomBar
-              chat={chat}
-              pricePerMessage={pricePerMessage}
-              tribeBots={tribeBots}
-            />
-          )}
-        </KeyboardAvoidingView>
-      </View>
-    </View>
+    // </View>
   )
 }
 
 const styles = StyleSheet.create({
   wrap: {
-    flex: 1
+    flex: 1,
+    height: '100%',
+    width: '100%'
   },
   content: {
     flex: 1

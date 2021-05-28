@@ -55,6 +55,11 @@ export default function MsgRow(props) {
 
   function onRowOpenHandler() {
     EE.emit(REPLY_UUID, props.uuid)
+
+    ReactNativeHapticFeedback.trigger('impactLight', {
+      enableVibrateFallback: true,
+      ignoreAndroidSystemSettings: false
+    })
   }
 
   function onRowCloseHandler() {
