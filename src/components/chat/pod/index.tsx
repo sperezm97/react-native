@@ -376,7 +376,9 @@ export default function Pod({ pod, show, chat, onBoost, podError }) {
           style={{ width: 42, height: 42, marginLeft: 8, marginRight: 12 }}
           resizeMode={'cover'}
         />
-        <Text style={{ ...styles.episodeTitle, color: theme.title }}>{item.title}</Text>
+        <Text style={{ ...styles.episodeTitle, color: theme.title }}>
+          {item.title.substring(0, 43)}...
+        </Text>
       </TouchableOpacity>
     )
   }
@@ -417,10 +419,10 @@ export default function Pod({ pod, show, chat, onBoost, podError }) {
               <FastImage
                 source={{ uri: episode.image || pod.image }}
                 style={{
-                  width: width - 78,
-                  height: width - 78,
-                  marginLeft: 39,
-                  marginTop: 25,
+                  width: width - 88,
+                  height: width - 88,
+                  marginLeft: 49,
+                  marginTop: 35,
                   borderRadius: 19
                 }}
                 resizeMode={'cover'}
