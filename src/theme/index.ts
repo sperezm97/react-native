@@ -37,7 +37,7 @@ export function paperTheme(theme) {
       ...DefaultTheme.colors,
       primary: theme.primary,
       accent: theme.accent,
-      text: theme.title,
+      text: theme.text,
       placeholder: theme.placeholder,
       background: theme.bg,
       surface: theme.main

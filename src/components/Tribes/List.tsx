@@ -1,14 +1,16 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { StyleSheet, View, FlatList, TouchableOpacity } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
 import { useNavigation } from '@react-navigation/native'
 import { ActivityIndicator } from 'react-native-paper'
 
 import { useStores, useTheme } from '../../store'
+import { SCREEN_WIDTH } from '../../constants'
 import Typography from '../common/Typography'
 import Avatar from '../common/Avatar'
 import Button from '../common/Button'
 import RefreshLoading from '../common/RefreshLoading'
+import JoinTribe from '../common/Modals/Tribe/JoinTribe'
 
 export default function List(props) {
   const { data, loading, listEmpty, refreshing, onRefresh } = props
@@ -49,13 +51,20 @@ function Item(props) {
   const { ui, chats } = useStores()
   const theme = useTheme()
   const navigation = useNavigation()
+  const [joinTribe, setJoinTribe] = useState({
+    visible: false,
+    tribe: null
+  })
 
   const onItemPress = () => navigation.navigate('Tribe', { tribe: { ...props } })
 
   async function onJoinPress() {
     const host = chats.getDefaultTribeServer().host
     const tribeParams = await chats.getTribeDetails(host, uuid)
-    ui.setJoinTribeModal(true, tribeParams)
+    setJoinTribe({
+      visible: true,
+      tribe: tribeParams
+    })
   }
 
   return (
@@ -102,11 +111,29 @@ function Item(props) {
           </View>
         </View>
         <View style={{ ...styles.row }}>
-          <Typography color={theme.subtitle} size={13} numberOfLines={1}>
+          <Typography
+            color={theme.subtitle}
+            size={13}
+            numberOfLines={1}
+            style={{
+              maxWidth: SCREEN_WIDTH - 175
+            }}
+          >
             {description}
           </Typography>
         </View>
       </View>
+
+      <JoinTribe
+        visible={joinTribe.visible}
+        tribe={joinTribe.tribe}
+        close={() => {
+          setJoinTribe({
+            visible: false,
+            tribe: null
+          })
+        }}
+      />
     </TouchableOpacity>
   )
 }

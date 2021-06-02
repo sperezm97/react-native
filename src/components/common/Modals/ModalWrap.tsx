@@ -1,17 +1,29 @@
 import React from 'react'
 import { StyleSheet, View, Dimensions } from 'react-native'
 import Modal from 'react-native-modal'
+import { isIphoneX, getStatusBarHeight } from 'react-native-iphone-x-helper'
 
 import { useTheme } from '../../../store'
 
 export default function ModalWrap(props) {
-  const { visible, onClose, noHeader, noSwipe, swipeDirection, hasBackdrop, animationInTiming, animationOutTiming, coverScreen, fullscreen, animationIn, animationOut, children } = props
+  const {
+    visible,
+    onClose,
+    noHeader,
+    noSwipe,
+    swipeDirection,
+    hasBackdrop,
+    animationInTiming,
+    animationOutTiming,
+    coverScreen,
+    fullscreen,
+    animationIn,
+    animationOut,
+    children
+  } = props
   const theme = useTheme()
 
-  // const headerHeight = 60
-  // const h = Dimensions.get('screen').height - headerHeight
-
-  const paddingTop = noHeader ? 0 : fullscreen ? 45 : 0
+  const paddingTop = noHeader ? 0 : fullscreen ? getStatusBarHeight() : 0
 
   return (
     <Modal
@@ -32,7 +44,16 @@ export default function ModalWrap(props) {
       // useNativeDriver={true}
       // statusBarTranslucent={true}
     >
-      <View style={{ ...styles.main, backgroundColor: theme.bg, height: fullscreen ? '100%' : 200, paddingTop }}>{children}</View>
+      <View
+        style={{
+          ...styles.main,
+          backgroundColor: theme.bg,
+          height: fullscreen ? '100%' : 200,
+          paddingTop
+        }}
+      >
+        {children}
+      </View>
     </Modal>
   )
 }
@@ -55,7 +76,7 @@ const styles = StyleSheet.create({
     flex: 1
   },
   main: {
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20
+    borderTopLeftRadius: isIphoneX() ? 20 : 0,
+    borderTopRightRadius: isIphoneX() ? 20 : 0
   }
 })

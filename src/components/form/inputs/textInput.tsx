@@ -39,7 +39,9 @@ export default function TheTextInput({
 
   return (
     <>
-      <Typography size={14}>{lab}</Typography>
+      <Typography size={14} color={theme.title}>
+        {lab}
+      </Typography>
       <TextInput
         mode={mode}
         accessibilityLabel={accessibilityLabel}

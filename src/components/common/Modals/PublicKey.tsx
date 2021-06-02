@@ -19,7 +19,7 @@ export default function PubKey({ visible, close, pubkey }) {
 
   function copy() {
     Clipboard.setString(pubkey)
-    Toast.showWithGravity('Public Key Copied.', TOAST_DURATION, Toast.CENTER)
+    Toast.showWithGravity('Public Key Copied.', TOAST_DURATION, Toast.TOP)
   }
 
   async function share() {

@@ -40,24 +40,50 @@ export default function QrInput({
 
   return (
     <>
-      <Typography style={{ marginBottom: 16 }} size={14}>
+      <Typography style={{ marginBottom: 16 }} size={14} color={theme.title}>
         {lab}
       </Typography>
-      <View style={{ ...styles.inputWrap }}>
-        {displayOnly ? (
-          <TouchableOpacity activeOpacity={0.6} onPress={() => copyAddress(value)}>
-            <TextInput
-              editable={false}
-              disabled={true}
-              accessibilityLabel={accessibilityLabel}
-              onChangeText={handleChange(name)}
-              onBlur={handleBlur(name)}
-              value={value}
-              style={{ ...styles.input, backgroundColor: theme.bg }}
-              underlineColor={theme.border}
+      {displayOnly ? (
+        <>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+          >
+            <Typography
+              // color={theme.subtitle}
+              numberOfLines={1}
+              style={{
+                flex: 1,
+                height: value ? 'auto' : 30,
+                paddingRight: 5
+              }}
+            >
+              {value ? value : 'No Public key found.'}
+            </Typography>
+            {value && (
+              <IconButton
+                icon='qrcode'
+                color={theme.primary}
+                size={26}
+                onPress={() => setScanning(true)}
+              />
+            )}
+          </View>
+          {value && (
+            <View
+              style={{
+                borderBottomWidth: 1,
+                borderBottomColor: theme.border,
+                marginBottom: 25
+              }}
             />
-          </TouchableOpacity>
-        ) : (
+          )}
+        </>
+      ) : (
+        <View>
           <TextInput
             accessibilityLabel={accessibilityLabel}
             onChangeText={handleChange(name)}
@@ -66,16 +92,16 @@ export default function QrInput({
             style={{ ...styles.input, backgroundColor: theme.bg }}
             underlineColor={theme.border}
           />
-        )}
 
-        <IconButton
-          icon={displayOnly ? 'qrcode' : 'qrcode-scan'}
-          color={theme.primary}
-          size={displayOnly ? 26 : 22}
-          style={{ ...styles.icon }}
-          onPress={() => setScanning(true)}
-        />
-      </View>
+          <IconButton
+            icon='qrcode-scan'
+            color={theme.primary}
+            size={24}
+            style={{ ...styles.icon }}
+            onPress={() => setScanning(true)}
+          />
+        </View>
+      )}
 
       <QR
         visible={scanning && !displayOnly}
@@ -96,7 +122,6 @@ export default function QrInput({
 const styles = StyleSheet.create({
   inputWrap: {
     display: 'flex',
-    flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: 26,
     width: '100%'

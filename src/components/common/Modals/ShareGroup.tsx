@@ -10,7 +10,7 @@ import { useStores, useTheme } from '../../../store'
 import { DEFAULT_DOMAIN } from '../../../config'
 import { SCREEN_WIDTH, TOAST_DURATION } from '../../../constants'
 import ModalWrap from './ModalWrap'
-import Header from './ModalHeader'
+import ModalHeader from './ModalHeader'
 import Button from '../Button'
 import Typography from '../Typography'
 
@@ -20,7 +20,7 @@ export default function ShareGroup() {
 
   function copy() {
     Clipboard.setString(uuid)
-    Toast.showWithGravity('Tribe QR Copied!', TOAST_DURATION, Toast.CENTER)
+    Toast.showWithGravity('Tribe QR Copied!', TOAST_DURATION, Toast.TOP)
   }
 
   async function share() {
@@ -39,7 +39,7 @@ export default function ShareGroup() {
 
   return useObserver(() => (
     <ModalWrap visible={ui.shareTribeUUID ? true : false} onClose={close}>
-      <Header title='Community QR Code' onClose={close} />
+      <ModalHeader title='Community QR Code' onClose={close} />
       <View style={styles.wrap}>
         <View
           style={{
