@@ -15,6 +15,7 @@ export default function Typography(props) {
     fw,
     ls = 0.5,
     lh,
+    textAlign,
     numberOfLines,
     allowFontScaling,
     onPress
@@ -40,7 +41,8 @@ export default function Typography(props) {
         fontSize: size,
         fontWeight: fw,
         letterSpacing: ls,
-        lineHeight: lh ? lh : lineHeight
+        lineHeight: lh ? lh : lineHeight,
+        textAlign
       }}
       numberOfLines={numberOfLines}
     >

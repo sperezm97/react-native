@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
+import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import { Appbar } from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native'
 import FeatherIcon from 'react-native-vector-icons/Feather'

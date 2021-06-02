@@ -10,6 +10,7 @@ import Typography from '../common/Typography'
 import Button from '../common/Button'
 import Empty from '../common/Empty'
 import List from './List'
+import { SCREEN_HEIGHT, SCREEN_WIDTH, STACK_HEADER_HEIGHT } from '../../constants'
 
 const { useTribes } = hooks
 
@@ -59,8 +60,10 @@ function ListEmpty() {
   const theme = useTheme()
 
   return (
-    <Empty h={200}>
-      <Typography size={16}>Become a community owner to see it listed here.</Typography>
+    <Empty h={SCREEN_HEIGHT - STACK_HEADER_HEIGHT - 60 - 60 - 14} w={SCREEN_WIDTH - 100}>
+      <Typography size={16} textAlign='center'>
+        Become a community owner to see it listed here.
+      </Typography>
       <Button
         icon={() => <AntDesignIcon name='plus' color={theme.white} size={18} />}
         w={210}

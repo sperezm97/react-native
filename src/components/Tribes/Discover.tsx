@@ -16,6 +16,7 @@ import Button from '../common/Button'
 import Empty from '../common/Empty'
 import Icon from '../common/Icon'
 import QR from '../common/Accessories/QR'
+import JoinTribe from '../common/Modals/Tribe/JoinTribe'
 import List from './List'
 
 const { useTribes } = hooks
@@ -90,6 +91,10 @@ function SearchHeader() {
   const theme = useTheme()
   const navigation = useNavigation()
   const { ui, chats } = useStores()
+  const [joinTribe, setJoinTribe] = useState({
+    visible: false,
+    tribe: null
+  })
 
   const onTribesSearch = (txt: string) => ui.setTribesSearchTerm(txt)
 
@@ -100,7 +105,10 @@ function SearchHeader() {
     if (j['action']) {
       const tribeParams = await chats.getTribeDetails(j.host, j.uuid)
 
-      ui.setJoinTribeModal(true, tribeParams)
+      setJoinTribe({
+        visible: true,
+        tribe: tribeParams
+      })
     }
   }
 
@@ -144,6 +152,17 @@ function SearchHeader() {
           showPaster={false}
         />
       )}
+
+      <JoinTribe
+        visible={joinTribe.visible}
+        tribe={joinTribe.tribe}
+        close={() => {
+          setJoinTribe({
+            visible: false,
+            tribe: null
+          })
+        }}
+      />
     </Appbar.Header>
   )
 }

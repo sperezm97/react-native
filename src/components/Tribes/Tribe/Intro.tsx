@@ -13,6 +13,7 @@ import Avatar from '../../common/Avatar'
 import Button from '../../common/Button'
 import ImageDialog from '../../common/Dialogs/ImageDialog'
 import PhotoModal from '../../common/Modals/Media/Photo'
+import JoinTribe from '../../common/Modals/Tribe/JoinTribe'
 import AvatarEdit from '../../common/Avatar/AvatarEdit'
 
 export default function Intro({ tribe }) {
@@ -199,11 +200,19 @@ function TribeActions({ tribe }) {
   const { chats, msg, ui } = useStores()
   const theme = useTheme()
   const navigation = useNavigation()
+  const [joinTribe, setJoinTribe] = useState({
+    visible: false,
+    tribe: null
+  })
 
   async function onJoinPress() {
     const host = chats.getDefaultTribeServer().host
     const tribeParams = await chats.getTribeDetails(host, tribe.uuid)
-    ui.setJoinTribeModal(true, tribeParams)
+
+    setJoinTribe({
+      visible: true,
+      tribe: tribeParams
+    })
   }
 
   async function onChatPress() {
@@ -215,44 +224,60 @@ function TribeActions({ tribe }) {
   return useObserver(() => {
     return (
       <>
-        {!tribe.owner ? (
-          <>
-            {tribe.joined ? (
-              <View style={{ ...styles.headerActions }}>
-                {/* <Button color={theme.primary} onPress={onExitTribePress} w='35%'>
+        <>
+          {!tribe.owner ? (
+            <>
+              {tribe.joined ? (
+                <View style={{ ...styles.headerActions }}>
+                  {/* <Button color={theme.primary} onPress={onExitTribePress} w='35%'>
                 Joined
               </Button> */}
-                <Button
-                  icon={() => (
-                    <MaterialCommunityIcon
-                      name='chat-outline'
-                      color={theme.white}
-                      size={20}
-                    />
-                  )}
-                  onPress={onChatPress}
-                  w='70%'
-                >
-                  Chat
+                  <Button
+                    icon={() => (
+                      <MaterialCommunityIcon
+                        name='chat-outline'
+                        color={theme.white}
+                        size={20}
+                      />
+                    )}
+                    onPress={onChatPress}
+                    w='70%'
+                  >
+                    Chat
+                  </Button>
+                </View>
+              ) : (
+                <Button color={theme.primary} onPress={onJoinPress} w='35%'>
+                  Join
                 </Button>
-              </View>
-            ) : (
-              <Button color={theme.primary} onPress={onJoinPress} w='35%'>
-                Join
-              </Button>
-            )}
-          </>
-        ) : (
-          <Button
-            icon={() => (
-              <MaterialCommunityIcon name='chat-outline' color={theme.white} size={20} />
-            )}
-            onPress={onChatPress}
-            w='70%'
-          >
-            Chat
-          </Button>
-        )}
+              )}
+            </>
+          ) : (
+            <Button
+              icon={() => (
+                <MaterialCommunityIcon
+                  name='chat-outline'
+                  color={theme.white}
+                  size={20}
+                />
+              )}
+              onPress={onChatPress}
+              w='70%'
+            >
+              Chat
+            </Button>
+          )}
+        </>
+        <JoinTribe
+          visible={joinTribe.visible}
+          tribe={joinTribe.tribe}
+          close={() => {
+            setJoinTribe({
+              visible: false,
+              tribe: null
+            })
+          }}
+        />
       </>
     )
   })
