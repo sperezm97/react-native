@@ -1,15 +1,16 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { useObserver } from 'mobx-react-lite'
-import { StyleSheet, View, Text, Dimensions } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import Icon from 'react-native-vector-icons/AntDesign'
 import Clipboard from '@react-native-community/clipboard'
 import Toast from 'react-native-simple-toast'
 import Slider from '@react-native-community/slider'
 import { encode as btoa } from 'base-64'
 import { Modalize } from 'react-native-modalize'
+import { isIphoneX, getStatusBarHeight } from 'react-native-iphone-x-helper'
 
 import { useStores, useTheme } from '../../store'
-import { TOAST_DURATION } from '../../constants'
+import { SCREEN_HEIGHT, TOAST_DURATION } from '../../constants'
 import { getPinTimeout, updatePinTimeout } from '../utils/pin'
 import PIN from '../utils/pin'
 import * as rsa from '../../crypto/rsa'
@@ -18,6 +19,7 @@ import { userPinCode } from '../utils/pin'
 import Button from '../common/Button'
 import ActionMenu from '../common/ActionMenu'
 import BackHeader from '../common/BackHeader'
+import Typography from '../common/Typography'
 
 export default function Security() {
   const modalizeRef = useRef<Modalize>(null)
@@ -84,10 +86,10 @@ export default function Security() {
         <ActionMenu items={items} />
         <View style={{ padding: 18 }}>
           <View style={styles.pinTimeoutTextWrap}>
-            <Text style={{ color: theme.subtitle }}>PIN Timeout</Text>
-            <Text style={{ color: theme.title }}>
+            <Typography color={theme.subtitle}>PIN Timeout</Typography>
+            <Typography color={theme.title}>
               {pinTimeout ? pinTimeout : 'Always Require PIN'}
-            </Text>
+            </Typography>
           </View>
           <Slider
             minimumValue={0}
@@ -104,32 +106,45 @@ export default function Security() {
 
         <View style={styles.bottom}>
           <View style={{ ...styles.exportWrap }}>
-            <Text style={{ ...styles.exportText, color: theme.text }}>
-              Want to switch devices?
-            </Text>
-            <Button
-              accessibilityLabel='onboard-welcome-button'
-              onPress={() => modalizeRef.current?.open()}
-              size='large'
-              h={60}
+            <Typography
+              color={theme.title}
+              fw='500'
+              textAlign='center'
+              style={{
+                marginBottom: 14
+              }}
             >
-              <Text>Export keys</Text>
-              <View style={{ width: 12, height: 1 }}></View>
-              <Icon name='key' color={theme.white} size={18} />
-            </Button>
+              Want to switch devices?
+            </Typography>
+            <View style={{ alignItems: 'center' }}>
+              <Button
+                accessibilityLabel='onboard-welcome-button'
+                onPress={() => modalizeRef.current?.open()}
+                size='large'
+                w='70%'
+                h={50}
+              >
+                <Typography color={theme.white}>Export keys</Typography>
+                <View style={{ width: 12, height: 1 }}></View>
+                <Icon name='key' color={theme.white} size={18} />
+              </Button>
+            </View>
           </View>
         </View>
 
         <Modalize
           scrollViewProps={{
+            scrollEnabled: false,
             showsVerticalScrollIndicator: false,
             stickyHeaderIndices: [0]
           }}
           ref={modalizeRef}
           adjustToContentHeight={true}
+          disableScrollIfPossible={true}
           openAnimationConfig={{
             timing: { duration: 300 }
           }}
+          modalTopOffset={getStatusBarHeight() + 30}
         >
           <PIN forceEnterMode={true} onFinish={pin => finish(pin)} />
         </Modalize>
@@ -145,23 +160,12 @@ const styles = StyleSheet.create({
   },
   bottom: {
     flex: 1,
-    marginTop: 40,
-    paddingRight: 18,
-    paddingLeft: 18,
     justifyContent: 'flex-end'
   },
   exportWrap: {
     display: 'flex',
     justifyContent: 'center',
-    minHeight: 200,
-    paddingTop: 20,
-    paddingBottom: 20
-  },
-  exportText: {
-    fontSize: 14,
-    fontWeight: '500',
-    textAlign: 'center',
-    marginBottom: 14
+    marginBottom: 40
   },
   pinTimeoutTextWrap: {
     width: '100%',

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, View, Text, Dimensions } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { ActivityIndicator, Colors } from 'react-native-paper'
 import EncryptedStorage from 'react-native-encrypted-storage'
@@ -9,7 +9,9 @@ import moment from 'moment'
 // import SecureStorage from 'react-native-secure-storage'
 
 import { useTheme } from '../../store'
+import { SCREEN_HEIGHT } from '../../constants'
 import NumKey from './numkey'
+import Typography from '../common/Typography'
 
 const ns = [1, 2, 3, 4, 5, 6]
 export default function PIN(props) {
@@ -98,14 +100,26 @@ export default function PIN(props) {
   }
   if (err) txt = 'TRY AGAIN!'
 
-  const h = Dimensions.get('screen').height
-
   return (
-    <View style={{ ...styles.wrap, backgroundColor: theme.blue }}>
-      <View style={{ ...styles.top, height: h / 2 }}>
+    <View
+      style={{
+        ...styles.wrap,
+        backgroundColor: theme.blue
+      }}
+    >
+      <View style={{ ...styles.top, height: SCREEN_HEIGHT / 3 }}>
         <View style={styles.lock}>
           <Icon name='lock-outline' size={25} color={theme.white} />
-          <Text style={{ ...styles.choose, color: theme.white }}>{txt}</Text>
+          <Typography
+            size={20}
+            fw='600'
+            style={{
+              marginTop: 20
+            }}
+            color={theme.white}
+          >
+            {txt}
+          </Typography>
         </View>
         <View style={styles.circles}>
           {ns.map(n => (
@@ -124,7 +138,9 @@ export default function PIN(props) {
             />
           ))}
         </View>
-        <View style={styles.spinWrap}>{checking && <ActivityIndicator animating={true} color='white' />}</View>
+        <View style={styles.spinWrap}>
+          {checking && <ActivityIndicator animating={true} color={theme.white} />}
+        </View>
       </View>
       <NumKey onKeyPress={v => go(v)} onBackspace={() => backspace()} dark />
     </View>
@@ -193,34 +209,31 @@ function ts() {
 
 const styles = StyleSheet.create({
   wrap: {
-    flex: 1,
-    width: '100%'
+    flex: 1
   },
   top: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 60
+    marginTop: 40,
+    marginBottom: 40
   },
   lock: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center'
-  },
-  choose: {
-    fontWeight: 'bold',
-    fontSize: 20,
-    marginTop: 20
-  },
-  spinWrap: {
-    height: 20
+    justifyContent: 'center',
+    marginBottom: 60
   },
   circles: {
     width: '100%',
     display: 'flex',
-    marginBottom: 60,
     flexDirection: 'row',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    marginBottom: 60
+  },
+  spinWrap: {
+    height: 20
   }
 })
+//
