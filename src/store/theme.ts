@@ -78,7 +78,7 @@ export class ThemeStore {
   @observable accent: string = '#0a84ff'
   @observable active: string = '#49ca97'
   @observable inactive: string = '#febd59'
-  @observable error: string = '#DB5554'
+  @observable error: string = '#ff0033'
   @observable transparent: string = 'rgba(0,0,0,0.5)'
   @observable danger: string = '#fa1616'
 }
