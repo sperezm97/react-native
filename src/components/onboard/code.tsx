@@ -178,7 +178,10 @@ export default function Code(props) {
         center={[80, 40]}
         radius={400}
       >
-        <KeyboardAwareScrollView contentContainerStyle={{ ...styles.content }}>
+        <KeyboardAwareScrollView
+          contentContainerStyle={{ ...styles.content }}
+          scrollEnabled={false}
+        >
           <Title style={styles.welcome}>Welcome</Title>
           <Typography style={styles.msg} size={20} color={theme.white} lh={27}>
             Paste the invitation text or scan the QR code
@@ -218,11 +221,11 @@ export default function Code(props) {
               backgroundColor: theme.transparent
             }}
           >
-            <Typography style={styles.wrongText} color={theme.white}>
+            <Typography style={styles.wrongText} color={theme.white} textAlign='center'>
               {wrong}
             </Typography>
             <TouchableOpacity onPress={() => Linking.openURL(DEFAULT_HOST)}>
-              <Typography style={styles.linkText} size={16} fw='500' color={theme.purple}>
+              <Typography size={16} fw='500' color={theme.purple} textAlign='center'>
                 {DEFAULT_HOST}
               </Typography>
             </TouchableOpacity>
@@ -236,7 +239,7 @@ export default function Code(props) {
               backgroundColor: theme.transparent
             }}
           >
-            <Typography style={styles.errorText} color={theme.white}>
+            <Typography style={styles.errorText} color={theme.white} textAlign='center'>
               {error}
             </Typography>
           </View>
@@ -333,20 +336,16 @@ const styles = StyleSheet.create({
     borderRadius: 10
   },
   wrong: {
-    height: 145
+    height: 150
   },
   wrongText: {
-    margin: 24,
-    textAlign: 'center'
+    margin: 24
   },
   error: {
     height: 70
   },
   errorText: {
     margin: 24,
-    textAlign: 'center'
-  },
-  linkText: {
     textAlign: 'center'
   }
 })

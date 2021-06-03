@@ -1,13 +1,13 @@
 import React from 'react'
 import { StyleSheet, Platform, StatusBar, View } from 'react-native'
+import { getStatusBarHeight } from 'react-native-iphone-x-helper'
 
-const STATUSBAR_HEIGHT = Platform.OS === 'ios' ? 20 : StatusBar.currentHeight
+const STATUSBAR_HEIGHT =
+  Platform.OS === 'ios' ? getStatusBarHeight() : StatusBar.currentHeight
 
 type BarStyle = 'default' | 'light-content' | 'dark-content'
 
 const GeneralStatusBarColor = props => {
-  // const navState = useNavigationState(state=>state.routeNames)
-
   const { primary } = props
   let backgroundColor = 'white'
   let barStyle: BarStyle = 'dark-content'
@@ -24,7 +24,7 @@ const GeneralStatusBarColor = props => {
 
 const styles = StyleSheet.create({
   statusBar: {
-    height: STATUSBAR_HEIGHT
+    // height: STATUSBAR_HEIGHT
   }
 })
 
@@ -34,22 +34,10 @@ type Tint = 'light' | 'dark' | 'black'
 
 export function setTint(s: Tint = 'light') {
   if (s === 'light') {
-    // StatusBar.setBarStyle('dark-content')
-
-    if (Platform.OS === 'android') {
-      StatusBar.setBackgroundColor('white')
-    }
-  } else if (s === 'black') {
-    // StatusBar.setBarStyle('light-content')
-
-    if (Platform.OS === 'android') {
-      StatusBar.setBackgroundColor('#1c252e')
-    }
+    StatusBar.setBarStyle('dark-content')
+  } else if (s === 'dark') {
+    StatusBar.setBarStyle('light-content')
   } else {
-    // StatusBar.setBarStyle('light-content')
-
-    if (Platform.OS === 'android') {
-      StatusBar.setBackgroundColor('#6289FD')
-    }
+    StatusBar.setBarStyle('light-content')
   }
 }

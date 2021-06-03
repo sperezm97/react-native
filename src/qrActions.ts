@@ -1,4 +1,4 @@
-import { setTint } from './components/utils/statusBar'
+import { setTint } from './components/common/StatusBar'
 
 function tint() {
   setTimeout(() => setTint('black'), 900)

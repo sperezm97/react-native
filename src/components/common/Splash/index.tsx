@@ -8,12 +8,22 @@ export default function Splash() {
   const theme = useTheme()
 
   return (
-    <View style={{ ...styles.wrap, backgroundColor: theme.dark ? theme.mirage : theme.white }}>
+    <View
+      style={{ ...styles.wrap, backgroundColor: theme.dark ? theme.mirage : theme.white }}
+    >
       <Wobble>
-        <Image source={require('../../../assets/n2n2.png')} style={{ width: 140, height: 140 }} resizeMode={'contain'} />
+        <Image
+          source={require('../../../assets/n2n2.png')}
+          style={{ width: 140, height: 140 }}
+          resizeMode={'contain'}
+        />
       </Wobble>
 
-      <Image source={require('../../../assets/n2n2-text.png')} style={{ width: 120, height: 120 }} resizeMode={'contain'} />
+      <Image
+        source={require('../../../assets/n2n2-text.png')}
+        style={{ width: 120, height: 120 }}
+        resizeMode={'contain'}
+      />
     </View>
   )
 }

@@ -5,7 +5,7 @@ import { StyleSheet } from 'react-native'
 const basex = require('bs58-rn')
 
 import { useStores } from '../../../../store'
-import { setTint } from '../../../utils/statusBar'
+import { setTint } from '../../StatusBar'
 import ModalWrap from '../ModalWrap'
 import ModalHeader from '../ModalHeader'
 import Main from './Main'

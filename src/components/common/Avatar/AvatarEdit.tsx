@@ -22,13 +22,13 @@ export default function AvatarEdit({
   return (
     <TouchableOpacity onPress={onPress} style={styles.imgWrap} activeOpacity={0.6}>
       {children}
-
       <>
         {uploading && (
           <Typography
             style={{ ...styles.uploadPercent, top: top ? top : '43%' }}
             size={percentSize}
             color={theme.white}
+            textAlign='center'
           >{`${uploadPercent}%`}</Typography>
         )}
         {uploading && (
@@ -81,7 +81,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     height: '100%',
     width: '100%',
-    textAlign: 'center',
     zIndex: 1
   },
   imgIcon: {

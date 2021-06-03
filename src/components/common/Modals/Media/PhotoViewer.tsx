@@ -58,14 +58,8 @@ export default function PhotoViewer({ visible, close, photos, chat, initialIndex
 
 function SwipeItem(props) {
   const [photoH, setPhotoH] = useState(0)
-  const {
-    uuid,
-    message_content,
-    media_type,
-    media_token,
-    chat,
-    boosts_total_sats
-  } = props
+  const { uuid, message_content, media_type, media_token, chat, boosts_total_sats } =
+    props
   const [buying, setBuying] = useState(false)
   const [pricePerMessage, setPricePerMessage] = useState(0)
   const { meme, ui, chats, msg, user, details } = useStores()

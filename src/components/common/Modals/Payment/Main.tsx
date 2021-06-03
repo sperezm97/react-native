@@ -88,7 +88,7 @@ export default function Main({ contact, loading, confirmOrContinue, contactless 
         <View style={styles.confirmWrap}>
           {amt !== '0' && (
             <Button
-              style={{ ...styles.confirm }}
+              w={160}
               loading={loading}
               onPress={() => confirmOrContinue(parseInt(amt), text)}
             >
@@ -151,14 +151,7 @@ const styles = StyleSheet.create({
     width: '100%',
     display: 'flex',
     alignItems: 'center',
-    height: 80,
     marginTop: 14
-  },
-  confirm: {
-    height: 45,
-    width: 150,
-    justifyContent: 'center',
-    borderRadius: 20
   },
   memoWrap: {
     width: '80%',

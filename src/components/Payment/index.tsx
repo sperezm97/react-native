@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
-import { View, Text, StyleSheet, ScrollView } from 'react-native'
-
+import React, { useEffect, useState } from 'react'
+import { View, StyleSheet } from 'react-native'
+import { useObserver } from 'mobx-react-lite'
 import { useStores, useTheme } from '../../store'
 import * as utils from '../utils/utils'
 import { qrActions } from '../../qrActions'
@@ -14,9 +14,47 @@ import Typography from '../common/Typography'
 
 export default function Payment() {
   const [scanning, setScanning] = useState(false)
+  const [loading, setLoading] = useState(true)
+  const [refreshing, setRefreshing] = useState(false)
+  const [payments, setPayments] = useState([])
 
   const { ui, details, chats } = useStores()
   const theme = useTheme()
+
+  function isMsgs(msgs): boolean {
+    const m = msgs && msgs.length && msgs[0]
+    if (m.message_content || m.message_content === '' || m.message_content === null) {
+      // needs this field
+      return true
+    }
+    return false
+  }
+
+  useEffect(() => {
+    fetchPayments()
+
+    fetchBalance()
+  }, [])
+
+  async function fetchBalance() {
+    await details.getBalance()
+  }
+  async function fetchPayments() {
+    setLoading(true)
+    const ps = await details.getPayments()
+
+    setLoading(false)
+    if (!isMsgs(ps)) return
+    setPayments(ps)
+  }
+
+  async function onRefresh() {
+    setRefreshing(true)
+    fetchPayments()
+    fetchBalance()
+
+    setRefreshing(false)
+  }
 
   async function scanningDone(data) {
     if (isLN(data)) {
@@ -49,60 +87,74 @@ export default function Payment() {
     // }
   }
 
+  return useObserver(() => {
+    return (
+      <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
+        <Header onScanClick={() => setScanning(true)} />
+        <Transactions
+          data={payments}
+          refreshing={refreshing}
+          onRefresh={onRefresh}
+          listHeader={<ListHeader />}
+        />
+
+        <QR
+          visible={scanning}
+          onCancel={() => setScanning(false)}
+          confirm={scanningDone}
+          showPaster={true}
+          inputPlaceholder='Paste Invoice or Subscription code'
+        />
+        <TabBar />
+      </View>
+    )
+  })
+}
+
+const ListHeader = () => {
+  const { ui, details, chats } = useStores()
+  const theme = useTheme()
+
   return (
-    <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
-      <Header onScanClick={() => setScanning(true)} />
-      <ScrollView>
-        <View style={{ ...styles.headerActions }}>
-          <View style={styles.wallet}>
-            <Typography
-              size={26}
-              fw='500'
-              color={theme.text}
-              style={{ marginBottom: 10 }}
-            >
-              My Wallet
-            </Typography>
-            <Typography size={16} fw='500' color={theme.text}>
-              {details.balance} <Typography color={theme.subtitle}> sat</Typography>
-            </Typography>
-          </View>
-          <View style={styles.buttonWrap}>
-            <Button
-              mode='outlined'
-              icon='arrow-bottom-left'
-              w={130}
-              h={45}
-              round={0}
-              style={{ borderColor: theme.border }}
-              onPress={() => ui.setPayMode('invoice', null)}
-            >
-              RECEIVE
-            </Button>
-            <Button
-              mode='outlined'
-              icon='arrow-top-right'
-              w={130}
-              h={45}
-              round={0}
-              style={{ borderColor: theme.border, borderLeftWidth: 0 }}
-              onPress={() => ui.setPayMode('payment', null)}
-            >
-              SEND
-            </Button>
-          </View>
+    <>
+      <View style={{ ...styles.headerActions }}>
+        <View style={styles.wallet}>
+          <Typography size={26} fw='500' color={theme.text} style={{ marginBottom: 10 }}>
+            My Wallet
+          </Typography>
+          <Typography size={16} fw='500' color={theme.text}>
+            {details.balance} <Typography color={theme.subtitle}> sat</Typography>
+          </Typography>
         </View>
-        <Transactions />
-      </ScrollView>
-      <QR
-        visible={scanning}
-        onCancel={() => setScanning(false)}
-        confirm={scanningDone}
-        showPaster={true}
-        inputPlaceholder='Paste Invoice or Subscription code'
-      />
-      <TabBar />
-    </View>
+        <View style={styles.buttonWrap}>
+          <Button
+            mode='outlined'
+            icon='arrow-bottom-left'
+            w={130}
+            h={45}
+            round={0}
+            style={{ borderColor: theme.border }}
+            onPress={() => ui.setPayMode('invoice', null)}
+          >
+            RECEIVE
+          </Button>
+          <Button
+            mode='outlined'
+            icon='arrow-top-right'
+            w={130}
+            h={45}
+            round={0}
+            style={{ borderColor: theme.border, borderLeftWidth: 0 }}
+            onPress={() => ui.setPayMode('payment', null)}
+          >
+            SEND
+          </Button>
+        </View>
+        <Typography size={20} style={{ marginLeft: 12, marginBottom: 10 }}>
+          Transactions
+        </Typography>
+      </View>
+    </>
   )
 }
 
@@ -111,12 +163,13 @@ const styles = StyleSheet.create({
     flex: 1
   },
   headerActions: {
-    width: '100%',
-    height: 250,
-    maxHeight: 250,
-    minHeight: 250,
     display: 'flex',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    width: '100%',
+    marginTop: 40
+    // height: 200,
+    // maxHeight: 200,
+    // minHeight: 200,
   },
   wallet: {
     display: 'flex',
@@ -129,10 +182,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    // justifyContent: 'space-between',
-    // width: 200,
-    // marginRight: 'auto',
-    // marginLeft: 'auto',
-    paddingTop: 30
+    marginVertical: 30
   }
 })

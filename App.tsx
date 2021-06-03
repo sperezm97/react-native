@@ -17,6 +17,7 @@ import Main from './src/components/main'
 import Onboard from './src/components/onboard'
 import Splash from './src/components/common/Splash'
 import PinCodeModal from './src/components/common/Modals/PinCode'
+import StatusBar, { setTint } from './src/components/common/StatusBar'
 
 declare var global: { HermesInternal: null | {} }
 
@@ -25,6 +26,7 @@ export default function Wrap() {
   const { ui, chats } = useStores()
   const [wrapReady, setWrapReady] = useState(false)
   const [isBack, setBack] = useState(false)
+  const theme = useTheme()
 
   useEffect(() => {
     Linking.addEventListener('url', gotLink)
@@ -41,6 +43,8 @@ export default function Wrap() {
   useEffect(() => {
     // rsa.testSecure()
     // rsa.getPublicKey()
+
+    setTint(theme.dark ? 'dark' : 'light')
 
     Linking.getInitialURL()
       .then(e => {
@@ -89,11 +93,18 @@ function App() {
 
     // TrackPlayer.setupPlayer();
     ;(async () => {
-      const isSignedUp = user.currentIP && user.authToken && !user.onboardStep ? true : false
+      const isSignedUp =
+        user.currentIP && user.authToken && !user.onboardStep ? true : false
       setSignedUp(isSignedUp)
 
       if (isSignedUp) {
-        instantiateRelay(user.currentIP, user.authToken, connectedHandler, disconnectedHandler, resetIP)
+        instantiateRelay(
+          user.currentIP,
+          user.authToken,
+          connectedHandler,
+          disconnectedHandler,
+          resetIP
+        )
       }
       const pinWasEnteredRecently = await wasEnteredRecently()
 
@@ -132,6 +143,8 @@ function App() {
     return (
       <>
         <PaperProvider theme={pTheme}>
+          <StatusBar />
+
           <NavigationContainer>
             {signedUp && <Main />}
             {!signedUp && (

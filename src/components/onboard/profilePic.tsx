@@ -27,6 +27,8 @@ export default function ProfilePic({ z, show, onDone, onBack }) {
       const url = await uploadSync(img.uri)
 
       if (url) {
+        console.log('is url', url)
+
         await contacts.updateContact(1, {
           photo_url: url
         })
@@ -87,24 +89,57 @@ export default function ProfilePic({ z, show, onDone, onBack }) {
 
   return useObserver(() => {
     return (
-      <Slider z={z} show={show} style={{ backgroundColor: theme.bg }} accessibilityLabel='onboard-profile'>
-        <IconButton icon='arrow-left' style={styles.backArrow} color={theme.grey} onPress={onBack} accessibilityLabel='onboard-profile-back' />
-        <View style={styles.nicknameWrap} accessibilityLabel='onboard-profile-nickname-wrap'>
+      <Slider
+        z={z}
+        show={show}
+        style={{ backgroundColor: theme.bg }}
+        accessibilityLabel='onboard-profile'
+      >
+        <IconButton
+          icon='arrow-left'
+          style={styles.backArrow}
+          color={theme.grey}
+          onPress={onBack}
+          accessibilityLabel='onboard-profile-back'
+        />
+        <View
+          style={styles.nicknameWrap}
+          accessibilityLabel='onboard-profile-nickname-wrap'
+        >
           <Text style={{ ...styles.nickname, color: theme.text }}>{user.alias}</Text>
         </View>
         <View style={styles.mid} accessibilityLabel='onboard-profile-middle'>
           <Avatar size={200} photo={img && img.uri} round={100} />
-          <Button accessibilityLabel='onboard-profile-choose-image' onPress={() => setDialogOpen(true)} style={{ ...styles.selectButton }} color={theme.lightGrey} w={200}>
+          <Button
+            accessibilityLabel='onboard-profile-choose-image'
+            onPress={() => setDialogOpen(true)}
+            style={{ ...styles.selectButton }}
+            color={theme.lightGrey}
+            w={200}
+          >
             <Text style={{ color: theme.black }}>Select Image</Text>
           </Button>
         </View>
         <View style={styles.buttonWrap} accessibilityLabel='onboard-profile-button-wrap'>
-          <Button accessibilityLabel='onboard-profile-button' loading={uploading} onPress={finish} style={{ ...styles.button }} size='large' w={150}>
+          <Button
+            accessibilityLabel='onboard-profile-button'
+            loading={uploading}
+            onPress={finish}
+            style={{ ...styles.button }}
+            size='large'
+            w={150}
+          >
             <Text style={{ color: theme.white }}> {img ? 'Next' : 'Skip'}</Text>
           </Button>
         </View>
 
-        <ImageDialog visible={dialogOpen} onCancel={() => setDialogOpen(false)} onPick={pickImage} onSnap={pickImage} setImageDialog={setDialogOpen} />
+        <ImageDialog
+          visible={dialogOpen}
+          onCancel={() => setDialogOpen(false)}
+          onPick={pickImage}
+          onSnap={pickImage}
+          setImageDialog={setDialogOpen}
+        />
       </Slider>
     )
   })

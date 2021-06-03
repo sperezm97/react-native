@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     position: 'relative',
-    paddingHorizontal: 12,
+    paddingHorizontal: 6,
     width: '100%'
   },
   left: {

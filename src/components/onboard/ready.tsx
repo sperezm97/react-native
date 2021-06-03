@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, StyleSheet, Text } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import RadialGradient from 'react-native-radial-gradient'
 import { ActivityIndicator } from 'react-native-paper'
 
@@ -8,6 +8,7 @@ import Slider from '../utils/slider'
 import { constants } from '../../constants'
 import actions from '../../store/actions'
 import Button from '../common/Button'
+import Typography from '../common/Typography'
 
 export default function Ready(props) {
   const { z, show, onDone } = props
@@ -38,33 +39,88 @@ export default function Ready(props) {
 
   return (
     <Slider z={z} show={show} accessibilityLabel='onboard-ready'>
-      <RadialGradient style={styles.gradient} colors={[theme.gradient, theme.gradient2]} stops={[0.1, 1]} center={[80, 40]} radius={400}>
+      <RadialGradient
+        style={styles.gradient}
+        colors={[theme.gradient, theme.gradient2]}
+        stops={[0.1, 1]}
+        center={[80, 40]}
+        radius={400}
+      >
         <View style={styles.titleWrap} accessibilityLabel='onboard-ready-title'>
           <View style={styles.titleRow}>
-            <Text style={styles.title}>You're</Text>
-            <Text style={styles.boldTitle}>ready</Text>
+            <Typography size={40} color={theme.white}>
+              You're
+            </Typography>
+            <Typography
+              style={{
+                marginLeft: 10,
+                marginRight: 10
+              }}
+              size={40}
+              color={theme.white}
+              fw='600'
+            >
+              ready
+            </Typography>
           </View>
           <View style={styles.titleRow}>
-            <Text style={styles.title}>to use N2N2</Text>
+            <Typography size={40} color={theme.white} lh={50}>
+              to use N2N2
+            </Typography>
           </View>
         </View>
         <View style={styles.msgWrap} accessibilityLabel='onboard-ready-message'>
           <View style={styles.msgRow}>
-            <Text style={styles.msg}>You can send messages</Text>
+            <Typography size={20} color={theme.white} textAlign='center' lh={28}>
+              You can send messages
+            </Typography>
           </View>
           <View style={styles.msgRow}>
-            <Text style={styles.msg}>spend</Text>
-            <Text style={styles.msgBold}>1000 sats,</Text>
-            <Text style={styles.msg}>or receive</Text>
+            <Typography size={20} color={theme.white} textAlign='center' lh={28}>
+              spend
+            </Typography>
+            <Typography
+              style={styles.msgBold}
+              size={20}
+              color={theme.white}
+              lh={28}
+              fw='600'
+            >
+              1000 sats,
+            </Typography>
+            <Typography size={20} color={theme.white} textAlign='center' lh={28}>
+              or receive
+            </Typography>
           </View>
           <View style={styles.msgRow}>
-            <Text style={styles.msg}>up to</Text>
-            <Text style={styles.msgBold}>10000 sats</Text>
+            <Typography size={20} color={theme.white} textAlign='center' lh={28}>
+              up to
+            </Typography>
+            <Typography
+              style={styles.msgBold}
+              size={20}
+              color={theme.white}
+              lh={28}
+              fw='600'
+            >
+              10000 sats
+            </Typography>
           </View>
         </View>
         <View style={styles.buttonWrap} accessibilityLabel='onboard-ready-button-wrap'>
-          <Button accessibilityLabel='onboard-ready-button' onPress={finish} color={theme.white} size='large' w='75%' h={55} round={40} fs={15}>
-            {loading && <ActivityIndicator animating={loading} color={theme.grey} size={18} />}
+          <Button
+            accessibilityLabel='onboard-ready-button'
+            onPress={finish}
+            color={theme.white}
+            size='large'
+            w='75%'
+            h={55}
+            round={40}
+            fs={15}
+          >
+            {loading && (
+              <ActivityIndicator animating={loading} color={theme.grey} size={18} />
+            )}
             {loading && <View style={{ width: 12, height: 1 }}></View>}
             Finish
           </Button>
@@ -91,20 +147,9 @@ const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'center'
   },
-  title: {
-    color: 'white',
-    fontSize: 40
-  },
-  boldTitle: {
-    fontWeight: 'bold',
-    color: 'white',
-    fontSize: 40,
-    marginLeft: 10,
-    marginRight: 10
-  },
   msgWrap: {
     display: 'flex',
-    maxWidth: 220,
+    maxWidth: 250,
     marginTop: 42,
     marginBottom: 100,
     width: '100%'
@@ -115,19 +160,9 @@ const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'center'
   },
-  msg: {
-    color: 'white',
-    fontSize: 20,
-    textAlign: 'center',
-    lineHeight: 28
-  },
   msgBold: {
-    color: 'white',
-    fontWeight: 'bold',
-    fontSize: 20,
     marginLeft: 8,
-    marginRight: 8,
-    lineHeight: 28
+    marginRight: 8
   },
   buttonWrap: {
     position: 'absolute',
