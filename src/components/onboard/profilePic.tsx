@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, StyleSheet, Text } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
 import { IconButton } from 'react-native-paper'
 import RNFetchBlob from 'rn-fetch-blob'
@@ -9,6 +9,7 @@ import Slider from '../utils/slider'
 import Button from '../common/Button'
 import ImageDialog from '../common/Dialogs/ImageDialog'
 import Avatar from '../common/Avatar'
+import Typography from '../common/Typography'
 
 export default function ProfilePic({ z, show, onDone, onBack }) {
   const { contacts, user, meme } = useStores()
@@ -106,7 +107,9 @@ export default function ProfilePic({ z, show, onDone, onBack }) {
           style={styles.nicknameWrap}
           accessibilityLabel='onboard-profile-nickname-wrap'
         >
-          <Text style={{ ...styles.nickname, color: theme.text }}>{user.alias}</Text>
+          <Typography size={32} textAlign='center' style={styles.nickname}>
+            {user.alias}
+          </Typography>
         </View>
         <View style={styles.mid} accessibilityLabel='onboard-profile-middle'>
           <Avatar size={200} photo={img && img.uri} round={100} />
@@ -117,7 +120,7 @@ export default function ProfilePic({ z, show, onDone, onBack }) {
             color={theme.lightGrey}
             w={200}
           >
-            <Text style={{ color: theme.black }}>Select Image</Text>
+            <Typography color={theme.black}>Select Image</Typography>
           </Button>
         </View>
         <View style={styles.buttonWrap} accessibilityLabel='onboard-profile-button-wrap'>
@@ -129,7 +132,7 @@ export default function ProfilePic({ z, show, onDone, onBack }) {
             size='large'
             w={150}
           >
-            <Text style={{ color: theme.white }}> {img ? 'Next' : 'Skip'}</Text>
+            <Typography color={theme.white}> {img ? 'Next' : 'Skip'}</Typography>
           </Button>
         </View>
 
@@ -149,16 +152,14 @@ const styles = StyleSheet.create({
   backArrow: {
     position: 'absolute',
     left: 15,
-    top: 35
+    top: 45
   },
   nicknameWrap: {
     position: 'absolute',
     top: 12
   },
   nickname: {
-    fontSize: 32,
     marginTop: 60,
-    textAlign: 'center',
     marginLeft: 50,
     marginRight: 50
   },

@@ -1,13 +1,16 @@
 import React, { useRef, useEffect } from 'react'
 import { AppState } from 'react-native'
 
-import { useStores } from '../store'
-import APNManager from '../store/contexts/apn'
-import { initPicSrc } from './utils/picSrc'
-import * as rsa from '../crypto/rsa'
-import EE, { RESET_IP, RESET_IP_FINISHED } from './utils/ee'
-import { check } from './checkVersion'
-import Navigation from './Navigation'
+import { useStores } from './store'
+import APNManager from './store/contexts/apn'
+import { initPicSrc } from './components/utils/picSrc'
+import * as rsa from './crypto/rsa'
+import EE, { RESET_IP, RESET_IP_FINISHED } from './components/utils/ee'
+import { check } from './components/checkVersion'
+import Modals from './components/modals'
+import ModalsN from './components/common/Modals'
+import Dialogs from './components/common/Dialogs'
+import Root from './components/Navigation/Root'
 
 async function createPrivateKeyIfNotExists(contacts) {
   const priv = await rsa.getPrivateKey()
@@ -83,7 +86,10 @@ export default function Main() {
   return (
     <>
       <APNManager>
-        <Navigation />
+        <Root />
+        <Modals />
+        <ModalsN />
+        <Dialogs />
       </APNManager>
     </>
   )

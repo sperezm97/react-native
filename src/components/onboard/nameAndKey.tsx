@@ -1,5 +1,5 @@
-import React, { useState, useRef } from 'react'
-import { View, Text, StyleSheet, TextInput } from 'react-native'
+import React, { useState, useRef, useEffect } from 'react'
+import { StyleSheet, View, TextInput } from 'react-native'
 
 import { useStores, useTheme } from '../../store'
 import Slider from '../utils/slider'
@@ -34,7 +34,7 @@ export default function NameAndKey(props) {
     <Slider
       z={z}
       show={show}
-      style={{ backgroundColor: theme.lightGrey }}
+      style={{ backgroundColor: theme.bg }}
       accessibilityLabel='onboard-name'
     >
       <TextInput
@@ -44,7 +44,7 @@ export default function NameAndKey(props) {
         placeholder='Set Nickname'
         style={{
           ...styles.input,
-          backgroundColor: theme.white,
+          backgroundColor: theme.dark ? theme.white : theme.lightGrey,
           borderColor: theme.white
         }}
         onChangeText={text => setText(text)}

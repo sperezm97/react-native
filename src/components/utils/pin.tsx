@@ -209,7 +209,8 @@ function ts() {
 
 const styles = StyleSheet.create({
   wrap: {
-    flex: 1
+    flex: 1,
+    width: '100%'
   },
   top: {
     flex: 1,

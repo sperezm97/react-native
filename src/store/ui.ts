@@ -314,6 +314,11 @@ export class UiStore {
   @action setPinCodeModal(b) {
     this.pinCodeModal = b
   }
+
+  @observable signedUp: boolean = false
+  @action setSignedUp(b) {
+    this.signedUp = b
+  }
 }
 
 export const uiStore = new UiStore()
