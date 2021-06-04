@@ -24,6 +24,8 @@ export default function TribeTags({
   displayOnly = false,
   saveAction = true,
   saveText = 'Save',
+  btnMode = 'text',
+  btnW,
   finish
 }) {
   const theme = useTheme()
@@ -147,8 +149,14 @@ export default function TribeTags({
         <View style={{ ...styles.badgeContainer }}>{renderTags()}</View>
       </View>
       {!displayOnly && (
-        <View style={{ ...styles.buttonWrap }}>
-          <Button mode='text' onPress={() => finish(tagz)}>
+        <View
+          style={{
+            ...styles.buttonWrap,
+
+            justifyContent: saveAction ? 'flex-end' : 'center'
+          }}
+        >
+          <Button mode={btnMode} onPress={() => finish(tagz)} w={btnW}>
             {saveText}
           </Button>
         </View>
@@ -181,8 +189,8 @@ const styles = StyleSheet.create({
   buttonWrap: {
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'flex-end',
-    alignItems: 'center'
+    alignItems: 'center',
+    marginTop: 40
   },
   inputWrap: {
     marginBottom: 16

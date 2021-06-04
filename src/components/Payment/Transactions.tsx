@@ -1,60 +1,40 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
+import { StyleSheet, View, FlatList } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
-import { View, StyleSheet, Text, FlatList } from 'react-native'
-import { ActivityIndicator, Title } from 'react-native-paper'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import moment from 'moment'
 
 import { useStores, useTheme } from '../../store'
 import Empty from '../common/Empty'
 import Icon from '../common/Icon'
+import RefreshLoading from '../common/RefreshLoading'
+import Typography from '../common/Typography'
 
-export default function Transactions() {
-  const { details } = useStores()
-  const theme = useTheme()
-  const [loading, setLoading] = useState(true)
-  const [payments, setPayments] = useState([])
+export default function Transactions(props) {
+  const { data, refreshing, onRefresh, listHeader } = props
 
-  function isMsgs(msgs): boolean {
-    const m = msgs && msgs.length && msgs[0]
-    if (m.message_content || m.message_content === '' || m.message_content === null) {
-      // needs this field
-      return true
-    }
-    return false
-  }
-
-  useEffect(() => {
-    ;(async () => {
-      setLoading(true)
-      const ps = await details.getPayments()
-
-      setLoading(false)
-      if (!isMsgs(ps)) return
-      setPayments(ps)
-    })()
-  }, [])
-
-  /**
-   * renderItem component
-   * @param {object} item - item object getting from map payment array
-   * @param {number} index - index of item in the array
-   */
-  // const renderItem: any = ({ item, index }: any) => <Payment key={index} {...item} />
-  // <FlatList<any> style={{ ...styles.scroller, borderTopColor: theme.border }} data={payments} renderItem={renderItem} keyExtractor={item => String(item.id)} />
+  const renderItem: any = ({ item, index }: any) => <Payment key={index} {...item} />
 
   return useObserver(() => (
     <View style={styles.wrap}>
-      <Title style={{ ...styles.title, color: theme.text }}>Transactions</Title>
-      {!loading && payments.map((item, index) => <Payment key={index} {...item} />)}
-      {!loading && payments.length <= 0 && <Empty text='No transactions found' />}
-      {loading && (
-        <View style={styles.loading}>
-          <ActivityIndicator animating color={theme.darkGrey} />
-        </View>
-      )}
+      <FlatList
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
+        data={data}
+        keyExtractor={item => String(item.id)}
+        renderItem={renderItem}
+        ListHeaderComponent={listHeader}
+        ListEmptyComponent={<ListEmpty />}
+        refreshing={refreshing}
+        onRefresh={onRefresh && onRefresh}
+        refreshControl={<RefreshLoading refreshing={refreshing} onRefresh={onRefresh} />}
+      />
     </View>
   ))
+}
+
+function ListEmpty() {
+  return <Empty text='No transactions found' />
 }
 
 function Payment(props) {
@@ -104,18 +84,29 @@ function Payment(props) {
             style={{ marginLeft: 10 }}
           />
           <View style={styles.mid}>
-            <Icon name='Invoice' fill={theme.icon} size={16} />
-            <Text style={{ ...styles.contact, color: theme.text }} numberOfLines={1}>
+            <Icon name='Invoice' fill={theme.icon} size={14} />
+            <Typography style={{ marginLeft: 10 }} numberOfLines={1}>
               {text}
-            </Text>
+            </Typography>
           </View>
           <View style={styles.amountWrap}>
-            <Text style={{ ...styles.amount, color: theme.text }}>{amount}</Text>
-            <Text style={{ ...styles.sat, color: theme.subtitle }}>sat</Text>
+            <Typography
+              size={14}
+              style={{
+                marginRight: 10
+              }}
+            >
+              {amount}
+            </Typography>
+            <Typography fw='600' color={theme.subtitle}>
+              sat
+            </Typography>
           </View>
         </View>
         <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end' }}>
-          <Text style={{ color: theme.subtitle, fontSize: 12 }}>{transactionDate}</Text>
+          <Typography color={theme.subtitle} size={12}>
+            {transactionDate}
+          </Typography>
         </View>
       </View>
     </View>
@@ -124,8 +115,7 @@ function Payment(props) {
 
 const styles = StyleSheet.create({
   wrap: {
-    flex: 1,
-    paddingBottom: 40
+    flex: 1
   },
   title: {
     paddingBottom: 14,
@@ -167,16 +157,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flexDirection: 'row'
   },
-  amount: {
-    marginRight: 10,
-    fontSize: 14
-  },
-  sat: {
-    fontSize: 12,
-    fontWeight: '600'
-  },
-  contact: {
-    fontSize: 12,
-    marginLeft: 10
-  }
+  contact: {}
 })

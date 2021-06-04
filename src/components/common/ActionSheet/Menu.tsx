@@ -47,6 +47,7 @@ export default function Menu(props) {
 
           return (
             <TouchableOpacity
+              activeOpacity={0.7}
               key={`${item.title}${i}`}
               style={{
                 ...styles.row,
@@ -58,18 +59,41 @@ export default function Menu(props) {
             >
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 {item.thumbIcon && (
-                  <View style={{ ...styles.thumbWrapper, backgroundColor: item.thumbBgColor }}>
-                    {iconProp ? <>{item.thumbIcon}</> : <Icon name={item.thumbIcon} size={18} color={item.thumbColor} />}
+                  <View
+                    style={{ ...styles.thumbWrapper, backgroundColor: item.thumbBgColor }}
+                  >
+                    {iconProp ? (
+                      <>{item.thumbIcon}</>
+                    ) : (
+                      <Icon name={item.thumbIcon} size={18} color={item.thumbColor} />
+                    )}
                   </View>
                 )}
-                {item.thumbImage && <Image source={typeof item.thumbImage === 'string' ? { uri: item.thumbImage } : item.thumbImage} style={{ ...styles.thumbImage }} />}
+                {item.thumbImage && (
+                  <Image
+                    source={
+                      typeof item.thumbImage === 'string'
+                        ? { uri: item.thumbImage }
+                        : item.thumbImage
+                    }
+                    style={{ ...styles.thumbImage }}
+                  />
+                )}
                 <View>
                   <Text style={{ fontSize: 16, color: theme.text }}>{item.title}</Text>
-                  {item.description && <Text style={{ fontSize: 14, color: theme.subtitle }}>{item.description}</Text>}
+                  {item.description && (
+                    <Text style={{ fontSize: 14, color: theme.subtitle }}>
+                      {item.description}
+                    </Text>
+                  )}
                 </View>
               </View>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                {item.preview && <Text style={{ ...styles.previewText, color: theme.text }}>{item.preview}</Text>}
+                {item.preview && (
+                  <Text style={{ ...styles.previewText, color: theme.text }}>
+                    {item.preview}
+                  </Text>
+                )}
                 {item.icon && <Icon name={item.icon} color={theme.icon} size={25} />}
               </View>
             </TouchableOpacity>

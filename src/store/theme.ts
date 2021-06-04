@@ -17,8 +17,6 @@ export class ThemeStore {
     this.dark = d
     this.bg = d ? '#141d26' : '#fff'
     this.main = d ? '#1c252e' : '#f8fafb'
-    // this.bg = d ? '#12181f' : '#fff'
-    // this.main = d ? '#141d26' : '#f3f3f3'
     this.title = d ? '#ddd' : '#666'
     this.subtitle = d ? '#8b98b4' : '#7e7e7e'
     this.text = d ? '#fff' : '#000000'
@@ -33,9 +31,8 @@ export class ThemeStore {
     this.primary = d ? '#0067ff' : '#0067ff'
     this.secondary = d ? '#0fb17d' : '#0fb17d'
     this.special = d ? '#1c252e' : '#f8fafb'
-    // this.secondary = d ? '#0fb17d' : '#0fb17d'
-    this.gradient = d ? '#1c252e' : '#4889e8'
-    this.gradient2 = d ? '#141d26' : '#055deb'
+    // this.gradient = d ? '#1c252e' : '#4889e8'
+    // this.gradient2 = d ? '#141d26' : '#055deb'
   }
 
   @observable bg: string = '#fff'
@@ -73,12 +70,14 @@ export class ThemeStore {
   @observable yellow: string = '#FFDF00'
   @observable silver: string = '#afb3b1'
   @observable purple: string = '#6289FD'
+  @observable orange: string = '#f0665b'
+  @observable orangeSecondary: string = '#e45e53'
 
   @observable badge: string = '#f50057'
   @observable accent: string = '#0a84ff'
   @observable active: string = '#49ca97'
   @observable inactive: string = '#febd59'
-  @observable error: string = '#DB5554'
+  @observable error: string = '#ff0033'
   @observable transparent: string = 'rgba(0,0,0,0.5)'
   @observable danger: string = '#fa1616'
 }

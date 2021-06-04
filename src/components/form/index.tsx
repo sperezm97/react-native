@@ -69,7 +69,7 @@ export default function Form(props) {
                   color={props.btnColor}
                   fs={props.btnFs}
                   size={props.btnSize}
-                  w={props.btnW}
+                  w={props.btnW ? props.btnW : '60%'}
                   style={{ ...props.btnStyles }}
                   // labelStyle={{ color: labelColor, opacity: d ? 0.5 : 1 }}
                   loading={props.loading}
@@ -88,7 +88,17 @@ export default function Form(props) {
 function Action({ type, nopad, rowContent, children }) {
   switch (type) {
     case 'Wide':
-      return <View style={{ padding: nopad ? 0 : 25 }}>{children}</View>
+      return (
+        <View
+          style={{
+            padding: nopad ? 0 : 25,
+            flexDirection: 'row',
+            justifyContent: 'center'
+          }}
+        >
+          {children}
+        </View>
+      )
     case 'Row':
       return (
         <View style={{ ...styles.rowWrap, padding: nopad ? 0 : 25 }}>

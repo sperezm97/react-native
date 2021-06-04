@@ -5,6 +5,7 @@ import Share from 'react-native-share'
 import Clipboard from '@react-native-community/clipboard'
 import Toast from 'react-native-simple-toast'
 import QRCode from 'react-native-qrcode-svg'
+import { isIphoneX, getBottomSpace } from 'react-native-iphone-x-helper'
 
 import { useTheme } from '../../../store'
 import { SCREEN_WIDTH, TOAST_DURATION } from '../../../constants'
@@ -19,7 +20,7 @@ export default function PubKey({ visible, close, pubkey }) {
 
   function copy() {
     Clipboard.setString(pubkey)
-    Toast.showWithGravity('Public Key Copied.', TOAST_DURATION, Toast.TOP)
+    Toast.showWithGravity('Public Key Copied.', TOAST_DURATION, Toast.CENTER)
   }
 
   async function share() {
@@ -43,6 +44,7 @@ export default function PubKey({ visible, close, pubkey }) {
           <Typography color={theme.title} style={{ marginTop: 40 }}>
             {pubkey}
           </Typography>
+
           {pubkey && (
             <View style={styles.buttonsWrap}>
               <Button onPress={() => share()} w={130}>
@@ -62,19 +64,19 @@ export default function PubKey({ visible, close, pubkey }) {
 const styles = StyleSheet.create({
   wrap: {
     flex: 1,
-    paddingTop: 40
+    marginTop: 40
   },
   content: {
+    flex: 1,
     alignSelf: 'center',
-    justifyContent: 'center',
-    alignItems: 'center',
     width: SCREEN_WIDTH / 1.3
   },
   buttonsWrap: {
-    marginTop: 40,
     display: 'flex',
     flexDirection: 'row',
     width: '100%',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    marginTop: 40,
+    marginBottom: isIphoneX() ? getBottomSpace() : 30
   }
 })

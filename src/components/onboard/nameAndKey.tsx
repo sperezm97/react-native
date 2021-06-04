@@ -1,10 +1,11 @@
-import React, { useState, useRef } from 'react'
-import { View, Text, StyleSheet, TextInput } from 'react-native'
+import React, { useState, useRef, useEffect } from 'react'
+import { StyleSheet, View, TextInput } from 'react-native'
 
 import { useStores, useTheme } from '../../store'
 import Slider from '../utils/slider'
 import * as rsa from '../../crypto/rsa'
 import Button from '../common/Button'
+import Typography from '../common/Typography'
 
 export default function NameAndKey(props) {
   const { onDone, z, show } = props
@@ -30,11 +31,36 @@ export default function NameAndKey(props) {
     }, 500)
   }
   return (
-    <Slider z={z} show={show} style={{ backgroundColor: theme.lightGrey }} accessibilityLabel='onboard-name'>
-      <TextInput value={text} ref={inputRef} accessibilityLabel='onboard-name-input' placeholder='Set Nickname' style={styles.input} onChangeText={text => setText(text)} />
+    <Slider
+      z={z}
+      show={show}
+      style={{ backgroundColor: theme.bg }}
+      accessibilityLabel='onboard-name'
+    >
+      <TextInput
+        value={text}
+        ref={inputRef}
+        accessibilityLabel='onboard-name-input'
+        placeholder='Set Nickname'
+        style={{
+          ...styles.input,
+          backgroundColor: theme.dark ? theme.white : theme.lightGrey,
+          borderColor: theme.white
+        }}
+        onChangeText={text => setText(text)}
+      />
       <View style={styles.buttonWrap} accessibilityLabel='onboard-name-button-wrap'>
-        <Button accessibilityLabel='onboard-name-button' loading={updating} onPress={ok} disabled={!text} style={{ ...styles.button }} color={theme.primary} w={150} size='large'>
-          <Text style={{ color: text ? theme.white : theme.black }}>Next</Text>
+        <Button
+          accessibilityLabel='onboard-name-button'
+          loading={updating}
+          onPress={ok}
+          disabled={!text}
+          style={{ ...styles.button }}
+          color={theme.primary}
+          w={150}
+          size='large'
+        >
+          <Typography color={text ? theme.white : theme.black}>Next</Typography>
         </Button>
       </View>
     </Slider>
@@ -54,8 +80,6 @@ const styles = StyleSheet.create({
   },
   input: {
     width: '75%',
-    borderColor: 'white',
-    backgroundColor: 'white',
     height: 70,
     borderRadius: 35,
     marginTop: 30,

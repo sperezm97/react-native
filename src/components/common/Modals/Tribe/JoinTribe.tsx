@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   StyleSheet,
   View,
@@ -15,6 +15,7 @@ import { useNavigation } from '@react-navigation/native'
 import { useStores, useTheme, hooks } from '../../../../store'
 import { DEFAULT_TRIBE_SERVER } from '../../../../config'
 import { SCREEN_HEIGHT } from '../../../../constants'
+import { setTint } from '../../StatusBar'
 import Header from '../ModalHeader'
 import Button from '../../Button'
 import Avatar from '../../Avatar'
@@ -47,6 +48,7 @@ function JoinTribe(props) {
     setLoading(true)
     setFinish(true)
     setLoading(false)
+    setTimeout(() => setTint('dark'), 500)
   }
 
   async function done() {
@@ -65,6 +67,7 @@ function JoinTribe(props) {
 
     close()
     navigation.navigate('Tribe', { tribe: { ...tribeToCheck } })
+    setTimeout(() => setTint(theme.dark ? 'dark' : 'light'), 150)
   }
 
   let prices = []

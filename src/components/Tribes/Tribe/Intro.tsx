@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native'
 import RNFetchBlob from 'rn-fetch-blob'
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
+import Ionicon from 'react-native-vector-icons/Ionicons'
 import { isIphoneX } from 'react-native-iphone-x-helper'
 
 import { useStores, useTheme } from '../../../store'
@@ -234,14 +235,10 @@ function TribeActions({ tribe }) {
               </Button> */}
                   <Button
                     icon={() => (
-                      <MaterialCommunityIcon
-                        name='chat-outline'
-                        color={theme.white}
-                        size={20}
-                      />
+                      <Ionicon name='chatbubbles-outline' color={theme.white} size={20} />
                     )}
                     onPress={onChatPress}
-                    w='70%'
+                    w='60%'
                   >
                     Chat
                   </Button>
@@ -255,14 +252,10 @@ function TribeActions({ tribe }) {
           ) : (
             <Button
               icon={() => (
-                <MaterialCommunityIcon
-                  name='chat-outline'
-                  color={theme.white}
-                  size={20}
-                />
+                <Ionicon name='chatbubbles-outline' color={theme.white} size={20} />
               )}
               onPress={onChatPress}
-              w='70%'
+              w='60%'
             >
               Chat
             </Button>

@@ -137,11 +137,18 @@ export default function AddTribe() {
           >
             <View
               style={{
-                marginBottom: 60,
+                // marginBottom: 60,
                 paddingHorizontal: 45
               }}
             >
-              <TribeTags tags={[]} finish={finish} saveAction={false} saveText='Finish' />
+              <TribeTags
+                tags={[]}
+                finish={finish}
+                saveAction={false}
+                saveText='Finish'
+                btnMode='contained'
+                btnW='60%'
+              />
             </View>
           </Animated.View>
         )}
@@ -239,7 +246,7 @@ const AddPhoto = ({ finish }) => {
         </View>
 
         <Button
-          w={200}
+          w='60%'
           onPress={() => (showNext ? finish(photo) : setImageDialog(true))}
           style={{ marginTop: 20 }}
           size='large'

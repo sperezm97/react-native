@@ -13,10 +13,11 @@ import PIN, { wasEnteredRecently } from './src/components/utils/pin'
 import EE, { RESET_IP_FINISHED } from './src/components/utils/ee'
 import { qrActions } from './src/qrActions'
 import { paperTheme } from './src/theme'
-import Main from './src/components/main'
-import Onboard from './src/components/onboard'
+import Main from './src/main'
+import Auth from './src/components/Navigation/Auth'
 import Splash from './src/components/common/Splash'
 import PinCodeModal from './src/components/common/Modals/PinCode'
+import StatusBar, { setTint } from './src/components/common/StatusBar'
 
 declare var global: { HermesInternal: null | {} }
 
@@ -25,6 +26,7 @@ export default function Wrap() {
   const { ui, chats } = useStores()
   const [wrapReady, setWrapReady] = useState(false)
   const [isBack, setBack] = useState(false)
+  const theme = useTheme()
 
   useEffect(() => {
     Linking.addEventListener('url', gotLink)
@@ -41,6 +43,8 @@ export default function Wrap() {
   useEffect(() => {
     // rsa.testSecure()
     // rsa.getPublicKey()
+
+    setTint(theme.dark ? 'dark' : 'light')
 
     Linking.getInitialURL()
       .then(e => {
@@ -62,9 +66,7 @@ export default function Wrap() {
 function App() {
   const { user, ui } = useStores()
   const theme = useTheme()
-  const [loading, setLoading] = useState(true) // default
-  const [signedUp, setSignedUp] = useState(false) // <=
-  const [pinned, setPinned] = useState(false)
+  const [loading, setLoading] = useState(true)
 
   function connectedHandler() {
     ui.setConnected(true)
@@ -89,15 +91,24 @@ function App() {
 
     // TrackPlayer.setupPlayer();
     ;(async () => {
-      const isSignedUp = user.currentIP && user.authToken && !user.onboardStep ? true : false
-      setSignedUp(isSignedUp)
+      const isSignedUp =
+        user.currentIP && user.authToken && !user.onboardStep ? true : false
+      // setSignedUp(isSignedUp)
+
+      ui.setSignedUp(isSignedUp)
 
       if (isSignedUp) {
-        instantiateRelay(user.currentIP, user.authToken, connectedHandler, disconnectedHandler, resetIP)
+        instantiateRelay(
+          user.currentIP,
+          user.authToken,
+          connectedHandler,
+          disconnectedHandler,
+          resetIP
+        )
       }
       const pinWasEnteredRecently = await wasEnteredRecently()
 
-      if (pinWasEnteredRecently) setPinned(true)
+      if (pinWasEnteredRecently) ui.setPinCodeModal(true)
 
       setLoading(false)
 
@@ -114,13 +125,13 @@ function App() {
 
   return useObserver(() => {
     if (loading) return <Splash />
-    if (signedUp && !pinned) {
+    if (ui.signedUp && !ui.pinCodeModal) {
       return (
-        <PinCodeModal visible={signedUp && !pinned}>
+        <PinCodeModal visible={ui.signedUp && !ui.pinCodeModal}>
           <PIN
             onFinish={async () => {
               await sleep(240)
-              setPinned(true)
+              ui.setPinCodeModal(true)
             }}
           />
         </PinCodeModal>
@@ -129,20 +140,15 @@ function App() {
 
     const pTheme = paperTheme(theme)
 
+    console.log('ui signedup', ui.signedUp)
+
     return (
       <>
         <PaperProvider theme={pTheme}>
+          <StatusBar />
           <NavigationContainer>
-            {signedUp && <Main />}
-            {!signedUp && (
-              <Onboard
-                onFinish={() => {
-                  user.finishOnboard() // clear out things
-                  setSignedUp(true) // signed up w key export
-                  setPinned(true) // also PIN has been set
-                }}
-              />
-            )}
+            {ui.signedUp && <Main />}
+            {!ui.signedUp && <Auth />}
           </NavigationContainer>
         </PaperProvider>
       </>

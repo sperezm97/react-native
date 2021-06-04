@@ -52,24 +52,26 @@ export default function QrInput({
               justifyContent: 'center'
             }}
           >
-            <Typography
-              // color={theme.subtitle}
-              numberOfLines={1}
-              style={{
-                flex: 1,
-                height: value ? 'auto' : 30,
-                paddingRight: 5
-              }}
-            >
-              {value ? value : 'No Public key found.'}
-            </Typography>
-            {value && (
-              <IconButton
-                icon='qrcode'
-                color={theme.primary}
-                size={26}
-                onPress={() => setScanning(true)}
-              />
+            {value ? (
+              <>
+                <Typography
+                  numberOfLines={1}
+                  style={{
+                    flex: 1,
+                    paddingRight: 5
+                  }}
+                >
+                  {value}
+                </Typography>
+                <IconButton
+                  icon='qrcode'
+                  color={theme.primary}
+                  size={26}
+                  onPress={() => setScanning(true)}
+                />
+              </>
+            ) : (
+              <Typography color={theme.subtitle}>No Public key found.</Typography>
             )}
           </View>
           {value && (

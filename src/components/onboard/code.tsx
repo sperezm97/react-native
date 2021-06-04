@@ -1,16 +1,10 @@
 import React, { useState } from 'react'
-import {
-  View,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-  Linking,
-  Platform
-} from 'react-native'
-import { Title, IconButton, ActivityIndicator } from 'react-native-paper'
+import { StyleSheet, View, TextInput, TouchableOpacity, Linking } from 'react-native'
+import { IconButton, ActivityIndicator } from 'react-native-paper'
 import RadialGradient from 'react-native-radial-gradient'
 import { decode as atob } from 'base-64'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { useNavigation } from '@react-navigation/native'
 
 import { useStores, useTheme } from '../../store'
 import { DEFAULT_HOST } from '../../config'
@@ -25,6 +19,8 @@ import { isLN, parseLightningInvoice } from '../utils/ln'
 export default function Code(props) {
   const { onDone, z, onRestore } = props
   const { user } = useStores()
+  const theme = useTheme()
+  const navigation = useNavigation()
 
   const [scanning, setScanning] = useState(false)
   const [code, setCode] = useState('')
@@ -32,7 +28,6 @@ export default function Code(props) {
   const [showPin, setShowPin] = useState(false)
   const [wrong, setWrong] = useState('')
   const [error, setError] = useState('')
-  const theme = useTheme()
 
   async function scan(data) {
     setCode(data)
@@ -178,9 +173,39 @@ export default function Code(props) {
         center={[80, 40]}
         radius={400}
       >
-        <KeyboardAwareScrollView contentContainerStyle={{ ...styles.content }}>
-          <Title style={styles.welcome}>Welcome</Title>
-          <Typography style={styles.msg} size={20} color={theme.white} lh={27}>
+        <IconButton
+          icon='arrow-left'
+          style={styles.backArrow}
+          color={theme.grey}
+          onPress={() => navigation.navigate('Home')}
+          accessibilityLabel='onboard-profile-back'
+        />
+
+        <KeyboardAwareScrollView
+          contentContainerStyle={{ ...styles.content }}
+          scrollEnabled={false}
+        >
+          <Typography
+            style={{
+              marginBottom: 40
+            }}
+            size={48}
+            color={theme.white}
+            fw='600'
+            lh={48}
+          >
+            Welcome
+          </Typography>
+          <Typography
+            color={theme.white}
+            size={20}
+            textAlign='center'
+            lh={29}
+            style={{
+              marginTop: 15,
+              maxWidth: 240
+            }}
+          >
             Paste the invitation text or scan the QR code
           </Typography>
           <View style={styles.inputWrap} accessibilityLabel='onboard-code-input-wrap'>
@@ -218,11 +243,11 @@ export default function Code(props) {
               backgroundColor: theme.transparent
             }}
           >
-            <Typography style={styles.wrongText} color={theme.white}>
+            <Typography style={styles.wrongText} color={theme.white} textAlign='center'>
               {wrong}
             </Typography>
             <TouchableOpacity onPress={() => Linking.openURL(DEFAULT_HOST)}>
-              <Typography style={styles.linkText} size={16} fw='500' color={theme.purple}>
+              <Typography size={16} fw='500' color={theme.purple} textAlign='center'>
                 {DEFAULT_HOST}
               </Typography>
             </TouchableOpacity>
@@ -236,7 +261,7 @@ export default function Code(props) {
               backgroundColor: theme.transparent
             }}
           >
-            <Typography style={styles.errorText} color={theme.white}>
+            <Typography style={styles.errorText} color={theme.white} textAlign='center'>
               {error}
             </Typography>
           </View>
@@ -288,6 +313,11 @@ const styles = StyleSheet.create({
     height: '100%',
     width: '100%'
   },
+  backArrow: {
+    position: 'absolute',
+    left: 15,
+    top: 45
+  },
   welcome: {
     color: 'white',
     fontSize: 48,
@@ -333,21 +363,16 @@ const styles = StyleSheet.create({
     borderRadius: 10
   },
   wrong: {
-    height: 145
+    height: 150
   },
   wrongText: {
-    margin: 24,
-    textAlign: 'center'
+    margin: 24
   },
   error: {
     height: 70
   },
   errorText: {
-    margin: 24,
-    textAlign: 'center'
-  },
-  linkText: {
-    textAlign: 'center'
+    margin: 24
   }
 })
 

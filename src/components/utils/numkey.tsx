@@ -1,8 +1,10 @@
 import React from 'react'
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
+import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import { IconButton } from 'react-native-paper'
+import { isIphoneX, getBottomSpace } from 'react-native-iphone-x-helper'
 
 import { useTheme } from '../../store'
+import Typography from '../common/Typography'
 
 const keys = [
   [1, 2, 3],
@@ -19,46 +21,63 @@ export default function NumKey(props) {
     <View
       style={{
         ...styles.wrap,
-        height: h,
-        maxHeight: h,
-        minHeight: h,
-        backgroundColor: props.dark ? theme.black : theme.bg
+        backgroundColor: props.dark ? theme.black : theme.bg,
+        paddingTop: 15,
+        paddingBottom: isIphoneX() ? getBottomSpace() : 0
       }}
     >
-      {keys.map((row, i) => {
-        return (
-          <View key={i} style={styles.row}>
-            {row.map(key => {
-              if (key === '_') return <View key={key} style={styles.empty} />
-              if (key === 'back') {
+      <View
+        style={{
+          height: h,
+          maxHeight: h,
+          minHeight: h
+        }}
+      >
+        {keys.map((row, i) => {
+          return (
+            <View key={i} style={{ ...styles.row }}>
+              {row.map(key => {
+                if (key === '_') return <View key={key} style={styles.empty} />
+                if (key === 'back') {
+                  return (
+                    <TouchableOpacity
+                      key={key}
+                      style={styles.backWrap}
+                      onPress={() => {
+                        if (props.onBackspace) props.onBackspace()
+                      }}
+                    >
+                      <IconButton
+                        icon='backspace'
+                        color={props.dark ? theme.white : theme.subtitle}
+                        accessibilityLabel={`pin-number-backspace`}
+                      />
+                    </TouchableOpacity>
+                  )
+                }
                 return (
                   <TouchableOpacity
+                    accessibilityLabel={`pin-number-key-${key}`}
                     key={key}
-                    style={styles.backWrap}
+                    style={styles.key}
                     onPress={() => {
-                      if (props.onBackspace) props.onBackspace()
+                      if (props.onKeyPress) props.onKeyPress(key)
                     }}
                   >
-                    <IconButton icon='backspace' color={props.dark ? theme.white : theme.subtitle} accessibilityLabel={`pin-number-backspace`} />
+                    <Typography
+                      size={24}
+                      color={props.dark ? theme.white : theme.subtitle}
+                      fw='500'
+                    >
+                      {key}
+                    </Typography>
                   </TouchableOpacity>
                 )
-              }
-              return (
-                <TouchableOpacity
-                  accessibilityLabel={`pin-number-key-${key}`}
-                  key={key}
-                  style={styles.key}
-                  onPress={() => {
-                    if (props.onKeyPress) props.onKeyPress(key)
-                  }}
-                >
-                  <Text style={{ ...styles.keyText, color: props.dark ? theme.white : theme.subtitle }}>{key}</Text>
-                </TouchableOpacity>
-              )
-            })}
-          </View>
-        )
-      })}
+              })}
+            </View>
+          )
+        })}
+      </View>
     </View>
   )
 }
@@ -69,10 +88,10 @@ NumKey.defaultProps = {
 
 const styles = StyleSheet.create({
   wrap: {
-    flex: 1,
-    width: '100%',
-    flexDirection: 'column',
-    paddingTop: 10
+    // flex: 1
+    // justifyContent: 'flex-end',
+    // width: '100%',
+    // height: '100%'
   },
   row: {
     width: '100%',
@@ -85,10 +104,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center'
-  },
-  keyText: {
-    fontSize: 24,
-    fontWeight: '500'
   },
   empty: {
     width: '33.33%'

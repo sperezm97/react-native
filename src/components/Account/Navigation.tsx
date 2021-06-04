@@ -21,7 +21,7 @@ export default function Navigation() {
       <Stack.Screen
         name='Account'
         component={Account}
-        listeners={{ focus: () => setTint('dark') }}
+        listeners={{ focus: () => setTint(theme.dark ? 'dark' : 'light') }}
         options={{
           headerShown: false
         }}
@@ -29,7 +29,7 @@ export default function Navigation() {
       <Stack.Screen
         name='Settings'
         component={AccountDetails}
-        listeners={{ focus: () => setTint('dark') }}
+        listeners={{ focus: () => setTint(theme.dark ? 'dark' : 'light') }}
         options={{
           headerShown: false
         }}
@@ -37,7 +37,7 @@ export default function Navigation() {
       <Stack.Screen
         name='Network'
         component={Network}
-        listeners={{ focus: () => setTint(theme.dark ? 'black' : 'light') }}
+        listeners={{ focus: () => setTint(theme.dark ? 'dark' : 'light') }}
         options={{
           headerShown: false
         }}
@@ -45,7 +45,7 @@ export default function Navigation() {
       <Stack.Screen
         name='Security'
         component={Security}
-        listeners={{ focus: () => setTint(theme.dark ? 'black' : 'light') }}
+        listeners={{ focus: () => setTint(theme.dark ? 'dark' : 'light') }}
         options={{
           headerShown: false
         }}
@@ -53,7 +53,7 @@ export default function Navigation() {
       <Stack.Screen
         name='Appearance'
         component={Appearance}
-        listeners={{ focus: () => setTint(theme.dark ? 'black' : 'light') }}
+        listeners={{ focus: () => setTint(theme.dark ? 'dark' : 'light') }}
         options={{
           headerShown: false
         }}
@@ -61,7 +61,7 @@ export default function Navigation() {
       <Stack.Screen
         name='QRCode'
         component={PublicKey}
-        listeners={{ focus: () => setTint(theme.dark ? 'black' : 'light') }}
+        listeners={{ focus: () => setTint(theme.dark ? 'dark' : 'light') }}
         options={{
           headerShown: false
         }}
@@ -70,7 +70,7 @@ export default function Navigation() {
       <Stack.Screen
         name='Support'
         component={Support}
-        listeners={{ focus: () => setTint(theme.dark ? 'black' : 'light') }}
+        listeners={{ focus: () => setTint(theme.dark ? 'dark' : 'light') }}
         options={{
           headerShown: false
         }}

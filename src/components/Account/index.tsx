@@ -3,7 +3,7 @@ import { StyleSheet, View, ScrollView } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
 import RNFetchBlob from 'rn-fetch-blob'
 import { useNavigation } from '@react-navigation/native'
-import { Portal, Dialog, Title } from 'react-native-paper'
+import { Title } from 'react-native-paper'
 import AntDesignIcon from 'react-native-vector-icons/AntDesign'
 
 import { useStores, useTheme } from '../../store'
@@ -17,6 +17,7 @@ import AvatarEdit from '../common/Avatar/AvatarEdit'
 import DialogWrap from '../common/Dialogs/DialogWrap'
 import Form from '../form'
 import { me } from '../form/schemas'
+import Typography from '../common/Typography'
 
 export default function Account() {
   const { user, contacts, meme } = useStores()
@@ -150,63 +151,67 @@ export default function Account() {
       <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
         <Header onEdit={() => setUserDialog(true)} />
         <ScrollView>
-          <View style={{ flex: 1, backgroundColor: theme.bg }}>
-            <View style={{ ...styles.userInfoSection, borderBottomColor: theme.border }}>
-              <View
-                style={{
-                  ...styles.userInfoContent
-                }}
+          <View style={{ ...styles.userInfoSection, borderBottomColor: theme.border }}>
+            <View
+              style={{
+                ...styles.userInfoContent
+              }}
+            >
+              <AvatarEdit
+                onPress={() => setImageDialog(true)}
+                uploading={uploading}
+                uploadPercent={uploadPercent}
+                display={false}
+                size={100}
+                round={50}
               >
-                <AvatarEdit
-                  onPress={() => setImageDialog(true)}
-                  uploading={uploading}
-                  uploadPercent={uploadPercent}
-                  display={false}
-                  size={100}
-                  round={50}
+                <Avatar size={100} photo={imgURI} round={50} />
+              </AvatarEdit>
+              <View style={{ display: 'flex', flexDirection: 'column' }}>
+                <Typography
+                  size={20}
+                  fw='600'
+                  style={{
+                    marginTop: 20,
+                    marginBottom: 10
+                  }}
                 >
-                  <Avatar size={100} photo={imgURI} round={50} />
-                </AvatarEdit>
-                <View style={{ display: 'flex', flexDirection: 'column' }}>
-                  <Title style={{ ...styles.title, color: theme.text }}>
-                    {user.alias}
-                  </Title>
-                </View>
+                  {meContact.alias}
+                </Typography>
               </View>
             </View>
-
-            <ActionMenu items={items} />
-
-            <ImageDialog
-              visible={imageDialog}
-              onCancel={() => setImageDialog(false)}
-              onPick={tookPic}
-              onSnap={tookPic}
-              setImageDialog={setImageDialog}
-            />
-
-            <DialogWrap
-              title='Edit Name'
-              visible={userDialog}
-              onDismiss={() => setUserDialog(false)}
-            >
-              <Form
-                nopad
-                schema={me}
-                loading={saving}
-                buttonMode='text'
-                buttonText='Save'
-                initialValues={{
-                  alias: user.alias
-                }}
-                onSubmit={values => saveUser(values)}
-                action
-                actionType='Dialog'
-              />
-            </DialogWrap>
           </View>
-        </ScrollView>
+          <ActionMenu items={items} />
 
+          <ImageDialog
+            visible={imageDialog}
+            onCancel={() => setImageDialog(false)}
+            onPick={tookPic}
+            onSnap={tookPic}
+            setImageDialog={setImageDialog}
+          />
+
+          <DialogWrap
+            title='Edit Name'
+            visible={userDialog}
+            onDismiss={() => setUserDialog(false)}
+          >
+            <Form
+              nopad
+              schema={me}
+              loading={saving}
+              buttonMode='text'
+              buttonText='Save'
+              btnW='auto'
+              initialValues={{
+                alias: meContact.alias
+              }}
+              onSubmit={values => saveUser(values)}
+              action
+              actionType='Dialog'
+            />
+          </DialogWrap>
+        </ScrollView>
         <TabBar />
       </View>
     )
@@ -218,7 +223,6 @@ const styles = StyleSheet.create({
     flex: 1
   },
   userInfoSection: {
-    // paddingTop: 5,
     paddingBottom: 10,
     borderBottomWidth: 1,
     flexDirection: 'row',
@@ -230,11 +234,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center'
-  },
-  title: {
-    fontWeight: '600',
-    marginTop: 20,
-    marginBottom: 10
   },
   spinner: {
     position: 'absolute',

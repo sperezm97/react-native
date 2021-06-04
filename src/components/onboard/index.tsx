@@ -21,8 +21,8 @@ import { useStores } from '../../store'
 
 // Final: ProfilePic before Ready
 const steps = [Code, Welcome, PIN, NameAndKey, ProfilePic, Ready]
-export default function Invite({ onFinish }) {
-  const { user } = useStores()
+export default function OnBoard() {
+  const { ui, user } = useStores()
 
   return useObserver(() => {
     let step = user.onboardStep
@@ -36,6 +36,12 @@ export default function Invite({ onFinish }) {
     }
     function stepBack() {
       user.setOnboardStep(step - 1)
+    }
+
+    function onFinish() {
+      user.finishOnboard() // clear out things
+      ui.setSignedUp(true) // signed up w key export
+      ui.setPinCodeModal(true) // also PIN has been set
     }
 
     return (

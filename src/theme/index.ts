@@ -40,7 +40,8 @@ export function paperTheme(theme) {
       text: theme.text,
       placeholder: theme.placeholder,
       background: theme.bg,
-      surface: theme.main
+      surface: theme.main,
+      error: theme.error
     },
     dark: theme.dark
   }

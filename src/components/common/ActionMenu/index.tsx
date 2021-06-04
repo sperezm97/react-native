@@ -16,6 +16,7 @@ export default function ActionMenu({ items }) {
 
             return (
               <TouchableOpacity
+                activeOpacity={0.7}
                 key={`${item.title}${i}`}
                 style={{
                   ...styles.row,

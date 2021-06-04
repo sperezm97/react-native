@@ -5,6 +5,7 @@ import Share from 'react-native-share'
 import Clipboard from '@react-native-community/clipboard'
 import Toast from 'react-native-simple-toast'
 import QRCode from 'react-native-qrcode-svg'
+import { isIphoneX, getBottomSpace } from 'react-native-iphone-x-helper'
 
 import { useStores, useTheme } from '../../../store'
 import { DEFAULT_DOMAIN } from '../../../config'
@@ -20,7 +21,7 @@ export default function ShareGroup() {
 
   function copy() {
     Clipboard.setString(uuid)
-    Toast.showWithGravity('Tribe QR Copied!', TOAST_DURATION, Toast.TOP)
+    Toast.showWithGravity('Tribe QR Copied!', TOAST_DURATION, Toast.CENTER)
   }
 
   async function share() {
@@ -65,19 +66,19 @@ export default function ShareGroup() {
 const styles = StyleSheet.create({
   wrap: {
     flex: 1,
-    paddingTop: 40
+    marginTop: 40
   },
   content: {
+    flex: 1,
     alignSelf: 'center',
-    justifyContent: 'center',
-    alignItems: 'center',
     width: SCREEN_WIDTH / 1.3
   },
   buttonsWrap: {
-    paddingTop: 40,
     display: 'flex',
     flexDirection: 'row',
     width: '100%',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    paddingTop: 40
+    // marginBottom: isIphoneX() ? getBottomSpace() : 30
   }
 })

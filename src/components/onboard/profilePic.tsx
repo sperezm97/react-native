@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, StyleSheet, Text } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
 import { IconButton } from 'react-native-paper'
 import RNFetchBlob from 'rn-fetch-blob'
@@ -9,6 +9,7 @@ import Slider from '../utils/slider'
 import Button from '../common/Button'
 import ImageDialog from '../common/Dialogs/ImageDialog'
 import Avatar from '../common/Avatar'
+import Typography from '../common/Typography'
 
 export default function ProfilePic({ z, show, onDone, onBack }) {
   const { contacts, user, meme } = useStores()
@@ -27,6 +28,8 @@ export default function ProfilePic({ z, show, onDone, onBack }) {
       const url = await uploadSync(img.uri)
 
       if (url) {
+        console.log('is url', url)
+
         await contacts.updateContact(1, {
           photo_url: url
         })
@@ -87,24 +90,59 @@ export default function ProfilePic({ z, show, onDone, onBack }) {
 
   return useObserver(() => {
     return (
-      <Slider z={z} show={show} style={{ backgroundColor: theme.bg }} accessibilityLabel='onboard-profile'>
-        <IconButton icon='arrow-left' style={styles.backArrow} color={theme.grey} onPress={onBack} accessibilityLabel='onboard-profile-back' />
-        <View style={styles.nicknameWrap} accessibilityLabel='onboard-profile-nickname-wrap'>
-          <Text style={{ ...styles.nickname, color: theme.text }}>{user.alias}</Text>
+      <Slider
+        z={z}
+        show={show}
+        style={{ backgroundColor: theme.bg }}
+        accessibilityLabel='onboard-profile'
+      >
+        <IconButton
+          icon='arrow-left'
+          style={styles.backArrow}
+          color={theme.grey}
+          onPress={onBack}
+          accessibilityLabel='onboard-profile-back'
+        />
+        <View
+          style={styles.nicknameWrap}
+          accessibilityLabel='onboard-profile-nickname-wrap'
+        >
+          <Typography size={32} textAlign='center' style={styles.nickname}>
+            {user.alias}
+          </Typography>
         </View>
         <View style={styles.mid} accessibilityLabel='onboard-profile-middle'>
           <Avatar size={200} photo={img && img.uri} round={100} />
-          <Button accessibilityLabel='onboard-profile-choose-image' onPress={() => setDialogOpen(true)} style={{ ...styles.selectButton }} color={theme.lightGrey} w={200}>
-            <Text style={{ color: theme.black }}>Select Image</Text>
+          <Button
+            accessibilityLabel='onboard-profile-choose-image'
+            onPress={() => setDialogOpen(true)}
+            style={{ ...styles.selectButton }}
+            color={theme.lightGrey}
+            w={200}
+          >
+            <Typography color={theme.black}>Select Image</Typography>
           </Button>
         </View>
         <View style={styles.buttonWrap} accessibilityLabel='onboard-profile-button-wrap'>
-          <Button accessibilityLabel='onboard-profile-button' loading={uploading} onPress={finish} style={{ ...styles.button }} size='large' w={150}>
-            <Text style={{ color: theme.white }}> {img ? 'Next' : 'Skip'}</Text>
+          <Button
+            accessibilityLabel='onboard-profile-button'
+            loading={uploading}
+            onPress={finish}
+            style={{ ...styles.button }}
+            size='large'
+            w={150}
+          >
+            <Typography color={theme.white}> {img ? 'Next' : 'Skip'}</Typography>
           </Button>
         </View>
 
-        <ImageDialog visible={dialogOpen} onCancel={() => setDialogOpen(false)} onPick={pickImage} onSnap={pickImage} setImageDialog={setDialogOpen} />
+        <ImageDialog
+          visible={dialogOpen}
+          onCancel={() => setDialogOpen(false)}
+          onPick={pickImage}
+          onSnap={pickImage}
+          setImageDialog={setDialogOpen}
+        />
       </Slider>
     )
   })
@@ -114,16 +152,14 @@ const styles = StyleSheet.create({
   backArrow: {
     position: 'absolute',
     left: 15,
-    top: 35
+    top: 45
   },
   nicknameWrap: {
     position: 'absolute',
     top: 12
   },
   nickname: {
-    fontSize: 32,
     marginTop: 60,
-    textAlign: 'center',
     marginLeft: 50,
     marginRight: 50
   },

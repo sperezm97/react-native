@@ -19,7 +19,7 @@ export default function Header({}) {
       <Appbar.Header style={{ ...styles.appBar, backgroundColor: theme.bg }}>
         <View style={{ ...styles.flex, ...styles.content }}>
           <View style={{ ...styles.flex, ...styles.left }}>
-            <Typography size={25} fw='500'>
+            <Typography size={24} fw='500'>
               My Communities
             </Typography>
           </View>

@@ -2,7 +2,7 @@ import { observable, action } from 'mobx'
 import { persist } from 'mobx-persist'
 
 import * as api from '../api'
-import config from '../config'
+import config, { DEFAULT_HUB_API } from '../config'
 import { randString } from '../crypto/rand'
 import { uiStore } from './ui'
 
@@ -256,6 +256,31 @@ class UserStore {
       return r.node_ip
     } catch (e) {
       console.log('Error:', e)
+    }
+  }
+
+  @action
+  async requestInvite(email) {
+    try {
+      if (!email) return
+
+      const r = await api.invite.post('invite_request', {
+        email
+      })
+
+      // if (!r) {
+      //   return false
+      // }
+
+      // if (!r.message) {
+      //   return false
+      // }
+
+      return true
+    } catch (error) {
+      console.log('error store', error)
+
+      return false
     }
   }
 
