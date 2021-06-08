@@ -114,6 +114,9 @@ export default function Chat() {
     }
 
     const r = await chats.checkRoute(chat.id)
+
+    // console.log('r', r)
+
     if (r && r.success_prob && r.success_prob > 0) {
       setStatus('active')
     } else {
@@ -185,7 +188,7 @@ export default function Chat() {
 
       {!theShow && (
         <View style={{ ...styles.loadWrap, backgroundColor: theme.bg }}>
-          <ActivityIndicator animating={true} color={theme.subtitle} />
+          <ActivityIndicator animating={true} />
         </View>
       )}
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import {
   StyleSheet,
   View,
@@ -20,7 +20,6 @@ import Header from '../ModalHeader'
 import Button from '../../Button'
 import Avatar from '../../Avatar'
 import Typography from '../../Typography'
-import SlideUp from '../../Animations/SlideUp'
 
 const { useTribes } = hooks
 
@@ -32,8 +31,7 @@ function JoinTribe(props) {
   const { visible, close, tribe } = props
   const { ui, chats } = useStores()
   const theme = useTheme()
-  const [loading, setLoading] = useState(false)
-  const [finish, setFinish] = useState(false)
+  const [videoVisible, setVideoVisible] = useState(false)
   const [alias, setAlias] = useState('')
   const navigation = useNavigation()
 
@@ -44,14 +42,14 @@ function JoinTribe(props) {
     joined = tribeToCheck.joined
   }
 
-  async function joinTribe() {
-    setLoading(true)
-    setFinish(true)
-    setLoading(false)
-    setTimeout(() => setTint('dark'), 500)
+  function onJoinPress() {
+    setTimeout(() => {
+      setTint('dark')
+      setVideoVisible(true)
+    }, 500)
   }
 
-  async function done() {
+  async function joinTribe() {
     await chats.joinTribe({
       name: tribe.name,
       group_key: tribe.group_key,
@@ -65,6 +63,11 @@ function JoinTribe(props) {
       ...(alias && { my_alias: alias })
     })
 
+    setVideoVisible(false)
+    finish()
+  }
+
+  async function finish() {
     close()
     navigation.navigate('Tribe', { tribe: { ...tribeToCheck } })
     setTimeout(() => setTint(theme.dark ? 'dark' : 'light'), 150)
@@ -155,8 +158,7 @@ function JoinTribe(props) {
                         />
                         <Button
                           style={{ marginBottom: 20 }}
-                          onPress={joinTribe}
-                          loading={loading}
+                          onPress={onJoinPress}
                           size='large'
                           w={240}
                         >
@@ -176,7 +178,7 @@ function JoinTribe(props) {
                         >
                           You already joined this community.
                         </Typography>
-                        <Button w={300} onPress={done} style={{ marginVertically: 20 }}>
+                        <Button w={300} onPress={finish} style={{ marginVertically: 20 }}>
                           Go to {tribeToCheck.name}
                         </Button>
                       </>
@@ -187,19 +189,32 @@ function JoinTribe(props) {
             </KeyboardAvoidingView>
           </SafeAreaView>
 
-          {finish && <MemoizedVideoView tribe={tribeToCheck} done={done} />}
+          {finish && (
+            <MemoizedVideoView
+              videoVisible={videoVisible}
+              tribe={tribeToCheck}
+              joinTribe={joinTribe}
+            />
+          )}
         </Modal>
       </>
     )
   })
 }
 
-function VideoView({ tribe, done }) {
+function VideoView({ videoVisible, tribe, joinTribe }) {
+  const [loading, setLoading] = useState(false)
   const theme = useTheme()
   const network = require('../../../../assets/videos/network-nodes-blue.mp4')
 
+  async function onJoin() {
+    setLoading(true)
+    await joinTribe()
+    setLoading(false)
+  }
+
   return (
-    <SlideUp>
+    <Modal visible={videoVisible} animationType='fade' presentationStyle='fullScreen'>
       <View
         style={{
           position: 'absolute',
@@ -218,7 +233,6 @@ function VideoView({ tribe, done }) {
             height: SCREEN_HEIGHT
           }}
         />
-
         {tribe && (
           <View
             style={{
@@ -231,17 +245,21 @@ function VideoView({ tribe, done }) {
               flex: 1
             }}
           >
-            <Button w={300} onPress={done}>
+            <Button w={300} onPress={onJoin} loading={loading}>
               Go to {tribe.name}
             </Button>
           </View>
         )}
       </View>
-    </SlideUp>
+    </Modal>
   )
 }
 
-const MemoizedVideoView = React.memo(VideoView)
+function areEqual(prev, next) {
+  return prev.videoVisible === next.videoVisible
+}
+
+const MemoizedVideoView = React.memo(VideoView, areEqual)
 
 const styles = StyleSheet.create({
   wrap: {

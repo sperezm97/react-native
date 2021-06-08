@@ -45,6 +45,7 @@ export default function Invite(props) {
 
       if (done) {
         setSuccessVisible(true)
+        setEmail('')
       } else {
         setWrong('Failed to request invitation.')
       }
@@ -67,8 +68,9 @@ export default function Invite(props) {
       >
         <IconButton
           icon='arrow-left'
-          style={styles.backArrow}
           color={theme.grey}
+          size={26}
+          style={styles.backArrow}
           onPress={() => navigation.navigate('Home')}
           accessibilityLabel='onboard-profile-back'
         />
@@ -88,7 +90,7 @@ export default function Invite(props) {
           >
             Welcome
           </Typography>
-          {/* <Typography
+          <Typography
             color={theme.white}
             size={20}
             textAlign='center'
@@ -99,13 +101,18 @@ export default function Invite(props) {
             }}
           >
             Enter your email and we will contact you shortly for next steps.
-          </Typography> */}
+          </Typography>
           <View style={styles.inputWrap} accessibilityLabel='onboard-code-input-wrap'>
             <TextInput
               autoCorrect={false}
               accessibilityLabel='onboard-code-input'
               placeholder='Enter Email'
-              style={styles.input}
+              style={{
+                ...styles.input,
+                backgroundColor: theme.white,
+                borderColor: theme.white
+              }}
+              placeholderTextColor={theme.greySecondary}
               value={email}
               onChangeText={text => setEmail(text)}
               // onBlur={() => submitEmail(email)}
@@ -219,8 +226,6 @@ const styles = StyleSheet.create({
   },
   input: {
     width: '100%',
-    borderColor: 'white',
-    backgroundColor: 'white',
     height: 70,
     borderRadius: 35,
     marginTop: 30,

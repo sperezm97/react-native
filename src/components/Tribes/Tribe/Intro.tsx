@@ -16,6 +16,7 @@ import ImageDialog from '../../common/Dialogs/ImageDialog'
 import PhotoModal from '../../common/Modals/Media/Photo'
 import JoinTribe from '../../common/Modals/Tribe/JoinTribe'
 import AvatarEdit from '../../common/Avatar/AvatarEdit'
+import { setTint } from '../../common/StatusBar'
 
 export default function Intro({ tribe }) {
   const { chats, meme } = useStores()
@@ -98,9 +99,12 @@ export default function Intro({ tribe }) {
         <View style={{ ...styles.header }}>
           <View style={{ ...styles.avatarWrap }}>
             <AvatarEdit
-              onPress={() =>
+              onPress={() => {
+                setTimeout(() => {
+                  setTint('dark')
+                }, 300)
                 tribe.owner ? setImageDialog(true) : tribe.img && setPhotoModal(true)
-              }
+              }}
               uploading={uploading}
               uploadPercent={uploadPercent}
               display={!tribe.owner}
@@ -189,7 +193,10 @@ export default function Intro({ tribe }) {
         />
         <PhotoModal
           visible={photoModal}
-          close={() => setPhotoModal(false)}
+          close={() => {
+            setPhotoModal(false)
+            setTint(theme.dark ? 'dark' : 'light')
+          }}
           photo={tribe.img}
         />
       </View>

@@ -5,12 +5,12 @@ import { StyleSheet } from 'react-native'
 const basex = require('bs58-rn')
 
 import { useStores } from '../../../../store'
-import { setTint } from '../../StatusBar'
 import ModalWrap from '../ModalWrap'
 import ModalHeader from '../ModalHeader'
 import Main from './Main'
 import RawInvoice from './RawInvoice'
 import QR from '../../Accessories/QR'
+import { setTint } from '../../StatusBar'
 
 const ALPHABET = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
 const base58 = basex(ALPHABET)
@@ -149,17 +149,17 @@ function Payment({ visible, close }) {
   async function confirmOrContinue(amt, text) {
     if (!chat) {
       sendContactless(amt, text)
-      setTimeout(() => setTint('dark'), 150)
+      // setTimeout(() => setTint('dark'), 150)
       return
     }
     if (ui.payMode === 'loopout') {
       sendContactless(amt, text)
-      setTimeout(() => setTint('dark'), 150)
+      // setTimeout(() => setTint('dark'), 150)
       return
     }
     if (ui.payMode === 'payment') await sendPayment(amt, text)
     if (ui.payMode === 'invoice') await sendInvoice(amt, text)
-    setTimeout(() => setTint('light'), 150)
+    // setTimeout(() => setTint('light'), 150)
     clearOut()
   }
 

@@ -1,12 +1,14 @@
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
 
-import { useTheme } from '../../../../store'
+import { useStores, useTheme } from '../../../../store'
+import { useBoostSender } from '../../../../store/hooks/msg'
 import CustomIcon from '../../../utils/customIcons'
 import Typography from '../../../common/Typography'
 import AvatarsRow from '../../../chat/msg/avatarsRow'
 
 export default function BoostRow(props) {
+  const { contacts } = useStores()
   const theme = useTheme()
   const isMe = props.sender === 1
 
@@ -36,12 +38,27 @@ export default function BoostRow(props) {
         </Typography>
         <Typography color={theme.white}>sats</Typography>
       </View>
-      <View style={{ ...styles.right, paddingRight: 5 }}>
+      <View style={{ ...styles.right }}>
         {hasBoosts && (
           <AvatarsRow
             aliases={theBoosts.map(b => {
-              if (b.sender === 1) return props.myAlias || 'Me'
-              return b.sender_alias
+              const { senderAlias, senderPic } = useBoostSender(
+                b,
+                contacts.contacts,
+                true
+              )
+
+              if (b.sender === 1) {
+                return {
+                  alias: props.myAlias || 'Me',
+                  photo: props.myPhoto
+                }
+              }
+
+              return {
+                alias: senderAlias,
+                photo: senderPic
+              }
             })}
             borderColor={theme.border}
           />
@@ -66,7 +83,9 @@ const styles = StyleSheet.create({
   right: {
     display: 'flex',
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
+    marginLeft: 20,
+    marginRight: 4
   },
   rocketWrap: {
     height: 17,

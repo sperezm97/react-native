@@ -106,6 +106,7 @@ function processMsgs(incomingmsgs: Msg[], isTribe: boolean, contacts: Contact[])
         const bm = <BoostMsg>{
           amount: msg.amount,
           sender_alias: msg.sender_alias,
+          sender_pic: msg.sender_pic,
           date: msg.date,
           sender: msg.sender
         }
@@ -144,8 +145,6 @@ const msgTypesNoInfoBar = [
 function calcShowInfoBar(msgs: Msg[], msg: Msg, i: number, isTribe: boolean) {
   if (msgTypesNoInfoBar.includes(msg.type)) return false
   const previous = getPrevious(msgs, i)
-
-  // console.log('previous', previous)
 
   if (!previous) return true
   if (isTribe && msg.sender !== 1) {
@@ -211,6 +210,21 @@ export function useMsgSender(m, contactList, isTribe) {
   let senderPic = (!isTribe && sender && sender.photo_url) || ''
   if (isTribe) {
     senderAlias = m.sender_alias
+    if (m.sender_pic) senderPic = m.sender_pic
+  } else {
+    senderAlias = sender && sender.alias
+  }
+  return { senderAlias, senderPic }
+}
+
+export function useBoostSender(m, contactList, isTribe) {
+  let senderAlias = ''
+  const sender = contactList.find(c => c.id === m.sender)
+  let senderPic = (!isTribe && sender && sender.photo_url) || ''
+
+  if (isTribe) {
+    senderAlias = m.sender_alias
+
     if (m.sender_pic) senderPic = m.sender_pic
   } else {
     senderAlias = sender && sender.alias

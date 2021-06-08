@@ -55,6 +55,10 @@ class UserStore {
   @observable
   tipAmount: number = 100
 
+  @persist
+  @observable
+  contactKey: string = ''
+
   @action reset() {
     this.code = ''
     this.alias = ''
@@ -95,6 +99,11 @@ class UserStore {
   @action
   setPublicKey(pubkey) {
     this.publicKey = pubkey
+  }
+
+  @action
+  setContactKey(ck: string) {
+    this.contactKey = ck
   }
 
   @action

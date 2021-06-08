@@ -11,6 +11,7 @@ import Transactions from './Transactions'
 import Button from '../common/Button'
 import QR from '../common/Accessories/QR'
 import Typography from '../common/Typography'
+import { setTint } from '../common/StatusBar'
 
 export default function Payment() {
   const [scanning, setScanning] = useState(false)
@@ -31,19 +32,20 @@ export default function Payment() {
   }
 
   useEffect(() => {
+    setLoading(true)
     fetchPayments()
-
     fetchBalance()
+    setTimeout(() => {
+      setLoading(false)
+    }, 400)
   }, [])
 
   async function fetchBalance() {
     await details.getBalance()
   }
   async function fetchPayments() {
-    setLoading(true)
     const ps = await details.getPayments()
 
-    setLoading(false)
     if (!isMsgs(ps)) return
     setPayments(ps)
   }
@@ -90,17 +92,26 @@ export default function Payment() {
   return useObserver(() => {
     return (
       <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
-        <Header onScanClick={() => setScanning(true)} />
+        <Header
+          onScanClick={() => {
+            setTint('dark')
+            setScanning(true)
+          }}
+        />
         <Transactions
           data={payments}
           refreshing={refreshing}
+          loading={loading}
           onRefresh={onRefresh}
           listHeader={<ListHeader />}
         />
-
         <QR
           visible={scanning}
-          onCancel={() => setScanning(false)}
+          onCancel={() => {
+            setTint(theme.dark ? 'dark' : 'light')
+
+            setScanning(false)
+          }}
           confirm={scanningDone}
           showPaster={true}
           inputPlaceholder='Paste Invoice or Subscription code'
@@ -119,10 +130,10 @@ const ListHeader = () => {
     <>
       <View style={{ ...styles.headerActions }}>
         <View style={styles.wallet}>
-          <Typography size={26} fw='500' color={theme.text} style={{ marginBottom: 10 }}>
+          <Typography size={26} fw='500' style={{ marginBottom: 10 }}>
             My Wallet
           </Typography>
-          <Typography size={16} fw='500' color={theme.text}>
+          <Typography size={16} fw='500'>
             {details.balance} <Typography color={theme.subtitle}> sat</Typography>
           </Typography>
         </View>

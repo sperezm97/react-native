@@ -148,7 +148,7 @@ export default function Code(props) {
           const priv = await user.restore(dec)
 
           if (priv) {
-            rsa.setPrivateKey(priv)
+            await rsa.setPrivateKey(priv)
             return onRestore()
           }
         } else {
@@ -175,12 +175,12 @@ export default function Code(props) {
       >
         <IconButton
           icon='arrow-left'
-          style={styles.backArrow}
           color={theme.grey}
+          size={26}
+          style={styles.backArrow}
           onPress={() => navigation.navigate('Home')}
           accessibilityLabel='onboard-profile-back'
         />
-
         <KeyboardAwareScrollView
           contentContainerStyle={{ ...styles.content }}
           scrollEnabled={false}
@@ -213,7 +213,12 @@ export default function Code(props) {
               autoCorrect={false}
               accessibilityLabel='onboard-code-input'
               placeholder='Enter Code ...'
-              style={styles.input}
+              style={{
+                ...styles.input,
+                backgroundColor: theme.white,
+                borderColor: theme.white
+              }}
+              placeholderTextColor={theme.greySecondary}
               value={code}
               onChangeText={text => setCode(text)}
               onBlur={() => checkInvite(code)}
@@ -325,18 +330,8 @@ const styles = StyleSheet.create({
     marginTop: 48,
     lineHeight: 48
   },
-  msg: {
-    color: 'white',
-    fontSize: 20,
-    marginTop: 15,
-    maxWidth: 240,
-    lineHeight: 29,
-    textAlign: 'center'
-  },
   input: {
     width: '100%',
-    borderColor: 'white',
-    backgroundColor: 'white',
     height: 70,
     borderRadius: 35,
     marginTop: 30,

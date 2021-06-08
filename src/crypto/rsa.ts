@@ -64,14 +64,20 @@ export async function decrypt(data) {
     const n = Math.ceil(buf.length / BLOCK_SIZE)
     const arr = Array(n).fill(0)
     arr.forEach((_, i) => {
-      dataArray.push(buf.subarray(i * BLOCK_SIZE, i * BLOCK_SIZE + BLOCK_SIZE).toString('base64'))
+      dataArray.push(
+        buf.subarray(i * BLOCK_SIZE, i * BLOCK_SIZE + BLOCK_SIZE).toString('base64')
+      )
     })
+
     await asyncForEach(dataArray, async d => {
       const dec = await RSA.decrypt(d, key)
       finalDec += dec
     })
+
     return finalDec
-  } catch (e) {}
+  } catch (e) {
+    console.log(e)
+  }
   return ''
 }
 
@@ -103,7 +109,9 @@ export async function encrypt(data, pubkey) {
     const n = Math.ceil(buf.length / MAX_CHUNK_SIZE)
     const arr = Array(n).fill(0)
     arr.forEach((_, i) => {
-      const sub = buf.subarray(i * MAX_CHUNK_SIZE, i * MAX_CHUNK_SIZE + MAX_CHUNK_SIZE).toString('utf8')
+      const sub = buf
+        .subarray(i * MAX_CHUNK_SIZE, i * MAX_CHUNK_SIZE + MAX_CHUNK_SIZE)
+        .toString('utf8')
       dataArray.push(sub)
     })
     await asyncForEach(dataArray, async d => {
@@ -125,7 +133,9 @@ export async function decryptOld(data) {
     const n = Math.ceil(buf.length / BLOCK_SIZE)
     const arr = Array(n).fill(0)
     arr.forEach((_, i) => {
-      dataArray.push(buf.subarray(i * BLOCK_SIZE, i * BLOCK_SIZE + BLOCK_SIZE).toString('base64'))
+      dataArray.push(
+        buf.subarray(i * BLOCK_SIZE, i * BLOCK_SIZE + BLOCK_SIZE).toString('base64')
+      )
     })
     await asyncForEach(dataArray, async d => {
       const dec = await RSAKeychain.decrypt(d, KEY_TAG)
@@ -159,7 +169,9 @@ function pubcert(key) {
   return '-----BEGIN RSA PUBLIC KEY-----\n' + key + '\n' + '-----END RSA PUBLIC KEY-----'
 }
 function privcert(key) {
-  return '-----BEGIN RSA PRIVATE KEY-----\n' + key + '\n' + '-----END RSA PRIVATE KEY-----'
+  return (
+    '-----BEGIN RSA PRIVATE KEY-----\n' + key + '\n' + '-----END RSA PRIVATE KEY-----'
+  )
 }
 function privuncert(key) {
   let s = key

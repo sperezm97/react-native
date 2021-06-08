@@ -29,7 +29,6 @@ export default function Chats() {
           onChangeText={txt => {
             ui.setSearchTerm(txt)
           }}
-          h={45}
           style={{ width: '100%' }}
         />
       </View>

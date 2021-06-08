@@ -93,7 +93,6 @@ function ListHeader({ tribe, searchText, setSearchText }) {
         placeholder='Search'
         onChangeText={value => setSearchText(value)}
         value={searchText}
-        h={45}
       />
     </View>
   )

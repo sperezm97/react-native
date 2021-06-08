@@ -163,7 +163,8 @@ class ContactStore {
   @action
   async exchangeKeys(id) {
     try {
-      await relay.post(`contacts/${id}/keys`, {})
+      const r = await relay.post(`contacts/${id}/keys`, {})
+      console.log('r', r)
     } catch (e) {
       console.log(e)
     }

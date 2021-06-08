@@ -98,8 +98,9 @@ export default function ProfilePic({ z, show, onDone, onBack }) {
       >
         <IconButton
           icon='arrow-left'
-          style={styles.backArrow}
           color={theme.grey}
+          size={26}
+          style={styles.backArrow}
           onPress={onBack}
           accessibilityLabel='onboard-profile-back'
         />

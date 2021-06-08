@@ -38,23 +38,49 @@ export default function Security() {
     loadPinTimeout()
   }, [])
 
+  function showError(err) {
+    Toast.showWithGravity(err, TOAST_DURATION, Toast.CENTER)
+  }
+
   async function exportKeys(pin) {
-    if (!pin) return
-    const thePIN = await userPinCode()
+    try {
+      if (!pin) return showError('NO PIN')
+      const thePIN = await userPinCode()
+      if (pin !== thePIN) return showError('NO USER PIN')
 
-    if (pin !== thePIN) return
-    const priv = await rsa.getPrivateKey()
-    const me = contacts.contacts.find(c => c.id === 1)
-    const pub = me && me.contact_key
-    const ip = user.currentIP
-    const token = user.authToken
-    if (!priv || !pub || !ip || !token) return
-    const str = `${priv}::${pub}::${ip}::${token}`
-    const enc = await e2e.encrypt(str, pin)
-    const final = btoa(`keys::${enc}`)
+      const priv = await rsa.getPrivateKey()
+      if (!priv) return showError('CANT READ PRIVATE KEY')
 
-    Clipboard.setString(final)
-    Toast.showWithGravity('Export Keys Copied.', TOAST_DURATION, Toast.CENTER)
+      const myContactKey = user.contactKey
+
+      const meContact = contacts.contacts.find(c => c.id === 1) || {
+        contact_key: myContactKey
+      }
+
+      let pub = myContactKey
+      if (!pub) {
+        pub = meContact && meContact.contact_key
+      }
+
+      if (!pub) return showError('CANT FIND CONTACT KEY')
+
+      const ip = user.currentIP
+      if (!ip) return showError('CANT FIND IP')
+
+      const token = user.authToken
+      if (!token) return showError('CANT FIND TOKEN')
+
+      if (!priv || !pub || !ip || !token) return showError('MISSING A VAR')
+
+      const str = `${priv}::${pub}::${ip}::${token}`
+      const enc = await e2e.encrypt(str, pin)
+      const final = btoa(`keys::${enc}`)
+
+      Clipboard.setString(final)
+      Toast.showWithGravity('Export Keys Copied.', TOAST_DURATION, Toast.CENTER)
+    } catch (e) {
+      showError(e.message || e)
+    }
   }
 
   function pinTimeoutValueUpdated(v) {

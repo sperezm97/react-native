@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { TouchableOpacity, Text, View, StyleSheet } from 'react-native'
+import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
 import { Appbar } from 'react-native-paper'
 import { useNavigation, useRoute } from '@react-navigation/native'
@@ -11,10 +11,11 @@ import { useJoinedTribes } from '../../store/hooks/tribes'
 import { Chat } from '../../store/chats'
 import { contactForConversation } from './utils'
 import { useChatPicSrc } from '../utils/picSrc'
-import { constants } from '../../constants'
+import { constants, SCREEN_WIDTH } from '../../constants'
 import { randAscii } from '../../crypto/rand'
 import { RouteStatus } from './chat'
 import Avatar from '../common/Avatar'
+import Typography from '../common/Typography'
 
 const { useTribes } = hooks
 
@@ -110,41 +111,55 @@ export default function Header({
           borderBottomColor: theme.border
         }}
       >
-        <TouchableOpacity onPress={onBackPress} style={{ marginLeft: 6, marginRight: 6 }}>
-          <FeatherIcon name='chevron-left' size={28} color={theme.icon} />
-        </TouchableOpacity>
+        <View style={styles.row}>
+          <TouchableOpacity
+            onPress={onBackPress}
+            style={{ marginLeft: 6, marginRight: 6 }}
+          >
+            <FeatherIcon name='chevron-left' size={28} color={theme.icon} />
+          </TouchableOpacity>
 
-        <TouchableOpacity
-          onPress={onChatTitlePress}
-          style={{ ...styles.detailsWrap }}
-          activeOpacity={0.6}
-        >
-          <View style={{ marginRight: 10 }}>
-            <Avatar alias={name} photo={uri || ''} size={38} big aliasSize={15} />
-          </View>
-          <View style={{ height: 45 }}>
-            <View style={{ ...styles.title }}>
-              <Text style={{ fontSize: 18, color: theme.text }}>{name}</Text>
-              {status !== null && (
-                <MaterialIcon
-                  name='lock'
-                  style={{ marginLeft: 16 }}
-                  size={13}
-                  color={status === 'active' ? theme.active : theme.inactive}
-                />
+          <TouchableOpacity
+            onPress={onChatTitlePress}
+            style={{ ...styles.row }}
+            activeOpacity={0.6}
+          >
+            <View style={{ marginRight: 10 }}>
+              <Avatar alias={name} photo={uri || ''} size={38} big aliasSize={15} />
+            </View>
+            <View style={{}}>
+              <View
+                style={{
+                  ...styles.row
+                }}
+              >
+                <Typography
+                  size={16}
+                  numberOfLines={1}
+                  style={{ width: name?.length > 20 ? SCREEN_WIDTH - 180 : 'auto' }}
+                >
+                  {name}
+                </Typography>
+
+                {status !== null && (
+                  <MaterialIcon
+                    name='lock'
+                    style={{ marginLeft: 6 }}
+                    size={13}
+                    color={status === 'active' ? theme.active : theme.inactive}
+                  />
+                )}
+              </View>
+              {isPodcast && (
+                <Typography size={12} color={theme.subtitle}>
+                  {isTribeAdmin ? `Earned: ${earned} sats` : `Contributed: ${spent} sats`}
+                </Typography>
               )}
             </View>
-            {isPodcast && (
-              <Text style={{ ...styles.stats, color: theme.subtitle }}>
-                {isTribeAdmin ? `Earned: ${earned} sats` : `Contributed: ${spent} sats`}
-              </Text>
-            )}
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{ position: 'absolute', right: 16 }}
-          onPress={onChatInfoPress}
-        >
+          </TouchableOpacity>
+        </View>
+
+        <TouchableOpacity style={{ marginRight: 6 }} onPress={onChatInfoPress}>
           <FeatherIcon name='info' size={24} color={theme.icon} />
         </TouchableOpacity>
       </Appbar.Header>
@@ -162,26 +177,12 @@ const styles = StyleSheet.create({
     position: 'relative',
     display: 'flex',
     flexDirection: 'row',
-    alignItems: 'center'
-  },
-  detailsWrap: {
-    flexDirection: 'row',
-    alignItems: 'center'
-  },
-  title: {
-    display: 'flex',
-    flexDirection: 'row',
-    flex: 1,
-    alignItems: 'center'
-  },
-  textWrap: {
-    display: 'flex',
-    flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'center',
-    marginLeft: 13
+    justifyContent: 'space-between'
   },
-  stats: {
-    fontSize: 12
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center'
+    // justifyContent: 'center'
   }
 })

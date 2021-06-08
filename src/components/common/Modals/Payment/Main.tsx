@@ -1,12 +1,16 @@
 import React, { useState } from 'react'
-import { View, StyleSheet, Text, Dimensions } from 'react-native'
-import { Avatar, TextInput } from 'react-native-paper'
+import { StyleSheet, View } from 'react-native'
+import { TextInput } from 'react-native-paper'
+import { getBottomSpace, isIphoneX } from 'react-native-iphone-x-helper'
 
-import NumKey from '../../../utils/numkey'
-import { usePicSrc } from '../../../utils/picSrc'
 import { useStores, useTheme } from '../../../../store'
 import { useAvatarColor } from '../../../../store/hooks/msg'
-import Button from '../../../common/Button'
+import { SCREEN_HEIGHT } from '../../../../constants'
+import NumKey from '../../../utils/numkey'
+import { usePicSrc } from '../../../utils/picSrc'
+import Button from '../../Button'
+import Typography from '../../Typography'
+import Avatar from '../../Avatar'
 
 export default function Main({ contact, loading, confirmOrContinue, contactless }) {
   const { ui, details } = useStores()
@@ -15,7 +19,6 @@ export default function Main({ contact, loading, confirmOrContinue, contactless 
   const [text, setText] = useState('')
   const [inputFocused, setInputFocused] = useState(false)
 
-  const height = Math.round(Dimensions.get('window').height) - 80
   const uri = usePicSrc(contact)
   const hasImg = uri ? true : false
 
@@ -46,56 +49,58 @@ export default function Main({ contact, loading, confirmOrContinue, contactless 
     <View
       style={{
         ...styles.wrap,
-        maxHeight: height,
-        minHeight: height,
+        maxHeight: SCREEN_HEIGHT - 80,
+        minHeight: SCREEN_HEIGHT - 80,
         justifyContent: contact ? 'space-around' : 'center'
       }}
     >
       {contact && (
         <View style={styles.contactWrap}>
-          {/* <Avatar.Image source={hasImg ? { uri } : require('../../../../../android_assets/avatar.png')} size={42} /> */}
+          <Avatar photo={contact.photo_url} size={40} />
           <View style={styles.contactAliasWrap}>
-            <Text style={styles.contactAliasLabel}>
+            <Typography color={theme.subtitle}>
               {ui.payMode === 'invoice' ? 'From' : 'To'}
-            </Text>
-            <Text style={{ color: nameColor }}>{contact.alias}</Text>
+            </Typography>
+            <Typography color={nameColor}>{contact.alias}</Typography>
           </View>
         </View>
       )}
 
       <View style={styles.amtWrap}>
         <View style={styles.amtInnerWrap}>
-          <Text style={{ ...styles.amt, color: theme.text }}>{amt}</Text>
-          <Text style={{ ...styles.sat, color: theme.subtitle }}>sat</Text>
+          <Typography size={45} lh={50}>
+            {amt}
+          </Typography>
+          <Typography style={{ ...styles.sat }} size={23} color={theme.subtitle}>
+            sat
+          </Typography>
         </View>
       </View>
 
-      <View style={styles.bottom}>
-        {ui.payMode === 'invoice' && (
-          <View style={styles.memoWrap}>
-            <TextInput
-              value={text}
-              placeholder='Add Message'
-              onChangeText={v => setText(v)}
-              style={{ ...styles.input, backgroundColor: theme.bg }}
-              underlineColor={theme.border}
-              onFocus={() => setInputFocused(true)}
-              onBlur={() => setInputFocused(false)}
-            />
-          </View>
-        )}
-        <NumKey onKeyPress={v => go(v)} onBackspace={() => backspace()} squish />
-        <View style={styles.confirmWrap}>
-          {amt !== '0' && (
-            <Button
-              w={160}
-              loading={loading}
-              onPress={() => confirmOrContinue(parseInt(amt), text)}
-            >
-              {contactless || isLoopout ? 'CONTINUE' : 'CONFIRM'}
-            </Button>
-          )}
+      {ui.payMode === 'invoice' && (
+        <View style={styles.memoWrap}>
+          <TextInput
+            value={text}
+            placeholder='Add Message'
+            onChangeText={v => setText(v)}
+            style={{ ...styles.input, backgroundColor: theme.bg }}
+            underlineColor={theme.border}
+            onFocus={() => setInputFocused(true)}
+            onBlur={() => setInputFocused(false)}
+          />
         </View>
+      )}
+      <NumKey onKeyPress={v => go(v)} onBackspace={() => backspace()} squish />
+      <View style={styles.confirmWrap}>
+        {amt !== '0' && (
+          <Button
+            w={160}
+            loading={loading}
+            onPress={() => confirmOrContinue(parseInt(amt), text)}
+          >
+            {contactless || isLoopout ? 'CONTINUE' : 'CONFIRM'}
+          </Button>
+        )}
       </View>
     </View>
   )
@@ -107,29 +112,26 @@ const styles = StyleSheet.create({
     width: '100%'
   },
   contactWrap: {
-    width: '100%',
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 5
+    width: '100%',
+    marginTop: 10,
+    marginBottom: 30
   },
   contactAliasWrap: {
-    marginLeft: 10,
     display: 'flex',
-    flexDirection: 'column'
-  },
-  contactAliasLabel: {
-    color: '#ccc',
-    fontSize: 11
+    flexDirection: 'column',
+    marginLeft: 10
   },
   amtWrap: {
-    width: '100%',
     display: 'flex',
-    marginBottom: 11,
     flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    width: '100%',
+    marginBottom: 10
   },
   amtInnerWrap: {
     width: '100%',
@@ -139,19 +141,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     position: 'relative'
   },
-  amt: {
-    fontSize: 45
-  },
   sat: {
     position: 'absolute',
-    right: 25,
-    fontSize: 23
+    right: 25
   },
   confirmWrap: {
     width: '100%',
     display: 'flex',
     alignItems: 'center',
-    marginTop: 14
+    height: 60,
+    marginTop: 14,
+    marginBottom: isIphoneX() ? getBottomSpace() : 10
   },
   memoWrap: {
     width: '80%',
@@ -169,10 +169,5 @@ const styles = StyleSheet.create({
     flex: 1,
     textAlign: 'center',
     fontSize: 18
-  },
-  bottom: {
-    width: '100%',
-    flex: 1,
-    maxHeight: 390
   }
 })

@@ -1,6 +1,7 @@
 import React from 'react'
 import { StyleSheet, View, FlatList } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
+import { ActivityIndicator } from 'react-native-paper'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import moment from 'moment'
 
@@ -11,24 +12,32 @@ import RefreshLoading from '../common/RefreshLoading'
 import Typography from '../common/Typography'
 
 export default function Transactions(props) {
-  const { data, refreshing, onRefresh, listHeader } = props
+  const { data, refreshing, loading, onRefresh, listHeader } = props
 
   const renderItem: any = ({ item, index }: any) => <Payment key={index} {...item} />
 
   return useObserver(() => (
     <View style={styles.wrap}>
-      <FlatList
-        showsVerticalScrollIndicator={false}
-        showsHorizontalScrollIndicator={false}
-        data={data}
-        keyExtractor={item => String(item.id)}
-        renderItem={renderItem}
-        ListHeaderComponent={listHeader}
-        ListEmptyComponent={<ListEmpty />}
-        refreshing={refreshing}
-        onRefresh={onRefresh && onRefresh}
-        refreshControl={<RefreshLoading refreshing={refreshing} onRefresh={onRefresh} />}
-      />
+      {loading ? (
+        <View style={{ paddingTop: 20 }}>
+          <ActivityIndicator />
+        </View>
+      ) : (
+        <FlatList
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
+          data={data}
+          keyExtractor={item => String(item.id)}
+          renderItem={renderItem}
+          ListHeaderComponent={listHeader}
+          ListEmptyComponent={<ListEmpty />}
+          refreshing={refreshing}
+          onRefresh={onRefresh && onRefresh}
+          refreshControl={
+            <RefreshLoading refreshing={refreshing} onRefresh={onRefresh} />
+          }
+        />
+      )}
     </View>
   ))
 }

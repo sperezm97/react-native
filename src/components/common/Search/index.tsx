@@ -44,7 +44,7 @@ export default function Search(props) {
 
 function ClearIcon({ value }) {
   const theme = useTheme()
-  return <Icon name='Close' color={value ? theme.icon : 'transparent'} size={22} />
+  return <Icon name='Close' color={value ? theme.icon : 'transparent'} size={18} />
 }
 
 Search.defaultProps = {

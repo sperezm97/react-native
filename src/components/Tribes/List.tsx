@@ -83,7 +83,12 @@ function Item(props) {
       <View style={styles.itemContent}>
         <View style={{ ...styles.row }}>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Typography size={16} fw='500'>
+            <Typography
+              size={16}
+              fw='500'
+              // numberOfLines={1}
+              style={{ width: SCREEN_WIDTH - 180 }}
+            >
               {name}
             </Typography>
             {/* {!owner && (

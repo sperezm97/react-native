@@ -41,12 +41,16 @@ export async function makeRemoteTextMap({ contact_id, text, chat_id }, includeSe
       const contact = contactStore.contacts.find(c => c.id === contact_id)
       if (contact) idToKeyMap[contact_id] = contact.contact_key
     }
+
     for (let [id, key] of Object.entries(idToKeyMap)) {
       const encText = await e2e.encryptPublic(text, String(key))
       remoteTextMap[id] = encText
     }
+
     return remoteTextMap
-  } catch (error) {}
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 export async function decodeSingle(m: Msg) {
@@ -56,6 +60,7 @@ export async function decodeSingle(m: Msg) {
   const msg = m
   if (m.message_content) {
     const dcontent = await e2e.decryptPrivate(m.message_content)
+
     msg.message_content = dcontent
   }
   if (m.media_key) {

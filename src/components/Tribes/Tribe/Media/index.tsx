@@ -11,6 +11,7 @@ import Icon from '../../../common/Icon'
 import Empty from '../../../common/Empty'
 import Typography from '../../../common/Typography'
 import PhotoViewer from '../../../common/Modals/Media/PhotoViewer'
+import { setTint } from '../../../common/StatusBar'
 
 const { useMsgs } = hooks
 
@@ -22,6 +23,9 @@ function Media({ tribe }) {
   function onMediaPress(id) {
     setSelectedMedia(id)
     setMediaModal(true)
+    setTimeout(() => {
+      setTint('dark')
+    }, 300)
   }
 
   return useObserver(() => {
@@ -92,7 +96,10 @@ function Media({ tribe }) {
           </View>
           <PhotoViewer
             visible={mediaModal}
-            close={() => setMediaModal(false)}
+            close={() => {
+              setMediaModal(false)
+              setTint(theme.dark ? 'dark' : 'light')
+            }}
             photos={media && media.filter(m => m.id === selectedMedia)}
             // initialIndex={media && media.findIndex(m => m.id === selectedMedia)}
             initialIndex={0}

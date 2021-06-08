@@ -17,6 +17,7 @@ import Empty from '../common/Empty'
 import Icon from '../common/Icon'
 import QR from '../common/Accessories/QR'
 import JoinTribe from '../common/Modals/Tribe/JoinTribe'
+import { setTint } from '../common/StatusBar'
 import List from './List'
 
 const { useTribes } = hooks
@@ -130,7 +131,6 @@ function SearchHeader() {
           placeholder='Search Communities'
           value={ui.tribesSearchTerm}
           onChangeText={onTribesSearch}
-          h={45}
         />
       </View>
       <View style={{ ...styles.right }}>
@@ -140,6 +140,7 @@ function SearchHeader() {
           color={theme.icon}
           onPress={() => {
             setScanning(true)
+            setTint('dark')
           }}
         />
       </View>
@@ -147,7 +148,10 @@ function SearchHeader() {
       {scanning && (
         <QR
           visible={scanning}
-          onCancel={() => setScanning(false)}
+          onCancel={() => {
+            setScanning(false)
+            setTint(theme.dark ? 'dark' : 'light')
+          }}
           onScan={data => scan(data)}
           showPaster={false}
         />

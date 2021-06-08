@@ -6,20 +6,21 @@ import { useTheme } from '../../../store'
 import { useAvatarColor } from '../../../store/hooks/msg'
 import Typography from '../../common/Typography'
 
-export default function AvatarsRow({
-  aliases,
-  borderColor
-}: {
-  aliases: string[]
-  borderColor?: string
-}) {
+export default function AvatarsRow({ aliases, borderColor }) {
   const theAliases = aliases && aliases.slice(0, 3)
   return (
     <View style={styles.row}>
       {theAliases &&
         theAliases.map((a, i) => {
           return (
-            <AvatarTiny key={i} i={i} size={22} alias={a} borderColor={borderColor} />
+            <AvatarTiny
+              key={i}
+              i={i}
+              size={22}
+              alias={a.alias}
+              photo={a.photo}
+              borderColor={borderColor}
+            />
           )
         })}
     </View>
@@ -31,27 +32,30 @@ function AvatarTiny(props) {
   const name = props.alias || 'N2N2'
   const photo = props.photo
   const size = props.size
+
   const borderRadius = Math.ceil(props.size / 2)
+
   let initial = ''
   const arr = name.split(' ')
   arr.forEach((str, i) => {
     if (i < 2) initial += str.substring(0, 1).toUpperCase()
   })
+
   if (photo) {
     return (
       <View
         style={{
-          ...styles.avatar,
-          height: size,
-          width: size,
-          borderRadius,
-          borderColor: props.borderColor || 'black',
-          borderWidth: 1
+          ...styles.wrap,
+          right: props.i * 12
         }}
       >
         <FastImage
           source={{ uri: photo }}
-          style={{ width: size, height: size }}
+          style={{
+            width: size,
+            height: size,
+            borderRadius
+          }}
           resizeMode={FastImage.resizeMode.cover}
         />
       </View>
@@ -60,10 +64,10 @@ function AvatarTiny(props) {
   return (
     <View
       style={{
-        right: props.i * 12,
-        borderColor: props.borderColor || 'black',
-        borderWidth: 1,
         ...styles.wrap,
+        right: props.i * 12,
+        borderColor: props.borderColor || theme.border,
+        borderWidth: 1,
         height: size,
         width: size,
         borderRadius,
@@ -79,8 +83,6 @@ function AvatarTiny(props) {
 
 const styles = StyleSheet.create({
   wrap: {
-    marginLeft: 8,
-    backgroundColor: 'black',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
