@@ -21,6 +21,7 @@ import BoostRow from './boostRow'
 import Typography from '../../common/Typography'
 import Button from '../../common/Button'
 import PhotoViewer from '../../common/Modals/Media/PhotoViewer'
+import { setTint } from '../../common/StatusBar'
 
 const { useMsgs } = hooks
 
@@ -72,6 +73,9 @@ export default function MediaMsg(props) {
     if (media_type.startsWith('image')) {
       setSelectedMedia(id)
       setMediaModal(true)
+      setTimeout(() => {
+        setTint('dark')
+      }, 300)
 
       // if (data) ui.setImgViewerParams({ data })
       // if (uri) ui.setImgViewerParams({ uri })
@@ -245,7 +249,11 @@ export default function MediaMsg(props) {
         )}
         <PhotoViewer
           visible={mediaModal}
-          close={() => setMediaModal(false)}
+          close={() => {
+            setMediaModal(false)
+
+            setTint(theme.dark ? 'dark' : 'light')
+          }}
           // photos={photos}
           photos={photos && photos.filter(m => m.id === selectedMedia)}
           // initialIndex={photos && photos.findIndex(m => m.id === selectedMedia)}

@@ -5,12 +5,12 @@ import { StyleSheet } from 'react-native'
 const basex = require('bs58-rn')
 
 import { useStores } from '../../../../store'
-import { setTint } from '../../StatusBar'
 import ModalWrap from '../ModalWrap'
 import ModalHeader from '../ModalHeader'
 import Main from './Main'
 import RawInvoice from './RawInvoice'
 import QR from '../../Accessories/QR'
+import { setTint } from '../../StatusBar'
 
 const ALPHABET = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
 const base58 = basex(ALPHABET)

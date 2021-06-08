@@ -54,9 +54,12 @@ export default function Main() {
         if (!user.contactKey) {
           user.setContactKey(me.contact_key)
         }
+
         // set into me Contact
       } else if (user.contactKey) {
       } else {
+        console.log('is updating')
+
         // need to regen :(
         const keyPair = await rsa.generateKeyPair()
         user.setContactKey(keyPair.public)
@@ -68,6 +71,8 @@ export default function Main() {
       }
       // no private key!!
     } else {
+      console.log('is here?')
+
       const keyPair = await rsa.generateKeyPair()
       user.setContactKey(keyPair.public)
       contacts.updateContact(user.myid, {
@@ -77,13 +82,29 @@ export default function Main() {
     }
   }
 
+  // async function createPrivateKeyIfNotExists(contacts) {
+  //   const priv = await rsa.getPrivateKey()
+  //   if (priv) return // all good
+
+  //   const keyPair = await rsa.generateKeyPair()
+  //   contacts.updateContact(1, {
+  //     contact_key: keyPair.public
+  //   })
+  // }
+
   async function checkVersion() {
     await check()
   }
 
-  async function loadHistory() {
+  async function loadHistory(skipLoadingContacts?: boolean) {
     ui.setLoadingHistory(true)
-    await Promise.all([contacts.getContacts(), msg.getMessages()])
+
+    if (!skipLoadingContacts) {
+      await contacts.getContacts()
+    }
+
+    await msg.getMessages()
+
     ui.setLoadingHistory(false)
 
     // msg.initLastSeen()
@@ -95,9 +116,13 @@ export default function Main() {
 
   useEffect(() => {
     ;(async () => {
-      loadHistory()
+      await contacts.getContacts()
+
+      loadHistory(true)
+
       // checkVersion()
       initPicSrc()
+      // createPrivateKeyIfNotExists(contacts)
       createPrivateKeyIfNotExists(contacts, user)
     })()
 

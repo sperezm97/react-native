@@ -2,7 +2,6 @@ import React from 'react'
 
 import { createStackNavigator } from '@react-navigation/stack'
 
-import { setTint } from '../../components/common/StatusBar'
 import { useTheme } from '../../store'
 import Chats from '../chat/Chats'
 import Chat from '../chat/chat'
@@ -18,6 +17,7 @@ import Tribe from '../Tribes/Tribe'
 import EditTribe from '../Tribes/Tribe/EditTribe'
 import TribeMembers from '../Tribes/Members'
 import Home from '../Home'
+import { setTint } from '../../components/common/StatusBar'
 
 const RootStack = createStackNavigator()
 
