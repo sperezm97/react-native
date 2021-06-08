@@ -297,7 +297,9 @@ class MsgStore {
 
       if (!chat_id) {
         const r = await relay.post('messages', v)
+
         if (!r) return
+
         this.gotNewMessage(r)
       } else {
         const putInMsgType = boost
@@ -322,12 +324,15 @@ class MsgStore {
           chat_id
         )
         const r = await relay.post('messages', v)
+
         if (!r) return
         // console.log("RESULT")
         this.messagePosted(r)
         if (amount) detailsStore.addToBalance(amount * -1)
       }
-    } catch (e) {}
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   @action
@@ -551,7 +556,11 @@ class MsgStore {
 
   @action // only if it contains a "chat"
   async gotNewMessage(m) {
+    console.log('m', m)
+
     let newMsg = await decodeSingle(m)
+    console.log('newMsg', newMsg)
+
     const chatID = newMsg.chat_id
     if (chatID) {
       putIn(this.messages, newMsg, chatID)
@@ -562,6 +571,8 @@ class MsgStore {
 
   @action // only if it contains a "chat"
   async gotNewMessageFromWS(m) {
+    console.log('m websocket', m)
+
     let newMsg = await decodeSingle(m)
 
     const chatID = newMsg.chat_id

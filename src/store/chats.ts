@@ -402,7 +402,9 @@ export class ChatStore {
   @action
   async checkRoute(cid) {
     const chat = this.chats.find(ch => ch.id === cid)
+
     if (!chat) return
+
     let pubkey
     if (chat.type === constants.chat_types.tribe) {
       pubkey = chat.owner_pubkey
@@ -413,8 +415,10 @@ export class ChatStore {
         pubkey = contact.public_key
       }
     }
+
     if (!pubkey) return
     const r = await relay.get(`route?pubkey=${pubkey}`)
+
     if (r) return r
   }
 

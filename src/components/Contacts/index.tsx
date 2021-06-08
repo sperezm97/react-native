@@ -51,7 +51,6 @@ function ListHeader() {
         placeholder='Search Contacts'
         onChangeText={onChangeTextHandler}
         value={ui.contactsSearchTerm}
-        h={45}
       />
     </View>
   )

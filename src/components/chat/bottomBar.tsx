@@ -93,6 +93,7 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
       if (!text) return
       if (waitingForAdminApproval) return
       let contact_id = chat.contact_ids.find(cid => cid !== 1)
+
       let { price, failureMessage } = calcBotPrice(tribeBots, text)
       if (failureMessage) {
         Toast.showWithGravity(failureMessage, Toast.SHORT, Toast.TOP)

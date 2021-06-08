@@ -58,6 +58,7 @@ export class ThemeStore {
   @observable grey: string = '#d0d0d0'
   @observable darkGrey: string = '#777'
   @observable greyPrimary: string = '#aaa'
+  @observable greySecondary: string = '#c7c9c6'
   @observable black: string = '#000000'
   @observable gradient: string = '#4889e8'
   @observable gradient2: string = '#055deb'

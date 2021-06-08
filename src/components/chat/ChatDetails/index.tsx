@@ -11,7 +11,7 @@ import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIc
 
 import { useStores, useTheme } from '../../../store'
 import { constants } from '../../../constants'
-import { useChatPicSrc, createChatPic } from '../../utils/picSrc'
+import { useChatPicSrc, usePicSrc, createChatPic } from '../../utils/picSrc'
 import EE, { LEFT_GROUP } from '../../utils/ee'
 import BackHeader from '../../common/BackHeader'
 import GroupSettings from '../../common/Dialogs/GroupSettings'
@@ -22,7 +22,7 @@ import Typography from '../../common/Typography'
 import InputAccessoryView from '../../common/Accessories/InputAccessoryView'
 
 export default function ChatDetails({ route }) {
-  const { ui, chats, user, meme } = useStores()
+  const { ui, chats, user, contacts, meme } = useStores()
   const theme = useTheme()
   const [loading, setLoading] = useState(false)
   const [groupSettingsDialog, setGroupSettingsDialog] = useState(false)
@@ -160,7 +160,10 @@ export default function ChatDetails({ route }) {
   }
 
   return useObserver(() => {
-    let myPhoto = group.my_photo_url
+    const meContact = contacts.contacts.find(c => c.id === 1)
+    let imgURI = usePicSrc(meContact)
+
+    let myPhoto = group.my_photo_url || imgURI
 
     if (photo_url) myPhoto = photo_url
 

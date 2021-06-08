@@ -140,8 +140,6 @@ function App() {
 
     const pTheme = paperTheme(theme)
 
-    console.log('ui signedup', ui.signedUp)
-
     return (
       <>
         <PaperProvider theme={pTheme}>

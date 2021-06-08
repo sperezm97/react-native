@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, View, ScrollView } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
+import { ActivityIndicator } from 'react-native-paper'
 
 import { useStores, useTheme, hooks } from '../../store'
 import { useFeed } from '../../store/hooks/tribes'
@@ -19,7 +20,11 @@ export default function Home() {
   const theme = useTheme()
 
   useEffect(() => {
+    setLoading(true)
     fetchTribes()
+    setTimeout(() => {
+      setLoading(false)
+    }, 400)
   }, [])
 
   function fetchTribes() {
@@ -38,21 +43,27 @@ export default function Home() {
     return (
       <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
         <Header border={true} />
-        <ScrollView
-          keyboardDismissMode='on-drag'
-          //  ref={_scrollRef}
-          style={{
-            height: SCREEN_HEIGHT - STATUS_BAR_HEIGHT - 44
-          }}
-          refreshControl={
-            <RefreshLoading refreshing={refreshing} onRefresh={onRefresh} />
-          }
-          // scrollEventThrottle={10}
-          //  onScroll={_onScroll}
-          showsVerticalScrollIndicator={false}
-        >
-          <Feed feed={feed} />
-        </ScrollView>
+        <View style={{ flex: 1 }}>
+          {loading ? (
+            <View style={{ marginTop: 20 }}>
+              <ActivityIndicator />
+            </View>
+          ) : (
+            <ScrollView
+              keyboardDismissMode='on-drag'
+              style={{
+                height: SCREEN_HEIGHT - STATUS_BAR_HEIGHT - 44
+              }}
+              refreshControl={
+                <RefreshLoading refreshing={refreshing} onRefresh={onRefresh} />
+              }
+              showsVerticalScrollIndicator={false}
+            >
+              <Feed feed={feed} />
+            </ScrollView>
+          )}
+        </View>
+
         <TabBar />
       </View>
     )

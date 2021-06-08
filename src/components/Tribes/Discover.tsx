@@ -130,7 +130,6 @@ function SearchHeader() {
           placeholder='Search Communities'
           value={ui.tribesSearchTerm}
           onChangeText={onTribesSearch}
-          h={45}
         />
       </View>
       <View style={{ ...styles.right }}>

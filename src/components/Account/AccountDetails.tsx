@@ -41,6 +41,7 @@ export default function AccountDetails() {
 
   async function shareContactKey() {
     const contact_key = me.contact_key
+
     if (!contact_key) return
     await contacts.updateContact(1, { contact_key })
   }

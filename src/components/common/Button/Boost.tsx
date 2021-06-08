@@ -16,8 +16,9 @@ export default function Boost(props) {
     rippleColor = theme.primary,
     circleH = 35,
     circleW = 35,
-    rippleH = 55,
-    rippleW = 55
+    rippleH = 45,
+    rippleW = 45,
+    rocketSize = 18
   } = props
 
   function go() {
@@ -51,7 +52,7 @@ export default function Boost(props) {
             transform: [{ scale: size }]
           }}
         >
-          <Ionicon name='rocket-outline' color={color} size={20} />
+          <Ionicon name='rocket-outline' color={color} size={rocketSize} />
         </Animated.View>
       </View>
     </TouchableRipple>

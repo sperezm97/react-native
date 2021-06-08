@@ -31,19 +31,20 @@ export default function Payment() {
   }
 
   useEffect(() => {
+    setLoading(true)
     fetchPayments()
-
     fetchBalance()
+    setTimeout(() => {
+      setLoading(false)
+    }, 400)
   }, [])
 
   async function fetchBalance() {
     await details.getBalance()
   }
   async function fetchPayments() {
-    setLoading(true)
     const ps = await details.getPayments()
 
-    setLoading(false)
     if (!isMsgs(ps)) return
     setPayments(ps)
   }
@@ -94,10 +95,10 @@ export default function Payment() {
         <Transactions
           data={payments}
           refreshing={refreshing}
+          loading={loading}
           onRefresh={onRefresh}
           listHeader={<ListHeader />}
         />
-
         <QR
           visible={scanning}
           onCancel={() => setScanning(false)}

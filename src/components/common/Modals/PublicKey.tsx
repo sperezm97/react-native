@@ -1,6 +1,6 @@
 import React from 'react'
-import { useObserver } from 'mobx-react-lite'
 import { StyleSheet, View } from 'react-native'
+import { useObserver } from 'mobx-react-lite'
 import Share from 'react-native-share'
 import Clipboard from '@react-native-community/clipboard'
 import Toast from 'react-native-simple-toast'

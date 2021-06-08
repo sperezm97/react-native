@@ -9,6 +9,7 @@ import moment from 'moment'
 
 import { useStores, useTheme, hooks } from '../../store'
 import { calendarDate } from '../../store/utils/date'
+import { usePicSrc } from '../utils/picSrc'
 import { parseLDAT } from '../utils/ldat'
 import { useCachedEncryptedFile } from '../chat/msg/hooks'
 import { SCREEN_WIDTH, SCREEN_HEIGHT, STATUS_BAR_HEIGHT } from '../../constants'
@@ -22,6 +23,7 @@ function Media(props) {
   const {
     index,
     mediaLength,
+    item,
     id,
     uuid,
     message_content,
@@ -34,11 +36,12 @@ function Media(props) {
     boosts_total_sats
   } = props
   const [boosted, setBoosted] = useState(false)
-  const { msg, ui, user, chats } = useStores()
+  const { msg, ui, user, contacts, chats } = useStores()
   const theme = useTheme()
   const navigation = useNavigation()
 
   const ldat = parseLDAT(media_token)
+
   let { data, uri, loading, trigger, paidMessageText } = useCachedEncryptedFile(
     props,
     ldat
@@ -79,6 +82,9 @@ function Media(props) {
 
   const showBoostRow = boosts_total_sats ? true : false
 
+  const meContact = contacts.contacts.find(c => c.id === 1)
+  const myPhoto = usePicSrc(meContact)
+
   return (
     <>
       {hasImgData && (
@@ -93,7 +99,7 @@ function Media(props) {
               </View>
             </TouchableOpacity>
 
-            <Typography size={12} color={theme.subtitle} style={{ paddingRight: 5 }}>
+            <Typography size={12} color={theme.subtitle}>
               {calendarDate(moment(created_at), 'MMM DD, YYYY')}
             </Typography>
           </View>
@@ -101,23 +107,16 @@ function Media(props) {
           {!loading ? (
             <MediaType type={media_type} data={data} uri={uri} />
           ) : (
-            <ActivityIndicator animating={true} color='grey' />
+            <ActivityIndicator animating={true} />
           )}
 
           <View style={{ ...styles.footer }}>
-            <Boost
-              onPress={onBoostPress}
-              // bg={theme.lightGrey}
-              // color={theme.text}
-              // rippleColor={theme.primary}
-              circleH={40}
-              circleW={40}
-            />
-            <View>
-              {showBoostRow && <BoostDetails {...props} myAlias={user.alias} />}
-            </View>
+            <Boost onPress={onBoostPress} circleH={30} circleW={30} />
+            {showBoostRow && (
+              <BoostDetails {...props} myAlias={user.alias} myPhoto={myPhoto} />
+            )}
           </View>
-          <View style={{ ...styles.meta }}></View>
+          {/* <View style={{ ...styles.meta }}></View> */}
 
           {index + 1 !== mediaLength && <Divider mt={10} mb={10} />}
         </View>
@@ -132,6 +131,7 @@ function MediaType({ type, data, uri }) {
   const [photoH, setPhotoH] = useState(0)
 
   if (type === 'n2n2/text') return <></>
+
   if (type.startsWith('image')) {
     return (
       <View
@@ -207,7 +207,6 @@ const styles = StyleSheet.create({
   photo: {
     width: '100%',
     height: '100%'
-    // borderRadius: 5
   }
 })
 
