@@ -54,11 +54,7 @@ export async function decrypt(data) {
     // const config = { service: 'sphinx_encryption_key' }
     // const priv = await SecureStorage.getItem('private', config)
 
-    console.log('data', data)
-
     const priv = await EncryptedStorage.getItem('private')
-
-    console.log('priv', priv)
 
     const key = privcert(priv)
 
@@ -73,18 +69,14 @@ export async function decrypt(data) {
       )
     })
 
-    console.log('dataArray', dataArray)
-
     await asyncForEach(dataArray, async d => {
       const dec = await RSA.decrypt(d, key)
       finalDec += dec
     })
 
-    console.log('finalDec', finalDec)
-
     return finalDec
   } catch (e) {
-    console.log('decrypt  eroro', e)
+    console.log(e)
   }
   return ''
 }

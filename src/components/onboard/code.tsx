@@ -148,7 +148,7 @@ export default function Code(props) {
           const priv = await user.restore(dec)
 
           if (priv) {
-            rsa.setPrivateKey(priv)
+            await rsa.setPrivateKey(priv)
             return onRestore()
           }
         } else {
