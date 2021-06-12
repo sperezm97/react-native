@@ -136,7 +136,7 @@ export default function Header({
                 <Typography
                   size={16}
                   numberOfLines={1}
-                  style={{ width: name?.length > 20 ? SCREEN_WIDTH - 180 : 'auto' }}
+                  // style={{ width: name?.length > 20 ? SCREEN_WIDTH - 180 : 'auto' }}
                 >
                   {name}
                 </Typography>

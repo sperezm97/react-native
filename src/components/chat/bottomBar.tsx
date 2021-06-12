@@ -343,14 +343,15 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
   let theID = chat && chat.id
   const thisChatMsgs = theID && msg.messages[theID]
 
-  const { replyMessageSenderAlias, replyMessageContent, replyColor } = useReplyContent(
-    thisChatMsgs,
-    replyUuid,
-    extraTextContent
-  )
+  const {
+    replyMessageSenderAlias,
+    replyMessageContent,
+    replyMessageExtraContent,
+    replyColor
+  } = useReplyContent(thisChatMsgs, replyUuid, extraTextContent)
 
   const msgs = useMsgs(chat) || []
-  const { replyMessage } = useChatReply(msgs, replyUuid)
+  const { replyMessage } = useChatReply(msgs, replyUuid, extraTextContent)
   const hasReplyContent = replyUuid || extraTextContent ? true : false
 
   // const replyMessage = replyUuid&&thisChatMsgs&&thisChatMsgs.find(m=>m.uuid===replyUuid)
@@ -381,7 +382,7 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
         {(hasReplyContent ? true : false) && (
           <ReplyContent
             reply={true}
-            replyMsg={replyMessage}
+            replyMessageExtraContent={replyMessageExtraContent}
             showClose={true}
             color={replyColor}
             content={replyMessageContent}

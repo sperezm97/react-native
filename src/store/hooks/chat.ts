@@ -23,8 +23,6 @@ function toHHMMSS(ts) {
   return hours + ':' + minutes + ':' + seconds
 }
 function makeExtraTextContent(obj) {
-  console.log('obj', obj)
-
   const content =
     obj.ts || obj.ts === 0 ? `Share audio clip: ${toHHMMSS(obj.ts)}` : 'Content'
   const title = obj.title || 'Title'
@@ -40,11 +38,13 @@ interface replyContent {
   replyMessageSenderAlias: string
   replyMessageContent: string
   replyColor: string
+  replyMessageExtraContent: {}
 }
 export function useReplyContent(msgs, replyUUID, extraTextContent): replyContent {
   const { contacts } = useStores()
   let replyMessageSenderAlias = ''
   let replyMessageContent = ''
+  let replyMessageExtraContent = {}
   let replyColor = ''
 
   if (extraTextContent) {
@@ -56,10 +56,13 @@ export function useReplyContent(msgs, replyUUID, extraTextContent): replyContent
     const replyMsg = msgs && replyUUID && msgs.find(m => m.uuid === replyUUID)
     replyMessageSenderAlias = replyMsg && replyMsg.sender_alias
 
+    replyMessageExtraContent = replyMsg
+
     replyMessageContent =
       replyMsg && replyMsg.message_content
         ? replyMsg.message_content
         : replyMsg?.media_type
+
     if (!replyMessageSenderAlias && replyMsg && replyMsg.sender) {
       const sender = contacts.contacts.find(c => c.id === replyMsg.sender)
       if (sender) replyMessageSenderAlias = sender.alias
@@ -69,12 +72,19 @@ export function useReplyContent(msgs, replyUUID, extraTextContent): replyContent
   return {
     replyMessageSenderAlias,
     replyMessageContent,
+    replyMessageExtraContent,
     replyColor
   }
 }
 
-export function useChatReply(msgs, replyUUID) {
-  const replyMessage = msgs && replyUUID && msgs.find(m => m.uuid === replyUUID)
+export function useChatReply(msgs, replyUUID, extraTextContent) {
+  let replyMessage = {}
+
+  if (extraTextContent) {
+    replyMessage = {}
+  } else {
+    replyMessage = msgs && replyUUID && msgs.find(m => m.uuid === replyUUID)
+  }
 
   return {
     replyMessage
