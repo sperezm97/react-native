@@ -34,7 +34,7 @@ export default function ReplyContent(props) {
       >
         <View style={{ ...styles.replyBar, backgroundColor: nameColor }} />
         <View style={{ ...styles.replyWrap }}>
-          {props.replyMsg && <ReplySource {...props} />}
+          {props?.replyMessageExtraContent?.media_token && <ReplySource {...props} />}
 
           <View style={{ ...styles.replyContent }}>
             <Typography color={nameColor} numberOfLines={1} fw='500'>
@@ -60,46 +60,36 @@ export default function ReplyContent(props) {
 }
 
 function ReplySource(props) {
-  const typ = constantCodes['message_types'][props.replyMsg.type]
+  const type = constantCodes['message_types'][props.replyMessageExtraContent.type]
 
-  switch (typ) {
+  switch (type) {
     case 'message':
       return <></>
 
     case 'attachment':
-      return <Media {...props.replyMsg} reply={props.reply} />
+      return <Media {...props.replyMessageExtraContent} reply={props.reply} />
 
     case 'boost':
+      return null
     default:
       return <></>
   }
 }
 
 function Media(props) {
-  const { id, message_content, media_type, chat, media_token } = props
+  const { media_token } = props
+
   const theme = useTheme()
-  const isMe = props.sender === 1
 
   const ldat = parseLDAT(media_token)
 
-  let amt = null
-  let purchased = false
-  if (ldat.meta && ldat.meta.amt) {
-    amt = ldat.meta.amt
-    if (ldat.sig) purchased = true
-  }
-
-  let { data, uri, loading, trigger, paidMessageText } = useCachedEncryptedFile(
-    props,
-    ldat
-  )
+  let { data, uri, loading, trigger } = useCachedEncryptedFile(props, ldat)
 
   useEffect(() => {
     trigger()
   }, [media_token])
 
   const hasImgData = data || uri ? true : false
-  const showPurchaseButton = amt && !isMe ? true : false
 
   return (
     <View style={{ width: props.reply ? '15%' : '25%' }}>
