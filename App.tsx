@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Provider as PaperProvider } from 'react-native-paper'
 import { useDarkMode } from 'react-native-dynamic'
 import { is24HourFormat } from 'react-native-device-time-format'
@@ -17,7 +17,7 @@ import Main from './src/main'
 import Auth from './src/components/Navigation/Auth'
 import Splash from './src/components/common/Splash'
 import PinCodeModal from './src/components/common/Modals/PinCode'
-import StatusBar, { setTint } from './src/components/common/StatusBar'
+import StatusBar from './src/components/common/StatusBar'
 
 declare var global: { HermesInternal: null | {} }
 
@@ -41,11 +41,6 @@ export default function Wrap() {
   }
 
   useEffect(() => {
-    // rsa.testSecure()
-    // rsa.getPublicKey()
-
-    setTint(theme.dark ? 'dark' : 'light')
-
     Linking.getInitialURL()
       .then(e => {
         if (e) gotLink(e).then(() => setWrapReady(true))
@@ -93,7 +88,6 @@ function App() {
     ;(async () => {
       const isSignedUp =
         user.currentIP && user.authToken && !user.onboardStep ? true : false
-      // setSignedUp(isSignedUp)
 
       ui.setSignedUp(isSignedUp)
 
@@ -127,10 +121,10 @@ function App() {
     if (loading) return <Splash />
     if (ui.signedUp && !ui.pinCodeModal) {
       return (
-        <PinCodeModal visible={ui.signedUp && !ui.pinCodeModal}>
+        <PinCodeModal visible={true}>
           <PIN
             onFinish={async () => {
-              await sleep(240)
+              await utils.sleep(240)
               ui.setPinCodeModal(true)
             }}
           />
@@ -152,9 +146,4 @@ function App() {
       </>
     )
   })
-}
-
-// TODO => Abstraction
-async function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms))
 }

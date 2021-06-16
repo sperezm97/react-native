@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react'
-import { StyleSheet, View, BackHandler, Modal } from 'react-native'
+import React, { useState } from 'react'
+import { StyleSheet, View, Modal } from 'react-native'
 import { TextInput } from 'react-native-paper'
-import Toast from 'react-native-simple-toast'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import { useTheme } from '../../../store'
+import { SCREEN_HEIGHT } from '../../../constants'
 import ModalHeader from '../Modals/ModalHeader'
 import QRScanner from './QRScanner'
 import Button from '../Button'
-import Typography from '../Typography'
 
 export default function QR({
   visible,
@@ -16,33 +16,12 @@ export default function QR({
   showPaster,
   inputPlaceholder,
   isLoopout = false,
-  confirm
+  confirm,
+  scannerH = SCREEN_HEIGHT - 300
 }) {
   const theme = useTheme()
-  const [hasPermission, setHasPermission] = useState(null)
   const [scanned, setScanned] = useState(false)
   const [text, setText] = useState('')
-  const [data, setData] = useState('')
-
-  useEffect(() => {
-    BackHandler.addEventListener('hardwareBackPress', function () {
-      onCancel()
-      return true
-    })
-  }, [])
-
-  // useEffect(() => {
-  //   (async () => {
-  //     if(!hasPermission){
-  //       const { status } = await BarCodeScanner.requestPermissionsAsync()
-  //       if(status==='granted'){
-  //         setHasPermission(true)
-  //       } else {
-  //         onCancel()
-  //       }
-  //     }
-  //   })()
-  // }, [])
 
   function handleBarCodeScanned(data) {
     setScanned(true)
@@ -62,40 +41,55 @@ export default function QR({
       } else {
         setText(data)
       }
+      return
+    } else {
+      setText(data)
     }
     // if (data.length === 66)
-
-    setText(data)
   }
 
+  const h = SCREEN_HEIGHT - 60
   return (
     <Modal visible={visible} animationType='slide' presentationStyle='pageSheet'>
-      <ModalHeader title='Scan QR Code' onClose={onCancel} />
-      <View style={{ ...styles.content }}>
-        <QRScanner
-          scanned={scanned ? true : false}
-          handleBarCodeScanned={handleBarCodeScanned}
-        />
-        {showPaster && (
-          <View style={{ ...styles.bottom, backgroundColor: theme.main }}>
-            <View style={styles.textInputWrap}>
-              <TextInput
-                placeholder={inputPlaceholder}
-                value={text}
-                onChangeText={e => setText(e)}
-                style={{ backgroundColor: theme.main }}
-                underlineColor={theme.border}
-              />
-            </View>
-            <View style={styles.confirmWrap}>
-              {(text ? true : false) && (
-                <Button style={styles.confirm} onPress={() => confirm(text)}>
+      <View style={{ ...styles.wrap, height: h, backgroundColor: theme.bg }}>
+        <ModalHeader title='Scan QR Code' onClose={onCancel} />
+        <KeyboardAwareScrollView
+          extraScrollHeight={120} // 70 + 50
+          contentContainerStyle={{ ...styles.content }}
+          scrollEnabled={false}
+        >
+          <QRScanner
+            smaller
+            height={scannerH}
+            scanned={scanned ? true : false}
+            handleBarCodeScanned={handleBarCodeScanned}
+          />
+          {showPaster && (
+            <>
+              <View style={{ ...styles.inputWrap, backgroundColor: theme.bg }}>
+                <TextInput
+                  placeholder={inputPlaceholder}
+                  value={text}
+                  onChangeText={e => setText(e)}
+                  style={{ ...styles.input, backgroundColor: theme.bg }}
+                  underlineColor={theme.border}
+                  selectionColor={theme.primary}
+                  theme={{ colors: { primary: theme.border } }}
+                />
+              </View>
+              <View
+                style={{
+                  ...styles.buttonWrap,
+                  backgroundColor: theme.bg
+                }}
+              >
+                <Button w={140} onPress={() => confirm(text)} disabled={!text}>
                   CONFIRM
                 </Button>
-              )}
-            </View>
-          </View>
-        )}
+              </View>
+            </>
+          )}
+        </KeyboardAwareScrollView>
       </View>
     </Modal>
   )
@@ -108,26 +102,25 @@ QR.defaultProps = {
 }
 
 const styles = StyleSheet.create({
+  wrap: {
+    flex: 1,
+    width: '100%'
+  },
   content: {
     flex: 1
   },
-  bottom: {
-    width: '100%',
-    height: 153
+  inputWrap: {
+    paddingHorizontal: 30
   },
-  textInputWrap: {
-    marginLeft: 20,
-    marginRight: 20,
-    marginTop: 20,
-    marginBottom: 15
+  input: {
+    height: 70,
+    textAlign: 'auto'
   },
-  confirmWrap: {
-    width: '100%',
+  buttonWrap: {
     display: 'flex',
-    alignItems: 'center'
-  },
-  confirm: {
-    width: 160,
-    borderRadius: 20
+    alignItems: 'center',
+    width: '100%',
+    height: 50,
+    paddingTop: 20
   }
 })

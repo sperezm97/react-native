@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
-import { View, StyleSheet } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import RadialGradient from 'react-native-radial-gradient'
 import { ActivityIndicator } from 'react-native-paper'
 
 import { useStores, useTheme } from '../../store'
-import Slider from '../utils/slider'
-import { constants } from '../../constants'
 import actions from '../../store/actions'
+import { constants } from '../../constants'
+import Slider from '../utils/slider'
 import Button from '../common/Button'
 import Typography from '../common/Typography'
 

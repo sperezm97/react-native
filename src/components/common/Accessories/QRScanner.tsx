@@ -1,14 +1,15 @@
 import React from 'react'
-import { StyleSheet, View, Dimensions } from 'react-native'
-
+import { StyleSheet, View } from 'react-native'
 import QRCodeScanner from 'react-native-qrcode-scanner'
 import { RNCamera } from 'react-native-camera'
+
+import { SCREEN_HEIGHT, SCREEN_WIDTH } from '../../../constants'
 
 export default function QRScanner(props) {
   const { handleBarCodeScanned, height, scanned, smaller } = props
   const less = smaller ? 310 : 100
-  let w = Dimensions.get('screen').width
-  let h = height || Dimensions.get('screen').height - less
+  let w = SCREEN_WIDTH
+  let h = height || SCREEN_HEIGHT - less
   if (w === 0) w = 280
 
   function onSuccess(e) {
@@ -26,7 +27,6 @@ export default function QRScanner(props) {
           flashMode: RNCamera.Constants.FlashMode.off
         }}
       />
-
       <Outliner size={w - 80} top={h / 2 - (w / 2 - 40)} />
     </View>
   )
@@ -47,7 +47,12 @@ function Outliner({ size, top }) {
   return (
     <View style={{ ...styles.outlineWrap, width: size, height: size, top }}>
       {outlines.map((o, i) => {
-        return <View key={i} style={{ position: 'absolute', backgroundColor: 'white', ...o }} />
+        return (
+          <View
+            key={i}
+            style={{ position: 'absolute', backgroundColor: 'white', ...o }}
+          />
+        )
       })}
     </View>
   )

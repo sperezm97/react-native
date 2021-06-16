@@ -71,22 +71,6 @@ export default function Payment() {
         ui.setConfirmInvoiceMsg({ payment_request: theData, amount: sats })
       }, 150)
     }
-
-    // else if (data.startsWith('n2n2.chat://')) {
-    //   const j = utils.jsonFromUrl(data)
-    //   setScanning(false)
-    //   setTimeout(async () => {
-    //     await qrActions(j, ui, chats)
-    //   }, 150)
-    // } else if (data.startsWith('action=donation')) {
-    //   // this should be already
-    //   const nd = 'n2n2.chat://?' + data
-    //   const j = utils.jsonFromUrl(nd)
-    //   setScanning(false)
-    //   setTimeout(async () => {
-    //     await qrActions(j, ui, chats)
-    //   }, 150)
-    // }
   }
 
   return useObserver(() => {
@@ -109,7 +93,6 @@ export default function Payment() {
           visible={scanning}
           onCancel={() => {
             setTint(theme.dark ? 'dark' : 'light')
-
             setScanning(false)
           }}
           confirm={scanningDone}

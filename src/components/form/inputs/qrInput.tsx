@@ -3,10 +3,9 @@ import { StyleSheet, View } from 'react-native'
 import { IconButton, TextInput } from 'react-native-paper'
 import Clipboard from '@react-native-community/clipboard'
 import Toast from 'react-native-simple-toast'
-import { TouchableOpacity } from 'react-native-gesture-handler'
 
 import { useTheme } from '../../../store'
-import { TOAST_DURATION } from '../../../constants'
+import { SCREEN_HEIGHT, TOAST_DURATION } from '../../../constants'
 import QR from '../../common/Accessories/QR'
 import PublicKey from '../../common/Modals/PublicKey'
 import Typography from '../../common/Typography'
@@ -106,6 +105,7 @@ export default function QrInput({
       )}
 
       <QR
+        scannerH={SCREEN_HEIGHT - 60}
         visible={scanning && !displayOnly}
         onCancel={() => setScanning(false)}
         onScan={data => scan(data)}

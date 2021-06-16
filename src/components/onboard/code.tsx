@@ -10,11 +10,12 @@ import { useStores, useTheme } from '../../store'
 import { DEFAULT_HOST } from '../../config'
 import * as e2e from '../../crypto/e2e'
 import * as rsa from '../../crypto/rsa'
+import { isLN, parseLightningInvoice } from '../utils/ln'
+import PIN, { setPinCode } from '../utils/pin'
 import QR from '../common/Accessories/QR'
 import PinCodeModal from '../common/Modals/PinCode'
 import Typography from '../common/Typography'
-import PIN, { setPinCode } from '../utils/pin'
-import { isLN, parseLightningInvoice } from '../utils/ln'
+import { SCREEN_HEIGHT } from '../../constants'
 
 export default function Code(props) {
   const { onDone, z, onRestore } = props
@@ -275,6 +276,7 @@ export default function Code(props) {
 
       {scanning && (
         <QR
+          scannerH={SCREEN_HEIGHT - 60}
           visible={scanning}
           onCancel={() => setScanning(false)}
           onScan={data => scan(data)}

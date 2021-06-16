@@ -1,14 +1,15 @@
 import React from 'react'
-import { View, StyleSheet } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
 
+import { useStores } from '../../store'
 import Code from './code'
 import Welcome from './welcome'
 import NameAndKey from './nameAndKey'
 import Ready from './ready'
 import PIN from './choosePIN'
 import ProfilePic from './profilePic'
-import { useStores } from '../../store'
+import Backup from './Backup'
 
 /*
 1. scan or enter code, create ip (from invite server), create auth_token in Relay
@@ -20,7 +21,7 @@ import { useStores } from '../../store'
 */
 
 // Final: ProfilePic before Ready
-const steps = [Code, Welcome, PIN, NameAndKey, ProfilePic, Ready]
+const steps = [Code, Welcome, PIN, NameAndKey, ProfilePic, Ready, Backup]
 export default function OnBoard() {
   const { ui, user } = useStores()
 
