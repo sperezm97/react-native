@@ -213,14 +213,3 @@ function Payment({ visible, close }) {
     )
   })
 }
-
-const styles = StyleSheet.create({
-  content: {
-    flex: 1,
-    width: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'absolute',
-    top: 50
-  }
-})

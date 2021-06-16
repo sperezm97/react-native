@@ -100,6 +100,7 @@ function SearchHeader() {
   const onTribesSearch = (txt: string) => ui.setTribesSearchTerm(txt)
 
   async function scan(data) {
+    setTint(theme.dark ? 'dark' : 'light')
     setScanning(false)
     const j = utils.jsonFromUrl(data)
 
@@ -147,6 +148,7 @@ function SearchHeader() {
 
       {scanning && (
         <QR
+          scannerH={SCREEN_HEIGHT - 60}
           visible={scanning}
           onCancel={() => {
             setScanning(false)

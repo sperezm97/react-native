@@ -44,3 +44,7 @@ export function isIphoneXorAbove() {
     (d.height === 812 || d.width === 812 || d.height === 896 || d.width === 896)
   )
 }
+
+export async function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms))
+}

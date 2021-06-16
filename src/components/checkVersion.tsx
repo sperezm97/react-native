@@ -14,7 +14,11 @@ const HOURS = 12 // 0.001
 export function VersionDialog({ showVersionDialog, onCloseVersionDialog }) {
   const theme = useTheme()
   return (
-    <Dialog visible={showVersionDialog} style={{ bottom: 10 }} onDismiss={onCloseVersionDialog}>
+    <Dialog
+      visible={showVersionDialog}
+      style={{ bottom: 10 }}
+      onDismiss={onCloseVersionDialog}
+    >
       <Dialog.Title>App Version</Dialog.Title>
       <Dialog.Actions
         style={{
@@ -24,12 +28,22 @@ export function VersionDialog({ showVersionDialog, onCloseVersionDialog }) {
           alignItems: 'flex-start'
         }}
       >
-        <Text style={{ color: theme.title, padding: 12 }}>Your app version is outdated. Please update!</Text>
-        <TouchableOpacity onPress={() => Linking.openURL(DEFAULT_HOST)} style={styles.linkWrap}>
+        <Text style={{ color: theme.title, padding: 12 }}>
+          Your app version is outdated. Please update!
+        </Text>
+        <TouchableOpacity
+          onPress={() => Linking.openURL(DEFAULT_HOST)}
+          style={styles.linkWrap}
+        >
           <Text style={styles.linkText}>{DEFAULT_HOST}</Text>
         </TouchableOpacity>
         <View style={styles.buttonWrap}>
-          <Button icon='check' onPress={onCloseVersionDialog} style={{ width: 100, alignItems: 'flex-end' }} accessibilityLabel='app-version-ok-button'>
+          <Button
+            icon='check'
+            onPress={onCloseVersionDialog}
+            style={{ width: 100, alignItems: 'flex-end' }}
+            accessibilityLabel='app-version-ok-button'
+          >
             OK
           </Button>
         </View>

@@ -31,8 +31,6 @@ export class ThemeStore {
     this.primary = d ? '#0067ff' : '#0067ff'
     this.secondary = d ? '#0fb17d' : '#0fb17d'
     this.special = d ? '#1c252e' : '#f8fafb'
-    // this.gradient = d ? '#1c252e' : '#4889e8'
-    // this.gradient2 = d ? '#141d26' : '#055deb'
   }
 
   @observable bg: string = '#fff'

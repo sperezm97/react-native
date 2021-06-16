@@ -29,7 +29,10 @@ export default function Support() {
 
   function email() {
     let body = text ? `${text}<br/><br/>` : ''
-    body += details.logs.replace(/(\n)/g, '<br/>')
+
+    if (details.logs) {
+      body += details.logs.replace(/(\n)/g, '<br/>')
+    }
     const subject = 'N2N2 Support Request'
     Linking.openURL(`mailto:ci@n2n2.co?subject=${subject}&body=${body}`)
   }
@@ -70,7 +73,7 @@ export default function Support() {
 
       <View style={styles.bottom}>
         <View style={styles.buttonWrap}>
-          <Button disabled={!details.logs} onPress={() => email()} w={160}>
+          <Button onPress={() => email()} w={160}>
             Send Message
           </Button>
           <Button disabled={!details.logs} onPress={() => copy()} w={160}>

@@ -20,6 +20,7 @@ import Button from '../common/Button'
 import ActionMenu from '../common/ActionMenu'
 import BackHeader from '../common/BackHeader'
 import Typography from '../common/Typography'
+import { setTint } from '../common/StatusBar'
 
 export default function Security() {
   const modalizeRef = useRef<Modalize>(null)
@@ -103,6 +104,7 @@ export default function Security() {
   function finish(pin) {
     exportKeys(pin)
     modalizeRef.current.close()
+    setTint(theme.dark ? 'dark' : 'light')
   }
 
   return useObserver(() => {
@@ -145,7 +147,12 @@ export default function Security() {
             <View style={{ alignItems: 'center' }}>
               <Button
                 accessibilityLabel='onboard-welcome-button'
-                onPress={() => modalizeRef.current?.open()}
+                onPress={() => {
+                  setTimeout(() => {
+                    setTint('dark')
+                  }, 200)
+                  modalizeRef.current?.open()
+                }}
                 size='large'
                 w='70%'
                 h={50}
