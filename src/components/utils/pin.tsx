@@ -120,6 +120,17 @@ export default function PIN(props) {
           >
             {txt}
           </Typography>
+          {props?.extraMessage && (
+            <Typography
+              size={20}
+              style={{
+                marginTop: 10
+              }}
+              color={theme.white}
+            >
+              {props.extraMessage}
+            </Typography>
+          )}
         </View>
         <View style={styles.circles}>
           {ns.map(n => (

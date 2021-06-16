@@ -37,7 +37,7 @@ function JoinTribe(props) {
 
   const tribes = useTribes()
   const tribeToCheck = tribes && tribes.find(t => t.uuid === tribe.uuid)
-  let joined = false
+  let joined = true
   if (tribeToCheck) {
     joined = tribeToCheck.joined
   }
@@ -172,6 +172,7 @@ function JoinTribe(props) {
                           color={theme.subtitle}
                           style={{
                             marginTop: 10,
+                            marginBottom: 20,
                             maxWidth: 340,
                             textAlign: 'center'
                           }}

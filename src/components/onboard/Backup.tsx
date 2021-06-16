@@ -4,15 +4,17 @@ import Toast from 'react-native-simple-toast'
 import Clipboard from '@react-native-community/clipboard'
 import { encode as btoa } from 'base-64'
 
-import { useStores } from '../../../store'
-import { TOAST_DURATION } from '../../../constants'
-import * as rsa from '../../../crypto/rsa'
-import * as e2e from '../../../crypto/e2e'
-import * as utils from '../../utils/utils'
-import PIN, { userPinCode } from '../../utils/pin'
-import ModalWrap from './ModalWrap'
+import { useStores } from '../../store'
+import { TOAST_DURATION } from '../../constants'
 
-export default function BackupKeys({ visible, close }) {
+import * as rsa from '../../crypto/rsa'
+import * as e2e from '../../crypto/e2e'
+import * as utils from '../utils/utils'
+import PIN, { userPinCode } from '../utils/pin'
+import Slider from '../utils/slider'
+
+export default function Backup(props) {
+  const { onDone, z, show } = props
   const { user, contacts } = useStores()
 
   function showError(err) {
@@ -59,7 +61,7 @@ export default function BackupKeys({ visible, close }) {
       showError(e.message || e)
     } finally {
       await utils.sleep(500)
-      close()
+      onDone()
     }
   }
 
@@ -68,8 +70,12 @@ export default function BackupKeys({ visible, close }) {
   }
 
   return useObserver(() => (
-    <ModalWrap visible={visible} onClose={close} noHeader>
-      <PIN forceEnterMode={true} onFinish={pin => finish(pin)} />
-    </ModalWrap>
+    <Slider z={z} show={show} accessibilityLabel='onboard-PIN'>
+      <PIN
+        forceEnterMode={true}
+        onFinish={pin => finish(pin)}
+        extraMessage='Backup your keys'
+      />
+    </Slider>
   ))
 }

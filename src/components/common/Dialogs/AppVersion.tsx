@@ -19,7 +19,7 @@ export default function AppVersionUpdate({ visible, close }) {
     <DialogWrap
       visible={visible}
       onDismiss={close}
-      minH={500}
+      minH={450}
       round={20}
       dismissable={false}
       ph={0}

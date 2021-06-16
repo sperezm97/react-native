@@ -30,16 +30,12 @@ export default function Main() {
       const bundleId = getBundleId()
 
       const version = await checkVersion({
-        bundleId: 'chat.n2n2.Chat',
+        bundleId,
         currentVersion
       })
 
       await utils.sleep(300)
-      // if (version.needsUpdate) {
-      if (true) {
-        // setTimeout(() => {
-        //   setTint('dark')
-        // }, 400)
+      if (version.needsUpdate) {
         setVersionUpdateVisible(true)
         console.log(`App has a ${version.updateType} update pending.`)
       }

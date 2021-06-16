@@ -16,7 +16,8 @@ const config = {
   },
   inviter: {
     key: '03ea08d787c0153d42f0aa286a1b7000de17d959771e059aadc1cf85d5f2a67e35'
-  }
+  },
+  appstore: 'https://apps.apple.com/us/app/n2n2/id1556918256'
 }
 
 export const DEFAULT_HOST = config.host
@@ -25,5 +26,7 @@ export const DEFAULT_HUB_API = config.hub.api
 export const DEFAULT_TRIBE_SERVER = config.tribes.server
 export const DEFAULT_MEME_SERVER = config.memes.server
 export const DEFAULT_AUTH_SERVER = config.auth.server
+export const INVITER_KEY = config.inviter.key
+export const APP_STORE = config.appstore
 
 export default config

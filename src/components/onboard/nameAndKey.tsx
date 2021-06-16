@@ -47,6 +47,7 @@ export default function NameAndKey(props) {
           backgroundColor: theme.dark ? theme.white : theme.lightGrey,
           borderColor: theme.white
         }}
+        placeholderTextColor={theme.greySecondary}
         onChangeText={text => setText(text)}
       />
       <View style={styles.buttonWrap} accessibilityLabel='onboard-name-button-wrap'>

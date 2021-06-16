@@ -5,17 +5,17 @@ const config = {
     api: 'https://hub.n2n2.chat/api/v1/'
   },
   tribes: {
-    server: 'tribes.n2n2.chat',
-    uuid: 'YHiUtB-9mp5X8Fetn6xBA9y4MSM9LzLsewgw29btcOsTi0zToSOwUryHWzslCUc6dSKhlNK6zJrCxJP_b-OdJzfxF-P5'
+    server: 'tribes-staging.n2n2.chat',
+    uuid: 'YGT2Bx-VzNmGHkGIZqQnD7cBh7I6z6Wb_wNIuRpmOjR_mowtxQnCi4Z250FpyEB_R0BOvE5IDbqaogSOzaZXbCRGCg0s'
   },
   memes: {
-    server: 'memes.n2n2.chat'
+    server: 'memes-staging.n2n2.chat'
   },
   auth: {
     server: 'auth.n2n2.chat'
   },
   inviter: {
-    key: '03ea08d787c0153d42f0aa286a1b7000de17d959771e059aadc1cf85d5f2a67e35'
+    key: '0228af7ad42a56c4069a7af192d139747e98283dfc8d5ba8da9884821c3ef2758e'
   },
   appstore: 'https://apps.apple.com/us/app/n2n2/id1556918256'
 }
@@ -26,6 +26,7 @@ export const DEFAULT_HUB_API = config.hub.api
 export const DEFAULT_TRIBE_SERVER = config.tribes.server
 export const DEFAULT_MEME_SERVER = config.memes.server
 export const DEFAULT_AUTH_SERVER = config.auth.server
+export const INVITER_KEY = config.inviter.key
 export const APP_STORE = config.appstore
 
 export default config
