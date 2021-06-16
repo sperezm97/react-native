@@ -41,8 +41,7 @@ export default function Controls(props) {
     setPos(n)
   }
   function feedClip() {
-    const ep = props.episode
-    const pod = props.pod
+    const { episode: ep, pod, quoteCallback } = props
     if (!ep || !pod) return
     const obj: StreamPayment = {
       ts: pos,
@@ -54,6 +53,7 @@ export default function Controls(props) {
     }
     if (props.myPubkey) obj.pubkey = props.myPubkey
     EE.emit(EXTRA_TEXT_CONTENT, obj)
+    if (quoteCallback) quoteCallback()
   }
   async function track(ratio) {
     const { duration } = props
