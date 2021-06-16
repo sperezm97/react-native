@@ -208,6 +208,7 @@ function VideoView({ videoVisible, tribe, joinTribe }) {
   const network = require('../../../../assets/videos/network-nodes-blue.mp4')
 
   async function onJoin() {
+    if (loading) return
     setLoading(true)
     await joinTribe()
     setLoading(false)
