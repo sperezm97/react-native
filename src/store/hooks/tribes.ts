@@ -2,7 +2,7 @@ import moment from 'moment'
 
 import { useStores } from '../index'
 import { useChats } from './chats'
-import config from '../../config'
+import { INVITER_KEY } from '../../config'
 import { constants } from '../../constants'
 import { calendarDate } from '../utils/date'
 import { useMsgs } from './msg'
@@ -102,9 +102,7 @@ export function useOwnerMediaType(msgs, type, owner = true) {
 
 // feed from joined tribes
 export function useFeed(tribes) {
-  tribes = tribes.filter(
-    t => t.joined && !t.owner && t.owner_pubkey !== config.inviter.key
-  )
+  tribes = tribes.filter(t => t.joined && !t.owner && t.owner_pubkey !== INVITER_KEY)
 
   let allTribes = tribes.map(t => processFeed(t, 6))
 

@@ -2,7 +2,7 @@ import { observable, action } from 'mobx'
 import { persist } from 'mobx-persist'
 
 import * as api from '../api'
-import config, { DEFAULT_HUB_API } from '../config'
+import { INVITER_KEY } from '../config'
 import { randString } from '../crypto/rand'
 import { uiStore } from './ui'
 
@@ -305,7 +305,7 @@ async function sleep(ms) {
 
 const supportContact = {
   inviterNickname: 'N2N2 Root',
-  inviterPubkey: config.inviter.key,
+  inviterPubkey: INVITER_KEY,
   welcomeMessage: 'Welcome to N2N2!',
   action: ''
 }
