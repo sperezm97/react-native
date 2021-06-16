@@ -460,6 +460,7 @@ export default function Pod({ pod, show, chat, onBoost, podError }) {
               boost={boost}
               speed={speed}
               setRate={setRate}
+              quoteCallback={closeFull}
             />
           </View>
           {(pod.episodes ? true : false) && (
