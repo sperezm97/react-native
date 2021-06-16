@@ -571,8 +571,6 @@ class MsgStore {
 
   @action // only if it contains a "chat"
   async gotNewMessageFromWS(m) {
-    console.log('m websocket', m)
-
     let newMsg = await decodeSingle(m)
 
     const chatID = newMsg.chat_id

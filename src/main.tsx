@@ -1,22 +1,50 @@
-import React, { useRef, useEffect } from 'react'
+import React, { useRef, useEffect, useState } from 'react'
 import { AppState } from 'react-native'
 import Toast from 'react-native-simple-toast'
+import { checkVersion } from 'react-native-check-version'
+import { getVersion, getBundleId } from 'react-native-device-info'
 
 import { useStores } from './store'
 import APNManager from './store/contexts/apn'
 import { TOAST_DURATION } from './constants'
+import * as utils from './components/utils/utils'
 import { initPicSrc } from './components/utils/picSrc'
 import * as rsa from './crypto/rsa'
 import EE, { RESET_IP_FINISHED } from './components/utils/ee'
-import { check } from './components/checkVersion'
 import Modals from './components/modals'
 import ModalsN from './components/common/Modals'
 import Dialogs from './components/common/Dialogs'
 import Root from './components/Navigation/Root'
+import AppVersionUpdate from './components/common/Dialogs/AppVersion'
+import { setTint } from './components/common/StatusBar'
 
 export default function Main() {
   const { contacts, msg, details, user, meme, ui } = useStores()
+  const [versionUpdateVisible, setVersionUpdateVisible] = useState(false)
+
   const appState = useRef(AppState.currentState)
+
+  useEffect(() => {
+    ;(async () => {
+      const currentVersion = getVersion()
+      const bundleId = getBundleId()
+
+      const version = await checkVersion({
+        bundleId: 'chat.n2n2.Chat',
+        currentVersion
+      })
+
+      await utils.sleep(300)
+      // if (version.needsUpdate) {
+      if (true) {
+        // setTimeout(() => {
+        //   setTint('dark')
+        // }, 400)
+        setVersionUpdateVisible(true)
+        console.log(`App has a ${version.updateType} update pending.`)
+      }
+    })()
+  }, [])
 
   useEffect(() => {
     AppState.addEventListener('change', handleAppStateChange)
@@ -28,7 +56,6 @@ export default function Main() {
   function handleAppStateChange(nextAppState) {
     if (appState.current.match(/inactive|background/) && nextAppState === 'active') {
       loadHistory()
-      checkVersion()
     }
     if (appState.current.match(/active/) && nextAppState === 'background') {
       const count = msg.countUnseenMessages()
@@ -58,8 +85,6 @@ export default function Main() {
         // set into me Contact
       } else if (user.contactKey) {
       } else {
-        console.log('is updating')
-
         // need to regen :(
         const keyPair = await rsa.generateKeyPair()
         user.setContactKey(keyPair.public)
@@ -71,8 +96,6 @@ export default function Main() {
       }
       // no private key!!
     } else {
-      console.log('is here?')
-
       const keyPair = await rsa.generateKeyPair()
       user.setContactKey(keyPair.public)
       contacts.updateContact(user.myid, {
@@ -91,10 +114,6 @@ export default function Main() {
   //     contact_key: keyPair.public
   //   })
   // }
-
-  async function checkVersion() {
-    await check()
-  }
 
   async function loadHistory(skipLoadingContacts?: boolean) {
     ui.setLoadingHistory(true)
@@ -139,6 +158,10 @@ export default function Main() {
         <Modals />
         <ModalsN />
         <Dialogs />
+        <AppVersionUpdate
+          visible={versionUpdateVisible}
+          close={() => setVersionUpdateVisible(false)}
+        />
       </APNManager>
     </>
   )

@@ -100,10 +100,15 @@ export default function Intro({ tribe }) {
           <View style={{ ...styles.avatarWrap }}>
             <AvatarEdit
               onPress={() => {
-                setTimeout(() => {
-                  setTint('dark')
-                }, 300)
-                tribe.owner ? setImageDialog(true) : tribe.img && setPhotoModal(true)
+                if (tribe.owner) {
+                  setImageDialog(true)
+                } else {
+                  setTimeout(() => {
+                    setTint('dark')
+                  }, 300)
+
+                  tribe.img && setPhotoModal(true)
+                }
               }}
               uploading={uploading}
               uploadPercent={uploadPercent}

@@ -18,6 +18,7 @@ import Auth from './src/components/Navigation/Auth'
 import Splash from './src/components/common/Splash'
 import PinCodeModal from './src/components/common/Modals/PinCode'
 import StatusBar, { setTint } from './src/components/common/StatusBar'
+import AppVersionUpdate from './src/components/common/Modals/AppVersionUpdate'
 
 declare var global: { HermesInternal: null | {} }
 
@@ -41,9 +42,6 @@ export default function Wrap() {
   }
 
   useEffect(() => {
-    // rsa.testSecure()
-    // rsa.getPublicKey()
-
     setTint(theme.dark ? 'dark' : 'light')
 
     Linking.getInitialURL()
@@ -130,7 +128,7 @@ function App() {
         <PinCodeModal visible={ui.signedUp && !ui.pinCodeModal}>
           <PIN
             onFinish={async () => {
-              await sleep(240)
+              await utils.sleep(240)
               ui.setPinCodeModal(true)
             }}
           />
@@ -152,9 +150,4 @@ function App() {
       </>
     )
   })
-}
-
-// TODO => Abstraction
-async function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms))
 }
