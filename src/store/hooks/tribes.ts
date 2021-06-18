@@ -34,16 +34,27 @@ export function useJoinedTribes(tribes) {
 export function useOwnedTribes(tribes) {
   // tribes = tribes.filter(t => t.owner)
   tribes = tribes.filter(t => t.joined)
-
-  return tribes.sort((a, b) => {
-    if (a.owner > b.owner) return -1
-    return 0
-  })
+  return sortTribesByLastMsg(tribes)
 
   // return tribes.sort((a, b) => {
   //   if (a.joined > b.owner && b.last_active > a.last_active) return -1
   //   return 0
   // })
+}
+
+function sortTribesByLastMsg(tribesToShow) {
+  const { msg: { messages } } = useStores()
+
+  return tribesToShow.sort((a, b) => {
+    const amsgs = messages[a.chat.id]
+    const alastMsg = amsgs?.[0]
+    const then = moment(new Date()).add(-30, 'days')
+    const adate = alastMsg?.date ? moment(alastMsg.date) : then
+    const bmsgs = messages[b.chat.id]
+    const blastMsg = bmsgs?.[0]
+    const bdate = blastMsg?.date ? moment(blastMsg.date) : then
+    return adate.isBefore(bdate) ? 0 : -1
+  })
 }
 
 export function searchTribes(tribes, searchTerm) {

@@ -9,7 +9,7 @@ import NameAndKey from './nameAndKey'
 import Ready from './ready'
 import PIN from './choosePIN'
 import ProfilePic from './profilePic'
-import Backup from './Backup'
+// import Backup from './Backup'
 
 /*
 1. scan or enter code, create ip (from invite server), create auth_token in Relay
@@ -21,7 +21,7 @@ import Backup from './Backup'
 */
 
 // Final: ProfilePic before Ready
-const steps = [Code, Welcome, PIN, NameAndKey, ProfilePic, Ready, Backup]
+const steps = [Code, Welcome, PIN, NameAndKey, ProfilePic, Ready]
 export default function OnBoard() {
   const { ui, user } = useStores()
 
