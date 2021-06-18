@@ -4,13 +4,15 @@ import { useObserver } from 'mobx-react-lite'
 import { useNavigation } from '@react-navigation/native'
 import { ActivityIndicator } from 'react-native-paper'
 
-import { useStores, useTheme } from '../../store'
+import { useStores, useTheme, hooks } from '../../store'
 import { SCREEN_WIDTH } from '../../constants'
 import Typography from '../common/Typography'
 import Avatar from '../common/Avatar'
 import Button from '../common/Button'
 import RefreshLoading from '../common/RefreshLoading'
 import JoinTribe from '../common/Modals/Tribe/JoinTribe'
+
+const { useChatRow } = hooks
 
 export default function List(props) {
   const { data, loading, listEmpty, refreshing, onRefresh } = props
@@ -47,14 +49,12 @@ export default function List(props) {
 }
 
 function Item(props) {
-  const { name, description, img, joined, uuid, owner, owner_alias } = props
+  const { name, description, img, joined, uuid, owner, owner_alias, chat } = props
   const { ui, chats } = useStores()
   const theme = useTheme()
   const navigation = useNavigation()
-  const [joinTribe, setJoinTribe] = useState({
-    visible: false,
-    tribe: null
-  })
+  const [joinTribe, setJoinTribe] = useState({ visible: false, tribe: null })
+  const { unseenCount, hasUnseen } = useChatRow(chat?.id ?? '')
 
   const onItemPress = () => navigation.navigate('Tribe', { tribe: { ...props } })
 
@@ -115,7 +115,7 @@ function Item(props) {
             )}
           </View>
         </View>
-        <View style={{ ...styles.row }}>
+        <View style={{ ...styles.bottom }}>
           <Typography
             color={theme.subtitle}
             size={13}
@@ -126,6 +126,13 @@ function Item(props) {
           >
             {description}
           </Typography>
+          {hasUnseen && (
+            <View style={{ ...styles.badge, backgroundColor: theme.green }}>
+              <Typography color={theme.white} size={12}>
+                {unseenCount}
+              </Typography>
+            </View>
+          )}
         </View>
       </View>
 
@@ -181,5 +188,20 @@ const styles = StyleSheet.create({
     height: 3,
     borderRadius: 5,
     marginHorizontal: 10
+  },
+  bottom: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between'
+  },
+  badge: {
+    width: 22,
+    height: 22,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 15,
+    marginRight: 14
   }
 })

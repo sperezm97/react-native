@@ -5,10 +5,15 @@ import { constants } from '../constants'
 import { Msg, MAX_MSGS_PER_CHAT } from './msg'
 
 export async function encryptText({ contact_id, text }) {
+  console.log("encryptText => 1:", text)
   if (!text) return ''
+  console.log("encryptText => 2:", contactStore.contacts)
   const contact = contactStore.contacts.find(c => c.id === contact_id)
+  console.log("encryptText => 3:", contact)
   if (!contact) return ''
-  const encText = await e2e.encryptPublic(text, contact.contact_key)
+  console.log("encryptText => 4")
+  const encText = await e2e.encryptPublic(text, contact.contact_key) // contact.contact_key === null
+  console.log("encryptText => 5:", encText)
   return encText
 }
 
