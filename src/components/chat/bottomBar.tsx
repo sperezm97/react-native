@@ -88,7 +88,7 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
     }).start()
   })
 
-  function sendMessage() {
+  async function sendMessage() {
     try {
       if (!text) return
       if (waitingForAdminApproval) return
@@ -106,13 +106,15 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
         txt = type + '::' + JSON.stringify({ ...rest, text })
       }
 
-      msg.sendMessage({
+      console.log("=> BEFORE")
+      await msg.sendMessage({
         contact_id: contact_id || 1,
         text: txt,
         chat_id: chat.id || null,
         amount: price + pricePerMessage || 0,
         reply_uuid: replyUuid || ''
       })
+      console.log("=> AFTER")
       setText('')
       if (replyUuid) {
         setReplyUuid('')

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { View, StyleSheet, TextInput, Linking } from 'react-native'
+import React, { useState, useEffect, useRef } from 'react'
+import { View, StyleSheet, TextInput, Linking, Text, ScrollView } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
 import Clipboard from '@react-native-community/clipboard'
 import { ActivityIndicator } from 'react-native-paper'
@@ -64,6 +64,11 @@ export default function Support() {
           }}
           placeholderTextColor={theme.placeholder}
         />
+        <ScrollView style={styles.scroll} contentContainerStyle={styles.inner}>
+          <Text>
+            {details.logs}
+          </Text>
+        </ScrollView>
         {loading && (
           <View style={styles.spinWrap}>
             <ActivityIndicator animating={true} color={theme.icon} />
@@ -89,6 +94,18 @@ const styles = StyleSheet.create({
   wrap: {
     flex: 1,
     width: '100%'
+  },
+  scroll: {
+    flex: 1,
+    display: 'flex',
+    maxHeight: '90%',
+    overflow: 'scroll'
+  },
+  inner: {
+    margin: 2,
+    display: 'flex',
+    position: 'relative',
+    alignItems: 'center'
   },
   bottom: {
     flex: 1,

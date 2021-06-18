@@ -67,13 +67,20 @@ export default function Main() {
   }
 
   async function createPrivateKeyIfNotExists(contacts, user) {
+    console.log("=== createPrivateKeyIfNotExists ===")
+    // const priv = null
     const priv = await rsa.getPrivateKey()
-    const me = contacts.contacts.find(c => c.id === 1)
+    const me = contacts.contacts.find(c => c.id === user.myid)
+    console.log("priv:", priv)
+    console.log("me:", me)
+    console.log("me.contact_key:", me.contact_key)
+
 
     // private key has been made
     if (priv) {
       // set into user.contactKey
       if (me && me.contact_key) {
+        console.log("Is here?")
         if (!user.contactKey) {
           user.setContactKey(me.contact_key)
         }
@@ -81,6 +88,7 @@ export default function Main() {
         // set into me Contact
       } else if (user.contactKey) {
       } else {
+        console.log("JASDLKJASDLKJASDLKJADS")
         // need to regen :(
         const keyPair = await rsa.generateKeyPair()
         user.setContactKey(keyPair.public)
@@ -92,8 +100,11 @@ export default function Main() {
       }
       // no private key!!
     } else {
+      console.log("WITHOUT PRIVATE KEY")
       const keyPair = await rsa.generateKeyPair()
       user.setContactKey(keyPair.public)
+      console.log("keyPair:", keyPair)
+      console.log("keyPair.public:", keyPair.public)
       contacts.updateContact(user.myid, {
         contact_key: keyPair.public
       })
