@@ -25,11 +25,11 @@ export default function TabBar() {
   const tabbarWidth = width - 32
 
   const routes = [
-    {
-      name: 'Home',
-      icon: 'home',
-      key: 'home'
-    },
+    // {
+    //   name: 'Home',
+    //   icon: 'home',
+    //   key: 'home'
+    // },
     {
       name: 'Chats',
       icon: color => <Ionicon name='chatbubbles-outline' color={color} size={24} />,
@@ -73,7 +73,7 @@ export default function TabBar() {
                 <View
                   style={{
                     ...styles.iconWrap,
-                    width: tabbarWidth / 5
+                    width: tabbarWidth / 4
                   }}
                 >
                   {renderIcon(route, current, theme)}
