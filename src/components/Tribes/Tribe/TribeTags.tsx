@@ -25,7 +25,7 @@ export default function TribeTags({
   saveAction = true,
   saveText = 'Save',
   btnMode = 'text',
-  btnW,
+  btnW = '',
   finish
 }) {
   const theme = useTheme()

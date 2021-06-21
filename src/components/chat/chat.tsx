@@ -64,7 +64,7 @@ export default function Chat() {
       contacts.exchangeKeys(contact.id)
     }
     EE.on(LEFT_GROUP, () => {
-      navigation.navigate('Home', { params: { rnd: Math.random() } })
+      navigation.navigate('Tribes', { params: { rnd: Math.random() } })
     })
     // EE.on(LEFT_IMAGE_VIEWER, () => {
     //   handleBack()

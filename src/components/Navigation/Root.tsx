@@ -26,7 +26,7 @@ export default function Root() {
 
   return (
     <RootStack.Navigator initialRouteName='Tribes'>
-      <RootStack.Screen
+      {/* <RootStack.Screen
         name='Home'
         component={Home}
         listeners={{ focus: () => setTint(theme.dark ? 'dark' : 'light') }}
@@ -34,7 +34,7 @@ export default function Root() {
           headerShown: false,
           animationEnabled: false
         }}
-      />
+      /> */}
       <RootStack.Screen
         name='Chats'
         component={Chats}

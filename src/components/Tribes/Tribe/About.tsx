@@ -47,7 +47,7 @@ function About({ tribe }) {
             </View>
           </View>
 
-          <View style={{ ...styles.description, marginBottom: 40 }}>
+          {/* <View style={{ ...styles.description, marginBottom: 40 }}>
             <FontAwesome5Icon name='coins' size={26} color={theme.yellow} />
             <View style={{ ...styles.dContent }}>
               <Typography size={18} style={{ marginBottom: 6 }}>
@@ -60,7 +60,7 @@ function About({ tribe }) {
                 Price to join {tribe?.name} {tribe?.price_to_join}.
               </Typography>
             </View>
-          </View>
+          </View> */}
           <Tags theTribe={tribe} />
         </View>
       </>
