@@ -36,6 +36,7 @@ import Giphy from './giphy'
 import { requestAudioPermissions, uploadAudioFile } from './audioHelpers'
 import Camera from '../common/Accessories/Camera'
 import { setTint } from '../common/StatusBar'
+import ChatOptions from '../common/Dialogs/ChatOptions'
 
 let dirs = RNFetchBlob.fs.dirs
 
@@ -500,7 +501,7 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
         )}
 
         {recordingStartTime && <View style={styles.recordingCircle}></View>}
-
+        {/* 
         <AttachmentDialog
           hasLoopout={hasLoopout}
           isConversation={isConversation}
@@ -522,7 +523,31 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
             ui.setPayMode('loopout', chat)
           }}
           onGiphyHandler={onGiphyHandler}
+        /> */}
+
+        <ChatOptions
+          visible={dialogOpen}
+          onCancel={() => setDialogOpen(false)}
+          hasLoopout={hasLoopout}
+          isConversation={isConversation}
+          onPick={res => tookPic(res)}
+          onChooseCam={() => setTakingPhoto(true)}
+          doPaidMessage={() => doPaidMessage()}
+          request={() => {
+            // setDialogOpen(false)
+            ui.setPayMode('invoice', chat)
+          }}
+          send={() => {
+            // setDialogOpen(false)
+            ui.setPayMode('payment', chat)
+          }}
+          loopout={() => {
+            // setDialogOpen(false)
+            ui.setPayMode('loopout', chat)
+          }}
+          onGiphyHandler={onGiphyHandler}
         />
+
         <Giphy
           open={showGiphyModal}
           onClose={setShowGiphyModal}
