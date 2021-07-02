@@ -27,6 +27,7 @@ const { useMsgs } = hooks
 
 export default function MediaMsg(props) {
   const { id, message_content, media_type, chat, media_token } = props
+  const [onlyOneClick, setOnlyOnClick] = useState(false)
   const [buying, setBuying] = useState(false)
   const [mediaModal, setMediaModal] = useState(false)
   const [selectedMedia, setSelectedMedia] = useState(null)
@@ -54,6 +55,7 @@ export default function MediaMsg(props) {
   }, [props.media_token])
 
   async function buy(amount) {
+    setOnlyOnClick(true)
     setBuying(true)
     let contact_id = props.sender
     if (!contact_id) {
@@ -131,7 +133,7 @@ export default function MediaMsg(props) {
   if (showPurchaseButton) wrapHeight += 38
 
   const onButtonPressHandler = () => {
-    if (!purchased) buy(amt)
+    if (!purchased && !buying && !onlyOneClick) buy(amt)
   }
 
   const onLongPressHandler = () => props.onLongPress(props)
