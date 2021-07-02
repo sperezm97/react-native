@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { TouchableOpacity, View, StyleSheet, Image, Alert } from 'react-native'
+import { StyleSheet, TouchableOpacity, View, Image, Alert } from 'react-native'
 import { Dialog, Portal, Button } from 'react-native-paper'
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import moment from 'moment'

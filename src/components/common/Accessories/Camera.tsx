@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
+import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import { RNCamera } from 'react-native-camera'
 import { Portal, Button } from 'react-native-paper'
 import Modal from 'react-native-modal'
@@ -64,7 +64,17 @@ export default function Camera({ visible, onCancel, onSnap }) {
             Cancel
           </Button>
           <Snapper snap={() => takePic()} />
-          <Button icon='rotate-left' color='white' onPress={() => setType(type === RNCamera.Constants.Type.back ? RNCamera.Constants.Type.front : RNCamera.Constants.Type.back)}>
+          <Button
+            icon='rotate-left'
+            color='white'
+            onPress={() =>
+              setType(
+                type === RNCamera.Constants.Type.back
+                  ? RNCamera.Constants.Type.front
+                  : RNCamera.Constants.Type.back
+              )
+            }
+          >
             Flip
           </Button>
         </View>
@@ -77,7 +87,11 @@ function Snapper({ snap }) {
   return (
     <View style={styles.snapWrap}>
       <View style={styles.innerSnap}>
-        <TouchableOpacity style={styles.snap} activeOpacity={0.5} onPress={() => snap()}></TouchableOpacity>
+        <TouchableOpacity
+          style={styles.snap}
+          activeOpacity={0.5}
+          onPress={() => snap()}
+        ></TouchableOpacity>
       </View>
     </View>
   )

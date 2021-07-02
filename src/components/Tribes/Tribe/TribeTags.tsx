@@ -18,16 +18,17 @@ import Typography from '../../common/Typography'
 //   'Music'
 // ]
 
-export default function TribeTags({
-  containerStyle,
-  tags,
-  displayOnly = false,
-  saveAction = true,
-  saveText = 'Save',
-  btnMode = 'text',
-  btnW = '',
-  finish
-}) {
+export default function TribeTags(props) {
+  const {
+    containerStyle,
+    tags,
+    displayOnly = false,
+    saveAction = true,
+    saveText = 'Save',
+    btnMode = 'text',
+    finish
+  } = props
+
   const theme = useTheme()
   const [tag, setTag] = useState('')
   const [error, setError] = useState('')
@@ -156,7 +157,11 @@ export default function TribeTags({
             justifyContent: saveAction ? 'flex-end' : 'center'
           }}
         >
-          <Button mode={btnMode} onPress={() => finish(tagz)} w={btnW}>
+          <Button
+            mode={btnMode}
+            onPress={() => finish(tagz)}
+            w={props.btnW ? props.btnW : 100}
+          >
             {saveText}
           </Button>
         </View>

@@ -126,7 +126,7 @@ workflows:
             branches:
               only: main
 
-      # - staging_ios:
-      #     filters:
-      #       branches:
-      #         only: staging
+      - staging_ios:
+          filters:
+            branches:
+              only: staging

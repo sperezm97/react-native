@@ -26,15 +26,16 @@ import EE, {
   CANCEL_REPLY_UUID,
   CLEAR_REPLY_UUID
 } from '../utils/ee'
-import Cam from '../utils/cam'
-import { constants, SCREEN_HEIGHT } from '../../constants'
-import AttachmentDialog from './attachmentDialog'
+import { constants } from '../../constants'
+import { fetchGifs } from './helpers'
 import ReplyContent from './msg/replyContent'
 import RecDot from './recDot'
 import RNFetchBlob from 'rn-fetch-blob'
-import { fetchGifs } from './helpers'
 import Giphy from './giphy'
 import { requestAudioPermissions, uploadAudioFile } from './audioHelpers'
+import Camera from '../common/Accessories/Camera'
+import { setTint } from '../common/StatusBar'
+import ChatOptions from '../common/Dialogs/ChatOptions'
 
 let dirs = RNFetchBlob.fs.dirs
 
@@ -106,7 +107,7 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
         txt = type + '::' + JSON.stringify({ ...rest, text })
       }
 
-      console.log("=> BEFORE")
+      console.log('=> BEFORE')
       await msg.sendMessage({
         contact_id: contact_id || 1,
         text: txt,
@@ -114,7 +115,7 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
         amount: price + pricePerMessage || 0,
         reply_uuid: replyUuid || ''
       })
-      console.log("=> AFTER")
+      console.log('=> AFTER')
       setText('')
       if (replyUuid) {
         setReplyUuid('')
@@ -169,12 +170,18 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
 
   async function tookPic(img) {
     setDialogOpen(false)
+    setTakingPhoto(false)
+
+    // setTimeout(() => {
+    // setTint('dark')
+    // }, 350)
+
     setTimeout(() => {
-      setTakingPhoto(false)
       if (img && img.uri) {
         openImgViewer({ uri: img.uri })
+        setTint('dark')
       }
-    }, 250)
+    }, 500)
   }
 
   function openImgViewer(obj) {
@@ -408,7 +415,6 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
             activeOpacity={0.6}
             style={{
               ...styles.attach,
-              borderColor: theme.border,
               backgroundColor: theme.bg
             }}
             accessibilityLabel='more-button'
@@ -494,28 +500,29 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
 
         {recordingStartTime && <View style={styles.recordingCircle}></View>}
 
-        <AttachmentDialog
+        <ChatOptions
+          visible={dialogOpen}
+          onCancel={() => setDialogOpen(false)}
           hasLoopout={hasLoopout}
           isConversation={isConversation}
-          open={dialogOpen}
-          onClose={() => setDialogOpen(false)}
           onPick={res => tookPic(res)}
           onChooseCam={() => setTakingPhoto(true)}
           doPaidMessage={() => doPaidMessage()}
           request={() => {
-            setDialogOpen(false)
+            // setDialogOpen(false)
             ui.setPayMode('invoice', chat)
           }}
           send={() => {
-            setDialogOpen(false)
+            // setDialogOpen(false)
             ui.setPayMode('payment', chat)
           }}
           loopout={() => {
-            setDialogOpen(false)
+            // setDialogOpen(false)
             ui.setPayMode('loopout', chat)
           }}
           onGiphyHandler={onGiphyHandler}
         />
+
         <Giphy
           open={showGiphyModal}
           onClose={setShowGiphyModal}
@@ -527,11 +534,15 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
         />
       </View>
 
-      {takingPhoto && (
-        <Portal>
-          <Cam onCancel={() => setTakingPhoto(false)} onSnap={pic => tookPic(pic)} />
-        </Portal>
-      )}
+      <Camera
+        visible={takingPhoto}
+        onSnap={tookPic}
+        onCancel={() => {
+          setTakingPhoto(false)
+          setDialogOpen(false)
+          setTint(theme.dark ? 'dark' : 'light')
+        }}
+      />
     </View>
   ))
 }
@@ -580,9 +591,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   attach: {
-    width: 40,
-    height: 40,
-    borderWidth: 1,
+    width: 30,
+    height: 30,
     borderRadius: 20,
     marginLeft: 8,
     marginRight: 8,

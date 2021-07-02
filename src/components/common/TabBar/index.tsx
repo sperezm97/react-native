@@ -6,7 +6,8 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import AntDesignIcon from 'react-native-vector-icons/AntDesign'
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
 import MaterialIcon from 'react-native-vector-icons/AntDesign'
-import Ionicon from 'react-native-vector-icons/Ionicons'
+import IonIcon from 'react-native-vector-icons/Ionicons'
+import SimpleIcon from 'react-native-vector-icons/SimpleLineIcons'
 
 // import { ifIphoneX, } from 'react-native-iphone-x-helper'
 import { isIphoneX, getBottomSpace } from 'react-native-iphone-x-helper'
@@ -32,7 +33,7 @@ export default function TabBar() {
     // },
     {
       name: 'Chats',
-      icon: color => <Ionicon name='chatbubbles-outline' color={color} size={24} />,
+      icon: color => <IonIcon name='chatbubbles-outline' color={color} size={24} />,
       key: 'chats'
     },
     {
@@ -42,7 +43,8 @@ export default function TabBar() {
     },
     {
       name: 'Payment',
-      icon: 'wallet',
+      // icon: 'wallet',
+      icon: color => <SimpleIcon name='wallet' color={color} size={20} />,
       key: 'payment'
     },
     {

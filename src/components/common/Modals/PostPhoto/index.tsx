@@ -1,51 +1,63 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef } from 'react'
 import { useObserver } from 'mobx-react-lite'
 import {
-  View,
   StyleSheet,
-  Image,
-  Dimensions,
+  View,
   TextInput,
-  Text,
   TouchableOpacity,
-  BackHandler,
   KeyboardAvoidingView
 } from 'react-native'
-import { Portal, IconButton } from 'react-native-paper'
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import RNFetchBlob from 'rn-fetch-blob'
-import { ActivityIndicator } from 'react-native-paper'
-import * as base64 from 'base-64'
+import { ActivityIndicator, IconButton } from 'react-native-paper'
+import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import FastImage from 'react-native-fast-image'
+import { isIphoneX, getBottomSpace } from 'react-native-iphone-x-helper'
+import * as base64 from 'base-64'
 
-import { useStores, useTheme } from '../../../store'
-import { randString } from '../../../crypto/rand'
-import * as e2e from '../../../crypto/e2e'
-import SetPrice from './setPrice'
-import EE, { LEFT_IMAGE_VIEWER } from '../../utils/ee'
-import { constants } from '../../../constants'
-import { fileUpload } from '../../chat/fileUpload'
-import ModalWrap from '../modalWrap'
-import Header from '../modalHeader'
+import { useStores, useTheme } from '../../../../store'
+import {
+  constants,
+  SCREEN_HEIGHT,
+  SCREEN_WIDTH,
+  STATUS_BAR_HEIGHT
+} from '../../../../constants'
+import { randString } from '../../../../crypto/rand'
+import * as e2e from '../../../../crypto/e2e'
+import ModalWrap from '../ModalWrap'
+import SetPrice from './SetPrice'
+import Typography from '../../Typography'
+import { setTint } from '../../StatusBar'
 
-export default function ImageViewerWrap({ params, visible }) {
-  const { ui } = useStores()
+export default function PostPhotoWrap() {
+  return useObserver(() => {
+    const { ui } = useStores()
+    const theme = useTheme()
 
-  function close() {
-    ui.setImgViewerParams(null)
-  }
+    const visible =
+      ui.imgViewerParams &&
+      (ui.imgViewerParams.data || ui.imgViewerParams.uri || ui.imgViewerParams.msg)
+        ? true
+        : false
 
-  return (
-    <ModalWrap onClose={close} visible={visible}>
-      {visible && <ImageViewer params={params} close={close} />}
-    </ModalWrap>
-  )
+    const params = ui.imgViewerParams
+
+    function close() {
+      ui.setImgViewerParams(null)
+      setTint(theme.dark ? 'dark' : 'light')
+    }
+
+    return (
+      <ModalWrap onClose={close} visible={visible} noHeader noSwipe>
+        {visible && <PostPhoto params={params} close={close} />}
+      </ModalWrap>
+    )
+  })
 }
 
-function ImageViewer(props) {
-  const { params, close, visible } = props
+function PostPhoto(props) {
+  const { params, close } = props
   const { data, uri, chat_id, contact_id, pricePerMessage } = params
-  const { ui, meme, msg, chats } = useStores()
+  const { meme, msg } = useStores()
   const theme = useTheme()
   const [text, setText] = useState('')
   const [price, setPrice] = useState(0)
@@ -54,12 +66,10 @@ function ImageViewer(props) {
   const [uploadPercent, setUploadedPercent] = useState(0)
   const inputRef = useRef(null)
 
-  const w = Math.round(Dimensions.get('window').width)
-  const h = Math.round(Dimensions.get('window').height)
   const showImg = uri || data ? true : false
   const showInput = contact_id || chat_id ? true : false
   const showMsgMessage = params.msg ? true : false
-  const title = showMsgMessage ? 'Send Paid Message' : 'Send Image'
+  //   const title = showMsgMessage ? 'Send Paid Message' : 'Send Image'
 
   async function sendFinalMsg({ muid, media_key, media_type, price }) {
     await msg.sendAttachment({
@@ -144,7 +154,6 @@ function ImageViewer(props) {
       })
       .then(async resp => {
         let json = resp.json()
-        console.log('done uploading', json)
         await sendFinalMsg({
           muid: json.muid,
           media_key: pwd,
@@ -158,11 +167,8 @@ function ImageViewer(props) {
       })
   }
 
-  const boxStyles = { width: w, height: h - 160 }
+  const boxStyles = { width: SCREEN_WIDTH, height: SCREEN_HEIGHT }
   const disabled = uploading || (showMsgMessage && !price)
-
-  const theChat = chat_id && chats.chats.find(c => c.id === chat_id)
-  const isTribe = theChat && theChat.type === constants.chat_types.tribe
 
   function onShowAmount() {
     if (inputRef.current) {
@@ -170,15 +176,15 @@ function ImageViewer(props) {
     }
   }
 
-  const headerHeight = 60
-
-  return useObserver(() => (
-    <Portal.Host>
-      <Header title={title} onClose={close} />
+  return useObserver(() => {
+    return (
       <View style={{ ...styles.wrap, backgroundColor: theme.black }}>
-        {/* {showInput && !isTribe && <SetPrice setAmount={amt=> setPrice(amt)} />} */}
+        <IconButton
+          icon={() => <MaterialCommunityIcon name='close' color={theme.icon} size={30} />}
+          onPress={close}
+          style={{ ...styles.closeButton }}
+        />
         {showInput && <SetPrice setAmount={amt => setPrice(amt)} onShow={onShowAmount} />}
-
         {showImg && (
           <FastImage
             resizeMode='contain'
@@ -188,14 +194,28 @@ function ImageViewer(props) {
         )}
         {showMsgMessage && !uploading && (
           <View style={{ ...styles.msgMessage, ...boxStyles }}>
-            <Text style={styles.msgMessageText}>Set a price and enter your message</Text>
+            <Typography color={theme.white}>
+              Set a price and enter your message
+            </Typography>
           </View>
         )}
 
         {uploading && (
-          <View style={{ ...styles.activityWrap, width: w, height: h - 180 }}>
+          <View
+            style={{
+              ...styles.activityWrap,
+              width: SCREEN_WIDTH,
+              height: SCREEN_HEIGHT - 180
+            }}
+          >
             <ActivityIndicator animating={true} color='white' size='large' />
-            <Text style={styles.progressNum}>{`${uploadPercent}%`}</Text>
+            <Typography
+              color={theme.white}
+              size={16}
+              style={{
+                marginTop: 16
+              }}
+            >{`${uploadPercent}%`}</Typography>
           </View>
         )}
 
@@ -203,9 +223,14 @@ function ImageViewer(props) {
           <KeyboardAvoidingView
             style={{ position: 'absolute', left: 0, right: 0, bottom: 0 }}
             behavior='position'
-            keyboardVerticalOffset={headerHeight}
+            keyboardVerticalOffset={1}
           >
-            <View style={styles.inputWrap}>
+            <View
+              style={{
+                ...styles.inputWrap,
+                bottom: isIphoneX() ? getBottomSpace() : 15
+              }}
+            >
               <TextInput
                 placeholder='Message...'
                 ref={inputRef}
@@ -218,30 +243,29 @@ function ImageViewer(props) {
                 onFocus={() => setInputFocused(true)}
                 onBlur={() => setInputFocused(false)}
                 onChangeText={e => setText(e)}
+                value={text}
+              />
+              <TouchableOpacity
+                activeOpacity={0.6}
+                style={{ ...styles.sendButton, backgroundColor: theme.primary }}
+                onPress={() => sendAttachment()}
+                disabled={disabled}
               >
-                <Text>{text}</Text>
-              </TextInput>
-              <View style={styles.sendButtonWrap}>
-                <TouchableOpacity
-                  activeOpacity={0.5}
-                  style={{ ...styles.sendButton, backgroundColor: theme.primary }}
-                  onPress={() => sendAttachment()}
-                  disabled={disabled}
-                >
-                  <Icon name='send' size={17} color={theme.white} />
-                </TouchableOpacity>
-              </View>
+                <MaterialCommunityIcon name='send' size={17} color={theme.white} />
+              </TouchableOpacity>
             </View>
           </KeyboardAvoidingView>
         )}
       </View>
-    </Portal.Host>
-  ))
+    )
+  })
 }
 
 const styles = StyleSheet.create({
   wrap: {
-    flex: 1
+    flex: 1,
+    height: '100%',
+    position: 'relative'
   },
   img: {
     width: '100%'
@@ -260,12 +284,11 @@ const styles = StyleSheet.create({
     width: '100%',
     left: 0,
     right: 0,
-    bottom: 50,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingLeft: 10,
-    paddingRight: 10
+    paddingLeft: 14,
+    paddingRight: 14
   },
   input: {
     flex: 1,
@@ -276,33 +299,26 @@ const styles = StyleSheet.create({
     fontSize: 17,
     lineHeight: 20
   },
-  sendButtonWrap: {
-    width: 55,
-    height: 40
-  },
   sendButton: {
     marginLeft: 7,
-    width: 39,
-    maxWidth: 39,
-    height: 39,
-    maxHeight: 39,
-    borderRadius: 19,
-    marginTop: 1,
+    width: 42,
+    maxWidth: 42,
+    height: 42,
+    maxHeight: 42,
+    borderRadius: 25,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center'
-  },
-  progressNum: {
-    color: 'white',
-    fontSize: 16,
-    marginTop: 16
   },
   msgMessage: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center'
   },
-  msgMessageText: {
-    color: 'white'
+  closeButton: {
+    position: 'absolute',
+    top: STATUS_BAR_HEIGHT + 1,
+    right: 0,
+    zIndex: 1
   }
 })

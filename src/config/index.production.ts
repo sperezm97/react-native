@@ -6,7 +6,7 @@ const config = {
   },
   tribes: {
     server: 'tribes.n2n2.chat',
-    uuid: 'YHiUtB-9mp5X8Fetn6xBA9y4MSM9LzLsewgw29btcOsTi0zToSOwUryHWzslCUc6dSKhlNK6zJrCxJP_b-OdJzfxF-P5'
+    uuid: 'YNzR0h_54n6O1zjeKKEM6vSzwO6yq3N-3aYSpAaeZ04C72dYISzw5UQEAeB3nvwVXspEnAFavDaE0o-bmxZiw_2CNpL1'
   },
   memes: {
     server: 'memes.n2n2.chat'
@@ -15,7 +15,7 @@ const config = {
     server: 'auth.n2n2.chat'
   },
   inviter: {
-    key: '03ea08d787c0153d42f0aa286a1b7000de17d959771e059aadc1cf85d5f2a67e35'
+    key: '03fc010914cd0b9950f128f1e91c83da9d718b688aa86c5ed5b8bbf521a2f41fc1'
   },
   appstore: 'https://apps.apple.com/us/app/n2n2/id1556918256'
 }

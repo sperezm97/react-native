@@ -83,9 +83,11 @@ export default function QR({
                   backgroundColor: theme.bg
                 }}
               >
-                <Button w={140} onPress={() => confirm(text)} disabled={!text}>
-                  CONFIRM
-                </Button>
+                {text.length > 0 && (
+                  <Button w={125} onPress={() => confirm(text)} disabled={!text}>
+                    CONFIRM
+                  </Button>
+                )}
               </View>
             </>
           )}

@@ -8,13 +8,14 @@ import {
   KeyboardAvoidingView
 } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
-import { TextInput } from 'react-native-paper'
-import Video from 'react-native-video'
 import { useNavigation } from '@react-navigation/native'
+import Video from 'react-native-video'
+import { IconButton, TextInput } from 'react-native-paper'
+import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 import { useStores, useTheme, hooks } from '../../../../store'
 import { DEFAULT_TRIBE_SERVER } from '../../../../config'
-import { SCREEN_HEIGHT } from '../../../../constants'
+import { SCREEN_HEIGHT, STATUS_BAR_HEIGHT } from '../../../../constants'
 import { setTint } from '../../StatusBar'
 import Header from '../ModalHeader'
 import Button from '../../Button'
@@ -179,7 +180,11 @@ function JoinTribe(props) {
                         >
                           You already joined this community.
                         </Typography>
-                        <Button w={300} onPress={finish} style={{ marginVertically: 20 }}>
+                        <Button
+                          w={300}
+                          onPress={finish}
+                          style={{ marginVertically: 20, paddingHorizontal: 20 }}
+                        >
                           Go to {tribeToCheck.name}
                         </Button>
                       </>
@@ -195,6 +200,7 @@ function JoinTribe(props) {
               videoVisible={videoVisible}
               tribe={tribeToCheck}
               joinTribe={joinTribe}
+              close={() => setVideoVisible(false)}
             />
           )}
         </Modal>
@@ -203,7 +209,7 @@ function JoinTribe(props) {
   })
 }
 
-function VideoView({ videoVisible, tribe, joinTribe }) {
+function VideoView({ videoVisible, tribe, joinTribe, close }) {
   const [loading, setLoading] = useState(false)
   const theme = useTheme()
   const network = require('../../../../assets/videos/network-nodes-blue.mp4')
@@ -217,6 +223,11 @@ function VideoView({ videoVisible, tribe, joinTribe }) {
 
   return (
     <Modal visible={videoVisible} animationType='fade' presentationStyle='fullScreen'>
+      <IconButton
+        icon={() => <MaterialCommunityIcon name='close' color={theme.white} size={30} />}
+        onPress={close}
+        style={{ ...styles.closeButton }}
+      />
       <View
         style={{
           position: 'absolute',
@@ -247,7 +258,12 @@ function VideoView({ videoVisible, tribe, joinTribe }) {
               flex: 1
             }}
           >
-            <Button w={300} onPress={onJoin} loading={loading}>
+            <Button
+              w={300}
+              onPress={onJoin}
+              loading={loading}
+              style={{ paddingHorizontal: 20 }}
+            >
               Go to {tribe.name}
             </Button>
           </View>
@@ -300,5 +316,11 @@ const styles = StyleSheet.create({
     maxHeight: 50,
     minWidth: 240,
     marginBottom: 40
+  },
+  closeButton: {
+    position: 'absolute',
+    top: STATUS_BAR_HEIGHT + 1,
+    right: 0,
+    zIndex: 1
   }
 })

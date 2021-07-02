@@ -8,7 +8,6 @@ import { useStores } from '../../store'
 import Oauth from './oauth'
 import Subscribe from './subscribe'
 import Redeem from './redeem'
-import ImageViewer from './imgViewer'
 import VideoViewer from './vidViewer'
 
 export default function Modals() {
@@ -17,14 +16,7 @@ export default function Modals() {
   return useObserver(() => {
     const showConfirmPayInvoice =
       ui.confirmInvoiceMsg && ui.confirmInvoiceMsg.payment_request ? true : false
-    // const showNewGroupModal = ui.newGroupModal || ui.editTribeParams ? true : false
     const showRawInvoiceModal = ui.rawInvoiceModal
-    const showImageViewer =
-      ui.imgViewerParams &&
-      (ui.imgViewerParams.data || ui.imgViewerParams.uri || ui.imgViewerParams.msg)
-        ? true
-        : false
-    // const showJoinTribe = ui.joinTribeParams ? true : false
     const showOauth = ui.oauthParams ? true : false
     const showSubModal = ui.subModalParams ? true : false
     const showRedeemModal = ui.redeemModalParams ? true : false
@@ -32,16 +24,13 @@ export default function Modals() {
 
     return (
       <>
-        {/* <JoinTribe visible={showJoinTribe} /> */}
         <ShareInvite visible={ui.shareInviteModal} />
         <ConfirmPayInvoice visible={showConfirmPayInvoice} />
         <RawInvoiceModal visible={showRawInvoiceModal} />
-        {/* <NewGroupModal visible={showNewGroupModal} /> */}
         <Oauth visible={showOauth} />
         <Subscribe visible={showSubModal} />
         <Redeem visible={showRedeemModal} />
         <VideoViewer params={showVid} visible={ui.vidViewerParams} />
-        <ImageViewer params={ui.imgViewerParams} visible={showImageViewer} />
       </>
     )
   })

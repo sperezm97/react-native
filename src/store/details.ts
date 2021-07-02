@@ -2,19 +2,72 @@ import { observable, action } from 'mobx'
 import { persist } from 'mobx-persist'
 
 import { relay } from '../api'
+import { DEFAULT_HUB_API } from '../config'
 
 class DetailsStore {
   @persist
   @observable
   balance: number = 0
 
+  @persist
+  @observable
+  localBalance: number = 0
+
+  @persist
+  @observable
+  remoteBalance: number = 0
+
+  @persist
+  @observable
+  usRate: number = 0
+
+  @persist
+  @observable
+  usAmount: number = 0
+
   @action
   async getBalance() {
     try {
       const r = await relay.get('balance')
       if (!r) return
+
       const b = r.balance && parseInt(r.balance)
       this.balance = b || 0
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  @action
+  async getChannelBalance() {
+    try {
+      const r = await relay.get('balance/all')
+      if (!r) return
+
+      const lb = r.local_balance && parseInt(r.local_balance)
+      const rb = r.remote_balance && parseInt(r.remote_balance)
+
+      this.localBalance = lb || 0
+      this.remoteBalance = rb || 0
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  @action
+  async getUSDollarRate() {
+    try {
+      const r = await fetch(`https://cryptoforge.org/api/price`)
+      const j = await r.json()
+
+      if (!j) return
+
+      this.usRate = j['USD']
+
+      const value = this.usRate / 100000000
+      let final = value * this.localBalance
+
+      this.usAmount = Number(final.toFixed(2)) || 0
     } catch (e) {
       console.log(e)
     }
@@ -32,6 +85,40 @@ class DetailsStore {
       return r
     } catch (e) {
       console.log(e)
+    }
+  }
+
+  @action
+  async requestCapacity(pubKey) {
+    try {
+      const payload = {
+        pubKey
+      }
+
+      const url = `${DEFAULT_HUB_API}request_capacity`
+
+      const r = await fetch(url, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      })
+
+      const j = await r.json()
+
+      if (j.done) {
+        return true
+      }
+
+      return false
+
+      // return j
+    } catch (e) {
+      console.log(e)
+
+      return false
     }
   }
 

@@ -74,6 +74,7 @@ export default function Header({
     function onChatTitlePress() {
       if (chat.type === conversation) {
         if (contact) {
+          navigation.goBack()
         }
         // navigation.navigate('Contacts', {
         //   screen: 'Contact',
@@ -127,7 +128,7 @@ export default function Header({
             <View style={{ marginRight: 10 }}>
               <Avatar alias={name} photo={uri || ''} size={38} big aliasSize={15} />
             </View>
-            <View style={{}}>
+            <View>
               <View
                 style={{
                   ...styles.row
