@@ -60,6 +60,7 @@ function SwipeItem(props) {
   const [photoH, setPhotoH] = useState(0)
   const { uuid, message_content, media_type, media_token, chat, boosts_total_sats } =
     props
+  const [onlyOneClick, setOnlyOnClick] = useState(false)
   const [buying, setBuying] = useState(false)
   const [pricePerMessage, setPricePerMessage] = useState(0)
   const { meme, ui, chats, msg, user, details } = useStores()
@@ -111,6 +112,7 @@ function SwipeItem(props) {
   }
 
   async function buy(amount) {
+    setOnlyOnClick(true)
     setBuying(true)
     let contact_id = props.sender
     if (!contact_id) {
@@ -128,7 +130,7 @@ function SwipeItem(props) {
   }
 
   function onPurchasePress() {
-    if (!purchased) buy(amt)
+    if (!purchased && !buying && !onlyOneClick) buy(amt)
   }
 
   async function onBoostPress() {

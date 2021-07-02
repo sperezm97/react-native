@@ -1,6 +1,7 @@
 import { contactStore } from './contacts'
 import * as e2e from '../crypto/e2e'
 import { chatStore } from './chats'
+import { userStore } from './user'
 import { constants } from '../constants'
 import { Msg, MAX_MSGS_PER_CHAT } from './msg'
 
@@ -18,44 +19,38 @@ export async function encryptText({ contact_id, text }) {
 }
 
 export async function makeRemoteTextMap({ contact_id, text, chat_id }, includeSelf?) {
-  try {
-    const idToKeyMap = {}
-    const remoteTextMap = {}
-    const chat = chat_id && chatStore.chats.find(c => c.id === chat_id)
-    if (chat) {
-      // TRIBE
-      if (chat.type === constants.chat_types.tribe && chat.group_key) {
-        idToKeyMap['chat'] = chat.group_key // "chat" is the key for tribes
-        if (includeSelf) {
-          const me = contactStore.contacts.find(c => c.id === 1) // add in my own self (for media_key_map)
-          if (me) idToKeyMap[1] = me.contact_key
-        }
-      } else {
-        // NON TRIBE
-        const contactsInChat = contactStore.contacts.filter(c => {
-          if (includeSelf) {
-            return chat.contact_ids.includes(c.id)
-          } else {
-            return chat.contact_ids.includes(c.id) && c.id !== 1
-          }
-        })
-        contactsInChat.forEach(c => (idToKeyMap[c.id] = c.contact_key))
+  const idToKeyMap = {}
+  const remoteTextMap = {}
+  const chat = chat_id && chatStore.chats.find(c => c.id === chat_id)
+  const myid = userStore.myid
+  if (chat) {
+    // TRIBE
+    if (chat.type === constants.chat_types.tribe && chat.group_key) {
+      idToKeyMap['chat'] = chat.group_key // "chat" is the key for tribes
+      if (includeSelf) {
+        const me = contactStore.contacts.find(c => c.id === myid) // add in my own self (for media_key_map)
+        if (me) idToKeyMap[myid] = me.contact_key
       }
-    } else {
-      // console.log(contactStore.contacts, contact_id)
-      const contact = contactStore.contacts.find(c => c.id === contact_id)
-      if (contact) idToKeyMap[contact_id] = contact.contact_key
+    } else { // NON TRIBE
+      const contactsInChat = contactStore.contacts.filter(c => {
+        if (includeSelf) {
+          return chat.contact_ids.includes(c.id)
+        } else {
+          return chat.contact_ids.includes(c.id) && c.id !== myid
+        }
+      })
+      contactsInChat.forEach(c => idToKeyMap[c.id] = c.contact_key)
     }
-
-    for (let [id, key] of Object.entries(idToKeyMap)) {
-      const encText = await e2e.encryptPublic(text, String(key))
-      remoteTextMap[id] = encText
-    }
-
-    return remoteTextMap
-  } catch (error) {
-    console.log(error)
+  } else {
+    // console.log(contactStore.contacts, contact_id)
+    const contact = contactStore.contacts.find(c => c.id === contact_id)
+    if (contact) idToKeyMap[contact_id] = contact.contact_key
   }
+  for (let [id, key] of Object.entries(idToKeyMap)) {
+    const encText = await e2e.encryptPublic(text, String(key))
+    remoteTextMap[id] = encText
+  }
+  return remoteTextMap
 }
 
 export async function decodeSingle(m: Msg) {

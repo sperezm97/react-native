@@ -328,7 +328,7 @@ class MsgStore {
           {
             ...v,
             id: -1,
-            sender: 1,
+            sender: myId,
             amount: amt,
             date: moment().toISOString(),
             type: putInMsgType,
@@ -380,11 +380,13 @@ class MsgStore {
       }
       if (price) v.price = price
       if (text) {
-        const encryptedText = await encryptText({ contact_id: 1, text })
+        const myid = userStore.myid
+        const encryptedText = await encryptText({ contact_id: myid, text })
         const remote_text_map = await makeRemoteTextMap({ contact_id, text, chat_id })
         v.text = encryptedText
         v.remote_text_map = remote_text_map
       }
+      console.log("v:", v)
       // return
       const r = await relay.post('attachment', v)
       if (!r) return
@@ -411,7 +413,8 @@ class MsgStore {
   @action
   async sendPayment({ contact_id, amt, chat_id, destination_key, memo }) {
     try {
-      const myenc = await encryptText({ contact_id: 1, text: memo })
+      const myid = userStore.myid
+      const myenc = await encryptText({ contact_id: myid, text: memo })
       const encMemo = await encryptText({ contact_id, text: memo })
       const v = {
         contact_id: contact_id || null,
@@ -465,7 +468,8 @@ class MsgStore {
   @action
   async sendInvoice({ contact_id, amt, chat_id, memo }) {
     try {
-      const myenc = await encryptText({ contact_id: 1, text: memo })
+      const myid = userStore.myid
+      const myenc = await encryptText({ contact_id: myid, text: memo })
       const encMemo = await encryptText({ contact_id, text: memo })
       const v = {
         contact_id,
