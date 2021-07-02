@@ -191,7 +191,7 @@ const ListHeader = () => {
           </View>
         </View>
 
-        <MaskedView
+        {/* <MaskedView
           maskElement={
             <LinearGradient
               start={{ x: 0, y: 0 }}
@@ -209,13 +209,13 @@ const ListHeader = () => {
               source={require('../../assets/sparkline.webp')}
             />
           </View>
-        </MaskedView>
+        </MaskedView> */}
 
         <View style={styles.buttonWrap}>
           <Button
             icon='arrow-bottom-left'
-            w={130}
-            h={45}
+            w={125}
+            h={40}
             round={5}
             style={{ borderColor: theme.border, marginRight: 6 }}
             onPress={() => ui.setPayMode('invoice', null)}
@@ -225,8 +225,8 @@ const ListHeader = () => {
           <Button
             color={theme.darkPrimary}
             icon='arrow-top-right'
-            w={130}
-            h={45}
+            w={125}
+            h={40}
             round={5}
             style={{ borderColor: theme.border, marginLeft: 6 }}
             onPress={() => ui.setPayMode('payment', null)}

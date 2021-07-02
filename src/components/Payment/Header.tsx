@@ -122,7 +122,7 @@ export default function Header({ onScanClick }) {
                   h={40}
                   fs={12}
                   loading={loading}
-                  w={160}
+                  w={125}
                   onPress={onCapacityRequest}
                   style={{
                     marginTop: 25,

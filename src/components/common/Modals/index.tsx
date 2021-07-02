@@ -7,6 +7,7 @@ import InviteNewUser from './InviteNewUser'
 import Payment from './Payment'
 import ShareGroup from './ShareGroup'
 import AddTribe from './Tribe/AddTribe'
+import PostPhoto from './PostPhoto'
 // import JoinTribe from './Tribe/JoinTribe'
 
 export default function Modals() {
@@ -16,6 +17,7 @@ export default function Modals() {
         <ContactSubscribe />
         <AddContact />
         <InviteNewUser />
+        <PostPhoto />
         <Payment />
         <ShareGroup />
         <AddTribe />

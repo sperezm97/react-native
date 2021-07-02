@@ -41,7 +41,7 @@ export default function Modals() {
         <Subscribe visible={showSubModal} />
         <Redeem visible={showRedeemModal} />
         <VideoViewer params={showVid} visible={ui.vidViewerParams} />
-        <ImageViewer params={ui.imgViewerParams} visible={showImageViewer} />
+        {/* <ImageViewer params={ui.imgViewerParams} visible={showImageViewer} /> */}
       </>
     )
   })

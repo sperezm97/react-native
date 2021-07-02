@@ -94,7 +94,7 @@ export default function Main({ contact, loading, confirmOrContinue, contactless 
       <View style={styles.confirmWrap}>
         {amt !== '0' && (
           <Button
-            w={160}
+            w={125}
             loading={loading}
             onPress={() => confirmOrContinue(parseInt(amt), text)}
           >
