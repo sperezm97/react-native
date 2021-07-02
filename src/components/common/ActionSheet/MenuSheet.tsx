@@ -57,7 +57,7 @@ export default function MenuSheet(props) {
               key={`${item.title}${i}`}
               style={[
                 {
-                  backgroundColor: theme.white,
+                  backgroundColor: theme.dark ? theme.bg : theme.white,
                   height: item.description ? 70 : 60,
                   maxHeight: item.description ? 70 : 60
                 },

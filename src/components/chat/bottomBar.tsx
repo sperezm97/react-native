@@ -28,7 +28,6 @@ import EE, {
 } from '../utils/ee'
 import { constants } from '../../constants'
 import { fetchGifs } from './helpers'
-import AttachmentDialog from './attachmentDialog'
 import ReplyContent from './msg/replyContent'
 import RecDot from './recDot'
 import RNFetchBlob from 'rn-fetch-blob'
@@ -416,7 +415,6 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
             activeOpacity={0.6}
             style={{
               ...styles.attach,
-              borderColor: theme.border,
               backgroundColor: theme.bg
             }}
             accessibilityLabel='more-button'
@@ -501,29 +499,6 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
         )}
 
         {recordingStartTime && <View style={styles.recordingCircle}></View>}
-        {/* 
-        <AttachmentDialog
-          hasLoopout={hasLoopout}
-          isConversation={isConversation}
-          open={dialogOpen}
-          onClose={() => setDialogOpen(false)}
-          onPick={res => tookPic(res)}
-          onChooseCam={() => setTakingPhoto(true)}
-          doPaidMessage={() => doPaidMessage()}
-          request={() => {
-            setDialogOpen(false)
-            ui.setPayMode('invoice', chat)
-          }}
-          send={() => {
-            setDialogOpen(false)
-            ui.setPayMode('payment', chat)
-          }}
-          loopout={() => {
-            setDialogOpen(false)
-            ui.setPayMode('loopout', chat)
-          }}
-          onGiphyHandler={onGiphyHandler}
-        /> */}
 
         <ChatOptions
           visible={dialogOpen}
@@ -616,9 +591,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   attach: {
-    width: 40,
-    height: 40,
-    borderWidth: 1,
+    width: 30,
+    height: 30,
     borderRadius: 20,
     marginLeft: 8,
     marginRight: 8,
