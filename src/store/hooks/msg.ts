@@ -152,14 +152,16 @@ function calcShowInfoBar(msgs: Msg[], msg: Msg, i: number, isTribe: boolean) {
 
     if (
       previous.sender_alias === msg.sender_alias &&
-      previous.type !== constants.message_types.group_join
+      previous.type !== constants.message_types.group_join &&
+      previous.type !== constants.message_types.boost
     ) {
       return false
     }
   } else {
     if (
       previous.sender === msg.sender &&
-      previous.type !== constants.message_types.group_join
+      previous.type !== constants.message_types.group_join &&
+      previous.type !== constants.message_types.boost
     ) {
       return false
     }
