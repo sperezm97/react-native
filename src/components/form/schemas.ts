@@ -54,7 +54,7 @@ const pubKey = [
   {
     name: 'public_key',
     type: 'pubkey',
-    label: { en: 'Address', es: 'Address' },
+    label: { en: 'Public Key', es: 'Address' },
     required: true,
     validator: Yup.string().required(rq)
   }

@@ -1,42 +1,40 @@
 import React, { useEffect, useState, useRef } from 'react'
-import {
-  View,
-  StyleSheet,
-  Text,
-  ActivityIndicator,
-  AppState,
-  Dimensions,
-  ScrollView,
-  ToastAndroid
-} from 'react-native'
-import { useStores, useTheme } from '../../../store'
-import TrackPlayer from 'react-native-track-player'
-import { IconButton } from 'react-native-paper'
-import Controls from './controls'
-import useInterval from '../../utils/useInterval'
-import EE, { CLIP_PAYMENT, PLAY_ANIMATION } from '../../utils/ee'
-import { Destination, StreamPayment, NUM_SECONDS } from '../../../store/feed'
-import PodBar from './podBar'
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
-import { TouchableOpacity } from 'react-native-gesture-handler'
+import { StyleSheet, View, AppState } from 'react-native'
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import FastImage from 'react-native-fast-image'
-import Replay from './replay'
-import { getPosition, setPosition } from './position'
+import TrackPlayer from 'react-native-track-player'
+import { Modalize } from 'react-native-modalize'
+import { isIphoneX, getStatusBarHeight } from 'react-native-iphone-x-helper'
+import Toast from 'react-native-simple-toast'
 
-export default function Pod({ pod, show, chat, onBoost, podError }) {
+import { useStores, useTheme } from '../../store'
+import { Destination, StreamPayment, NUM_SECONDS } from '../../store/feed'
+import { SCREEN_WIDTH } from '../../constants'
+import useInterval from '../utils/useInterval'
+import EE, { CLIP_PAYMENT, PLAY_ANIMATION } from '../utils/ee'
+import Controls from './Controls'
+import Replay from './Replay'
+import Rocket from './Rocket'
+import { getPosition, setPosition } from './Position'
+import MiniPodcast from './MiniPodcast'
+import Typography from '../common/Typography'
+import Button from '../common/Button'
+import BoostButton from '../common/Button/BoostButton'
+import BoostControls from '../common/Button/BoostControls'
+
+export default function Podcast({ pod, chat, onBoost, podError }) {
   const theme = useTheme()
+  const { feed, user, msg, chats, details, ui } = useStores()
   const chatID = chat.id
-  const { feed, user, msg, chats, details } = useStores()
   const myid = user.myid
-
   const [loading, setLoading] = useState(false)
   const [playing, setPlaying] = useState(false)
-  // const [list,setList] = useState(false)
   const [duration, setDuration] = useState(0)
   const [selectedEpisodeID, setSelectedEpisodeID] = useState(null)
-  const [full, setFull] = useState(false)
   const [queuedTrackID, setQueuedTrackID] = useState(null)
   const [speed, setSpeed] = useState('1')
+  const modalizeRef = useRef<Modalize>(null)
+  //   const [currentTip, setCurrentTip] = useState()
 
   function getAndSetDuration() {
     setTimeout(async () => {
@@ -71,6 +69,8 @@ export default function Pod({ pod, show, chat, onBoost, podError }) {
   }
 
   async function selectEpisode(episode) {
+    console.log('episode', episode)
+
     TrackPlayer.reset()
     setDuration(0)
     setSelectedEpisodeID(episode.id)
@@ -212,8 +212,8 @@ export default function Pod({ pod, show, chat, onBoost, podError }) {
   }, [])
 
   useEffect(() => {
-    if (show) checkState()
-  }, [show])
+    checkState()
+  }, [])
 
   useEffect(() => {
     if (pod) initialSelect(pod)
@@ -255,10 +255,16 @@ export default function Pod({ pod, show, chat, onBoost, podError }) {
     pod.episodes.find(e => e.id === selectedEpisodeID)
 
   const replayMsgs = useRef([])
+
   function closeFull() {
-    replayMsgs.current = [] // close out
-    setFull(false)
+    replayMsgs.current = []
+    modalizeRef.current.close()
   }
+
+  function onClose() {
+    replayMsgs.current = []
+  }
+
   function openFull() {
     if (!chatID) return
     const msgs = msg.messages[chatID] || []
@@ -284,39 +290,14 @@ export default function Pod({ pod, show, chat, onBoost, podError }) {
       } catch (e) {}
     })
     replayMsgs.current = msgsforReplay
-    setFull(true)
+    modalizeRef.current?.open()
   }
 
-  if (!show) {
-    return <></>
-  }
-
-  if (!episode) {
-    return (
-      <PodBar
-        episode={episode}
-        onToggle={onToggle}
-        playing={playing}
-        onShowFull={openFull}
-        boost={boost}
-        duration={duration}
-        loading={true}
-        podError={podError}
-      />
-    )
-  }
-
-  function boost() {
-    const amount = user.tipAmount || 100
+  function boost(amount) {
+    amount = amount || user.tipAmount || 100
 
     if (amount > details.balance) {
-      ToastAndroid.showWithGravityAndOffset(
-        'Not Enough Balance',
-        ToastAndroid.SHORT,
-        ToastAndroid.CENTER,
-        0,
-        125
-      )
+      Toast.showWithGravity('Not Enough Balance', Toast.SHORT, Toast.CENTER)
       return
     }
 
@@ -336,250 +317,264 @@ export default function Pod({ pod, show, chat, onBoost, podError }) {
       const memo = JSON.stringify(sp)
       feed.sendPayments(dests, memo, amount, chatID, false)
     })
+
+    ui.setPodcastBoostAmount(null)
   }
 
-  if (!full) {
+  function Footer() {
     return (
-      <PodBar
-        episode={episode}
-        onToggle={onToggle}
-        playing={playing}
-        onShowFull={openFull}
-        boost={boost}
-        duration={duration}
-        loading={false}
-        podError={''}
-      />
-    )
-  }
-
-  const renderListItem: any = ({ item, index, selected, fallbackImage }) => {
-    return (
-      <TouchableOpacity
-        key={index}
+      <View
         style={{
-          ...styles.episode,
-          borderBottomColor: theme.border,
-          backgroundColor: selected ? theme.main : theme.bg
+          ...styles.footer,
+          backgroundColor: theme.main,
+          borderTopColor: theme.border
         }}
-        onPress={() => selectEpisode(item)}
       >
-        {/* <IconButton icon="play" onPress={()=>selectEpisode(item)} /> */}
-        <Icon
-          name='play'
-          color={theme.subtitle}
-          size={16}
-          style={{ opacity: selected ? 1 : 0 }}
+        <BoostButton
+          onPress={() => {
+            const isBoostAmount = ui.podcastBoostAmount && ui.podcastBoostAmount
+            const amount = isBoostAmount || user.tipAmount || 100
+            boost(amount)
+          }}
         />
-        <FastImage
-          source={{ uri: item.image || fallbackImage }}
-          style={{ width: 42, height: 42, marginLeft: 8, marginRight: 12 }}
-          resizeMode={'cover'}
-        />
-        <Text style={{ ...styles.episodeTitle, color: theme.title }}>
-          {item.title.substring(0, 43)}...
-        </Text>
-      </TouchableOpacity>
+        <View style={{ width: 130, marginHorizontal: 10 }}>
+          <BoostControls />
+        </View>
+      </View>
     )
   }
 
-  const width = Math.round(Dimensions.get('window').width)
-  return (
-    <View
-      style={{
-        ...styles.wrap,
-        backgroundColor: theme.bg,
-        borderBottomColor: theme.border
-      }}
-    >
-      {loading && (
-        <View style={{ ...styles.spinWrap }}>
-          <ActivityIndicator animating={true} color='#bbb' />
+  function Header() {
+    return (
+      <View style={{ alignItems: 'center', backgroundColor: theme.bg }}>
+        {pod.image && (
+          <View
+            style={{
+              ...styles.imgWrap,
+              width: SCREEN_WIDTH,
+              height: SCREEN_WIDTH - 140
+            }}
+          >
+            <FastImage
+              source={{ uri: episode.image || pod.image }}
+              style={{
+                width: SCREEN_WIDTH - 180,
+                height: SCREEN_WIDTH - 180,
+                borderRadius: 25
+              }}
+              resizeMode={'cover'}
+            />
+            {/* <Replay msgs={replayMsgs.current} playing={playing} /> */}
+          </View>
+        )}
+        <View style={styles.top}>
+          {episode.title && (
+            <Typography size={18} numberOfLines={1}>
+              {episode.title}
+            </Typography>
+          )}
         </View>
-      )}
-
-      {/* <IconButton size={25} icon="menu" color={theme.title} style={styles.clickList}
-      onPress={clickList}
-    /> */}
-
-      {!loading && episode && (
-        <ScrollView style={styles.scroll} contentContainerStyle={styles.inner}>
-          <IconButton
-            size={32}
-            icon='chevron-down'
-            color={theme.title}
-            style={styles.closeFull}
-            onPress={closeFull}
+        <View style={styles.track}>
+          <Controls
+            theme={theme}
+            onToggle={onToggle}
+            playing={playing}
+            duration={duration}
+            episode={episode}
+            pod={pod}
+            myPubkey={user.publicKey}
+            boost={boost}
+            speed={speed}
+            setRate={setRate}
+            quoteCallback={closeFull}
           />
+        </View>
 
-          {/* <Boost onPress={boost} style={{position:'absolute',right:15,top:width-108,zIndex:200}} inert={false} /> */}
-
-          {pod.image && (
-            <View style={{ ...styles.imgWrap, width, height: width - 34 }}>
-              <FastImage
-                source={{ uri: episode.image || pod.image }}
+        {(pod.episodes ? true : false) && (
+          <View style={styles.list}>
+            <View style={{ ...styles.episodesLabel, borderBottomColor: theme.border }}>
+              <Typography color={theme.subtitle} size={12} fw='500'>
+                EPISODES
+              </Typography>
+              <Typography
+                color={theme.subtitle}
+                size={12}
                 style={{
-                  width: width - 88,
-                  height: width - 88,
-                  marginLeft: 49,
-                  marginTop: 35,
-                  borderRadius: 19
+                  opacity: 0.85,
+                  marginLeft: 10
                 }}
+              >
+                {pod.episodes.length}
+              </Typography>
+            </View>
+          </View>
+        )}
+      </View>
+    )
+  }
+
+  function renderItem({ item, index }) {
+    const selected = selectedEpisodeID === item.id
+    const fallbackImage = pod?.image
+
+    return (
+      <View key={index}>
+        <Button
+          color={theme.transparent}
+          mode='text'
+          h={60}
+          round={0}
+          style={{
+            ...styles.episode,
+            borderBottomColor: theme.border,
+            backgroundColor: selected ? theme.main : theme.bg
+          }}
+          onPress={() => selectEpisode(item)}
+        >
+          <View style={{ flexDirection: 'row', alignItems: 'center', width: '100%' }}>
+            <View
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                width: 20
+              }}
+            >
+              <MaterialCommunityIcons
+                name='play'
+                color={theme.icon}
+                size={18}
+                style={{ opacity: selected ? 1 : 0 }}
+              />
+            </View>
+
+            <View style={{ width: 45 }}>
+              <FastImage
+                source={{ uri: item.image || fallbackImage }}
+                style={{ width: 42, height: 42, marginLeft: 8, marginRight: 12 }}
                 resizeMode={'cover'}
               />
-              <Replay msgs={replayMsgs.current} playing={playing} />
             </View>
-          )}
-          <View style={styles.top}>
-            {episode.title && (
-              <Text style={{ color: theme.title, fontSize: 18 }} numberOfLines={1}>
-                {episode.title}
-              </Text>
-            )}
-            {/* <View style={styles.info}>
-          {pod.title && <Text style={{ color: theme.title, ...styles.podcastTitle }} numberOfLines={1}>
-            {pod.title}
-          </Text>}
-          {episode.title && <Text style={{ color: theme.title, fontSize:13 }} numberOfLines={1}>
-            {episode.title}
-          </Text>}
-          {pricePerMinute && <Text style={{ color: theme.subtitle, fontSize:13, marginTop:6 }} numberOfLines={1}>
-            {`Price per minute: ${pricePerMinute} sats`}  
-          </Text>}
-        </View> */}
+            <Typography
+              color={theme.title}
+              numberOfLines={1}
+              style={{
+                width: '100%',
+                display: 'flex',
+                flexDirection: 'row',
+                paddingLeft: 15,
+                flex: 1,
+                flexWrap: 'wrap'
+              }}
+            >
+              {item.title}
+            </Typography>
           </View>
-          <View style={styles.track}>
-            <Controls
-              theme={theme}
-              onToggle={onToggle}
-              playing={playing}
-              duration={duration}
-              episode={episode}
-              pod={pod}
-              myPubkey={user.publicKey}
-              boost={boost}
-              speed={speed}
-              setRate={setRate}
-              quoteCallback={closeFull}
-            />
-          </View>
-          {(pod.episodes ? true : false) && (
-            <View style={styles.listWrap}>
-              <View style={{ ...styles.episodesLabel, borderBottomColor: theme.border }}>
-                <Text style={{ color: theme.subtitle, fontSize: 12, fontWeight: 'bold' }}>
-                  EPISODES
-                </Text>
-                <Text
-                  style={{
-                    color: theme.subtitle,
-                    opacity: 0.85,
-                    fontSize: 12,
-                    marginLeft: 10
-                  }}
-                >
-                  {pod.episodes.length}
-                </Text>
-              </View>
-              <ItemList
-                style={styles.list}
-                data={pod.episodes}
-                fallbackImage={pod.image}
-                renderItem={renderListItem}
-                selectedEpisodeID={selectedEpisodeID}
-              />
-            </View>
-          )}
-        </ScrollView>
-      )}
-    </View>
-  )
-}
+        </Button>
+      </View>
+    )
+  }
 
-function ItemList({ data, renderItem, style, selectedEpisodeID, fallbackImage }) {
   return (
-    <View style={style}>
-      {data &&
-        data.map((item, index) => {
-          const selected = selectedEpisodeID === item.id
-          return renderItem({ item, index, selected, fallbackImage })
-        })}
-    </View>
+    <>
+      <Modalize
+        ref={modalizeRef}
+        // adjustToContentHeight={true}
+        modalTopOffset={getStatusBarHeight()}
+        openAnimationConfig={{
+          timing: { duration: 300 }
+        }}
+        onClose={onClose}
+        HeaderComponent={<Header />}
+        FooterComponent={<Footer />}
+        childrenStyle={{
+          backgroundColor: theme.bg
+        }}
+        rootStyle={
+          {
+            //   backgroundColor: theme.bg
+          }
+        }
+        flatListProps={{
+          data: pod?.episodes,
+          renderItem: renderItem,
+          keyExtractor: item => item.id,
+          showsVerticalScrollIndicator: false
+        }}
+      />
+
+      {!episode ? (
+        <MiniPodcast
+          episode={episode}
+          onToggle={onToggle}
+          playing={playing}
+          onShowFull={openFull}
+          boost={() => {
+            const amount = user.tipAmount || 100
+
+            boost(amount)
+          }}
+          duration={duration}
+          loading={true}
+          podError={podError}
+          pod={pod}
+        />
+      ) : (
+        <MiniPodcast
+          episode={episode}
+          onToggle={onToggle}
+          playing={playing}
+          onShowFull={openFull}
+          boost={() => {
+            const amount = user.tipAmount || 100
+
+            boost(amount)
+          }}
+          duration={duration}
+          loading={false}
+          podError={''}
+          pod={pod}
+        />
+      )}
+    </>
   )
 }
 
 const styles = StyleSheet.create({
-  wrap: {
-    position: 'absolute',
-    maxWidth: '100%',
-    minWidth: '100%',
-    height: '100%',
-    zIndex: 150,
-    top: 0,
-    bottom: 0,
+  content: {
     display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
     flex: 1
   },
-  imgWrap: {
-    width: '100%',
-    position: 'relative'
+  list: {
+    width: '100%'
   },
-  spinWrap: {
+  top: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '90%'
+    // paddingHorizontal:14
+  },
+  imgWrap: {
+    position: 'relative',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     width: '100%'
   },
-  title: {
-    color: 'white'
-  },
-  scroll: {
-    margin: 4,
-    flex: 1,
+  spinWrap: {
     display: 'flex',
-    maxHeight: '90%',
-    overflow: 'scroll'
-  },
-  inner: {
-    margin: 4,
-    display: 'flex',
-    position: 'relative',
-    alignItems: 'center'
-  },
-  top: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center'
-  },
-  info: {
-    marginLeft: 15,
-    marginTop: 0,
-    display: 'flex',
-    flex: 1,
-    justifyContent: 'space-around'
-  },
-  podcastTitle: {
-    fontSize: 15,
-    marginBottom: 8,
-    maxWidth: '100%'
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    position: 'absolute',
+    top: 20
   },
   track: {
     width: '90%'
-    // height:128,
-  },
-  listWrap: {
-    display: 'flex',
-    flex: 1,
-    width: '100%'
-  },
-  list: {
-    display: 'flex',
-    flex: 1
-  },
-  closeFull: {
-    position: 'absolute',
-    top: 8,
-    left: 0,
-    zIndex: 150
+    // height: 128
   },
   clickList: {
     position: 'absolute',
@@ -588,16 +583,16 @@ const styles = StyleSheet.create({
     zIndex: 150
   },
   episode: {
-    height: 45,
+    borderBottomWidth: 1,
     width: '100%',
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  episodeInner: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    borderBottomWidth: 1,
-    position: 'relative'
-  },
-  episodeTitle: {
-    fontSize: 14
+    justifyContent: 'flex-start'
   },
   episodesLabel: {
     display: 'flex',
@@ -605,8 +600,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     borderBottomWidth: 2,
-    padding: 4,
-    marginTop: 8,
-    marginBottom: 6
+    paddingHorizontal: 14,
+    paddingBottom: 14
+  },
+  footer: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 14,
+    height: isIphoneX() ? 80 : 65,
+    paddingBottom: isIphoneX() ? 10 : 0,
+    borderTopWidth: 1
+    // paddingTop: isIphoneX() ? 30 : 0
   }
 })

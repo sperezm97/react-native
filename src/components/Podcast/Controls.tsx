@@ -1,18 +1,22 @@
-import React, { useState, useRef, useEffect } from 'react'
-import { View, StyleSheet, Text, TouchableOpacity } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import TrackPlayer from 'react-native-track-player'
 import moment from 'moment'
-import EE, { EXTRA_TEXT_CONTENT } from '../../utils/ee'
 import momentDurationFormatSetup from 'moment-duration-format'
-import { StreamPayment } from '../../../store/feed'
-momentDurationFormatSetup(moment)
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import Slider from '@react-native-community/slider'
-import TouchableIcon from '../../utils/touchableIcon'
-import Rocket from './rocket'
-import CustomIcon from '../../utils/customIcons'
-import { getPosition, setPosition } from './position'
-import useInterval from '../../utils/useInterval'
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+
+import { StreamPayment } from '../../store/feed'
+import EE, { EXTRA_TEXT_CONTENT } from '../utils/ee'
+import TouchableIcon from '../utils/touchableIcon'
+import CustomIcon from '../utils/customIcons'
+import useInterval from '../utils/useInterval'
+
+import { getPosition, setPosition } from './Position'
+import Rocket from './Rocket'
+import Typography from '../common/Typography'
+
+momentDurationFormatSetup(moment)
 
 export default function Controls(props) {
   const [pos, setPos] = useState(0)
@@ -100,20 +104,25 @@ export default function Controls(props) {
             onSlidingComplete={track}
           />
         </View>
-        <Text style={{ ...styles.progressText, color: theme.title }}>{progressText}</Text>
-        <Text style={{ ...styles.durationText, color: theme.title }}>{durationText}</Text>
+        <Typography size={13} style={{ ...styles.progressText }}>
+          {progressText}
+        </Typography>
+        <Typography size={13} style={{ ...styles.durationText }}>
+          {durationText}
+        </Typography>
       </View>
 
       {!selectSpeed && (
         <View style={styles.speedWrap}>
           <View style={styles.speedWrapInner}>
             <TouchableOpacity
+              activeOpacity={0.6}
               style={styles.speedClickable}
               onPress={() => setSelectSpeed(true)}
             >
-              <Text style={{ ...styles.speed, color: theme.subtitle }}>
+              <Typography color={theme.subtitle} size={14}>
                 {`${props.speed || '1'}x`}
-              </Text>
+              </Typography>
             </TouchableOpacity>
           </View>
         </View>
@@ -125,6 +134,7 @@ export default function Controls(props) {
             {ratez.map(s => {
               return (
                 <TouchableOpacity
+                  activeOpacity={0.6}
                   key={s}
                   onPress={() => doSelectSpeed(s)}
                   style={{
@@ -132,7 +142,10 @@ export default function Controls(props) {
                     backgroundColor: s === props.speed ? theme.primary : theme.deep
                   }}
                 >
-                  <Text style={{ color: theme.title, fontSize: 11 }}>{`${s}x`}</Text>
+                  <Typography
+                    size={12}
+                    color={s === props.speed ? theme.white : theme.text}
+                  >{`${s}x`}</Typography>
                 </TouchableOpacity>
               )
             })}
@@ -141,35 +154,37 @@ export default function Controls(props) {
       )}
 
       <View style={styles.progressWrapBottom}>
-        <View style={{ height: 48, width: 50 }}>
-          <TouchableIcon rippleColor={theme.title} size={48} onPress={feedClip}>
-            <CustomIcon name='chat-quote' color={theme.title} size={24} />
-          </TouchableIcon>
+        <View
+          style={{ height: 55, width: 50, display: 'flex', justifyContent: 'flex-end' }}
+        >
+          {/* <Rocket onPress={props.boost} /> */}
         </View>
-
         <View style={styles.controls}>
-          <TouchableIcon rippleColor={theme.title} size={48} onPress={rewind}>
+          <TouchableIcon rippleColor={theme.grey} size={48} onPress={rewind}>
             <CustomIcon name='back-15' color={theme.title} size={28} />
           </TouchableIcon>
           <TouchableOpacity
             onPress={onToggle}
-            style={{ marginLeft: 18, marginRight: 18 }}
+            style={{
+              marginLeft: 18,
+              marginRight: 18
+            }}
           >
-            <Icon
+            <MaterialCommunityIcons
               name={playing ? 'pause-circle' : 'play-circle'}
               size={52}
               color={theme.primary}
             />
           </TouchableOpacity>
-          <TouchableIcon rippleColor={theme.title} size={48} onPress={fastForward}>
+          <TouchableIcon rippleColor={theme.grey} size={48} onPress={fastForward}>
             <CustomIcon name='forward-30' color={theme.title} size={28} />
           </TouchableIcon>
         </View>
 
-        <View
-          style={{ height: 55, width: 50, display: 'flex', justifyContent: 'flex-end' }}
-        >
-          <Rocket onPress={props.boost} />
+        <View style={{ height: 48, width: 50 }}>
+          <TouchableIcon rippleColor={theme.grey} size={48} onPress={feedClip}>
+            <CustomIcon name='chat-quote' color={theme.icon} size={24} />
+          </TouchableIcon>
         </View>
       </View>
     </View>
@@ -179,13 +194,13 @@ export default function Controls(props) {
 const styles = StyleSheet.create({
   controls: {
     display: 'flex',
-    alignItems: 'center',
-    flexDirection: 'row'
+    flexDirection: 'row',
+    alignItems: 'center'
   },
   progressWrap: {
-    marginTop: 5,
     display: 'flex',
     width: '100%'
+    // marginTop: 5
   },
   speedWrap: {
     width: '100%',
@@ -212,9 +227,6 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-start'
-  },
-  speed: {
-    fontSize: 11
   },
   selectSpeed: {
     height: 50,
@@ -244,7 +256,7 @@ const styles = StyleSheet.create({
     position: 'relative'
   },
   progressBarWrap: {
-    height: 32,
+    height: 30,
     marginTop: 10,
     display: 'flex',
     justifyContent: 'center'
@@ -255,18 +267,16 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     maxWidth: '100%',
-    marginTop: 18
+    marginTop: 20
   },
   progressText: {
     position: 'absolute',
-    top: 36,
-    left: 0,
-    fontSize: 10
+    top: 42,
+    left: 0
   },
   durationText: {
     position: 'absolute',
-    top: 37,
-    right: 0,
-    fontSize: 10
+    top: 39,
+    right: 0
   }
 })

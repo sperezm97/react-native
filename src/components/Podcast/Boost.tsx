@@ -1,43 +1,51 @@
 import React, { useRef } from 'react'
 import { Animated, Easing, StyleSheet, View, Text } from 'react-native'
-import { useTheme, useStores } from '../../../store'
 import { TouchableRipple } from 'react-native-paper'
-import CustomIcon from '../../utils/customIcons'
+
+import { useTheme, useStores } from '../../store'
+import CustomIcon from '../utils/customIcons'
 
 export default function Boost({ style, onPress, inert }) {
   const theme = useTheme()
   const { user } = useStores()
-  const size = useRef(new Animated.Value(1)).current;
+  const size = useRef(new Animated.Value(1)).current
   function go() {
     if (inert) return
     Animated.sequence([
       Animated.timing(size, {
         toValue: 2.5,
         duration: 75,
-        useNativeDriver: true,
+        useNativeDriver: true
       }),
       Animated.timing(size, {
         toValue: 1,
         duration: 500,
-        useNativeDriver: true,
+        useNativeDriver: true
       })
-    ]).start();
+    ]).start()
     onPress()
   }
-  return <TouchableRipple borderless style={{ ...styles.ripple, ...style }}
-    onPress={inert ? null : go} rippleColor={theme.accent} underlayColor="black">
-    <View style={{ ...styles.wrap, backgroundColor: theme.accent }}>
-      <Text style={styles.hundred}>
-        {user.tipAmount || 100}
-      </Text>
-      <Animated.View style={{
-        ...styles.rocketWrap,
-        transform: [{ scale: size }]
-      }}>
-        <CustomIcon color={theme.accent} size={20} name="fireworks" />
-      </Animated.View>
-    </View>
-  </TouchableRipple>
+  return (
+    <TouchableRipple
+      borderless
+      style={{ ...styles.ripple, ...style }}
+      onPress={inert ? null : go}
+      rippleColor={theme.accent}
+      underlayColor='black'
+    >
+      <View style={{ ...styles.wrap, backgroundColor: theme.accent }}>
+        <Text style={styles.hundred}>{user.tipAmount || 100}</Text>
+        <Animated.View
+          style={{
+            ...styles.rocketWrap,
+            transform: [{ scale: size }]
+          }}
+        >
+          <CustomIcon color={theme.accent} size={20} name='fireworks' />
+        </Animated.View>
+      </View>
+    </TouchableRipple>
+  )
 }
 
 const styles = StyleSheet.create({
@@ -52,10 +60,12 @@ const styles = StyleSheet.create({
     width: 86,
     borderRadius: 19,
     position: 'absolute',
-    left: 17, top: 17
+    left: 17,
+    top: 17
   },
   rocketWrap: {
-    height: 30, width: 30,
+    height: 30,
+    width: 30,
     backgroundColor: 'white',
     borderRadius: 15,
     position: 'absolute',
@@ -70,6 +80,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: 'bold',
     position: 'absolute',
-    top: 8, left: 14
+    top: 8,
+    left: 14
   }
 })

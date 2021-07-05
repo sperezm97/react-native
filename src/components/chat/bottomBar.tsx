@@ -172,10 +172,6 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
     setDialogOpen(false)
     setTakingPhoto(false)
 
-    // setTimeout(() => {
-    // setTint('dark')
-    // }, 350)
-
     setTimeout(() => {
       if (img && img.uri) {
         openImgViewer({ uri: img.uri })
