@@ -54,9 +54,11 @@ export default function Security() {
 
       const myContactKey = user.contactKey
 
-      const meContact = contacts.contacts.find(c => c.id === 1) || {
+      const meContact = contacts.contacts.find(c => c.id === user.myid) || {
         contact_key: myContactKey
       }
+
+      console.log('meContact', meContact)
 
       let pub = myContactKey
       if (!pub) {

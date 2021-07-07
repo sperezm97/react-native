@@ -73,7 +73,7 @@ export default function Account() {
           setPhotoUrl(`https://${server.host}/public/${json.muid}`)
         }
 
-        await contacts.updateContact(1, {
+        await contacts.updateContact(user.myid, {
           photo_url: `https://${server.host}/public/${json.muid}`
         })
         setUploading(false)
@@ -86,7 +86,7 @@ export default function Account() {
 
   async function saveUser(values) {
     setSaving(true)
-    await contacts.updateContact(1, {
+    await contacts.updateContact(user.myid, {
       alias: values.alias
     })
     setSaving(false)
@@ -141,7 +141,9 @@ export default function Account() {
   ]
 
   return useObserver(() => {
-    const meContact = contacts.contacts.find(c => c.id === 1)
+    const myid = user.myid
+
+    const meContact = contacts.contacts.find(c => c.id === myid)
     let imgURI = usePicSrc(meContact)
 
     if (photo_url) imgURI = photo_url

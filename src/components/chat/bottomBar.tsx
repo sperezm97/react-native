@@ -11,7 +11,7 @@ import {
   KeyboardAvoidingView,
   Platform
 } from 'react-native'
-import { IconButton, Portal, ActivityIndicator } from 'react-native-paper'
+import { IconButton, ActivityIndicator } from 'react-native-paper'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import AudioRecorderPlayer from 'react-native-audio-recorder-player'
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback'
@@ -19,7 +19,7 @@ import Toast from 'react-native-simple-toast'
 import { isIphoneX, getBottomSpace } from 'react-native-iphone-x-helper'
 
 import { useStores, useTheme, hooks } from '../../store'
-import { calcBotPrice, useReplyContent, useChatReply } from '../../store/hooks/chat'
+import { calcBotPrice, useReplyContent } from '../../store/hooks/chat'
 import EE, {
   EXTRA_TEXT_CONTENT,
   REPLY_UUID,
@@ -49,7 +49,7 @@ let dontRecordActually = false
 const { useMsgs } = hooks
 
 export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
-  const { ui, msg, meme } = useStores()
+  const { user, ui, msg, meme } = useStores()
   const theme = useTheme()
   const [text, setText] = useState('')
   const [inputFocused, setInputFocused] = useState(false)
@@ -64,6 +64,7 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
   const [replyUuid, setReplyUuid] = useState('')
   const [extraTextContent, setExtraTextContent] = useState(null)
   const appearAnim = new Animated.Value(300)
+  const myid = user.myid
 
   const inputRef = useRef(null)
 
@@ -93,7 +94,7 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
     try {
       if (!text) return
       if (waitingForAdminApproval) return
-      let contact_id = chat.contact_ids.find(cid => cid !== 1)
+      let contact_id = chat.contact_ids.find(cid => cid !== myid)
 
       let { price, failureMessage } = calcBotPrice(tribeBots, text)
       if (failureMessage) {
@@ -109,7 +110,7 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
 
       console.log('=> BEFORE')
       await msg.sendMessage({
-        contact_id: contact_id || 1,
+        contact_id: contact_id || null,
         text: txt,
         chat_id: chat.id || null,
         amount: price + pricePerMessage || 0,
@@ -182,9 +183,10 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
 
   function openImgViewer(obj) {
     let contact_id = null
+
     if (!chat.id) {
       // if no chat (new contact)
-      contact_id = chat.contact_ids.find(cid => cid !== 1)
+      contact_id = chat.contact_ids.find(cid => cid !== myid)
     }
     ui.setImgViewerParams({
       contact_id,
@@ -342,29 +344,22 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
   }
 
   const isConversation = chat.type === conversation
-  const isTribe = chat.type === constants.chat_types.tribe
+  // const isTribe = chat.type === constants.chat_types.tribe
   const hideMic = inputFocused || text ? true : false
 
-  let theID = chat && chat.id
-  const thisChatMsgs = theID && msg.messages[theID]
+  // let theID = chat && chat.id
+  // const thisChatMsgs = theID && msg.messages[theID]
+
+  const msgs = useMsgs(chat) || []
 
   const {
     replyMessageSenderAlias,
     replyMessageContent,
     replyMessageExtraContent,
     replyColor
-  } = useReplyContent(thisChatMsgs, replyUuid, extraTextContent)
+  } = useReplyContent(msgs, replyUuid, extraTextContent)
 
-  const msgs = useMsgs(chat) || []
-  const { replyMessage } = useChatReply(msgs, replyUuid, extraTextContent)
   const hasReplyContent = replyUuid || extraTextContent ? true : false
-
-  // const replyMessage = replyUuid&&thisChatMsgs&&thisChatMsgs.find(m=>m.uuid===replyUuid)
-  // let replyMessageSenderAlias = replyMessage&&replyMessage.sender_alias
-  // if(!isTribe && !replyMessageSenderAlias && replyMessage && replyMessage.sender){
-  //   const sender = contacts.contacts.find(c=> c.id===replyMessage.sender)
-  //   if(sender) replyMessageSenderAlias = sender.alias
-  // }
 
   return useObserver(() => (
     <View

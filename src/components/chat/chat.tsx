@@ -20,6 +20,7 @@ export type RouteStatus = 'active' | 'inactive' | null
 export default function Chat() {
   const { contacts, user, chats, ui, msg } = useStores()
   const theme = useTheme()
+  const myid = user.myid
 
   const [pricePerMessage, setPricePerMessage] = useState(0)
   const [appMode, setAppMode] = useState(false)
@@ -36,7 +37,7 @@ export default function Chat() {
 
   useEffect(() => {
     // check for contact key, exchange if none
-    const contact = contactForConversation(chat, contacts.contacts)
+    const contact = contactForConversation(chat, contacts.contacts, myid)
 
     if (contact && !contact.contact_key) {
       contacts.exchangeKeys(contact.id)
@@ -83,9 +84,7 @@ export default function Chat() {
       setTribeParams(null)
     }
 
-    const r = await chats.checkRoute(chat.id)
-
-    // console.log('r', r)
+    const r = await chats.checkRoute(chat.id, myid)
 
     if (r && r.success_prob && r.success_prob > 0) {
       setStatus('active')
@@ -118,7 +117,7 @@ export default function Chat() {
   }
 
   const podID = pod && pod.id
-  const { earned, spent } = useIncomingPayments(podID)
+  const { earned, spent } = useIncomingPayments(podID, myid)
 
   let pricePerMinute = 0
   if (pod && pod.value && pod.value.model && pod.value.model.suggested) {

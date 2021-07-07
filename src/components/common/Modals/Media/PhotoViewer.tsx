@@ -60,6 +60,7 @@ function SwipeItem(props) {
   const [photoH, setPhotoH] = useState(0)
   const { uuid, message_content, media_type, media_token, chat, boosts_total_sats } =
     props
+
   const [onlyOneClick, setOnlyOnClick] = useState(false)
   const [buying, setBuying] = useState(false)
   const [pricePerMessage, setPricePerMessage] = useState(0)
@@ -95,7 +96,7 @@ function SwipeItem(props) {
     if (ldat.sig) purchased = true
   }
 
-  const isMe = props.sender === 1
+  const isMe = props.sender === user.myid
   const hasImgData = data || uri ? true : false
   const hasContent = message_content ? true : false
   const showPurchaseButton = amt && !isMe ? true : false
@@ -116,7 +117,7 @@ function SwipeItem(props) {
     setBuying(true)
     let contact_id = props.sender
     if (!contact_id) {
-      contact_id = chat.contact_ids && chat.contact_ids.find(cid => cid !== 1)
+      contact_id = chat.contact_ids && chat.contact_ids.find(cid => cid !== user.myid)
     }
 
     await msg.purchaseMedia({

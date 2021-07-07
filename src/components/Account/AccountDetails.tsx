@@ -14,7 +14,7 @@ export default function AccountDetails() {
   const [tipAmount, setTipAmount] = useState(user.tipAmount + '')
   const [loading, setLoading] = useState(false)
   const [isEnabled, setIsEnabled] = useState(false)
-  const me = contacts.contacts.find(c => c.id === 1)
+  const me = contacts.contacts.find(c => c.id === user.myid)
   const nativeID = 'tipAmount'
 
   useEffect(() => {
@@ -33,9 +33,13 @@ export default function AccountDetails() {
     shareContactKey()
   }
 
-  function save() {
+  async function save() {
     setLoading(true)
     user.setTipAmount(parseInt(tipAmount))
+
+    await contacts.updateContact(user.myid, {
+      tip_amount: user.tipAmount
+    })
     setLoading(false)
   }
 
@@ -43,7 +47,7 @@ export default function AccountDetails() {
     const contact_key = me.contact_key
 
     if (!contact_key) return
-    await contacts.updateContact(1, { contact_key })
+    await contacts.updateContact(user.myid, { contact_key })
   }
 
   return (

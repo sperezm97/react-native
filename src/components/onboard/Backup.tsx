@@ -32,7 +32,7 @@ export default function Backup(props) {
 
       const myContactKey = user.contactKey
 
-      const meContact = contacts.contacts.find(c => c.id === 1) || {
+      const meContact = contacts.contacts.find(c => c.id === user.myid) || {
         contact_key: myContactKey
       }
 
