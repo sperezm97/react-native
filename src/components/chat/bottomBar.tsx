@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from 'react'
 import { useObserver } from 'mobx-react-lite'
 import {
@@ -17,6 +18,7 @@ import AudioRecorderPlayer from 'react-native-audio-recorder-player'
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback'
 import Toast from 'react-native-simple-toast'
 import { isIphoneX, getBottomSpace } from 'react-native-iphone-x-helper'
+import { Modalize } from 'react-native-modalize'
 
 import { useStores, useTheme, hooks } from '../../store'
 import { calcBotPrice, useReplyContent } from '../../store/hooks/chat'
@@ -65,6 +67,7 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
   const [extraTextContent, setExtraTextContent] = useState(null)
   const appearAnim = new Animated.Value(300)
   const myid = user.myid
+  const modalizeRef = useRef<Modalize>(null)
 
   const inputRef = useRef(null)
 
@@ -89,6 +92,8 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
       useNativeDriver: true
     }).start()
   })
+
+  const openGiphyModal = () => modalizeRef.current?.open()
 
   async function sendMessage() {
     try {
@@ -312,12 +317,18 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
     })
   }
 
+  function closeGiphyModal() {
+    modalizeRef?.current.close()
+    setShowGiphyModal(false)
+  }
+
   async function onGiphyHandler() {
     try {
       const gifs = await fetchGifs(searchGif)
       if (gifs.meta.status === 200) setGifs(gifs.data)
       setDialogOpen(false)
       setShowGiphyModal(true)
+      openGiphyModal()
     } catch (e) {
       console.warn(e)
     }
@@ -329,7 +340,7 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
   }
 
   async function onSendGifHandler(gif: any) {
-    setShowGiphyModal(false)
+    closeGiphyModal()
     setDialogOpen(false)
     setTimeout(() => {
       setTakingPhoto(false)
@@ -515,8 +526,9 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
         />
 
         <Giphy
+          ref={modalizeRef}
           open={showGiphyModal}
-          onClose={setShowGiphyModal}
+          onClose={closeGiphyModal}
           gifs={gifs}
           searchGif={searchGif}
           setSearchGif={setSearchGif}

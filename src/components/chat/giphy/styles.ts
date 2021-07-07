@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { SCREEN_HEIGHT } from '../../../constants'
 
 export default StyleSheet.create({
   gifContainer: {
@@ -9,47 +10,24 @@ export default StyleSheet.create({
     flexWrap: 'wrap',
   },
   gif: {
-    width: 100,
-    height: 100,
-    margin: 5
-  },
-  input: {
-    width: '95%',
-    height: 50,
-    marginBottom: 20,
-    borderRadius: 3,
-    alignSelf: 'center',
-  },
-  centeredView: {
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 22,
-  },
-  modalView: {
-    margin: 20,
-    borderRadius: 20,
-    padding: 10,
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 3,
-    borderWidth:1,
+    alignSelf: 'stretch',
+    borderRadius: 4,
+    width: '100%',
   },
   header: {
-    width: '100%',
-    justifyContent: 'space-between',
-    flexDirection: 'row',
-    paddingHorizontal: 8,
-    textAlign: 'center',
-    alignContent: 'center',
+    paddingHorizontal: 12,
+    paddingVertical: 16,
+    marginBottom: 6,
+  },
+  inputContainer: {
+    borderRadius: 12,
+    overflow: 'hidden',
+  },
+  input: {
+    fontSize: 20,
   },
   select: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "600",
   },
 });
