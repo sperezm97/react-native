@@ -1,16 +1,20 @@
 import React, { useState, useEffect } from 'react'
-import { View, StyleSheet, Text, TouchableOpacity } from 'react-native'
-import { IconButton, ActivityIndicator } from 'react-native-paper'
+import { StyleSheet, View, TouchableOpacity } from 'react-native'
+import { ActivityIndicator } from 'react-native-paper'
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import TrackPlayer from 'react-native-track-player'
+import FastImage from 'react-native-fast-image'
 
-import { useTheme } from '../../../store'
-import Rocket from './rocket'
-import CustomIcon from '../../utils/customIcons'
-import TouchableIcon from '../../utils/touchableIcon'
-import { getPosition } from './position'
-import useInterval from '../../utils/useInterval'
+import { useTheme } from '../../store'
+import CustomIcon from '../utils/customIcons'
+import TouchableIcon from '../utils/touchableIcon'
+import useInterval from '../utils/useInterval'
+import Rocket from './Rocket'
+import { getPosition } from './Position'
+import Typography from '../common/Typography'
+import Boost from '../common/Button/Boost'
 
-export default function PodBar({
+export default function MinPodcast({
   duration,
   episode,
   onToggle,
@@ -18,7 +22,8 @@ export default function PodBar({
   onShowFull,
   boost,
   loading,
-  podError
+  podError,
+  pod
 }) {
   const theme = useTheme()
   const [pos, setPos] = useState(0)
@@ -44,14 +49,14 @@ export default function PodBar({
     setPos(P)
   }
 
-  const height = 58
+  const height = 60
 
   if (loading || podError) {
     return (
       <View
         style={{
           ...styles.wrap,
-          backgroundColor: theme.dark ? theme.deep : theme.bg,
+          backgroundColor: theme.bg,
           borderTopColor: theme.border,
           height
         }}
@@ -60,16 +65,13 @@ export default function PodBar({
           <View style={styles.title}>
             <ActivityIndicator
               animating={true}
-              color={theme.title}
+              color={theme.primary}
               size={13}
               style={{ marginLeft: 14 }}
             />
-            <Text
-              style={{ color: theme.title, marginLeft: 14, maxWidth: '100%' }}
-              numberOfLines={1}
-            >
+            <Typography style={{ marginLeft: 14, maxWidth: '100%' }} numberOfLines={1}>
               {podError ? 'Error loading podcast' : 'loading...'}
-            </Text>
+            </Typography>
           </View>
         </View>
       </View>
@@ -80,33 +82,47 @@ export default function PodBar({
     <View
       style={{
         ...styles.wrap,
-        backgroundColor: theme.dark ? theme.deep : theme.bg,
+        backgroundColor: theme.bg,
         borderTopColor: theme.border,
         height
       }}
     >
-      <TouchableOpacity onPress={onShowFull} style={styles.touchable}>
+      <TouchableOpacity activeOpacity={0.6} onPress={onShowFull} style={styles.touchable}>
         <View style={styles.inner}>
+          <View style={styles.image}>
+            <FastImage
+              source={{ uri: episode.image || pod.image }}
+              style={{
+                width: 50,
+                height: 50,
+                borderRadius: 50
+              }}
+              resizeMode={'cover'}
+            />
+          </View>
           <View style={styles.title}>
-            <Text
-              style={{ color: theme.title, marginLeft: 14, maxWidth: '100%' }}
-              numberOfLines={1}
-            >
+            <Typography style={{ marginLeft: 10, maxWidth: '100%' }} numberOfLines={1}>
               {episode.title}
-            </Text>
+            </Typography>
           </View>
           <View style={styles.iconz}>
-            <IconButton
-              icon={playing ? 'pause' : 'play'}
-              color={theme.title}
-              size={26}
+            <TouchableOpacity
               onPress={onToggle}
-              style={{ marginRight: 15 }}
-            />
-            <TouchableIcon rippleColor={theme.title} size={42} onPress={fastForward}>
+              style={{
+                ...styles.play
+              }}
+            >
+              <MaterialCommunityIcons
+                name={playing ? 'pause-circle' : 'play-circle'}
+                size={40}
+                color={theme.primary}
+              />
+            </TouchableOpacity>
+            <TouchableIcon rippleColor={theme.grey} size={42} onPress={fastForward}>
               <CustomIcon size={26} name='forward-30' color={theme.title} />
             </TouchableIcon>
-            <Rocket onPress={boost} />
+            <Boost onPress={boost} />
+            {/* <Rocket onPress={boost} /> */}
           </View>
         </View>
         <View style={styles.progressWrap}>
@@ -128,7 +144,7 @@ const styles = StyleSheet.create({
     position: 'relative',
     width: '100%',
     zIndex: 150,
-    borderTopWidth: 2,
+    borderTopWidth: 1,
     display: 'flex'
   },
   touchable: {
@@ -140,6 +156,12 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between'
+  },
+  image: {
+    width: 50,
+    height: 50,
+    marginLeft: 10,
+    paddingVertical: 4
   },
   title: {
     display: 'flex',
@@ -153,6 +175,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row-reverse',
     alignItems: 'center',
     paddingRight: 10
+  },
+  play: {
+    width: 40,
+    height: 40,
+    borderRadius: 40,
+    marginRight: 15,
+    marginLeft: 5
   },
   progressWrap: {
     width: '100%',

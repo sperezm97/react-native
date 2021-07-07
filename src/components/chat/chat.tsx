@@ -1,43 +1,29 @@
 import React, { useEffect, useState } from 'react'
-import {
-  View,
-  StyleSheet,
-  InteractionManager,
-  BackHandler,
-  SafeAreaView,
-  ScrollView,
-  KeyboardAvoidingView,
-  Platform
-} from 'react-native'
+import { StyleSheet, KeyboardAvoidingView } from 'react-native'
 import { useRoute, useNavigation } from '@react-navigation/native'
-import { ActivityIndicator } from 'react-native-paper'
 import Toast from 'react-native-simple-toast'
-import { ifIphoneX } from 'react-native-iphone-x-helper'
 
+import { useStores, useTheme } from '../../store'
+import { StreamPayment } from '../../store/feed'
+import { useIncomingPayments } from '../../store/hooks/pod'
+import { constants } from '../../constants'
+import { ChatRouteProp } from '../../types'
+import { contactForConversation } from './utils'
+import EE, { LEFT_GROUP } from '../utils/ee'
 import Header from './header'
 import MsgList from './msgList'
 import BottomBar from './bottomBar'
-import { ChatRouteProp } from '../../types'
-import { useStores, useTheme } from '../../store'
-import { contactForConversation } from './utils'
-import EE, { LEFT_GROUP, LEFT_IMAGE_VIEWER } from '../utils/ee'
-import { constants } from '../../constants'
-import Frame from './frame'
-import { StreamPayment } from '../../store/feed'
-import { useIncomingPayments } from '../../store/hooks/pod'
-import Pod from './pod'
-import Anim from './pod/anim'
+import Podcast from '../Podcast'
 
 export type RouteStatus = 'active' | 'inactive' | null
 
 export default function Chat() {
   const { contacts, user, chats, ui, msg } = useStores()
   const theme = useTheme()
+  const myid = user.myid
 
-  const [show, setShow] = useState(false)
   const [pricePerMessage, setPricePerMessage] = useState(0)
   const [appMode, setAppMode] = useState(false)
-  // const [showPod, setShowPod] = useState(false)
   const [status, setStatus] = useState<RouteStatus>(null)
   const [tribeParams, setTribeParams] = useState(null)
   const [pod, setPod] = useState(null)
@@ -49,16 +35,9 @@ export default function Chat() {
 
   const navigation = useNavigation()
 
-  // function handleBack() {
-  //   BackHandler.addEventListener('hardwareBackPress', function () {
-  //     navigation.navigate('Home', { params: { rnd: Math.random() } })
-  //     return true
-  //   })
-  // }
-
   useEffect(() => {
     // check for contact key, exchange if none
-    const contact = contactForConversation(chat, contacts.contacts)
+    const contact = contactForConversation(chat, contacts.contacts, myid)
 
     if (contact && !contact.contact_key) {
       contacts.exchangeKeys(contact.id)
@@ -66,14 +45,6 @@ export default function Chat() {
     EE.on(LEFT_GROUP, () => {
       navigation.navigate('Tribes', { params: { rnd: Math.random() } })
     })
-    // EE.on(LEFT_IMAGE_VIEWER, () => {
-    //   handleBack()
-    // })
-    InteractionManager.runAfterInteractions(() => {
-      setShow(true)
-    })
-
-    // handleBack()
 
     fetchTribeParams()
 
@@ -113,9 +84,7 @@ export default function Chat() {
       setTribeParams(null)
     }
 
-    const r = await chats.checkRoute(chat.id)
-
-    // console.log('r', r)
+    const r = await chats.checkRoute(chat.id, myid)
 
     if (r && r.success_prob && r.success_prob > 0) {
       setStatus('active')
@@ -135,7 +104,6 @@ export default function Chat() {
   const appURL = tribeParams && tribeParams.app_url
   const feedURL = tribeParams && tribeParams.feed_url
   const tribeBots = tribeParams && tribeParams.bots
-  const theShow = show
 
   function onBoost(sp: StreamPayment) {
     if (!(chat && chat.id)) return
@@ -149,25 +117,17 @@ export default function Chat() {
   }
 
   const podID = pod && pod.id
-  const { earned, spent } = useIncomingPayments(podID)
+  const { earned, spent } = useIncomingPayments(podID, myid)
 
-  const isIOS = Platform.OS === 'ios'
-  const statusBarHeight = isIOS ? ifIphoneX(50, 20) : 0
-  const headerHeight = statusBarHeight + 64
   let pricePerMinute = 0
   if (pod && pod.value && pod.value.model && pod.value.model.suggested) {
     pricePerMinute = Math.round(parseFloat(pod.value.model.suggested) * 100000000)
   }
 
-  return (
-    // <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
+  const showPod = feedURL ? true : false
 
-    //   <View style={{ ...styles.content }}>
-    // <SafeAreaView style={{ ...styles.wrap, backgroundColor: theme.bg }}>
+  return (
     <KeyboardAvoidingView
-      // style={{ flex: 1 }}
-      // behavior='padding'
-      // keyboardVerticalOffset={headerHeight}
       behavior='padding'
       style={{ flex: 1, backgroundColor: theme.bg }}
       keyboardVerticalOffset={1}
@@ -182,33 +142,17 @@ export default function Chat() {
         spent={spent}
         pricePerMinute={pricePerMinute}
       />
-      {/* <ScrollView> */}
-      {theShow && <MsgList chat={chat} pricePerMessage={pricePerMessage} />}
-      {/* </ScrollView> */}
 
-      {!theShow && (
-        <View style={{ ...styles.loadWrap, backgroundColor: theme.bg }}>
-          <ActivityIndicator animating={true} />
-        </View>
-      )}
+      <MsgList chat={chat} pricePerMessage={pricePerMessage} />
 
-      <Pod
-        pod={pod}
-        show={feedURL ? true : false}
-        chat={chat}
-        onBoost={onBoost}
-        podError={podError}
-      />
+      {/* <View style={{ ...styles.loadWrap, backgroundColor: theme.bg }}>
+        <ActivityIndicator animating={true} />
+      </View> */}
 
-      {/* <Anim dark={theme.dark} /> */}
-      {theShow && (
-        <BottomBar chat={chat} pricePerMessage={pricePerMessage} tribeBots={tribeBots} />
-      )}
+      {showPod && <Podcast pod={pod} chat={chat} onBoost={onBoost} podError={podError} />}
+
+      <BottomBar chat={chat} pricePerMessage={pricePerMessage} tribeBots={tribeBots} />
     </KeyboardAvoidingView>
-
-    // </SafeAreaView>
-
-    // </View>
   )
 }
 

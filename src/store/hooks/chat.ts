@@ -77,14 +77,8 @@ export function useReplyContent(msgs, replyUUID, extraTextContent): replyContent
   }
 }
 
-export function useChatReply(msgs, replyUUID, extraTextContent) {
-  let replyMessage = {}
-
-  if (extraTextContent) {
-    replyMessage = {}
-  } else {
-    replyMessage = msgs && replyUUID && msgs.find(m => m.uuid === replyUUID)
-  }
+export function useChatReply(msgs, replyUUID) {
+  let replyMessage = msgs && replyUUID && msgs.find(m => m.uuid === replyUUID)
 
   return {
     replyMessage

@@ -1,15 +1,17 @@
 import React, { useState } from 'react'
-import { View, FlatList, Text, StyleSheet } from 'react-native'
+import { StyleSheet, View, Text } from 'react-native'
 import TrackPlayer from 'react-native-track-player'
-import useInterval from '../../utils/useInterval'
-import { useTheme } from '../../../store'
-import Rocket from './rocket'
-import Avatar from '../msg/avatar'
 import moment from 'moment'
+
+import { useTheme } from '../../store'
+import useInterval from '../utils/useInterval'
+import Avatar from '../chat/msg/avatar'
+import Rocket from './Rocket'
 
 export default function Replay({ msgs, playing }) {
   const theme = useTheme()
   const [messages, setMessages] = useState([])
+
   async function getPosition() {
     const posf = await TrackPlayer.getPosition()
     const pos = Math.floor(posf)
@@ -22,7 +24,7 @@ export default function Replay({ msgs, playing }) {
       getPosition()
     }
   }, 1000)
-  console.log('MESSAGES', messages)
+
   const renderItem: any = ({ item, index }) => {
     const isBoost = item.type === 'boost'
     const bg = isBoost ? '#35806d' : 'white'
@@ -55,7 +57,13 @@ export default function Replay({ msgs, playing }) {
   const showBackdrop = messages && messages.length ? true : false
   return (
     <>
-      <View style={{ ...styles.backdrop, backgroundColor: theme.main, opacity: showBackdrop ? 0.5 : 0 }} />
+      <View
+        style={{
+          ...styles.backdrop,
+          backgroundColor: theme.main,
+          opacity: showBackdrop ? 0.5 : 0
+        }}
+      />
       <ItemList style={{ ...styles.scroller }} data={messages} renderItem={renderItem} />
     </>
   )

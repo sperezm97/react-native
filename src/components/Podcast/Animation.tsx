@@ -1,11 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { View, StyleSheet, Animated } from 'react-native'
+import { StyleSheet, View, Animated } from 'react-native'
 import LottieView from 'lottie-react-native'
-import EE, { PLAY_ANIMATION } from '../../utils/ee'
-import { useStores } from '../../../store'
-import { usePicSrc } from '../../utils/picSrc'
 import FastImage from 'react-native-fast-image'
-import Boost from './boost'
+
+import { useStores } from '../../store'
+import EE, { PLAY_ANIMATION } from '../utils/ee'
+import { usePicSrc } from '../utils/picSrc'
+import Boost from './Boost'
 
 const lens = {
   // min 1000
@@ -14,7 +15,7 @@ const lens = {
   }
 }
 
-export default function Anim({ dark, myid }) {
+export default function Animation({ dark, myid }) {
   const { contacts } = useStores()
   const [show, setShow] = useState(false)
 
@@ -76,11 +77,22 @@ export default function Anim({ dark, myid }) {
       />
 
       <View style={styles.content}>
-        {(meIMG ? true : false) && <FastImage resizeMode='cover' source={{ uri: meIMG }} style={{ width: 120, height: 120, borderRadius: 60, zIndex: 102 }} />}
+        {(meIMG ? true : false) && (
+          <FastImage
+            resizeMode='cover'
+            source={{ uri: meIMG }}
+            style={{ width: 120, height: 120, borderRadius: 60, zIndex: 102 }}
+          />
+        )}
         <Boost inert={true} style={{ marginTop: -40, zIndex: 104 }} onPress={() => {}} />
       </View>
 
-      <LottieView ref={confetti} loop={false} style={{ width: 300, height: 400, position: 'absolute' }} source={require('../../../animations/confetti.json')} />
+      <LottieView
+        ref={confetti}
+        loop={false}
+        style={{ width: 300, height: 400, position: 'absolute' }}
+        source={require('../../animations/confetti.json')}
+      />
     </Animated.View>
   )
 }

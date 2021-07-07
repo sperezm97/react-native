@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import moment from 'moment'
 
@@ -17,7 +17,7 @@ export default function InfoBar(props) {
   const { ui } = useStores()
   const theme = useTheme()
 
-  const isMe = props.sender === 1
+  const isMe = props.sender === props.myid
   const isReceived = props.status === received
   const showLock = encryptedTypes.includes(props.type)
 

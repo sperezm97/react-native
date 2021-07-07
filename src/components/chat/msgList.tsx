@@ -82,6 +82,7 @@ export default function MsgListWrap({
         onDelete={onDelete}
         myPubkey={user.publicKey}
         myAlias={user.alias}
+        myid={user.myid}
         onApproveOrDenyMember={onApproveOrDenyMember}
         onDeleteChat={onDeleteChat}
         onLoadMoreMsgs={onLoadMoreMsgs}
@@ -101,7 +102,8 @@ function MsgList({
   onApproveOrDenyMember,
   onDeleteChat,
   onLoadMoreMsgs,
-  onBoostMsg
+  onBoostMsg,
+  myid
 }) {
   const scrollViewRef = useRef(null)
   const theme = useTheme()
@@ -180,6 +182,7 @@ function MsgList({
               chat={chat}
               senderAlias={senderAlias}
               senderPic={senderPic}
+              myid={myid}
               isGroup={isGroup}
               isTribe={isTribe}
               onDelete={onDelete}
@@ -234,7 +237,8 @@ function ListItem({
   windowWidth,
   onApproveOrDenyMember,
   onDeleteChat,
-  onBoostMsg
+  onBoostMsg,
+  myid
 }) {
   if (m.dateLine) {
     return <DateLine dateString={m.dateLine} />
@@ -256,6 +260,7 @@ function ListItem({
         onDelete={onDelete}
         myPubkey={myPubkey}
         myAlias={myAlias}
+        myid={myid}
         windowWidth={windowWidth}
         onApproveOrDenyMember={onApproveOrDenyMember}
         onDeleteChat={onDeleteChat}

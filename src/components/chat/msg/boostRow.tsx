@@ -11,7 +11,7 @@ import AvatarsRow from './avatarsRow'
 export default function BoostRow(props) {
   const { contacts } = useStores()
   const theme = useTheme()
-  const isMe = props.sender === 1
+  const isMe = props.sender === props.myid
 
   const theBoosts = []
   if (props.boosts) {
@@ -60,7 +60,7 @@ export default function BoostRow(props) {
                 true
               )
 
-              if (b.sender === 1) {
+              if (b.sender === props.myid) {
                 return {
                   alias: props.myAlias || 'Me',
                   photo: props.myPhoto

@@ -319,6 +319,11 @@ export class UiStore {
   @action setSignedUp(b) {
     this.signedUp = b
   }
+
+  @observable podcastBoostAmount: number = null
+  @action setPodcastBoostAmount(v: number) {
+    this.podcastBoostAmount = v
+  }
 }
 
 export const uiStore = new UiStore()

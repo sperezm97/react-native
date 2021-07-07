@@ -183,7 +183,8 @@ function JoinTribe(props) {
                         <Button
                           w={300}
                           onPress={finish}
-                          style={{ marginVertically: 20, paddingHorizontal: 20 }}
+                          ph={20}
+                          style={{ marginVertically: 20 }}
                         >
                           Go to {tribeToCheck.name}
                         </Button>
@@ -200,7 +201,10 @@ function JoinTribe(props) {
               videoVisible={videoVisible}
               tribe={tribeToCheck}
               joinTribe={joinTribe}
-              close={() => setVideoVisible(false)}
+              close={() => {
+                setVideoVisible(false)
+                setTint(theme.dark ? 'dark' : 'light')
+              }}
             />
           )}
         </Modal>
@@ -258,12 +262,7 @@ function VideoView({ videoVisible, tribe, joinTribe, close }) {
               flex: 1
             }}
           >
-            <Button
-              w={300}
-              onPress={onJoin}
-              loading={loading}
-              style={{ paddingHorizontal: 20 }}
-            >
+            <Button w={300} onPress={onJoin} loading={loading} ph={20}>
               Go to {tribe.name}
             </Button>
           </View>

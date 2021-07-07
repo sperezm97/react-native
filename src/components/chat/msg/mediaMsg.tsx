@@ -33,7 +33,7 @@ export default function MediaMsg(props) {
   const [selectedMedia, setSelectedMedia] = useState(null)
   const { meme, ui, msg } = useStores()
   const theme = useTheme()
-  const isMe = props.sender === 1
+  const isMe = props.sender === props.myid
 
   const ldat = parseLDAT(media_token)
   // console.log('ldat', ldat, 'message_content', message_content)
@@ -59,7 +59,7 @@ export default function MediaMsg(props) {
     setBuying(true)
     let contact_id = props.sender
     if (!contact_id) {
-      contact_id = chat.contact_ids && chat.contact_ids.find(cid => cid !== 1)
+      contact_id = chat.contact_ids && chat.contact_ids.find(cid => cid !== props.myid)
     }
 
     await msg.purchaseMedia({

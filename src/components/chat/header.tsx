@@ -58,7 +58,7 @@ export default function Header({
 
     let contact
     if (chat && chat.type === conversation) {
-      contact = contactForConversation(chat, contacts.contacts)
+      contact = contactForConversation(chat, contacts.contacts, user.myid)
     }
 
     function onChatInfoPress() {

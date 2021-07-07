@@ -103,11 +103,12 @@ export default function Intro({ tribe }) {
                 if (tribe.owner) {
                   setImageDialog(true)
                 } else {
-                  setTimeout(() => {
-                    setTint('dark')
-                  }, 300)
-
-                  tribe.img && setPhotoModal(true)
+                  if (tribe.img) {
+                    setPhotoModal(true)
+                    setTimeout(() => {
+                      setTint('dark')
+                    }, 300)
+                  }
                 }
               }}
               uploading={uploading}

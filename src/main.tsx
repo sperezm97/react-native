@@ -54,7 +54,7 @@ export default function Main() {
       loadHistory()
     }
     if (appState.current.match(/active/) && nextAppState === 'background') {
-      const count = msg.countUnseenMessages()
+      const count = msg.countUnseenMessages(user.myid)
 
       // BadgeAndroid.setBadge(count);
     }
@@ -113,7 +113,7 @@ export default function Main() {
   //   if (priv) return // all good
 
   //   const keyPair = await rsa.generateKeyPair()
-  //   contacts.updateContact(1, {
+  //   contacts.updateContact(user.myid, {
   //     contact_key: keyPair.public
   //   })
   // }
