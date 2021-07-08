@@ -2,18 +2,6 @@ import { StyleSheet } from 'react-native';
 import { SCREEN_HEIGHT } from '../../../constants'
 
 export default StyleSheet.create({
-  gifContainer: {
-    flex: 1,
-    width: '100%',
-    justifyContent: 'center',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-  },
-  gif: {
-    alignSelf: 'stretch',
-    borderRadius: 4,
-    width: '100%',
-  },
   header: {
     paddingHorizontal: 12,
     paddingVertical: 16,
@@ -25,9 +13,25 @@ export default StyleSheet.create({
   },
   input: {
     fontSize: 20,
+    borderBottomColor: 'transparent',
   },
-  select: {
-    fontSize: 18,
-    fontWeight: "600",
+  gifContainer: {
+    flex: 1,
+    width: '100%',
+    justifyContent: 'center',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
   },
+  gifWrapper: {
+    padding: 3
+  },
+  gif: {
+    borderRadius: 4,
+  },
+  loadingWrapper: {
+    flexDirection: "row",
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  }
 });

@@ -1,6 +1,7 @@
-import React, { useCallback, useState, useEffect } from "react"
-import { Image, TouchableOpacity } from "react-native"
-import styles from "./styles"
+import React, { useState, useEffect } from 'react'
+import { Image, Text, TouchableOpacity } from 'react-native'
+import FastImage from 'react-native-fast-image'
+import styles from './styles'
 
 type ImageSize = {
   height: number;
@@ -14,28 +15,34 @@ const getOriginalImageSize = async (imageUri: string): Promise<ImageSize> =>
       (width: number, height: number) => resolve({ width, height }),
       reject,
     ),
-);
+  );
 
-const Item = (onSendGifHandler) => ({ item, index }) => {
+interface ItemProps {
+  i: number;
+  item: any;
+}
+
+const Item = (onSendGifHandler: (item: any) => void) => ({ item, i }: ItemProps) => {
   const [imgAspectRatio, setImgAspectRatio] = useState(0)
 
-  const thumb = item.images.original.url.replace(
-    /giphy.gif/g,
-    "100w.gif"
-  )
+  const thumb = item.images.original.url.replace(/giphy.gif/g, '100w.gif')
 
-  const getImageRatio = useCallback(async (): Promise<void> => {
-    const imageSize = await getOriginalImageSize(thumb);
-    if (imageSize) setImgAspectRatio(imageSize.height / imageSize.width)
+  useEffect(() => {
+    const getImageRatio = async () => {
+      const imageSize = await getOriginalImageSize(thumb)
+      if (!imageSize) return
+      setImgAspectRatio(imageSize.height > imageSize.width
+        ? imageSize.height / imageSize.width
+        : imageSize.width / imageSize.height
+      )
+    }
+    getImageRatio()
   }, [thumb])
 
-  useEffect(() => { getImageRatio(); }, [getImageRatio])
-
   return (
-    <TouchableOpacity key={item.id} style={{ padding: 4 }} onPress={() => onSendGifHandler(item)}>
-      <Image
-        progressiveRenderingEnabled
-        resizeMode="cover"
+    <TouchableOpacity key={item.id} style={styles.gifWrapper} onPress={() => onSendGifHandler(item)}>
+      <FastImage
+        resizeMode="contain"
         source={{ uri: thumb }}
         style={{ ...styles.gif, aspectRatio: imgAspectRatio }}
       />

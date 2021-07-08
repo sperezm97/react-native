@@ -1,12 +1,12 @@
 import React from 'react'
-import { View } from "react-native"
-import { TextInput } from "react-native-paper"
-import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'
+import { View } from 'react-native'
+import { TextInput } from 'react-native-paper'
+import Ionicons from 'react-native-vector-icons/Ionicons'
 import { GiphyProps } from './type'
-import styles from "./styles"
-import { useTheme } from "../../../store"
+import styles from './styles'
+import { useTheme } from '../../../store'
 
-type HeaderProps = Pick<GiphyProps, "onClose" | "searchGif" | "setSearchGif" | "getGifsBySearch">
+type HeaderProps = Pick<GiphyProps, 'onClose' | 'searchGif' | 'setSearchGif' | 'getGifsBySearch'>
 
 const Header: React.FC<HeaderProps> = ({
   onClose,
@@ -14,7 +14,7 @@ const Header: React.FC<HeaderProps> = ({
   setSearchGif,
   getGifsBySearch,
 }) => {
-  const theme = useTheme();
+  const theme = useTheme()
 
   return (
     <View style={styles.header}>
@@ -25,7 +25,8 @@ const Header: React.FC<HeaderProps> = ({
           value={searchGif}
           onChangeText={setSearchGif}
           onSubmitEditing={getGifsBySearch}
-          left={<TextInput.Icon name={() => <FontAwesomeIcon name='search' size={20} color={theme.iconPrimary} />} />}
+          underlineColor="transparent"
+          left={<TextInput.Icon name={() => <Ionicons name='search' size={20} color={theme.primary} />} />}
         />
       </View>
     </View>
