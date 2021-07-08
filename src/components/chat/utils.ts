@@ -7,11 +7,11 @@ const conversation = constants.chat_types.conversation
 const group = constants.chat_types.conversation
 const expiredInvite = constants.invite_statuses.expired
 
-export function allChats(chats: Chat[], contacts: Contact[]): Chat[] {
+export function allChats(chats: Chat[], contacts: Contact[], myid: number): Chat[] {
   const groupChats = chats.filter(c => c.type !== conversation).map(c => ({ ...c }))
   const conversations = []
   contacts.forEach(contact => {
-    if (contact.id !== 1 && !contact.from_group) {
+    if (contact.id !== myid && !contact.from_group) {
       const chatForContact = chats.find(c => {
         return c.type === conversation && c.contact_ids.includes(contact.id)
       })
@@ -24,7 +24,7 @@ export function allChats(chats: Chat[], contacts: Contact[]): Chat[] {
           name: contact.alias,
           photo_url: contact.photo_url,
           updated_at: new Date().toJSON(),
-          contact_ids: [1, contact.id],
+          contact_ids: [myid, contact.id],
           invite: contact.invite,
           type: conversation
         })

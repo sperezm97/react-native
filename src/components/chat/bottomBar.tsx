@@ -108,7 +108,6 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
         txt = type + '::' + JSON.stringify({ ...rest, text })
       }
 
-      console.log('=> BEFORE')
       await msg.sendMessage({
         contact_id: contact_id || null,
         text: txt,
@@ -116,7 +115,6 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
         amount: price + pricePerMessage || 0,
         reply_uuid: replyUuid || ''
       })
-      console.log('=> AFTER')
       setText('')
       if (replyUuid) {
         setReplyUuid('')
@@ -128,7 +126,7 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
       // inputRef.current.blur()
       // setInputFocused(false)
     } catch (error) {
-      console.log('error:::', error)
+      console.log(error)
     }
   }
 
@@ -236,7 +234,7 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
       setRecordSecs('0:00')
       if (cb && !tooShort) cb(result)
     } catch (e) {
-      console.log(e || 'ERROR')
+      console.log(e)
     }
   }
 

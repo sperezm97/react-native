@@ -76,9 +76,7 @@ class ContactStore {
       if (r.subscriptions) subStore.setSubs(r.subscriptions)
 
       return r
-    } catch (e) {
-      console.log('getContacts error', e)
-    }
+    } catch (e) {}
   }
 
   @action

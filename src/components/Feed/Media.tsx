@@ -113,7 +113,12 @@ function Media(props) {
           <View style={{ ...styles.footer }}>
             <Boost onPress={onBoostPress} circleH={30} circleW={30} />
             {showBoostRow && (
-              <BoostDetails {...props} myAlias={user.alias} myPhoto={myPhoto} />
+              <BoostDetails
+                {...props}
+                myAlias={user.alias}
+                myPhoto={myPhoto}
+                myid={user.myid}
+              />
             )}
           </View>
           {/* <View style={{ ...styles.meta }}></View> */}

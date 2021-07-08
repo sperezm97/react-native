@@ -92,9 +92,7 @@ export async function contactPicSrc(id): Promise<any> {
   try {
     const exists = await RNFetchBlob.fs.exists(path)
     if (exists) return { uri: path }
-  } catch (e) {
-    console.log('error contactPicSrc', e)
-  }
+  } catch (e) {}
   return null
 }
 

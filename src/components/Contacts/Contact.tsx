@@ -115,7 +115,7 @@ export default function EditContact({ route }) {
 
       <View style={styles.content}>
         <Form
-          schema={schemas.contact}
+          schema={schemas.contactEdit}
           loading={loading}
           buttonText='Save'
           initialValues={

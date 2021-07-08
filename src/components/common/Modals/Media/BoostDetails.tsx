@@ -48,7 +48,7 @@ export default function BoostRow(props) {
                 true
               )
 
-              if (b.sender === 1) {
+              if (b.sender === props.myid) {
                 return {
                   alias: props.myAlias || 'Me',
                   photo: props.myPhoto

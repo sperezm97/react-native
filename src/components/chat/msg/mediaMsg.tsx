@@ -31,12 +31,11 @@ export default function MediaMsg(props) {
   const [buying, setBuying] = useState(false)
   const [mediaModal, setMediaModal] = useState(false)
   const [selectedMedia, setSelectedMedia] = useState(null)
-  const { meme, ui, msg } = useStores()
+  const { meme, ui, msg, user } = useStores()
   const theme = useTheme()
   const isMe = props.sender === props.myid
 
-  const ldat = parseLDAT(media_token)
-  // console.log('ldat', ldat, 'message_content', message_content)
+  let ldat = parseLDAT(media_token)
 
   let amt = null
   let purchased = false

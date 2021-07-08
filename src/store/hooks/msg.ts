@@ -69,6 +69,7 @@ function processMsgs(
             (isTribe && mtype === 'purchase_accept' && m.original_muid === ldat.muid)
           )
         })
+
         if (accepted) {
           msg.media_token = accepted.media_token
           msg.media_key = accepted.media_key

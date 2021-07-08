@@ -114,6 +114,7 @@ const expiredInvite = constants.invite_statuses.expired
 export function allChats(chats: Chat[], contacts: Contact[], myid: number): Chat[] {
   const groupChats = chats.filter(c => c.type !== conversation).map(c => ({ ...c }))
   const conversations = []
+
   contacts.forEach(contact => {
     if (contact.id !== myid && !contact.from_group) {
       const chatForContact = chats.find(c => {
@@ -139,15 +140,6 @@ export function allChats(chats: Chat[], contacts: Contact[], myid: number): Chat
     c => !(c.invite && c.invite.status === expiredInvite)
   )
   const all = groupChats.concat(convs)
-
-  // return all.map(chat => {
-  //   return {
-  //     ...chat,
-  //     joined: true,
-  //     owner: chat.owner_pubkey === user.publicKey
-  //   }
-  // })
-
   return all
 }
 

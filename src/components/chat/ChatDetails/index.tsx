@@ -95,7 +95,6 @@ export default function ChatDetails({ route }) {
         setUploading(false)
       })
       .catch(err => {
-        console.log(err)
         setUploading(false)
       })
   }
