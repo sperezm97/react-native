@@ -16,6 +16,6 @@
     "module": "esnext",
     "isolatedModules": true
   },
-  // "include": ["src"]
-  "include": ["src/index.web.tsx", "web", "node_modules/react-native-redash/lib/typescript/v1/index.d.ts"]
+  "include": ["src"]
+  // "include": ["node_modules/react-native-redash/lib/typescript/v1/index.d.ts"]
 }

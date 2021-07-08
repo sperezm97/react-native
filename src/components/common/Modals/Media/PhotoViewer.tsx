@@ -268,7 +268,11 @@ function SwipeItem(props) {
         <View style={styles.row}>
           {!isMe ? <Boost onPress={onBoostPress} /> : <View></View>}
 
-          <View>{showBoostRow && <BoostDetails {...props} myAlias={user.alias} />}</View>
+          <View>
+            {showBoostRow && (
+              <BoostDetails {...props} myAlias={user.alias} myid={user.myid} />
+            )}
+          </View>
         </View>
       </View>
     </View>

@@ -277,16 +277,12 @@ class MsgStore {
     boost?: boolean
     message_price?: number
   }) {
-    console.log('HERE => 0')
     try {
-      console.log('HERE => 0.1')
       const myId = userStore.myid
       const encryptedText = await encryptText({ contact_id: myId, text })
 
-      console.log('HERE => 0.2')
       const remote_text_map = await makeRemoteTextMap({ contact_id, text, chat_id })
 
-      console.log('HERE => 0.3')
       const v: { [k: string]: any } = {
         contact_id,
         chat_id: chat_id || null,
@@ -297,23 +293,16 @@ class MsgStore {
         boost: boost || false
       }
 
-      console.log('HERE => 0.4')
       if (message_price) v.message_price = message_price
-      console.log('HERE => 0.5')
       // const r = await relay.post('messages', v)
       // this.gotNewMessage(r)
 
       if (!chat_id) {
-        console.log('HERE => 1')
         const r = await relay.post('messages', v)
-        console.log('HERE => 1.1')
         if (!r) return
-        console.log('HERE => 1.2')
 
         this.gotNewMessage(r)
-        console.log('HERE => 1.3')
       } else {
-        console.log('HERE => 2')
         const putInMsgType = boost
           ? constants.message_types.boost
           : constants.message_types.message
@@ -322,7 +311,6 @@ class MsgStore {
           boost && message_price && message_price < amount
             ? amount - message_price
             : amount
-        console.log('HERE => 2.1')
         putIn(
           this.messages,
           {
@@ -336,20 +324,13 @@ class MsgStore {
           },
           chat_id
         )
-        console.log('HERE => 2.2')
         const r = await relay.post('messages', v)
-        console.log('HERE => 2.3')
 
         if (!r) return
-        console.log('HERE => 2.4')
-        // console.log("RESULT")
         this.messagePosted(r)
-        console.log('HERE => 2.5')
         if (amount) detailsStore.addToBalance(amount * -1)
-        console.log('HERE => 2.6')
       }
     } catch (e) {
-      console.log('HERE => 3 ERROR!!!:', e)
       console.log(e)
     }
   }
@@ -578,10 +559,7 @@ class MsgStore {
 
   @action // only if it contains a "chat"
   async gotNewMessage(m) {
-    console.log('m', m)
-
     let newMsg = await decodeSingle(m)
-    console.log('newMsg', newMsg)
 
     const chatID = newMsg.chat_id
     if (chatID) {

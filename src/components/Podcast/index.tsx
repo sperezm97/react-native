@@ -51,7 +51,6 @@ export default function Podcast({ pod, chat, onBoost, podError }) {
     // }
     if (playing) TrackPlayer.pause()
     else {
-      console.log('PLAY!')
       TrackPlayer.play()
       if (!duration) getAndSetDuration()
     }
@@ -69,8 +68,6 @@ export default function Podcast({ pod, chat, onBoost, podError }) {
   }
 
   async function selectEpisode(episode) {
-    console.log('episode', episode)
-
     TrackPlayer.reset()
     setDuration(0)
     setSelectedEpisodeID(episode.id)

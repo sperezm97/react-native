@@ -6,15 +6,10 @@ import { constants } from '../constants'
 import { Msg, MAX_MSGS_PER_CHAT } from './msg'
 
 export async function encryptText({ contact_id, text }) {
-  console.log("encryptText => 1:", text)
   if (!text) return ''
-  console.log("encryptText => 2:", contactStore.contacts)
   const contact = contactStore.contacts.find(c => c.id === contact_id)
-  console.log("encryptText => 3:", contact)
   if (!contact) return ''
-  console.log("encryptText => 4")
   const encText = await e2e.encryptPublic(text, contact.contact_key) // contact.contact_key === null
-  console.log("encryptText => 5:", encText)
   return encText
 }
 
@@ -31,7 +26,8 @@ export async function makeRemoteTextMap({ contact_id, text, chat_id }, includeSe
         const me = contactStore.contacts.find(c => c.id === myid) // add in my own self (for media_key_map)
         if (me) idToKeyMap[myid] = me.contact_key
       }
-    } else { // NON TRIBE
+    } else {
+      // NON TRIBE
       const contactsInChat = contactStore.contacts.filter(c => {
         if (includeSelf) {
           return chat.contact_ids.includes(c.id)
@@ -39,10 +35,9 @@ export async function makeRemoteTextMap({ contact_id, text, chat_id }, includeSe
           return chat.contact_ids.includes(c.id) && c.id !== myid
         }
       })
-      contactsInChat.forEach(c => idToKeyMap[c.id] = c.contact_key)
+      contactsInChat.forEach(c => (idToKeyMap[c.id] = c.contact_key))
     }
   } else {
-    // console.log(contactStore.contacts, contact_id)
     const contact = contactStore.contacts.find(c => c.id === contact_id)
     if (contact) idToKeyMap[contact_id] = contact.contact_key
   }

@@ -28,8 +28,6 @@ export default function ProfilePic({ z, show, onDone, onBack }) {
       const url = await uploadSync(img.uri)
 
       if (url) {
-        console.log('is url', url)
-
         await contacts.updateContact(user.myid, {
           photo_url: url
         })

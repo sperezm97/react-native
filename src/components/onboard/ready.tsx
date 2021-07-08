@@ -33,7 +33,7 @@ export default function Ready(props) {
       setLoading(false)
       onDone()
     } catch (error) {
-      console.log('error', error)
+      console.log('finish onboarding error', error)
     }
   }
 

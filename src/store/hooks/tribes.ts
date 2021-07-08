@@ -107,7 +107,7 @@ export function useTribeHistory(created, lastActive) {
 
 export function useOwnerMediaType(msgs, type, owner = true, myid) {
   return msgs.filter(m => {
-    const ownerCriteria = owner ? m.sender === 1 : m.sender !== myid
+    const ownerCriteria = owner ? m.sender === myid : m.sender !== myid
 
     return m.type === type && m.status !== constants.statuses.deleted && ownerCriteria
   })
