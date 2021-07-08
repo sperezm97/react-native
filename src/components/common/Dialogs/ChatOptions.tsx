@@ -102,9 +102,7 @@ export default function ChatOptions(props) {
       thumbBgColor: theme.primary,
       action: () => {
         close()
-        setTimeout(() => {
-          pickGif()
-        }, 400)
+        setTimeout(pickGif, 400)
       }
     }
   ]
