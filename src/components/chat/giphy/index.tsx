@@ -46,8 +46,6 @@ const Giphy = React.forwardRef<Modalize | null, GiphyProps>(({
     />
   )
 
-  console.log("111111")
-
   return (
     <Portal>
       <Modalize
