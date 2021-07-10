@@ -82,7 +82,7 @@ function Media(props) {
 
   const showBoostRow = boosts_total_sats ? true : false
 
-  const meContact = contacts.contacts.find(c => c.id === 1)
+  const meContact = contacts.contacts.find(c => c.id === user.myid)
   const myPhoto = usePicSrc(meContact)
 
   return (
@@ -113,7 +113,12 @@ function Media(props) {
           <View style={{ ...styles.footer }}>
             <Boost onPress={onBoostPress} circleH={30} circleW={30} />
             {showBoostRow && (
-              <BoostDetails {...props} myAlias={user.alias} myPhoto={myPhoto} />
+              <BoostDetails
+                {...props}
+                myAlias={user.alias}
+                myPhoto={myPhoto}
+                myid={user.myid}
+              />
             )}
           </View>
           {/* <View style={{ ...styles.meta }}></View> */}

@@ -73,9 +73,17 @@ export async function decryptFileAndSave(filepath, pwd, extension): Promise<stri
   }
 }
 
-export async function decryptFileAndSaveReturningContent(filepath, pwd, extension): Promise<string> {
+export async function decryptFileAndSaveReturningContent(
+  filepath,
+  pwd,
+  extension
+): Promise<string> {
   try {
-    const content = await RNCryptor.decryptFileAndSaveReturningContent(filepath, pwd, extension)
+    const content = await RNCryptor.decryptFileAndSaveReturningContent(
+      filepath,
+      pwd,
+      extension
+    )
     return content
   } catch (e) {
     console.log(e)

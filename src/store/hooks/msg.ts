@@ -11,7 +11,9 @@ const group = constants.chat_types.group
 const tribe = constants.chat_types.tribe
 
 export function useMsgs(chat, limit?: number) {
-  const { chats, msg, contacts } = useStores()
+  const { chats, user, msg, contacts } = useStores()
+  const myid = user.myid
+
   if (!chat) return
 
   let theID = chat.id
@@ -27,7 +29,7 @@ export function useMsgs(chat, limit?: number) {
 
   const shownMsgs = msgs && msgs.slice(0, limit || 1000)
 
-  const messages = processMsgs(shownMsgs, isTribe, contacts.contacts)
+  const messages = processMsgs(shownMsgs, isTribe, contacts.contacts, myid)
 
   const msgsWithDates = msgs && injectDates(messages)
   const ms = msgsWithDates || []
@@ -37,7 +39,12 @@ export function useMsgs(chat, limit?: number) {
 
 // "payment" is for paying an invoice
 const hideTypes = ['payment', 'purchase', 'purchase_accept', 'purchase_deny']
-function processMsgs(incomingmsgs: Msg[], isTribe: boolean, contacts: Contact[]) {
+function processMsgs(
+  incomingmsgs: Msg[],
+  isTribe: boolean,
+  contacts: Contact[],
+  myid: number
+) {
   // "deep clone" the messages array
   const msgs = incomingmsgs && incomingmsgs.map(a => Object.assign({}, a)).reverse()
   const ms = []
@@ -46,11 +53,11 @@ function processMsgs(incomingmsgs: Msg[], isTribe: boolean, contacts: Contact[])
     let skip = false
     const msg = msgs[i]
 
-    msg.showInfoBar = calcShowInfoBar(msgs, msg, i, isTribe)
+    msg.showInfoBar = calcShowInfoBar(msgs, msg, i, isTribe, myid)
     const typ = constantCodes['message_types'][msg.type]
 
     // attachment logic
-    if (typ === 'attachment' && msg.sender !== 1) {
+    if (typ === 'attachment' && msg.sender !== myid) {
       // not from me
       const ldat = parseLDAT(msg.media_token)
       if (ldat.muid && ldat.meta && ldat.meta.amt) {
@@ -62,13 +69,14 @@ function processMsgs(incomingmsgs: Msg[], isTribe: boolean, contacts: Contact[])
             (isTribe && mtype === 'purchase_accept' && m.original_muid === ldat.muid)
           )
         })
+
         if (accepted) {
           msg.media_token = accepted.media_token
           msg.media_key = accepted.media_key
         }
       }
     }
-    if (typ === 'attachment' && msg.sender === 1) {
+    if (typ === 'attachment' && msg.sender === myid) {
       // from me
       const ldat = parseLDAT(msg.media_token)
       if (ldat && ldat.muid && ldat.meta && ldat.meta.amt) {
@@ -142,24 +150,32 @@ const msgTypesNoInfoBar = [
   constants.message_types.member_reject
 ]
 // only show info bar if first in a group from contact
-function calcShowInfoBar(msgs: Msg[], msg: Msg, i: number, isTribe: boolean) {
+function calcShowInfoBar(
+  msgs: Msg[],
+  msg: Msg,
+  i: number,
+  isTribe: boolean,
+  myid: number
+) {
   if (msgTypesNoInfoBar.includes(msg.type)) return false
   const previous = getPrevious(msgs, i)
 
   if (!previous) return true
-  if (isTribe && msg.sender !== 1) {
+  if (isTribe && msg.sender !== myid) {
     // for self msgs, do normal way
 
     if (
       previous.sender_alias === msg.sender_alias &&
-      previous.type !== constants.message_types.group_join
+      previous.type !== constants.message_types.group_join &&
+      previous.type !== constants.message_types.boost
     ) {
       return false
     }
   } else {
     if (
       previous.sender === msg.sender &&
-      previous.type !== constants.message_types.group_join
+      previous.type !== constants.message_types.group_join &&
+      previous.type !== constants.message_types.boost
     ) {
       return false
     }

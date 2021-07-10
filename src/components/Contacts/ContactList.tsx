@@ -12,8 +12,9 @@ import Typography from '../common/Typography'
 
 export default function ContactList({ listHeader }) {
   const navigation = useNavigation()
-  const { ui, contacts } = useStores()
+  const { user, ui, contacts } = useStores()
   const theme = useTheme()
+  const myid = user.myid
 
   return useObserver(() => {
     const contactsToShow = contacts.contacts.filter(c => {
@@ -21,7 +22,7 @@ export default function ContactList({ listHeader }) {
       return c.alias.toLowerCase().includes(ui.contactsSearchTerm.toLowerCase())
     })
     const contactsNotMe = contactsToShow
-      .filter(c => c.id !== 1)
+      .filter(c => c.id !== myid)
       .sort((a, b) => (a.alias > b.alias ? 1 : -1))
 
     const contactsNotFromGroups = contactsNotMe.filter(c => !c.from_group)

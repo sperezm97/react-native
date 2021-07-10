@@ -4,7 +4,6 @@ import { DEFAULT_TRIBE_SERVER } from '../config'
 
 export default async function actions(action: string) {
   if (!action) return
-  console.log('ACTION', action)
 
   if (action.startsWith('create_podcast')) {
     const arr = action.split(':')

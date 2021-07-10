@@ -2,13 +2,13 @@ import * as Yup from 'yup'
 const rq = 'Required'
 
 const contact = [
-  {
-    name: 'alias',
-    type: 'text',
-    label: { en: 'Name', es: 'Nombre' },
-    required: true,
-    validator: Yup.string().required(rq)
-  },
+  // {
+  //   name: 'alias',
+  //   type: 'text',
+  //   label: { en: 'Name', es: 'Nombre' },
+  //   required: true,
+  //   validator: Yup.string().required(rq)
+  // },
   // {
   //   name:'photo',
   //   type:'photo',
@@ -20,7 +20,24 @@ const contact = [
   {
     name: 'public_key',
     type: 'pubkey',
-    label: { en: 'Address', es: 'Address' },
+    label: { en: 'Public Key', es: 'Address' },
+    required: true,
+    validator: Yup.string().required(rq)
+  }
+]
+
+const contactEdit = [
+  {
+    name: 'alias',
+    type: 'text',
+    label: { en: 'Name', es: 'Nombre' },
+    required: true,
+    validator: Yup.string().required(rq)
+  },
+  {
+    name: 'public_key',
+    type: 'pubkey',
+    label: { en: 'Public Key', es: 'Address' },
     required: true,
     validator: Yup.string().required(rq)
   }
@@ -54,7 +71,7 @@ const pubKey = [
   {
     name: 'public_key',
     type: 'pubkey',
-    label: { en: 'Address', es: 'Address' },
+    label: { en: 'Public Key', es: 'Address' },
     required: true,
     validator: Yup.string().required(rq)
   }
@@ -196,7 +213,7 @@ const tribe = [
   // }
 ]
 
-export { contact, me, pubKey, tribe, subscribe, inviteFriend }
+export { contact, contactEdit, me, pubKey, tribe, subscribe, inviteFriend }
 
 function emptyStringToNull(value, originalValue) {
   if (typeof originalValue === 'string' && originalValue === '') {

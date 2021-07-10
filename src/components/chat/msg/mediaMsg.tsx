@@ -27,15 +27,21 @@ const { useMsgs } = hooks
 
 export default function MediaMsg(props) {
   const { id, message_content, media_type, chat, media_token } = props
+  const [onlyOneClick, setOnlyOnClick] = useState(false)
   const [buying, setBuying] = useState(false)
   const [mediaModal, setMediaModal] = useState(false)
   const [selectedMedia, setSelectedMedia] = useState(null)
-  const { meme, ui, msg } = useStores()
+  const { meme, ui, msg, user } = useStores()
   const theme = useTheme()
-  const isMe = props.sender === 1
+  const isMe = props.sender === props.myid
 
-  const ldat = parseLDAT(media_token)
-  // console.log('ldat', ldat, 'message_content', message_content)
+  let ldat = parseLDAT(media_token)
+
+  // console.log('ldat', ldat)
+  // console.log('my pub', user.publicKey)
+  // console.log('owner_pubkey', chat.owner_pubkey)
+  // console.log('ldat pubkey', ldat.pubkey)
+  // console.log('assert', chat.owner_pubkey === ldat.pubkey)
 
   let amt = null
   let purchased = false
@@ -54,10 +60,11 @@ export default function MediaMsg(props) {
   }, [props.media_token])
 
   async function buy(amount) {
+    setOnlyOnClick(true)
     setBuying(true)
     let contact_id = props.sender
     if (!contact_id) {
-      contact_id = chat.contact_ids && chat.contact_ids.find(cid => cid !== 1)
+      contact_id = chat.contact_ids && chat.contact_ids.find(cid => cid !== props.myid)
     }
 
     await msg.purchaseMedia({
@@ -131,7 +138,7 @@ export default function MediaMsg(props) {
   if (showPurchaseButton) wrapHeight += 38
 
   const onButtonPressHandler = () => {
-    if (!purchased) buy(amt)
+    if (!purchased && !buying && !onlyOneClick) buy(amt)
   }
 
   const onLongPressHandler = () => props.onLongPress(props)

@@ -1,8 +1,13 @@
-import React from "react";
-import { Image, View, ScrollView, TouchableOpacity, Modal } from "react-native";
-import { IconButton, TextInput, Text } from "react-native-paper";
-import { useTheme } from "../../../store";
-import styles from "./styles";
+import React, { useCallback, useMemo, useState, useEffect } from "react"
+import { Image, View, TouchableOpacity } from "react-native"
+import MasonryList from '@react-native-seoul/masonry-list'
+import { Modalize } from 'react-native-modalize'
+import { Portal } from 'react-native-portalize'
+import { useTheme } from "../../../store"
+import { GiphyProps } from './type'
+import styles from "./styles"
+import Header from './header'
+import Item from './item'
 
 /**
  * Component that shows a modal with specific gifs
@@ -14,7 +19,7 @@ import styles from "./styles";
  * @param {Function} onSendGifHandler - callback function that return the selected gif
  * @param {Function} onSubmitEditing - function that search the type of gifs
  */
-export default function Giphy({
+const Giphy = React.forwardRef<Modalize | null, GiphyProps>(({
   gifs,
   open,
   onClose,
@@ -22,62 +27,45 @@ export default function Giphy({
   onSendGifHandler,
   setSearchGif,
   getGifsBySearch,
-}) {
+}, modalizeRef) => {
   const theme = useTheme();
+
+  const keyExtractor = useCallback(({ id }) => id, [])
+
+  const onSearchGIF = () => {
+    setSearchGif(searchGif)
+    getGifsBySearch()
+  }
+
+  const CustomHeader = () => (
+    <Header
+      onClose={onClose}
+      searchGif={searchGif}
+      setSearchGif={setSearchGif}
+      getGifsBySearch={getGifsBySearch}
+    />
+  )
+
   return (
-    <View style={styles.centeredView}>
-      <Modal
-        visible={open}
-        onDismiss={() => onClose(false)}
-        onRequestClose={() => onClose(false)}
-        animationType="slide"
-        transparent={true}
+    <Portal>
+      <Modalize
+        ref={modalizeRef}
+        modalHeight={400}
+        HeaderComponent={CustomHeader}
+        modalStyle={{ backgroundColor: theme.main }}
       >
-        <View
-          style={{
-            ...styles.modalView,
-            backgroundColor: theme.bg,
-            borderColor: theme.border,
+        <MasonryList
+          contentContainerStyle={{
+            paddingHorizontal: 10,
+            alignSelf: 'stretch',
           }}
-        >
-          <View style={styles.header}>
-            <Text style={{ ...styles.select, color: theme.title }}>
-              Select gif
-            </Text>
-            <IconButton
-              icon="close"
-              color={theme.subtitle}
-              size={20}
-              onPress={() => onClose(false)}
-            />
-          </View>
-          <TextInput
-            style={styles.input}
-            label="Search"
-            value={searchGif}
-            onChangeText={(value) => setSearchGif(value)}
-            onSubmitEditing={getGifsBySearch}
-          />
-          <ScrollView>
-            <View style={styles.gifContainer}>
-              {gifs.map((gif) => {
-                const thumb = gif.images.original.url.replace(
-                  /giphy.gif/g,
-                  "100w.gif"
-                );
-                return (
-                  <TouchableOpacity
-                    key={gif.id}
-                    onPress={() => onSendGifHandler(gif)}
-                  >
-                    <Image source={{ uri: thumb }} style={styles.gif} />
-                  </TouchableOpacity>
-                );
-              })}
-            </View>
-          </ScrollView>
-        </View>
-      </Modal>
-    </View>
-  );
-}
+          numColumns={3}
+          data={gifs}
+          renderItem={Item(onSendGifHandler)}
+        />
+      </Modalize>
+    </Portal>
+  )
+})
+
+export default Giphy

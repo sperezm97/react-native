@@ -1,5 +1,7 @@
 import React from 'react'
-import { View, StyleSheet } from 'react-native'
+import { StyleSheet, View } from 'react-native'
+import Ionicon from 'react-native-vector-icons/Ionicons'
+
 import { useParsedJsonOrClipMsg } from '../../../store/hooks/msg'
 import { useTheme } from '../../../store'
 import shared from './sharedStyles'
@@ -15,8 +17,9 @@ export default function BoostMessage(props) {
 
   return (
     <View style={{ ...styles.wrap }}>
-      <View style={{ ...styles.rocketWrap, backgroundColor: theme.accent }}>
-        <CustomIcon color='white' size={20} name='fireworks' />
+      <View style={{ ...styles.rocketWrap, backgroundColor: theme.primary }}>
+        {/* <CustomIcon color='white' size={20} name='fireworks' /> */}
+        <Ionicon name='rocket-outline' color={theme.white} size={16} />
       </View>
       <Typography color={theme.text} fw='500'>
         {amount}

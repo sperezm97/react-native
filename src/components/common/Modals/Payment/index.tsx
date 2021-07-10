@@ -30,8 +30,7 @@ export default function PaymentWrap() {
 }
 
 function Payment({ visible, close }) {
-  const { ui, msg, contacts } = useStores()
-
+  const { ui, user, msg, contacts } = useStores()
   const [main, setMain] = useState(false)
   const [next, setNext] = useState('')
   const [loading, setLoading] = useState(false)
@@ -46,7 +45,8 @@ function Payment({ visible, close }) {
 
   const chat = ui.chatForPayModal
 
-  const contact_id = chat && chat.contact_ids && chat.contact_ids.find(cid => cid !== 1)
+  const contact_id =
+    chat && chat.contact_ids && chat.contact_ids.find(cid => cid !== user.myid)
 
   const contact = contact_id && contacts.contacts.find(c => c.id === contact_id)
 
@@ -202,6 +202,7 @@ function Payment({ visible, close }) {
             paid={rawInvoice.invoice === ui.lastPaidInvoice}
           />
         )}
+
         <QR
           visible={next === 'payment' || next === 'loopout'}
           onCancel={handleOnClose}

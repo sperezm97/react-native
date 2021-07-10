@@ -17,13 +17,15 @@ export default function NumKey(props) {
   const theme = useTheme()
   const h = props.squish ? 240 : 275
 
+  const inline = props.inline ? true : false
+
   return (
     <View
       style={{
         ...styles.wrap,
         backgroundColor: props.dark ? theme.black : theme.bg,
-        paddingTop: 15,
-        paddingBottom: isIphoneX() ? getBottomSpace() : 0
+        paddingTop: inline ? 0 : 15,
+        paddingBottom: inline ? 0 : isIphoneX() ? getBottomSpace() : 0
       }}
     >
       <View
@@ -88,9 +90,9 @@ NumKey.defaultProps = {
 
 const styles = StyleSheet.create({
   wrap: {
-    // flex: 1
+    // flex: 1,
     // justifyContent: 'flex-end',
-    // width: '100%',
+    // width: '100%'
     // height: '100%'
   },
   row: {

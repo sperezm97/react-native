@@ -78,7 +78,6 @@ function ReplySource(props) {
 
 function Media(props) {
   const { media_token } = props
-
   const theme = useTheme()
 
   const ldat = parseLDAT(media_token)

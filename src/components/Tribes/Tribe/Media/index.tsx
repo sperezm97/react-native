@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 
-import { useTheme, hooks } from '../../../../store'
+import { useStores, useTheme, hooks } from '../../../../store'
 import { useOwnerMediaType } from '../../../../store/hooks/tribes'
 import { SCREEN_WIDTH } from '../../../../constants'
 import MediaItem from './MediaItem'
@@ -16,6 +16,7 @@ import { setTint } from '../../../common/StatusBar'
 const { useMsgs } = hooks
 
 function Media({ tribe }) {
+  const { user } = useStores()
   const [mediaModal, setMediaModal] = useState(false)
   const [selectedMedia, setSelectedMedia] = useState(null)
   const theme = useTheme()
@@ -28,10 +29,10 @@ function Media({ tribe }) {
     }, 300)
   }
 
-  return useObserver(() => {
-    const msgs = useMsgs(tribe.chat) || []
-    const media = useOwnerMediaType(msgs, 6, tribe.owner)
+  const msgs = useMsgs(tribe.chat) || []
+  const media = useOwnerMediaType(msgs, tribe, 6, user.myid)
 
+  return useObserver(() => {
     return (
       <>
         <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>

@@ -24,7 +24,8 @@ export default function Button(props) {
     dark,
     icon,
     children,
-    size
+    size,
+    ph
   } = props
 
   let defaultFs = 13
@@ -60,7 +61,7 @@ export default function Button(props) {
         fontWeight,
         textTransform: tf ? tf : 'uppercase'
       }}
-      contentStyle={{ height }}
+      contentStyle={{ height, paddingHorizontal: ph }}
       dark={dark}
       icon={icon}
       color={color}

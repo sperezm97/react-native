@@ -97,7 +97,7 @@ export default function MsgRow(props) {
     )
   }
 
-  const isMe = props.sender === 1
+  const isMe = props.sender === props.myid
   const w = props.windowWidth
 
   return (
@@ -157,6 +157,7 @@ export default function MsgRow(props) {
                 isTribe={isTribe}
                 isTribeOwner={isTribeOwner}
                 myAlias={props.myAlias}
+                myid={props.myid}
               />
             </View>
             <View
@@ -185,10 +186,10 @@ function MsgBubble(props) {
   const theme = useTheme()
   const { msg } = useStores()
   const [deleting, setDeleting] = useState(false)
-  const isMe = props.sender === 1
   const isInvoice = props.type === constants.message_types.invoice
   const isPaid = props.status === constants.statuses.confirmed
   const [showPopover, setShowPopover] = useState(false)
+  const isMe = props.sender === props.myid
 
   let backgroundColor = isMe ? (theme.dark ? theme.main : theme.lightGrey) : theme.bg
   if (isInvoice && !isPaid) {
@@ -253,9 +254,9 @@ function MsgBubble(props) {
           {isDeleted && <DeletedMsg />}
           {!isDeleted && (props.reply_uuid ? true : false) && (
             <ReplyContent
-              replyMsg={replyMessage}
               content={props.reply_message_content}
               senderAlias={props.reply_message_sender_alias}
+              replyMessageExtraContent={replyMessage}
             />
           )}
           {!isDeleted && (
@@ -264,7 +265,7 @@ function MsgBubble(props) {
               id={props.id}
               onLongPress={onLongPressHandler}
               myAlias={props.myAlias}
-              isMe={isMe}
+              myid={props.myid}
             />
           )}
         </View>

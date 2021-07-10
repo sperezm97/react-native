@@ -28,7 +28,14 @@ export default function DialogWrap({
           paddingHorizontal: ph
         }}
       >
-        <Dialog.Title style={{ color: theme.primary, fontWeight: '400' }}>
+        <Dialog.Title
+          style={{
+            color: theme.primary,
+            fontWeight: '400',
+            paddingHorizontal: 0,
+            marginHorizontal: ph
+          }}
+        >
           {title}
         </Dialog.Title>
         <Dialog.Content

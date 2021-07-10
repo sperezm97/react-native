@@ -1,13 +1,6 @@
 import React, { useState, useCallback } from 'react'
 import { useObserver } from 'mobx-react-lite'
-import {
-  StyleSheet,
-  View,
-  Text,
-  TouchableOpacity,
-  FlatList,
-  Dimensions
-} from 'react-native'
+import { StyleSheet, View, TouchableOpacity, FlatList, Dimensions } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback'
 
@@ -15,7 +8,6 @@ import { useStores, useTheme, hooks } from '../../store'
 import { useSearchChats } from '../../store/hooks/chats'
 import InviteRow, { styles } from './inviteRow'
 import { chatPicSrc, useChatPicSrc } from '../utils/picSrc'
-import PushableButton from '../common/Button/PushableButton'
 import RefreshLoading from '../common/RefreshLoading'
 import Avatar from '../common/Avatar'
 import Typography from '../common/Typography'
@@ -23,7 +15,8 @@ import Typography from '../common/Typography'
 const { useChats, useChatRow } = hooks
 
 export default function ChatList(props) {
-  const { ui, contacts, msg, details, chats } = useStores()
+  const { ui, user, contacts, msg, details, chats } = useStores()
+  const myid = user.myid
 
   const [refreshing, setRefreshing] = useState(false)
   const onRefresh = useCallback(async () => {
@@ -51,9 +44,6 @@ export default function ChatList(props) {
     return <ChatRow key={chatID} {...item} />
   }
 
-  const setAddFriendModalHandler = () => ui.setAddFriendDialog(true)
-  const setNewTribeModalHandler = () => ui.setNewTribeModal(true)
-
   return useObserver(() => {
     const chats = useChats()
 
@@ -66,7 +56,7 @@ export default function ChatList(props) {
           renderItem={renderItem}
           keyExtractor={item => {
             if (!item.id) {
-              const contact_id = item.contact_ids.find(id => id !== 1)
+              const contact_id = item.contact_ids.find(id => id !== myid)
               return 'contact_' + String(contact_id)
             }
             return String(item.id)

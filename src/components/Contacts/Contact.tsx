@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
 import { IconButton, Switch } from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native'
@@ -12,6 +12,7 @@ import * as schemas from '../form/schemas'
 import Form from '../form'
 import BackHeader from '../common/BackHeader'
 import Button from '../common/Button'
+import Typography from '../common/Typography'
 
 const conversation = constants.chat_types.conversation
 
@@ -70,19 +71,34 @@ export default function EditContact({ route }) {
 
   const Subscribe = (
     <>
-      {!sub && (
+      {/* {!sub && (
         <TouchableOpacity onPress={() => ui.setContactSubscribeModal(true, contact)}>
           <Button mode='text' size='small'>
-            <Text style={{ fontSize: 14 }}>{existingSub ? 'Subscribed' : 'Subscribe'}</Text>
+            <Typography size={14} color={theme.primary}>
+              {existingSub ? 'Subscribed' : 'Subscribe'}
+            </Typography>
           </Button>
         </TouchableOpacity>
-      )}
+      )} */}
       {sub && existingSub && existingSub.id && (
         <View style={styles.row}>
-          <IconButton icon='trash-can-outline' color={theme.icon} size={22} style={{ marginRight: 12 }} onPress={() => setShowConfirm(true)} />
+          <IconButton
+            icon='trash-can-outline'
+            color={theme.icon}
+            size={22}
+            style={{ marginRight: 12 }}
+            onPress={() => setShowConfirm(true)}
+          />
           <View style={styles.row}>
-            <Text style={{ ...styles.pausedText, color: theme.subtitle }}>{subPaused ? 'PAUSED' : 'ACTIVE'}</Text>
-            <Switch value={!subPaused} onValueChange={() => toggleSubscription(existingSub.id, subPaused ? false : true)} />
+            <Typography style={{ ...styles.pausedText, color: theme.subtitle }}>
+              {subPaused ? 'PAUSED' : 'ACTIVE'}
+            </Typography>
+            <Switch
+              value={!subPaused}
+              onValueChange={() =>
+                toggleSubscription(existingSub.id, subPaused ? false : true)
+              }
+            />
           </View>
         </View>
       )}
@@ -91,11 +107,15 @@ export default function EditContact({ route }) {
 
   return useObserver(() => (
     <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
-      <BackHeader title='Edit Contact' navigate={() => navigation.goBack()} action={Subscribe} />
+      <BackHeader
+        title='Edit Contact'
+        navigate={() => navigation.goBack()}
+        action={Subscribe}
+      />
 
       <View style={styles.content}>
         <Form
-          schema={schemas.contact}
+          schema={schemas.contactEdit}
           loading={loading}
           buttonText='Save'
           initialValues={

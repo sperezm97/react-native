@@ -1,6 +1,20 @@
 import { StyleSheet } from 'react-native';
+import { SCREEN_HEIGHT } from '../../../constants'
 
 export default StyleSheet.create({
+  header: {
+    paddingHorizontal: 12,
+    paddingVertical: 16,
+    marginBottom: 6,
+  },
+  inputContainer: {
+    borderRadius: 12,
+    overflow: 'hidden',
+  },
+  input: {
+    fontSize: 20,
+    borderBottomColor: 'transparent',
+  },
   gifContainer: {
     flex: 1,
     width: '100%',
@@ -8,48 +22,16 @@ export default StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
   },
+  gifWrapper: {
+    padding: 3
+  },
   gif: {
-    width: 100,
-    height: 100,
-    margin: 5
+    borderRadius: 4,
   },
-  input: {
-    width: '95%',
-    height: 50,
-    marginBottom: 20,
-    borderRadius: 3,
-    alignSelf: 'center',
-  },
-  centeredView: {
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 22,
-  },
-  modalView: {
-    margin: 20,
-    borderRadius: 20,
-    padding: 10,
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 3,
-    borderWidth:1,
-  },
-  header: {
-    width: '100%',
-    justifyContent: 'space-between',
-    flexDirection: 'row',
-    paddingHorizontal: 8,
-    textAlign: 'center',
-    alignContent: 'center',
-  },
-  select: {
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
+  loadingWrapper: {
+    flexDirection: "row",
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  }
 });

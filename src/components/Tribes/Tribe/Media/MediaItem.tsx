@@ -13,23 +13,22 @@ import Typography from '../../../common/Typography'
 
 function MediaItem(props) {
   const [buying, setBuying] = useState(false)
-  const { meme, ui, msg } = useStores()
+  const { meme, ui, msg, user } = useStores()
   const theme = useTheme()
-  const {
-    index,
-    id,
-    message_content,
-    media_type,
-    chat,
-    media_token,
-    onMediaPress
-  } = props
+  const { index, id, message_content, media_type, chat, media_token, onMediaPress } =
+    props
 
   const ldat = parseLDAT(media_token)
   let { data, uri, loading, trigger, paidMessageText } = useCachedEncryptedFile(
     props,
     ldat
   )
+
+  // console.log('ldat', ldat)
+  // console.log('my pub', user.publicKey)
+  // console.log('owner_pubkey', chat.owner_pubkey)
+  // console.log('ldat pubkey', ldat.pubkey)
+  // console.log('assert', chat.owner_pubkey === ldat.pubkey)
 
   useEffect(() => {
     trigger()
@@ -42,7 +41,9 @@ function MediaItem(props) {
     if (ldat.sig) purchased = true
   }
 
-  const isMe = props.sender === 1
+  // console.log('props.sender', props.sender)
+
+  const isMe = props.sender === props.myid
   const hasImgData = data || uri ? true : false
   const hasContent = message_content ? true : false
   const showPurchaseButton = amt && !isMe ? true : false
@@ -72,7 +73,7 @@ function MediaItem(props) {
     setBuying(true)
     let contact_id = props.sender
     if (!contact_id) {
-      contact_id = chat.contact_ids && chat.contact_ids.find(cid => cid !== 1)
+      contact_id = chat.contact_ids && chat.contact_ids.find(cid => cid !== props.myid)
     }
 
     await msg.purchaseMedia({

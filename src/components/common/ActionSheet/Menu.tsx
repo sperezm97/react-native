@@ -1,9 +1,10 @@
 import React from 'react'
-import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native'
+import { StyleSheet, View, Image, TouchableOpacity } from 'react-native'
 import Modal from 'react-native-modal'
 
 import { useTheme } from '../../../store'
 import Icon from '../Icon'
+import Typography from '../Typography'
 
 export default function Menu(props) {
   const { visible, items, hasBackdrop, swipeDirection, onCancel } = props
@@ -80,19 +81,23 @@ export default function Menu(props) {
                   />
                 )}
                 <View>
-                  <Text style={{ fontSize: 16, color: theme.text }}>{item.title}</Text>
+                  <Typography size={16}>{item.title}</Typography>
                   {item.description && (
-                    <Text style={{ fontSize: 14, color: theme.subtitle }}>
+                    <Typography size={14} color={theme.subtitle}>
                       {item.description}
-                    </Text>
+                    </Typography>
                   )}
                 </View>
               </View>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 {item.preview && (
-                  <Text style={{ ...styles.previewText, color: theme.text }}>
+                  <Typography
+                    style={{
+                      marginRight: 5
+                    }}
+                  >
                     {item.preview}
-                  </Text>
+                  </Typography>
                 )}
                 {item.icon && <Icon name={item.icon} color={theme.icon} size={25} />}
               </View>
@@ -125,10 +130,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingTop: 12,
     paddingBottom: 12
-  },
-  previewText: {
-    fontSize: 16,
-    marginRight: 5
   },
   thumbWrapper: {
     width: 30,

@@ -16,7 +16,7 @@ const { useTribes } = hooks
 export default function Home() {
   const [refreshing, setRefreshing] = useState(false)
   const [loading, setLoading] = useState(true)
-  const { ui, chats } = useStores()
+  const { ui, chats, user } = useStores()
   const theme = useTheme()
 
   useEffect(() => {
@@ -38,7 +38,7 @@ export default function Home() {
 
   return useObserver(() => {
     const allTribes = useTribes()
-    const feed = useFeed(allTribes)
+    const feed = useFeed(allTribes, user.myid)
 
     return (
       <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>

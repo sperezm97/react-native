@@ -60,6 +60,8 @@ function SwipeItem(props) {
   const [photoH, setPhotoH] = useState(0)
   const { uuid, message_content, media_type, media_token, chat, boosts_total_sats } =
     props
+
+  const [onlyOneClick, setOnlyOnClick] = useState(false)
   const [buying, setBuying] = useState(false)
   const [pricePerMessage, setPricePerMessage] = useState(0)
   const { meme, ui, chats, msg, user, details } = useStores()
@@ -94,7 +96,7 @@ function SwipeItem(props) {
     if (ldat.sig) purchased = true
   }
 
-  const isMe = props.sender === 1
+  const isMe = props.sender === user.myid
   const hasImgData = data || uri ? true : false
   const hasContent = message_content ? true : false
   const showPurchaseButton = amt && !isMe ? true : false
@@ -111,10 +113,11 @@ function SwipeItem(props) {
   }
 
   async function buy(amount) {
+    setOnlyOnClick(true)
     setBuying(true)
     let contact_id = props.sender
     if (!contact_id) {
-      contact_id = chat.contact_ids && chat.contact_ids.find(cid => cid !== 1)
+      contact_id = chat.contact_ids && chat.contact_ids.find(cid => cid !== user.myid)
     }
 
     await msg.purchaseMedia({
@@ -128,7 +131,7 @@ function SwipeItem(props) {
   }
 
   function onPurchasePress() {
-    if (!purchased) buy(amt)
+    if (!purchased && !buying && !onlyOneClick) buy(amt)
   }
 
   async function onBoostPress() {
@@ -265,7 +268,11 @@ function SwipeItem(props) {
         <View style={styles.row}>
           {!isMe ? <Boost onPress={onBoostPress} /> : <View></View>}
 
-          <View>{showBoostRow && <BoostDetails {...props} myAlias={user.alias} />}</View>
+          <View>
+            {showBoostRow && (
+              <BoostDetails {...props} myAlias={user.alias} myid={user.myid} />
+            )}
+          </View>
         </View>
       </View>
     </View>

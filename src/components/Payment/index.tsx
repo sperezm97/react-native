@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { View, StyleSheet } from 'react-native'
+import { StyleSheet, View, Image, Text } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
+import MaskedView from '@react-native-community/masked-view'
+import LinearGradient from 'react-native-linear-gradient'
+import { Chip } from 'react-native-paper'
+
 import { useStores, useTheme } from '../../store'
+import { SCREEN_WIDTH } from '../../constants'
 import * as utils from '../utils/utils'
 import { qrActions } from '../../qrActions'
 import { isLN, parseLightningInvoice, removeLightningPrefix } from '../utils/ln'
@@ -12,6 +17,7 @@ import Button from '../common/Button'
 import QR from '../common/Accessories/QR'
 import Typography from '../common/Typography'
 import { setTint } from '../common/StatusBar'
+import Icon from '../common/Icon'
 
 export default function Payment() {
   const [scanning, setScanning] = useState(false)
@@ -33,16 +39,19 @@ export default function Payment() {
 
   useEffect(() => {
     setLoading(true)
-    fetchPayments()
     fetchBalance()
+    fetchPayments()
     setTimeout(() => {
       setLoading(false)
     }, 400)
   }, [])
 
   async function fetchBalance() {
+    await details.getChannelBalance()
     await details.getBalance()
+    await details.getUSDollarRate()
   }
+
   async function fetchPayments() {
     const ps = await details.getPayments()
 
@@ -82,6 +91,7 @@ export default function Payment() {
             setScanning(true)
           }}
         />
+
         <Transactions
           data={payments}
           refreshing={refreshing}
@@ -113,32 +123,112 @@ const ListHeader = () => {
     <>
       <View style={{ ...styles.headerActions }}>
         <View style={styles.wallet}>
-          <Typography size={26} fw='500' style={{ marginBottom: 10 }}>
+          <Typography size={30} fw='500' style={{ marginBottom: 10 }}>
             My Wallet
           </Typography>
-          <Typography size={16} fw='500'>
-            {details.balance} <Typography color={theme.subtitle}> sat</Typography>
-          </Typography>
+          <View>
+            <Typography size={12} fw='500' textAlign='center' color={theme.subtitle}>
+              Total balance
+            </Typography>
+            <Typography size={18} fw='500'>
+              {details?.localBalance}{' '}
+              <Typography color={theme.subtitle} fw='400'>
+                {' '}
+                sat
+              </Typography>
+            </Typography>
+            {/* <Typography size={17} fw='500'>
+              {' '}
+              =
+            </Typography>
+            <Typography
+              size={20}
+              color={theme.primary}
+              fw='500'
+              // style={{ marginLeft: 10 }}
+            >
+              <Typography size={17} color={theme.primary}>
+                $
+              </Typography>
+              {details.usAmount}
+            </Typography> */}
+          </View>
+          <View
+            style={{
+              marginTop: 14,
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '100%'
+            }}
+          >
+            <Typography
+              size={12}
+              fw='500'
+              textAlign='center'
+              color={theme.subtitle}
+              style={{ marginBottom: 4 }}
+            >
+              Your node capacity
+            </Typography>
+            <View
+              style={{
+                backgroundColor: theme.secondary,
+                borderRadius: 50,
+                height: 30,
+                width: 100
+              }}
+            >
+              <Typography
+                size={16}
+                fw='500'
+                textAlign='center'
+                color={theme.white}
+                lh={30}
+              >
+                {details?.localBalance + details?.remoteBalance}{' '}
+              </Typography>
+            </View>
+          </View>
         </View>
+
+        {/* <MaskedView
+          maskElement={
+            <LinearGradient
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 0 }}
+              colors={['transparent', 'black', 'transparent']}
+              style={{ flex: 1 }}
+            ></LinearGradient>
+          }
+        >
+          <View
+            style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }}
+          >
+            <Image
+              style={{ width: SCREEN_WIDTH, height: 100 }}
+              source={require('../../assets/sparkline.webp')}
+            />
+          </View>
+        </MaskedView> */}
+
         <View style={styles.buttonWrap}>
           <Button
-            mode='outlined'
             icon='arrow-bottom-left'
-            w={130}
-            h={45}
-            round={0}
-            style={{ borderColor: theme.border }}
+            w={125}
+            h={40}
+            round={5}
+            style={{ borderColor: theme.border, marginRight: 6 }}
             onPress={() => ui.setPayMode('invoice', null)}
           >
             RECEIVE
           </Button>
           <Button
-            mode='outlined'
+            color={theme.darkPrimary}
             icon='arrow-top-right'
-            w={130}
-            h={45}
-            round={0}
-            style={{ borderColor: theme.border, borderLeftWidth: 0 }}
+            w={125}
+            h={40}
+            round={5}
+            style={{ borderColor: theme.border, marginLeft: 6 }}
             onPress={() => ui.setPayMode('payment', null)}
           >
             SEND
@@ -160,10 +250,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     width: '100%',
-    marginTop: 40
-    // height: 200,
-    // maxHeight: 200,
-    // minHeight: 200,
+    marginTop: 20
   },
   wallet: {
     display: 'flex',
@@ -176,6 +263,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    width: '100%',
     marginVertical: 30
   }
 })

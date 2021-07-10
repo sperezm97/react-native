@@ -47,12 +47,13 @@ function ListEmpty() {
 }
 
 function Payment(props) {
-  const { contacts, chats } = useStores()
+  const { user, contacts, chats } = useStores()
   const theme = useTheme()
   const { amount, date, sender, chat_id } = props
   const transactionDate = moment(date).format('dd MMM DD, hh:mm A')
+  const myid = user.myid
 
-  const type = sender === 1 ? 'payment' : 'invoice'
+  const type = sender === myid ? 'payment' : 'invoice'
   const params = {
     payment: {
       icon: 'arrow-top-right',
@@ -71,7 +72,7 @@ function Payment(props) {
     const chat = chats.chats.find(c => c.id === chat_id)
     if (chat && chat.name) text = chat.name
     if (chat && chat.contact_ids && chat.contact_ids.length === 2) {
-      const oid = chat.contact_ids.find(id => id !== 1)
+      const oid = chat.contact_ids.find(id => id !== myid)
       const contact = contacts.contacts.find(c => c.id === oid)
       if (contact) text = contact.alias || contact.public_key
     }

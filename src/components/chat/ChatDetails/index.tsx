@@ -95,7 +95,6 @@ export default function ChatDetails({ route }) {
         setUploading(false)
       })
       .catch(err => {
-        console.log(err)
         setUploading(false)
       })
   }
@@ -160,7 +159,7 @@ export default function ChatDetails({ route }) {
   }
 
   return useObserver(() => {
-    const meContact = contacts.contacts.find(c => c.id === 1)
+    const meContact = contacts.contacts.find(c => c.id === user.myid)
     let imgURI = usePicSrc(meContact)
 
     let myPhoto = group.my_photo_url || imgURI

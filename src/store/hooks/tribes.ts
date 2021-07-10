@@ -43,7 +43,9 @@ export function useOwnedTribes(tribes) {
 }
 
 function sortTribesByLastMsg(tribesToShow) {
-  const { msg: { messages } } = useStores()
+  const {
+    msg: { messages }
+  } = useStores()
 
   return tribesToShow.sort((a, b) => {
     const amsgs = messages[a.chat.id]
@@ -103,19 +105,47 @@ export function useTribeHistory(created, lastActive) {
   return { createdDate, lastActiveDate }
 }
 
-export function useOwnerMediaType(msgs, type, owner = true) {
+export function useOwnerMediaType(msgs, tribe, type, myid) {
+  // console.log('owner_pubkey', tribe.owner_pubkey)
+  // console.log('A')
+
+  // msgs.filter(m => {
+  //   if (m.type === 6 && m.sender !== 1) {
+  //     // me
+  //     console.log(JSON.stringify(m, null, '\t'))
+  //   }
+  // })
+
   return msgs.filter(m => {
-    const ownerCriteria = owner ? m.sender === 1 : m.sender !== 1
+    if (m.type === 6) {
+    }
+
+    // console.log(m, 'color: green; background: yellow; font-size: 30px')
+    // console.log('---------------------')
+
+    // let ownerCriteria = owner ? m.sender === myid : m.sender !== myid
+
+    let ownerCriteria = false
+    // console.log('m.sender_alias', m.sender_alias)
+
+    if (tribe.owner) {
+      ownerCriteria = m.sender === myid
+    } else {
+      ownerCriteria = m.sender_alias === tribe.owner_alias
+      // if not owener id will not work.
+      // depend on sender alias
+      // ownerCriteria
+    }
 
     return m.type === type && m.status !== constants.statuses.deleted && ownerCriteria
   })
 }
 
 // feed from joined tribes
-export function useFeed(tribes) {
+export function useFeed(tribes, myid) {
   tribes = tribes.filter(t => t.joined && !t.owner && t.owner_pubkey !== INVITER_KEY)
 
-  let allTribes = tribes.map(t => processFeed(t, 6))
+  let allTribes = tribes.map(t => processFeed(t, 6, myid))
 
   let feed = []
 
@@ -134,11 +164,11 @@ export function useFeed(tribes) {
 }
 
 // not used temporarily
-export function useMediaType(msgs, type) {
+export function useMediaType(msgs, type, myid) {
   return msgs.filter(
     m =>
       m.type === type &&
-      m.sender !== 1 &&
+      m.sender !== myid &&
       m.media_token &&
       m.media_type.startsWith('image')
   )
@@ -154,13 +184,13 @@ export function useTribeMediaType(msgs, type) {
   )
 }
 
-export function processFeed(tribe, type) {
+export function processFeed(tribe, type, myid) {
   let msgs = useMsgs(tribe.chat)
 
   msgs = msgs.filter(
     m =>
       m.type === type &&
-      m.sender !== 1 &&
+      m.sender !== myid &&
       m.media_token &&
       m.media_type.startsWith('image') &&
       m.status !== constants.statuses.deleted

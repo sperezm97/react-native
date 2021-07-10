@@ -3,6 +3,7 @@ import { Provider as PaperProvider } from 'react-native-paper'
 import { useDarkMode } from 'react-native-dynamic'
 import { is24HourFormat } from 'react-native-device-time-format'
 import { useObserver } from 'mobx-react-lite'
+import { Host } from 'react-native-portalize'
 import { NavigationContainer } from '@react-navigation/native'
 import { Linking, AppState } from 'react-native'
 
@@ -139,8 +140,10 @@ function App() {
         <PaperProvider theme={pTheme}>
           <StatusBar />
           <NavigationContainer>
-            {ui.signedUp && <Main />}
-            {!ui.signedUp && <Auth />}
+            <Host>
+              {ui.signedUp && <Main />}
+              {!ui.signedUp && <Auth />}
+            </Host>
           </NavigationContainer>
         </PaperProvider>
       </>

@@ -90,10 +90,8 @@ export async function keyGen() {
 }
 
 export async function getPublicKey() {
-  console.log('=> get publickey')
   try {
     const pub = await RSAKeychain.getPublicKey(KEY_TAG)
-    console.log('======> pub ', pub)
   } catch (e) {
     console.log(e)
   }
