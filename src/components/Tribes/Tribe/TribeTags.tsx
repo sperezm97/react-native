@@ -53,6 +53,7 @@ export default function TribeTags(props) {
       setTagz([tag, ...newValues])
     } else {
     }
+
     setTag('')
   }
 
@@ -117,7 +118,7 @@ export default function TribeTags(props) {
               })}
             </>
           ) : (
-            <Typography size={16}>Tags are empty.</Typography>
+            <Typography size={16}></Typography>
           )}
         </>
       )
@@ -132,7 +133,7 @@ export default function TribeTags(props) {
             <View style={{ ...styles.inputWrap }}>
               <TextInput
                 inputAccessoryViewID={nativeID}
-                placeholder='Art, Comedy, Music...'
+                placeholder='Type topic: Art or Music...'
                 value={tag}
                 onChangeText={setTag}
                 onFocus={() => setError('')}
@@ -143,7 +144,7 @@ export default function TribeTags(props) {
                 {error}
               </Typography>
             </View>
-            <InputAccessoryView nativeID={nativeID} done={addTag} />
+            <InputAccessoryView nativeID={nativeID} done={addTag} doneText='Add' />
           </>
         )}
 

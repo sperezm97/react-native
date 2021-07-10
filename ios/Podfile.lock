@@ -34,9 +34,9 @@ PODS:
     - libwebp/demux
   - libwebp/webp (1.2.0)
   - lottie-ios (3.1.8)
-  - lottie-react-native (3.5.0):
+  - lottie-react-native (4.0.2):
     - lottie-ios (~> 3.1.8)
-    - React
+    - React-Core
   - Permission-Camera (3.0.2):
     - RNPermissions
   - RCTRequired (0.63.4)
@@ -403,6 +403,7 @@ DEPENDENCIES:
   - FBReactNativeSpec (from `../node_modules/react-native/Libraries/FBReactNativeSpec`)
   - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
+  - lottie-ios (from `../node_modules/lottie-ios`)
   - lottie-react-native (from `../node_modules/lottie-react-native`)
   - Permission-Camera (from `../node_modules/react-native-permissions/ios/Camera`)
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
@@ -475,7 +476,6 @@ SPEC REPOS:
     - boost-for-react-native
     - GCDWebServer
     - libwebp
-    - lottie-ios
     - SDWebImage
     - SDWebImageWebPCoder
     - Toast
@@ -493,6 +493,8 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/third-party-podspecs/Folly.podspec"
   glog:
     :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
+  lottie-ios:
+    :path: "../node_modules/lottie-ios"
   lottie-react-native:
     :path: "../node_modules/lottie-react-native"
   Permission-Camera:
@@ -633,7 +635,7 @@ SPEC CHECKSUMS:
   glog: 40a13f7840415b9a77023fbcae0f1e6f43192af3
   libwebp: e90b9c01d99205d03b6bb8f2c8c415e5a4ef66f0
   lottie-ios: 48fac6be217c76937e36e340e2d09cf7b10b7f5f
-  lottie-react-native: 1fb4ce21d6ad37dab8343eaff8719df76035bd93
+  lottie-react-native: 4dff8fe8d10ddef9e7880e770080f4a56121397e
   Permission-Camera: 7aa2f6b584f8b1396ae6abaf13093fb9b5212499
   RCTRequired: 082f10cd3f905d6c124597fd1c14f6f2655ff65e
   RCTTypeSafety: 8c9c544ecbf20337d069e4ae7fd9a377aadf504b

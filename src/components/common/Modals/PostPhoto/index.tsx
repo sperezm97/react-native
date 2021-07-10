@@ -57,7 +57,6 @@ export default function PostPhotoWrap() {
 function PostPhoto(props) {
   const { params, close } = props
   const { data, uri, chat_id, contact_id, pricePerMessage } = params
-  console.log('params', params)
 
   const { meme, msg } = useStores()
   const theme = useTheme()
@@ -74,17 +73,17 @@ function PostPhoto(props) {
   //   const title = showMsgMessage ? 'Send Paid Message' : 'Send Image'
 
   async function sendFinalMsg({ muid, media_key, media_type, price }) {
-    // await msg.sendAttachment({
-    //   contact_id,
-    //   chat_id,
-    //   muid,
-    //   price,
-    //   media_key,
-    //   media_type,
-    //   text: showMsgMessage ? '' : text,
-    //   amount: pricePerMessage || 0
-    // })
-    // close()
+    await msg.sendAttachment({
+      contact_id,
+      chat_id,
+      muid,
+      price,
+      media_key,
+      media_type,
+      text: showMsgMessage ? '' : text,
+      amount: pricePerMessage || 0
+    })
+    close()
   }
 
   async function sendGif() {

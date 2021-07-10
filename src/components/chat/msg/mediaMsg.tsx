@@ -37,6 +37,12 @@ export default function MediaMsg(props) {
 
   let ldat = parseLDAT(media_token)
 
+  // console.log('ldat', ldat)
+  // console.log('my pub', user.publicKey)
+  // console.log('owner_pubkey', chat.owner_pubkey)
+  // console.log('ldat pubkey', ldat.pubkey)
+  // console.log('assert', chat.owner_pubkey === ldat.pubkey)
+
   let amt = null
   let purchased = false
   if (ldat.meta && ldat.meta.amt) {

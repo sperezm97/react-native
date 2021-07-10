@@ -109,6 +109,7 @@
     "jscryptor-2": "0.0.1",
     "keytar": "^6.0.1",
     "localforage": "^1.8.1",
+    "lottie-ios": "3.1.8",
     "lottie-react-native": "^4.0.2",
     "mobx": "^5.15.4",
     "mobx-persist": "^0.4.1",

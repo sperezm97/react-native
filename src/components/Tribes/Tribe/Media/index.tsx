@@ -29,10 +29,10 @@ function Media({ tribe }) {
     }, 300)
   }
 
-  return useObserver(() => {
-    const msgs = useMsgs(tribe.chat) || []
-    const media = useOwnerMediaType(msgs, 6, tribe.owner, user.myid)
+  const msgs = useMsgs(tribe.chat) || []
+  const media = useOwnerMediaType(msgs, tribe, 6, user.myid)
 
+  return useObserver(() => {
     return (
       <>
         <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
