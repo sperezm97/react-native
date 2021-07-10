@@ -109,7 +109,7 @@ function Tags(props) {
               )}
             </>
             <DialogWrap
-              title='Edit Tags'
+              title='Edit Topics'
               visible={topicsEditDialog}
               onDismiss={() => setTopicsEditDialog(false)}
             >

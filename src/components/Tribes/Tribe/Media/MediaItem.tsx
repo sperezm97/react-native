@@ -13,7 +13,7 @@ import Typography from '../../../common/Typography'
 
 function MediaItem(props) {
   const [buying, setBuying] = useState(false)
-  const { meme, ui, msg } = useStores()
+  const { meme, ui, msg, user } = useStores()
   const theme = useTheme()
   const { index, id, message_content, media_type, chat, media_token, onMediaPress } =
     props
@@ -23,6 +23,12 @@ function MediaItem(props) {
     props,
     ldat
   )
+
+  // console.log('ldat', ldat)
+  // console.log('my pub', user.publicKey)
+  // console.log('owner_pubkey', chat.owner_pubkey)
+  // console.log('ldat pubkey', ldat.pubkey)
+  // console.log('assert', chat.owner_pubkey === ldat.pubkey)
 
   useEffect(() => {
     trigger()
@@ -34,6 +40,8 @@ function MediaItem(props) {
     amt = ldat.meta.amt
     if (ldat.sig) purchased = true
   }
+
+  // console.log('props.sender', props.sender)
 
   const isMe = props.sender === props.myid
   const hasImgData = data || uri ? true : false
