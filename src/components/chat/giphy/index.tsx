@@ -1,12 +1,13 @@
-import React, { useCallback, useMemo, useState, useEffect } from "react"
-import { Image, View, TouchableOpacity } from "react-native"
+import React from 'react'
 import MasonryList from '@react-native-seoul/masonry-list'
 import { Modalize } from 'react-native-modalize'
 import { Portal } from 'react-native-portalize'
-import { useTheme } from "../../../store"
+import { useKeyboard } from '@react-native-community/hooks'
+import { useTheme } from '../../../store'
 import { GiphyProps } from './type'
-import styles from "./styles"
+import styles from './styles'
 import Header from './header'
+import Footer from './footer'
 import Item from './item'
 
 /**
@@ -28,9 +29,9 @@ const Giphy = React.forwardRef<Modalize | null, GiphyProps>(({
   setSearchGif,
   getGifsBySearch,
 }, modalizeRef) => {
+  const { keyboardHeight } = useKeyboard();
+  const modalHeight = keyboardHeight + 100;
   const theme = useTheme();
-
-  const keyExtractor = useCallback(({ id }) => id, [])
 
   const onSearchGIF = () => {
     setSearchGif(searchGif)
@@ -50,15 +51,13 @@ const Giphy = React.forwardRef<Modalize | null, GiphyProps>(({
     <Portal>
       <Modalize
         ref={modalizeRef}
-        modalHeight={400}
+        modalHeight={Math.max(modalHeight, 450)}
         HeaderComponent={CustomHeader}
+        FooterComponent={Footer}
         modalStyle={{ backgroundColor: theme.main }}
       >
         <MasonryList
-          contentContainerStyle={{
-            paddingHorizontal: 10,
-            alignSelf: 'stretch',
-          }}
+          contentContainerStyle={styles.mansoryContainer}
           numColumns={3}
           data={gifs}
           renderItem={Item(onSendGifHandler)}
