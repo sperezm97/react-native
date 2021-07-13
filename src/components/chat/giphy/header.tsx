@@ -29,9 +29,7 @@ const Header: React.FC<HeaderProps> = ({
           value={searchGif}
           onChangeText={setSearchGif}
           onSubmitEditing={v => {
-            if (!searchGif) {
-              return
-            }
+            if (!searchGif) return
             getGifsBySearch()
           }}
           underlineColor='transparent'

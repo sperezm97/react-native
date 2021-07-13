@@ -3,24 +3,28 @@ import { SCREEN_HEIGHT } from '../../../constants'
 
 export default StyleSheet.create({
   header: {
+    marginBottom: 6,
     paddingHorizontal: 12,
     paddingVertical: 16,
-    marginBottom: 6,
   },
   inputContainer: {
     borderRadius: 12,
     overflow: 'hidden',
   },
   input: {
-    fontSize: 20,
     borderBottomColor: 'transparent',
+    fontSize: 20,
+  },
+  mansoryContainer: {
+    alignSelf: 'stretch',
+    paddingHorizontal: 10,
   },
   gifContainer: {
     flex: 1,
-    width: '100%',
-    justifyContent: 'center',
     flexDirection: 'row',
     flexWrap: 'wrap',
+    justifyContent: 'center',
+    width: '100%',
   },
   gifWrapper: {
     padding: 3
@@ -29,9 +33,9 @@ export default StyleSheet.create({
     borderRadius: 4,
   },
   loadingWrapper: {
-    flexDirection: "row",
-    flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: 'center',
   }
 });
