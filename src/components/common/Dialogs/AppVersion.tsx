@@ -21,7 +21,7 @@ export default function AppVersionUpdate({ visible, close }) {
       onDismiss={close}
       minH={450}
       round={20}
-      dismissable={false}
+      // dismissable={false}
       ph={0}
     >
       <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
