@@ -10,14 +10,16 @@ import {
   Dimensions,
   ActivityIndicator
 } from 'react-native'
+import { isIphoneX, getStatusBarHeight } from 'react-native-iphone-x-helper'
 import { useNavigation } from '@react-navigation/native'
+import { Rect } from 'react-native-popover-view'
 import Toast from 'react-native-simple-toast'
 
 import { useStores, useTheme, hooks } from '../../store'
 import { Chat } from '../../store/chats'
 import { useMsgSender } from '../../store/hooks/msg'
 import Message from './msg'
-import { constants } from '../../constants'
+import { constants, SCREEN_HEIGHT, SCREEN_WIDTH } from '../../constants'
 import EE, { SHOW_REFRESHER } from '../utils/ee'
 import Typography from '../common/Typography'
 
@@ -105,6 +107,7 @@ function MsgList({
   onBoostMsg,
   myid
 }) {
+  const [virtualizedListHeight, setVirtualizedListHeight] = useState(null)
   const scrollViewRef = useRef(null)
   const theme = useTheme()
   const { contacts } = useStores()
@@ -160,6 +163,7 @@ function MsgList({
         windowSize={10}
         ref={scrollViewRef}
         data={msgs}
+        onLayout={(event) => setVirtualizedListHeight(event.nativeEvent.layout.height)}
         initialNumToRender={initialNumToRender}
         initialScrollIndex={0}
         onEndReached={onEndReached}
@@ -191,6 +195,7 @@ function MsgList({
               onApproveOrDenyMember={onApproveOrDenyMember}
               onDeleteChat={onDeleteChat}
               onBoostMsg={onBoostMsg}
+              virtualizedListHeight={virtualizedListHeight}
             />
           )
         }}
@@ -238,7 +243,8 @@ function ListItem({
   onApproveOrDenyMember,
   onDeleteChat,
   onBoostMsg,
-  myid
+  myid,
+  virtualizedListHeight,
 }) {
   if (m.dateLine) {
     return <DateLine dateString={m.dateLine} />
@@ -265,9 +271,10 @@ function ListItem({
         onApproveOrDenyMember={onApproveOrDenyMember}
         onDeleteChat={onDeleteChat}
         onBoostMsg={onBoostMsg}
+        virtualizedListHeight={virtualizedListHeight}
       />
     ),
-    [m.id, m.type, m.media_token, m.status, m.sold, m.boosts_total_sats]
+    [m.id, m.type, m.media_token, m.status, m.sold, m.boosts_total_sats, virtualizedListHeight]
   )
 }
 
