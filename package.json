@@ -31,7 +31,7 @@
     },
     "mac": {
       "identity": null,
-      "category": "chat.n2n2.Chat.staging",
+      "category": "chat.n2n2.Chat",
       "icon": "build/static/icon.ico"
     },
     "linux": {
