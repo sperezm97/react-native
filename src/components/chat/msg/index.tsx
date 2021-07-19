@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useRef, useLayoutEffect, useEffect } from 'react'
+import React, { useState, useRef, useLayoutEffect } from 'react'
 import { View, StyleSheet, Text } from 'react-native'
 import { SwipeRow } from 'react-native-swipe-list-view'
 import { IconButton } from 'react-native-paper'
@@ -6,7 +6,7 @@ import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIc
 import Ionicon from 'react-native-vector-icons/Ionicons'
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback'
-import Popover, { PopoverMode, Rect, PopoverPlacement } from 'react-native-popover-view'
+import Popover, { PopoverPlacement } from 'react-native-popover-view'
 import Clipboard from '@react-native-community/clipboard'
 
 import { useStores, useTheme, hooks } from '../../../store'
@@ -182,10 +182,13 @@ export default function MsgRow(props) {
   )
 }
 
+const isMsgBiggerThanScreen = (msgHeight: number) => msgHeight > (SCREEN_HEIGHT - 300)
+
 function MsgBubble(props) {
   const theme = useTheme()
   const { msg } = useStores()
-  const [msgHeight, setMsgHeight] = useState(0)
+  const [popoverPlacement, setPopoverPlacement] = useState(PopoverPlacement.BOTTOM)
+  const msgRefHeight = useRef<number>(0)
   const [deleting, setDeleting] = useState(false)
   const isInvoice = props.type === constants.message_types.invoice
   const isPaid = props.status === constants.statuses.confirmed
@@ -201,6 +204,7 @@ function MsgBubble(props) {
 
   const onRequestCloseHandler = () => setShowPopover(false)
   const onLongPressHandler = () => {
+    if (isMsgBiggerThanScreen(msgRefHeight.current)) setPopoverPlacement(PopoverPlacement.CENTER)
     ReactNativeHapticFeedback.trigger('impactLight', {
       enableVibrateFallback: true,
       ignoreAndroidSystemSettings: false
@@ -229,17 +233,11 @@ function MsgBubble(props) {
   const msgs = useMsgs(props.chat) || []
   const { replyMessage } = useChatReply(msgs, props.reply_uuid)
 
-  const itemPlacement = useMemo(() => {
-    if (!msgHeight) return PopoverPlacement.BOTTOM
-    if (!props.virtualizedListHeight) return PopoverPlacement.BOTTOM
-    return props.virtualizedListHeight < msgHeight ? PopoverPlacement.CENTER : PopoverPlacement.BOTTOM
-  }, [props.virtualizedListHeight, msgHeight])
-
   return (
     <Popover
       isVisible={showPopover}
       onRequestClose={onRequestCloseHandler}
-      placement={itemPlacement}
+      placement={popoverPlacement}
       arrowStyle={{ width: 0, height: 0 }}
       popoverStyle={{
         display: 'flex',
@@ -257,7 +255,9 @@ function MsgBubble(props) {
             borderColor: !isMe ? theme.border : 'transparent',
             overflow: 'hidden'
           }}
-          onLayout={(event) => setMsgHeight(event.nativeEvent.layout.height)}
+          onLayout={(event) => {
+            msgRefHeight.current = event.nativeEvent.layout.height
+          }}
         >
           {isDeleted && <DeletedMsg />}
           {!isDeleted && (props.reply_uuid ? true : false) && (

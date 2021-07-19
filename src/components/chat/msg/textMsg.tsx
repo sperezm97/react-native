@@ -17,8 +17,8 @@ export default function TextMsg(props) {
   const { message_content } = props
   const isLink =
     message_content &&
-    (message_content.toLowerCase().startsWith('http://') ||
-      message_content.toLowerCase().startsWith('https://'))
+    (message_content.toLowerCase().trim().startsWith('http://') ||
+      message_content.toLowerCase().trim().startsWith('https://'))
 
   function openLink() {
     Linking.openURL(message_content)
