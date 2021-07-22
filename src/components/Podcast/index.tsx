@@ -51,7 +51,7 @@ export default function Podcast({ pod, chat, onBoost, podError }) {
     // }
     if (playing) TrackPlayer.pause()
     else {
-      TrackPlayer.play()
+      await TrackPlayer.play()
       if (!duration) getAndSetDuration()
     }
     setPlaying(!playing)
@@ -87,6 +87,22 @@ export default function Podcast({ pod, chat, onBoost, podError }) {
   }
 
   async function initialSelect(ps) {
+    await TrackPlayer.setupPlayer({})
+    await TrackPlayer.updateOptions({
+      stopWithApp: true,
+      capabilities: [
+        TrackPlayer.CAPABILITY_PLAY,
+        TrackPlayer.CAPABILITY_PAUSE,
+        TrackPlayer.CAPABILITY_SKIP_TO_NEXT,
+        TrackPlayer.CAPABILITY_STOP,
+        TrackPlayer.CAPABILITY_SKIP_TO_PREVIOUS,
+        TrackPlayer.CAPABILITY_STOP
+      ],
+      compactCapabilities: [
+        TrackPlayer.CAPABILITY_PLAY,
+        TrackPlayer.CAPABILITY_PAUSE,
+      ],
+    });
     let theID = queuedTrackID
     if (chat.meta && chat.meta.itemID) {
       theID = chat.meta.itemID
@@ -103,7 +119,6 @@ export default function Podcast({ pod, chat, onBoost, podError }) {
     if (!episode) return
 
     setSelectedEpisodeID(episode.id)
-
     await addEpisodeToQueue(episode)
     if (!duration) getAndSetDuration()
 
@@ -284,7 +299,7 @@ export default function Podcast({ pod, chat, onBoost, podError }) {
             alias: m.sender_alias || (m.sender === myid ? user.alias : ''),
             date: m.date
           })
-      } catch (e) {}
+      } catch (e) { }
     })
     replayMsgs.current = msgsforReplay
     modalizeRef.current?.open()
