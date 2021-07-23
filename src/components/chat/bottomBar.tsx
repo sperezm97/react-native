@@ -212,7 +212,11 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
     }
     setRecordSecs('0:00')
     try {
-      await audioRecorderPlayer.startRecorder(dirs.CacheDir + '/sound.mp4')
+      const path = Platform.select({
+        ios: 'sound.mp4',
+        android: `${dirs.CacheDir}/sound.mp4`,
+      })
+      await audioRecorderPlayer.startRecorder(path)
       audioRecorderPlayer.addRecordBackListener(e => {
         const str = audioRecorderPlayer.mmssss(Math.floor(e.current_position))
         const idx = str.lastIndexOf(':')

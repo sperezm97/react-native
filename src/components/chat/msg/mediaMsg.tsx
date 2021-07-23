@@ -50,10 +50,7 @@ export default function MediaMsg(props) {
     if (ldat.sig) purchased = true
   }
 
-  let { data, uri, loading, trigger, paidMessageText } = useCachedEncryptedFile(
-    props,
-    ldat
-  )
+  let { data, uri, loading, trigger, paidMessageText } = useCachedEncryptedFile(props, ldat)
 
   useEffect(() => {
     trigger()
@@ -291,6 +288,7 @@ function Media({ type, data, uri, filename }) {
   if (type.startsWith('video') && uri) {
     return <VideoPlayer uri={{ uri }} />
   }
+  return null
 }
 
 // video player component

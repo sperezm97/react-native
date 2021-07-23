@@ -1,16 +1,20 @@
 import { PermissionsAndroid } from 'react-native'
+import { PERMISSIONS, check, request, RESULTS } from 'react-native-permissions'
 import * as e2e from '../../crypto/e2e'
 import { randString } from '../../crypto/rand'
 import RNFetchBlob from 'rn-fetch-blob'
 
 export async function uploadAudioFile(uri, server, callback) {
   const pwd = await randString(32)
+  console.log("uploadAudioFile:", uri, server, callback)
   if (!server) return
   if (!uri) return
 
   const type = 'audio/mp4'
   const filename = 'sound.mp4'
-  let enc = await e2e.encryptFile(uri, pwd)
+  const newUri = uri.replace('file://', '')
+  const enc = await e2e.encryptFile(newUri, pwd)
+
   RNFetchBlob.fetch(
     'POST',
     `https://${server.host}/file`,
@@ -42,43 +46,49 @@ export async function uploadAudioFile(uri, server, callback) {
     })
 }
 
+const getPermission = async (permission) => {
+  const permissionStatus = await check(permission)
+
+  if (permissionStatus === RESULTS.GRANTED) return true
+  if (permissionStatus === RESULTS.DENIED) {
+    const newPermissionStatus = await request(permission)
+    return newPermissionStatus === RESULTS.GRANTED
+  }
+  return false
+}
+
+const checkPermissions = async (...permissions) => permissions.every(getPermission)
+
+const requestWriteExternalStoragePermission = async () => {
+  const storageResponse = await checkPermissions(
+    PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
+    PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE,
+    PERMISSIONS.IOS.MEDIA_LIBRARY,
+  )
+
+  if (storageResponse) {
+    console.log('You can use the storage')
+    return
+  }
+  console.log(`${PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE} - permission denied`)
+}
+
+const requestRecordAudioPermission = async () => {
+  const microphoneResponse = await checkPermissions(
+    PERMISSIONS.ANDROID.RECORD_AUDIO,
+    PERMISSIONS.IOS.MICROPHONE,
+  )
+
+  if (microphoneResponse) {
+    console.log('You can record audio')
+    return
+  }
+  console.log(`${PERMISSIONS.ANDROID.RECORD_AUDIO}, ${PERMISSIONS.IOS.MICROPHONE} - permission denied`)
+}
+
 export async function requestAudioPermissions() {
-  try {
-    const granted = await PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-      {
-        title: 'Permissions for write access',
-        message: 'Give permission to your storage to write a file',
-        buttonPositive: 'ok'
-      }
-    )
-    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-      console.log('You can use the storage')
-    } else {
-      console.log('permission denied')
-      return
-    }
-  } catch (err) {
-    console.warn(err)
-    return
-  }
-  try {
-    const granted = await PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
-      {
-        title: 'Permissions for audio recording',
-        message: 'Give permission to record audio',
-        buttonPositive: 'ok'
-      }
-    )
-    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-      console.log('You can record audio')
-    } else {
-      console.log('permission denied')
-      return
-    }
-  } catch (err) {
-    console.warn(err)
-    return
-  }
+  await Promise.all([
+    requestWriteExternalStoragePermission(),
+    requestRecordAudioPermission(),
+  ])
 }
