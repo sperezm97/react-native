@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useState, useRef, useCallback } from 'react'
+import { Linking, AppState } from 'react-native'
+import { useObserver } from 'mobx-react-lite'
 import { Provider as PaperProvider } from 'react-native-paper'
 import { useDarkMode } from 'react-native-dynamic'
 import { is24HourFormat } from 'react-native-device-time-format'
-import { useObserver } from 'mobx-react-lite'
 import { Host } from 'react-native-portalize'
 import { NavigationContainer } from '@react-navigation/native'
-import { Linking, AppState } from 'react-native'
 
 import { useStores, useTheme } from './src/store'
+import APNManager from './src/store/contexts/apn'
 import { instantiateRelay } from './src/api'
+import { navigationRef } from './src/components/Navigation'
 import * as utils from './src/components/utils/utils'
 import PIN, { wasEnteredRecently } from './src/components/utils/pin'
 import EE, { RESET_IP_FINISHED } from './src/components/utils/ee'
@@ -26,31 +28,48 @@ declare var global: { HermesInternal: null | {} }
 export default function Wrap() {
   const { ui, chats } = useStores()
   const [wrapReady, setWrapReady] = useState(false)
-  const [isBack, setBack] = useState(false)
   const theme = useTheme()
+  // const appState = useRef(AppState.currentState)
+
+  // useEffect(() => {
+  //   AppState.addEventListener('change', handleAppStateChange)
+  //   return () => {
+  //     AppState.removeEventListener('change', handleAppStateChange)
+  //   }
+  // }, [])
+
+  // function handleAppStateChange(nextAppState) {
+  //   if (appState.current.match(/inactive|background/) && nextAppState === 'active') {
+  //     // handleDeepLink()
+  //   }
+  //   if (appState.current.match(/active/) && nextAppState === 'background') {
+  //   }
+
+  //   appState.current = nextAppState
+  // }
 
   useEffect(() => {
-    Linking.addEventListener('url', gotLink)
-  }, [isBack])
+    handleDeepLink()
+    Linking.addEventListener('url', handleDeepLink)
+
+    return () => {
+      Linking.removeEventListener('url', handleDeepLink)
+    }
+  }, [])
 
   async function gotLink(e) {
     if (e && typeof e === 'string') {
       const j = utils.jsonFromUrl(e)
-
       if (j['action']) await qrActions(j, ui, chats)
     }
   }
 
-  useEffect(() => {
-    Linking.getInitialURL()
-      .then(e => {
-        if (e) gotLink(e).then(() => setWrapReady(true))
-        else setWrapReady(true)
-      })
-      .catch(() => setWrapReady(true))
-    Linking.addEventListener('url', gotLink)
-    // RNWebRTC.registerGlobals()
-  }, [])
+  async function handleDeepLink() {
+    const url = await Linking.getInitialURL()
+
+    if (url) gotLink(url)
+    setWrapReady(true)
+  }
 
   return useObserver(() => {
     if (ui.ready && wrapReady) return <App /> // hydrated and checked for deeplinks!
@@ -139,9 +158,13 @@ function App() {
       <>
         <PaperProvider theme={pTheme}>
           <StatusBar />
-          <NavigationContainer>
+          <NavigationContainer ref={navigationRef}>
             <Host>
-              {ui.signedUp && <Main />}
+              {ui.signedUp && (
+                <APNManager>
+                  <Main />
+                </APNManager>
+              )}
               {!ui.signedUp && <Auth />}
             </Host>
           </NavigationContainer>
