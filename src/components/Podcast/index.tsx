@@ -65,6 +65,12 @@ export default function Podcast({ pod, chat, onBoost, podError }) {
       artist: episode.author || 'author',
       artwork: episode.image
     })
+
+    await TrackPlayer.updateMetadataForTrack(`${episode.id}`, {
+      title: episode.title,
+      artist: episode.author || 'author',
+      artwork: episode.image
+    })
   }
 
   async function selectEpisode(episode) {
@@ -87,6 +93,11 @@ export default function Podcast({ pod, chat, onBoost, podError }) {
   }
 
   async function initialSelect(ps) {
+    let theID = queuedTrackID
+    if (chat.meta && chat.meta.itemID) {
+      theID = chat.meta.itemID
+    }
+    let episode = ps && ps.episodes && ps.episodes.length && ps.episodes[0]
     await TrackPlayer.setupPlayer({})
     await TrackPlayer.updateOptions({
       stopWithApp: true,
@@ -103,11 +114,7 @@ export default function Podcast({ pod, chat, onBoost, podError }) {
         TrackPlayer.CAPABILITY_PAUSE,
       ],
     });
-    let theID = queuedTrackID
-    if (chat.meta && chat.meta.itemID) {
-      theID = chat.meta.itemID
-    }
-    let episode = ps && ps.episodes && ps.episodes.length && ps.episodes[0]
+
     if (theID) {
       const qe =
         ps && ps.episodes && ps.episodes.length && ps.episodes.find(e => e.id == theID)
