@@ -141,8 +141,6 @@ export default function Main() {
         notification => {
           const id = notification.data.aps.alert.action
 
-          alert(`notification: ${notification}`)
-
           if (notification.userInteraction && notification.finish) {
             PushNotificationIOS.setApplicationIconBadgeNumber(0)
             notification.finish(PushNotificationIOS.FetchResult.NoData)

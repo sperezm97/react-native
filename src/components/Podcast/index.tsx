@@ -2,7 +2,11 @@ import React, { useEffect, useState, useRef } from 'react'
 import { StyleSheet, View, AppState } from 'react-native'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import FastImage from 'react-native-fast-image'
-import TrackPlayer from 'react-native-track-player'
+import TrackPlayer, { TrackPlayerEvents } from 'react-native-track-player'
+import {
+  useTrackPlayerProgress,
+  useTrackPlayerEvents
+} from 'react-native-track-player/lib/hooks'
 import { Modalize } from 'react-native-modalize'
 import { isIphoneX, getStatusBarHeight } from 'react-native-iphone-x-helper'
 import Toast from 'react-native-simple-toast'
@@ -92,6 +96,17 @@ export default function Podcast({ pod, chat, onBoost, podError }) {
     TrackPlayer.setRate(1)
   }
 
+  useTrackPlayerEvents([TrackPlayerEvents.PLAYBACK_STATE], async event => {
+    // console.log("EVENT === ", event)
+    if (event.state === TrackPlayer.STATE_STOPPED) {
+      // console.log("STOPPING")
+      TrackPlayer.pause()
+      setPlaying(false)
+      await TrackPlayer.seekTo(0)
+      setPosition()
+    }
+  })
+
   async function initialSelect(ps) {
     let theID = queuedTrackID
     if (chat.meta && chat.meta.itemID) {
@@ -109,11 +124,8 @@ export default function Podcast({ pod, chat, onBoost, podError }) {
         TrackPlayer.CAPABILITY_SKIP_TO_PREVIOUS,
         TrackPlayer.CAPABILITY_STOP
       ],
-      compactCapabilities: [
-        TrackPlayer.CAPABILITY_PLAY,
-        TrackPlayer.CAPABILITY_PAUSE,
-      ],
-    });
+      compactCapabilities: [TrackPlayer.CAPABILITY_PLAY, TrackPlayer.CAPABILITY_PAUSE]
+    })
 
     if (theID) {
       const qe =
@@ -306,7 +318,7 @@ export default function Podcast({ pod, chat, onBoost, podError }) {
             alias: m.sender_alias || (m.sender === myid ? user.alias : ''),
             date: m.date
           })
-      } catch (e) { }
+      } catch (e) {}
     })
     replayMsgs.current = msgsforReplay
     modalizeRef.current?.open()
