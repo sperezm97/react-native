@@ -28,8 +28,22 @@ export interface StreamPayment {
   amount?: number
 }
 
+export interface SendPaymentArgs {
+  destinations: Destination[]
+  text: string
+  amount: number
+  chat_id: number
+  update_meta: boolean
+}
+
 export class FeedStore {
-  @action async sendPayments(destinations: Destination[], text: string, amount: number, chat_id: number, update_meta: boolean) {
+  @action async sendPayments(
+    destinations: Destination[],
+    text: string,
+    amount: number,
+    chat_id: number,
+    update_meta: boolean
+  ) {
     await relay.post('stream', {
       destinations,
       text,

@@ -1,8 +1,9 @@
 import 'react-native-gesture-handler'
 import { AppRegistry, Platform, LogBox, NativeModules } from 'react-native'
+import TrackPlayer from 'react-native-track-player'
+
 import App from './App'
 import { name as appName } from './app.json'
-// import TrackPlayer from 'react-native-track-player';
 
 // if (__DEV__) {
 //   NativeModules.DevSettings.setIsDebuggingRemotely(true)
@@ -11,6 +12,7 @@ import { name as appName } from './app.json'
 LogBox.ignoreLogs(['Require cycle:'])
 
 AppRegistry.registerComponent(appName, () => App)
+TrackPlayer.registerPlaybackService(() => require('./src/components/Podcast/Service'))
 
 // TrackPlayer.registerPlaybackService(() => require('./src/trackPlayer.js'));
 
