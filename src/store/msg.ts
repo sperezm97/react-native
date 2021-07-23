@@ -512,7 +512,8 @@ class MsgStore {
   seeChat(id) {
     if (!id) return
     this.lastSeen[id] = new Date().getTime()
-    relay.post(`messages/${id}/read`)
+    const r = relay.post(`messages/${id}/read`)
+
     this.persister()
   }
 

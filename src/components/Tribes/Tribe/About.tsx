@@ -98,7 +98,7 @@ function Tags(props) {
               </Button>
             </BoxHeader>
             <>
-              {tribe.tags.length > 0 ? (
+              {tribe.tags && tribe.tags.length > 0 ? (
                 <TribeTags
                   tags={tribe.tags}
                   displayOnly={true}

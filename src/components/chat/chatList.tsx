@@ -24,6 +24,7 @@ export default function ChatList(props) {
       enableVibrateFallback: true,
       ignoreAndroidSystemSettings: false
     })
+
     setRefreshing(true)
     await contacts.getContacts()
     await msg.getMessages()
@@ -46,7 +47,6 @@ export default function ChatList(props) {
 
   return useObserver(() => {
     const chats = useChats()
-
     const chatsToShow = useSearchChats(chats)
 
     return (
