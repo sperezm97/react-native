@@ -130,6 +130,7 @@ function MediaType({ type, data, uri }) {
       />
     )
   }
+  return null
 }
 
 const styles = StyleSheet.create({

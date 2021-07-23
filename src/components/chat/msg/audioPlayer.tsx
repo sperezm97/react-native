@@ -18,11 +18,11 @@ export default function AudioPlayer(props) {
   // },[])
 
   useEffect(() => {
-    return ()=>{
+    return () => {
       if(playing) ARP.stop()
     }
   }, [playing])
-  
+
   async function toggle() {
     try {
       if(playing) {

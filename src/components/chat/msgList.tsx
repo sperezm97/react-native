@@ -149,6 +149,8 @@ function MsgList({
   const isTribe = chat.type === tribe
   const initialNumToRender = 20
 
+  // console.log("msgs last one:", msgs[0])
+
   return (
     <>
       <Refresher />
