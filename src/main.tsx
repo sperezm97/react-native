@@ -142,13 +142,15 @@ export default function Main() {
           const id = notification.data.aps.alert.action
 
           if (notification.userInteraction && notification.finish) {
-            PushNotificationIOS.setApplicationIconBadgeNumber(0)
-            notification.finish(PushNotificationIOS.FetchResult.NoData)
-
             if (id) {
               setChatID(id)
             }
           }
+          // const count = msg.countUnseenMessages(user.myid)
+          // PushNotificationIOS.setApplicationIconBadgeNumber(count)
+
+          PushNotificationIOS.setApplicationIconBadgeNumber(0)
+          notification.finish(PushNotificationIOS.FetchResult.NoData)
         }
       )
 
