@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { TouchableOpacity, Text, StyleSheet, Image, View, Linking } from 'react-native'
 import RNUrlPreview from 'react-native-url-preview'
+import * as linkify from 'linkifyjs'
 
 import { useTheme } from '../../../store'
 import { useParsedGiphyMsg } from '../../../store/hooks/msg'
@@ -10,6 +11,7 @@ import ClipMessage from './clipMsg'
 import BoostMessage from './boostMsg'
 import BoostRow from './boostRow'
 import TribeMsg from './tribeMsg'
+import RumbleVideo from './rumbleVideo'
 import Typography from '../../common/Typography'
 
 export default function TextMsg(props) {
@@ -19,6 +21,12 @@ export default function TextMsg(props) {
     message_content &&
     (message_content.toLowerCase().trim().startsWith('http://') ||
       message_content.toLowerCase().trim().startsWith('https://'))
+
+  const rumbleLink = useMemo(() => {
+    const messageLinks = linkify.find(message_content, 'url')
+    const rumbleLink = messageLinks.find(messageLink => messageLink.href.startsWith('https://rumble.com/'))
+    return rumbleLink?.href ?? ""
+  }, [message_content])
 
   function openLink() {
     Linking.openURL(message_content)
@@ -83,7 +91,7 @@ export default function TextMsg(props) {
       style={isLink ? { width: 280, paddingLeft: 7, minHeight: 72 } : shared.innerPad}
       onLongPress={onLongPressHandler}
     >
-      {isLink ? (
+      {isLink && !rumbleLink ? (
         <View style={styles.linkWrap}>
           <TouchableOpacity onPress={openLink}>
             <Typography color={theme.text} size={15}>
@@ -97,6 +105,7 @@ export default function TextMsg(props) {
           {message_content}
         </Typography>
       )}
+      {!!rumbleLink && <RumbleVideo link={rumbleLink}/>}
       {showBoostRow && <BoostRow {...props} myAlias={props.myAlias} />}
     </TouchableOpacity>
   )
