@@ -50,6 +50,7 @@ export default function Wrap() {
 
   useEffect(() => {
     handleDeepLink()
+    // If the app is already open, the app is foregrounded and a Linking 'url' event is fired
     Linking.addEventListener('url', handleDeepLink)
 
     return () => {
@@ -64,11 +65,13 @@ export default function Wrap() {
     }
   }
 
-  async function handleDeepLink() {
+  async function handleDeepLink(e?: Partial<{ url: string }>) {
+    // If the app launch was triggered by an app link, it will give the link url, otherwise it will give null
     const url = await Linking.getInitialURL()
 
-    if (url) gotLink(url)
     setWrapReady(true)
+    if (e?.url) return gotLink(e.url)
+    if (url) return gotLink(url)
   }
 
   return useObserver(() => {
@@ -104,30 +107,30 @@ function App() {
 
     check24Hour()
 
-    // TrackPlayer.setupPlayer();
-    ;(async () => {
-      const isSignedUp =
-        user.currentIP && user.authToken && !user.onboardStep ? true : false
+      // TrackPlayer.setupPlayer();
+      ; (async () => {
+        const isSignedUp =
+          user.currentIP && user.authToken && !user.onboardStep ? true : false
 
-      ui.setSignedUp(isSignedUp)
+        ui.setSignedUp(isSignedUp)
 
-      if (isSignedUp) {
-        instantiateRelay(
-          user.currentIP,
-          user.authToken,
-          connectedHandler,
-          disconnectedHandler,
-          resetIP
-        )
-      }
-      const pinWasEnteredRecently = await wasEnteredRecently()
+        if (isSignedUp) {
+          instantiateRelay(
+            user.currentIP,
+            user.authToken,
+            connectedHandler,
+            disconnectedHandler,
+            resetIP
+          )
+        }
+        const pinWasEnteredRecently = await wasEnteredRecently()
 
-      if (pinWasEnteredRecently) ui.setPinCodeModal(true)
+        if (pinWasEnteredRecently) ui.setPinCodeModal(true)
 
-      setLoading(false)
+        setLoading(false)
 
-      user.testinit()
-    })()
+        user.testinit()
+      })()
   }, [])
 
   async function resetIP() {
