@@ -51,7 +51,7 @@ function Payment({ visible, close }) {
   const contact = contact_id && contacts.contacts.find(c => c.id === contact_id)
 
   async function sendPayment(amt, text) {
-    if (!amt) return
+    if (!amt || loading) return
     setLoading(true)
     await msg.sendPayment({
       contact_id: contact_id || null,
@@ -65,7 +65,7 @@ function Payment({ visible, close }) {
   }
 
   async function sendInvoice(amt, text) {
-    if (!amt) return
+    if (!amt || loading) return
     setLoading(true)
     const inv = await msg.sendInvoice({
       contact_id: contact_id || null,
@@ -80,6 +80,7 @@ function Payment({ visible, close }) {
 
   async function sendContactless(amt, text) {
     if (ui.payMode === 'invoice') {
+      if (loading) return
       setLoading(true)
       const inv = await msg.createRawInvoice({ amt, memo: text })
       setRawInvoice({ ...inv, amount: amt })
@@ -123,6 +124,7 @@ function Payment({ visible, close }) {
     close()
   }
   async function payContactless(addy) {
+    if (loading) return
     if (ui.payMode === 'loopout') {
       payLoopout(addy)
       return
@@ -159,6 +161,7 @@ function Payment({ visible, close }) {
     }
     if (ui.payMode === 'payment') await sendPayment(amt, text)
     if (ui.payMode === 'invoice') await sendInvoice(amt, text)
+    if (loading) return
     // setTimeout(() => setTint('light'), 150)
     clearOut()
   }
@@ -207,6 +210,7 @@ function Payment({ visible, close }) {
           visible={next === 'payment' || next === 'loopout'}
           onCancel={handleOnClose}
           confirm={payContactless}
+          isLoading={loading}
           isLoopout={isLoopout}
           showPaster={true}
         />
