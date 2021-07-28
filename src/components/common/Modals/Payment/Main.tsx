@@ -44,7 +44,7 @@ export default function Main({ contact, loading, confirmOrContinue, contactless 
   }
 
   const isLoopout = ui.payMode === 'loopout'
-  const nameColor = contact && useAvatarColor(contact.alias)\
+  const nameColor = contact && useAvatarColor(contact.alias)
   return (
     <View
       style={{
