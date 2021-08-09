@@ -1,3 +1,4 @@
+import Toast from 'react-native-simple-toast'
 import { contactStore } from './contacts'
 import * as e2e from '../crypto/e2e'
 import { chatStore } from './chats'
@@ -8,9 +9,22 @@ import { Msg, MAX_MSGS_PER_CHAT } from './msg'
 export async function encryptText({ contact_id, text }) {
   if (!text) return ''
   const contact = contactStore.contacts.find(c => c.id === contact_id)
-  if (!contact) return ''
+  if (!contact || !contact?.contact_key) return ''
   const encText = await e2e.encryptPublic(text, contact.contact_key) // contact.contact_key === null
   return encText
+}
+
+const invalidContactKeyMessage = 'Invalid contact_key value'
+const throwInvalidContactKey = () => { throw new Error(invalidContactKeyMessage) }
+const isInvalidContactKeyError = (error: Error) => error.name === 'Error' && error.message === invalidContactKeyMessage
+export const showToastIfContactKeyError = (error: Error) => {
+  if (isInvalidContactKeyError(error)) {
+    Toast.showWithGravity(
+      'Contact key missing! Wait until you receive this information from the contact',
+      5,
+      Toast.CENTER,
+    )
+  }
 }
 
 export async function makeRemoteTextMap({ contact_id, text, chat_id }, includeSelf?) {
@@ -24,7 +38,7 @@ export async function makeRemoteTextMap({ contact_id, text, chat_id }, includeSe
       idToKeyMap['chat'] = chat.group_key // "chat" is the key for tribes
       if (includeSelf) {
         const me = contactStore.contacts.find(c => c.id === myid) // add in my own self (for media_key_map)
-        if (me) idToKeyMap[myid] = me.contact_key
+        if (me) idToKeyMap[myid] = me?.contact_key ?? ""
       }
     } else {
       // NON TRIBE
@@ -35,13 +49,14 @@ export async function makeRemoteTextMap({ contact_id, text, chat_id }, includeSe
           return chat.contact_ids.includes(c.id) && c.id !== myid
         }
       })
-      contactsInChat.forEach(c => (idToKeyMap[c.id] = c.contact_key))
+      contactsInChat.forEach(c => (idToKeyMap[c.id] = c?.contact_key ?? ""))
     }
   } else {
     const contact = contactStore.contacts.find(c => c.id === contact_id)
-    if (contact) idToKeyMap[contact_id] = contact.contact_key
+    if (contact) idToKeyMap[contact_id] = contact?.contact_key ?? ""
   }
   for (let [id, key] of Object.entries(idToKeyMap)) {
+    if (!key) throwInvalidContactKey()
     const encText = await e2e.encryptPublic(text, String(key))
     remoteTextMap[id] = encText
   }
