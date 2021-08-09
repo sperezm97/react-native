@@ -2,7 +2,11 @@ import React, { useEffect, useState, useRef } from 'react'
 import { StyleSheet, View, AppState } from 'react-native'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import FastImage from 'react-native-fast-image'
-import TrackPlayer from 'react-native-track-player'
+import TrackPlayer, { TrackPlayerEvents } from 'react-native-track-player'
+import {
+  useTrackPlayerProgress,
+  useTrackPlayerEvents
+} from 'react-native-track-player/lib/hooks'
 import { Modalize } from 'react-native-modalize'
 import { isIphoneX, getStatusBarHeight } from 'react-native-iphone-x-helper'
 import Toast from 'react-native-simple-toast'
@@ -51,7 +55,7 @@ export default function Podcast({ pod, chat, onBoost, podError }) {
     // }
     if (playing) TrackPlayer.pause()
     else {
-      TrackPlayer.play()
+      await TrackPlayer.play()
       if (!duration) getAndSetDuration()
     }
     setPlaying(!playing)
@@ -61,6 +65,12 @@ export default function Podcast({ pod, chat, onBoost, podError }) {
     await TrackPlayer.add({
       id: episode.id,
       url: episode.enclosureUrl,
+      title: episode.title,
+      artist: episode.author || 'author',
+      artwork: episode.image
+    })
+
+    await TrackPlayer.updateMetadataForTrack(`${episode.id}`, {
       title: episode.title,
       artist: episode.author || 'author',
       artwork: episode.image
@@ -86,12 +96,37 @@ export default function Podcast({ pod, chat, onBoost, podError }) {
     TrackPlayer.setRate(1)
   }
 
+  useTrackPlayerEvents([TrackPlayerEvents.PLAYBACK_STATE], async event => {
+    // console.log("EVENT === ", event)
+    if (event.state === TrackPlayer.STATE_STOPPED) {
+      // console.log("STOPPING")
+      TrackPlayer.pause()
+      setPlaying(false)
+      await TrackPlayer.seekTo(0)
+      setPosition()
+    }
+  })
+
   async function initialSelect(ps) {
     let theID = queuedTrackID
     if (chat.meta && chat.meta.itemID) {
       theID = chat.meta.itemID
     }
     let episode = ps && ps.episodes && ps.episodes.length && ps.episodes[0]
+    await TrackPlayer.setupPlayer({})
+    await TrackPlayer.updateOptions({
+      stopWithApp: true,
+      capabilities: [
+        TrackPlayer.CAPABILITY_PLAY,
+        TrackPlayer.CAPABILITY_PAUSE,
+        TrackPlayer.CAPABILITY_SKIP_TO_NEXT,
+        TrackPlayer.CAPABILITY_STOP,
+        TrackPlayer.CAPABILITY_SKIP_TO_PREVIOUS,
+        TrackPlayer.CAPABILITY_STOP
+      ],
+      compactCapabilities: [TrackPlayer.CAPABILITY_PLAY, TrackPlayer.CAPABILITY_PAUSE]
+    })
+
     if (theID) {
       const qe =
         ps && ps.episodes && ps.episodes.length && ps.episodes.find(e => e.id == theID)
@@ -103,7 +138,6 @@ export default function Podcast({ pod, chat, onBoost, podError }) {
     if (!episode) return
 
     setSelectedEpisodeID(episode.id)
-
     await addEpisodeToQueue(episode)
     if (!duration) getAndSetDuration()
 

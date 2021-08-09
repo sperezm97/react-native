@@ -5,11 +5,13 @@
 
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
+#import <React/RCTLinkingManager.h>
 #import <React/RCTRootView.h>
 
 // #import <UMCore/UMModuleRegistry.h>
 // #import <UMReactNativeAdapter/UMNativeModulesProxy.h>
 // #import <UMReactNativeAdapter/UMModuleRegistryAdapter.h>
+
 
 #ifdef FB_SONARKIT_ENABLED
 #import <FlipperKit/FlipperClient.h>
@@ -19,17 +21,6 @@
 #import <SKIOSNetworkPlugin/SKIOSNetworkAdapter.h>
 #import <FlipperKitReactPlugin/FlipperKitReactPlugin.h>
 
-
-
-// iOS 9.x or newer
-#import <React/RCTLinkingManager.h>
-
-- (BOOL)application:(UIApplication *)application
-   openURL:(NSURL *)url
-   options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
-{
-  return [RCTLinkingManager application:application openURL:url options:options];
-}
 
 static void InitializeFlipper(UIApplication *application) {
   FlipperClient *client = [FlipperClient sharedClient];
@@ -41,7 +32,6 @@ static void InitializeFlipper(UIApplication *application) {
   [client start];
 }
 #endif
-
 
 // @interface AppDelegate () <RCTBridgeDelegate>
  
@@ -138,6 +128,19 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
 #else
   return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
 #endif
+}
+
+// iOS 9.x or newer
+- (BOOL)application:(UIApplication *)application
+   openURL:(NSURL *)url
+   options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
+{
+  return [RCTLinkingManager application:application openURL:url options:options];
+}
+
+- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray<id<UIUserActivityRestoring>> * _Nullable))restorationHandler
+{
+  return [RCTLinkingManager application:application continueUserActivity:userActivity restorationHandler:restorationHandler];
 }
 
 @end

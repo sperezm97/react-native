@@ -84,7 +84,7 @@ export function useCachedEncryptedFile(props, ldat) {
       if (status == 200 && path) {
         let extension = ''
         if (media_type.startsWith('audio')) {
-          // extension = 'm4a'
+          extension = 'm4a'
         }
 
         if (isPaidMessage) {

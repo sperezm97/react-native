@@ -1,4 +1,4 @@
-import React, { useState, useRef, useLayoutEffect, useEffect } from 'react'
+import React, { useState, useRef, useLayoutEffect } from 'react'
 import { View, StyleSheet, Text } from 'react-native'
 import { SwipeRow } from 'react-native-swipe-list-view'
 import { IconButton } from 'react-native-paper'
@@ -11,7 +11,7 @@ import Clipboard from '@react-native-community/clipboard'
 
 import { useStores, useTheme, hooks } from '../../../store'
 import { useChatReply } from '../../../store/hooks/chat'
-import { constantCodes, constants, SCREEN_WIDTH } from '../../../constants'
+import { constantCodes, constants, SCREEN_HEIGHT, SCREEN_WIDTH } from '../../../constants'
 import EE, { CANCEL_REPLY_UUID, CLEAR_REPLY_UUID, REPLY_UUID } from '../../utils/ee'
 import TextMsg from './textMsg'
 import PaymentMessage from './paymentMsg'
@@ -182,9 +182,13 @@ export default function MsgRow(props) {
   )
 }
 
+const isMsgBiggerThanScreen = (msgHeight: number) => msgHeight > (SCREEN_HEIGHT - 300)
+
 function MsgBubble(props) {
   const theme = useTheme()
   const { msg } = useStores()
+  const [popoverPlacement, setPopoverPlacement] = useState(PopoverPlacement.BOTTOM)
+  const msgRefHeight = useRef<number>(0)
   const [deleting, setDeleting] = useState(false)
   const isInvoice = props.type === constants.message_types.invoice
   const isPaid = props.status === constants.statuses.confirmed
@@ -200,6 +204,7 @@ function MsgBubble(props) {
 
   const onRequestCloseHandler = () => setShowPopover(false)
   const onLongPressHandler = () => {
+    if (isMsgBiggerThanScreen(msgRefHeight.current)) setPopoverPlacement(PopoverPlacement.CENTER)
     ReactNativeHapticFeedback.trigger('impactLight', {
       enableVibrateFallback: true,
       ignoreAndroidSystemSettings: false
@@ -232,7 +237,7 @@ function MsgBubble(props) {
     <Popover
       isVisible={showPopover}
       onRequestClose={onRequestCloseHandler}
-      placement={PopoverPlacement.BOTTOM}
+      placement={popoverPlacement}
       arrowStyle={{ width: 0, height: 0 }}
       popoverStyle={{
         display: 'flex',
@@ -249,6 +254,9 @@ function MsgBubble(props) {
             backgroundColor,
             borderColor: !isMe ? theme.border : 'transparent',
             overflow: 'hidden'
+          }}
+          onLayout={(event) => {
+            msgRefHeight.current = event.nativeEvent.layout.height
           }}
         >
           {isDeleted && <DeletedMsg />}

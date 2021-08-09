@@ -119,6 +119,8 @@ export class ChatStore {
     const chats = await relay.get('chats')
     if (!(chats && chats.length)) return
     this.chats = this.chats.map(c => this.parseChat(c))
+
+    return this.chats
   }
 
   @action
@@ -372,6 +374,7 @@ export class ChatStore {
       const j = await r.json()
 
       this.tribes = j
+
       return true
     } catch (e) {
       console.log(e)

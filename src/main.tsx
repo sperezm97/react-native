@@ -3,10 +3,12 @@ import { AppState } from 'react-native'
 import Toast from 'react-native-simple-toast'
 import { checkVersion } from 'react-native-check-version'
 import { getVersion, getBundleId } from 'react-native-device-info'
+import PushNotificationIOS from '@react-native-community/push-notification-ios'
 
-import { useStores } from './store'
-import APNManager from './store/contexts/apn'
+import { useStores, hooks } from './store'
+import { useApn } from './store/contexts/apn'
 import { TOAST_DURATION } from './constants'
+import { navigate } from './components/Navigation'
 import * as utils from './components/utils/utils'
 import { initPicSrc } from './components/utils/picSrc'
 import * as rsa from './crypto/rsa'
@@ -16,31 +18,17 @@ import ModalsN from './components/common/Modals'
 import Dialogs from './components/common/Dialogs'
 import Root from './components/Navigation/Root'
 import AppVersionUpdate from './components/common/Dialogs/AppVersion'
-import { setTint } from './components/common/StatusBar'
+
+const { useChats } = hooks
 
 export default function Main() {
   const { contacts, msg, details, user, meme, ui } = useStores()
   const [versionUpdateVisible, setVersionUpdateVisible] = useState(false)
+  const [chatID, setChatID] = useState(null)
+  const chats = useChats()
+  const apn = useApn()
 
   const appState = useRef(AppState.currentState)
-
-  useEffect(() => {
-    ;(async () => {
-      const currentVersion = getVersion()
-      const bundleId = getBundleId()
-
-      const version = await checkVersion({
-        bundleId,
-        currentVersion
-      })
-
-      await utils.sleep(300)
-      if (version.needsUpdate) {
-        setVersionUpdateVisible(true)
-        console.log(`App has a ${version.updateType} update pending.`)
-      }
-    })()
-  }, [])
 
   useEffect(() => {
     AppState.addEventListener('change', handleAppStateChange)
@@ -55,8 +43,7 @@ export default function Main() {
     }
     if (appState.current.match(/active/) && nextAppState === 'background') {
       const count = msg.countUnseenMessages(user.myid)
-
-      // BadgeAndroid.setBadge(count);
+      PushNotificationIOS.setApplicationIconBadgeNumber(count)
     }
 
     appState.current = nextAppState
@@ -110,7 +97,6 @@ export default function Main() {
     }
 
     await msg.getMessages()
-
     ui.setLoadingHistory(false)
 
     // msg.initLastSeen()
@@ -123,12 +109,8 @@ export default function Main() {
   useEffect(() => {
     ;(async () => {
       await contacts.getContacts()
-
       loadHistory(true)
-
-      // checkVersion()
       initPicSrc()
-      // createPrivateKeyIfNotExists(contacts)
       createPrivateKeyIfNotExists(contacts, user)
     })()
 
@@ -138,18 +120,66 @@ export default function Main() {
     }
   }, [])
 
+  useEffect(() => {
+    if (chatID) {
+      const chat = chats.find(c => c.id === chatID)
+      if (chat) {
+        navigate('Chat', { ...chat })
+        setChatID(null)
+      }
+    }
+  }, [chatID])
+
+  useEffect(() => {
+    ;(async () => {
+      apn.configure(
+        token => {
+          if ((token && !user.deviceId) || user.deviceId !== token) {
+            user.registerMyDeviceId(token, user.myid)
+          }
+        },
+        notification => {
+          const id = notification.data.aps.alert.action
+
+          if (notification.userInteraction && notification.finish) {
+            if (id) {
+              setChatID(id)
+            }
+          }
+          // const count = msg.countUnseenMessages(user.myid)
+          // PushNotificationIOS.setApplicationIconBadgeNumber(count)
+
+          PushNotificationIOS.setApplicationIconBadgeNumber(0)
+          notification.finish(PushNotificationIOS.FetchResult.NoData)
+        }
+      )
+
+      const currentVersion = getVersion()
+      const bundleId = getBundleId()
+
+      const version = await checkVersion({
+        bundleId,
+        currentVersion
+      })
+
+      await utils.sleep(300)
+      if (version.needsUpdate) {
+        setVersionUpdateVisible(true)
+        console.log(`App has a ${version.updateType} update pending.`)
+      }
+    })()
+  }, [])
+
   return (
     <>
-      <APNManager>
-        <Root />
-        <Modals />
-        <ModalsN />
-        <Dialogs />
-        <AppVersionUpdate
-          visible={versionUpdateVisible}
-          close={() => setVersionUpdateVisible(false)}
-        />
-      </APNManager>
+      <Root />
+      <Modals />
+      <ModalsN />
+      <Dialogs />
+      <AppVersionUpdate
+        visible={versionUpdateVisible}
+        close={() => setVersionUpdateVisible(false)}
+      />
     </>
   )
 }

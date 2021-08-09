@@ -8,12 +8,13 @@ import {
   KeyboardAvoidingView
 } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
-import { useNavigation } from '@react-navigation/native'
+// import { useNavigation } from '@react-navigation/native'
 import Video from 'react-native-video'
 import { IconButton, TextInput } from 'react-native-paper'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 import { useStores, useTheme, hooks } from '../../../../store'
+import { navigate } from '../../../Navigation'
 import { DEFAULT_TRIBE_SERVER } from '../../../../config'
 import { SCREEN_HEIGHT, STATUS_BAR_HEIGHT } from '../../../../constants'
 import { setTint } from '../../StatusBar'
@@ -30,11 +31,11 @@ export default function JoinTribeWrap(props) {
 
 function JoinTribe(props) {
   const { visible, close, tribe } = props
+
   const { ui, chats } = useStores()
   const theme = useTheme()
   const [videoVisible, setVideoVisible] = useState(false)
   const [alias, setAlias] = useState('')
-  const navigation = useNavigation()
 
   const tribes = useTribes()
   const tribeToCheck = tribes && tribes.find(t => t.uuid === tribe.uuid)
@@ -70,7 +71,7 @@ function JoinTribe(props) {
 
   async function finish() {
     close()
-    navigation.navigate('Tribe', { tribe: { ...tribeToCheck } })
+    navigate('Tribe', { tribe: { ...tribeToCheck } })
     setTimeout(() => setTint(theme.dark ? 'dark' : 'light'), 150)
   }
 
@@ -186,7 +187,7 @@ function JoinTribe(props) {
                           ph={20}
                           style={{ marginVertically: 20 }}
                         >
-                          Go to {tribeToCheck.name}
+                          Go to {tribeToCheck?.name}
                         </Button>
                       </>
                     )}

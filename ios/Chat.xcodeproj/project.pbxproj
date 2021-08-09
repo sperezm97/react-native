@@ -655,16 +655,16 @@
 				INFOPLIST_FILE = Chat/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.6;
+				MARKETING_VERSION = 1.7.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = chat.n2n2.Chat.staging;
+				PRODUCT_BUNDLE_IDENTIFIER = chat.n2n2.Chat;
 				PRODUCT_NAME = Chat;
-				PROVISIONING_PROFILE_SPECIFIER = "match AppStore chat.n2n2.Chat.staging";
+				PROVISIONING_PROFILE_SPECIFIER = "match AppStore chat.n2n2.Chat";
 				SWIFT_OBJC_BRIDGING_HEADER = "Chat-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -687,16 +687,16 @@
 				INFOPLIST_FILE = Chat/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.6;
+				MARKETING_VERSION = 1.7.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = chat.n2n2.Chat.staging;
+				PRODUCT_BUNDLE_IDENTIFIER = chat.n2n2.Chat;
 				PRODUCT_NAME = Chat;
-				PROVISIONING_PROFILE_SPECIFIER = "match AppStore chat.n2n2.Chat.staging";
+				PROVISIONING_PROFILE_SPECIFIER = "match AppStore chat.n2n2.Chat";
 				SWIFT_OBJC_BRIDGING_HEADER = "Chat-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";

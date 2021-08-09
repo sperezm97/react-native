@@ -11,6 +11,10 @@ class DetailsStore {
 
   @persist
   @observable
+  fullBalance: number = 0
+
+  @persist
+  @observable
   localBalance: number = 0
 
   @persist
@@ -32,7 +36,9 @@ class DetailsStore {
       if (!r) return
 
       const b = r.balance && parseInt(r.balance)
+      const fb = r.full_balance && parseInt(r.full_balance)
       this.balance = b || 0
+      this.fullBalance = fb || 0
     } catch (e) {
       console.log(e)
     }

@@ -17,7 +17,7 @@ import { useStores, useTheme, hooks } from '../../store'
 import { Chat } from '../../store/chats'
 import { useMsgSender } from '../../store/hooks/msg'
 import Message from './msg'
-import { constants } from '../../constants'
+import { constants, SCREEN_HEIGHT, SCREEN_WIDTH } from '../../constants'
 import EE, { SHOW_REFRESHER } from '../utils/ee'
 import Typography from '../common/Typography'
 
@@ -149,6 +149,8 @@ function MsgList({
   const isTribe = chat.type === tribe
   const initialNumToRender = 20
 
+  // console.log("msgs last one:", msgs[0])
+
   return (
     <>
       <Refresher />
@@ -238,7 +240,7 @@ function ListItem({
   onApproveOrDenyMember,
   onDeleteChat,
   onBoostMsg,
-  myid
+  myid,
 }) {
   if (m.dateLine) {
     return <DateLine dateString={m.dateLine} />

@@ -5,7 +5,7 @@ const config = {
     api: 'https://hub.n2n2.chat/api/v1/'
   },
   tribes: {
-    server: 'tribes.n2n2.chat',
+    server: 'communities.n2n2.chat',
     uuid: 'YNzR0h_54n6O1zjeKKEM6vSzwO6yq3N-3aYSpAaeZ04C72dYISzw5UQEAeB3nvwVXspEnAFavDaE0o-bmxZiw_2CNpL1'
   },
   memes: {

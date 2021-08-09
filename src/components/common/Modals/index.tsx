@@ -7,8 +7,8 @@ import InviteNewUser from './InviteNewUser'
 import Payment from './Payment'
 import ShareGroup from './ShareGroup'
 import AddTribe from './Tribe/AddTribe'
+import JoinTribeModal from './Tribe/JoinTribeModal'
 import PostPhoto from './PostPhoto'
-// import JoinTribe from './Tribe/JoinTribe'
 
 export default function Modals() {
   return useObserver(() => {
@@ -21,7 +21,7 @@ export default function Modals() {
         <Payment />
         <ShareGroup />
         <AddTribe />
-        {/* <JoinTribe /> */}
+        <JoinTribeModal />
       </>
     )
   })

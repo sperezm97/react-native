@@ -1,16 +1,16 @@
-# n2n2-react-native
+# react-native
 
 ## Description
 
 <dl>
     <dd>
-        React-Native IOS for N2N2
+        React-Native IOS for ZION
     </dd>
 </dl><br />
 
 ## Quick start
 
-1.  Clone this repo using `git clone https://github.com/n2n2dev/n2n2-react-native.git`
+1.  Clone this repo using `git clone https://github.com/getZION/react-native.git`
 2.  Move to the directory: `cd <PROJECT_NAME>`.<br />
 3.  Run: `yarn install`.<br />
 

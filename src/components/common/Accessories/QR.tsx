@@ -15,6 +15,7 @@ export default function QR({
   onScan,
   showPaster,
   inputPlaceholder,
+  isLoading = false,
   isLoopout = false,
   confirm,
   scannerH = SCREEN_HEIGHT - 300
@@ -84,7 +85,7 @@ export default function QR({
                 }}
               >
                 {text.length > 0 && (
-                  <Button w={125} onPress={() => confirm(text)} disabled={!text}>
+                  <Button w={125} onPress={() => confirm(text)} disabled={!text || isLoading} loading={isLoading}>
                     CONFIRM
                   </Button>
                 )}

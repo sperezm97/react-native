@@ -14,6 +14,7 @@ import AddMemberModal from '../../common/Modals/Tribe/AddMembers'
 import Typography from '../../common/Typography'
 import Empty from '../../common/Empty'
 import Search from '../../common/Search'
+import { SCREEN_WIDTH } from '../../../constants'
 
 export default function Members({ route }) {
   const [addMember, setAddMember] = useState(false)
@@ -102,8 +103,8 @@ function EmptyMembers({ tribe }) {
   const theme = useTheme()
 
   return (
-    <Empty>
-      <Typography color={theme.subtitle} size={14}>
+    <Empty w={SCREEN_WIDTH - 100}>
+      <Typography color={theme.subtitle} size={14} textAlign='center'>
         {`There are no members in ${tribe.name}.`}
       </Typography>
     </Empty>
