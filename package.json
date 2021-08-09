@@ -2,7 +2,7 @@
   "name": "ZION",
   "description": "Bitcoin Lightning Powered Chat",
   "author": "",
-  "version": "1.0.0",
+  "version": "1.7.0",
   "main": "public/electron",
   "homepage": "./",
   "scripts": {
