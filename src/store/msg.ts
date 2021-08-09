@@ -10,6 +10,7 @@ import { constants } from '../constants'
 import {
   encryptText,
   makeRemoteTextMap,
+  showToastIfContactKeyError,
   decodeSingle,
   decodeMessages,
   orgMsgsFromExisting,
@@ -331,6 +332,7 @@ class MsgStore {
         if (amount) detailsStore.addToBalance(amount * -1)
       }
     } catch (e) {
+      showToastIfContactKeyError(e)
       console.log(e)
     }
   }
@@ -372,6 +374,7 @@ class MsgStore {
       if (!r) return
       this.gotNewMessage(r)
     } catch (e) {
+      showToastIfContactKeyError(e)
       console.log(e)
     }
   }
