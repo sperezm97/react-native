@@ -10,10 +10,9 @@ import Typography from '../common/Typography'
 import { useTheme } from '@react-navigation/native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
-export default function SuggestToUserToBackupTheirKeys(props) {
+export default function SuggestToUserToBackupTheirKeys({ onDone, z }) {
 	const [isVideoFinished, setIsVideoFinished] = useState(false)
 	const theme = useTheme()
-	const { onDone, z, show } = props
 	const network = require('../../assets/videos/back-up-keys.mov')
 
 	const videoRef = useRef(null)
@@ -28,12 +27,10 @@ export default function SuggestToUserToBackupTheirKeys(props) {
 				style={{
 					height: SCREEN_HEIGHT
 				}}
-			>
-			</Video>
+			/>
 			<View style={styles.buttonWrap}>
 				<Button
 					accessibilityLabel='onboard-name-button'
-					// loading={updating}
 					onPress={onDone}
 					disabled={!isVideoFinished}
 					style={{ ...styles.button }}
@@ -45,14 +42,13 @@ export default function SuggestToUserToBackupTheirKeys(props) {
 				</Button>
 				<Button
 					accessibilityLabel='onboard-name-button'
-					// loading={updating}
 					style={{marginRight: 10}}
 					onPress={() => videoRef.current && videoRef.current.seek(0)}
 					disabled={false}
 					w={32}
 					color={theme.colors.primary}
 				>
-            		<Icon name='repeat' color={'white'} size={32} />
+					<Icon name='repeat' color={'white'} size={32} />
 				</Button>
 			</View>
 		</View>
