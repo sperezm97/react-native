@@ -11,8 +11,9 @@ import ClipMessage from './clipMsg'
 import BoostMessage from './boostMsg'
 import BoostRow from './boostRow'
 import TribeMsg from './tribeMsg'
-import RumbleVideo from './rumbleVideo'
+import EmbedVideo from './embedVideo'
 import Typography from '../../common/Typography'
+import { getRumbleLink, getYoutubeLink } from './utils'
 
 export default function TextMsg(props) {
   const theme = useTheme()
@@ -22,11 +23,8 @@ export default function TextMsg(props) {
     (message_content.toLowerCase().trim().startsWith('http://') ||
       message_content.toLowerCase().trim().startsWith('https://'))
 
-  const rumbleLink = useMemo(() => {
-    const messageLinks = linkify.find(message_content, 'url')
-    const rumbleLink = messageLinks.find(messageLink => messageLink.href.startsWith('https://rumble.com/'))
-    return rumbleLink?.href ?? ""
-  }, [message_content])
+  const rumbleLink = useMemo(() => getRumbleLink(message_content), [message_content])
+  const youtubeLink = useMemo(() => getYoutubeLink(message_content), [message_content])
 
   function openLink() {
     Linking.openURL(message_content)
@@ -66,24 +64,31 @@ export default function TextMsg(props) {
   }
 
   const isClip = message_content && message_content.startsWith('clip::')
-  if (isClip) {
-    return (
-      <View style={styles.column}>
-        <ClipMessage {...props} />
-        {showBoostRow && <BoostRow {...props} myAlias={props.myAlias} pad />}
-      </View>
-    )
-  }
-  const isBoost = message_content && message_content.startsWith('boost::')
-  if (isBoost) {
-    return <BoostMessage {...props} />
-  }
+  if (isClip) return (
+    <View style={styles.column}>
+      <ClipMessage {...props} />
+      {showBoostRow && <BoostRow {...props} myAlias={props.myAlias} pad />}
+    </View>
+  )
 
-  const isTribe =
-    message_content && message_content.startsWith(`${DEFAULT_DOMAIN}://?action=tribe`)
-  if (isTribe) {
-    return <TribeMsg {...props} />
-  }
+  const isBoost = message_content?.startsWith('boost::')
+  if (isBoost) return <BoostMessage {...props} />
+
+  const isTribe = message_content?.startsWith(`${DEFAULT_DOMAIN}://?action=tribe`)
+  if (isTribe) return <TribeMsg {...props} />
+
+  if (rumbleLink || youtubeLink) return (
+    <TouchableOpacity
+      activeOpacity={0.8}
+      style={isLink ? { width: 280, paddingLeft: 7, minHeight: 72 } : shared.innerPad}
+      onLongPress={onLongPressHandler}
+    >
+      {/* TODO: Refactor with a better logic */}
+      {!!rumbleLink && <EmbedVideo type="rumble" link={rumbleLink} />}
+      {!!youtubeLink && <EmbedVideo type="youtube" link={youtubeLink} />}
+      {showBoostRow && <BoostRow {...props} myAlias={props.myAlias} />}
+    </TouchableOpacity>
+  )
 
   return (
     <TouchableOpacity
@@ -91,7 +96,7 @@ export default function TextMsg(props) {
       style={isLink ? { width: 280, paddingLeft: 7, minHeight: 72 } : shared.innerPad}
       onLongPress={onLongPressHandler}
     >
-      {isLink && !rumbleLink ? (
+      {isLink ? (
         <View style={styles.linkWrap}>
           <TouchableOpacity onPress={openLink}>
             <Typography color={theme.text} size={15}>
@@ -105,7 +110,6 @@ export default function TextMsg(props) {
           {message_content}
         </Typography>
       )}
-      {!!rumbleLink && <RumbleVideo link={rumbleLink}/>}
       {showBoostRow && <BoostRow {...props} myAlias={props.myAlias} />}
     </TouchableOpacity>
   )
