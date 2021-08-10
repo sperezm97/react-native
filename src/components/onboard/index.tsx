@@ -9,6 +9,7 @@ import NameAndKey from './nameAndKey'
 import Ready from './ready'
 import PIN from './choosePIN'
 import ProfilePic from './profilePic'
+import SuggestToUserToBackupTheirKeys from './suggestToUserToBackupTheirKeys'
 // import Backup from './Backup'
 
 /*
@@ -16,12 +17,13 @@ import ProfilePic from './profilePic'
 2. create inviter contact (relay)
 3. set pin
 4. set my nickname (and RSA pubkey!)
-5. set my profile pic
-6. Ready!
+5. SuggestToUserToBackupTheirKeys
+6. set my profile pic
+7. Ready!
 */
 
 // Final: ProfilePic before Ready
-const steps = [Code, Welcome, PIN, NameAndKey, ProfilePic, Ready]
+const steps = [Code, Welcome, PIN, NameAndKey, SuggestToUserToBackupTheirKeys ,ProfilePic, Ready]
 export default function OnBoard() {
   const { ui, user } = useStores()
 
