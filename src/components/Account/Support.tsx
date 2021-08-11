@@ -11,7 +11,7 @@ import Button from '../common/Button'
 import BackHeader from '../common/BackHeader'
 
 export default function Support() {
-  const { details } = useStores()
+  const { details, user } = useStores()
   const [loading, setLoading] = useState(true)
   const [text, setText] = useState('')
   const theme = useTheme()
@@ -29,6 +29,7 @@ export default function Support() {
 
   function email() {
     let body = text ? `${text}<br/><br/>` : ''
+    body += `Server URL (alias) of this user account: ${user.currentIP}<br/><br/>`
 
     if (details.logs) {
       body += details.logs.replace(/(\n)/g, '<br/>')
@@ -78,10 +79,10 @@ export default function Support() {
 
       <View style={styles.bottom}>
         <View style={styles.buttonWrap}>
-          <Button onPress={() => email()} w={160}>
+          <Button onPress={email} w={160}>
             Send Message
           </Button>
-          <Button disabled={!details.logs} onPress={() => copy()} w={160}>
+          <Button disabled={!details.logs} onPress={copy} w={160}>
             Copy Logs
           </Button>
         </View>
