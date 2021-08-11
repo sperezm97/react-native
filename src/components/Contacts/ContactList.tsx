@@ -97,7 +97,7 @@ function grouper(data) {
   // takes "alias"
   const ret = []
   const groups = data.reduce((r, e) => {
-    let title = e.alias[0]
+    let title = e.alias && e.alias[0]
     if (!r[title]) r[title] = { title, data: [e] }
     else r[title].data.push(e)
     return r

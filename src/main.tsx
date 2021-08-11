@@ -61,13 +61,16 @@ export default function Main() {
     // private key has been made
     if (priv) {
       // set into user.contactKey
-      if (me && me.contact_key) {
-        if (!user.contactKey) {
-          user.setContactKey(me.contact_key)
-        }
-
+      if (me?.contact_key && !user.contactKey) {
+        user.setContactKey(me.contact_key)
+        contacts.updateContact(user.myid, {
+          contact_key: me.contact_key
+        })
         // set into me Contact
       } else if (user.contactKey) {
+        contacts.updateContact(user.myid, {
+          contact_key: user.contactKey
+        })
       } else {
         // need to regen :(
         const keyPair = await rsa.generateKeyPair()
