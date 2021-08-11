@@ -131,7 +131,7 @@ const ListHeader = () => {
               Total balance
             </Typography>
             <Typography size={18} fw='500'>
-              {details?.balance}{' '}
+              {details?.fullBalance}{' '}
               <Typography color={theme.subtitle} fw='400'>
                 {' '}
                 sat
