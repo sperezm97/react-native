@@ -21,7 +21,7 @@ export default function AppVersionUpdate({ visible, close }) {
       onDismiss={close}
       minH={450}
       round={20}
-      // dismissable={false}
+      dismissable={false}
       ph={0}
     >
       <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
@@ -53,7 +53,7 @@ export default function AppVersionUpdate({ visible, close }) {
               >
                 Update N2N2
               </Button>
-              <Button
+              {/* <Button
                 mode='text'
                 style={{ marginTop: 20 }}
                 size='small'
@@ -65,7 +65,7 @@ export default function AppVersionUpdate({ visible, close }) {
                 accessibilityLabel='app-version-cancel-button'
               >
                 Cancel
-              </Button>
+              </Button> */}
             </View>
           ) : (
             <Button
