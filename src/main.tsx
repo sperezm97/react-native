@@ -162,7 +162,7 @@ export default function Main() {
 
       const version = await checkVersion({
         bundleId,
-        currentVersion
+        currentVersion: currentVersion.toString()
       })
 
       await utils.sleep(300)
