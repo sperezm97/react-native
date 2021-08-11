@@ -243,8 +243,8 @@ PODS:
     - react-native-video/Video (= 5.1.1)
   - react-native-video/Video (5.1.1):
     - React-Core
-  - react-native-webview (9.4.0):
-    - React
+  - react-native-webview (11.6.5):
+    - React-Core
   - React-RCTActionSheet (0.63.4):
     - React-Core/RCTActionSheetHeaders (= 0.63.4)
   - React-RCTAnimation (0.63.4):
@@ -661,7 +661,7 @@ SPEC CHECKSUMS:
   react-native-track-player: 6ec965317dbf9d49f2f4f87d050b53b3f994a5b7
   react-native-udp: ff9d13e523f2b58e6bc5d4d32321ac60671b5dc9
   react-native-video: 0bb76b6d6b77da3009611586c7dbf817b947f30e
-  react-native-webview: cf5527893252b3b036eea024a1da6996f7344c74
+  react-native-webview: 2e8fe70dc32b50d3231c23043f8e8b5a5525d346
   React-RCTActionSheet: 89a0ca9f4a06c1f93c26067af074ccdce0f40336
   React-RCTAnimation: 1bde3ecc0c104c55df246eda516e0deb03c4e49b
   React-RCTBlob: a97d378b527740cc667e03ebfa183a75231ab0f0
