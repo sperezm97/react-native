@@ -87,7 +87,15 @@ export class ChatStore {
 
   @action getDefaultTribeServer(): TribeServer {
     const server = this.servers.find(s => s.host === DEFAULT_TRIBE_SERVER)
+    if (!server) {
+      this.updateServers()
+      return this.getDefaultTribeServer()
+    }
     return server
+  }
+
+  @action updateServers(): void {
+    this.servers = [{ host: DEFAULT_TRIBE_SERVER }]
   }
 
   @action
