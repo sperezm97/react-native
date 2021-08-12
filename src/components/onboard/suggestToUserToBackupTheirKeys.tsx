@@ -10,14 +10,16 @@ import Typography from '../common/Typography'
 import { useTheme } from '@react-navigation/native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
-export default function SuggestToUserToBackupTheirKeys({ onDone, z }) {
+export default function SuggestToUserToBackupTheirKeys({ onDone, z, isTheMainRender }) {
 	const [isVideoFinished, setIsVideoFinished] = useState(false)
 	const theme = useTheme()
 	const network = require('../../assets/videos/back-up-keys.mov')
 
 	const videoRef = useRef(null)
 
-	return useObserver(() => (
+	return useObserver(() => {
+		if(!isTheMainRender) return null
+		return (
 		<View style={{ zIndex: z }}>
 			<Video
 				source={network}
@@ -52,7 +54,7 @@ export default function SuggestToUserToBackupTheirKeys({ onDone, z }) {
 				</Button>
 			</View>
 		</View>
-	))
+	)})
 }
 
 
