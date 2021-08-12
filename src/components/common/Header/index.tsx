@@ -33,7 +33,7 @@ export default function Header({ border = false }) {
         <View style={{ ...styles.flex, ...styles.content }}>
           <View style={{ ...styles.flex, ...styles.left }}>
             <Image
-              source={require('../../../assets/n2n2-text.png')}
+              source={require('../../../assets/n2n2-text.jpeg')}
               style={styles.brand}
               resizeMode={'contain'}
             />

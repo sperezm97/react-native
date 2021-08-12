@@ -34,7 +34,7 @@ export default function Support() {
     if (details.logs) {
       body += details.logs.replace(/(\n)/g, '<br/>')
     }
-    const subject = 'N2N2 Support Request'
+    const subject = 'Zion Support Request'
     Linking.openURL(`mailto:ci@n2n2.co?subject=${subject}&body=${body}`)
   }
 

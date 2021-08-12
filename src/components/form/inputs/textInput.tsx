@@ -19,7 +19,8 @@ export default function TheTextInput({
   accessibilityLabel,
   multiline,
   numberOfLines,
-  style
+  style,
+  hasAccessoryView = true,
 }) {
   const theme = useTheme()
   let lab = `${label.en}${required ? ' *' : ''}`
@@ -62,7 +63,7 @@ export default function TheTextInput({
         textAlignVertical='auto'
         inputAccessoryViewID={name}
       />
-      <InputAccessoryView nativeID={name} />
+      {hasAccessoryView && <InputAccessoryView nativeID={name} />}
     </>
   )
 }

@@ -57,6 +57,7 @@ export default function OnBoard() {
               key={i}
               z={i}
               show={step > i - 1}
+              isTheMainRender={step===i}
               onDone={stepForward}
               onBack={stepBack}
               onRestore={onFinish}

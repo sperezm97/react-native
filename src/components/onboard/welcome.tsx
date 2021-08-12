@@ -41,7 +41,7 @@ export default function Welcome(props) {
               {user.invite.inviterNickname || 'Inviter'}
             </Typography>
             <Typography style={{ ...styles.message }} size={20} color={theme.title}>{`"${
-              user.invite.welcomeMessage || 'Welcome to N2N2!'
+              user.invite.welcomeMessage || 'Welcome to Zion!'
             }"`}</Typography>
           </View>
           <Button

@@ -15,12 +15,12 @@
     "xcode": "open ios/Chat.xcworkspace"
   },
   "build": {
-    "appId": "n2n2.chat",
-    "productName": "N2N2 Chat",
+    "appId": "Zion.chat",
+    "productName": "Zion Chat",
     "copyright": "copyright © 2021 ZION",
     "win": {
       "target": "nsis",
-      "publisherName": "N2N2",
+      "publisherName": "Zion",
       "icon": "build/static/icon.ico"
     },
     "nsis": {
@@ -31,7 +31,7 @@
     },
     "mac": {
       "identity": null,
-      "category": "chat.n2n2.Chat",
+      "category": "chat.Zion.Chat",
       "icon": "build/static/icon.ico"
     },
     "linux": {
@@ -41,7 +41,7 @@
       "icon": "build/static/icon.png",
       "category": "Finance",
       "desktop": {
-        "Name": "N2N2",
+        "Name": "Zion",
         "Comment": "Lightning Chat",
         "Categories": "Network;Finance"
       }

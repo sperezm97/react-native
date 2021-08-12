@@ -9,7 +9,6 @@ import {
   TouchableOpacity,
   PanResponder,
   Animated,
-  KeyboardAvoidingView,
   Platform
 } from 'react-native'
 import { IconButton, ActivityIndicator } from 'react-native-paper'
@@ -34,6 +33,7 @@ import ReplyContent from './msg/replyContent'
 import RecDot from './recDot'
 import RNFetchBlob from 'rn-fetch-blob'
 import Giphy from './giphy'
+import EmbedVideo from './embedVideo'
 import { requestAudioPermissions, uploadAudioFile } from './audioHelpers'
 import Camera from '../common/Accessories/Camera'
 import { setTint } from '../common/StatusBar'
@@ -63,6 +63,7 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
   const [gifs, setGifs] = useState([])
   const [searchGif, setSearchGif] = useState('Bitcoin')
   const [showGiphyModal, setShowGiphyModal] = useState(false)
+  const embedVideoModalRef = useRef<Modalize>(null)
   const [replyUuid, setReplyUuid] = useState('')
   const [extraTextContent, setExtraTextContent] = useState(null)
   const appearAnim = new Animated.Value(300)
@@ -356,6 +357,59 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
     }, 150)
   }
 
+  // =========== Embed Video Logic ============
+  const openEmbedVideoModal = () => embedVideoModalRef.current?.open()
+  const onEmbedVideoHandler = () => {
+    setDialogOpen(false)
+    openEmbedVideoModal()
+  }
+  const closeEmbedVideoModal = () => {
+    embedVideoModalRef?.current.close()
+  }
+  async function onSendEmbedVideoHandler({ video }) {
+    try {
+      closeEmbedVideoModal()
+      setDialogOpen(false)
+      const embedVideoLink = video as string
+      if (!embedVideoLink) return
+      if (waitingForAdminApproval) return
+      let contact_id = chat.contact_ids.find(cid => cid !== myid)
+
+      let { price, failureMessage } = calcBotPrice(tribeBots, embedVideoLink)
+      if (failureMessage) {
+        Toast.showWithGravity(failureMessage, Toast.SHORT, Toast.TOP)
+        return
+      }
+
+      let txt = embedVideoLink
+      if (extraTextContent) {
+        const { type, ...rest } = extraTextContent
+        txt = type + '::' + JSON.stringify({ ...rest, text: embedVideoLink })
+      }
+
+      await msg.sendMessage({
+        contact_id: contact_id || null,
+        text: txt,
+        chat_id: chat.id || null,
+        amount: price + pricePerMessage || 0,
+        reply_uuid: replyUuid || ''
+      })
+      setText('')
+      if (replyUuid) {
+        setReplyUuid('')
+        EE.emit(CLEAR_REPLY_UUID, null)
+      }
+      if (extraTextContent) {
+        setExtraTextContent(null)
+      }
+      // inputRef.current.blur()
+      // setInputFocused(false)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  // =========== Embed Video Logic ============
+
   const isConversation = chat.type === conversation
   // const isTribe = chat.type === constants.chat_types.tribe
   const hideMic = inputFocused || text ? true : false
@@ -525,6 +579,7 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
             ui.setPayMode('loopout', chat)
           }}
           onGiphyHandler={onGiphyHandler}
+          onEmbedVideoHandler={onEmbedVideoHandler}
         />
 
         <Giphy
@@ -536,6 +591,11 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
           setSearchGif={setSearchGif}
           onSendGifHandler={onSendGifHandler}
           getGifsBySearch={getGifsBySearch}
+        />
+
+        <EmbedVideo
+          ref={embedVideoModalRef}
+          onSendEmbedVideo={onSendEmbedVideoHandler}
         />
       </View>
 
