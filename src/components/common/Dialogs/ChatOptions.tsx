@@ -10,20 +10,20 @@ import * as ImagePicker from 'react-native-image-picker'
 import { useStores, useTheme } from '../../../store'
 import MenuSheet from '../ActionSheet/MenuSheet'
 
-export default function ChatOptions(props) {
-  const {
-    visible,
-    onCancel,
-    onPick,
-    onChooseCam,
-    doPaidMessage,
-    request,
-    send,
-    loopout,
-    isConversation,
-    onGiphyHandler,
-    hasLoopout
-  } = props
+export default function ChatOptions({
+  visible,
+  onCancel,
+  onPick,
+  onChooseCam,
+  doPaidMessage,
+  request,
+  send,
+  loopout,
+  isConversation,
+  onGiphyHandler,
+  onEmbedVideoHandler,
+  hasLoopout
+}) {
 
   const { ui } = useStores()
   const theme = useTheme()
@@ -32,22 +32,19 @@ export default function ChatOptions(props) {
     ImagePicker.launchImageLibrary({}, result => {
       if (!result.didCancel) {
         onPick(result)
-      } else {
-        onCancel()
+        return;
       }
+      onCancel()
     })
   }
 
-  const pickImageHandler = () => pickImage()
-  const pickGif = () => onGiphyHandler()
-  const requestHandler = () => request()
-  const sendHandler = () => send()
-  const doPaidMessageHandler = () => doPaidMessage()
-  const loopoutHandler = () => loopout()
-
-  function close() {
-    onCancel()
-  }
+  const pickImageHandler = pickImage
+  const pickGif = onGiphyHandler
+  const requestHandler = request
+  const sendHandler = send
+  const doPaidMessageHandler = doPaidMessage
+  const loopoutHandler = loopout
+  const close = onCancel
 
   const commonItems = [
     {
@@ -103,6 +100,23 @@ export default function ChatOptions(props) {
       action: () => {
         close()
         setTimeout(pickGif, 400)
+      }
+    },
+    {
+      title: 'Embed Video',
+      thumbIcon: (
+        <IconButton
+          icon={({ size, color }) => (
+            <MaterialIcons name='video-library' color={color} size={size} />
+          )}
+          color={theme.white}
+          size={22}
+        />
+      ),
+      thumbBgColor: theme.primary,
+      action: () => {
+        close()
+        setTimeout(onEmbedVideoHandler, 400)
       }
     }
   ]
