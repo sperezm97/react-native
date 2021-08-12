@@ -16,7 +16,7 @@ export default function AddFriend() {
 
   const items = [
     {
-      title: 'New to N2N2',
+      title: 'New to Zion',
       thumbIcon: 'Send',
       description: 'Invite a new friend',
       thumbBgColor: theme.primary,
@@ -28,7 +28,7 @@ export default function AddFriend() {
       }
     },
     {
-      title: 'Already on N2N2',
+      title: 'Already on Zion',
       thumbIcon: (
         <IconButton
           icon={({ size, color }) => (
