@@ -12,7 +12,7 @@ const YoutubeVideo: React.FC<YoutubeVideoProps> = ({ link }) => {
   const videoKey = useMemo(() => getQueryParamFromLink(link, 'v'), [link])
 
   return !!videoKey && (
-    <View style={{ width: 640, height: 170 }} pointerEvents="box-only">
+    <View style={{ width: 640, height: 170 }}>
       <WebView
         source={{
           html: `
