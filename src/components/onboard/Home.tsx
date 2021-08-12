@@ -30,7 +30,7 @@ export default function Home() {
             fw='600'
             lh={48}
           >
-            N2N2
+            Zion
           </Typography>
 
           <Button
