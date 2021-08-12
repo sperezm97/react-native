@@ -26,7 +26,7 @@ export default function AppVersionUpdate({ visible, close }) {
     >
       <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
         <Image
-          source={require('../../../assets/n2n2-text.png')}
+          source={require('../../../assets/n2n2-text.jpeg')}
           style={{ width: 120, height: 120 }}
           resizeMode={'contain'}
         />
@@ -51,7 +51,7 @@ export default function AppVersionUpdate({ visible, close }) {
                 }}
                 accessibilityLabel='app-version-ok-button'
               >
-                Update N2N2
+                Update Zion
               </Button>
               {/* <Button
                 mode='text'

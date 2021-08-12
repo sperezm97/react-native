@@ -20,7 +20,7 @@ export default function Splash() {
       </Wobble>
 
       <Image
-        source={require('../../../assets/n2n2-text.png')}
+        source={require('../../../assets/n2n2-text.jpeg')}
         style={{ width: 120, height: 120 }}
         resizeMode={'contain'}
       />
