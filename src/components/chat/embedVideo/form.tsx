@@ -8,21 +8,21 @@ import { Button, TextInput } from 'react-native-paper'
 import Typography from '../../common/Typography'
 import { useTheme } from '../../../store'
 
-const schema = Yup.object().shape({
-  video: Yup
-    .string()
-    .required('Required')
-    .matches(
-      /^(https:\/\/rumble\.com\/.+)|(https:\/\/www\.youtube\.com\/watch\?v=.+)$$/,
-      'Rumble/Youtube link is incorrect'
-    )
-})
-
 type FormValues = { video: string }
 
 type FormTypes = {
   onSubmit: (values: FormValues) => void
 }
+
+const schema = Yup.object<FormValues>().shape({
+  video: Yup
+    .string()
+    .required('Required')
+    .matches(
+      /^(https:\/\/rumble\.com\/.+)|(?:youtube\.com\/\S*(?:(?:\/e(?:mbed))?\/|watch\?(?:\S*?&?v\=))|youtu\.be\/)([a-zA-Z0-9_-]{6,11})/,
+      'Rumble/Youtube link is incorrect'
+    )
+})
 
 const Form: React.FC<FormTypes> = ({ onSubmit }) => {
   const theme = useTheme()
