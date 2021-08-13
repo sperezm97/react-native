@@ -27,8 +27,14 @@ const getLink = (linkFilter: (text: Link) => boolean) => (text: string): string 
 }
 const isLinkWithStart = (textToStart: string) => (link: Link) => link.href.startsWith(textToStart)
 
+const youtubeRegex = /(?:youtube\.com\/\S*(?:(?:\/e(?:mbed))?\/|watch\?(?:\S*?&?v\=))|youtu\.be\/)([a-zA-Z0-9_-]{6,11})/
+
 export const getRumbleLink = getLink(isLinkWithStart('https://rumble.com/embed/'))
-export const getYoutubeLink = getLink(isLinkWithStart('https://www.youtube.com/watch?v'))
+export const getYoutubeLink = getLink((link) => youtubeRegex.test(link.href))
+export const getYoutubeVideoID = (link: string) => {
+  const matches = youtubeRegex.exec(link)
+  return matches?.[1] ?? ''
+}
 export const getQueryParamFromLink = (link: string, queryParam: string) => {
   const urlParams = url.parse(link, true)
   return urlParams.query?.[queryParam] ?? ''

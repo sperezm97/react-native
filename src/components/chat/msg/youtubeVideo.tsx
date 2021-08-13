@@ -2,14 +2,14 @@ import React, { useMemo } from 'react'
 import { View } from 'react-native'
 import { WebView } from 'react-native-webview'
 import url from 'url'
-import { getQueryParamFromLink } from './utils'
+import { getYoutubeVideoID } from './utils'
 
 interface YoutubeVideoProps {
   link: string
 }
 
 const YoutubeVideo: React.FC<YoutubeVideoProps> = ({ link }) => {
-  const videoKey = useMemo(() => getQueryParamFromLink(link, 'v'), [link])
+  const videoKey = useMemo(() => getYoutubeVideoID(link), [link])
 
   return !!videoKey && (
     <View style={{ width: 640, height: 170 }}>
