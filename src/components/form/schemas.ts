@@ -76,22 +76,6 @@ const pubKey = [
     validator: Yup.string().required(rq)
   }
 ]
-const embedVideo = [
-  {
-    name: 'video',
-    type: 'text',
-    label: { en: 'Embed Video Link', es: 'Insertar enlace de video' },
-    required: true,
-    validator: Yup
-      .string()
-      .required(rq)
-      .matches(
-        /^(https:\/\/rumble\.com\/.+)|(https:\/\/www\.youtube\.com\/watch\?v=.+)$$/,
-        'Rumble/Youtube link is incorrect'
-      ),
-    hasAccessoryView: false,
-  }
-]
 const inviteFriend = [
   {
     name: 'nickname',
@@ -229,7 +213,7 @@ const tribe = [
   // }
 ]
 
-export { contact, contactEdit, me, pubKey, embedVideo, tribe, subscribe, inviteFriend }
+export { contact, contactEdit, me, pubKey, tribe, subscribe, inviteFriend }
 
 function emptyStringToNull(value, originalValue) {
   if (typeof originalValue === 'string' && originalValue === '') {
