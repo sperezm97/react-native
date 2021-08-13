@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useObserver } from 'mobx-react-lite'
 import { Dimensions, StyleSheet } from 'react-native'
 import Video from 'react-native-video'
-import { ProgressButton, } from 'react-native-progress-button'
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 
 import { SCREEN_HEIGHT } from '../../constants'
@@ -25,7 +24,6 @@ export default function SuggestToUserToBackupTheirKeys({ onDone, z, isTheMainRen
 		videoRef.current && videoRef.current.seek(0)
 		resetCounter()
 	}
-
 
 	/**
 	 * Animation section
