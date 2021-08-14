@@ -366,7 +366,7 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
   const closeEmbedVideoModal = () => {
     embedVideoModalRef?.current.close()
   }
-  async function onSendEmbedVideoHandler({ video }) {
+  async function onSendEmbedVideoHandler({ message_price, video }) {
     try {
       closeEmbedVideoModal()
       setDialogOpen(false)
@@ -392,7 +392,8 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
         text: txt,
         chat_id: chat.id || null,
         amount: price + pricePerMessage || 0,
-        reply_uuid: replyUuid || ''
+        reply_uuid: replyUuid || '',
+        ...(message_price && { message_price: parseInt(message_price) }),
       })
       setText('')
       if (replyUuid) {

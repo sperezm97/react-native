@@ -8,13 +8,18 @@ import { Button, TextInput } from 'react-native-paper'
 import Typography from '../../common/Typography'
 import { useTheme } from '../../../store'
 
-type FormValues = { video: string }
+type FormValues = { video: string, message_price: string }
 
 type FormTypes = {
   onSubmit: (values: FormValues) => void
 }
 
 const schema = Yup.object<FormValues>().shape({
+  message_price: Yup
+    .number()
+    .typeError('Not a valid number')
+    .moreThan(0, "Value needs to be greater than 0")
+    .integer('Only integer value'),
   video: Yup
     .string()
     .required('Required')
@@ -29,7 +34,7 @@ const Form: React.FC<FormTypes> = ({ onSubmit }) => {
 
   return (
     <Formik
-      initialValues={{ video: '' }}
+      initialValues={{ video: '', message_price: '' }}
       onSubmit={onSubmit}
       validationSchema={schema}
     >
@@ -70,6 +75,31 @@ const Form: React.FC<FormTypes> = ({ onSubmit }) => {
             />
             <Typography size={14} color={theme.danger} style={{ marginTop: 5 }}>
               {touched.video ? errors.video : ''}
+            </Typography>
+          </View>
+          <View>
+            <Typography size={14} color={theme.title}>
+              Message price
+            </Typography>
+            <TextInput
+              mode="flat"
+              accessibilityLabel="form-input-message-price"
+              error={!!errors.message_price}
+              style={{
+                height: 50,
+                maxHeight: 50,
+                backgroundColor: theme.bg,
+              }}
+              onChangeText={handleChange('message_price')}
+              onBlur={handleBlur('message_price')}
+              value={values.message_price}
+              placeholderTextColor={theme.placeholder}
+              underlineColor={theme.border}
+              textAlignVertical='auto'
+              inputAccessoryViewID="message_price"
+            />
+            <Typography size={14} color={theme.danger} style={{ marginTop: 5 }}>
+              {touched.message_price ? errors.message_price : ''}
             </Typography>
           </View>
           <View style={{ flexDirection:"row", marginTop: 25 }}>
