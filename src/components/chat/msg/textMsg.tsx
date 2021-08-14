@@ -77,13 +77,13 @@ export default function TextMsg({message_content ,...props}) {
   if (rumbleLink || youtubeLink) return (
     <TouchableOpacity
       activeOpacity={0.8}
-      style={isLink ? { width: 280, paddingLeft: 7, minHeight: 72 } : shared.innerPad}
+      style={isLink ? { width: 280, minHeight: 72 } : shared.innerPad}
       onLongPress={onLongPressHandler}
     >
       {/* TODO: Refactor with a better logic */}
-      {!!rumbleLink && <EmbedVideo type="rumble" link={rumbleLink} />}
-      {!!youtubeLink && <EmbedVideo type="youtube" link={youtubeLink} />}
-      {showBoostRow && <BoostRow {...props} myAlias={props.myAlias} />}
+      {!!rumbleLink && <EmbedVideo type="rumble" link={rumbleLink} onLongPress={onLongPressHandler} />}
+      {!!youtubeLink && <EmbedVideo type="youtube" link={youtubeLink} onLongPress={onLongPressHandler} />}
+      {showBoostRow && <BoostRow {...props} myAlias={props.myAlias} pad />}
     </TouchableOpacity>
   )
   return (
