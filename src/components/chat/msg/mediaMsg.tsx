@@ -37,12 +37,6 @@ export default function MediaMsg(props) {
 
   let ldat = parseLDAT(media_token)
 
-  // console.log('ldat', ldat)
-  // console.log('my pub', user.publicKey)
-  // console.log('owner_pubkey', chat.owner_pubkey)
-  // console.log('ldat pubkey', ldat.pubkey)
-  // console.log('assert', chat.owner_pubkey === ldat.pubkey)
-
   let amt = null
   let purchased = false
   if (ldat.meta && ldat.meta.amt) {
@@ -56,7 +50,33 @@ export default function MediaMsg(props) {
     trigger()
   }, [props.media_token])
 
-  async function buy(amount) {
+  const hasImgData =  data || uri ? true : false
+  const hasContent = message_content ? true : false
+  const showPurchaseButton = amt && !isMe ? true : false
+  const showStats = isMe && amt
+  const sold = props.sold
+  const showBoostRow = props.boosts_total_sats ? true : false
+
+  let isImg = false
+  let minHeight = 60
+  let showPayToUnlockMessage = false
+
+  if (media_type === 'n2n2/text') {
+    minHeight = isMe ? 72 : 42
+    if (!isMe && !loading && !paidMessageText) showPayToUnlockMessage = true
+  }
+  if (media_type.startsWith('audio')) {
+    minHeight = 50
+  }
+  if (media_type.startsWith('image') || media_type.startsWith('video')) {
+    minHeight = 200
+    isImg = true
+  }
+
+  let wrapHeight = minHeight
+  if (showPurchaseButton) wrapHeight += 38
+
+  const buy = async (amount) => {
     setOnlyOnClick(true)
     setBuying(true)
     let contact_id = props.sender
@@ -73,7 +93,7 @@ export default function MediaMsg(props) {
     setBuying(false)
   }
 
-  function onMediaPress() {
+  const onMediaPress = () => {
     if (media_type.startsWith('image')) {
       setSelectedMedia(id)
       setMediaModal(true)
@@ -88,7 +108,13 @@ export default function MediaMsg(props) {
     }
   }
 
-  async function downloadText(uri) {
+  const onButtonPressHandler = () => {
+    if (!purchased && !buying && !onlyOneClick) buy(amt)
+  }
+
+  const onLongPressHandler = () => props.onLongPress(props)
+
+  const downloadText = async (uri) => {
     try {
       let dirs = RNFetchBlob.fs.dirs
       const filename = meme.filenameCache[props.id]
@@ -108,37 +134,6 @@ export default function MediaMsg(props) {
       console.warn(err)
     }
   }
-
-  const hasImgData = data || uri ? true : false
-  const hasContent = message_content ? true : false
-  const showPurchaseButton = amt && !isMe ? true : false
-  const showStats = isMe && amt
-  const sold = props.sold
-  const showBoostRow = props.boosts_total_sats ? true : false
-
-  let isImg = false
-  let minHeight = 60
-  let showPayToUnlockMessage = false
-  if (media_type === 'n2n2/text') {
-    minHeight = isMe ? 72 : 42
-    if (!isMe && !loading && !paidMessageText) showPayToUnlockMessage = true
-  }
-  if (media_type.startsWith('audio')) {
-    minHeight = 50
-  }
-  if (media_type.startsWith('image') || media_type.startsWith('video')) {
-    minHeight = 200
-    isImg = true
-  }
-
-  let wrapHeight = minHeight
-  if (showPurchaseButton) wrapHeight += 38
-
-  const onButtonPressHandler = () => {
-    if (!purchased && !buying && !onlyOneClick) buy(amt)
-  }
-
-  const onLongPressHandler = () => props.onLongPress(props)
 
   return useObserver(() => {
     const msgs = useMsgs(chat) || []
