@@ -15,27 +15,31 @@ import EmbedVideo from './embedVideo'
 import Typography from '../../common/Typography'
 import { getRumbleLink, getYoutubeLink } from './utils'
 
-export default function TextMsg(props) {
+export default function TextMsg({message_content ,...props}) {
   const theme = useTheme()
-  const { message_content } = props
+
+  const rumbleLink = useMemo(() => getRumbleLink(message_content), [message_content])
+  const youtubeLink = useMemo(() => getYoutubeLink(message_content), [message_content])
+  const showBoostRow = props.boosts_total_sats ? true : false
+  const isGiphy = message_content && message_content.startsWith('giphy::')
+  const isClip = message_content && message_content.startsWith('clip::')
+  const isBoost = message_content?.startsWith('boost::')
+  const isTribe = message_content?.startsWith(`${DEFAULT_DOMAIN}://?action=tribe`)
   const isLink =
     message_content &&
     (message_content.toLowerCase().trim().startsWith('http://') ||
       message_content.toLowerCase().trim().startsWith('https://'))
 
-  const rumbleLink = useMemo(() => getRumbleLink(message_content), [message_content])
-  const youtubeLink = useMemo(() => getYoutubeLink(message_content), [message_content])
-
   function openLink() {
     Linking.openURL(message_content)
   }
-
-  const showBoostRow = props.boosts_total_sats ? true : false
-
   const onLongPressHandler = () => props.onLongPress(props)
 
-  const isGiphy = message_content && message_content.startsWith('giphy::')
+  /**
+   * Returns
+   */
   if (isGiphy) {
+    // TODO: Move this block to a separated component 
     const { url, aspectRatio, text } = useParsedGiphyMsg(message_content)
     return (
       <TouchableOpacity
@@ -62,21 +66,14 @@ export default function TextMsg(props) {
       </TouchableOpacity>
     )
   }
-
-  const isClip = message_content && message_content.startsWith('clip::')
   if (isClip) return (
     <View style={styles.column}>
       <ClipMessage {...props} />
       {showBoostRow && <BoostRow {...props} myAlias={props.myAlias} pad />}
     </View>
   )
-
-  const isBoost = message_content?.startsWith('boost::')
   if (isBoost) return <BoostMessage {...props} />
-
-  const isTribe = message_content?.startsWith(`${DEFAULT_DOMAIN}://?action=tribe`)
   if (isTribe) return <TribeMsg {...props} />
-
   if (rumbleLink || youtubeLink) return (
     <TouchableOpacity
       activeOpacity={0.8}
@@ -89,7 +86,6 @@ export default function TextMsg(props) {
       {showBoostRow && <BoostRow {...props} myAlias={props.myAlias} />}
     </TouchableOpacity>
   )
-
   return (
     <TouchableOpacity
       activeOpacity={0.8}
