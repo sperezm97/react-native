@@ -218,13 +218,13 @@ export default function MediaMsg(props) {
             {purchased ? (
               <View style={{ ...styles.purchasedWrap, backgroundColor: theme.main }}>
                 <MaterialCommunityIcon
-                  name={purchased ? 'check' : 'arrow-top-right'}
+                  name="check"
                   color={theme.dark ? theme.white : theme.icon}
                   size={20}
                   style={{ paddingRight: 8 }}
                 />
                 <Typography size={15} style={{ paddingRight: 10 }}>
-                  {purchased ? 'Purchased' : `Pay ${amt} sat`}
+                  Purchased
                 </Typography>
               </View>
             ) : (
