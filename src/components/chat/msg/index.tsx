@@ -35,13 +35,15 @@ export default function MsgRow(props) {
 
   const swipeRowRef = useRef<any>(null)
 
-  function clearReplyUUID() {
-    const sr = swipeRowRef.current
-    if (sr && sr.isOpen) {
-      if (sr && sr.closeRow) sr.closeRow()
-      setShowReply(false)
-    }
+  const w = props.windowWidth
+  const isMe = props.sender === props.myid
+  let isTribe = false
+  let isTribeOwner = false
+  if (props.chat) {
+    isTribe = props.chat.type === constants.chat_types.tribe
+    isTribeOwner = props.chat.owner_pubkey === props.myPubkey
   }
+
   useLayoutEffect(() => {
     EE.on(CLEAR_REPLY_UUID, clearReplyUUID)
     return () => {
@@ -49,11 +51,19 @@ export default function MsgRow(props) {
     }
   }, [swipeRowRef])
 
-  function onRowDidOpenHandler() {
+  const clearReplyUUID = () => {
+    const sr = swipeRowRef.current
+    if (sr && sr.isOpen) {
+      if (sr && sr.closeRow) sr.closeRow()
+      setShowReply(false)
+    }
+  }
+
+  const onRowDidOpenHandler = () => {
     clearReplyUUID()
   }
 
-  function onRowOpenHandler() {
+  const onRowOpenHandler = () => {
     EE.emit(REPLY_UUID, props.uuid)
 
     ReactNativeHapticFeedback.trigger('impactLight', {
@@ -62,24 +72,14 @@ export default function MsgRow(props) {
     })
   }
 
-  function onRowCloseHandler() {
+  const onRowCloseHandler = () => {
     // EE.emit(CANCEL_REPLY_UUID, '')
   }
 
   const isGroupNotification =
     props.type === constants.message_types.group_join ||
     props.type === constants.message_types.group_leave
-  if (isGroupNotification) {
-    return <GroupNotification {...props} />
-  }
 
-  const chat = props.chat
-  let isTribe = false
-  let isTribeOwner = false
-  if (chat) {
-    isTribe = chat.type === constants.chat_types.tribe
-    isTribeOwner = chat.owner_pubkey === props.myPubkey
-  }
 
   const memberReqTypes = [
     constants.message_types.member_request,
@@ -87,6 +87,15 @@ export default function MsgRow(props) {
     constants.message_types.member_reject
   ]
   const isMemberRequest = memberReqTypes.includes(props.type)
+
+  /**
+   * Returns 
+   */
+
+  if (isGroupNotification) {
+    return <GroupNotification {...props} />
+  }
+
   if (isMemberRequest) {
     return (
       <MemberRequest
@@ -96,9 +105,6 @@ export default function MsgRow(props) {
       />
     )
   }
-
-  const isMe = props.sender === props.myid
-  const w = props.windowWidth
 
   return (
     <View
@@ -187,20 +193,25 @@ const isMsgBiggerThanScreen = (msgHeight: number) => msgHeight > (SCREEN_HEIGHT 
 function MsgBubble(props) {
   const theme = useTheme()
   const { msg } = useStores()
+
   const [popoverPlacement, setPopoverPlacement] = useState(PopoverPlacement.BOTTOM)
-  const msgRefHeight = useRef<number>(0)
+  const [showPopover, setShowPopover] = useState(false)
   const [deleting, setDeleting] = useState(false)
+  const msgRefHeight = useRef<number>(0)
+
   const isInvoice = props.type === constants.message_types.invoice
   const isPaid = props.status === constants.statuses.confirmed
-  const [showPopover, setShowPopover] = useState(false)
   const isMe = props.sender === props.myid
+  const isDeleted = props.status === constants.statuses.deleted
+  const allowBoost = !isMe && !(props.message_content || '').startsWith('boost::')
 
   let backgroundColor = isMe ? (theme.dark ? theme.main : theme.lightGrey) : theme.bg
   if (isInvoice && !isPaid) {
     backgroundColor = theme.dark ? '#202a36' : 'white'
   }
 
-  const isDeleted = props.status === constants.statuses.deleted
+  const msgs = useMsgs(props.chat) || []
+  const { replyMessage } = useChatReply(msgs, props.reply_uuid)
 
   const onRequestCloseHandler = () => setShowPopover(false)
   const onLongPressHandler = () => {
@@ -227,11 +238,6 @@ function MsgBubble(props) {
       onRequestCloseHandler()
     }
   }
-
-  const allowBoost = !isMe && !(props.message_content || '').startsWith('boost::')
-
-  const msgs = useMsgs(props.chat) || []
-  const { replyMessage } = useChatReply(msgs, props.reply_uuid)
 
   return (
     <Popover
