@@ -22,6 +22,9 @@ import Typography from '../../common/Typography'
 import Button from '../../common/Button'
 import PhotoViewer from '../../common/Modals/Media/PhotoViewer'
 import { setTint } from '../../common/StatusBar'
+import EmbedVideo from './embedVideo'
+import { getRumbleLink, getYoutubeLink } from './utils'
+import { isBase64 } from '../../../crypto/Base64'
 
 const { useMsgs } = hooks
 
@@ -36,13 +39,6 @@ export default function MediaMsg(props) {
   const isMe = props.sender === props.myid
 
   let ldat = parseLDAT(media_token)
-
-  // console.log('ldat', ldat)
-  // console.log('my pub', user.publicKey)
-  // console.log('owner_pubkey', chat.owner_pubkey)
-  // console.log('ldat pubkey', ldat.pubkey)
-  // console.log('assert', chat.owner_pubkey === ldat.pubkey)
-
   let amt = null
   let purchased = false
   if (ldat.meta && ldat.meta.amt) {
@@ -52,11 +48,42 @@ export default function MediaMsg(props) {
 
   let { data, uri, loading, trigger, paidMessageText } = useCachedEncryptedFile(props, ldat)
 
+  const decodedMessageInCaseOfEmbedVideo = isBase64(paidMessageText).text
+  const rumbleLink = useMemo(() => getRumbleLink(decodedMessageInCaseOfEmbedVideo), [decodedMessageInCaseOfEmbedVideo])
+  const youtubeLink = useMemo(() => getYoutubeLink(decodedMessageInCaseOfEmbedVideo), [decodedMessageInCaseOfEmbedVideo])
+  const isEmbedVideo = youtubeLink || rumbleLink
+
   useEffect(() => {
     trigger()
   }, [props.media_token])
 
-  async function buy(amount) {
+  const hasImgData = data || uri ? true : false
+  const hasContent = message_content ? true : false
+  const showPurchaseButton = amt && !isMe ? true : false
+  const showStats = isMe && amt
+  const sold = props.sold
+  const showBoostRow = props.boosts_total_sats ? true : false
+
+  let isImg = false
+  let minHeight = 60
+  let showPayToUnlockMessage = false
+
+  if (media_type === 'n2n2/text') {
+    minHeight = isMe ? 72 : 42
+    if (!isMe && !loading && !paidMessageText) showPayToUnlockMessage = true
+  }
+  if (media_type.startsWith('audio')) {
+    minHeight = 50
+  }
+  if (media_type.startsWith('image') || media_type.startsWith('video')) {
+    minHeight = 200
+    isImg = true
+  }
+
+  let wrapHeight = minHeight
+  if (showPurchaseButton) wrapHeight += 38
+
+  const buy = async (amount) => {
     setOnlyOnClick(true)
     setBuying(true)
     let contact_id = props.sender
@@ -73,7 +100,7 @@ export default function MediaMsg(props) {
     setBuying(false)
   }
 
-  function onMediaPress() {
+  const onMediaPress = () => {
     if (media_type.startsWith('image')) {
       setSelectedMedia(id)
       setMediaModal(true)
@@ -88,7 +115,13 @@ export default function MediaMsg(props) {
     }
   }
 
-  async function downloadText(uri) {
+  const onButtonPressHandler = () => {
+    if (!purchased && !buying && !onlyOneClick) buy(amt)
+  }
+
+  const onLongPressHandler = () => props.onLongPress(props)
+
+  const downloadText = async (uri) => {
     try {
       let dirs = RNFetchBlob.fs.dirs
       const filename = meme.filenameCache[props.id]
@@ -109,37 +142,6 @@ export default function MediaMsg(props) {
     }
   }
 
-  const hasImgData = data || uri ? true : false
-  const hasContent = message_content ? true : false
-  const showPurchaseButton = amt && !isMe ? true : false
-  const showStats = isMe && amt
-  const sold = props.sold
-  const showBoostRow = props.boosts_total_sats ? true : false
-
-  let isImg = false
-  let minHeight = 60
-  let showPayToUnlockMessage = false
-  if (media_type === 'n2n2/text') {
-    minHeight = isMe ? 72 : 42
-    if (!isMe && !loading && !paidMessageText) showPayToUnlockMessage = true
-  }
-  if (media_type.startsWith('audio')) {
-    minHeight = 50
-  }
-  if (media_type.startsWith('image') || media_type.startsWith('video')) {
-    minHeight = 200
-    isImg = true
-  }
-
-  let wrapHeight = minHeight
-  if (showPurchaseButton) wrapHeight += 38
-
-  const onButtonPressHandler = () => {
-    if (!purchased && !buying && !onlyOneClick) buy(amt)
-  }
-
-  const onLongPressHandler = () => props.onLongPress(props)
-
   return useObserver(() => {
     const msgs = useMsgs(chat) || []
     const photos = useTribeMediaType(msgs, 6)
@@ -152,15 +154,17 @@ export default function MediaMsg(props) {
           activeOpacity={0.8}
         >
           {!hasImgData && (
-            <View style={{ minHeight, ...styles.loading }}>
+            <View style={{ minHeight, ...styles.loading, ...(isEmbedVideo && { width: 640 }) }}>
               {loading && (
                 <View style={{ minHeight, ...styles.loadingWrap }}>
                   <ActivityIndicator animating={true} color='grey' />
                 </View>
               )}
               {paidMessageText && (
-                <View style={{ minHeight, ...styles.paidAttachmentText }}>
-                  <Text style={{ color: theme.title }}>{paidMessageText}</Text>
+                <View style={{ minHeight, ...styles.paidAttachmentText, width: 640, backgroundColor: "#ddd", ...(isEmbedVideo && { height: 170 }) }}>
+                  {!!rumbleLink ? <EmbedVideo type="rumble" link={rumbleLink} onLongPress={onLongPressHandler} /> : null}
+                  {!!youtubeLink && <EmbedVideo type="youtube" link={youtubeLink} onLongPress={onLongPressHandler} />}
+                  {!rumbleLink && !youtubeLink && <Text style={{ color: theme.title }}>{paidMessageText}</Text>}
                 </View>
               )}
               {showPayToUnlockMessage && (
@@ -223,13 +227,13 @@ export default function MediaMsg(props) {
             {purchased ? (
               <View style={{ ...styles.purchasedWrap, backgroundColor: theme.main }}>
                 <MaterialCommunityIcon
-                  name={purchased ? 'check' : 'arrow-top-right'}
+                  name="check"
                   color={theme.dark ? theme.white : theme.icon}
                   size={20}
                   style={{ paddingRight: 8 }}
                 />
                 <Typography size={15} style={{ paddingRight: 10 }}>
-                  {purchased ? 'Purchased' : `Pay ${amt} sat`}
+                  Purchased
                 </Typography>
               </View>
             ) : (
@@ -240,7 +244,7 @@ export default function MediaMsg(props) {
                 loading={buying}
                 icon={() => (
                   <MaterialCommunityIcon
-                    name={purchased ? 'check' : 'arrow-top-right'}
+                    name="arrow-top-right"
                     color={theme.dark ? theme.white : theme.icon}
                     size={18}
                   />
@@ -294,7 +298,7 @@ function Media({ type, data, uri, filename }) {
 // video player component
 function VideoPlayer(props) {
   const { ui } = useStores()
-  function onEnd() {}
+  function onEnd() { }
   function onPlay() {
     ui.setVidViewerParams(props)
   }

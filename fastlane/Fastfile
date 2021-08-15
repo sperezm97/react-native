@@ -60,7 +60,7 @@ platform :ios do
 #     )
 #   ) + 1
 
-  build_number=9
+  build_number=1
 
   increment_build_number(
     build_number:build_number,

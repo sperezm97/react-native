@@ -21,6 +21,8 @@ import { Modalize } from 'react-native-modalize'
 
 import { useStores, useTheme, hooks } from '../../store'
 import { calcBotPrice, useReplyContent } from '../../store/hooks/chat'
+import { randString } from '../../crypto/rand'
+import * as e2e from '../../crypto/e2e'
 import EE, {
   EXTRA_TEXT_CONTENT,
   REPLY_UUID,
@@ -366,44 +368,53 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
   const closeEmbedVideoModal = () => {
     embedVideoModalRef?.current.close()
   }
-  async function onSendEmbedVideoHandler({ video }) {
+  async function onSendEmbedVideoHandler({ message_price, video }) {
     try {
       closeEmbedVideoModal()
       setDialogOpen(false)
       const embedVideoLink = video as string
       if (!embedVideoLink) return
-      if (waitingForAdminApproval) return
-      let contact_id = chat.contact_ids.find(cid => cid !== myid)
 
-      let { price, failureMessage } = calcBotPrice(tribeBots, embedVideoLink)
-      if (failureMessage) {
-        Toast.showWithGravity(failureMessage, Toast.SHORT, Toast.TOP)
-        return
-      }
+      const type = 'n2n2/text'
+      const name = 'Message.txt'
+      const pwd = await randString(32)
+      const server = meme.getDefaultServer()
+      if(!server) return
 
-      let txt = embedVideoLink
-      if (extraTextContent) {
-        const { type, ...rest } = extraTextContent
-        txt = type + '::' + JSON.stringify({ ...rest, text: embedVideoLink })
-      }
+      const enc = await e2e.encrypt(embedVideoLink, pwd)
+      const contactID = chat.contact_ids.find(cid => cid !== myid)
 
-      await msg.sendMessage({
-        contact_id: contact_id || null,
-        text: txt,
-        chat_id: chat.id || null,
-        amount: price + pricePerMessage || 0,
-        reply_uuid: replyUuid || ''
+      RNFetchBlob.fetch('POST', `https://${server.host}/file`, {
+        Authorization: `Bearer ${server.token}`,
+        'Content-Type': 'multipart/form-data'
+      }, [{
+          name:'file',
+          filename: name,
+          type,
+          data: enc,
+        }, {name:'name', data:name}
+      ])
+      // listen to upload progress event, emit every 250ms
+      .uploadProgress({ interval : 250 },(written, total) => {
+        console.log('uploaded', written / total)
       })
-      setText('')
-      if (replyUuid) {
-        setReplyUuid('')
-        EE.emit(CLEAR_REPLY_UUID, null)
-      }
-      if (extraTextContent) {
-        setExtraTextContent(null)
-      }
-      // inputRef.current.blur()
-      // setInputFocused(false)
+      .then(async (resp) => {
+        let json = resp.json()
+        await msg.sendAttachment({
+          contact_id: contactID || null,
+          chat_id: chat.id || null,
+          muid: json.muid,
+          price: message_price,
+          media_key: pwd,
+          media_type: type,
+          text: '',
+          amount: pricePerMessage || 0
+        })
+        setUploading(false)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
     } catch (error) {
       console.log(error)
     }

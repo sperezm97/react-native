@@ -16,18 +16,6 @@ export default function AddFriend() {
 
   const items = [
     {
-      title: 'New to Zion',
-      thumbIcon: 'Send',
-      description: 'Invite a new friend',
-      thumbBgColor: theme.primary,
-      action: () => {
-        close()
-        setTimeout(() => {
-          ui.setInviteFriendModal(true)
-        }, 400)
-      }
-    },
-    {
       title: 'Already on Zion',
       thumbIcon: (
         <IconButton
