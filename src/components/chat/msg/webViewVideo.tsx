@@ -11,7 +11,8 @@ const WebViewVideo: React.FC<WebViewVideoProps> = ({ embedLink, onLongPress }) =
   !!embedLink && (
     <View style={{ width: 640, height: 170 }}>
       <WebView
-        // TODO: Inform why we needed to add this code
+        // This code will serve as an observer to long press actions in the webview so we can trigger the modal
+        // in the react native side using injectedJavaScript + onMessage props
         injectedJavaScript={`
           (() => {
             let setTimeoutID
@@ -20,7 +21,7 @@ const WebViewVideo: React.FC<WebViewVideoProps> = ({ embedLink, onLongPress }) =
                 setTimeoutID = null
                 window.ReactNativeWebView.postMessage("longPress")
                 event.preventDefault()
-              }, 700)
+              }, 450)
             })
             document.addEventListener("touchend", function(event) {
               if (setTimeoutID) {
