@@ -22,6 +22,9 @@ import Typography from '../../common/Typography'
 import Button from '../../common/Button'
 import PhotoViewer from '../../common/Modals/Media/PhotoViewer'
 import { setTint } from '../../common/StatusBar'
+import EmbedVideo from './embedVideo'
+import { getRumbleLink, getYoutubeLink } from './utils'
+import { isBase64 } from '../../../crypto/Base64'
 
 const { useMsgs } = hooks
 
@@ -36,7 +39,6 @@ export default function MediaMsg(props) {
   const isMe = props.sender === props.myid
 
   let ldat = parseLDAT(media_token)
-
   let amt = null
   let purchased = false
   if (ldat.meta && ldat.meta.amt) {
@@ -46,11 +48,16 @@ export default function MediaMsg(props) {
 
   let { data, uri, loading, trigger, paidMessageText } = useCachedEncryptedFile(props, ldat)
 
+  const decodedMessageInCaseOfEmbedVideo = isBase64(paidMessageText).text
+  const rumbleLink = useMemo(() => getRumbleLink(decodedMessageInCaseOfEmbedVideo), [decodedMessageInCaseOfEmbedVideo])
+  const youtubeLink = useMemo(() => getYoutubeLink(decodedMessageInCaseOfEmbedVideo), [decodedMessageInCaseOfEmbedVideo])
+  const isEmbedVideo = youtubeLink || rumbleLink
+
   useEffect(() => {
     trigger()
   }, [props.media_token])
 
-  const hasImgData =  data || uri ? true : false
+  const hasImgData = data || uri ? true : false
   const hasContent = message_content ? true : false
   const showPurchaseButton = amt && !isMe ? true : false
   const showStats = isMe && amt
@@ -147,15 +154,17 @@ export default function MediaMsg(props) {
           activeOpacity={0.8}
         >
           {!hasImgData && (
-            <View style={{ minHeight, ...styles.loading }}>
+            <View style={{ minHeight, ...styles.loading, ...(isEmbedVideo && { width: 640 }) }}>
               {loading && (
                 <View style={{ minHeight, ...styles.loadingWrap }}>
                   <ActivityIndicator animating={true} color='grey' />
                 </View>
               )}
               {paidMessageText && (
-                <View style={{ minHeight, ...styles.paidAttachmentText }}>
-                  <Text style={{ color: theme.title }}>{paidMessageText}</Text>
+                <View style={{ minHeight, ...styles.paidAttachmentText, width: 640, backgroundColor: "#ddd", ...(isEmbedVideo && { height: 170 }) }}>
+                  {!!rumbleLink ? <EmbedVideo type="rumble" link={rumbleLink} onLongPress={onLongPressHandler} /> : null}
+                  {!!youtubeLink && <EmbedVideo type="youtube" link={youtubeLink} onLongPress={onLongPressHandler} />}
+                  {!rumbleLink && !youtubeLink && <Text style={{ color: theme.title }}>{paidMessageText}</Text>}
                 </View>
               )}
               {showPayToUnlockMessage && (
@@ -289,7 +298,7 @@ function Media({ type, data, uri, filename }) {
 // video player component
 function VideoPlayer(props) {
   const { ui } = useStores()
-  function onEnd() {}
+  function onEnd() { }
   function onPlay() {
     ui.setVidViewerParams(props)
   }
