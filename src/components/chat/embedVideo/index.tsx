@@ -16,7 +16,7 @@ const EmbedVideo = React.forwardRef<Modalize | null, EmbedVideoProps>(({
     <Portal>
       <Modalize
         ref={embedVideoModalRef}
-        modalHeight={350}
+        adjustToContentHeight
         HeaderComponent={Header}
         FooterComponent={Footer}
         modalStyle={{ backgroundColor: theme.main }}
