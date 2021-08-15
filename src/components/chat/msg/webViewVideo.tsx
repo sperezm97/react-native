@@ -14,15 +14,20 @@ const WebViewVideo: React.FC<WebViewVideoProps> = ({ embedLink, onLongPress }) =
         // TODO: Inform why we needed to add this code
         injectedJavaScript={`
           (() => {
-            let start
-            document.addEventListener("touchstart", () => { start = new Date(); })
-            document.addEventListener("touchend", function(event) {
-              const end = new Date()
-              const delta = end - start
-              if (delta > 700) {
+            let setTimeoutID
+            document.addEventListener("touchstart", function(event) {
+              setTimeoutID = setTimeout(() => {
+                setTimeoutID = null
                 window.ReactNativeWebView.postMessage("longPress")
                 event.preventDefault()
+              }, 700)
+            })
+            document.addEventListener("touchend", function(event) {
+              if (setTimeoutID) {
+                clearTimeout(setTimeoutID)
+                return
               }
+              event.preventDefault()
             });
           })()
           (() => {
