@@ -21,7 +21,7 @@ export function useSearchChats(chats) {
   const conversation = constants.chat_types.conversation
 
   chats = chats.filter(c => {
-    return c.type === conversation && c.name !== 'N2N2 Root'
+    return c.type === conversation && c.name !== 'Zion Root'
   })
 
   const chatsToShow = searchChats(chats, ui.searchTerm)
