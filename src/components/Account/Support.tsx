@@ -35,7 +35,7 @@ export default function Support() {
       body += details.logs.replace(/(\n)/g, '<br/>')
     }
     const subject = 'Zion Support Request'
-    Linking.openURL(`mailto:ci@n2n2.co?subject=${subject}&body=${body}`)
+    Linking.openURL(`mailto:info@getzion.com?subject=${subject}&body=${body}`)
   }
 
   useEffect(() => {
