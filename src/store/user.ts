@@ -294,7 +294,7 @@ class UserStore {
   }
 
   @action
-  async testinit() {}
+  async testinit() { }
 }
 
 export const userStore = new UserStore()
@@ -304,8 +304,8 @@ async function sleep(ms) {
 }
 
 const supportContact = {
-  inviterNickname: 'N2N2 Root',
+  inviterNickname: 'Zion Root',
   inviterPubkey: INVITER_KEY,
-  welcomeMessage: 'Welcome to N2N2!',
+  welcomeMessage: 'Welcome to Zion!',
   action: ''
 }
