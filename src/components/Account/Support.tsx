@@ -4,10 +4,12 @@ import { useObserver } from 'mobx-react-lite'
 import Clipboard from '@react-native-community/clipboard'
 import { ActivityIndicator } from 'react-native-paper'
 import Toast from 'react-native-simple-toast'
+import packageJSON from '../../../package.json'
 
 import { useStores, useTheme } from '../../store'
 import { TOAST_DURATION } from '../../constants'
 import Button from '../common/Button'
+import Typography from '../common/Typography'
 import BackHeader from '../common/BackHeader'
 
 export default function Support() {
@@ -65,6 +67,9 @@ export default function Support() {
           }}
           placeholderTextColor={theme.placeholder}
         />
+        <Typography size={14} style={styles.version}>
+          {`App version: ${packageJSON.version}`}
+        </Typography>
         <ScrollView style={styles.scroll} contentContainerStyle={styles.inner}>
           <Text>
             {details.logs}
@@ -107,6 +112,9 @@ const styles = StyleSheet.create({
     display: 'flex',
     position: 'relative',
     alignItems: 'center'
+  },
+  version: {
+    marginTop: 6,
   },
   bottom: {
     flex: 1,
