@@ -8,6 +8,7 @@ import Toast from 'react-native-simple-toast'
 
 import { useStores, useTheme } from '../../../store'
 import Balance from '../Balance'
+import { useDarkMode } from 'react-native-dynamic'
 
 export default function Header({ border = false }) {
   const navigation = useNavigation()
@@ -20,6 +21,7 @@ export default function Header({ border = false }) {
     Toast.showWithGravity(status, 0.4, Toast.CENTER)
   }
 
+  const isDarkMode = useDarkMode()
   return useObserver(() => {
     return (
       <Appbar.Header
@@ -33,7 +35,7 @@ export default function Header({ border = false }) {
         <View style={{ ...styles.flex, ...styles.content }}>
           <View style={{ ...styles.flex, ...styles.left }}>
             <Image
-              source={require('../../../assets/n2n2-text.jpeg')}
+              source={isDarkMode ? require('../../../assets/zion-dark-theme.png') : require('../../../assets/zion.png')}
               style={styles.brand}
               resizeMode={'contain'}
             />
