@@ -3,6 +3,7 @@ import React, { useState, useRef, useEffect } from 'react'
 import { useObserver } from 'mobx-react-lite'
 import {
   StyleSheet,
+  Keyboard,
   View,
   Text,
   TextInput,
@@ -487,7 +488,10 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
               backgroundColor: theme.bg
             }}
             accessibilityLabel='more-button'
-            onPress={() => setDialogOpen(true)}
+            onPress={() => {
+              Keyboard.dismiss()
+              setDialogOpen(true)
+            }}
           >
             <Icon name='plus' color={theme.primary} size={27} />
           </TouchableOpacity>
