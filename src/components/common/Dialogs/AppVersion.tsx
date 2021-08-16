@@ -9,11 +9,14 @@ import Typography from '../Typography'
 import Button from '../Button'
 import BackupKeys from '../Modals/BackupKeys'
 import { setTint } from '../StatusBar'
+import { useDarkMode } from 'react-native-dynamic'
 
 export default function AppVersionUpdate({ visible, close }) {
   const theme = useTheme()
   const [backupVisible, setBackupVisible] = useState(false)
   const [updateVisible, setUpdateVisible] = useState(false)
+
+  const isDarkMode = useDarkMode()
 
   return useObserver(() => (
     <DialogWrap
@@ -26,7 +29,7 @@ export default function AppVersionUpdate({ visible, close }) {
     >
       <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
         <Image
-          source={require('../../../assets/n2n2-text.jpeg')}
+          source={isDarkMode ? require('../../../assets/zion-dark-theme.png') : require('../../../assets/zion.png')}
           style={{ width: 120, height: 120 }}
           resizeMode={'contain'}
         />
