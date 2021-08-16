@@ -35,7 +35,7 @@ export default function Header({ border = false }) {
         <View style={{ ...styles.flex, ...styles.content }}>
           <View style={{ ...styles.flex, ...styles.left }}>
             <Image
-              source={isDarkMode ? require('../../../assets/zion-dark-theme.png') : require('../../../assets/zion.png')}
+              source={theme.dark ? require('../../../assets/zion-dark-theme.png') : require('../../../assets/zion.png')}
               style={styles.brand}
               resizeMode={'contain'}
             />

@@ -16,47 +16,47 @@ export default function AppVersionUpdate({ visible, close }) {
   const [backupVisible, setBackupVisible] = useState(false)
   const [updateVisible, setUpdateVisible] = useState(false)
 
-  const isDarkMode = useDarkMode()
 
-  return useObserver(() => (
-    <DialogWrap
-      visible={visible}
-      onDismiss={close}
-      minH={450}
-      round={20}
-      dismissable={false}
-      ph={0}
-    >
-      <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
-        <Image
-          source={isDarkMode ? require('../../../assets/zion-dark-theme.png') : require('../../../assets/zion.png')}
-          style={{ width: 120, height: 120 }}
-          resizeMode={'contain'}
-        />
-        <View style={styles.content}>
-          <Typography size={15} textAlign='center'>
-            Your app version is outdated. Please update!
-          </Typography>
-          <Typography color={theme.subtitle} textAlign='center' style={{ marginTop: 20 }}>
-            Please backup your keys before updating the app.
-          </Typography>
-        </View>
+  return useObserver(() => {
+    return (
+      <DialogWrap
+        visible={visible}
+        onDismiss={close}
+        minH={450}
+        round={20}
+        dismissable={false}
+        ph={0}
+      >
+        <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
+          <Image
+            source={theme.dark ? require('../../../assets/zion-dark-theme.png') : require('../../../assets/zion.png')}
+            style={{ width: 120, height: 120 }}
+            resizeMode={'contain'}
+          />
+          <View style={styles.content}>
+            <Typography size={15} textAlign='center'>
+              Your app version is outdated. Please update!
+            </Typography>
+            <Typography color={theme.subtitle} textAlign='center' style={{ marginTop: 20 }}>
+              Please backup your keys before updating the app.
+            </Typography>
+          </View>
 
-        <View style={styles.buttonWrap}>
-          {updateVisible ? (
-            <View>
-              <Button
-                size='small'
-                w={170}
-                h={40}
-                onPress={() => {
-                  Linking.openURL(APP_STORE)
-                }}
-                accessibilityLabel='app-version-ok-button'
-              >
-                Update Zion
-              </Button>
-              {/* <Button
+          <View style={styles.buttonWrap}>
+            {updateVisible ? (
+              <View>
+                <Button
+                  size='small'
+                  w={170}
+                  h={40}
+                  onPress={() => {
+                    Linking.openURL(APP_STORE)
+                  }}
+                  accessibilityLabel='app-version-ok-button'
+                >
+                  Update Zion
+                </Button>
+                {/* <Button
                 mode='text'
                 style={{ marginTop: 20 }}
                 size='small'
@@ -69,34 +69,35 @@ export default function AppVersionUpdate({ visible, close }) {
               >
                 Cancel
               </Button> */}
-            </View>
-          ) : (
-            <Button
-              w='65%'
-              onPress={() => {
-                setBackupVisible(true)
-                setTimeout(() => {
-                  setTint('dark')
-                }, 200)
-              }}
-              accessibilityLabel='app-version-ok-button'
-            >
-              Backup My Keys
-            </Button>
-          )}
+              </View>
+            ) : (
+              <Button
+                w='65%'
+                onPress={() => {
+                  setBackupVisible(true)
+                  setTimeout(() => {
+                    setTint('dark')
+                  }, 200)
+                }}
+                accessibilityLabel='app-version-ok-button'
+              >
+                Backup My Keys
+              </Button>
+            )}
+          </View>
         </View>
-      </View>
 
-      <BackupKeys
-        visible={backupVisible}
-        close={() => {
-          setUpdateVisible(true)
-          setBackupVisible(false)
-          setTint(theme.dark ? 'dark' : 'light')
-        }}
-      />
-    </DialogWrap>
-  ))
+        <BackupKeys
+          visible={backupVisible}
+          close={() => {
+            setUpdateVisible(true)
+            setBackupVisible(false)
+            setTint(theme.dark ? 'dark' : 'light')
+          }}
+        />
+      </DialogWrap>
+    )
+  })
 }
 
 const styles = StyleSheet.create({
