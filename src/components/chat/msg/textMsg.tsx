@@ -91,14 +91,13 @@ export default function TextMsg({message_content ,...props}) {
       activeOpacity={0.8}
       style={isLink ? { width: 280, paddingLeft: 7, minHeight: 72 } : shared.innerPad}
       onLongPress={onLongPressHandler}
+      onPress={isLink ? openLink : () => {}}
     >
       {isLink ? (
         <View style={styles.linkWrap}>
-          <TouchableOpacity onPress={openLink}>
-            <Typography color={theme.text} size={15}>
-              {message_content}
-            </Typography>
-          </TouchableOpacity>
+          <Typography color={theme.text} size={15}>
+            {message_content}
+          </Typography>
           <RNUrlPreview {...linkStyles(theme)} text={message_content} />
         </View>
       ) : (
