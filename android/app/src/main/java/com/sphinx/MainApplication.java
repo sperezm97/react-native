@@ -1,5 +1,6 @@
 package com.sphinx;
 
+import com.bugsnag.android.Bugsnag;
 import io.realm.react.RealmReactPackage; // add this import
 import androidx.annotation.Nullable;
 import android.app.Application;
@@ -123,6 +124,7 @@ public class MainApplication extends Application implements ReactApplication {
   @Override
   public void onCreate() {
     super.onCreate();
+    Bugsnag.start(this);
     SoLoader.init(this, /* native exopackage */ false);
     WebView.setWebContentsDebuggingEnabled(true);
     long size = 50L * 1024L * 1024L; // 50 MB
