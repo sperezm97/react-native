@@ -161,7 +161,7 @@ export default function MediaMsg(props) {
                 </View>
               )}
               {paidMessageText && (
-                <View style={{ minHeight, ...styles.paidAttachmentText, width: 640, backgroundColor: "#ddd", ...(isEmbedVideo && { height: 170 }) }}>
+                <View style={{ minHeight, ...styles.paidAttachmentText, width: 640, backgroundColor: "transparent", ...(isEmbedVideo && { height: 170 }) }}>
                   {!!rumbleLink ? <EmbedVideo type="rumble" link={rumbleLink} onLongPress={onLongPressHandler} /> : null}
                   {!!youtubeLink && <EmbedVideo type="youtube" link={youtubeLink} onLongPress={onLongPressHandler} />}
                   {!rumbleLink && !youtubeLink && <Text style={{ color: theme.title }}>{paidMessageText}</Text>}
