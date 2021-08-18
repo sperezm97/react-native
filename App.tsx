@@ -8,6 +8,7 @@ import { Host } from 'react-native-portalize'
 import { NavigationContainer } from '@react-navigation/native'
 
 import { useStores, useTheme } from './src/store'
+import useConnectionInfo from './src/hooks/useConnectionInfo'
 import APNManager from './src/store/contexts/apn'
 import { instantiateRelay } from './src/api'
 import { navigationRef } from './src/components/Navigation'
@@ -17,6 +18,7 @@ import EE, { RESET_IP_FINISHED } from './src/components/utils/ee'
 import { qrActions } from './src/qrActions'
 import { paperTheme } from './src/theme'
 import Main from './src/main'
+import Disconnect from './src/components/disconnect'
 import Auth from './src/components/Navigation/Auth'
 import Splash from './src/components/common/Splash'
 import PinCodeModal from './src/components/common/Modals/PinCode'
@@ -141,6 +143,9 @@ function App() {
   }
 
   return useObserver(() => {
+    const isConnected = useConnectionInfo()
+
+    if (!isConnected) return <Disconnect />
     if (loading) return <Splash />
     if (ui.signedUp && !ui.pinCodeModal) {
       return (
