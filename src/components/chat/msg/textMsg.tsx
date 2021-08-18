@@ -105,7 +105,21 @@ export default function TextMsg({message_content ,...props}) {
           {message_content}
         </Typography>
       )}
-      {showBoostRow && <BoostRow {...props} myAlias={props.myAlias} />}
+      {showBoostRow && (
+        <BoostRow
+          {...props}
+          myAlias={props.myAlias}
+          {...(isLink && {
+            pad: true,
+            customPad: {
+              paddingLeft: 10,
+              paddingRight: 20,
+              paddingTop: 0,
+              paddingBottom: 0
+            },
+          })}
+        />
+      )}
     </TouchableOpacity>
   )
 }
