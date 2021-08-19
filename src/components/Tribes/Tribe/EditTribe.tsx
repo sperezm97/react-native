@@ -46,6 +46,7 @@ export default function EditTribe({ route }) {
             onSubmit={finish}
             initialValues={{
               ...tribe,
+              host: tribe.chat.host,
               is_private: tribe.private
             }}
           />

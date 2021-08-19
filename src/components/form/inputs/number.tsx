@@ -52,7 +52,7 @@ export default function NumberInput({
 
 const styles = StyleSheet.create({
   inputStyles: {
-    marginBottom: 25,
+    marginBottom: 16,
     maxHeight: 55
   }
 })

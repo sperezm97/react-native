@@ -26,7 +26,12 @@ export default function BoostRow(props) {
     })
   }
 
-  const paddStyles = props.pad ? { ...shared.innerPad } : {}
+  const paddStyles = props.pad
+    ? {
+      ...shared.innerPad,
+      ...(props.customPad && props.customPad),
+    }
+    : {}
 
   const wrapStyles = {
     ...styles.row,
