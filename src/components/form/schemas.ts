@@ -171,6 +171,12 @@ const tribe = [
     validator: Yup.number()
   },
   {
+    name: 'host',
+    type: 'text',
+    label: { en: 'Edit host', es: 'Edit host' },
+    validator: Yup.string()
+  },
+  {
     name: 'feed_url',
     type: 'text',
     label: { en: 'RSS Feed URL', es: 'RSS Feed URL' },
