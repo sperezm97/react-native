@@ -116,7 +116,7 @@ export class ChatStore {
       let meta
       try {
         meta = JSON.parse(String(c.meta))
-      } catch (e) {}
+      } catch (e) { }
       return { ...c, meta }
     }
     return c
@@ -212,6 +212,7 @@ export class ChatStore {
     description,
     tags,
     img,
+    host,
     price_per_message,
     price_to_join,
     escrow_amount,
@@ -226,6 +227,7 @@ export class ChatStore {
       description,
       tags: tags || [],
       is_listed: true,
+      host,
       price_per_message: price_per_message || 0,
       price_to_join: price_to_join || 0,
       escrow_amount: escrow_amount || 0,
