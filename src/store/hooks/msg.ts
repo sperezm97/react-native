@@ -214,7 +214,7 @@ function arraysEqual(_arr1, _arr2) {
   return true
 }
 
-export function useMsgsFilter(msgs: Msg[], filter: string) {}
+export function useMsgsFilter(msgs: Msg[], filter: string) { }
 
 function rando() {
   return Math.random().toString(12).substring(0)
