@@ -174,6 +174,7 @@ const tribe = [
     name: 'host',
     type: 'text',
     label: { en: 'Edit host', es: 'Edit host' },
+    required: true,
     validator: Yup.string()
   },
   {

@@ -73,10 +73,11 @@ class ContactStore {
       }
 
       if (r.chats) chatStore.setChats(r.chats)
+
       if (r.subscriptions) subStore.setSubs(r.subscriptions)
 
       return r
-    } catch (e) {}
+    } catch (e) { }
   }
 
   @action

@@ -1,54 +1,54 @@
-import React, { useState } from 'react'
+import React, { useState } from "react";
 import {
   StyleSheet,
   View,
   Modal,
   SafeAreaView,
   ScrollView,
-  KeyboardAvoidingView
-} from 'react-native'
-import { useObserver } from 'mobx-react-lite'
+  KeyboardAvoidingView,
+} from "react-native";
+import { useObserver } from "mobx-react-lite";
 // import { useNavigation } from '@react-navigation/native'
-import Video from 'react-native-video'
-import { IconButton, TextInput } from 'react-native-paper'
-import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
+import Video from "react-native-video";
+import { IconButton, TextInput } from "react-native-paper";
+import MaterialCommunityIcon from "react-native-vector-icons/MaterialCommunityIcons";
 
-import { useStores, useTheme, hooks } from '../../../../store'
-import { navigate } from '../../../Navigation'
-import { DEFAULT_TRIBE_SERVER } from '../../../../config'
-import { SCREEN_HEIGHT, STATUS_BAR_HEIGHT } from '../../../../constants'
-import { setTint } from '../../StatusBar'
-import Header from '../ModalHeader'
-import Button from '../../Button'
-import Avatar from '../../Avatar'
-import Typography from '../../Typography'
+import { useStores, useTheme, hooks } from "../../../../store";
+import { navigate } from "../../../Navigation";
+import { DEFAULT_TRIBE_SERVER } from "../../../../config";
+import { SCREEN_HEIGHT, STATUS_BAR_HEIGHT } from "../../../../constants";
+import { setTint } from "../../StatusBar";
+import Header from "../ModalHeader";
+import Button from "../../Button";
+import Avatar from "../../Avatar";
+import Typography from "../../Typography";
 
-const { useTribes } = hooks
+const { useTribes } = hooks;
 
 export default function JoinTribeWrap(props) {
-  return <>{props.visible && <JoinTribe {...props} />}</>
+  return <>{props.visible && <JoinTribe {...props} />}</>;
 }
 
 function JoinTribe(props) {
-  const { visible, close, tribe } = props
+  const { visible, close, tribe } = props;
 
-  const { ui, chats } = useStores()
-  const theme = useTheme()
-  const [videoVisible, setVideoVisible] = useState(false)
-  const [alias, setAlias] = useState('')
+  const { ui, chats } = useStores();
+  const theme = useTheme();
+  const [videoVisible, setVideoVisible] = useState(false);
+  const [alias, setAlias] = useState("");
 
-  const tribes = useTribes()
-  const tribeToCheck = tribes && tribes.find(t => t.uuid === tribe.uuid)
-  let joined = true
+  const tribes = useTribes();
+  const tribeToCheck = tribes && tribes.find((t) => t.uuid === tribe.uuid);
+  let joined = true;
   if (tribeToCheck) {
-    joined = tribeToCheck.joined
+    joined = tribeToCheck.joined;
   }
 
   function onJoinPress() {
     setTimeout(() => {
-      setTint('dark')
-      setVideoVisible(true)
-    }, 500)
+      setTint("dark");
+      setVideoVisible(true);
+    }, 500);
   }
 
   async function joinTribe() {
@@ -62,55 +62,55 @@ function JoinTribe(props) {
       img: tribe.img,
       amount: tribe.price_to_join || 0,
       is_private: tribe.private,
-      ...(alias && { my_alias: alias })
-    })
+      ...(alias && { my_alias: alias }),
+    });
 
-    setVideoVisible(false)
-    finish()
+    setVideoVisible(false);
+    finish();
   }
 
   async function finish() {
-    close()
-    navigate('Tribe', { tribe: { ...tribeToCheck } })
-    setTimeout(() => setTint(theme.dark ? 'dark' : 'light'), 150)
+    close();
+    navigate("Tribe", { tribe: { ...tribeToCheck } });
+    setTimeout(() => setTint(theme.dark ? "dark" : "light"), 150);
   }
 
-  let prices = []
+  let prices = [];
   if (tribe) {
     prices = [
-      { label: 'Price to Join', value: tribe.price_to_join },
-      { label: 'Price per Message', value: tribe.price_per_message },
-      { label: 'Amount to Stake', value: tribe.escrow_amount }
-    ]
+      { label: "Price to Join", value: tribe.price_to_join },
+      { label: "Price per Message", value: tribe.price_per_message },
+      { label: "Amount to Stake", value: tribe.escrow_amount },
+    ];
   }
 
-  const hasImg = tribe && tribe.img ? true : false
+  const hasImg = tribe && tribe.img ? true : false;
 
   return useObserver(() => {
     return (
       <>
         <Modal
           visible={visible}
-          animationType='slide'
-          presentationStyle='fullScreen'
+          animationType="slide"
+          presentationStyle="fullScreen"
           onDismiss={close}
         >
           <SafeAreaView style={{ ...styles.wrap, backgroundColor: theme.bg }}>
             <KeyboardAvoidingView
-              behavior='padding'
+              behavior="padding"
               style={{ flex: 1 }}
               keyboardVerticalOffset={1}
             >
-              <Header title='Join Community' onClose={() => close()} />
+              <Header title="Join Community" onClose={() => close()} />
               <ScrollView>
                 {tribe && (
                   <View style={{ ...styles.content }}>
                     <Avatar photo={hasImg && tribe.img} size={160} round={90} />
                     <Typography
                       size={20}
-                      fw='500'
+                      fw="500"
                       style={{
-                        marginTop: 10
+                        marginTop: 10,
                       }}
                     >
                       {tribe.name}
@@ -121,13 +121,15 @@ function JoinTribe(props) {
                         marginTop: 10,
                         marginBottom: 10,
                         maxWidth: 340,
-                        textAlign: 'center',
-                        marginHorizontal: 'auto'
+                        textAlign: "center",
+                        marginHorizontal: "auto",
                       }}
                     >
                       {tribe.description}
                     </Typography>
-                    <View style={{ ...styles.table, borderColor: theme.border }}>
+                    <View
+                      style={{ ...styles.table, borderColor: theme.border }}
+                    >
                       {prices &&
                         prices.map((p, i) => {
                           return (
@@ -136,32 +138,35 @@ function JoinTribe(props) {
                               style={{
                                 ...styles.tableRow,
                                 borderBottomColor: theme.border,
-                                borderBottomWidth: i === prices.length - 1 ? 0 : 1
+                                borderBottomWidth:
+                                  i === prices.length - 1 ? 0 : 1,
                               }}
                             >
-                              <Typography color={theme.title}>{`${p.label}`}</Typography>
-                              <Typography fw='500'>{p.value || 0}</Typography>
+                              <Typography
+                                color={theme.title}
+                              >{`${p.label}`}</Typography>
+                              <Typography fw="500">{p.value || 0}</Typography>
                             </View>
-                          )
+                          );
                         })}
                     </View>
                     {!joined ? (
                       <>
                         <TextInput
-                          placeholder='Your Name in this Tribe'
-                          onChangeText={e => setAlias(e)}
+                          placeholder="Your Name in this Tribe"
+                          onChangeText={(e) => setAlias(e)}
                           value={alias}
                           style={{
                             ...styles.input,
                             backgroundColor: theme.bg,
-                            color: theme.placeholder
+                            color: theme.placeholder,
                           }}
                           underlineColor={theme.border}
                         />
                         <Button
                           style={{ marginBottom: 20 }}
                           onPress={onJoinPress}
-                          size='large'
+                          size="large"
                           w={240}
                         >
                           Join
@@ -176,7 +181,7 @@ function JoinTribe(props) {
                             marginTop: 10,
                             marginBottom: 20,
                             maxWidth: 340,
-                            textAlign: 'center'
+                            textAlign: "center",
                           }}
                         >
                           You already joined this community.
@@ -203,64 +208,70 @@ function JoinTribe(props) {
               tribe={tribeToCheck}
               joinTribe={joinTribe}
               close={() => {
-                setVideoVisible(false)
-                setTint(theme.dark ? 'dark' : 'light')
+                setVideoVisible(false);
+                setTint(theme.dark ? "dark" : "light");
               }}
             />
           )}
         </Modal>
       </>
-    )
-  })
+    );
+  });
 }
 
 function VideoView({ videoVisible, tribe, joinTribe, close }) {
-  const [loading, setLoading] = useState(false)
-  const theme = useTheme()
-  const network = require('../../../../assets/videos/network-nodes-blue.mp4')
+  const [loading, setLoading] = useState(false);
+  const theme = useTheme();
+  const network = require("../../../../assets/videos/network-nodes-blue.mp4");
 
   async function onJoin() {
-    if (loading) return
-    setLoading(true)
-    await joinTribe()
-    setLoading(false)
+    if (loading) return;
+    setLoading(true);
+    await joinTribe();
+    setLoading(false);
   }
 
   return (
-    <Modal visible={videoVisible} animationType='fade' presentationStyle='fullScreen'>
+    <Modal
+      visible={videoVisible}
+      animationType="fade"
+      presentationStyle="fullScreen"
+    >
       <IconButton
-        icon={() => <MaterialCommunityIcon name='close' color={theme.white} size={30} />}
+        icon={() => (
+          <MaterialCommunityIcon name="close" color={theme.white} size={30} />
+        )}
         onPress={close}
         style={{ ...styles.closeButton }}
       />
       <View
         style={{
-          position: 'absolute',
+          position: "absolute",
           top: 0,
           bottom: 0,
           right: 0,
           left: 0,
           backgroundColor: theme.black,
-          height: SCREEN_HEIGHT
+          height: SCREEN_HEIGHT,
         }}
       >
         <Video
           source={network}
-          resizeMode='cover'
+          resizeMode="cover"
           style={{
-            height: SCREEN_HEIGHT
+            height: SCREEN_HEIGHT,
           }}
         />
         {tribe && (
           <View
             style={{
-              position: 'absolute',
+              position: "absolute",
               bottom: 100,
               right: 0,
               left: 0,
-              justifyContent: 'center',
-              alignItems: 'center',
-              flex: 1
+              justifyContent: "center",
+              alignItems: "center",
+              flex: 1,
             }}
           >
             <Button w={300} onPress={onJoin} loading={loading} ph={20}>
@@ -270,35 +281,35 @@ function VideoView({ videoVisible, tribe, joinTribe, close }) {
         )}
       </View>
     </Modal>
-  )
+  );
 }
 
 function areEqual(prev, next) {
-  return prev.videoVisible === next.videoVisible
+  return prev.videoVisible === next.videoVisible;
 }
 
-const MemoizedVideoView = React.memo(VideoView, areEqual)
+const MemoizedVideoView = React.memo(VideoView, areEqual);
 
 const styles = StyleSheet.create({
   wrap: {
     flex: 1,
-    height: '100%',
-    width: '100%'
+    height: "100%",
+    width: "100%",
   },
   content: {
     flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: '100%',
-    width: '100%'
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    height: "100%",
+    width: "100%",
   },
   table: {
     borderWidth: 1,
     borderRadius: 5,
     width: 240,
     marginTop: 25,
-    marginBottom: 25
+    marginBottom: 25,
   },
   tableRow: {
     borderBottomWidth: 1,
@@ -306,21 +317,21 @@ const styles = StyleSheet.create({
     paddingRight: 12,
     paddingTop: 6,
     paddingBottom: 6,
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between'
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
   input: {
     height: 50,
     maxHeight: 50,
     minWidth: 240,
-    marginBottom: 40
+    marginBottom: 40,
   },
   closeButton: {
-    position: 'absolute',
+    position: "absolute",
     top: STATUS_BAR_HEIGHT + 1,
     right: 0,
-    zIndex: 1
-  }
-})
+    zIndex: 1,
+  },
+});
