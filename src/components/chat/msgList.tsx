@@ -5,14 +5,13 @@ import React, {
   useCallback,
   useEffect,
 } from "react";
-import { useObserver } from "mobx-react-lite";
+import { observer } from "mobx-react-lite";
 import {
   StyleSheet,
   VirtualizedList,
   View,
   Text,
   Keyboard,
-  Animated,
   Dimensions,
   ActivityIndicator,
 } from "react-native";
@@ -23,7 +22,7 @@ import { useStores, useTheme, hooks } from "../../store";
 import { Chat } from "../../store/chats";
 import { useMsgSender } from "../../store/hooks/msg";
 import Message from "./msg";
-import { constants, SCREEN_HEIGHT, SCREEN_WIDTH } from "../../constants";
+import { constants } from "../../constants";
 import EE, { SHOW_REFRESHER } from "../utils/ee";
 import Typography from "../common/Typography";
 
@@ -32,14 +31,14 @@ const { useMsgs } = hooks;
 const group = constants.chat_types.group;
 const tribe = constants.chat_types.tribe;
 
-export default function MsgListWrap({
+const MsgListWrap = ({
   chat,
   pricePerMessage,
 }: {
   chat: Chat;
   pricePerMessage: number;
-}) {
-  const { msg, ui, user, chats, details } = useStores();
+}) => {
+  const { msg, user, chats, details } = useStores();
   const [limit, setLimit] = useState(40);
   const navigation = useNavigation();
 
@@ -47,56 +46,67 @@ export default function MsgListWrap({
     setLimit((c) => c + 40);
   }
 
-  async function onBoostMsg(m) {
-    const { uuid } = m;
-    if (!uuid) return;
-    const amount = (user.tipAmount || 100) + pricePerMessage;
+  const onBoostMsg = useCallback(
+    async (m) => {
+      const { uuid } = m;
+      if (!uuid) return;
+      const amount = (user.tipAmount || 100) + pricePerMessage;
 
-    if (amount > details.balance) {
-      Toast.showWithGravity("Not Enough Balance", Toast.SHORT, Toast.TOP);
-      return;
-    }
+      if (amount > details.balance) {
+        Toast.showWithGravity("Not Enough Balance", Toast.SHORT, Toast.TOP);
+        return;
+      }
 
-    msg.sendMessage({
-      boost: true,
-      contact_id: null,
-      text: "",
-      amount,
-      chat_id: chat.id || null,
-      reply_uuid: uuid,
-      message_price: pricePerMessage,
-    });
-  }
-  async function onDelete(id) {
-    await msg.deleteMessage(id);
-  }
-  async function onApproveOrDenyMember(contactId, status, msgId) {
-    await msg.approveOrRejectMember(contactId, status, msgId);
-  }
-  async function onDeleteChat() {
+      msg.sendMessage({
+        boost: true,
+        contact_id: null,
+        text: "",
+        amount,
+        chat_id: chat.id || null,
+        reply_uuid: uuid,
+        message_price: pricePerMessage,
+      });
+    },
+    [chat.id, details.balance, msg, pricePerMessage, user.tipAmount]
+  );
+
+  const onDelete = useCallback(
+    async (id) => {
+      await msg.deleteMessage(id);
+    },
+    [msg]
+  );
+
+  const onApproveOrDenyMember = useCallback(
+    async (contactId, status, msgId) => {
+      await msg.approveOrRejectMember(contactId, status, msgId);
+    },
+    [msg]
+  );
+
+  const onDeleteChat = useCallback(async () => {
     navigation.navigate("Home", { params: { rnd: Math.random() } });
     await chats.exitGroup(chat.id);
-  }
-  return useObserver(() => {
-    const msgs = useMsgs(chat, limit) || [];
+  }, [chat.id, chats, navigation]);
 
-    return (
-      <MsgList
-        msgsLength={(msgs && msgs.length) || 0}
-        msgs={msgs}
-        chat={chat}
-        onDelete={onDelete}
-        myPubkey={user.publicKey}
-        myAlias={user.alias}
-        myid={user.myid}
-        onApproveOrDenyMember={onApproveOrDenyMember}
-        onDeleteChat={onDeleteChat}
-        onLoadMoreMsgs={onLoadMoreMsgs}
-        onBoostMsg={onBoostMsg}
-      />
-    );
-  });
-}
+  const msgs = useMsgs(chat, limit) || [];
+
+  return (
+    <MsgList
+      msgsLength={(msgs && msgs.length) || 0}
+      msgs={msgs}
+      chat={chat}
+      onDelete={onDelete}
+      myPubkey={user.publicKey}
+      myAlias={user.alias}
+      myid={user.myid}
+      onApproveOrDenyMember={onApproveOrDenyMember}
+      onDeleteChat={onDeleteChat}
+      onLoadMoreMsgs={onLoadMoreMsgs}
+      onBoostMsg={onBoostMsg}
+    />
+  );
+};
 
 function MsgList({
   msgsLength,
@@ -137,7 +147,7 @@ function MsgList({
       Keyboard.removeListener("keyboardDidShow", () => {});
       scrollViewRef.current = null;
     };
-  }, [msgsLength]);
+  }, [msgs, msgsLength]);
 
   if (chat.status === constants.chat_statuses.pending) {
     return (
@@ -176,7 +186,7 @@ function MsgList({
           waitForInteraction: false,
           viewAreaCoveragePercentThreshold: 20,
         }}
-        renderItem={({ item, index }) => {
+        renderItem={({ item }) => {
           const { senderAlias, senderPic } = useMsgSender(
             item,
             contacts.contacts,
@@ -275,7 +285,22 @@ function ListItem({
         onBoostMsg={onBoostMsg}
       />
     ),
-    [m.id, m.type, m.media_token, m.status, m.sold, m.boosts_total_sats]
+    [
+      msg,
+      chat,
+      isGroup,
+      isTribe,
+      senderAlias,
+      senderPic,
+      onDelete,
+      myPubkey,
+      myAlias,
+      myid,
+      windowWidth,
+      onApproveOrDenyMember,
+      onDeleteChat,
+      onBoostMsg,
+    ]
   );
 }
 
@@ -321,8 +346,4 @@ const styles = StyleSheet.create({
   },
 });
 
-function wait(timeout) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, timeout);
-  });
-}
+export default observer(MsgListWrap);
