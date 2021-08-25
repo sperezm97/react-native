@@ -174,7 +174,7 @@ function MsgList({
         inverted
         style={{ zIndex: 100 }}
         contentContainerStyle={{ paddingTop: 20, paddingBottom: 40 }}
-        windowSize={10}
+        windowSize={5}
         ref={scrollViewRef}
         data={msgs}
         initialNumToRender={initialNumToRender}
