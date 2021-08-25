@@ -123,7 +123,6 @@ function MsgList({
 }) {
   const scrollViewRef = useRef(null);
   const theme = useTheme();
-  const { contacts } = useStores();
 
   async function onEndReached() {
     // EE.emit(SHOW_REFRESHER)
@@ -187,19 +186,12 @@ function MsgList({
           viewAreaCoveragePercentThreshold: 20,
         }}
         renderItem={({ item }) => {
-          const { senderAlias, senderPic } = useMsgSender(
-            item,
-            contacts.contacts,
-            isTribe
-          );
           return (
             <ListItem
               key={item.id}
               windowWidth={windowWidth}
               m={item}
               chat={chat}
-              senderAlias={senderAlias}
-              senderPic={senderPic}
               myid={myid}
               isGroup={isGroup}
               isTribe={isTribe}
@@ -242,32 +234,53 @@ function Refresher() {
   );
 }
 
-function ListItem({
-  m,
-  chat,
-  isGroup,
-  isTribe,
-  onDelete,
-  myPubkey,
-  myAlias,
-  senderAlias,
-  senderPic,
-  windowWidth,
-  onApproveOrDenyMember,
-  onDeleteChat,
-  onBoostMsg,
-  myid,
-}) {
-  if (m.dateLine) {
-    return <DateLine dateString={m.dateLine} />;
-  }
+type IListItem = {
+  m: any;
+  chat: any;
+  isGroup: any;
+  isTribe: any;
+  onDelete: any;
+  myPubkey: any;
+  myAlias: any;
+  windowWidth: any;
+  onApproveOrDenyMember: any;
+  onDeleteChat: any;
+  onBoostMsg: any;
+  myid: any;
+};
 
-  const msg = m;
+const ListItem = React.memo(
+  ({
+    m,
+    chat,
+    isGroup,
+    isTribe,
+    onDelete,
+    myPubkey,
+    myAlias,
+    windowWidth,
+    onApproveOrDenyMember,
+    onDeleteChat,
+    onBoostMsg,
+    myid,
+  }: IListItem) => {
+    const { contacts } = useStores();
 
-  if (!m.chat) msg.chat = chat;
+    const { senderAlias, senderPic } = useMsgSender(
+      m,
+      contacts.contacts,
+      isTribe
+    );
 
-  return useMemo(
-    () => (
+    if (m.dateLine) {
+      return <DateLine dateString={m.dateLine} />;
+    }
+
+    const msg = m;
+
+    if (!m.chat) msg.chat = chat;
+
+    return (
       <Message
         {...msg}
         chat={chat}
@@ -284,25 +297,9 @@ function ListItem({
         onDeleteChat={onDeleteChat}
         onBoostMsg={onBoostMsg}
       />
-    ),
-    [
-      msg,
-      chat,
-      isGroup,
-      isTribe,
-      senderAlias,
-      senderPic,
-      onDelete,
-      myPubkey,
-      myAlias,
-      myid,
-      windowWidth,
-      onApproveOrDenyMember,
-      onDeleteChat,
-      onBoostMsg,
-    ]
-  );
-}
+    );
+  }
+);
 
 // date label component
 function DateLine({ dateString }) {
