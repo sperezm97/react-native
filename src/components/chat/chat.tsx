@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { StyleSheet, KeyboardAvoidingView } from "react-native";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { KeyboardAvoidingView } from "react-native";
 import { useRoute, useNavigation } from "@react-navigation/native";
-import Toast from "react-native-simple-toast";
 
 import { useStores, useTheme } from "../../store";
 import { StreamPayment } from "../../store/feed";
@@ -18,9 +17,10 @@ import Podcast from "../Podcast";
 export type RouteStatus = "active" | "inactive" | null;
 
 export default function Chat() {
-  const { contacts, user, chats, ui, msg } = useStores();
+  const { contacts, user, chats, msg } = useStores();
   const theme = useTheme();
   const myid = user.myid;
+  const route = useRoute<ChatRouteProp>();
 
   const [pricePerMessage, setPricePerMessage] = useState(0);
   const [appMode, setAppMode] = useState(false);
@@ -29,31 +29,27 @@ export default function Chat() {
   const [pod, setPod] = useState(null);
   const [podError, setPodError] = useState(null);
 
-  const route = useRoute<ChatRouteProp>();
+  const feedURL = tribeParams && tribeParams.feed_url;
+  const tribeBots = tribeParams && tribeParams.bots;
   const chatID = route.params.id;
-  const chat = chats.chats.find((c) => c.id === chatID) || route.params;
+  const chat = useMemo(
+    () => chats.chats.find((c) => c.id === chatID) || route.params,
+    [chatID, chats.chats, route.params]
+  );
 
   const navigation = useNavigation();
 
-  useEffect(() => {
-    // check for contact key, exchange if none
-    const contact = contactForConversation(chat, contacts.contacts, myid);
+  const loadPod = useCallback(
+    async (tr) => {
+      const params = await chats.loadFeed(chat.host, chat.uuid, tr.feed_url);
 
-    if (contact && !contact.contact_key) {
-      contacts.exchangeKeys(contact.id);
-    }
-    EE.on(LEFT_GROUP, () => {
-      navigation.navigate("Tribes", { params: { rnd: Math.random() } });
-    });
+      if (params) setPod(params);
+      if (!params) setPodError("no podcast found");
+    },
+    [chat.host, chat.uuid, chats]
+  );
 
-    fetchTribeParams();
-
-    return () => {
-      setTribeParams(null);
-    };
-  }, []);
-
-  async function fetchTribeParams() {
+  const fetchTribeParams = useCallback(async () => {
     const isTribe = chat && chat.type === constants.chat_types.tribe;
     const isTribeAdmin = isTribe && chat.owner_pubkey === user.publicKey;
     // let isAppURL = false
@@ -91,19 +87,25 @@ export default function Chat() {
     } else {
       setStatus("inactive");
     }
-  }
+  }, [chat, chats, loadPod, myid, user.publicKey]);
 
-  async function loadPod(tr) {
-    const params = await chats.loadFeed(chat.host, chat.uuid, tr.feed_url);
+  useEffect(() => {
+    // check for contact key, exchange if none
+    const contact = contactForConversation(chat, contacts.contacts, myid);
 
-    if (params) setPod(params);
-    if (!params) setPodError("no podcast found");
-    // if (params) initialSelect(params)
-  }
+    if (contact && !contact.contact_key) {
+      contacts.exchangeKeys(contact.id);
+    }
+    EE.on(LEFT_GROUP, () => {
+      navigation.navigate("Tribes", { params: { rnd: Math.random() } });
+    });
 
-  const appURL = tribeParams && tribeParams.app_url;
-  const feedURL = tribeParams && tribeParams.feed_url;
-  const tribeBots = tribeParams && tribeParams.bots;
+    fetchTribeParams();
+
+    return () => {
+      setTribeParams(null);
+    };
+  }, [chat, contacts, fetchTribeParams, myid, navigation]);
 
   function onBoost(sp: StreamPayment) {
     if (!(chat && chat.id)) return;
@@ -163,32 +165,3 @@ export default function Chat() {
     </KeyboardAvoidingView>
   );
 }
-
-const styles = StyleSheet.create({
-  wrap: {
-    flex: 1,
-    height: "100%",
-    width: "100%",
-  },
-  content: {
-    flex: 1,
-  },
-  main: {
-    display: "flex",
-    width: "100%",
-    height: "100%",
-    position: "relative",
-  },
-  layer: {
-    display: "flex",
-    width: "100%",
-    height: "100%",
-    position: "absolute",
-    paddingTop: 50,
-  },
-  loadWrap: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});

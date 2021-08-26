@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { StyleSheet, View, ScrollView, SafeAreaView } from 'react-native'
-import { useObserver } from 'mobx-react-lite'
+import { observer } from 'mobx-react-lite'
 import { useNavigation, useIsFocused } from '@react-navigation/native'
 import { IconButton } from 'react-native-paper'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -16,88 +16,85 @@ import About from './About'
 import Media from './Media'
 
 const { useTribes } = hooks
-
-export default function Tribe({ route }) {
+const Tribe = ({ route }) => {
   const theme = useTheme()
   const navigation = useNavigation()
+  const { chats } = useStores()
+  const isFocused = useIsFocused()
+  const tribes = useTribes()
+
   const [tribeDialog, setTribeDialog] = useState(false)
   const [index, setIndex] = React.useState(0)
   const [routes] = React.useState([
     { key: 'first', title: 'Media' },
     { key: 'second', title: 'About' }
   ])
-  const { ui, chats } = useStores()
-  const isFocused = useIsFocused()
 
-  return useObserver(() => {
-    const tribes = useTribes()
-    const tribe =
-      tribes.find(t => t.uuid === route.params.tribe.uuid) || route.params.tribe
+  const tribe =
+    useMemo(() => tribes.find(t => t.uuid === route.params.tribe.uuid) || route.params.tribe, [tribes.length])
 
-    function fetchTribes() {
-      chats.getTribes()
+  useEffect(() => {
+    chats.getTribes()
+  }, [isFocused])
+
+  const onEditTribePress = useCallback(() => {
+    navigation.navigate('EditTribe', { tribe })
+  }, [])
+
+  const onTribeMembersPress = useCallback(() => {
+    navigation.navigate('TribeMembers', { tribe })
+  }, [])
+
+  const navigationBack = useCallback(() => {
+    navigation.goBack()
+  }, [])
+
+  const openDialog = useCallback(() => {
+    setTribeDialog(true)
+  }, [])
+
+  const renderScene = useCallback(({ route: renderSceneRoute }) => {
+    switch (renderSceneRoute.key) {
+      case 'first':
+        return <Media tribe={tribe} />
+      case 'second':
+        return <About tribe={tribe} />
+      default:
+        return null
     }
+  }, [])
 
-    useEffect(() => {
-      fetchTribes()
-    }, [isFocused])
+  return (
+    <SafeAreaView style={{ ...styles.wrap, backgroundColor: theme.bg }}>
+      <BackHeader
+        navigate={navigationBack}
+        action={
+          <TribeHeader tribe={tribe} openDialog={openDialog} />
+        }
+      />
 
-    function onEditTribePress() {
-      navigation.navigate('EditTribe', { tribe })
-    }
+      <ScrollView>
+        <View style={styles.content}>
+          <Intro tribe={tribe} />
+          <Divider mt={30} mb={0} />
+          <TabView
+            navigationState={{ index, routes }}
+            renderScene={renderScene}
+            onIndexChange={setIndex}
+            renderTabBar={props => <Tabs {...props} />}
+          />
+        </View>
+      </ScrollView>
 
-    function onTribeMembersPress() {
-      navigation.navigate('TribeMembers', { tribe })
-    }
-
-    const renderScene = ({ route }) => {
-      switch (route.key) {
-        case 'first':
-          return <Media tribe={tribe} />
-        case 'second':
-          return <About tribe={tribe} />
-        default:
-          return null
-      }
-    }
-
-    return (
-      <SafeAreaView style={{ ...styles.wrap, backgroundColor: theme.bg }}>
-        <BackHeader
-          // title={tribe.name}
-          navigate={() => navigation.goBack()}
-          // border
-          action={
-            // tribe.owner && (
-            <TribeHeader tribe={tribe} openDialog={() => setTribeDialog(true)} />
-            // )
-          }
-        />
-        <ScrollView>
-          <View style={styles.content}>
-            <Intro tribe={tribe} />
-            <Divider mt={30} mb={0} />
-            <TabView
-              navigationState={{ index, routes }}
-              renderScene={renderScene}
-              onIndexChange={setIndex}
-              renderTabBar={props => <Tabs {...props} />}
-            />
-          </View>
-        </ScrollView>
-
-        {/* {tribe.owner && ( */}
-        <TribeSettings
-          visible={tribeDialog}
-          owner={tribe.owner}
-          onCancel={() => setTribeDialog(false)}
-          onEditPress={onEditTribePress}
-          onMembersPress={onTribeMembersPress}
-        />
-        {/* )} */}
-      </SafeAreaView>
-    )
-  })
+      <TribeSettings
+        visible={tribeDialog}
+        owner={tribe.owner}
+        onCancel={() => setTribeDialog(false)}
+        onEditPress={onEditTribePress}
+        onMembersPress={onTribeMembersPress}
+      />
+    </SafeAreaView>
+  )
 }
 
 function TribeHeader({ tribe, openDialog }) {
@@ -125,3 +122,5 @@ const styles = StyleSheet.create({
     // paddingLeft: 14
   }
 })
+
+export default observer(Tribe)
