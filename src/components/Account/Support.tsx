@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react'
-import { View, StyleSheet, TextInput, Linking, Text, ScrollView } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import { View, StyleSheet, TextInput, Linking, ScrollView } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
 import Clipboard from '@react-native-community/clipboard'
 import { ActivityIndicator } from 'react-native-paper'
@@ -71,9 +71,9 @@ export default function Support() {
           {`App version: ${packageJSON.version}`}
         </Typography>
         <ScrollView style={styles.scroll} contentContainerStyle={styles.inner}>
-          <Text>
+          <Typography size={14}>
             {details.logs}
-          </Text>
+          </Typography>
         </ScrollView>
         {loading && (
           <View style={styles.spinWrap}>
