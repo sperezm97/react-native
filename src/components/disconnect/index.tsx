@@ -3,6 +3,7 @@ import { View, StyleSheet, Image } from 'react-native'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 
 import { useTheme } from '../../store'
+import Button from '../common/Button'
 import Typography from '../common/Typography'
 
 const circleStyle = (index: number, opacity: number) => ({
@@ -12,7 +13,11 @@ const circleStyle = (index: number, opacity: number) => ({
   backgroundColor: `rgba(255, 255, 255, ${opacity})`
 })
 
-const Disconnect = () => {
+type DisconnectProps = {
+  onClose: () => void
+}
+
+const Disconnect: React.FC<DisconnectProps> = ({ onClose }) => {
   const theme = useTheme()
 
   return (
@@ -32,6 +37,11 @@ const Disconnect = () => {
           Please check your internet settings
         </Typography>
       </View>
+      <View style={styles.buttonWrap}>
+        <Button onPress={onClose} ph={20} fw="600">
+          Close
+        </Button>
+      </View>
     </View>
   )
 }
@@ -49,6 +59,9 @@ const styles = StyleSheet.create({
   textWrap: {
     marginTop: 50,
     paddingHorizontal: 15,
+  },
+  buttonWrap: {
+    marginTop: 50,
   }
 })
 

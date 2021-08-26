@@ -87,6 +87,7 @@ function App() {
   const { user, ui } = useStores()
   const theme = useTheme()
   const [loading, setLoading] = useState(true)
+  const [showDisconnectUI, setShowDisconnectedUI] = useState(true)
 
   function connectedHandler() {
     ui.setConnected(true)
@@ -145,7 +146,7 @@ function App() {
   return useObserver(() => {
     const isConnected = useConnectionInfo()
 
-    if (!isConnected) return <Disconnect />
+    if (!isConnected && showDisconnectUI) return <Disconnect onClose={() => setShowDisconnectedUI(false)} />
     if (loading) return <Splash />
     if (ui.signedUp && !ui.pinCodeModal) {
       return (
