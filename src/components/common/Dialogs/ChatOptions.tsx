@@ -35,17 +35,23 @@ export default function ChatOptions({
         if (!result.didCancel) {
           onPick(result);
           return;
+        } else {
+          onCancel();
         }
-        onCancel();
       }
     );
   }
 
-  const pickImageHandler = pickImage;
-  const pickGif = onGiphyHandler;
-  const requestHandler = request;
-  const sendHandler = send;
-  const close = onCancel;
+  const pickImageHandler = () => pickImage();
+  const pickGif = () => onGiphyHandler();
+  const requestHandler = () => request();
+  const sendHandler = () => send();
+  const doPaidMessageHandler = () => doPaidMessage();
+  const loopoutHandler = () => loopout();
+
+  function close() {
+    onCancel();
+  }
 
   const commonItems = [
     {
