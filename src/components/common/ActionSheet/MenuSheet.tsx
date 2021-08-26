@@ -51,7 +51,20 @@ export default function MenuSheet(props) {
         {actionItems.map((item, i) => {
           const iconProp = React.isValidElement(item.thumbIcon)
 
+
           return (
+          <View style={[
+                i === actionItems.length - 1 && {
+                  backgroundColor: theme.dark ? theme.bg : theme.white,
+                  marginTop: 12,
+                  paddingHorizontal: 64,
+                  borderTopLeftRadius: 12,
+                  borderTopRightRadius: 12,
+                  borderBottomLeftRadius: 12,
+                  borderBottomRightRadius: 12,
+                  justifyContent: 'center'
+                }
+          ]}>
             <TouchableOpacity
               activeOpacity={0.9}
               key={`${item.title}${i}`}
@@ -71,8 +84,8 @@ export default function MenuSheet(props) {
                   borderBottomLeftRadius: 12,
                   borderBottomRightRadius: 12
                 },
+                // In case of cancel button we should be able to get a different button style, smaller
                 i === actionItems.length - 1 && {
-                  marginTop: 12,
                   borderTopLeftRadius: 12,
                   borderTopRightRadius: 12,
                   borderBottomLeftRadius: 12,
@@ -120,6 +133,7 @@ export default function MenuSheet(props) {
                 </View>
               </View>
             </TouchableOpacity>
+          </View>
           )
         })}
       </View>
