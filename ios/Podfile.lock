@@ -219,6 +219,8 @@ PODS:
     - React-Core
   - react-native-image-picker (3.3.2):
     - React-Core
+  - react-native-netinfo (5.9.6):
+    - React
   - react-native-notifications (3.4.2):
     - React-Core
   - react-native-randombytes (3.6.0):
@@ -422,6 +424,7 @@ DEPENDENCIES:
   - react-native-encrypted-storage (from `../node_modules/react-native-encrypted-storage`)
   - react-native-get-random-values (from `../node_modules/react-native-get-random-values`)
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
+  - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - react-native-notifications (from `../node_modules/react-native-notifications`)
   - react-native-randombytes (from `../node_modules/react-native-randombytes`)
   - react-native-rncryptor (from `../node_modules/react-native-rncryptor`)
@@ -527,6 +530,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-get-random-values"
   react-native-image-picker:
     :path: "../node_modules/react-native-image-picker"
+  react-native-netinfo:
+    :path: "../node_modules/@react-native-community/netinfo"
   react-native-notifications:
     :path: "../node_modules/react-native-notifications"
   react-native-randombytes:
@@ -651,6 +656,7 @@ SPEC CHECKSUMS:
   react-native-encrypted-storage: e78d848ce0fb663c2ce306e37921d026809322e6
   react-native-get-random-values: f0fc24a5887a3341589515a86282a574407b59e4
   react-native-image-picker: b42940647478bf106ad3c491d6f5d9d40916d865
+  react-native-netinfo: 38a1e0b3e89b48e4b5833ed475d8df5f049f6f90
   react-native-notifications: 51ed8167f70f01c5000ba81a4465ea98b4612e23
   react-native-randombytes: b6677f7d495c27e9ee0dbd77ebc97b3c59173729
   react-native-rncryptor: e273429757c7b34d0b2f90f71ba8a592dd02f973

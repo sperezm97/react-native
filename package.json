@@ -67,6 +67,7 @@
     "@react-native-community/datetimepicker": "^2.5.0",
     "@react-native-community/hooks": "^2.6.0",
     "@react-native-community/masked-view": "^0.1.11",
+    "@react-native-community/netinfo": "5.9.6",
     "@react-native-community/push-notification-ios": "^1.8.0",
     "@react-native-community/slider": "^3.0.3",
     "@react-native-seoul/masonry-list": "^1.0.6",
