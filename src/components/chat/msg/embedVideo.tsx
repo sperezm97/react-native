@@ -1,5 +1,4 @@
 import React, { useMemo } from 'react'
-import { View, Text } from 'react-native'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { useTheme } from '../../../store'
 import Button from '../../common/Button'
@@ -11,10 +10,11 @@ import { getYoutubeVideoID } from './utils'
 type EmbedVideoTypes = {
   link: string
   type: 'rumble' | 'youtube'
-  onLongPress: () => void
+  squareSize?: number
+  onLongPress?: () => void
 }
 
-const EmbedVideo: React.FC<EmbedVideoTypes> = ({ type, link, onLongPress }) => {
+const EmbedVideo: React.FC<EmbedVideoTypes> = ({ type, link, squareSize ,onLongPress = ()=>{} }) => {
   const embedLink = useMemo(() => {
     if (!link || !type) return ''
     if (type === 'rumble') return `${link.split('?')[0]}?rel=0`
@@ -25,7 +25,7 @@ const EmbedVideo: React.FC<EmbedVideoTypes> = ({ type, link, onLongPress }) => {
 
   return (!!embedLink ?
     <PaidEmbedWrapper>
-      <WebViewVideo embedLink={embedLink} onLongPress={onLongPress} />
+      <WebViewVideo embedLink={embedLink} onLongPress={onLongPress} squareSize={squareSize}/>
     </PaidEmbedWrapper> : null)
 }
 

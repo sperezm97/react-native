@@ -160,10 +160,10 @@ export default function MediaMsg(props) {
                   <ActivityIndicator animating={true} color='grey' />
                 </View>
               )}
-              {paidMessageText && (
+              {Boolean(paidMessageText) && (
                 <View style={{ minHeight, ...styles.paidAttachmentText, width: 640, backgroundColor: "transparent", ...(isEmbedVideo && { height: 170 }) }}>
                   {!!rumbleLink ? <EmbedVideo type="rumble" link={rumbleLink} onLongPress={onLongPressHandler} /> : null}
-                  {!!youtubeLink && <EmbedVideo type="youtube" link={youtubeLink} onLongPress={onLongPressHandler} />}
+                  {!!youtubeLink ? <EmbedVideo type="youtube" link={youtubeLink} onLongPress={onLongPressHandler} /> : null}
                   {!rumbleLink && !youtubeLink && <Text style={{ color: theme.title }}>{paidMessageText}</Text>}
                 </View>
               )}

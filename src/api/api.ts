@@ -21,8 +21,12 @@ export default class API {
 
 const TIMEOUT = 20000
 
+type APIOptions = {
+  rawValue?: boolean;
+}
+
 function addMethod(m: string, rootUrl: string): Function {
-  return async function (url: string, data: any, encoding?: string) {
+  return async function (url: string, data: any, encoding?: string, options?: APIOptions) {
     if (!data) data = {}
 
     try {
@@ -79,7 +83,7 @@ function addMethod(m: string, rootUrl: string): Function {
         }
         if (res.status && res.status === 'ok') {
           // invite server
-          return res.object
+          return options.rawValue ? res : res.object
         }
         if (res.success && res.response) {
           // relay

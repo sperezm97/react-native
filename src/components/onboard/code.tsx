@@ -4,7 +4,7 @@ import { IconButton, ActivityIndicator } from 'react-native-paper'
 import RadialGradient from 'react-native-radial-gradient'
 import { decode as atob } from 'base-64'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useRoute, RouteProp } from '@react-navigation/native'
 
 import { useStores, useTheme } from '../../store'
 import { DEFAULT_HOST } from '../../config'
@@ -17,11 +17,18 @@ import PinCodeModal from '../common/Modals/PinCode'
 import Typography from '../common/Typography'
 import { SCREEN_HEIGHT } from '../../constants'
 
+type RouteParams = {
+  Onboard: {
+    codeType: 'invite' | 'backup'
+  }
+}
+
 export default function Code(props) {
   const { onDone, z, onRestore } = props
   const { user } = useStores()
   const theme = useTheme()
   const navigation = useNavigation()
+  const route = useRoute<RouteProp<RouteParams, 'Onboard'>>();
 
   const [scanning, setScanning] = useState(false)
   const [code, setCode] = useState('')
@@ -207,7 +214,7 @@ export default function Code(props) {
               maxWidth: 240
             }}
           >
-            Paste the invitation text or scan the QR code
+            {`Paste the ${route.params?.codeType === 'invite' ? 'invitation' : 'backup'} key or scan the QR code`}
           </Typography>
           <View style={styles.inputWrap} accessibilityLabel='onboard-code-input-wrap'>
             <TextInput
