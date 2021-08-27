@@ -15,9 +15,10 @@ import EmbedVideo from './embedVideo'
 import Typography from '../../common/Typography'
 import { getRumbleLink, getYoutubeLink } from './utils'
 
-export default function TextMsg({message_content ,...props}) {
+export default function TextMsg(props) {
   const theme = useTheme()
 
+  const { message_content } = props;
   const rumbleLink = useMemo(() => getRumbleLink(message_content), [message_content])
   const youtubeLink = useMemo(() => getYoutubeLink(message_content), [message_content])
   const showBoostRow = props.boosts_total_sats ? true : false
