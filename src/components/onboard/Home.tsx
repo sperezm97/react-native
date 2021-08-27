@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react'
-import { StyleSheet, View } from 'react-native'
+import React from 'react'
+import { Image, StyleSheet, View } from 'react-native'
 import RadialGradient from 'react-native-radial-gradient'
 import { useNavigation } from '@react-navigation/native'
 
@@ -21,21 +21,17 @@ export default function Home() {
         radius={400}
       >
         <View style={styles.content}>
-          <Typography
-            style={{
-              marginBottom: 40
-            }}
-            size={48}
-            color={theme.white}
-            fw='600'
-            lh={48}
-          >
-            Zion
-          </Typography>
+          <View style={{ ...styles.imageWrapper, backgroundColor: theme.transparent }}>
+            <Image
+              source={require('../../assets/zion-dark-theme.png')}
+              style={{ width: 140, height: 100 }}
+              resizeMode={'contain'}
+            />
+          </View>
 
           <Button
             color={theme.orangeSecondary}
-            w='60%'
+            w='70%'
             size='large'
             style={{
               borderWidth: 2,
@@ -44,17 +40,26 @@ export default function Home() {
             onPress={() => navigation.navigate('Invite')}
           >
             <Typography color={theme.white} fw='700'>
-              Request Invite
+              Subscribe to the waitlist
             </Typography>
           </Button>
           <Button
             fw='500'
             color={theme.lightGrey}
-            w='40%'
-            style={{ marginTop: 50 }}
-            onPress={() => navigation.navigate('Onboard')}
+            w='70%'
+            style={{ marginTop: 15 }}
+            onPress={() => navigation.navigate('Onboard', { codeType: 'invite' })}
           >
-            I have a code
+            I have a invite code
+          </Button>
+          <Button
+            fw='500'
+            color={theme.lightGrey}
+            w='70%'
+            style={{ marginTop: 15 }}
+            onPress={() => navigation.navigate('Onboard', { codeType: 'backup' })}
+          >
+            I have a backup code
           </Button>
         </View>
       </RadialGradient>
@@ -85,5 +90,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: '100%',
     width: '100%'
+  },
+  imageWrapper: {
+    paddingHorizontal: 30,
+    borderRadius: 30,
+    marginBottom: 45,
   }
 })

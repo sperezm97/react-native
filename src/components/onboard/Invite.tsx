@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { View, StyleSheet, TextInput } from 'react-native'
 import { IconButton, ActivityIndicator, Snackbar } from 'react-native-paper'
 import RadialGradient from 'react-native-radial-gradient'
+import Toast from 'react-native-simple-toast'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { useNavigation } from '@react-navigation/native'
 
@@ -46,6 +47,12 @@ export default function Invite(props) {
       if (done) {
         setSuccessVisible(true)
         setEmail('')
+        // TODO: Await change on the backend to fix the number value
+        Toast.showWithGravity(
+          `Subscribed! You are the 500 number on the list`,
+          5,
+          Toast.BOTTOM,
+        )
       } else {
         setWrong('Failed to request invitation.')
       }
@@ -100,7 +107,7 @@ export default function Invite(props) {
               maxWidth: 270
             }}
           >
-            Enter your email and we will contact you shortly for next steps.
+            Enter your email and we will add you to the waitlist.
           </Typography>
           <View style={styles.inputWrap} accessibilityLabel='onboard-code-input-wrap'>
             <TextInput
@@ -133,7 +140,7 @@ export default function Invite(props) {
             onPress={() => submitEmail(email)}
           >
             <Typography color={theme.white} fw='700'>
-              Request Invite
+              Subscribe
             </Typography>
           </Button>
           <View style={styles.spinWrap}>
