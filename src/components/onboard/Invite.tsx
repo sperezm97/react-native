@@ -15,7 +15,6 @@ export default function Invite(props) {
   const [checking, setChecking] = useState(false)
   const [wrong, setWrong] = useState('')
   const [error, setError] = useState('')
-  const [successVisible, setSuccessVisible] = useState(false)
   const { user } = useStores()
   const navigation = useNavigation()
   const theme = useTheme()
@@ -44,12 +43,11 @@ export default function Invite(props) {
 
       const done = await user.requestInvite(email)
 
-      if (done) {
-        setSuccessVisible(true)
+      if (done.status === 'ok') {
         setEmail('')
         // TODO: Await change on the backend to fix the number value
         Toast.showWithGravity(
-          `Subscribed! You are the 500 number on the list`,
+          `Subscribed! You are the ${done.payload.id} number on the list`,
           5,
           Toast.BOTTOM,
         )
@@ -179,18 +177,6 @@ export default function Invite(props) {
           </View>
         )}
       </RadialGradient>
-      <Snackbar
-        duration={5000}
-        visible={successVisible}
-        onDismiss={() => setSuccessVisible(false)}
-        style={{
-          backgroundColor: theme.transparent
-        }}
-      >
-        <Typography color={theme.white} textAlign='center'>
-          We will contact you shortly for next steps.
-        </Typography>
-      </Snackbar>
     </View>
   )
 }

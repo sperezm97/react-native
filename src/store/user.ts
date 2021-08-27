@@ -273,23 +273,13 @@ class UserStore {
     try {
       if (!email) return
 
-      const r = await api.invite.post('invite_request', {
-        email
-      })
+      const r = await api.invite.post('invite_request', { email }, '', { rawValue: true })
+      if (r) return { status: 'ok', payload: { id: r.invite.id } }
 
-      // if (!r) {
-      //   return false
-      // }
-
-      // if (!r.message) {
-      //   return false
-      // }
-
-      return true
+      throw new Error('Failed')
     } catch (error) {
       console.log('error store', error)
-
-      return false
+      return { status: 'failure' }
     }
   }
 
