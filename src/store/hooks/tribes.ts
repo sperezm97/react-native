@@ -6,6 +6,7 @@ import { INVITER_KEY } from '../../config'
 import { constants } from '../../constants'
 import { calendarDate } from '../utils/date'
 import { useMsgs } from './msg'
+import { Msg } from '../msg'
 
 export function useTribes() {
   const { chats, user } = useStores()
@@ -105,39 +106,32 @@ export function useTribeHistory(created, lastActive) {
   return { createdDate, lastActiveDate }
 }
 
-export function useOwnerMediaType(msgs, tribe, type, myid) {
-  // console.log('owner_pubkey', tribe.owner_pubkey)
-  // console.log('A')
-
-  // msgs.filter(m => {
-  //   if (m.type === 6 && m.sender !== 1) {
-  //     // me
-  //     console.log(JSON.stringify(m, null, '\t'))
-  //   }
-  // })
-
-  return msgs.filter(m => {
-    if (m.type === 6) {
-    }
-
-    // console.log(m, 'color: green; background: yellow; font-size: 30px')
-    // console.log('---------------------')
-
-    // let ownerCriteria = owner ? m.sender === myid : m.sender !== myid
+/**
+ * This function will filter msgs based on some criteria
+ * 
+ * Filter criteria
+ * - `matchTypeMessage` = Should have same type as required on param 
+ * - `ownerCriteria` = The owner of the message should be the owner of tribe
+ * - `messageWithValidStatus` = Prevent deleted messages to be displayed
+ * @todo as seen this only has been used in one component, i think we should make it specific to 
+ * ony the covered cases
+ */
+export function useOwnerMediaType(msgs, tribe, type, myId):Array<Msg> {
+  return msgs.filter((m:Msg)=> {
+    const matchTypeMessage = m.type === type
+    const messageWithValidStatus = m.status !== constants.statuses.deleted
 
     let ownerCriteria = false
-    // console.log('m.sender_alias', m.sender_alias)
-
     if (tribe.owner) {
-      ownerCriteria = m.sender === myid
+      ownerCriteria = m.sender === myId
     } else {
-      ownerCriteria = m.sender_alias === tribe.owner_alias
       // if not owener id will not work.
       // depend on sender alias
       // ownerCriteria
+      ownerCriteria = m.sender_alias === tribe.owner_alias
     }
 
-    return m.type === type && m.status !== constants.statuses.deleted && ownerCriteria
+    return matchTypeMessage && messageWithValidStatus && ownerCriteria
   })
 }
 

@@ -5,23 +5,27 @@ import { WebView } from 'react-native-webview'
 
 type WebViewVideoProps = {
   embedLink: string
+  squareSize?: number
   onLongPress: () => void
 }
 
 const { width, height } = Dimensions.get('screen')
-const WebViewVideo: React.FC<WebViewVideoProps> = ({ embedLink, onLongPress }) => {
+
+const WebViewVideo: React.FC<WebViewVideoProps> = ({ embedLink, onLongPress, squareSize }) => {
   const [isLoading, setIsLoading] = useState(true)
   return (
     !!embedLink && (
       <>
-        <View style={{ width: 640, height: 170 }}>
+        <View style={{ width: squareSize || 640, height: squareSize || 170 }}>
           <View style={{ flex: 1, flexDirection: 'row' }}>
+            {/** This can't be a ternary as seen we need the 
+              * webView loading while we displays the activityIndicator
+              */}
             {isLoading && (
               <ActivityIndicator
                 animating={true}
                 size="large"
-                style={{ width: 280 }} // 280 is the maxWidth defined at <MsgBubble> 
-              // TODO: refactor this 👆 to make it independent of magic numbers
+                style={{ width: squareSize || 280 }} // 280 is the maxWidth defined at <MsgBubble> 
               />
             )
             }
@@ -58,7 +62,7 @@ const WebViewVideo: React.FC<WebViewVideoProps> = ({ embedLink, onLongPress }) =
               }}
               javaScriptEnabled={true}
               source={{ uri: embedLink }}
-              style={{ width: 280, height: 150 }}
+              style={{ width: squareSize || 280, height: squareSize || 150 }}
               onLoadEnd={() => setIsLoading(false)}
             />
           </View>
