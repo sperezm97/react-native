@@ -521,24 +521,12 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
         />
 
         {!hideMic && (
-          <Animated.View
-            style={{ marginLeft: 0, marginRight: 4, zIndex: 9 }}
-            {...panResponder.panHandlers}
-          >
-            {uploading ? (
-              <View style={{ width: 42 }}>
-                <ActivityIndicator size={20} color="grey" />
-              </View>
-            ) : (
-              <IconButton
-                icon="microphone-outline"
-                size={28}
-                color={recordingStartTime ? "white" : "#666"}
-              />
-            )}
-          </Animated.View>
+          <MicButton
+            panResponder={panResponder}
+            uploading={uploading}
+            recordingStartTime={recordingStartTime}
+          />
         )}
-
         {hideMic && <SendButton text={text} sendMessage={sendMessage} />}
 
         <ChatOptions
@@ -593,6 +581,36 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
       />
     </View>
   ));
+}
+
+type IMicButton = {
+  panResponder: any;
+  uploading: boolean;
+  recordingStartTime: any;
+};
+function MicButton({
+  panResponder,
+  uploading,
+  recordingStartTime,
+}: IMicButton) {
+  return (
+    <Animated.View
+      style={{ marginLeft: 0, marginRight: 4, zIndex: 9 }}
+      {...panResponder.panHandlers}
+    >
+      {uploading ? (
+        <View style={{ width: 42 }}>
+          <ActivityIndicator size={20} color="grey" />
+        </View>
+      ) : (
+        <IconButton
+          icon="microphone-outline"
+          size={28}
+          color={recordingStartTime ? "white" : "#666"}
+        />
+      )}
+    </Animated.View>
+  );
 }
 
 type ISendButton = { text: string; sendMessage: () => Promise<void> };
