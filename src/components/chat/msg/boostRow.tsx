@@ -8,7 +8,7 @@ import shared from './sharedStyles'
 import Typography from '../../common/Typography'
 import AvatarsRow from './avatarsRow'
 
-export default function BoostRow(props) {
+export default function BoostRow({ isTribe = true, ...props }) {
   const { contacts } = useStores()
   const theme = useTheme()
   const isMe = props.sender === props.myid
@@ -62,7 +62,7 @@ export default function BoostRow(props) {
               const { senderAlias, senderPic } = useBoostSender(
                 b,
                 contacts.contacts,
-                true
+                isTribe
               )
 
               if (b.sender === props.myid) {

@@ -109,6 +109,7 @@ export default function TextMsg(props) {
       {showBoostRow && (
         <BoostRow
           {...props}
+          isTribe={isTribe}
           myAlias={props.myAlias}
           {...(isLink && {
             pad: true,
