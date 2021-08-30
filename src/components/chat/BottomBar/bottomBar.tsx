@@ -487,41 +487,41 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
         accessibilityLabel="chat-bottombar-inner"
       >
         {!recordingStartTime && (
-          <TouchableOpacity
-            activeOpacity={0.6}
-            style={{
-              ...styles.attach,
-              backgroundColor: theme.bg,
-            }}
-            accessibilityLabel="more-button"
-            onPress={() => {
-              Keyboard.dismiss();
-              setDialogOpen(true);
-            }}
-          >
-            <Icon name="plus" color={theme.primary} size={27} />
-          </TouchableOpacity>
-        )}
-        {!recordingStartTime && (
-          <TextInput
-            textAlignVertical="top"
-            accessibilityLabel="message-input"
-            blurOnSubmit={true}
-            placeholder="Message..."
-            ref={inputRef}
-            style={{
-              ...styles.input,
-              height: 45,
-              backgroundColor: theme.inputBg,
-              borderColor: theme.border,
-              color: theme.input,
-            }}
-            placeholderTextColor={theme.subtitle}
-            onFocus={(e) => setInputFocused(true)}
-            onBlur={() => setInputFocused(false)}
-            onChangeText={(e) => setText(e)}
-            value={text}
-          />
+          <>
+            <TouchableOpacity
+              activeOpacity={0.6}
+              style={{
+                ...styles.attach,
+                backgroundColor: theme.bg,
+              }}
+              accessibilityLabel="more-button"
+              onPress={() => {
+                Keyboard.dismiss();
+                setDialogOpen(true);
+              }}
+            >
+              <Icon name="plus" color={theme.primary} size={27} />
+            </TouchableOpacity>
+            <TextInput
+              textAlignVertical="top"
+              accessibilityLabel="message-input"
+              blurOnSubmit={true}
+              placeholder="Message..."
+              ref={inputRef}
+              style={{
+                ...styles.input,
+                height: 45,
+                backgroundColor: theme.inputBg,
+                borderColor: theme.border,
+                color: theme.input,
+              }}
+              placeholderTextColor={theme.subtitle}
+              onFocus={(e) => setInputFocused(true)}
+              onBlur={() => setInputFocused(false)}
+              onChangeText={(e) => setText(e)}
+              value={text}
+            />
+          </>
         )}
         {/* Only renders if `recordingStartTime` is a truthy value*/}
         <RecordingBottomBar
