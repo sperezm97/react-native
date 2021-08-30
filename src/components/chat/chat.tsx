@@ -11,7 +11,7 @@ import { contactForConversation } from "./utils";
 import EE, { LEFT_GROUP } from "../utils/ee";
 import Header from "./header";
 import MsgList from "./msgList";
-import BottomBar from "./bottomBar";
+import BottomBar from "./BottomBar/bottomBar";
 import Podcast from "../Podcast";
 
 export type RouteStatus = "active" | "inactive" | null;
