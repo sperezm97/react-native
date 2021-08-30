@@ -117,6 +117,7 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
         txt = type + "::" + JSON.stringify({ ...rest, text });
       }
 
+      setText("");
       await msg.sendMessage({
         contact_id: contact_id || null,
         text: txt,
@@ -124,7 +125,6 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
         amount: price + pricePerMessage || 0,
         reply_uuid: replyUuid || "",
       });
-      setText("");
       if (replyUuid) {
         setReplyUuid("");
         EE.emit(CLEAR_REPLY_UUID, null);
