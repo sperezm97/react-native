@@ -39,6 +39,7 @@ import { setTint } from "../../common/StatusBar";
 import ChatOptions from "../../common/Dialogs/ChatOptions";
 import { styles } from "./styles";
 import { RecordingBottomBar } from "./RecordingBottomBar";
+import { ThemeStore } from "../../../store/theme";
 
 let dirs = RNFetchBlob.fs.dirs;
 
@@ -430,7 +431,7 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
 
   const isConversation = chat.type === conversation;
   // const isTribe = chat.type === constants.chat_types.tribe
-  const hideMic = inputFocused || text ? true : false;
+  const hideMic = inputFocused || Boolean(text);
 
   // let theID = chat && chat.id
   // const thisChatMsgs = theID && msg.messages[theID]
@@ -454,6 +455,7 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
       }}
       accessibilityLabel="chat-bottombar"
     >
+      {/* Reply area */}
       <Animated.View
         style={{
           zIndex: 1,
@@ -464,18 +466,20 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
           ],
         }}
       >
-        {(hasReplyContent ? true : false) && (
-          <ReplyContent
-            reply={true}
-            replyMessageExtraContent={replyMessageExtraContent}
-            showClose={true}
-            color={replyColor}
-            content={replyMessageContent}
-            senderAlias={replyMessageSenderAlias}
-            onClose={closeReplyContent}
-          />
-        )}
+        {/* Only renders if `hasReplyContent` is a truthy value*/}
+        <ReplyContent
+          shouldRender={hasReplyContent}
+          reply={true}
+          replyMessageExtraContent={replyMessageExtraContent}
+          showClose={true}
+          color={replyColor}
+          content={replyMessageContent}
+          senderAlias={replyMessageSenderAlias}
+          onClose={closeReplyContent}
+        />
       </Animated.View>
+
+      {/* Bottom row */}
       <View
         style={{
           ...styles.barInner,
@@ -488,20 +492,7 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
       >
         {!recordingStartTime && (
           <>
-            <TouchableOpacity
-              activeOpacity={0.6}
-              style={{
-                ...styles.attach,
-                backgroundColor: theme.bg,
-              }}
-              accessibilityLabel="more-button"
-              onPress={() => {
-                Keyboard.dismiss();
-                setDialogOpen(true);
-              }}
-            >
-              <Icon name="plus" color={theme.primary} size={27} />
-            </TouchableOpacity>
+            <PlusButton setDialogOpen={setDialogOpen} />
             <TextInput
               textAlignVertical="top"
               accessibilityLabel="message-input"
@@ -548,24 +539,7 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
           </Animated.View>
         )}
 
-        {hideMic && (
-          <View style={styles.sendButtonWrap}>
-            <TouchableOpacity
-              activeOpacity={0.5}
-              style={{
-                ...styles.sendButton,
-                backgroundColor: text ? theme.primary : theme.grey,
-              }}
-              onPress={() => sendMessage()}
-              accessibilityLabel="send-message"
-              disabled={!text}
-            >
-              <Icon name="send" size={17} color="white" />
-            </TouchableOpacity>
-          </View>
-        )}
-
-        {recordingStartTime && <View style={styles.recordingCircle}></View>}
+        {hideMic && <SendButton text={text} sendMessage={sendMessage} />}
 
         <ChatOptions
           visible={dialogOpen}
@@ -621,6 +595,46 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
   ));
 }
 
+type ISendButton = { text: string; sendMessage: () => Promise<void> };
+function SendButton({ text, sendMessage }: ISendButton) {
+  const theme = useTheme();
+  return (
+    <View style={styles.sendButtonWrap}>
+      <TouchableOpacity
+        activeOpacity={0.5}
+        style={{
+          ...styles.sendButton,
+          backgroundColor: text ? theme.primary : theme.grey,
+        }}
+        onPress={() => sendMessage()}
+        accessibilityLabel="send-message"
+        disabled={!text}
+      >
+        <Icon name="send" size={17} color="white" />
+      </TouchableOpacity>
+    </View>
+  );
+}
+
+function PlusButton({ setDialogOpen }) {
+  const theme = useTheme();
+  return (
+    <TouchableOpacity
+      activeOpacity={0.6}
+      style={{
+        ...styles.attach,
+        backgroundColor: theme.bg,
+      }}
+      accessibilityLabel="more-button"
+      onPress={() => {
+        Keyboard.dismiss();
+        setDialogOpen(true);
+      }}
+    >
+      <Icon name="plus" color={theme.primary} size={27} />
+    </TouchableOpacity>
+  );
+}
 async function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
