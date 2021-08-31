@@ -36,6 +36,7 @@ export default function Ready(props) {
       onDone();
     } catch (error) {
       console.log("finish onboarding error", error);
+      await user.reportError(error);
     }
   }
 
