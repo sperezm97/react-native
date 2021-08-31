@@ -44,7 +44,11 @@ static void InitializeFlipper(UIApplication *application) {
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-  [Bugsnag start];
+  // [Bugsnag start];
+  
+  BugsnagConfiguration *config = [BugsnagConfiguration loadConfig];
+  config.launchDurationMillis = 2000;
+  [Bugsnag startWithConfiguration:config];
 
 // [RNNotifications startMonitorNotifications]; 
 

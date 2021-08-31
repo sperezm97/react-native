@@ -24,10 +24,6 @@ import Splash from "./src/components/common/Splash";
 import PinCodeModal from "./src/components/common/Modals/PinCode";
 import StatusBar from "./src/components/common/StatusBar";
 
-import Bugsnag from "@bugsnag/react-native";
-
-Bugsnag.start();
-
 declare var global: { HermesInternal: null | {} };
 
 // splash screen
