@@ -69,6 +69,11 @@ jobs:
       - run:
           name: Bundle
           command: |
+            npm install -g react-native
+
+      - run:
+          name: Bundle
+          command: |
             react-native bundle --entry-file='index.js' --bundle-output='./ios/main.jsbundle' --dev=false --platform='ios' --assets-dest='./ios'
 
       - run:
