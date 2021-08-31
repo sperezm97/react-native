@@ -57,7 +57,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>$(PRODUCT_NAME) would like to access your camera. Enable access so you can take photos and scan QR codes.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string/>
+	<string></string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>$(PRODUCT_NAME) would like to use your microphone (for videos)</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
@@ -103,10 +103,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<string>NO</string>
-	<key>bugsnag</key>
-	<dict>
-		<key>apiKey</key>
-		<string>7ec3c56cfc352e023165be127f1e04ff</string>
-	</dict>
 </dict>
 </plist>

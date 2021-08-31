@@ -10,8 +10,6 @@ import Slider from "../utils/slider";
 import Button from "../common/Button";
 import Typography from "../common/Typography";
 
-import Bugsnag from "@bugsnag/react-native";
-
 export default function Ready(props) {
   const { z, show, onDone } = props;
   const { user, contacts, chats } = useStores();
@@ -38,7 +36,6 @@ export default function Ready(props) {
       onDone();
     } catch (error) {
       console.log("finish onboarding error", error);
-      Bugsnag.notify(error);
     }
   }
 

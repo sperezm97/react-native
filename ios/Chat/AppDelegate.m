@@ -1,4 +1,3 @@
-#import <Bugsnag/Bugsnag.h>
 // #import "RNNotifications.h"
 #import "AppDelegate.h"
 #import <UserNotifications/UserNotifications.h>
@@ -44,12 +43,6 @@ static void InitializeFlipper(UIApplication *application) {
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-  // [Bugsnag start];
-  
-  BugsnagConfiguration *config = [BugsnagConfiguration loadConfig];
-  config.launchDurationMillis = 2000;
-  [Bugsnag startWithConfiguration:config];
-
 // [RNNotifications startMonitorNotifications]; 
 
 #ifdef FB_SONARKIT_ENABLED

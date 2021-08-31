@@ -1,6 +1,3 @@
-import Bugsnag from "@bugsnag/react-native";
-Bugsnag.start();
-
 import 'react-native-gesture-handler'
 import { AppRegistry, Platform, LogBox, NativeModules } from 'react-native'
 import TrackPlayer from 'react-native-track-player'
