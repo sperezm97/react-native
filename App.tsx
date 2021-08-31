@@ -28,16 +28,6 @@ import Bugsnag from "@bugsnag/react-native";
 
 Bugsnag.start();
 
-Bugsnag.notify(new Error("uh oh"), null, function (err, event) {
-  if (err) {
-    console.log("Failed to send report because of:\n" + err.stack);
-  } else {
-    console.log(
-      'Successfully sent report "' + event.errors[0].errorMessage + '"'
-    );
-  }
-});
-
 declare var global: { HermesInternal: null | {} };
 
 // splash screen
