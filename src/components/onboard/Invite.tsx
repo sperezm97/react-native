@@ -43,22 +43,28 @@ export default function Invite(props) {
 
       const done = await user.requestInvite(email)
 
-      if (done.status === 'ok') {
-        setEmail('')
-        // TODO: Await change on the backend to fix the number value
-        Toast.showWithGravity(
-          `Subscribed! You are the ${done.payload.id} number on the list`,
-          5,
-          Toast.BOTTOM,
-        )
-      } else {
+      if (done.status !== 'ok') {
         setWrong('Failed to request invitation.')
+        return
       }
-      setTimeout(() => setWrong(''), 10000)
+
+      if (done.payload.duplicate) {
+        setEmail('');
+        Toast.showWithGravity(`Email already subscribed!`, 5, Toast.BOTTOM)
+        return
+      }
+
+      setEmail('')
+      Toast.showWithGravity(
+        `Subscribed! You are the ${done.payload.id} number on the list`,
+        5,
+        Toast.BOTTOM,
+      )
     } catch (error) {
       setError(error)
     } finally {
       setChecking(false)
+      setTimeout(() => setWrong(''), 10000)
     }
   }
 
@@ -112,6 +118,7 @@ export default function Invite(props) {
               autoCorrect={false}
               accessibilityLabel='onboard-code-input'
               placeholder='Enter Email'
+              autoCapitalize="none"
               style={{
                 ...styles.input,
                 backgroundColor: theme.white,
@@ -136,6 +143,7 @@ export default function Invite(props) {
             }}
             // onPress={submitEmail}
             onPress={() => submitEmail(email)}
+            disabled={checking}
           >
             <Typography color={theme.white} fw='700'>
               Subscribe
