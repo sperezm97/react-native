@@ -285,6 +285,15 @@ class UserStore {
 
   @action
   async testinit() { }
+
+  @action
+  async reportError(error) {
+    try {
+      const r = await api.invite.post('notify', { error }, '', { rawValue: true });
+    } catch (error) {
+      console.log('reportError: ', error)
+    }
+  }
 }
 
 export const userStore = new UserStore()

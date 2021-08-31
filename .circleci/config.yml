@@ -4,13 +4,13 @@ jobs:
     working_directory: ~/production_ios
 
     macos:
-      xcode: '12.4.0'
+      xcode: "12.5.1"
 
     steps:
       - checkout
 
       - run:
-          command: 'bundle install'
+          command: "bundle install"
           name: Build
 
       - run:
@@ -75,13 +75,13 @@ jobs:
     working_directory: ~/staging_ios
 
     macos:
-      xcode: '12.4.0'
+      xcode: "12.4.0"
 
     steps:
       - checkout
 
       - run:
-          command: 'bundle install'
+          command: "bundle install"
           name: Build
 
       - run:

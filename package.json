@@ -13,7 +13,8 @@
     "build": "react-app-rewired build",
     "jetify": "jetify",
     "xcode": "open ios/Chat.xcworkspace",
-    "bump": "npx react-native bump-version --skip-semver-for android --skip-code-for android"
+    "bump": "npx react-native bump-version --skip-semver-for android --skip-code-for android",
+    "t": "tsc"
   },
   "build": {
     "appId": "Zion.chat",
