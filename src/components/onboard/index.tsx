@@ -1,15 +1,15 @@
-import React from 'react'
-import { StyleSheet, View } from 'react-native'
-import { useObserver } from 'mobx-react-lite'
+import React from "react";
+import { StyleSheet, View } from "react-native";
+import { useObserver } from "mobx-react-lite";
 
-import { useStores } from '../../store'
-import Code from './code'
-import Welcome from './welcome'
-import NameAndKey from './nameAndKey'
-import Ready from './ready'
-import PIN from './choosePIN'
-import ProfilePic from './profilePic'
-import SuggestToUserToBackupTheirKeys from './suggestToUserToBackupTheirKeys'
+import { useStores } from "../../store";
+import Code from "./code";
+import Welcome from "./welcome";
+import NameAndKey from "./nameAndKey";
+import Ready from "./ready";
+import PIN from "./choosePIN";
+import ProfilePic from "./profilePic";
+import SuggestToUserToBackupTheirKeys from "./suggestToUserToBackupTheirKeys";
 // import Backup from './Backup'
 
 /*
@@ -23,52 +23,60 @@ import SuggestToUserToBackupTheirKeys from './suggestToUserToBackupTheirKeys'
 */
 
 // Final: ProfilePic before Ready
-const steps = [Code, Welcome, PIN, NameAndKey, SuggestToUserToBackupTheirKeys ,ProfilePic, Ready]
+const steps = [
+  Code,
+  Welcome,
+  PIN,
+  NameAndKey,
+  SuggestToUserToBackupTheirKeys,
+  ProfilePic,
+  Ready,
+];
 export default function OnBoard() {
-  const { ui, user } = useStores()
+  const { ui, user } = useStores();
 
   return useObserver(() => {
-    let step = user.onboardStep
+    let step = user.onboardStep;
 
     function stepForward() {
       if (step >= steps.length - 1) {
-        onFinish()
+        onFinish();
       } else {
-        user.setOnboardStep(step + 1)
+        user.setOnboardStep(step + 1);
       }
     }
     function stepBack() {
-      user.setOnboardStep(step - 1)
+      user.setOnboardStep(step - 1);
     }
 
     function onFinish() {
-      user.finishOnboard() // clear out things
-      ui.setSignedUp(true) // signed up w key export
-      ui.setPinCodeModal(true) // also PIN has been set
+      user.finishOnboard(); // clear out things
+      ui.setSignedUp(true); // signed up w key export
+      ui.setPinCodeModal(true); // also PIN has been set
     }
 
     return (
-      <View style={styles.wrap} accessibilityLabel='onboard-wrap'>
+      <View style={styles.wrap} accessibilityLabel="onboard-wrap">
         {steps.map((C, i) => {
-          const render = i === step - 1 || i === step || i === step + 1
-          if (!render) return <View key={i} />
+          const render = i === step - 1 || i === step || i === step + 1;
+          if (!render) return <View key={i} />;
           return (
             <C
               key={i}
               z={i}
               show={step > i - 1}
-              isTheMainRender={step===i}
+              isTheMainRender={step === i}
               onDone={stepForward}
               onBack={stepBack}
               onRestore={onFinish}
             />
-          )
+          );
         })}
       </View>
-    )
-  })
+    );
+  });
 }
 
 const styles = StyleSheet.create({
-  wrap: { flex: 1 }
-})
+  wrap: { flex: 1 },
+});

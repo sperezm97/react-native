@@ -19,16 +19,18 @@ export default function Ready(props) {
   async function finish() {
     try {
       setLoading(true);
-      await Promise.all([
-        user.finishInvite(),
-        contacts.addContact({
-          alias: user.invite.inviterNickname,
-          public_key: user.invite.inviterPubkey,
-          status: constants.contact_statuses.confirmed,
-        }),
-        actions(user.invite.action),
-        chats.joinDefaultTribe(),
-      ]);
+
+      await user.finishInvite();
+
+      await contacts.addContact({
+        alias: user.invite.inviterNickname,
+        public_key: user.invite.inviterPubkey,
+        status: constants.contact_statuses.confirmed,
+      });
+
+      await actions(user.invite.action);
+
+      await chats.joinDefaultTribe();
 
       setLoading(false);
       onDone();
