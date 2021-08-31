@@ -1,14 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, View, Image, Text } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
-import MaskedView from '@react-native-community/masked-view'
-import LinearGradient from 'react-native-linear-gradient'
-import { Chip } from 'react-native-paper'
 
 import { useStores, useTheme } from '../../store'
-import { SCREEN_WIDTH } from '../../constants'
-import * as utils from '../utils/utils'
-import { qrActions } from '../../qrActions'
 import { isLN, parseLightningInvoice, removeLightningPrefix } from '../utils/ln'
 import TabBar from '../common/TabBar'
 import Header from './Header'
@@ -17,7 +11,6 @@ import Button from '../common/Button'
 import QR from '../common/Accessories/QR'
 import Typography from '../common/Typography'
 import { setTint } from '../common/StatusBar'
-import Icon from '../common/Icon'
 
 export default function Payment() {
   const [scanning, setScanning] = useState(false)
@@ -234,9 +227,6 @@ const ListHeader = () => {
             SEND
           </Button>
         </View>
-        <Typography size={20} style={{ marginLeft: 12, marginBottom: 10 }}>
-          Transactions
-        </Typography>
       </View>
     </>
   )
