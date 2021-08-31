@@ -80,6 +80,8 @@
             <action android:name="com.google.firebase.MESSAGING_EVENT" />
         </intent-filter>
       </service>
+      
+      <meta-data android:name="com.bugsnag.android.API_KEY" android:value="7ec3c56cfc352e023165be127f1e04ff" />
 
     </application>
 
