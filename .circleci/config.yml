@@ -67,6 +67,11 @@ jobs:
             pod install
 
       - run:
+          name: Bundle
+          command: |
+            react-native bundle --entry-file='index.js' --bundle-output='./ios/main.jsbundle' --dev=false --platform='ios' --assets-dest='./ios'
+
+      - run:
           name: Build
           command: |
             bundle exec fastlane ios upload_testflight_production --verbose
