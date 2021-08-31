@@ -92,22 +92,18 @@ class ContactStore {
 
   @action
   async addContact(v) {
-    try {
-      if (!v.public_key) return console.log('no pub key')
-      const r = await relay.post('contacts', { ...v, status: 1 })
-      if (!r) return
-      const existingContact = this.contacts.find(c => c.id === r.id)
-      if (existingContact) {
-        if (r.alias) existingContact.alias = r.alias
-        if (r.photo_url) existingContact.photo_url = r.photo_url
-        existingContact.from_group = r.fromGroup || false
-      } else {
-        this.contacts = [...this.contacts, r]
-      }
-      return r
-    } catch (e) {
-      console.log(e)
+    if (!v.public_key) return console.log('no pub key')
+    const r = await relay.post('contacts', { ...v, status: 1 })
+    if (!r) return
+    const existingContact = this.contacts.find(c => c.id === r.id)
+    if (existingContact) {
+      if (r.alias) existingContact.alias = r.alias
+      if (r.photo_url) existingContact.photo_url = r.photo_url
+      existingContact.from_group = r.fromGroup || false
+    } else {
+      this.contacts = [...this.contacts, r]
     }
+    return r
   }
 
   @action
@@ -163,7 +159,7 @@ class ContactStore {
   @action
   async exchangeKeys(id) {
     try {
-      const r = await relay.post(`contacts/${id}/keys`, {})
+      const r = await relay.post(`contacts/${id}/keys`, { })
       console.log('r', r)
     } catch (e) {
       console.log(e)
@@ -197,7 +193,7 @@ class ContactStore {
   @action
   async payInvite(invite_string) {
     try {
-      const inv = await relay.post(`invites/${invite_string}/pay`, {})
+      const inv = await relay.post(`invites/${invite_string}/pay`, { })
       if (!inv) return
       console.log('inv', inv)
 

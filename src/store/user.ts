@@ -288,6 +288,7 @@ class UserStore {
 
   @action
   async reportError(error) {
+    console.log(error);
     try {
       const r = await api.invite.post('notify', { error }, '', { rawValue: true });
     } catch (error) {
