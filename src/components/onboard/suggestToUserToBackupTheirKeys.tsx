@@ -1,6 +1,12 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useObserver } from "mobx-react-lite";
-import { Dimensions, StyleSheet } from "react-native";
+import {
+  Alert,
+  Dimensions,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
 import Video from "react-native-video";
 import Animated, {
   useAnimatedStyle,
@@ -33,6 +39,20 @@ export default function SuggestToUserToBackupTheirKeys({
     resetCounter();
   };
 
+  const forceFinishLoad = () => {
+    Alert.alert(
+      "Are you sure?",
+      "This video explains the importance of backup your keys, you should watch this!",
+      [
+        {
+          text: "Cancel",
+          onPress: onDone,
+          style: "cancel",
+        },
+        { text: "OK", onPress: () => console.log("OK Pressed") },
+      ]
+    );
+  };
   /**
    * Animation section
    */
@@ -43,7 +63,7 @@ export default function SuggestToUserToBackupTheirKeys({
   const progressWidth = useSharedValue(0);
   useEffect(() => {
     progressWidth.value = withSpring(PROGRESS * WIDTH);
-  }, [timeVideoCounter]);
+  }, [PROGRESS, progressWidth.value, timeVideoCounter]);
 
   const progressStyle = useAnimatedStyle(() => {
     return {
@@ -65,6 +85,23 @@ export default function SuggestToUserToBackupTheirKeys({
             height: SCREEN_HEIGHT,
           }}
         />
+        <TouchableOpacity
+          onPress={forceFinishLoad}
+          style={{
+            width: 32,
+            height: 32,
+            position: "absolute",
+            top: 32,
+            left: 24,
+            transform: [{ rotate: "45deg" }],
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Text style={{ color: "white", fontSize: 32, lineHeight: 32 }}>
+            +
+          </Text>
+        </TouchableOpacity>
         <View style={styles.buttonWrap}>
           <Button
             accessibilityLabel="onboard-name-button"
@@ -130,7 +167,7 @@ const useCounterToVideo: UseCounterToVideo = () => {
 
   const resetCounter = useCallback(() => {
     setTimeVideoCounter(VIDEO_DURATION_SECONDS);
-  }, [timeVideoCounter]);
+  }, []);
 
   return { isVideoDone, resetCounter, timeVideoCounter };
 };
