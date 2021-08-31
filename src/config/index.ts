@@ -4,6 +4,9 @@ const config = {
   hub: {
     api: 'https://hub.n2n2.chat/api/v1/'
   },
+  shop: {
+    api: 'https://shop.n2n2.chat/api/v1/'
+  },
   tribes: {
     server: 'communities.getzion.com',
     uuid: 'YNzR0h_54n6O1zjeKKEM6vSzwO6yq3N-3aYSpAaeZ04C72dYISzw5UQEAeB3nvwVXspEnAFavDaE0o-bmxZiw_2CNpL1'
@@ -23,6 +26,7 @@ const config = {
 export const DEFAULT_HOST = config.host
 export const DEFAULT_DOMAIN = config.domain
 export const DEFAULT_HUB_API = config.hub.api
+export const DEFAULT_SHOP_API = config.shop.api
 export const DEFAULT_TRIBE_SERVER = config.tribes.server
 export const DEFAULT_TRIBE_UUID = config.tribes.uuid
 export const DEFAULT_MEME_SERVER = config.memes.server
