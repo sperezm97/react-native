@@ -93,7 +93,9 @@ class ContactStore {
   @action
   async addContact(v) {
     try {
-      if (!v.public_key) return console.log('no pub key')
+      if (!v.public_key) {
+        throw new Error("Not able to addContact, public key is missing.");
+      }
       const r = await relay.post('contacts', { ...v, status: 1 })
       if (!r) return
       const existingContact = this.contacts.find(c => c.id === r.id)
@@ -106,7 +108,7 @@ class ContactStore {
       }
       return r
     } catch (e) {
-      console.log(e)
+      console.log("[Error - addContact]", e)
     }
   }
 
