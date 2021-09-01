@@ -244,11 +244,20 @@ class UserStore {
   @action
   async finishInvite() {
     try {
-      await api.relay.post("invites/finish", {
-        invite_string: this.code,
-      });
+      await api.relay.post(
+        "invites/finish",
+        {
+          invite_string: this.code,
+        },
+        "",
+        {
+          // TODO: Create a util for this call
+          exceptionCallback: async (e) =>
+            api.invite.post("notify", { error: e }, "", { rawValue: true }),
+        }
+      );
     } catch (e) {
-      console.log("could not finish invite", e);
+      console.error("[Error - finishInvite]", e);
     }
   }
 
