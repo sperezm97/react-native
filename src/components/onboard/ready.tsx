@@ -35,8 +35,9 @@ export default function Ready(props) {
       setLoading(false);
       onDone();
     } catch (error) {
-      console.log("finish onboarding error", error);
       await user.reportError(error);
+    } finally {
+      setLoading(false);
     }
   }
 
