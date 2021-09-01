@@ -1,3 +1,9 @@
+type RelayMethod = (
+  url: string,
+  data: any,
+  encoding?: string,
+  options?: APIOptions
+) => any;
 export default class API {
   constructor(url: string, tokenKey?: string, tokenValue?: string, resetIPCallback?: Function) {
     this.get = addMethod('GET', url)
@@ -11,21 +17,22 @@ export default class API {
   }
   tokenKey: string
   tokenValue: string
-  get: Function
-  post: Function
-  put: Function
-  del: Function
-  upload: Function
-  resetIPCallback: Function
+  get: RelayMethod;
+  post: RelayMethod;
+  put: RelayMethod;
+  del: RelayMethod;
+  upload: RelayMethod;
+  resetIPCallback: RelayMethod;
 }
 
 const TIMEOUT = 20000
 
 type APIOptions = {
   rawValue?: boolean;
-}
+  exceptionCallback?: (error:any) => void;
+};
 
-function addMethod(m: string, rootUrl: string): Function {
+function addMethod(m: string, rootUrl: string): RelayMethod {
   return async function (url: string, data: any, encoding?: string, options?: APIOptions) {
     if (!data) data = {}
 
@@ -94,6 +101,12 @@ function addMethod(m: string, rootUrl: string): Function {
     } catch (e) {
       // 20 is an "abort" i guess
       // console.warn(e, 'url', url)
+      if (
+        options.exceptionCallback &&
+        typeof options.exceptionCallback === "function"
+      ) {
+        options.exceptionCallback(e);
+      }
       const isWebAbort = e.code === 20
       const isRNAbort = e.message === 'Aborted'
       if (isWebAbort || isRNAbort) reportTimeout(this.resetIPCallback)
