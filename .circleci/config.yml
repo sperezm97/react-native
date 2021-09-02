@@ -75,7 +75,7 @@ jobs:
     working_directory: ~/staging_ios
 
     macos:
-      xcode: "12.4.0"
+      xcode: "12.5.1"
 
     steps:
       - checkout
