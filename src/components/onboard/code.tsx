@@ -112,7 +112,10 @@ export default function Code(props) {
         signupWithIP(codeString);
         return;
       }
-    } catch (e) {}
+      user.reportError("Code Component - checkInvite function isn't keys or ip", { code: theCode })
+    } catch (e) {
+      user.reportError("Code component - checkInvite function - try catch of checking keys prefix", e)
+    }
 
     const isCorrect = theCode.length === 40 && theCode.match(/[0-9a-fA-F]+/g);
     if (!isCorrect) {

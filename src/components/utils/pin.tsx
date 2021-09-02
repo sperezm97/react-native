@@ -8,13 +8,14 @@ import AsyncStorage from "@react-native-community/async-storage";
 import moment from "moment";
 // import SecureStorage from 'react-native-secure-storage'
 
-import { useTheme } from "../../store";
+import { useStores, useTheme } from "../../store";
 import { SCREEN_HEIGHT } from "../../constants";
 import NumKey from "./numkey";
 import Typography from "../common/Typography";
 
 const ns = [1, 2, 3, 4, 5, 6];
 export default function PIN(props) {
+  const { user } = useStores();
   const [pin, setPin] = useState("");
   const [chosenPin, setChosenPin] = useState("");
   const [checking, setChecking] = useState(false);
@@ -77,7 +78,9 @@ export default function PIN(props) {
           setPin("");
           setChecking(false);
         }
-      } catch (e) {}
+      } catch (error) {
+        user.reportError("PIN Component - check function", error)
+      }
     }
   }
   function go(v) {
