@@ -112,8 +112,8 @@ function addMethod(m: string, rootUrl: string): RelayMethod {
       // 20 is an "abort" i guess
       // console.warn(e, 'url', url)
       if (
-        options.exceptionCallback &&
-        typeof options.exceptionCallback === "function"
+        options?.exceptionCallback &&
+        typeof options?.exceptionCallback === "function"
       ) {
         options.exceptionCallback(e);
       }
