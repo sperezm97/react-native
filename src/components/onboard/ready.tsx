@@ -35,7 +35,7 @@ export default function Ready(props) {
       setLoading(false);
       onDone();
     } catch (error) {
-      await user.reportError(error);
+      await user.reportError("Report component - finish function", error);
     } finally {
       setLoading(false);
     }

@@ -17,18 +17,22 @@ export default function NameAndKey(props) {
   const inputRef = useRef(null)
 
   async function ok() {
-    setUpdating(true)
-    const keyPair = await rsa.generateKeyPair()
-    await contacts.updateContact(user.myid, {
-      alias: text,
-      contact_key: keyPair.public
-    })
-    user.setAlias(text)
-    inputRef.current.blur()
-    onDone()
-    setTimeout(() => {
-      setUpdating(false)
-    }, 500)
+    try {
+      setUpdating(true)
+      const keyPair = await rsa.generateKeyPair()
+      await contacts.updateContact(user.myid, {
+        alias: text,
+        contact_key: keyPair.public
+      })
+      user.setAlias(text)
+      inputRef.current.blur()
+      onDone()
+      setTimeout(() => {
+        setUpdating(false)
+      }, 500)
+    } catch (error) {
+      await user.reportError("NameAndKey component - ok function", error);
+    }
   }
   return (
     <Slider
