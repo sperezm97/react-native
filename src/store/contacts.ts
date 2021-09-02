@@ -110,6 +110,7 @@ class ContactStore {
     } catch (e) {
       console.log("[Error - addContact]", e)
     }
+    return r
   }
 
   @action
@@ -165,7 +166,7 @@ class ContactStore {
   @action
   async exchangeKeys(id) {
     try {
-      const r = await relay.post(`contacts/${id}/keys`, {})
+      const r = await relay.post(`contacts/${id}/keys`, { })
       console.log('r', r)
     } catch (e) {
       console.log(e)
@@ -199,7 +200,7 @@ class ContactStore {
   @action
   async payInvite(invite_string) {
     try {
-      const inv = await relay.post(`invites/${invite_string}/pay`, {})
+      const inv = await relay.post(`invites/${invite_string}/pay`, { })
       if (!inv) return
       console.log('inv', inv)
 
