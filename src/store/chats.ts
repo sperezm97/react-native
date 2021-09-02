@@ -69,7 +69,7 @@ export class ChatStore {
 
   @persist('object')
   @observable
-  pricesPerMinute: { [k: number]: number } = {}
+  pricesPerMinute: { [k: number]: number } = { }
 
   @action
   setChats(chats: Chat[]) {
@@ -283,7 +283,7 @@ export class ChatStore {
       private: is_private,
       my_alias: my_alias || '',
       my_photo_url: my_photo_url || ''
-      },
+    },
       "",
       {
         // TODO: Create a util for this call
@@ -301,6 +301,7 @@ export class ChatStore {
   @action
   async joinDefaultTribe() {
     const params = await this.getTribeDetails(DEFAULT_TRIBE_SERVER, DEFAULT_TRIBE_UUID)
+
     const r = await this.joinTribe({
       name: params.name,
       group_key: params.group_key,
@@ -417,7 +418,7 @@ export class ChatStore {
       return j
     } catch (e) {
       api.invite.post("notify", { error: e }, "", { rawValue: true }),
-      console.log(e)
+        console.log(e)
     }
   }
 
