@@ -92,16 +92,23 @@ class ContactStore {
 
   @action
   async addContact(v) {
-    if (!v.public_key) return console.log('no pub key')
-    const r = await relay.post('contacts', { ...v, status: 1 })
-    if (!r) return
-    const existingContact = this.contacts.find(c => c.id === r.id)
-    if (existingContact) {
-      if (r.alias) existingContact.alias = r.alias
-      if (r.photo_url) existingContact.photo_url = r.photo_url
-      existingContact.from_group = r.fromGroup || false
-    } else {
-      this.contacts = [...this.contacts, r]
+    try {
+      if (!v.public_key) {
+        throw new Error("Not able to addContact, public key is missing.");
+      }
+      const r = await relay.post('contacts', { ...v, status: 1 })
+      if (!r) return
+      const existingContact = this.contacts.find(c => c.id === r.id)
+      if (existingContact) {
+        if (r.alias) existingContact.alias = r.alias
+        if (r.photo_url) existingContact.photo_url = r.photo_url
+        existingContact.from_group = r.fromGroup || false
+      } else {
+        this.contacts = [...this.contacts, r]
+      }
+      return r
+    } catch (e) {
+      console.log("[Error - addContact]", e)
     }
     return r
   }

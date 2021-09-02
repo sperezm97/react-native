@@ -6,7 +6,7 @@ import * as wsHandlers from '../store/websocketHandlers'
 const invite = new API(DEFAULT_HUB_API, '', '')
 const shop = new API(DEFAULT_SHOP_API, '', '')
 
-let relay = null
+let relay: API = null;
 
 export function instantiateRelay(ip: string, authToken?: string, connectedCallback?: Function, disconnectCallback?: Function, resetIPCallback?: Function) {
   if (!ip) return console.log('cant instantiate Relay, no IP')

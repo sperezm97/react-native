@@ -32,10 +32,11 @@ export default function Ready(props) {
 
       await chats.joinDefaultTribe();
 
-      setLoading(false);
       onDone();
     } catch (error) {
-      await user.reportError(error);
+      await user.reportError("Report component - finish function", error);
+    } finally {
+      setLoading(false);
     }
   }
 
