@@ -46,10 +46,10 @@ export default function SuggestToUserToBackupTheirKeys({
       [
         {
           text: "Cancel",
-          onPress: onDone,
+          onPress: () => null,
           style: "cancel",
         },
-        { text: "OK", onPress: () => console.log("OK Pressed") },
+        { text: "OK", onPress: onDone },
       ]
     );
   };
