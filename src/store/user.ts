@@ -301,11 +301,15 @@ class UserStore {
   async testinit() {}
 
   @action
-  async reportError(error) {
+  async reportError(label, error) {
     try {
-      const r = await api.invite.post("notify", { error }, "", {
-        rawValue: true,
-      });
+      console.log(label, error)
+      await api.invite.post(
+        "notify",
+        { place: "React Native APP", isDevEnvironment: __DEV__, label, error },
+        "",
+        { rawValue: true },
+      );
     } catch (error) {
       console.log("reportError: ", error);
     }

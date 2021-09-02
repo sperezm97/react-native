@@ -23,18 +23,23 @@ export default function ProfilePic({ z, show, onDone, onBack }) {
   }
 
   async function finish() {
-    if (img) {
-      setUploading(true)
-      const url = await uploadSync(img.uri)
+    try {
+      if (img) {
+        setUploading(true)
+        const url = await uploadSync(img.uri)
 
-      if (url) {
-        await contacts.updateContact(user.myid, {
-          photo_url: url
-        })
+        if (url) {
+          await contacts.updateContact(user.myid, {
+            photo_url: url
+          })
+        }
+        setUploading(false)
       }
-      setUploading(false)
+    } catch(error) {
+      await user.reportError("ProfilePic component - finish function", error);
+    } finally {
+      onDone()
     }
-    onDone()
   }
 
   async function uploadSync(uri) {
@@ -77,8 +82,8 @@ export default function ProfilePic({ z, show, onDone, onBack }) {
           setUploading(false)
           return
         })
-        .catch(err => {
-          console.log(err)
+        .catch(async err => {
+          await user.reportError("ProfilePic component - uploadSync function", err);
           setUploading(false)
           resolve('')
           return
