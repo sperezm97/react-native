@@ -164,7 +164,11 @@ export default function MediaMsg(props) {
                 <View style={{ minHeight, ...styles.paidAttachmentText, width: 640, backgroundColor: "transparent", ...(isEmbedVideo && { height: 170 }) }}>
                   {!!rumbleLink ? <EmbedVideo type="rumble" link={rumbleLink} onLongPress={onLongPressHandler} /> : null}
                   {!!youtubeLink ? <EmbedVideo type="youtube" link={youtubeLink} onLongPress={onLongPressHandler} /> : null}
-                  {!rumbleLink && !youtubeLink && <Text style={{ color: theme.title }}>{isBase64(paidMessageText).text}</Text>}
+                  {!rumbleLink && !youtubeLink && (
+                    <Text style={{ color: theme.title, paddingTop: media_type === 'n2n2/text' ? 10 : 0 }}>
+                      {isBase64(paidMessageText).text}
+                    </Text>
+                  )}
                 </View>
               )}
               {showPayToUnlockMessage && (
