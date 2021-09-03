@@ -69,6 +69,7 @@ export default function MenuSheet(props) {
                   justifyContent: "center",
                 },
               ]}
+              key={item.title}
             >
               <TouchableOpacity
                 activeOpacity={0.9}
