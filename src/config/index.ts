@@ -1,4 +1,6 @@
-const config = {
+import { Config } from './type'
+
+const config: Config = {
   host: 'https://hub.n2n2.chat',
   domain: 'n2n2.chat',
   hub: {
