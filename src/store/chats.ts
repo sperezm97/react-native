@@ -6,6 +6,7 @@ import { Invite, contactStore } from './contacts'
 import { relay } from '../api'
 import { constants } from '../constants'
 import { detailsStore } from './details'
+import * as api from "../api";
 /*
 disconneted - socket?
 03eab50cef61b9360bc24f0fd8a8cb3ebd7cec226d9f6fd39150594e0da8bd58a7
@@ -68,7 +69,7 @@ export class ChatStore {
 
   @persist('object')
   @observable
-  pricesPerMinute: { [k: number]: number } = {}
+  pricesPerMinute: { [k: number]: number } = { }
 
   @action
   setChats(chats: Chat[]) {
@@ -282,7 +283,14 @@ export class ChatStore {
       private: is_private,
       my_alias: my_alias || '',
       my_photo_url: my_photo_url || ''
-    })
+    },
+      "",
+      {
+        // TODO: Create a util for this call
+        exceptionCallback: async (e) =>
+          api.invite.post("notify", { error: e }, "", { rawValue: true }),
+      }
+    );
 
     if (!r) return
     this.gotChat(r)
@@ -293,6 +301,7 @@ export class ChatStore {
   @action
   async joinDefaultTribe() {
     const params = await this.getTribeDetails(DEFAULT_TRIBE_SERVER, DEFAULT_TRIBE_UUID)
+
     const r = await this.joinTribe({
       name: params.name,
       group_key: params.group_key,
@@ -408,7 +417,8 @@ export class ChatStore {
       }
       return j
     } catch (e) {
-      console.log(e)
+      api.invite.post("notify", { error: e }, "", { rawValue: true }),
+        console.log(e)
     }
   }
 

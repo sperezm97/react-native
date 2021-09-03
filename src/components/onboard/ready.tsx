@@ -22,13 +22,19 @@ export default function Ready(props) {
 
       await user.finishInvite();
 
+      // await user.reportError("ready", { break: "A" });
+
       await contacts.addContact({
         alias: user.invite.inviterNickname,
         public_key: user.invite.inviterPubkey,
         status: constants.contact_statuses.confirmed,
       });
 
+      // await user.reportError("ready", { break: "B" });
+
       await actions(user.invite.action);
+
+      // await user.reportError("ready", { break: "C" });
 
       await chats.joinDefaultTribe();
 

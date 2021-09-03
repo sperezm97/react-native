@@ -13,10 +13,10 @@ jobs:
           command: "bundle install"
           name: Build
 
-      - run:
-          name: Update package.json file
-          command: |
-            sed -i '' 's/chat.n2n2.Chat.staging/chat.n2n2.Chat/g' package.json
+      # - run:
+      #     name: Update package.json file
+      #     command: |
+      #       sed -i '' 's/chat.n2n2.Chat.staging/chat.n2n2.Chat/g' package.json
 
       - run:
           name: Install yarn
@@ -40,25 +40,25 @@ jobs:
           paths:
             - ~/.cache/yarn
 
-      - run:
-          name: Update config file
-          command: |
-            cd src/config
-            mv index.ts index.staging.ts
-            mv index.production.ts index.ts
+      # - run:
+      #     name: Update config file
+      #     command: |
+      #       cd src/config
+      #       mv index.ts index.staging.ts
+      #       mv index.production.ts index.ts
 
-      - run:
-          name: Update plist file
-          command: |
-            cd ios/Chat
-            mv Info.plist Info.staging.plist
-            mv Info.production.plist Info.plist
+      # - run:
+      #     name: Update plist file
+      #     command: |
+      #       cd ios/Chat
+      #       mv Info.plist Info.staging.plist
+      #       mv Info.production.plist Info.plist
 
-      - run:
-          name: Update plist file
-          command: |
-            cd ios/Chat.xcodeproj
-            sed -i '' 's/chat.n2n2.Chat.staging/chat.n2n2.Chat/g' project.pbxproj
+      # - run:
+      #     name: Update plist file
+      #     command: |
+      #       cd ios/Chat.xcodeproj
+      #       sed -i '' 's/chat.n2n2.Chat.staging/chat.n2n2.Chat/g' project.pbxproj
 
       - run:
           name: Install pods
@@ -75,7 +75,7 @@ jobs:
     working_directory: ~/staging_ios
 
     macos:
-      xcode: "12.4.0"
+      xcode: "12.5.1"
 
     steps:
       - checkout
