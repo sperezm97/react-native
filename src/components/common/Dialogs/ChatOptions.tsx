@@ -118,6 +118,21 @@ export default function ChatOptions({
         setTimeout(onEmbedVideoHandler, 400);
       },
     },
+    {
+      title: "Paid Message",
+      thumbIcon: (
+        <IconButton
+          icon={({ size, color }) => <MaterialIcons name="message" color={color} size={size} />}
+          color={theme.white}
+          size={22}
+        />
+      ),
+      thumbBgColor: theme.primary,
+      action: () => {
+        close();
+        setTimeout(doPaidMessageHandler, 400);
+      },
+    },
   ];
 
   const conversationItems = [
