@@ -1,9 +1,9 @@
-import 'react-native-get-random-values'
-import React from 'react'
-import { View } from 'react-native'
-import { WebView } from 'react-native-webview'
+import "react-native-get-random-values";
+import React from "react";
+import { View } from "react-native";
+import { WebView } from "react-native-webview";
 
-import qrious from './qrious'
+import qrious from "./qrious";
 
 function makeScript(value, size) {
   return `
@@ -20,7 +20,7 @@ var qr = new QRious({
   size: ${size}
 });
 </script>
-`
+`;
 }
 
 export default function Canvas(props) {
@@ -32,11 +32,11 @@ export default function Canvas(props) {
         scalesPageToFit={true}
         contentInset={{ top: 0, right: 0, bottom: 0, left: 0 }}
         source={{ html: makeScript(props.value, props.size) }}
-        style={{ ...props.style, resizeMode: 'cover', flex: 1 }}
+        style={{ ...props.style, resizeMode: "cover", flex: 1 }}
         javaScriptEnabled={true}
         scrollEnabled={false}
-        originWhitelist={['*']}
+        originWhitelist={["*"]}
       />
     </View>
-  )
+  );
 }

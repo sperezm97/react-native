@@ -1,12 +1,12 @@
-import { observable, action } from 'mobx'
-import { persist } from 'mobx-persist'
+import { observable, action } from "mobx";
+import { persist } from "mobx-persist";
 
-import { relay, invite } from '../api'
-import { chatStore } from './chats'
-import { subStore } from './subs'
-import { createFormData } from '../api/formdata'
-import { userStore } from './user'
-import { detailsStore } from './details'
+import { relay, invite } from "../api";
+import { chatStore } from "./chats";
+import { subStore } from "./subs";
+import { createFormData } from "../api/formdata";
+import { userStore } from "./user";
+import { detailsStore } from "./details";
 
 /*
 invites:
@@ -16,77 +16,77 @@ SOCKET when payment pending invite:{status=6, price:50, invite_string}
 */
 
 export interface Contact {
-  id: number
-  public_key: string
-  node_alias: string
-  alias: string
-  photo_url: string
-  private_photo: boolean
-  is_owner: boolean
-  deleted: boolean
-  auth_token: string
-  remote_id: number
-  status: number
-  contact_key: string
-  device_id: string
-  created_at: string
-  updated_at: string
-  from_group: boolean
+  id: number;
+  public_key: string;
+  node_alias: string;
+  alias: string;
+  photo_url: string;
+  private_photo: boolean;
+  is_owner: boolean;
+  deleted: boolean;
+  auth_token: string;
+  remote_id: number;
+  status: number;
+  contact_key: string;
+  device_id: string;
+  created_at: string;
+  updated_at: string;
+  from_group: boolean;
 
-  invite: Invite
+  invite: Invite;
 }
 
 export interface Invite {
-  id: number
-  invite_string: string
-  welcome_message: string
-  contact_id: number
-  status: number
-  price: number
-  created_at: string
-  updated_at: string
+  id: number;
+  invite_string: string;
+  welcome_message: string;
+  contact_id: number;
+  status: number;
+  price: number;
+  created_at: string;
+  updated_at: string;
 }
 
 class ContactStore {
-  @persist('list')
+  @persist("list")
   @observable
-  contacts: Contact[] = []
+  contacts: Contact[] = [];
 
   @action
   async getContacts() {
     try {
-      const r = await relay.get('contacts')
+      const r = await relay.get("contacts");
 
-      if (!r) return
+      if (!r) return;
       if (r.contacts) {
-        this.contacts = r.contacts
-        const me = r.contacts.find(c => c.is_owner)
+        this.contacts = r.contacts;
+        const me = r.contacts.find((c) => c.is_owner);
         if (me) {
-          userStore.setMyID(me.id)
-          userStore.setAlias(me.alias)
-          userStore.setDeviceId(me.device_id)
-          userStore.setPublicKey(me.public_key)
+          userStore.setMyID(me.id);
+          userStore.setAlias(me.alias);
+          userStore.setDeviceId(me.device_id);
+          userStore.setPublicKey(me.public_key);
           if (me.tip_amount || me.tip_amount === 0) {
-            userStore.setTipAmount(me.tip_amount)
+            userStore.setTipAmount(me.tip_amount);
           }
         }
       }
 
-      if (r.chats) chatStore.setChats(r.chats)
+      if (r.chats) chatStore.setChats(r.chats);
 
-      if (r.subscriptions) subStore.setSubs(r.subscriptions)
+      if (r.subscriptions) subStore.setSubs(r.subscriptions);
 
-      return r
-    } catch (e) { }
+      return r;
+    } catch (e) {}
   }
 
   @action
   async deleteContact(id) {
     try {
-      await relay.del(`contacts/${id}`)
-      this.contacts = this.contacts.filter(c => c.id !== id)
+      await relay.del(`contacts/${id}`);
+      this.contacts = this.contacts.filter((c) => c.id !== id);
     } catch (e) {
-      console.log(e)
+      console.log(e);
     }
   }
 
@@ -101,20 +101,20 @@ class ContactStore {
         exceptionCallback: async (e) =>
           invite.post("notify", { error: e }, "", { rawValue: true }),
       });
-      if (!r) return
-      const existingContact = this.contacts.find(c => c.id === r.id)
+      if (!r) return;
+      const existingContact = this.contacts.find((c) => c.id === r.id);
       if (existingContact) {
-        if (r.alias) existingContact.alias = r.alias
-        if (r.photo_url) existingContact.photo_url = r.photo_url
-        existingContact.from_group = r.fromGroup || false
+        if (r.alias) existingContact.alias = r.alias;
+        if (r.photo_url) existingContact.photo_url = r.photo_url;
+        existingContact.from_group = r.fromGroup || false;
       } else {
-        this.contacts = [...this.contacts, r]
+        this.contacts = [...this.contacts, r];
       }
-      return r
+      return r;
     } catch (e) {
-      console.log("[Error - addContact]", e)
+      console.log("[Error - addContact]", e);
     }
-    return r
+    return r;
   }
 
   @action
@@ -125,164 +125,166 @@ class ContactStore {
         exceptionCallback: async (e) =>
           invite.post("notify", { error: e }, "", { rawValue: true }),
       });
-      if (!r) return
-      const cs = [...this.contacts]
-      this.contacts = cs.map(c => {
+      if (!r) return;
+      const cs = [...this.contacts];
+      this.contacts = cs.map((c) => {
         if (c.id === id) {
-          return { ...c, ...v }
+          return { ...c, ...v };
         }
-        return c
-      })
+        return c;
+      });
     } catch (e) {
-      console.log(e)
+      console.log(e);
     }
   }
 
   @action
   updatePhotoURI(id, photo_uri) {
-    const cs = [...this.contacts]
-    this.contacts = cs.map(c => {
+    const cs = [...this.contacts];
+    this.contacts = cs.map((c) => {
       if (c.id === id) {
-        return { ...c, photo_uri }
+        return { ...c, photo_uri };
       }
-      return c
-    })
+      return c;
+    });
   }
 
   @action
   async contactUpdated(contact) {
-    const ei = this.contacts.findIndex(c => c.id === contact.id)
+    const ei = this.contacts.findIndex((c) => c.id === contact.id);
     if (ei >= 0) {
-      this.contacts[ei] = contact
+      this.contacts[ei] = contact;
     } else {
-      this.contacts.unshift(contact)
+      this.contacts.unshift(contact);
     }
   }
 
   @action
   async uploadProfilePic(file, params: { [k: string]: any }) {
     try {
-      const data = createFormData(file, params)
-      const r = await relay.upload(`upload`, data)
-      if (!r) return
-      console.log(r)
+      const data = createFormData(file, params);
+      const r = await relay.upload(`upload`, data);
+      if (!r) return;
+      console.log(r);
     } catch (e) {
-      console.log(e)
+      console.log(e);
     }
   }
 
   @action
   async exchangeKeys(id) {
     try {
-      const r = await relay.post(`contacts/${id}/keys`, { })
-      console.log('r', r)
+      const r = await relay.post(`contacts/${id}/keys`, {});
+      console.log("r", r);
     } catch (e) {
-      console.log(e)
+      console.log(e);
     }
   }
 
   @action
   async createInvite(nickname, welcome_message) {
     try {
-      await relay.post('invites', {
+      await relay.post("invites", {
         nickname,
-        welcome_message: welcome_message || 'Welcome to Zion!'
-      })
-      this.getContacts()
+        welcome_message: welcome_message || "Welcome to Zion!",
+      });
+      this.getContacts();
     } catch (e) {
-      console.log('could not create invite', e)
+      console.log("could not create invite", e);
     }
   }
 
   @action
   updateInvite(inv: Invite) {
-    const inviteContact = this.contacts.find(c => {
-      return c.invite && c.invite.id === inv.id
-    })
+    const inviteContact = this.contacts.find((c) => {
+      return c.invite && c.invite.id === inv.id;
+    });
     if (inviteContact) {
-      inviteContact.invite = inv
+      inviteContact.invite = inv;
     }
-    detailsStore.getBalance()
+    detailsStore.getBalance();
   }
 
   @action
   async payInvite(invite_string) {
     try {
-      const inv = await relay.post(`invites/${invite_string}/pay`, { })
-      if (!inv) return
-      console.log('inv', inv)
+      const inv = await relay.post(`invites/${invite_string}/pay`, {});
+      if (!inv) return;
+      console.log("inv", inv);
 
-      this.updateInvite(inv.invite)
+      this.updateInvite(inv.invite);
     } catch (e) {
-      console.log('could not pay invite', e)
+      console.log("could not pay invite", e);
     }
   }
 
   @action
   async getLowestPriceForInvite() {
     try {
-      const r = await invite.get('nodes/pricing')
-      if (r && (r.price || r.price === 0)) return r.price
+      const r = await invite.get("nodes/pricing");
+      if (r && (r.price || r.price === 0)) return r.price;
     } catch (e) {
-      console.log(e)
+      console.log(e);
     }
   }
 
   @action async createSubscription(v) {
     if (!v.amount || !v.interval || !(v.contact_id || v.chat_id)) {
-      return console.log('createSubscription: missing param')
+      return console.log("createSubscription: missing param");
     }
     try {
-      const s = await relay.post('subscriptions', v)
-      console.log(s)
-      return s
+      const s = await relay.post("subscriptions", v);
+      console.log(s);
+      return s;
     } catch (e) {
-      console.log(e)
+      console.log(e);
     }
   }
 
   @action async deleteSubscription(id) {
     try {
-      const s = await relay.del(`subscription/${id}`)
-      console.log(s)
+      const s = await relay.del(`subscription/${id}`);
+      console.log(s);
     } catch (e) {
-      console.log(e)
+      console.log(e);
     }
   }
 
   @action async getSubscriptionForContact(contactID) {
     try {
-      const s = await relay.get(`subscriptions/contact/${contactID}`)
-      return s
+      const s = await relay.get(`subscriptions/contact/${contactID}`);
+      return s;
     } catch (e) {
-      console.log(e)
+      console.log(e);
     }
   }
 
   @action async editSubscription(id, v) {
     if (!id || !v.amount || !v.interval || !(v.contact_id || v.chat_id)) {
-      return console.log('editSubscription: missing param')
+      return console.log("editSubscription: missing param");
     }
     try {
-      const s = await relay.put(`subscription/${id}`, v)
-      return s
+      const s = await relay.put(`subscription/${id}`, v);
+      return s;
     } catch (e) {
-      console.log(e)
+      console.log(e);
     }
   }
 
   @action async toggleSubscription(sid, paused) {
     try {
-      const s = await relay.put(`subscription/${sid}/${paused ? 'restart' : 'pause'}`)
-      if (s) return true
+      const s = await relay.put(
+        `subscription/${sid}/${paused ? "restart" : "pause"}`
+      );
+      if (s) return true;
     } catch (e) {
-      console.log(e)
+      console.log(e);
     }
   }
 
   @action reset() {
-    this.contacts = []
+    this.contacts = [];
   }
 }
 
-export const contactStore = new ContactStore()
+export const contactStore = new ContactStore();

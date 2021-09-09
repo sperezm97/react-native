@@ -1,57 +1,67 @@
-import React, { useState } from 'react'
-import * as ImagePicker from 'react-native-image-picker'
+import React, { useState } from "react";
+import * as ImagePicker from "react-native-image-picker";
 
-import ActionSheet from '../ActionSheet'
-import Camera from '../Accessories/Camera'
+import ActionSheet from "../ActionSheet";
+import Camera from "../Accessories/Camera";
 
-export default function ImageDialog({ visible, onCancel, onSnap, onPick, setImageDialog }) {
-  const [cameraOpen, setCameraOpen] = useState(false)
+export default function ImageDialog({
+  visible,
+  onCancel,
+  onSnap,
+  onPick,
+  setImageDialog,
+}) {
+  const [cameraOpen, setCameraOpen] = useState(false);
 
   async function pickImage() {
     ImagePicker.launchImageLibrary(
       {
-        mediaType: 'photo'
+        mediaType: "photo",
       },
-      result => {
-        setImageDialog(false)
+      (result) => {
+        setImageDialog(false);
         if (!result.didCancel) {
-          onPick(result)
+          onPick(result);
         } else {
-          onCancel()
+          onCancel();
         }
       }
-    )
+    );
   }
 
   const items = [
     {
       id: 1,
-      label: 'Camera',
+      label: "Camera",
       onPress: () => {
-        setImageDialog(false)
+        setImageDialog(false);
         setTimeout(() => {
-          setCameraOpen(true)
-        }, 400)
-      }
+          setCameraOpen(true);
+        }, 400);
+      },
     },
     {
       id: 2,
-      label: 'Photo Library',
+      label: "Photo Library",
       onPress: () => {
-        pickImage()
-      }
-    }
-  ]
+        pickImage();
+      },
+    },
+  ];
 
   function handleOnSnap(result) {
-    onSnap(result)
-    setCameraOpen(false)
+    onSnap(result);
+    setCameraOpen(false);
   }
 
   return (
     <>
       <ActionSheet visible={visible} items={items} onCancel={onCancel} />
-      <Camera visible={cameraOpen} onSnap={handleOnSnap} onCancel={() => setCameraOpen(false)} />
+      <Camera
+        visible={cameraOpen}
+        onSnap={handleOnSnap}
+        onCancel={() => setCameraOpen(false)}
+      />
     </>
-  )
+  );
 }

@@ -1,35 +1,37 @@
-import React from 'react'
-import { StyleSheet, View } from 'react-native'
-import { useObserver } from 'mobx-react-lite'
-import { useNavigation } from '@react-navigation/native'
-import { IconButton } from 'react-native-paper'
-import AntDesign from 'react-native-vector-icons/AntDesign'
+import React from "react";
+import { StyleSheet, View } from "react-native";
+import { useObserver } from "mobx-react-lite";
+import { useNavigation } from "@react-navigation/native";
+import { IconButton } from "react-native-paper";
+import AntDesign from "react-native-vector-icons/AntDesign";
 
-import { useStores, useTheme } from '../../store'
-import BackHeader from '../common/BackHeader'
-import Search from '../common/Search'
-import ContactList from './ContactList'
+import { useStores, useTheme } from "../../store";
+import BackHeader from "../common/BackHeader";
+import Search from "../common/Search";
+import ContactList from "./ContactList";
 
 export default function Contacts() {
-  const { ui } = useStores()
-  const theme = useTheme()
-  const navigation = useNavigation()
+  const { ui } = useStores();
+  const theme = useTheme();
+  const navigation = useNavigation();
 
-  const onAddFriendPress = () => ui.setAddFriendDialog(true)
+  const onAddFriendPress = () => ui.setAddFriendDialog(true);
 
   const AddContact = (
     <IconButton
-      icon={({ size, color }) => <AntDesign name='adduser' color={color} size={size} />}
+      icon={({ size, color }) => (
+        <AntDesign name="adduser" color={color} size={size} />
+      )}
       color={theme.primary}
       size={22}
       onPress={onAddFriendPress}
     />
-  )
+  );
 
   return useObserver(() => (
     <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
       <BackHeader
-        title='Contacts'
+        title="Contacts"
         action={AddContact}
         navigate={() => navigation.goBack()}
       />
@@ -37,35 +39,35 @@ export default function Contacts() {
         <ContactList listHeader={<ListHeader />} />
       </View>
     </View>
-  ))
+  ));
 }
 
 function ListHeader() {
-  const { ui } = useStores()
+  const { ui } = useStores();
 
-  const onChangeTextHandler = (txt: string) => ui.setContactsSearchTerm(txt)
+  const onChangeTextHandler = (txt: string) => ui.setContactsSearchTerm(txt);
 
   return (
     <View style={{ ...styles.searchWrap }}>
       <Search
-        placeholder='Search Contacts'
+        placeholder="Search Contacts"
         onChangeText={onChangeTextHandler}
         value={ui.contactsSearchTerm}
       />
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
   wrap: {
-    flex: 1
+    flex: 1,
   },
   content: {
-    flex: 1
+    flex: 1,
   },
   searchWrap: {
     paddingRight: 14,
     paddingLeft: 14,
-    paddingBottom: 14
-  }
-})
+    paddingBottom: 14,
+  },
+});

@@ -1,10 +1,10 @@
-import React from 'react'
-import { StyleSheet, View, TouchableOpacity } from 'react-native'
-import { Portal, Dialog, ActivityIndicator } from 'react-native-paper'
+import React from "react";
+import { StyleSheet, View, TouchableOpacity } from "react-native";
+import { Portal, Dialog, ActivityIndicator } from "react-native-paper";
 
-import { useTheme } from '../../../store'
-import Typography from '../Typography'
-import Icon from '../Icon'
+import { useTheme } from "../../../store";
+import Typography from "../Typography";
+import Icon from "../Icon";
 
 export default function AvatarEdit({
   display,
@@ -12,23 +12,27 @@ export default function AvatarEdit({
   onPress,
   uploading,
   uploadPercent,
-  top = '43%',
+  top = "43%",
   size,
   round = 25,
-  percentSize = 14
+  percentSize = 14,
 }) {
-  const theme = useTheme()
+  const theme = useTheme();
 
   return (
-    <TouchableOpacity onPress={onPress} style={styles.imgWrap} activeOpacity={0.6}>
+    <TouchableOpacity
+      onPress={onPress}
+      style={styles.imgWrap}
+      activeOpacity={0.6}
+    >
       {children}
       <>
         {uploading && (
           <Typography
-            style={{ ...styles.uploadPercent, top: top ? top : '43%' }}
+            style={{ ...styles.uploadPercent, top: top ? top : "43%" }}
             size={percentSize}
             color={theme.white}
-            textAlign='center'
+            textAlign="center"
           >{`${uploadPercent}%`}</Typography>
         )}
         {uploading && (
@@ -38,13 +42,13 @@ export default function AvatarEdit({
               backgroundColor: theme.transparent,
               width: size,
               height: size,
-              borderRadius: round
+              borderRadius: round,
             }}
           ></View>
         )}
         {!display && (
           <View style={styles.imgIcon}>
-            <Icon name='PlusCircle' fill={theme.primary} color={theme.white} />
+            <Icon name="PlusCircle" fill={theme.primary} color={theme.white} />
           </View>
         )}
         <Portal>
@@ -64,28 +68,28 @@ export default function AvatarEdit({
         </Portal>
       </>
     </TouchableOpacity>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
   imgWrap: {
-    position: 'relative'
+    position: "relative",
   },
   backDrop: {
-    position: 'absolute',
-    height: '100%',
-    width: '100%',
-    fontWeight: '500'
+    position: "absolute",
+    height: "100%",
+    width: "100%",
+    fontWeight: "500",
   },
   uploadPercent: {
-    position: 'absolute',
-    height: '100%',
-    width: '100%',
-    zIndex: 1
+    position: "absolute",
+    height: "100%",
+    width: "100%",
+    zIndex: 1,
   },
   imgIcon: {
-    position: 'absolute',
+    position: "absolute",
     right: -5,
-    top: '50%'
-  }
-})
+    top: "50%",
+  },
+});

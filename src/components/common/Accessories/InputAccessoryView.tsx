@@ -1,29 +1,29 @@
-import React from 'react'
+import React from "react";
 import {
   StyleSheet,
   View,
   Keyboard,
-  InputAccessoryView as ReactInputAccessoryView
-} from 'react-native'
+  InputAccessoryView as ReactInputAccessoryView,
+} from "react-native";
 
-import { useTheme } from '../../../store'
-import Button from '../Button'
+import { useTheme } from "../../../store";
+import Button from "../Button";
 
 export default function InputAccessoryView(props) {
-  const { nativeID, cancelText, doneText } = props
-  const theme = useTheme()
+  const { nativeID, cancelText, doneText } = props;
+  const theme = useTheme();
 
   function _cancel() {
-    Keyboard.dismiss()
+    Keyboard.dismiss();
     if (props.cancel) {
-      return props.cancel()
+      return props.cancel();
     }
   }
 
   function _done() {
-    Keyboard.dismiss()
+    Keyboard.dismiss();
     if (props.done) {
-      return props.done()
+      return props.done();
     }
   }
 
@@ -32,9 +32,9 @@ export default function InputAccessoryView(props) {
       <View style={styles.btnWrap}>
         <Button
           onPress={_cancel}
-          size='small'
+          size="small"
           style={{ ...styles.button }}
-          w='70%'
+          w="70%"
           round={0}
           color={theme.bg}
         >
@@ -42,29 +42,29 @@ export default function InputAccessoryView(props) {
         </Button>
         <Button
           onPress={_done}
-          size='small'
+          size="small"
           style={{ ...styles.button }}
-          w='30%'
+          w="30%"
           round={0}
         >
           {doneText}
         </Button>
       </View>
     </ReactInputAccessoryView>
-  )
+  );
 }
 
 InputAccessoryView.defaultProps = {
-  doneText: 'Done',
-  cancelText: 'Cancel'
-}
+  doneText: "Done",
+  cancelText: "Cancel",
+};
 
 const styles = StyleSheet.create({
   btnWrap: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between'
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
-  button: {}
-})
+  button: {},
+});

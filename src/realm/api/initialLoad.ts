@@ -1,5 +1,5 @@
-import { create, hasData, delet } from './'
-import { InitialLoad } from './types/initialLoad.interface'
+import { create, hasData, delet } from "./";
+import { InitialLoad } from "./types/initialLoad.interface";
 
 /**
  * Initial load function that load the data of Contacts, Chats y Msg in realm
@@ -13,18 +13,18 @@ export default (props: InitialLoad) => {
     if (contacts && !hasRealmData.contacts) {
       contacts.forEach((contact: any) => {
         create({
-          schema: 'Contacts',
-          body: { ...contact }
-        })
+          schema: "Contacts",
+          body: { ...contact },
+        });
       });
     }
 
     if (chats && !hasRealmData.chats) {
       chats.forEach((chat: any) => {
         create({
-          schema: 'Chats',
-          body: { ...chat }
-        })
+          schema: "Chats",
+          body: { ...chat },
+        });
       });
     }
 
@@ -33,10 +33,10 @@ export default (props: InitialLoad) => {
       Object.values(msg.messages).forEach((c: any) => {
         c.forEach((msg: any) => {
           allMessages.push({
-              ...msg,
-              amount: parseInt(msg.amount) || 0,
-          })
-        })
+            ...msg,
+            amount: parseInt(msg.amount) || 0,
+          });
+        });
       });
 
       const lastSeen = Object.keys(msg.lastSeen).map((key) => ({
@@ -48,16 +48,15 @@ export default (props: InitialLoad) => {
         messages: allMessages,
         lastSeen,
         lastFetched: msg.lastFetched || null,
-      }
+      };
 
       create({
-        schema: 'Msg',
-        body: { ...msgStructure }
-      })
+        schema: "Msg",
+        body: { ...msgStructure },
+      });
     }
 
-
-    return response = { success: true };
+    return (response = { success: true });
   } catch (e) {
     console.log(`Error at initial load.`);
     console.log(`error: ${e}`);
@@ -66,4 +65,4 @@ export default (props: InitialLoad) => {
       error: e,
     };
   }
-}
+};

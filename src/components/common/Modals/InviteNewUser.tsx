@@ -1,41 +1,41 @@
-import React, { useState, useEffect } from 'react'
-import { StyleSheet, View } from 'react-native'
-import { useObserver } from 'mobx-react-lite'
+import React, { useState, useEffect } from "react";
+import { StyleSheet, View } from "react-native";
+import { useObserver } from "mobx-react-lite";
 
-import { useStores, useTheme } from '../../../store'
-import * as schemas from '../../form/schemas'
-import Form from '../../form'
-import ModalWrap from './ModalWrap'
-import ModalHeader from './ModalHeader'
-import Typography from '../Typography'
+import { useStores, useTheme } from "../../../store";
+import * as schemas from "../../form/schemas";
+import Form from "../../form";
+import ModalWrap from "./ModalWrap";
+import ModalHeader from "./ModalHeader";
+import Typography from "../Typography";
 
 export default function InviteNewUser() {
-  const [price, setPrice] = useState(null)
-  const [loading, setLoading] = useState(false)
-  const { ui, contacts } = useStores()
-  const theme = useTheme()
+  const [price, setPrice] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const { ui, contacts } = useStores();
+  const theme = useTheme();
 
   async function invite(values) {
-    setLoading(true)
-    await contacts.createInvite(values.nickname, values.welcome_message)
-    setLoading(false)
-    close()
+    setLoading(true);
+    await contacts.createInvite(values.nickname, values.welcome_message);
+    setLoading(false);
+    close();
   }
 
   useEffect(() => {
-    fetchPrice()
-  }, [])
+    fetchPrice();
+  }, []);
 
   async function fetchPrice() {
-    const price = await contacts.getLowestPriceForInvite()
-    if (price || price === 0) setPrice(price)
+    const price = await contacts.getLowestPriceForInvite();
+    if (price || price === 0) setPrice(price);
   }
 
   function close() {
-    ui.setInviteFriendModal(false)
+    ui.setInviteFriendModal(false);
   }
 
-  const hasPrice = price || price === 0
+  const hasPrice = price || price === 0;
 
   const RowContent = (
     <>
@@ -43,56 +43,58 @@ export default function InviteNewUser() {
         <View style={styles.estimatedCost}>
           <Typography
             color={theme.title}
-            fw='500'
+            fw="500"
             style={{ ...styles.estimatedCostText }}
           >
             ESTIMATED COST
           </Typography>
           <View style={styles.estimatedCostBottom}>
-            <Typography style={{ ...styles.estimatedCostNum }}>{price}</Typography>
+            <Typography style={{ ...styles.estimatedCostNum }}>
+              {price}
+            </Typography>
             <Typography color={theme.darkGrey}>sat</Typography>
           </View>
         </View>
       )}
     </>
-  )
+  );
 
   return useObserver(() => (
     <ModalWrap onClose={close} visible={ui.inviteFriendModal} noSwipe>
-      <ModalHeader title='Add Friend' onClose={close} />
+      <ModalHeader title="Add Friend" onClose={close} />
       <View style={styles.content}>
         <Form
           schema={schemas.inviteFriend}
           loading={loading}
-          buttonText='Create Invitation'
+          buttonText="Create Invitation"
           btnColor={theme.secondary}
-          btnSize='large'
+          btnSize="large"
           btnFs={12}
-          btnW='50%'
-          actionType='Row'
+          btnW="50%"
+          actionType="Row"
           rowContent={RowContent}
-          onSubmit={values => invite(values)}
+          onSubmit={(values) => invite(values)}
         />
       </View>
     </ModalWrap>
-  ))
+  ));
 }
 
 const styles = StyleSheet.create({
   content: {
-    flex: 1
+    flex: 1,
   },
   estimatedCost: {
-    flexDirection: 'column'
+    flexDirection: "column",
   },
   estimatedCostText: {
     fontSize: 10,
-    color: '#aaa'
+    color: "#aaa",
   },
   estimatedCostBottom: {
-    flexDirection: 'row'
+    flexDirection: "row",
   },
   estimatedCostNum: {
-    marginRight: 5
-  }
-})
+    marginRight: 5,
+  },
+});

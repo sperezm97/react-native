@@ -1,43 +1,45 @@
-import React from 'react'
-import { useTheme } from '../../../store'
+import React from "react";
+import { useTheme } from "../../../store";
 
-import ActionSheet from '../ActionSheet'
+import ActionSheet from "../ActionSheet";
 
 export default function GroupSettings({
   visible,
   owner,
   onCancel,
   shareGroup,
-  exitGroup
+  exitGroup,
 }) {
-  const theme = useTheme()
+  const theme = useTheme();
   const ownerItems = [
     {
       id: 1,
-      label: 'Delete Community',
+      label: "Delete Community",
       onPress: () => exitGroup(),
-      actionTextColor: theme.danger
-    }
-  ]
+      actionTextColor: theme.danger,
+    },
+  ];
 
   const userItems = [
     {
       id: 1,
-      label: 'Exit Community',
+      label: "Exit Community",
       onPress: () => exitGroup(),
-      actionTextColor: theme.danger
-    }
-  ]
+      actionTextColor: theme.danger,
+    },
+  ];
 
   const commonItems = [
     {
       id: 1,
-      label: 'Share Community',
-      onPress: () => shareGroup()
-    }
-  ]
+      label: "Share Community",
+      onPress: () => shareGroup(),
+    },
+  ];
 
-  const items = owner ? [...commonItems, ...ownerItems] : [...commonItems, ...userItems]
+  const items = owner
+    ? [...commonItems, ...ownerItems]
+    : [...commonItems, ...userItems];
 
-  return <ActionSheet visible={visible} items={items} onCancel={onCancel} />
+  return <ActionSheet visible={visible} items={items} onCancel={onCancel} />;
 }

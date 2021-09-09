@@ -1,43 +1,47 @@
-import React, { useEffect, useState } from 'react'
-import { StyleSheet, View } from 'react-native'
-import { useObserver } from 'mobx-react-lite'
-import AntDesignIcon from 'react-native-vector-icons/AntDesign'
-import { useIsFocused } from '@react-navigation/native'
+import React, { useEffect, useState } from "react";
+import { StyleSheet, View } from "react-native";
+import { useObserver } from "mobx-react-lite";
+import AntDesignIcon from "react-native-vector-icons/AntDesign";
+import { useIsFocused } from "@react-navigation/native";
 
-import { useStores, useTheme, hooks } from '../../store'
-import { useOwnedTribes } from '../../store/hooks/tribes'
-import Typography from '../common/Typography'
-import Button from '../common/Button'
-import Empty from '../common/Empty'
-import List from './List'
-import { SCREEN_HEIGHT, SCREEN_WIDTH, STACK_HEADER_HEIGHT } from '../../constants'
+import { useStores, useTheme, hooks } from "../../store";
+import { useOwnedTribes } from "../../store/hooks/tribes";
+import Typography from "../common/Typography";
+import Button from "../common/Button";
+import Empty from "../common/Empty";
+import List from "./List";
+import {
+  SCREEN_HEIGHT,
+  SCREEN_WIDTH,
+  STACK_HEADER_HEIGHT,
+} from "../../constants";
 
-const { useTribes } = hooks
+const { useTribes } = hooks;
 
 export default function OwnedTribes() {
-  const [loading, setLoading] = useState(true)
-  const [refreshing, setRefreshing] = useState(false)
-  const { ui, chats } = useStores()
-  const theme = useTheme()
-  const isFocused = useIsFocused()
+  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+  const { ui, chats } = useStores();
+  const theme = useTheme();
+  const isFocused = useIsFocused();
 
   useEffect(() => {
-    fetchTribes()
-  }, [ui.newTribeModal, isFocused])
+    fetchTribes();
+  }, [ui.newTribeModal, isFocused]);
 
   function fetchTribes() {
-    chats.getTribes().then(() => setLoading(false))
+    chats.getTribes().then(() => setLoading(false));
   }
 
   function onRefresh() {
-    setRefreshing(true)
-    fetchTribes()
-    setRefreshing(false)
+    setRefreshing(true);
+    fetchTribes();
+    setRefreshing(false);
   }
 
   return useObserver(() => {
-    const tribes = useTribes()
-    const tribesToShow = useOwnedTribes(tribes)
+    const tribes = useTribes();
+    const tribesToShow = useOwnedTribes(tribes);
 
     return (
       <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
@@ -51,21 +55,24 @@ export default function OwnedTribes() {
           />
         </View>
       </View>
-    )
-  })
+    );
+  });
 }
 
 function ListEmpty() {
-  const { ui } = useStores()
-  const theme = useTheme()
+  const { ui } = useStores();
+  const theme = useTheme();
 
   return (
-    <Empty h={SCREEN_HEIGHT - STACK_HEADER_HEIGHT - 60 - 60 - 14} w={SCREEN_WIDTH - 100}>
-      <Typography size={16} textAlign='center'>
+    <Empty
+      h={SCREEN_HEIGHT - STACK_HEADER_HEIGHT - 60 - 60 - 14}
+      w={SCREEN_WIDTH - 100}
+    >
+      <Typography size={16} textAlign="center">
         Become a community owner to see it listed here.
       </Typography>
       <Button
-        icon={() => <AntDesignIcon name='plus' color={theme.white} size={18} />}
+        icon={() => <AntDesignIcon name="plus" color={theme.white} size={18} />}
         w={210}
         fs={12}
         onPress={() => ui.setNewTribeModal(true)}
@@ -74,31 +81,31 @@ function ListEmpty() {
         Create Community
       </Button>
     </Empty>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
   wrap: {
-    flex: 1
+    flex: 1,
   },
   content: {
     flex: 1,
-    marginTop: 14
+    marginTop: 14,
   },
   buttonWrap: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
     paddingLeft: 14,
     paddingTop: 6,
-    paddingBottom: 8
+    paddingBottom: 8,
   },
   headerWrap: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
     paddingRight: 14,
-    paddingLeft: 14
+    paddingLeft: 14,
   },
-  emptyWrap: {}
-})
+  emptyWrap: {},
+});

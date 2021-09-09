@@ -6,14 +6,14 @@ const styles = {
     marginLeft: 8,
     marginRight: 8,
     marginTop: 5,
-    maxWidth: 280
+    maxWidth: 280,
   },
   innerPad: {
     paddingLeft: 18,
     paddingRight: 18,
     paddingTop: 12,
-    paddingBottom: 12
-  }
-}
+    paddingBottom: 12,
+  },
+};
 
-export default styles
+export default styles;

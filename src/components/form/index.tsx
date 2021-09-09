@@ -1,23 +1,23 @@
-import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
-import { Formik } from 'formik'
-import * as Yup from 'yup'
-import { Dialog } from 'react-native-paper'
+import React from "react";
+import { View, Text, StyleSheet } from "react-native";
+import { Formik } from "formik";
+import * as Yup from "yup";
+import { Dialog } from "react-native-paper";
 
-import { useTheme } from '../../store'
-import Input from './inputs'
-import Button from '../common/Button'
+import { useTheme } from "../../store";
+import Input from "./inputs";
+import Button from "../common/Button";
 
 export default function Form(props) {
-  const theme = useTheme()
-  const { labelColor = theme.white } = props
-  if (!props.schema) return <Text>please provide schema</Text>
+  const theme = useTheme();
+  const { labelColor = theme.white } = props;
+  if (!props.schema) return <Text>please provide schema</Text>;
 
   return (
     <Formik
       initialValues={props.initialValues || {}}
-      onSubmit={values => {
-        props.onSubmit(values)
+      onSubmit={(values) => {
+        props.onSubmit(values);
       }}
       validationSchema={validator(props.schema)}
     >
@@ -29,15 +29,16 @@ export default function Form(props) {
         setFieldValue,
         errors,
         dirty,
-        isValid
+        isValid,
       }) => {
-        const d = !props.forceEnable && (!dirty || !isValid)
+        const d = !props.forceEnable && (!dirty || !isValid);
         return (
           <View style={styles.wrap}>
             <View style={{ padding: props.nopad ? 0 : 25 }}>
-              {props.schema.map(item => {
+              {props.schema.map((item) => {
                 const readOnly =
-                  props.readOnlyFields && props.readOnlyFields.includes(item.name)
+                  props.readOnlyFields &&
+                  props.readOnlyFields.includes(item.name);
                 return (
                   <Input
                     key={item.name}
@@ -47,11 +48,11 @@ export default function Form(props) {
                     displayOnly={props.displayOnly || readOnly}
                     handleChange={handleChange}
                     handleBlur={handleBlur}
-                    setValue={data => setFieldValue(item.name, data)}
+                    setValue={(data) => setFieldValue(item.name, data)}
                     error={errors[item.name]}
                     numberOfLines={item.numberOfLines}
                   />
-                )
+                );
               })}
             </View>
 
@@ -63,81 +64,83 @@ export default function Form(props) {
               >
                 <Button
                   mode={props.buttonMode}
-                  accessibilityLabel={props.buttonAccessibilityLabel || 'form-button'}
+                  accessibilityLabel={
+                    props.buttonAccessibilityLabel || "form-button"
+                  }
                   onPress={handleSubmit}
                   disabled={!props.forceEnable && (!dirty || !isValid)}
                   color={props.btnColor}
                   fs={props.btnFs}
                   size={props.btnSize}
-                  w={props.btnW ? props.btnW : '60%'}
+                  w={props.btnW ? props.btnW : "60%"}
                   style={{ ...props.btnStyles }}
                   // labelStyle={{ color: labelColor, opacity: d ? 0.5 : 1 }}
                   loading={props.loading}
                 >
-                  {props.buttonText || 'Submit'}
+                  {props.buttonText || "Submit"}
                 </Button>
               </Action>
             )}
           </View>
-        )
+        );
       }}
     </Formik>
-  )
+  );
 }
 
 function Action({ type, nopad, rowContent, children }) {
   switch (type) {
-    case 'Wide':
+    case "Wide":
       return (
         <View
           style={{
             padding: nopad ? 0 : 25,
-            flexDirection: 'row',
-            justifyContent: 'center'
+            flexDirection: "row",
+            justifyContent: "center",
           }}
         >
           {children}
         </View>
-      )
-    case 'Row':
+      );
+    case "Row":
       return (
         <View style={{ ...styles.rowWrap, padding: nopad ? 0 : 25 }}>
           {rowContent}
           {children}
         </View>
-      )
-    case 'Dialog':
-      return <Dialog.Actions>{children}</Dialog.Actions>
+      );
+    case "Dialog":
+      return <Dialog.Actions>{children}</Dialog.Actions>;
     default:
-      break
+      break;
   }
 }
 
 Form.defaultProps = {
-  actionType: 'Wide',
-  buttonMode: 'contained',
-  btnSize: 'large'
-}
+  actionType: "Wide",
+  buttonMode: "contained",
+  btnSize: "large",
+};
 
 function validator(config) {
-  const shape = {}
-  config.forEach(field => {
-    if (typeof field === 'object') {
-      shape[field.name] = field.validator
+  const shape = {};
+  config.forEach((field) => {
+    if (typeof field === "object") {
+      shape[field.name] = field.validator;
     }
-  })
-  return Yup.object().shape(shape)
+  });
+  return Yup.object().shape(shape);
 }
 
 const styles = StyleSheet.create({
   wrap: {},
   rowWrap: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center'
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   rightButton: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end'
-  }
-})
+    flexDirection: "row",
+    justifyContent: "flex-end",
+  },
+});

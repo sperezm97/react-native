@@ -1,10 +1,10 @@
-import React from 'react'
-import { Text } from 'react-native'
+import React from "react";
+import { Text } from "react-native";
 
-import { useTheme } from '../../../store'
+import { useTheme } from "../../../store";
 
 export default function Typography(props) {
-  const theme = useTheme()
+  const theme = useTheme();
 
   let {
     children,
@@ -18,16 +18,16 @@ export default function Typography(props) {
     textAlign,
     numberOfLines,
     allowFontScaling,
-    onPress
-  } = props
+    onPress,
+  } = props;
 
-  let lineHeight = 20
+  let lineHeight = 20;
   if (size >= 15 && size < 20) {
-    lineHeight = 26
+    lineHeight = 26;
   } else if (size >= 20) {
-    lineHeight = 40
+    lineHeight = 40;
   } else {
-    lineHeight = 20
+    lineHeight = 20;
   }
 
   return (
@@ -42,13 +42,13 @@ export default function Typography(props) {
         fontWeight: fw,
         letterSpacing: ls,
         lineHeight: lh ? lh : lineHeight,
-        textAlign
+        textAlign,
       }}
       numberOfLines={numberOfLines}
     >
       {children}
     </Text>
-  )
+  );
 }
 
-Typography.defaultProps = {}
+Typography.defaultProps = {};

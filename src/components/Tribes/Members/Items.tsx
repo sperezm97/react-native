@@ -1,21 +1,21 @@
-import React, { useState } from 'react'
-import { StyleSheet, View, TouchableOpacity } from 'react-native'
-import { RadioButton } from 'react-native-paper'
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
-import { SwipeRow } from 'react-native-swipe-list-view'
-import { IconButton } from 'react-native-paper'
+import React, { useState } from "react";
+import { StyleSheet, View, TouchableOpacity } from "react-native";
+import { RadioButton } from "react-native-paper";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import { SwipeRow } from "react-native-swipe-list-view";
+import { IconButton } from "react-native-paper";
 
-import { useTheme } from '../../../store'
-import { usePicSrc } from '../../utils/picSrc'
-import { ApproveButton, RejectButton } from '../../chat/msg/memberRequest'
-import Avatar from '../../common/Avatar'
-import Typography from '../../common/Typography'
+import { useTheme } from "../../../store";
+import { usePicSrc } from "../../utils/picSrc";
+import { ApproveButton, RejectButton } from "../../chat/msg/memberRequest";
+import Avatar from "../../common/Avatar";
+import Typography from "../../common/Typography";
 
 export function DeletableContact(props) {
-  const theme = useTheme()
-  const { contact, onDelete } = props
-  const uri = usePicSrc(contact)
-  const hasImg = uri ? true : false
+  const theme = useTheme();
+  const { contact, onDelete } = props;
+  const uri = usePicSrc(contact);
+  const hasImg = uri ? true : false;
 
   return (
     <SwipeRow
@@ -26,8 +26,8 @@ export function DeletableContact(props) {
     >
       <View style={styles.backSwipeRow}>
         <IconButton
-          icon='trash-can-outline'
-          color='white'
+          icon="trash-can-outline"
+          color="white"
           size={25}
           onPress={() => onDelete(contact.id)}
           style={{ marginRight: 20 }}
@@ -42,14 +42,14 @@ export function DeletableContact(props) {
         </View>
       </View>
     </SwipeRow>
-  )
+  );
 }
 
 export function Contact(props) {
-  const theme = useTheme()
-  const { contact, onPress, selected, unselectable } = props
-  const uri = usePicSrc(contact)
-  const hasImg = uri ? true : false
+  const theme = useTheme();
+  const { contact, onPress, selected, unselectable } = props;
+  const uri = usePicSrc(contact);
+  const hasImg = uri ? true : false;
   return (
     <TouchableOpacity
       style={{ ...styles.contactTouch, backgroundColor: theme.bg }}
@@ -57,7 +57,13 @@ export function Contact(props) {
       onPress={onPress}
     >
       <View style={{ ...styles.avatarWrap, borderColor: theme.border }}>
-        <Avatar size={40} aliasSize={16} photo={uri} big alias={contact.alias} />
+        <Avatar
+          size={40}
+          aliasSize={16}
+          photo={uri}
+          big
+          alias={contact.alias}
+        />
 
         {/* <Image source={hasImg ? { uri } : require('../../../../android_assets/avatar.png')} style={{ width: 44, height: 44 }} resizeMode={'cover'} /> */}
       </View>
@@ -68,28 +74,28 @@ export function Contact(props) {
       <View style={styles.checker}>
         {!unselectable && (
           <RadioButton
-            status={selected ? 'checked' : 'unchecked'}
-            value='contact'
+            status={selected ? "checked" : "unchecked"}
+            value="contact"
             color={theme.primary}
             onPress={onPress}
           />
         )}
       </View>
     </TouchableOpacity>
-  )
+  );
 }
 
 export function PendingContact(props) {
-  const theme = useTheme()
-  const [loadingStatus, setLoadingStatus] = useState('')
-  const { contact, onPress, selected, unselectable } = props
-  const uri = usePicSrc(contact)
-  const hasImg = uri ? true : false
+  const theme = useTheme();
+  const [loadingStatus, setLoadingStatus] = useState("");
+  const { contact, onPress, selected, unselectable } = props;
+  const uri = usePicSrc(contact);
+  const hasImg = uri ? true : false;
   async function press(status: string) {
-    if (loadingStatus) return
-    setLoadingStatus(status)
-    await props.onApproveOrDenyMember(contact.id, status)
-    setLoadingStatus('')
+    if (loadingStatus) return;
+    setLoadingStatus(status);
+    await props.onApproveOrDenyMember(contact.id, status);
+    setLoadingStatus("");
   }
   return (
     <TouchableOpacity
@@ -98,7 +104,13 @@ export function PendingContact(props) {
       onPress={onPress}
     >
       <View style={{ ...styles.avatarWrap, borderColor: theme.border }}>
-        <Avatar size={40} photo={uri} big alias={contact.alias} aliasSize={20} />
+        <Avatar
+          size={40}
+          photo={uri}
+          big
+          alias={contact.alias}
+          aliasSize={20}
+        />
       </View>
       <View style={styles.contactContent}>
         <Typography size={16}>{contact.alias}</Typography>
@@ -106,116 +118,116 @@ export function PendingContact(props) {
       <View style={styles.buttonz}>
         <ApproveButton
           disabled={loadingStatus}
-          onPress={() => press('approved')}
-          loading={loadingStatus === 'approved'}
+          onPress={() => press("approved")}
+          loading={loadingStatus === "approved"}
         />
         <RejectButton
           disabled={loadingStatus}
-          onPress={() => press('rejected')}
-          loading={loadingStatus === 'rejected'}
+          onPress={() => press("rejected")}
+          loading={loadingStatus === "rejected"}
         />
       </View>
     </TouchableOpacity>
-  )
+  );
 }
 
 export function SelectedContact({ contact, onPress, removable }) {
-  const theme = useTheme()
-  const uri = usePicSrc(contact)
-  const hasImg = uri ? true : false
+  const theme = useTheme();
+  const uri = usePicSrc(contact);
+  const hasImg = uri ? true : false;
   return (
     <View style={{ ...styles.selectedContact, backgroundColor: theme.bg }}>
       <View style={{ ...styles.selAvatar, borderColor: theme.border }}>
         {/* <Image source={hasImg ? { uri } : require('../../../../android_assets/avatar.png')} style={{ width: 54, height: 54, borderRadius: 27 }} resizeMode={'cover'} /> */}
         {removable && (
           <TouchableOpacity style={styles.tinyButton} onPress={onPress}>
-            <Icon name='close' color='white' size={14} />
+            <Icon name="close" color="white" size={14} />
           </TouchableOpacity>
         )}
       </View>
       <Typography size={16}>{contact.alias}</Typography>
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
   avatarWrap: {
     marginRight: 18,
-    marginLeft: 18
+    marginLeft: 18,
   },
   contactTouch: {
     flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     height: 80,
-    alignItems: 'center',
-    width: '100%'
+    alignItems: "center",
+    width: "100%",
   },
   contactContent: {
-    flex: 1
+    flex: 1,
   },
   contactName: {
     marginRight: 12,
     fontSize: 16,
-    fontWeight: '500'
+    fontWeight: "500",
   },
   checker: {
     width: 60,
     height: 80,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center'
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
   },
   selectedContact: {
     width: 80,
     height: 90,
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center'
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
   },
   selName: {
     fontSize: 11,
-    width: '100%',
-    textAlign: 'center'
+    width: "100%",
+    textAlign: "center",
   },
   selAvatar: {
-    position: 'relative'
+    position: "relative",
   },
   tinyButton: {
     height: 18,
     width: 18,
     borderRadius: 9,
-    backgroundColor: '#6289FD',
-    position: 'absolute',
+    backgroundColor: "#6289FD",
+    position: "absolute",
     top: 0,
     right: 0,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center'
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
   },
   backSwipeRow: {
-    backgroundColor: '#DB5554',
+    backgroundColor: "#DB5554",
     flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-end'
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-end",
   },
   frontSwipeRow: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
     flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    height: 80
+    flexDirection: "row",
+    alignItems: "center",
+    height: 80,
   },
   buttonz: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
     maxWidth: 100,
     width: 100,
     minWidth: 100,
-    marginRight: 12
-  }
-})
+    marginRight: 12,
+  },
+});

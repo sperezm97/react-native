@@ -1,4 +1,4 @@
-import Realm from 'realm'
+import Realm from "realm";
 import {
   msgSchema,
   chatsSchema,
@@ -6,7 +6,7 @@ import {
   contactsSchema,
   lastSeenSchema,
   statusMapSchema,
-} from '../models'
+} from "../models";
 
 /**
  * Create a new instance of realm with all the model schemas
@@ -19,5 +19,5 @@ export const realm = new Realm({
     contactsSchema,
     messageSchema,
     msgSchema,
-  ]
-})
+  ],
+});

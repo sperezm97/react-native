@@ -1,12 +1,12 @@
 export async function qrActions(j, ui, chats) {
-  const action = j['action']
+  const action = j["action"];
 
   switch (action) {
-    case 'tribe':
+    case "tribe":
       try {
-        const tribeParams = await chats.getTribeDetails(j.host, j.uuid)
+        const tribeParams = await chats.getTribeDetails(j.host, j.uuid);
 
-        ui.setJoinTribeParams(tribeParams)
+        ui.setJoinTribeParams(tribeParams);
       } catch (e) {}
 
     default:

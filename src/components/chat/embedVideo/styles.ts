@@ -1,5 +1,5 @@
-import { StyleSheet } from 'react-native';
-import { SCREEN_HEIGHT } from '../../../constants'
+import { StyleSheet } from "react-native";
+import { SCREEN_HEIGHT } from "../../../constants";
 
 export default StyleSheet.create({
   header: {

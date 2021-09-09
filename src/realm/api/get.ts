@@ -1,5 +1,5 @@
-import { realm } from './realm.instance'
-import { Get } from './types/get.interface'
+import { realm } from "./realm.instance";
+import { Get } from "./types/get.interface";
 
 /**
  * Get function

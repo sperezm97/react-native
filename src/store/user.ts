@@ -303,12 +303,12 @@ class UserStore {
   @action
   async reportError(label, error) {
     try {
-      console.log(label, error)
+      console.log(label, error);
       await api.invite.post(
         "notify",
         { place: "React Native APP", isDevEnvironment: __DEV__, label, error },
         "",
-        { rawValue: true },
+        { rawValue: true }
       );
     } catch (error) {
       console.log("reportError: ", error);

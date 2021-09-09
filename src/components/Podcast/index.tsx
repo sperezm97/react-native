@@ -1,50 +1,50 @@
-import React, { useEffect, useState, useRef } from 'react'
-import { StyleSheet, View, AppState } from 'react-native'
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
-import FastImage from 'react-native-fast-image'
-import TrackPlayer, { TrackPlayerEvents } from 'react-native-track-player'
+import React, { useEffect, useState, useRef } from "react";
+import { StyleSheet, View, AppState } from "react-native";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import FastImage from "react-native-fast-image";
+import TrackPlayer, { TrackPlayerEvents } from "react-native-track-player";
 import {
   useTrackPlayerProgress,
-  useTrackPlayerEvents
-} from 'react-native-track-player/lib/hooks'
-import { Modalize } from 'react-native-modalize'
-import { isIphoneX, getStatusBarHeight } from 'react-native-iphone-x-helper'
-import Toast from 'react-native-simple-toast'
+  useTrackPlayerEvents,
+} from "react-native-track-player/lib/hooks";
+import { Modalize } from "react-native-modalize";
+import { isIphoneX, getStatusBarHeight } from "react-native-iphone-x-helper";
+import Toast from "react-native-simple-toast";
 
-import { useStores, useTheme } from '../../store'
-import { Destination, StreamPayment, NUM_SECONDS } from '../../store/feed'
-import { SCREEN_WIDTH } from '../../constants'
-import useInterval from '../utils/useInterval'
-import EE, { CLIP_PAYMENT, PLAY_ANIMATION } from '../utils/ee'
-import Controls from './Controls'
-import Replay from './Replay'
-import Rocket from './Rocket'
-import { getPosition, setPosition } from './Position'
-import MiniPodcast from './MiniPodcast'
-import Typography from '../common/Typography'
-import Button from '../common/Button'
-import BoostButton from '../common/Button/BoostButton'
-import BoostControls from '../common/Button/BoostControls'
+import { useStores, useTheme } from "../../store";
+import { Destination, StreamPayment, NUM_SECONDS } from "../../store/feed";
+import { SCREEN_WIDTH } from "../../constants";
+import useInterval from "../utils/useInterval";
+import EE, { CLIP_PAYMENT, PLAY_ANIMATION } from "../utils/ee";
+import Controls from "./Controls";
+import Replay from "./Replay";
+import Rocket from "./Rocket";
+import { getPosition, setPosition } from "./Position";
+import MiniPodcast from "./MiniPodcast";
+import Typography from "../common/Typography";
+import Button from "../common/Button";
+import BoostButton from "../common/Button/BoostButton";
+import BoostControls from "../common/Button/BoostControls";
 
 export default function Podcast({ pod, chat, onBoost, podError }) {
-  const theme = useTheme()
-  const { feed, user, msg, chats, details, ui } = useStores()
-  const chatID = chat.id
-  const myid = user.myid
-  const [loading, setLoading] = useState(false)
-  const [playing, setPlaying] = useState(false)
-  const [duration, setDuration] = useState(0)
-  const [selectedEpisodeID, setSelectedEpisodeID] = useState(null)
-  const [queuedTrackID, setQueuedTrackID] = useState(null)
-  const [speed, setSpeed] = useState('1')
-  const modalizeRef = useRef<Modalize>(null)
+  const theme = useTheme();
+  const { feed, user, msg, chats, details, ui } = useStores();
+  const chatID = chat.id;
+  const myid = user.myid;
+  const [loading, setLoading] = useState(false);
+  const [playing, setPlaying] = useState(false);
+  const [duration, setDuration] = useState(0);
+  const [selectedEpisodeID, setSelectedEpisodeID] = useState(null);
+  const [queuedTrackID, setQueuedTrackID] = useState(null);
+  const [speed, setSpeed] = useState("1");
+  const modalizeRef = useRef<Modalize>(null);
   //   const [currentTip, setCurrentTip] = useState()
 
   function getAndSetDuration() {
     setTimeout(async () => {
-      const dur = await TrackPlayer.getDuration()
-      setDuration(dur)
-    }, 850)
+      const dur = await TrackPlayer.getDuration();
+      setDuration(dur);
+    }, 850);
   }
 
   async function onToggle() {
@@ -53,12 +53,12 @@ export default function Podcast({ pod, chat, onBoost, podError }) {
     //   console.log("RESET HERE")
     //   TrackPlayer.reset()
     // }
-    if (playing) TrackPlayer.pause()
+    if (playing) TrackPlayer.pause();
     else {
-      await TrackPlayer.play()
-      if (!duration) getAndSetDuration()
+      await TrackPlayer.play();
+      if (!duration) getAndSetDuration();
     }
-    setPlaying(!playing)
+    setPlaying(!playing);
   }
 
   async function addEpisodeToQueue(episode) {
@@ -66,54 +66,54 @@ export default function Podcast({ pod, chat, onBoost, podError }) {
       id: episode.id,
       url: episode.enclosureUrl,
       title: episode.title,
-      artist: episode.author || 'author',
-      artwork: episode.image
-    })
+      artist: episode.author || "author",
+      artwork: episode.image,
+    });
 
     await TrackPlayer.updateMetadataForTrack(`${episode.id}`, {
       title: episode.title,
-      artist: episode.author || 'author',
-      artwork: episode.image
-    })
+      artist: episode.author || "author",
+      artwork: episode.image,
+    });
   }
 
   async function selectEpisode(episode) {
-    TrackPlayer.reset()
-    setDuration(0)
-    setSelectedEpisodeID(episode.id)
-    await addEpisodeToQueue(episode)
-    await TrackPlayer.play()
-    setPlaying(true)
-    getAndSetDuration()
+    TrackPlayer.reset();
+    setDuration(0);
+    setSelectedEpisodeID(episode.id);
+    await addEpisodeToQueue(episode);
+    await TrackPlayer.play();
+    setPlaying(true);
+    getAndSetDuration();
   }
 
   function setRate(r: string) {
-    TrackPlayer.setRate(parseFloat(r))
-    setSpeed(r)
+    TrackPlayer.setRate(parseFloat(r));
+    setSpeed(r);
   }
 
   function setDefaultRate() {
-    TrackPlayer.setRate(1)
+    TrackPlayer.setRate(1);
   }
 
-  useTrackPlayerEvents([TrackPlayerEvents.PLAYBACK_STATE], async event => {
+  useTrackPlayerEvents([TrackPlayerEvents.PLAYBACK_STATE], async (event) => {
     // console.log("EVENT === ", event)
     if (event.state === TrackPlayer.STATE_STOPPED) {
       // console.log("STOPPING")
-      TrackPlayer.pause()
-      setPlaying(false)
-      await TrackPlayer.seekTo(0)
-      setPosition()
+      TrackPlayer.pause();
+      setPlaying(false);
+      await TrackPlayer.seekTo(0);
+      setPosition();
     }
-  })
+  });
 
   async function initialSelect(ps) {
-    let theID = queuedTrackID
+    let theID = queuedTrackID;
     if (chat.meta && chat.meta.itemID) {
-      theID = chat.meta.itemID
+      theID = chat.meta.itemID;
     }
-    let episode = ps && ps.episodes && ps.episodes.length && ps.episodes[0]
-    await TrackPlayer.setupPlayer({})
+    let episode = ps && ps.episodes && ps.episodes.length && ps.episodes[0];
+    await TrackPlayer.setupPlayer({});
     await TrackPlayer.updateOptions({
       stopWithApp: true,
       capabilities: [
@@ -122,234 +122,248 @@ export default function Podcast({ pod, chat, onBoost, podError }) {
         TrackPlayer.CAPABILITY_SKIP_TO_NEXT,
         TrackPlayer.CAPABILITY_STOP,
         TrackPlayer.CAPABILITY_SKIP_TO_PREVIOUS,
-        TrackPlayer.CAPABILITY_STOP
+        TrackPlayer.CAPABILITY_STOP,
       ],
-      compactCapabilities: [TrackPlayer.CAPABILITY_PLAY, TrackPlayer.CAPABILITY_PAUSE]
-    })
+      compactCapabilities: [
+        TrackPlayer.CAPABILITY_PLAY,
+        TrackPlayer.CAPABILITY_PAUSE,
+      ],
+    });
 
     if (theID) {
       const qe =
-        ps && ps.episodes && ps.episodes.length && ps.episodes.find(e => e.id == theID)
-      if (qe) episode = qe
+        ps &&
+        ps.episodes &&
+        ps.episodes.length &&
+        ps.episodes.find((e) => e.id == theID);
+      if (qe) episode = qe;
       else {
-        TrackPlayer.reset()
+        TrackPlayer.reset();
       }
     }
-    if (!episode) return
+    if (!episode) return;
 
-    setSelectedEpisodeID(episode.id)
-    await addEpisodeToQueue(episode)
-    if (!duration) getAndSetDuration()
+    setSelectedEpisodeID(episode.id);
+    await addEpisodeToQueue(episode);
+    if (!duration) getAndSetDuration();
 
     // if its the same, dont seek
     if (queuedTrackID && queuedTrackID !== episode.id) {
-      const ts = chat.meta && chat.meta.ts
+      const ts = chat.meta && chat.meta.ts;
       if ((!playing && ts) || ts === 0) {
-        await TrackPlayer.seekTo(ts)
-        setPosition()
+        await TrackPlayer.seekTo(ts);
+        setPosition();
       }
     }
 
-    const spm = chat.meta && chat.meta.sats_per_minute
+    const spm = chat.meta && chat.meta.sats_per_minute;
     if (spm || spm === 0) {
-      chats.setPricePerMinute(chatID, spm)
+      chats.setPricePerMinute(chatID, spm);
     }
 
-    const spee = chat.meta && chat.meta.speed
+    const spee = chat.meta && chat.meta.speed;
     if (spee) {
-      setRate(spee)
+      setRate(spee);
     } else {
-      setDefaultRate()
+      setDefaultRate();
     }
   }
 
   async function checkState() {
-    const state = await TrackPlayer.getState()
+    const state = await TrackPlayer.getState();
     // console.log(state)
-    if (state === TrackPlayer.STATE_PAUSED || state === TrackPlayer.STATE_STOPPED) {
-      setPlaying(false)
+    if (
+      state === TrackPlayer.STATE_PAUSED ||
+      state === TrackPlayer.STATE_STOPPED
+    ) {
+      setPlaying(false);
     }
     if (state === TrackPlayer.STATE_PLAYING) {
-      setPlaying(true)
-      const trackID = await TrackPlayer.getCurrentTrack()
+      setPlaying(true);
+      const trackID = await TrackPlayer.getCurrentTrack();
       if (trackID) {
-        setQueuedTrackID(trackID)
+        setQueuedTrackID(trackID);
       }
     }
   }
 
-  let pricePerMinute = 0
+  let pricePerMinute = 0;
   if (chats.pricesPerMinute[chatID] || chats.pricesPerMinute[chatID] === 0) {
-    pricePerMinute = chats.pricesPerMinute[chatID]
+    pricePerMinute = chats.pricesPerMinute[chatID];
   } else if (pod && pod.value && pod.value.model && pod.value.model.suggested) {
-    pricePerMinute = Math.round(parseFloat(pod.value.model.suggested) * 100000000)
+    pricePerMinute = Math.round(
+      parseFloat(pod.value.model.suggested) * 100000000
+    );
   }
 
   async function sendPayments(mult: number) {
-    if (!pricePerMinute) return
-    console.log('=> sendPayments!')
-    const pos = await TrackPlayer.getPosition()
-    const dests = pod && pod.value && pod.value.destinations
-    if (!dests) return
-    if (!pod.id || !selectedEpisodeID) return
+    if (!pricePerMinute) return;
+    console.log("=> sendPayments!");
+    const pos = await TrackPlayer.getPosition();
+    const dests = pod && pod.value && pod.value.destinations;
+    if (!dests) return;
+    if (!pod.id || !selectedEpisodeID) return;
     const sp: StreamPayment = {
       feedID: pod.id,
       itemID: selectedEpisodeID,
       ts: Math.round(pos) || 0,
-      speed: speed
-    }
-    const memo = JSON.stringify(sp)
-    feed.sendPayments(dests, memo, pricePerMinute * mult || 1, chatID, true)
+      speed: speed,
+    };
+    const memo = JSON.stringify(sp);
+    feed.sendPayments(dests, memo, pricePerMinute * mult || 1, chatID, true);
   }
 
-  const count = useRef(0)
-  const storedTime = useRef(0)
+  const count = useRef(0);
+  const storedTime = useRef(0);
   useInterval(() => {
     if (playing) {
-      setPosition()
-      const c = count.current
+      setPosition();
+      const c = count.current;
       if (c && c % NUM_SECONDS === 0) {
-        sendPayments(1)
+        sendPayments(1);
       }
-      count.current += 1
+      count.current += 1;
     }
-  }, 1000)
+  }, 1000);
 
-  const appState = useRef(AppState.currentState)
+  const appState = useRef(AppState.currentState);
   function handleAppStateChange(nextAppState) {
-    if (appState.current.match(/inactive|background/) && nextAppState === 'active') {
-      const now = Math.round(Date.now().valueOf() / 1000)
-      const gap = now - storedTime.current
+    if (
+      appState.current.match(/inactive|background/) &&
+      nextAppState === "active"
+    ) {
+      const now = Math.round(Date.now().valueOf() / 1000);
+      const gap = now - storedTime.current;
       if (gap > 0) {
-        const n = Math.floor(gap / NUM_SECONDS)
-        if (n) sendPayments(n)
+        const n = Math.floor(gap / NUM_SECONDS);
+        if (n) sendPayments(n);
       }
     }
-    if (appState.current.match(/active/) && nextAppState === 'background') {
-      storedTime.current = Math.round(Date.now().valueOf() / 1000)
+    if (appState.current.match(/active/) && nextAppState === "background") {
+      storedTime.current = Math.round(Date.now().valueOf() / 1000);
     }
-    appState.current = nextAppState
+    appState.current = nextAppState;
   }
 
   useEffect(() => {
-    AppState.addEventListener('change', handleAppStateChange)
+    AppState.addEventListener("change", handleAppStateChange);
     return () => {
-      AppState.removeEventListener('change', handleAppStateChange)
-    }
-  }, [])
+      AppState.removeEventListener("change", handleAppStateChange);
+    };
+  }, []);
 
   useEffect(() => {
-    setLoading(false)
-  }, [])
+    setLoading(false);
+  }, []);
 
   useEffect(() => {
-    checkState()
-  }, [])
+    checkState();
+  }, []);
 
   useEffect(() => {
-    if (pod) initialSelect(pod)
-  }, [pod])
+    if (pod) initialSelect(pod);
+  }, [pod]);
 
   function onClipPayment(d) {
     if (pricePerMinute && d.pubkey && d.ts) {
-      const dests = pod && pod.value && pod.value.destinations
-      if (!dests) return
+      const dests = pod && pod.value && pod.value.destinations;
+      if (!dests) return;
       const extraDest: Destination = {
         address: d.pubkey,
         split: 1,
-        type: 'node'
-      }
-      const finalDests = dests.concat(extraDest)
+        type: "node",
+      };
+      const finalDests = dests.concat(extraDest);
       const sp: StreamPayment = {
         feedID: pod.id,
         itemID: selectedEpisodeID,
-        ts: d.ts || 0
-      }
-      if (d.uuid) sp.uuid = d.uuid
-      const memo = JSON.stringify(sp)
-      feed.sendPayments(finalDests, memo, pricePerMinute, chatID, false)
+        ts: d.ts || 0,
+      };
+      if (d.uuid) sp.uuid = d.uuid;
+      const memo = JSON.stringify(sp);
+      feed.sendPayments(finalDests, memo, pricePerMinute, chatID, false);
     }
   }
 
   useEffect(() => {
-    EE.on(CLIP_PAYMENT, onClipPayment)
+    EE.on(CLIP_PAYMENT, onClipPayment);
     return () => {
-      EE.removeListener(CLIP_PAYMENT, onClipPayment)
-    }
-  }, [pod])
+      EE.removeListener(CLIP_PAYMENT, onClipPayment);
+    };
+  }, [pod]);
 
   const episode =
     selectedEpisodeID &&
     pod &&
     pod.episodes &&
     pod.episodes.length &&
-    pod.episodes.find(e => e.id === selectedEpisodeID)
+    pod.episodes.find((e) => e.id === selectedEpisodeID);
 
-  const replayMsgs = useRef([])
+  const replayMsgs = useRef([]);
 
   function closeFull() {
-    replayMsgs.current = []
-    modalizeRef.current.close()
+    replayMsgs.current = [];
+    modalizeRef.current.close();
   }
 
   function onClose() {
-    replayMsgs.current = []
+    replayMsgs.current = [];
   }
 
   function openFull() {
-    if (!chatID) return
-    const msgs = msg.messages[chatID] || []
+    if (!chatID) return;
+    const msgs = msg.messages[chatID] || [];
     const msgsForEpisode = msgs.filter(
-      m =>
+      (m) =>
         m.message_content &&
-        m.message_content.includes('::') &&
+        m.message_content.includes("::") &&
         m.message_content.includes(episode.id)
-    )
-    const msgsforReplay = []
-    msgsForEpisode.forEach(m => {
-      const arr = m.message_content.split('::')
-      if (arr.length < 2) return
+    );
+    const msgsforReplay = [];
+    msgsForEpisode.forEach((m) => {
+      const arr = m.message_content.split("::");
+      if (arr.length < 2) return;
       try {
-        const dat = JSON.parse(arr[1])
+        const dat = JSON.parse(arr[1]);
         if (dat)
           msgsforReplay.push({
             ...dat,
             type: arr[0],
-            alias: m.sender_alias || (m.sender === myid ? user.alias : ''),
-            date: m.date
-          })
+            alias: m.sender_alias || (m.sender === myid ? user.alias : ""),
+            date: m.date,
+          });
       } catch (e) {}
-    })
-    replayMsgs.current = msgsforReplay
-    modalizeRef.current?.open()
+    });
+    replayMsgs.current = msgsforReplay;
+    modalizeRef.current?.open();
   }
 
   function boost(amount) {
-    amount = amount || user.tipAmount || 100
+    amount = amount || user.tipAmount || 100;
 
     if (amount > details.balance) {
-      Toast.showWithGravity('Not Enough Balance', Toast.SHORT, Toast.CENTER)
-      return
+      Toast.showWithGravity("Not Enough Balance", Toast.SHORT, Toast.CENTER);
+      return;
     }
 
-    EE.emit(PLAY_ANIMATION)
+    EE.emit(PLAY_ANIMATION);
     requestAnimationFrame(async () => {
-      const pos = getPosition()
+      const pos = getPosition();
       const sp: StreamPayment = {
         feedID: pod.id,
         itemID: selectedEpisodeID,
         ts: Math.round(pos) || 0,
-        amount
-      }
-      onBoost(sp)
-      const dests = pod && pod.value && pod.value.destinations
-      if (!dests) return
-      if (!pod.id || !selectedEpisodeID) return
-      const memo = JSON.stringify(sp)
-      feed.sendPayments(dests, memo, amount, chatID, false)
-    })
+        amount,
+      };
+      onBoost(sp);
+      const dests = pod && pod.value && pod.value.destinations;
+      if (!dests) return;
+      if (!pod.id || !selectedEpisodeID) return;
+      const memo = JSON.stringify(sp);
+      feed.sendPayments(dests, memo, amount, chatID, false);
+    });
 
-    ui.setPodcastBoostAmount(null)
+    ui.setPodcastBoostAmount(null);
   }
 
   function Footer() {
@@ -358,32 +372,33 @@ export default function Podcast({ pod, chat, onBoost, podError }) {
         style={{
           ...styles.footer,
           backgroundColor: theme.main,
-          borderTopColor: theme.border
+          borderTopColor: theme.border,
         }}
       >
         <BoostButton
           onPress={() => {
-            const isBoostAmount = ui.podcastBoostAmount && ui.podcastBoostAmount
-            const amount = isBoostAmount || user.tipAmount || 100
-            boost(amount)
+            const isBoostAmount =
+              ui.podcastBoostAmount && ui.podcastBoostAmount;
+            const amount = isBoostAmount || user.tipAmount || 100;
+            boost(amount);
           }}
         />
         <View style={{ width: 130, marginHorizontal: 10 }}>
           <BoostControls />
         </View>
       </View>
-    )
+    );
   }
 
   function Header() {
     return (
-      <View style={{ alignItems: 'center', backgroundColor: theme.bg }}>
+      <View style={{ alignItems: "center", backgroundColor: theme.bg }}>
         {pod.image && (
           <View
             style={{
               ...styles.imgWrap,
               width: SCREEN_WIDTH,
-              height: SCREEN_WIDTH - 140
+              height: SCREEN_WIDTH - 140,
             }}
           >
             <FastImage
@@ -391,9 +406,9 @@ export default function Podcast({ pod, chat, onBoost, podError }) {
               style={{
                 width: SCREEN_WIDTH - 180,
                 height: SCREEN_WIDTH - 180,
-                borderRadius: 25
+                borderRadius: 25,
               }}
-              resizeMode={'cover'}
+              resizeMode={"cover"}
             />
             {/* <Replay msgs={replayMsgs.current} playing={playing} /> */}
           </View>
@@ -423,8 +438,13 @@ export default function Podcast({ pod, chat, onBoost, podError }) {
 
         {(pod.episodes ? true : false) && (
           <View style={styles.list}>
-            <View style={{ ...styles.episodesLabel, borderBottomColor: theme.border }}>
-              <Typography color={theme.subtitle} size={12} fw='500'>
+            <View
+              style={{
+                ...styles.episodesLabel,
+                borderBottomColor: theme.border,
+              }}
+            >
+              <Typography color={theme.subtitle} size={12} fw="500">
                 EPISODES
               </Typography>
               <Typography
@@ -432,7 +452,7 @@ export default function Podcast({ pod, chat, onBoost, podError }) {
                 size={12}
                 style={{
                   opacity: 0.85,
-                  marginLeft: 10
+                  marginLeft: 10,
                 }}
               >
                 {pod.episodes.length}
@@ -441,37 +461,43 @@ export default function Podcast({ pod, chat, onBoost, podError }) {
           </View>
         )}
       </View>
-    )
+    );
   }
 
   function renderItem({ item, index }) {
-    const selected = selectedEpisodeID === item.id
-    const fallbackImage = pod?.image
+    const selected = selectedEpisodeID === item.id;
+    const fallbackImage = pod?.image;
 
     return (
       <View key={index}>
         <Button
           color={theme.transparent}
-          mode='text'
+          mode="text"
           h={60}
           round={0}
           style={{
             ...styles.episode,
             borderBottomColor: theme.border,
-            backgroundColor: selected ? theme.main : theme.bg
+            backgroundColor: selected ? theme.main : theme.bg,
           }}
           onPress={() => selectEpisode(item)}
         >
-          <View style={{ flexDirection: 'row', alignItems: 'center', width: '100%' }}>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              width: "100%",
+            }}
+          >
             <View
               style={{
-                justifyContent: 'center',
-                alignItems: 'center',
-                width: 20
+                justifyContent: "center",
+                alignItems: "center",
+                width: 20,
               }}
             >
               <MaterialCommunityIcons
-                name='play'
+                name="play"
                 color={theme.icon}
                 size={18}
                 style={{ opacity: selected ? 1 : 0 }}
@@ -481,20 +507,25 @@ export default function Podcast({ pod, chat, onBoost, podError }) {
             <View style={{ width: 45 }}>
               <FastImage
                 source={{ uri: item.image || fallbackImage }}
-                style={{ width: 42, height: 42, marginLeft: 8, marginRight: 12 }}
-                resizeMode={'cover'}
+                style={{
+                  width: 42,
+                  height: 42,
+                  marginLeft: 8,
+                  marginRight: 12,
+                }}
+                resizeMode={"cover"}
               />
             </View>
             <Typography
               color={theme.title}
               numberOfLines={1}
               style={{
-                width: '100%',
-                display: 'flex',
-                flexDirection: 'row',
+                width: "100%",
+                display: "flex",
+                flexDirection: "row",
                 paddingLeft: 15,
                 flex: 1,
-                flexWrap: 'wrap'
+                flexWrap: "wrap",
               }}
             >
               {item.title}
@@ -502,7 +533,7 @@ export default function Podcast({ pod, chat, onBoost, podError }) {
           </View>
         </Button>
       </View>
-    )
+    );
   }
 
   return (
@@ -512,13 +543,13 @@ export default function Podcast({ pod, chat, onBoost, podError }) {
         // adjustToContentHeight={true}
         modalTopOffset={getStatusBarHeight()}
         openAnimationConfig={{
-          timing: { duration: 300 }
+          timing: { duration: 300 },
         }}
         onClose={onClose}
         HeaderComponent={<Header />}
         FooterComponent={<Footer />}
         childrenStyle={{
-          backgroundColor: theme.bg
+          backgroundColor: theme.bg,
         }}
         rootStyle={
           {
@@ -528,8 +559,8 @@ export default function Podcast({ pod, chat, onBoost, podError }) {
         flatListProps={{
           data: pod?.episodes,
           renderItem: renderItem,
-          keyExtractor: item => item.id,
-          showsVerticalScrollIndicator: false
+          keyExtractor: (item) => item.id,
+          showsVerticalScrollIndicator: false,
         }}
       />
 
@@ -540,9 +571,9 @@ export default function Podcast({ pod, chat, onBoost, podError }) {
           playing={playing}
           onShowFull={openFull}
           boost={() => {
-            const amount = user.tipAmount || 100
+            const amount = user.tipAmount || 100;
 
-            boost(amount)
+            boost(amount);
           }}
           duration={duration}
           loading={true}
@@ -556,93 +587,93 @@ export default function Podcast({ pod, chat, onBoost, podError }) {
           playing={playing}
           onShowFull={openFull}
           boost={() => {
-            const amount = user.tipAmount || 100
+            const amount = user.tipAmount || 100;
 
-            boost(amount)
+            boost(amount);
           }}
           duration={duration}
           loading={false}
-          podError={''}
+          podError={""}
           pod={pod}
         />
       )}
     </>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
   content: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    flex: 1,
   },
   list: {
-    width: '100%'
+    width: "100%",
   },
   top: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '90%'
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "90%",
     // paddingHorizontal:14
   },
   imgWrap: {
-    position: 'relative',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '100%'
+    position: "relative",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
   },
   spinWrap: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '100%',
-    position: 'absolute',
-    top: 20
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
+    position: "absolute",
+    top: 20,
   },
   track: {
-    width: '90%'
+    width: "90%",
     // height: 128
   },
   clickList: {
-    position: 'absolute',
+    position: "absolute",
     top: 6,
     right: 6,
-    zIndex: 150
+    zIndex: 150,
   },
   episode: {
     borderBottomWidth: 1,
-    width: '100%',
-    flexDirection: 'row',
-    alignItems: 'center'
+    width: "100%",
+    flexDirection: "row",
+    alignItems: "center",
   },
   episodeInner: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-start'
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-start",
   },
   episodesLabel: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: '100%',
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    width: "100%",
     borderBottomWidth: 2,
     paddingHorizontal: 14,
-    paddingBottom: 14
+    paddingBottom: 14,
   },
   footer: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
     paddingHorizontal: 14,
     height: isIphoneX() ? 80 : 65,
     paddingBottom: isIphoneX() ? 10 : 0,
-    borderTopWidth: 1
+    borderTopWidth: 1,
     // paddingTop: isIphoneX() ? 30 : 0
-  }
-})
+  },
+});
