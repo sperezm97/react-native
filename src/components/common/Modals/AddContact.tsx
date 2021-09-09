@@ -32,7 +32,7 @@ export default function AddContact() {
               setLoading(false);
               close();
             } catch (error) {
-              await user.reportError(error);
+              await user.reportError("Add Contact", error);
             }
           }}
         />

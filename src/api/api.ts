@@ -1,6 +1,6 @@
 type RelayMethod = (
   url: string,
-  data: any,
+  data?: any,
   encoding?: string,
   options?: APIOptions
 ) => any;
@@ -27,7 +27,7 @@ export default class API {
   put: RelayMethod;
   del: RelayMethod;
   upload: RelayMethod;
-  resetIPCallback: RelayMethod;
+  resetIPCallback: Function;
 }
 
 const TIMEOUT = 20000;

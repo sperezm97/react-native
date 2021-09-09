@@ -62,7 +62,7 @@ function Subscribe({ close }) {
       setLoading(false);
       close();
     } catch (error) {
-      await user.reportError(error);
+      await user.reportError("subscribe errors", error);
     }
   }
 

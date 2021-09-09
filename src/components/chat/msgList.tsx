@@ -224,7 +224,9 @@ function Refresher() {
       }, 100);
     }
     EE.on(SHOW_REFRESHER, doShow);
-    return () => EE.removeListener(SHOW_REFRESHER, doShow);
+    return () => {
+      EE.removeListener(SHOW_REFRESHER, doShow);
+    };
   }, []);
   if (!show) return <></>;
   return (
