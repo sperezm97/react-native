@@ -23,7 +23,7 @@ export function useSearchTribes(tribes) {
 
   // tribes = tribes.filter(t => !t.owner).sort((a, b) => a.joined - b.joined)
 
-  tribes = tribes.filter(t => !t.joined)
+  tribes = tribes.filter(t => !t.joined).sort((a) => !a.img ? 1 : -1)
 
   return searchTribes(tribes, ui.tribesSearchTerm)
 }
