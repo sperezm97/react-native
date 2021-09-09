@@ -41,7 +41,7 @@ export default function Header({ border = false }) {
             />
           </View>
           <Balance
-            balance={details.balance}
+            balance={details.fullBalance}
             color={theme.dark ? theme.white : theme.black}
           />
           <View style={{ ...styles.flex, ...styles.right }}>
