@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react'
-import { TouchableOpacity, Text, StyleSheet, Image, View, Linking } from 'react-native'
+import { Alert, TouchableOpacity, StyleSheet, Image, View, Linking } from 'react-native'
 import RNUrlPreview from 'react-native-url-preview'
+import Hyperlink from 'react-native-hyperlink'
 import * as linkify from 'linkifyjs'
 
 import { useTheme } from '../../../store'
@@ -26,14 +27,8 @@ export default function TextMsg(props) {
   const isClip = message_content && message_content.startsWith('clip::')
   const isBoost = message_content?.startsWith('boost::')
   const isTribe = message_content?.startsWith(`${DEFAULT_DOMAIN}://?action=tribe`)
-  const isLink =
-    message_content &&
-    (message_content.toLowerCase().trim().startsWith('http://') ||
-      message_content.toLowerCase().trim().startsWith('https://'))
+  const isLink = linkify.find(message_content, 'url').length > 0
 
-  function openLink() {
-    Linking.openURL(message_content)
-  }
   const onLongPressHandler = () => props.onLongPress(props)
 
   /**
@@ -90,15 +85,28 @@ export default function TextMsg(props) {
   return (
     <TouchableOpacity
       activeOpacity={0.8}
-      style={isLink ? { width: 280, paddingLeft: 7, minHeight: 72 } : shared.innerPad}
+      style={isLink ? { width: 280, padding: 7, minHeight: 72 } : shared.innerPad}
       onLongPress={onLongPressHandler}
-      onPress={isLink ? openLink : () => {}}
     >
       {isLink ? (
         <View style={styles.linkWrap}>
-          <Typography color={theme.text} size={15}>
-            {message_content}
-          </Typography>
+          <Hyperlink
+            linkStyle={{ color: theme.blue }}
+            onPress={(url) => {
+              Alert.alert(
+                "Warning",
+                "Link may contain harmful content, wanna continue?",
+                [
+                  { text: "No", onPress: () => {} },
+                  { text: "Yes", onPress: () => Linking.openURL(url) },
+                ]
+              )
+            }}
+          >
+            <Typography color={theme.text} size={15}>
+              {message_content}
+            </Typography>
+          </Hyperlink>
           <RNUrlPreview {...linkStyles(theme)} text={message_content} />
         </View>
       ) : (
