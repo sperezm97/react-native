@@ -8,6 +8,7 @@ export default function FadeInView(props) {
     Animated.timing(fadeAnim, {
       toValue: 1,
       duration: 10000,
+      useNativeDriver: true,
     }).start()
   }, [])
 
