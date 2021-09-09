@@ -68,7 +68,6 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
   const embedVideoModalRef = useRef<Modalize>(null);
   const [replyUuid, setReplyUuid] = useState("");
   const [extraTextContent, setExtraTextContent] = useState(null);
-  const appearAnim = new Animated.Value(300);
   const myid = user.myid;
   const modalizeRef = useRef<Modalize>(null);
 
@@ -88,14 +87,6 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
 
   const waitingForAdminApproval =
     chat.status === constants.chat_statuses.pending;
-
-  useEffect(() => {
-    Animated.timing(appearAnim, {
-      toValue: 0,
-      duration: 400,
-      useNativeDriver: true,
-    }).start();
-  });
 
   const openGiphyModal = () => modalizeRef.current?.open();
 
@@ -140,19 +131,13 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
   }
 
   function closeReplyContent() {
-    Animated.timing(appearAnim, {
-      toValue: 300,
-      duration: 400,
-      useNativeDriver: true,
-    }).start(() => {
-      if (replyUuid) {
-        setReplyUuid("");
-        EE.emit(CLEAR_REPLY_UUID, null);
-      }
-      if (extraTextContent) {
-        setExtraTextContent(null);
-      }
-    });
+    if (replyUuid) {
+      setReplyUuid("");
+      EE.emit(CLEAR_REPLY_UUID, null);
+    }
+    if (extraTextContent) {
+      setExtraTextContent(null);
+    }
   }
 
   function gotExtraTextContent(body) {
@@ -456,28 +441,17 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
       accessibilityLabel="chat-bottombar"
     >
       {/* Reply area */}
-      <Animated.View
-        style={{
-          zIndex: 1,
-          transform: [
-            {
-              translateY: appearAnim,
-            },
-          ],
-        }}
-      >
-        {/* Only renders if `hasReplyContent` is a truthy value*/}
-        <ReplyContent
-          shouldRender={hasReplyContent}
-          reply={true}
-          replyMessageExtraContent={replyMessageExtraContent}
-          showClose={true}
-          color={replyColor}
-          content={replyMessageContent}
-          senderAlias={replyMessageSenderAlias}
-          onClose={closeReplyContent}
-        />
-      </Animated.View>
+      {/* Only renders if `hasReplyContent` is a truthy value*/}
+      <ReplyContent
+        shouldRender={hasReplyContent}
+        reply={true}
+        replyMessageExtraContent={replyMessageExtraContent}
+        showClose={true}
+        color={replyColor}
+        content={replyMessageContent}
+        senderAlias={replyMessageSenderAlias}
+        onClose={closeReplyContent}
+      />
 
       {/* Bottom row */}
       <View
