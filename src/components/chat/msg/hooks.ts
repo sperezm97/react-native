@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import RNFetchBlob from "rn-fetch-blob";
 import { useStores } from "../../../store";
 import * as aes from "../../../crypto/aes";
 import { decode as atob } from "base-64";
+import { isBase64 } from "../../../crypto/Base64";
 
 const sess = "all";
 
@@ -18,7 +19,7 @@ type UseCachedEncryptedFile = {
     dispose: () => any;
     paidMessageText: string;
 };
-export function useCachedEncryptedFile(props, ldat): UseCachedEncryptedFile {
+export function useCachedEncryptedFile(props, ldat, dispatchTrigger = false): UseCachedEncryptedFile {
     const { meme } = useStores();
     const { id, media_key, media_type, media_token, message_content } = props;
 
@@ -38,13 +39,7 @@ export function useCachedEncryptedFile(props, ldat): UseCachedEncryptedFile {
 
     async function trigger() {
         if (loading || data || uri || paidMessageText) return; // already done
-        if (!(ldat && ldat.host)) {
-            return;
-        }
-
-        if (!ldat.sig) {
-            return;
-        }
+        if (!ldat?.host || !ldat?.sig) return;
 
         const url = `https://${ldat.host}/file/${media_token}`;
 
@@ -101,7 +96,7 @@ export function useCachedEncryptedFile(props, ldat): UseCachedEncryptedFile {
                         media_key,
                         extension
                     );
-                    setPaidMessageText(txt);
+                    setPaidMessageText(media_type === 'n2n2/text' ? isBase64(txt).text : txt);
                 } else {
                     const newpath = await aes.decryptFileAndSave(
                         path,
@@ -135,6 +130,11 @@ export function useCachedEncryptedFile(props, ldat): UseCachedEncryptedFile {
             console.log(e);
         }
     }
+
+    useEffect(() => {
+        if (!media_token || paidMessageText || !dispatchTrigger) return;
+        trigger()
+    }, [media_token, paidMessageText, ldat])
 
     return { data, uri, loading, trigger, dispose, paidMessageText };
 }

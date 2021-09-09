@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react'
+import React, { useState, useMemo } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
 import { PERMISSIONS, check, request, RESULTS } from 'react-native-permissions'
@@ -24,7 +24,6 @@ import PhotoViewer from '../../common/Modals/Media/PhotoViewer'
 import { setTint } from '../../common/StatusBar'
 import EmbedVideo from './embedVideo'
 import { getRumbleLink, getYoutubeLink } from './utils'
-import { isBase64 } from '../../../crypto/Base64'
 
 const { useMsgs } = hooks
 
@@ -34,7 +33,7 @@ export default function MediaMsg(props) {
   const [buying, setBuying] = useState(false)
   const [mediaModal, setMediaModal] = useState(false)
   const [selectedMedia, setSelectedMedia] = useState(null)
-  const { meme, ui, msg, user } = useStores()
+  const { meme, msg } = useStores()
   const theme = useTheme()
   const isMe = props.sender === props.myid
 
@@ -46,16 +45,11 @@ export default function MediaMsg(props) {
     if (ldat.sig) purchased = true
   }
 
-  let { data, uri, loading, trigger, paidMessageText } = useCachedEncryptedFile(props, ldat)
+  let { data, uri, loading, paidMessageText } = useCachedEncryptedFile(props, ldat, true)
 
-  const decodedMessageInCaseOfEmbedVideo = isBase64(paidMessageText).text
-  const rumbleLink = useMemo(() => getRumbleLink(decodedMessageInCaseOfEmbedVideo), [decodedMessageInCaseOfEmbedVideo])
-  const youtubeLink = useMemo(() => getYoutubeLink(decodedMessageInCaseOfEmbedVideo), [decodedMessageInCaseOfEmbedVideo])
+  const rumbleLink = useMemo(() => paidMessageText && getRumbleLink(paidMessageText), [paidMessageText])
+  const youtubeLink = useMemo(() => paidMessageText && getYoutubeLink(paidMessageText), [paidMessageText])
   const isEmbedVideo = youtubeLink || rumbleLink
-
-  useEffect(() => {
-    trigger()
-  }, [props.media_token])
 
   const hasImgData = data || uri ? true : false
   const hasContent = message_content ? true : false
@@ -79,9 +73,6 @@ export default function MediaMsg(props) {
     minHeight = 200
     isImg = true
   }
-
-  let wrapHeight = minHeight
-  if (showPurchaseButton) wrapHeight += 38
 
   const buy = async (amount) => {
     setOnlyOnClick(true)
@@ -166,7 +157,7 @@ export default function MediaMsg(props) {
                   {!!youtubeLink ? <EmbedVideo type="youtube" link={youtubeLink} onLongPress={onLongPressHandler} /> : null}
                   {!rumbleLink && !youtubeLink && (
                     <Text style={{ color: theme.title, paddingTop: media_type === 'n2n2/text' ? 10 : 0 }}>
-                      {isBase64(paidMessageText).text}
+                      {paidMessageText}
                     </Text>
                   )}
                 </View>
