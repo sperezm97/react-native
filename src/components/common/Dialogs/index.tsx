@@ -1,7 +1,7 @@
-import React from 'react'
-import { useObserver } from 'mobx-react-lite'
+import React from "react";
+import { useObserver } from "mobx-react-lite";
 
-import AddFriend from './AddFriend'
+import AddFriend from "./AddFriend";
 
 export default function Dialogs() {
   return useObserver(() => {
@@ -9,6 +9,6 @@ export default function Dialogs() {
       <>
         <AddFriend />
       </>
-    )
-  })
+    );
+  });
 }

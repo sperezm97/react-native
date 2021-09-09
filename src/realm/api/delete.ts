@@ -1,5 +1,5 @@
-import { realm } from './realm.instance'
-import { Delete } from './types/delete.interface'
+import { realm } from "./realm.instance";
+import { Delete } from "./types/delete.interface";
 
 /**
  * Delete function
@@ -12,22 +12,21 @@ export default (props: Delete) => {
   let response = null;
   try {
     realm.write(() => {
-      if (type === 'all') {
+      if (type === "all") {
         console.log(`Deleting all objects in schema: ${schema}`);
         const all = realm.objects(schema);
         response = realm.delete(all);
-        console.log(`Deleted: ${response}`)
-        if (response === undefined) response = { deleted: true }
+        console.log(`Deleted: ${response}`);
+        if (response === undefined) response = { deleted: true };
       }
 
-      if (type === 'single') {
+      if (type === "single") {
         console.log(`Deleting object in schema: ${schema} with id: ${id}`);
         const single = realm.objects(schema).find((e: any) => e.id === id);
         response = realm.delete(single);
-        console.log(`Deleted: ${response}`)
-        if (response === undefined) response = { deleted: true }
+        console.log(`Deleted: ${response}`);
+        if (response === undefined) response = { deleted: true };
       }
-
     });
     return response;
   } catch (e) {
@@ -36,4 +35,4 @@ export default (props: Delete) => {
     console.log(`error: ${e}`);
     return e;
   }
-}
+};

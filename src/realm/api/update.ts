@@ -1,5 +1,5 @@
-import { realm } from './realm.instance'
-import { Update } from './types/update.interface'
+import { realm } from "./realm.instance";
+import { Update } from "./types/update.interface";
 
 /**
  * Update function
@@ -14,7 +14,7 @@ export default (props: Update) => {
     realm.write(() => {
       // console.log(`Updating object in schema: ${schema}`);
       response = realm.objects(schema).find((e: any) => e.id === id);
-      if (schema === 'Msg') response = realm.objects(schema)[0]
+      if (schema === "Msg") response = realm.objects(schema)[0];
       const availableFields = [];
       for (let key in response) availableFields.push(key);
       let hasEqualBody = true;
@@ -25,11 +25,11 @@ export default (props: Update) => {
           hasEqualBody = false;
           response = null;
         }
-      })
+      });
 
       if (hasEqualBody) {
-        if (schema !== 'Msg') Object.assign(response, body);
-        if (schema === 'Msg') {
+        if (schema !== "Msg") Object.assign(response, body);
+        if (schema === "Msg") {
           response.messages = body.messages;
           response.lastSeen = body.lastSeen;
           response.lastFetched = body.lastFetched;
@@ -46,4 +46,4 @@ export default (props: Update) => {
     console.log(`error: ${e}`);
     return e;
   }
-}
+};

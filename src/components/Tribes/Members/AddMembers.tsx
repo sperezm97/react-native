@@ -1,56 +1,59 @@
-import React, { useEffect, useState } from 'react'
-import { useObserver } from 'mobx-react-lite'
+import React, { useEffect, useState } from "react";
+import { useObserver } from "mobx-react-lite";
 import {
   StyleSheet,
   View,
   Modal,
   ScrollView,
   FlatList,
-  TouchableOpacity
-} from 'react-native'
+  TouchableOpacity,
+} from "react-native";
 
-import { useTheme, useStores } from '../../../store'
-import { TRIBE_SIZE_LIMIT } from '../../../constants'
-import Button from '../../common/Button'
-import Typography from '../../common/Typography'
-import { Contact, SelectedContact } from './Items'
+import { useTheme, useStores } from "../../../store";
+import { TRIBE_SIZE_LIMIT } from "../../../constants";
+import Button from "../../common/Button";
+import Typography from "../../common/Typography";
+import { Contact, SelectedContact } from "./Items";
 
 export default function AddMembers({ initialMemberIds, loading, finish }) {
-  const theme = useTheme()
-  const { contacts } = useStores()
-  const [selected, setTheSelected] = useState([])
+  const theme = useTheme();
+  const { contacts } = useStores();
+  const [selected, setTheSelected] = useState([]);
 
   function setSelected(a) {
-    setTheSelected(a)
+    setTheSelected(a);
   }
 
   function add(id) {
-    const sel = [...selected]
+    const sel = [...selected];
     if (sel.includes(id)) {
-      setSelected(sel.filter(x => x !== id))
+      setSelected(sel.filter((x) => x !== id));
     } else {
       if (sel.length < TRIBE_SIZE_LIMIT || 20) {
-        sel.push(id)
-        setSelected(sel)
+        sel.push(id);
+        setSelected(sel);
       }
     }
   }
 
-  const initialContactIds = initialMemberIds || []
-  const initialContactsToShow = contacts.contacts.filter(c => {
-    return initialContactIds.includes(c.id)
-  })
+  const initialContactIds = initialMemberIds || [];
+  const initialContactsToShow = contacts.contacts.filter((c) => {
+    return initialContactIds.includes(c.id);
+  });
 
-  const noInitials = !(initialMemberIds && initialMemberIds.length)
+  const noInitials = !(initialMemberIds && initialMemberIds.length);
 
   const contactsToShow = contacts.contacts.filter(
-    c => c.id > 1 && !initialContactIds.includes(c.id)
-  )
-  const selectedContacts = contactsToShow.filter(c => selected.includes(c.id))
+    (c) => c.id > 1 && !initialContactIds.includes(c.id)
+  );
+  const selectedContacts = contactsToShow.filter((c) =>
+    selected.includes(c.id)
+  );
 
-  const showSelectedContacts = selectedContacts.length + initialContactsToShow.length > 0
+  const showSelectedContacts =
+    selectedContacts.length + initialContactsToShow.length > 0;
   function selectAll() {
-    setSelected(contactsToShow.map(c => c.id))
+    setSelected(contactsToShow.map((c) => c.id));
   }
 
   const renderContactsToShow: any = ({ item, index }) => (
@@ -60,7 +63,7 @@ export default function AddMembers({ initialMemberIds, loading, finish }) {
       onPress={() => add(item.id)}
       selected={selected.includes(item.id)}
     />
-  )
+  );
 
   const flatListHeader: any = () => (
     <View style={styles.topBar}>
@@ -69,29 +72,29 @@ export default function AddMembers({ initialMemberIds, loading, finish }) {
         <TouchableOpacity
           activeOpacity={0.6}
           onPress={selectAll}
-          accessibilityLabel='people-select-all'
+          accessibilityLabel="people-select-all"
         >
           <Typography>SELECT ALL</Typography>
         </TouchableOpacity>
       )}
     </View>
-  )
+  );
 
   const listFooterComponent: any = () => (
     <View style={styles.buttonWrap}>
-      <Button w='25%' loading={loading} onPress={() => finish(selected)}>
+      <Button w="25%" loading={loading} onPress={() => finish(selected)}>
         Finish
       </Button>
       <Button
         onPress={() => finish([])}
-        w='18%'
+        w="18%"
         color={theme.lightGrey}
         style={{ marginRight: 14, marginLeft: 20 }}
       >
         <Typography color={theme.black}> Skip</Typography>
       </Button>
     </View>
-  )
+  );
 
   return useObserver(() => (
     <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
@@ -131,37 +134,37 @@ export default function AddMembers({ initialMemberIds, loading, finish }) {
         />
       </>
     </View>
-  ))
+  ));
 }
 
 const styles = StyleSheet.create({
   wrap: {
     flex: 1,
-    position: 'relative'
+    position: "relative",
   },
   scroller: {
     // width: '100%'
   },
   topBar: {
-    width: '100%',
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    width: "100%",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
     paddingLeft: 14,
     paddingRight: 14,
-    marginTop: 10
+    marginTop: 10,
   },
   selContacts: {
     height: 90,
     maxHeight: 90,
-    width: '100%'
+    width: "100%",
   },
   buttonWrap: {
-    width: '100%',
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    marginTop: 30
+    width: "100%",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    marginTop: 30,
   },
-  button: {}
-})
+  button: {},
+});

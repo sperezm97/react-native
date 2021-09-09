@@ -1,27 +1,27 @@
-import React from 'react'
-import { View, StyleSheet, Image, TouchableOpacity } from 'react-native'
-import { Appbar, ActivityIndicator } from 'react-native-paper'
-import { useNavigation } from '@react-navigation/native'
-import { useObserver } from 'mobx-react-lite'
-import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons'
-import Toast from 'react-native-simple-toast'
+import React from "react";
+import { View, StyleSheet, Image, TouchableOpacity } from "react-native";
+import { Appbar, ActivityIndicator } from "react-native-paper";
+import { useNavigation } from "@react-navigation/native";
+import { useObserver } from "mobx-react-lite";
+import MaterialIcon from "react-native-vector-icons/MaterialCommunityIcons";
+import Toast from "react-native-simple-toast";
 
-import { useStores, useTheme } from '../../../store'
-import Balance from '../Balance'
-import { useDarkMode } from 'react-native-dynamic'
+import { useStores, useTheme } from "../../../store";
+import Balance from "../Balance";
+import { useDarkMode } from "react-native-dynamic";
 
 export default function Header({ border = false }) {
-  const navigation = useNavigation()
-  const { details, ui } = useStores()
-  const theme = useTheme()
+  const navigation = useNavigation();
+  const { details, ui } = useStores();
+  const theme = useTheme();
 
   const showStatusHandler = () => {
-    const status = ui.connected ? 'Connected node' : 'Disconnected node'
+    const status = ui.connected ? "Connected node" : "Disconnected node";
 
-    Toast.showWithGravity(status, 0.4, Toast.CENTER)
-  }
+    Toast.showWithGravity(status, 0.4, Toast.CENTER);
+  };
 
-  const isDarkMode = useDarkMode()
+  const isDarkMode = useDarkMode();
   return useObserver(() => {
     return (
       <Appbar.Header
@@ -29,15 +29,19 @@ export default function Header({ border = false }) {
           ...styles.appBar,
           backgroundColor: theme.bg,
           borderBottomWidth: border ? 1 : 0,
-          borderBottomColor: theme.border
+          borderBottomColor: theme.border,
         }}
       >
         <View style={{ ...styles.flex, ...styles.content }}>
           <View style={{ ...styles.flex, ...styles.left }}>
             <Image
-              source={theme.dark ? require('../../../assets/zion-dark-theme.png') : require('../../../assets/zion.png')}
+              source={
+                theme.dark
+                  ? require("../../../assets/zion-dark-theme.png")
+                  : require("../../../assets/zion.png")
+              }
               style={styles.brand}
-              resizeMode={'contain'}
+              resizeMode={"contain"}
             />
           </View>
           <Balance
@@ -53,50 +57,53 @@ export default function Header({ border = false }) {
                 style={{}}
               />
             ) : (
-              <TouchableOpacity onPress={showStatusHandler} style={{ ...styles.status }}>
+              <TouchableOpacity
+                onPress={showStatusHandler}
+                style={{ ...styles.status }}
+              >
                 <MaterialIcon
-                  name='lightning-bolt'
+                  name="lightning-bolt"
                   size={20}
-                  color={ui.connected ? '#49ca97' : '#febd59'}
+                  color={ui.connected ? "#49ca97" : "#febd59"}
                 />
               </TouchableOpacity>
             )}
           </View>
         </View>
       </Appbar.Header>
-    )
-  })
+    );
+  });
 }
 
 const styles = StyleSheet.create({
   appBar: {
     elevation: 0,
-    height: 60
+    height: 60,
   },
   flex: {
-    display: 'flex',
-    alignItems: 'center',
-    flexDirection: 'row'
+    display: "flex",
+    alignItems: "center",
+    flexDirection: "row",
   },
   content: {
-    justifyContent: 'space-between',
-    width: '100%'
+    justifyContent: "space-between",
+    width: "100%",
   },
   left: {
-    justifyContent: 'space-between',
+    justifyContent: "space-between",
     width: 50,
-    marginLeft: 12
+    marginLeft: 12,
   },
   right: {
-    justifyContent: 'flex-end',
-    marginRight: 12
+    justifyContent: "flex-end",
+    marginRight: 12,
   },
   brand: {
     width: 70,
     height: 70,
-    maxWidth: 70
+    maxWidth: 70,
   },
   status: {
-    width: 20
-  }
-})
+    width: 20,
+  },
+});

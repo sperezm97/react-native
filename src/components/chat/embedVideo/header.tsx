@@ -1,10 +1,10 @@
-import React from 'react'
-import { View } from 'react-native'
+import React from "react";
+import { View } from "react-native";
 
-import Typography from '../../common/Typography'
-import styles from './styles'
+import Typography from "../../common/Typography";
+import styles from "./styles";
 
-type HeaderProps = {}
+type HeaderProps = {};
 
 const Header: React.FC<HeaderProps> = () => {
   return (
@@ -13,7 +13,7 @@ const Header: React.FC<HeaderProps> = () => {
         Rumble embed or Youtube url
       </Typography>
     </View>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;

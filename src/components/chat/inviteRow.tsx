@@ -1,58 +1,58 @@
-import React, { useState } from 'react'
-import { StyleSheet, TouchableOpacity, View, Image, Alert } from 'react-native'
-import { Dialog, Portal, Button } from 'react-native-paper'
-import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons'
-import moment from 'moment'
-import Toast from 'react-native-simple-toast'
+import React, { useState } from "react";
+import { StyleSheet, TouchableOpacity, View, Image, Alert } from "react-native";
+import { Dialog, Portal, Button } from "react-native-paper";
+import MaterialIcon from "react-native-vector-icons/MaterialCommunityIcons";
+import moment from "moment";
+import Toast from "react-native-simple-toast";
 
-import { constantCodes } from '../../constants'
-import { useStores, useTheme } from '../../store'
-import Typography from '../common/Typography'
+import { constantCodes } from "../../constants";
+import { useStores, useTheme } from "../../store";
+import Typography from "../common/Typography";
 
 export default function InviteRow(props) {
-  const theme = useTheme()
-  const { contacts, ui, details } = useStores()
-  const { name, invite } = props
-  const [loading, setLoading] = useState(false)
-  const [confirmed, setConfirmed] = useState(false)
-  const statusString = constantCodes['invite_statuses'][invite.status]
+  const theme = useTheme();
+  const { contacts, ui, details } = useStores();
+  const { name, invite } = props;
+  const [loading, setLoading] = useState(false);
+  const [confirmed, setConfirmed] = useState(false);
+  const statusString = constantCodes["invite_statuses"][invite.status];
 
-  const expiredStatus = props.invite.status === 5
-  const yesterday = moment().utc().add(-24, 'hours')
+  const expiredStatus = props.invite.status === 5;
+  const yesterday = moment().utc().add(-24, "hours");
   const isExpired = moment(invite.created_at || new Date())
     .utc()
-    .isBefore(yesterday)
-  if (isExpired || expiredStatus) return <></>
+    .isBefore(yesterday);
+  if (isExpired || expiredStatus) return <></>;
 
   const actions = {
     payment_pending: () => {
       if (!confirmed) {
-        Alert.alert('Pay for invitation?', '', [
+        Alert.alert("Pay for invitation?", "", [
           {
-            text: 'Cancel',
-            onPress: () => console.log('Cancel Pressed'),
-            style: 'cancel'
+            text: "Cancel",
+            onPress: () => console.log("Cancel Pressed"),
+            style: "cancel",
           },
-          { text: 'Confirm', onPress: () => onConfirmHandler() }
-        ])
+          { text: "Confirm", onPress: () => onConfirmHandler() },
+        ]);
       }
     },
     ready: () => ui.setShareInviteModal(invite.invite_string),
-    delivered: () => ui.setShareInviteModal(invite.invite_string)
-  }
+    delivered: () => ui.setShareInviteModal(invite.invite_string),
+  };
   function doAction() {
-    if (actions[statusString]) actions[statusString]()
+    if (actions[statusString]) actions[statusString]();
   }
 
   async function onConfirmHandler() {
-    const balance = details.balance
+    const balance = details.balance;
     if (balance < invite.price) {
-      Toast.showWithGravity('Not Enough Balance', Toast.SHORT, Toast.TOP)
+      Toast.showWithGravity("Not Enough Balance", Toast.SHORT, Toast.TOP);
     } else {
-      setLoading(true)
-      await contacts.payInvite(invite.invite_string)
-      setConfirmed(true)
-      setLoading(false)
+      setLoading(true);
+      await contacts.payInvite(invite.invite_string);
+      setConfirmed(true);
+      setLoading(false);
     }
   }
 
@@ -64,7 +64,7 @@ export default function InviteRow(props) {
         ...styles.chatRow,
         backgroundColor: theme.main,
         ...styles.borderBottom,
-        borderBottomColor: theme.border
+        borderBottomColor: theme.border,
       }}
       activeOpacity={0.5}
       onPress={doAction}
@@ -72,12 +72,15 @@ export default function InviteRow(props) {
       <View style={styles.avatarWrap}>
         <Image
           style={{ height: 40, width: 40 }}
-          source={require('../../assets/invite-qr.png')}
+          source={require("../../assets/invite-qr.png")}
         />
       </View>
       <View style={styles.inviteContent}>
         <View style={styles.top}>
-          <Typography color={theme.primary} size={16}>{`Invite: ${name}`}</Typography>
+          <Typography
+            color={theme.primary}
+            size={16}
+          >{`Invite: ${name}`}</Typography>
           {invite.price && (
             <Typography style={{ marginRight: 14 }} color={theme.darkGrey}>
               {invite.price}
@@ -92,117 +95,119 @@ export default function InviteRow(props) {
         </View>
       </View>
     </TouchableOpacity>
-  )
+  );
 }
 
 function inviteIcon(statusString, theme) {
   switch (statusString) {
-    case 'payment_pending':
+    case "payment_pending":
       return (
         <MaterialIcon
-          name='credit-card'
+          name="credit-card"
           size={14}
           color={theme.icon}
           style={{ marginRight: 4 }}
         />
-      )
-    case 'ready':
+      );
+    case "ready":
       return (
         <MaterialIcon
-          name='check'
+          name="check"
           size={14}
           color={theme.icon}
           style={{ marginRight: 4 }}
         />
-      )
-    case 'delivered':
+      );
+    case "delivered":
       return (
         <MaterialIcon
-          name='check'
+          name="check"
           size={14}
           color={theme.icon}
           style={{ marginRight: 4 }}
         />
-      )
+      );
     default:
-      return <></>
+      return <></>;
   }
 }
 
 function inviteMsg(statusString: string, name: string, confirmed?: boolean) {
   switch (statusString) {
-    case 'pending':
-      return `${name} is on the waitlist`
-    case 'payment_pending':
-      return confirmed ? 'Awaiting confirmation...' : 'Tap to pay and activate the invite'
-    case 'ready':
-      return 'Ready! Tap to share. Expires in 24 hours'
-    case 'delivered':
-      return 'Ready! Tap to share. Expires in 24 hours'
-    case 'in_progress':
-      return `${name} is signing on`
-    case 'expired':
-      return 'Expired'
+    case "pending":
+      return `${name} is on the waitlist`;
+    case "payment_pending":
+      return confirmed
+        ? "Awaiting confirmation..."
+        : "Tap to pay and activate the invite";
+    case "ready":
+      return "Ready! Tap to share. Expires in 24 hours";
+    case "delivered":
+      return "Ready! Tap to share. Expires in 24 hours";
+    case "in_progress":
+      return `${name} is signing on`;
+    case "expired":
+      return "Expired";
     default:
-      return 'Signup complete'
+      return "Signup complete";
   }
 }
 
 export const styles = StyleSheet.create({
   chatRow: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center'
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
   },
   borderBottom: {
-    flexDirection: 'row',
+    flexDirection: "row",
     flex: 1,
-    borderBottomWidth: 1
+    borderBottomWidth: 1,
   },
   chatContent: {
-    display: 'flex',
-    flexDirection: 'column',
+    display: "flex",
+    flexDirection: "column",
     flex: 1,
     paddingLeft: 16,
-    paddingTop: 16
+    paddingTop: 16,
   },
   inviteContent: {
-    display: 'flex',
-    flexDirection: 'column',
+    display: "flex",
+    flexDirection: "column",
     flex: 1,
-    paddingLeft: 16
+    paddingLeft: 16,
   },
   top: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     flex: 1,
-    maxHeight: 28
+    maxHeight: 28,
   },
   bottom: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between'
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
   inviteBottom: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center'
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
   },
   avatarWrap: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
     paddingLeft: 16,
     width: 70,
-    height: 80
+    height: 80,
   },
   chatDate: {
-    marginRight: 14
+    marginRight: 14,
   },
   cancel: {
-    color: 'red'
-  }
-})
+    color: "red",
+  },
+});

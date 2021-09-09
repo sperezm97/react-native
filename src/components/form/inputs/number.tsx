@@ -1,10 +1,10 @@
-import React from 'react'
-import { StyleSheet, View } from 'react-native'
-import { TextInput } from 'react-native-paper'
+import React from "react";
+import { StyleSheet, View } from "react-native";
+import { TextInput } from "react-native-paper";
 
-import { useTheme } from '../../../store'
-import InputAccessoryView from '../../common/Accessories/InputAccessoryView'
-import Typography from '../../common/Typography'
+import { useTheme } from "../../../store";
+import InputAccessoryView from "../../common/Accessories/InputAccessoryView";
+import Typography from "../../common/Typography";
 // import QDialog from './qDialog'
 
 export default function NumberInput({
@@ -18,14 +18,14 @@ export default function NumberInput({
   displayOnly,
   description,
   accessibilityLabel,
-  style
+  style,
 }) {
-  const theme = useTheme()
-  let lab = `${label.en}${required ? ' *' : ''}`
+  const theme = useTheme();
+  let lab = `${label.en}${required ? " *" : ""}`;
   // if (error) {
   //   lab = `${label.en} - ${error}`
   // }
-  if (displayOnly) lab = label.en
+  if (displayOnly) lab = label.en;
 
   return (
     <>
@@ -34,12 +34,12 @@ export default function NumberInput({
       </Typography>
       <TextInput
         accessibilityLabel={accessibilityLabel}
-        keyboardType='numeric'
+        keyboardType="numeric"
         error={error}
         style={{ ...styles.inputStyles, ...style, backgroundColor: theme.bg }}
-        onChangeText={e => setValue(parseInt(e))}
+        onChangeText={(e) => setValue(parseInt(e))}
         onBlur={handleBlur(name)}
-        value={value || value === 0 ? value + '' : ''}
+        value={value || value === 0 ? value + "" : ""}
         inputAccessoryViewID={name}
         underlineColor={theme.border}
       />
@@ -47,12 +47,12 @@ export default function NumberInput({
 
       <InputAccessoryView nativeID={name} />
     </>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
   inputStyles: {
     marginBottom: 16,
-    maxHeight: 55
-  }
-})
+    maxHeight: 55,
+  },
+});

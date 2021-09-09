@@ -1,96 +1,96 @@
-import React, { useEffect, useState } from 'react'
-import { StyleSheet, TouchableOpacity, View } from 'react-native'
-import { useObserver } from 'mobx-react-lite'
-import { useNavigation } from '@react-navigation/native'
-import RNFetchBlob from 'rn-fetch-blob'
-import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
-import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
-import Ionicon from 'react-native-vector-icons/Ionicons'
-import { isIphoneX } from 'react-native-iphone-x-helper'
+import React, { useEffect, useState } from "react";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { useObserver } from "mobx-react-lite";
+import { useNavigation } from "@react-navigation/native";
+import RNFetchBlob from "rn-fetch-blob";
+import MaterialIcon from "react-native-vector-icons/MaterialIcons";
+import MaterialCommunityIcon from "react-native-vector-icons/MaterialCommunityIcons";
+import Ionicon from "react-native-vector-icons/Ionicons";
+import { isIphoneX } from "react-native-iphone-x-helper";
 
-import { useStores, useTheme } from '../../../store'
-import Typography from '../../common/Typography'
-import Avatar from '../../common/Avatar'
-import Button from '../../common/Button'
-import ImageDialog from '../../common/Dialogs/ImageDialog'
-import PhotoModal from '../../common/Modals/Media/Photo'
-import JoinTribe from '../../common/Modals/Tribe/JoinTribe'
-import AvatarEdit from '../../common/Avatar/AvatarEdit'
-import { setTint } from '../../common/StatusBar'
+import { useStores, useTheme } from "../../../store";
+import Typography from "../../common/Typography";
+import Avatar from "../../common/Avatar";
+import Button from "../../common/Button";
+import ImageDialog from "../../common/Dialogs/ImageDialog";
+import PhotoModal from "../../common/Modals/Media/Photo";
+import JoinTribe from "../../common/Modals/Tribe/JoinTribe";
+import AvatarEdit from "../../common/Avatar/AvatarEdit";
+import { setTint } from "../../common/StatusBar";
 
 export default function Intro({ tribe }) {
-  const { chats, meme } = useStores()
-  const theme = useTheme()
-  const [imageDialog, setImageDialog] = useState(false)
-  const [uploading, setUploading] = useState(false)
-  const [uploadPercent, setUploadedPercent] = useState(0)
-  const [photoModal, setPhotoModal] = useState(false)
-  const [tribePhoto, setTribePhoto] = useState('')
-  const navigation = useNavigation()
+  const { chats, meme } = useStores();
+  const theme = useTheme();
+  const [imageDialog, setImageDialog] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [uploadPercent, setUploadedPercent] = useState(0);
+  const [photoModal, setPhotoModal] = useState(false);
+  const [tribePhoto, setTribePhoto] = useState("");
+  const navigation = useNavigation();
 
   async function tookPic(img) {
-    setUploading(true)
+    setUploading(true);
     try {
-      await upload(img.uri)
+      await upload(img.uri);
     } catch (e) {
-      setUploading(false)
+      setUploading(false);
     }
   }
 
   async function upload(uri) {
-    const type = 'image/jpg'
-    const name = 'Image.jpg'
-    const server = meme.getDefaultServer()
-    if (!server) return
+    const type = "image/jpg";
+    const name = "Image.jpg";
+    const server = meme.getDefaultServer();
+    if (!server) return;
 
-    uri = uri.replace('file://', '')
+    uri = uri.replace("file://", "");
 
     RNFetchBlob.fetch(
-      'POST',
+      "POST",
       `https://${server.host}/public`,
       {
         Authorization: `Bearer ${server.token}`,
-        'Content-Type': 'multipart/form-data'
+        "Content-Type": "multipart/form-data",
       },
       [
         {
-          name: 'file',
+          name: "file",
           filename: name,
           type: type,
-          data: RNFetchBlob.wrap(uri)
+          data: RNFetchBlob.wrap(uri),
         },
-        { name: 'name', data: name }
+        { name: "name", data: name },
       ]
     )
       .uploadProgress({ interval: 250 }, (written, total) => {
-        setUploadedPercent(Math.round((written / total) * 100))
+        setUploadedPercent(Math.round((written / total) * 100));
       })
-      .then(async resp => {
-        let json = resp.json()
+      .then(async (resp) => {
+        let json = resp.json();
 
         if (json.muid) {
-          setTribePhoto(`https://${server.host}/public/${json.muid}`)
+          setTribePhoto(`https://${server.host}/public/${json.muid}`);
 
           await chats.editTribe({
             ...tribe,
-            id: tribe.chat.id
-          })
+            id: tribe.chat.id,
+          });
         }
 
-        setUploading(false)
+        setUploading(false);
       })
-      .catch(err => {
-        console.log(err)
-        setUploading(false)
-      })
+      .catch((err) => {
+        console.log(err);
+        setUploading(false);
+      });
   }
 
   function onTribeMembersPress() {
-    navigation.navigate('TribeMembers', { tribe })
+    navigation.navigate("TribeMembers", { tribe });
   }
 
   return useObserver(() => {
-    if (tribePhoto) tribe.img = tribePhoto
+    if (tribePhoto) tribe.img = tribePhoto;
 
     return (
       <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
@@ -99,13 +99,13 @@ export default function Intro({ tribe }) {
             <AvatarEdit
               onPress={() => {
                 if (tribe.owner) {
-                  setImageDialog(true)
+                  setImageDialog(true);
                 } else {
                   if (tribe.img) {
-                    setPhotoModal(true)
+                    setPhotoModal(true);
                     setTimeout(() => {
-                      setTint('dark')
-                    }, 300)
+                      setTint("dark");
+                    }, 300);
                   }
                 }
               }}
@@ -114,7 +114,7 @@ export default function Intro({ tribe }) {
               display={!tribe.owner}
               size={80}
               round={50}
-              top='40%'
+              top="40%"
             >
               <Avatar photo={tribe.img} size={80} round={50} />
             </AvatarEdit>
@@ -125,16 +125,23 @@ export default function Intro({ tribe }) {
               style={{
                 ...styles.row,
                 flex: 1,
-                flexWrap: 'wrap'
+                flexWrap: "wrap",
               }}
             >
-              <Typography size={22} fw='600' numberOfLines={1}>
+              <Typography size={22} fw="600" numberOfLines={1}>
                 {tribe.name}
               </Typography>
               {!tribe.owner && (
                 <>
-                  <View style={{ ...styles.dot, backgroundColor: theme.text }}></View>
-                  <Typography size={14} fw='500' color={theme.subtitle} numberOfLines={1}>
+                  <View
+                    style={{ ...styles.dot, backgroundColor: theme.text }}
+                  ></View>
+                  <Typography
+                    size={14}
+                    fw="500"
+                    color={theme.subtitle}
+                    numberOfLines={1}
+                  >
                     {tribe.owner_alias?.trim()}
                   </Typography>
                 </>
@@ -145,33 +152,39 @@ export default function Intro({ tribe }) {
               style={{
                 ...styles.row,
                 marginTop: 6,
-                marginBottom: 14
+                marginBottom: 14,
               }}
             >
               <View
                 style={{
-                  ...styles.row
+                  ...styles.row,
                 }}
               >
-                <MaterialIcon name='public' size={18} color={theme.grey} />
+                <MaterialIcon name="public" size={18} color={theme.grey} />
                 <Typography size={14} style={{ paddingLeft: 4 }}>
-                  {tribe.private ? 'Private Community' : 'Public Community'}
+                  {tribe.private ? "Private Community" : "Public Community"}
                 </Typography>
-                <View style={{ ...styles.dot, backgroundColor: theme.text }}></View>
+                <View
+                  style={{ ...styles.dot, backgroundColor: theme.text }}
+                ></View>
               </View>
 
               {/* {tribe.owner ? ( */}
               <TouchableOpacity
                 style={{
                   ...styles.row,
-                  flex: 1
+                  flex: 1,
                 }}
                 onPress={onTribeMembersPress}
               >
-                <Typography size={14} fw='600' numberOfLines={1}>
-                  {tribe.member_count}{' '}
+                <Typography size={14} fw="600" numberOfLines={1}>
+                  {tribe.member_count}{" "}
                 </Typography>
-                <Typography size={14} numberOfLines={1} style={{ flexShrink: 1 }}>
+                <Typography
+                  size={14}
+                  numberOfLines={1}
+                  style={{ flexShrink: 1 }}
+                >
                   members
                 </Typography>
               </TouchableOpacity>
@@ -198,39 +211,39 @@ export default function Intro({ tribe }) {
         <PhotoModal
           visible={photoModal}
           close={() => {
-            setPhotoModal(false)
-            setTint(theme.dark ? 'dark' : 'light')
+            setPhotoModal(false);
+            setTint(theme.dark ? "dark" : "light");
           }}
           photo={tribe.img}
         />
       </View>
-    )
-  })
+    );
+  });
 }
 
 function TribeActions({ tribe }) {
-  const { chats, msg, ui } = useStores()
-  const theme = useTheme()
-  const navigation = useNavigation()
+  const { chats, msg, ui } = useStores();
+  const theme = useTheme();
+  const navigation = useNavigation();
   const [joinTribe, setJoinTribe] = useState({
     visible: false,
-    tribe: null
-  })
+    tribe: null,
+  });
 
   async function onJoinPress() {
-    const host = chats.getDefaultTribeServer().host
-    const tribeParams = await chats.getTribeDetails(host, tribe.uuid)
+    const host = chats.getDefaultTribeServer().host;
+    const tribeParams = await chats.getTribeDetails(host, tribe.uuid);
 
     setJoinTribe({
       visible: true,
-      tribe: tribeParams
-    })
+      tribe: tribeParams,
+    });
   }
 
   async function onChatPress() {
-    msg.seeChat(tribe.chat.id)
-    msg.getMessages()
-    navigation.navigate('Chat', { ...tribe.chat })
+    msg.seeChat(tribe.chat.id);
+    msg.getMessages();
+    navigation.navigate("Chat", { ...tribe.chat });
   }
 
   return useObserver(() => {
@@ -246,16 +259,20 @@ function TribeActions({ tribe }) {
               </Button> */}
                   <Button
                     icon={() => (
-                      <Ionicon name='chatbubbles-outline' color={theme.white} size={20} />
+                      <Ionicon
+                        name="chatbubbles-outline"
+                        color={theme.white}
+                        size={20}
+                      />
                     )}
                     onPress={onChatPress}
-                    w='60%'
+                    w="60%"
                   >
                     Chat
                   </Button>
                 </View>
               ) : (
-                <Button color={theme.primary} onPress={onJoinPress} w='35%'>
+                <Button color={theme.primary} onPress={onJoinPress} w="35%">
                   Join
                 </Button>
               )}
@@ -263,10 +280,14 @@ function TribeActions({ tribe }) {
           ) : (
             <Button
               icon={() => (
-                <Ionicon name='chatbubbles-outline' color={theme.white} size={20} />
+                <Ionicon
+                  name="chatbubbles-outline"
+                  color={theme.white}
+                  size={20}
+                />
               )}
               onPress={onChatPress}
-              w='60%'
+              w="60%"
             >
               Chat
             </Button>
@@ -278,54 +299,54 @@ function TribeActions({ tribe }) {
           close={() => {
             setJoinTribe({
               visible: false,
-              tribe: null
-            })
+              tribe: null,
+            });
           }}
         />
       </>
-    )
-  })
+    );
+  });
 }
 
 const styles = StyleSheet.create({
   wrap: {
     flex: 1,
     paddingRight: 14,
-    paddingLeft: 14
+    paddingLeft: 14,
   },
   header: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
     // alignItems: 'center',
-    flexWrap: 'wrap',
-    width: '100%'
+    flexWrap: "wrap",
+    width: "100%",
   },
   headerContent: {
-    display: 'flex',
-    width: '80%',
-    paddingLeft: 25
+    display: "flex",
+    width: "80%",
+    paddingLeft: 25,
   },
   avatarWrap: {
-    display: 'flex',
-    alignItems: 'center',
-    width: '20%'
+    display: "flex",
+    alignItems: "center",
+    width: "20%",
     // justifyContent: 'center'
   },
   row: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center'
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
   },
   dot: {
     width: 3,
     height: 3,
     borderRadius: 5,
-    marginHorizontal: 10
+    marginHorizontal: 10,
   },
   headerActions: {
-    display: 'flex',
-    flexDirection: 'row',
-    flex: 1
-  }
-})
+    display: "flex",
+    flexDirection: "row",
+    flex: 1,
+  },
+});

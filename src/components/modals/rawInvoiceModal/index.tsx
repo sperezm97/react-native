@@ -1,122 +1,136 @@
-import React, { useState } from 'react'
-import { useObserver } from 'mobx-react-lite'
-import { View, Text, Image, StyleSheet } from 'react-native'
-import { Button, Portal } from 'react-native-paper'
+import React, { useState } from "react";
+import { useObserver } from "mobx-react-lite";
+import { View, Text, Image, StyleSheet } from "react-native";
+import { Button, Portal } from "react-native-paper";
 
-import { useStores } from '../../../store'
-import ModalWrap from '../modalWrap'
-import Header from '../modalHeader'
-import ShowRawInvoice from './showRawInvoice'
+import { useStores } from "../../../store";
+import ModalWrap from "../modalWrap";
+import Header from "../modalHeader";
+import ShowRawInvoice from "./showRawInvoice";
 
 export default function RawInvoiceModalWrap({ visible }) {
-  const { ui } = useStores()
+  const { ui } = useStores();
 
   function close() {
-    ui.clearRawInvoiceModal()
+    ui.clearRawInvoiceModal();
   }
 
   return (
     <ModalWrap onClose={close} visible={visible}>
       {visible && <RawInvoiceModal close={close} />}
     </ModalWrap>
-  )
+  );
 }
 
 function RawInvoiceModal({ close }) {
-  const { ui, msg } = useStores()
-  const [loading, setLoading] = useState(false)
-  const [payreq, setPayreq] = useState('')
+  const { ui, msg } = useStores();
+  const [loading, setLoading] = useState(false);
+  const [payreq, setPayreq] = useState("");
 
   async function createInvoice() {
-    setLoading(true)
-    const params = ui.rawInvoiceModalParams
-    const amt = (params.amount && parseInt(params.amount)) || 0
-    const r = await msg.createRawInvoice({ amt, memo: '' })
+    setLoading(true);
+    const params = ui.rawInvoiceModalParams;
+    const amt = (params.amount && parseInt(params.amount)) || 0;
+    const r = await msg.createRawInvoice({ amt, memo: "" });
     if (r && r.invoice) {
-      setPayreq(r.invoice)
+      setPayreq(r.invoice);
     }
-    setLoading(false)
+    setLoading(false);
   }
 
   return useObserver(() => {
-    const params = ui.rawInvoiceModalParams
-    const hasPayreq = payreq ? true : false
+    const params = ui.rawInvoiceModalParams;
+    const hasPayreq = payreq ? true : false;
     return (
       <Portal.Host>
-        <Header title='Payment Request' onClose={close} />
+        <Header title="Payment Request" onClose={close} />
         <View style={styles.wrap}>
           {params && !hasPayreq && (
             <View style={styles.innerWrap}>
               <Text style={styles.genText}>Generate Invoice</Text>
-              {params.imgurl && <Image source={{ uri: params.imgurl }} style={styles.img} />}
+              {params.imgurl && (
+                <Image source={{ uri: params.imgurl }} style={styles.img} />
+              )}
               {params.name && <Text style={styles.genText}>{params.name}</Text>}
               {params.amount && <Text style={styles.amt}>{params.amount}</Text>}
               {params.amount && <Text style={styles.sat}>sat</Text>}
               <View style={styles.confirmWrap}>
-                <Button style={styles.confirm} loading={loading} onPress={() => createInvoice()} mode='contained' dark={true}>
+                <Button
+                  style={styles.confirm}
+                  loading={loading}
+                  onPress={() => createInvoice()}
+                  mode="contained"
+                  dark={true}
+                >
                   CONFIRM
                 </Button>
               </View>
             </View>
           )}
 
-          {hasPayreq && <ShowRawInvoice amount={params && params.amount} payreq={payreq} paid={payreq === ui.lastPaidInvoice} />}
+          {hasPayreq && (
+            <ShowRawInvoice
+              amount={params && params.amount}
+              payreq={payreq}
+              paid={payreq === ui.lastPaidInvoice}
+            />
+          )}
         </View>
       </Portal.Host>
-    )
-  })
+    );
+  });
 }
 
 const styles = StyleSheet.create({
   wrap: {
     flex: 1,
-    width: '100%',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    minHeight: '90%',
-    maxHeight: '90%'
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "flex-end",
+    minHeight: "90%",
+    maxHeight: "90%",
   },
   innerWrap: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '100%'
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
   },
   genText: {
     fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 25
+    fontWeight: "bold",
+    marginBottom: 25,
   },
   amt: {
     fontSize: 42,
-    color: '#333'
+    color: "#333",
   },
   sat: {
     fontSize: 16,
-    color: '#aaa',
-    marginBottom: 15
+    color: "#aaa",
+    marginBottom: 15,
   },
   img: {
     height: 130,
     width: 130,
     borderRadius: 10,
-    marginBottom: 25
+    marginBottom: 25,
   },
   confirmWrap: {
-    width: '100%',
-    display: 'flex',
-    alignItems: 'center',
+    width: "100%",
+    display: "flex",
+    alignItems: "center",
     height: 100,
-    marginTop: 12
+    marginTop: 12,
   },
   confirm: {
-    backgroundColor: '#6289FD',
+    backgroundColor: "#6289FD",
     height: 42,
     width: 200,
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 20
-  }
-})
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 20,
+  },
+});

@@ -1,5 +1,5 @@
-import { Dimensions } from 'react-native'
-import { getStatusBarHeight } from 'react-native-status-bar-height'
+import { Dimensions } from "react-native";
+import { getStatusBarHeight } from "react-native-status-bar-height";
 
 const constants = {
   invite_statuses: {
@@ -9,11 +9,11 @@ const constants = {
     in_progress: 3,
     complete: 4,
     expired: 5,
-    payment_pending: 6
+    payment_pending: 6,
   },
   contact_statuses: {
     pending: 0,
-    confirmed: 1
+    confirmed: 1,
   },
   statuses: {
     pending: 0,
@@ -21,12 +21,12 @@ const constants = {
     cancelled: 2,
     received: 3,
     failed: 4,
-    deleted: 5
+    deleted: 5,
   },
   chat_statuses: {
     approved: 0,
     pending: 1,
-    rejected: 2
+    rejected: 2,
   },
   message_types: {
     message: 0,
@@ -56,45 +56,47 @@ const constants = {
     bot_cmd: 24,
     bot_res: 25,
     keysend: 28,
-    boost: 29
+    boost: 29,
   },
   payment_errors: {
-    timeout: 'Timed Out',
-    no_route: 'No Route To Receiver',
-    error: 'Error',
-    incorrect_payment_details: 'Incorrect Payment Details',
-    unknown: 'Unknown'
+    timeout: "Timed Out",
+    no_route: "No Route To Receiver",
+    error: "Error",
+    incorrect_payment_details: "Incorrect Payment Details",
+    unknown: "Unknown",
   },
   chat_types: {
     conversation: 0,
     group: 1,
-    tribe: 2
-  }
-}
+    tribe: 2,
+  },
+};
 
 function switcher(consts) {
-  const codes = {}
+  const codes = {};
   for (let [k, obj] of Object.entries(consts)) {
     for (let [str, num] of Object.entries(obj)) {
-      if (!codes[k]) codes[k] = {}
-      codes[k][num] = str
+      if (!codes[k]) codes[k] = {};
+      codes[k][num] = str;
     }
   }
   // dont switch this one
-  codes['payment_errors'] = consts['payment_errors']
-  return codes
+  codes["payment_errors"] = consts["payment_errors"];
+  return codes;
 }
 
-const constantCodes = switcher(constants)
+const constantCodes = switcher(constants);
 
-export const TRIBE_SIZE_LIMIT = 20
+export const TRIBE_SIZE_LIMIT = 20;
 
-export const TOAST_DURATION = 0.5
-export const STACK_HEADER_HEIGHT = 60
-export const TAB_HEIGHT = 50
+export const TOAST_DURATION = 0.5;
+export const STACK_HEADER_HEIGHT = 60;
+export const TAB_HEIGHT = 50;
 
-export const SCREEN_HEIGHT: number = Math.round(Dimensions.get('window').height)
-export const SCREEN_WIDTH: number = Math.round(Dimensions.get('window').width)
-export const STATUS_BAR_HEIGHT: number = getStatusBarHeight()
+export const SCREEN_HEIGHT: number = Math.round(
+  Dimensions.get("window").height
+);
+export const SCREEN_WIDTH: number = Math.round(Dimensions.get("window").width);
+export const STATUS_BAR_HEIGHT: number = getStatusBarHeight();
 
-export { constants, constantCodes }
+export { constants, constantCodes };

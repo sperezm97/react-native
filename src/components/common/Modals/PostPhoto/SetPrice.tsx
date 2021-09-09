@@ -1,34 +1,34 @@
-import React, { useState } from 'react'
-import { StyleSheet, View, TouchableOpacity } from 'react-native'
-import { useObserver } from 'mobx-react-lite'
+import React, { useState } from "react";
+import { StyleSheet, View, TouchableOpacity } from "react-native";
+import { useObserver } from "mobx-react-lite";
 
-import { useTheme } from '../../../../store'
-import NumKey from '../../../utils/numkey'
-import Typography from '../../Typography'
-import Button from '../../Button'
+import { useTheme } from "../../../../store";
+import NumKey from "../../../utils/numkey";
+import Typography from "../../Typography";
+import Button from "../../Button";
 
 export default function SetPrice({ setAmount, onShow }) {
-  const theme = useTheme()
-  const [price, setPrice] = useState('SET PRICE')
-  const [showNum, setShowNum] = useState(false)
-  const [amt, setAmt] = useState('0')
+  const theme = useTheme();
+  const [price, setPrice] = useState("SET PRICE");
+  const [showNum, setShowNum] = useState(false);
+  const [amt, setAmt] = useState("0");
 
   function go(n) {
-    if (amt === '0') setAmt(`${n}`)
-    else setAmt(`${amt}${n}`)
+    if (amt === "0") setAmt(`${n}`);
+    else setAmt(`${amt}${n}`);
   }
   function backspace() {
     if (amt.length === 1) {
-      setAmt('0')
+      setAmt("0");
     } else {
-      const newAmt = amt.substr(0, amt.length - 1)
-      setAmt(newAmt)
+      const newAmt = amt.substr(0, amt.length - 1);
+      setAmt(newAmt);
     }
   }
 
   function open() {
-    onShow()
-    setShowNum(!showNum)
+    onShow();
+    setShowNum(!showNum);
   }
 
   return useObserver(() => (
@@ -52,12 +52,12 @@ export default function SetPrice({ setAmount, onShow }) {
           </View>
           <View
             style={{
-              justifyContent: 'flex-end',
-              width: '100%'
+              justifyContent: "flex-end",
+              width: "100%",
             }}
           >
             <NumKey
-              onKeyPress={v => go(v)}
+              onKeyPress={(v) => go(v)}
               onBackspace={() => backspace()}
               squish
               inline
@@ -67,17 +67,17 @@ export default function SetPrice({ setAmount, onShow }) {
           <View
             style={{
               ...styles.confirmWrap,
-              opacity: amt && amt !== '0' ? 1 : 0
+              opacity: amt && amt !== "0" ? 1 : 0,
             }}
           >
             <Button
-              size='small'
+              size="small"
               w={130}
               h={40}
               onPress={() => {
-                setPrice(`${amt} sat`)
-                setShowNum(false)
-                setAmount(parseInt(amt))
+                setPrice(`${amt} sat`);
+                setShowNum(false);
+                setAmount(parseInt(amt));
               }}
             >
               CONFIRM
@@ -86,51 +86,51 @@ export default function SetPrice({ setAmount, onShow }) {
         </View>
       )}
     </>
-  ))
+  ));
 }
 
 const styles = StyleSheet.create({
   priceButton: {
-    position: 'absolute',
+    position: "absolute",
     top: 90,
     left: 20,
     height: 32,
     minWidth: 90,
     zIndex: 999,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 5
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 5,
   },
   num: {
     borderRadius: 10,
     width: 240,
     height: 400,
-    position: 'absolute',
+    position: "absolute",
     top: 140,
     left: 20,
     zIndex: 999,
-    display: 'flex',
-    justifyContent: 'space-around',
-    alignItems: 'center',
+    display: "flex",
+    justifyContent: "space-around",
+    alignItems: "center",
     paddingTop: 14,
-    paddingBottom: 14
+    paddingBottom: 14,
   },
   amtWrap: {
-    width: '100%',
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    position: 'relative'
+    width: "100%",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    position: "relative",
   },
   sat: {
-    position: 'absolute',
+    position: "absolute",
     right: 28,
-    top: 5
+    top: 5,
   },
   confirmWrap: {
-    width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'center'
-  }
-})
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "center",
+  },
+});

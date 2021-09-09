@@ -79,7 +79,7 @@ export default function PIN(props) {
           setChecking(false);
         }
       } catch (error) {
-        user.reportError("PIN Component - check function", error)
+        user.reportError("PIN Component - check function", error);
       }
     }
   }

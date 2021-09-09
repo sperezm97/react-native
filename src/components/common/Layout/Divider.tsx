@@ -1,13 +1,13 @@
-import React from 'react'
-import { StyleSheet, View } from 'react-native'
+import React from "react";
+import { StyleSheet, View } from "react-native";
 
-import { useTheme } from '../../../store'
+import { useTheme } from "../../../store";
 
 export default function Divider(props) {
-  let { color, h = 1, w = '100%', pt, pb, pr, pl, mt = 20, mb = 20 } = props
-  const theme = useTheme()
+  let { color, h = 1, w = "100%", pt, pb, pr, pl, mt = 20, mb = 20 } = props;
+  const theme = useTheme();
 
-  const borderColor = color ? color : theme.border
+  const borderColor = color ? color : theme.border;
 
   const borderStyles = {
     borderBottomColor: borderColor,
@@ -18,10 +18,10 @@ export default function Divider(props) {
     paddingRight: pr,
     marginTop: mt,
     marginBottom: mb,
-    marginLeft: 'auto',
-    marginRight: 'auto',
-    width: w
-  }
+    marginLeft: "auto",
+    marginRight: "auto",
+    width: w,
+  };
 
-  return <View style={{ ...borderStyles }}></View>
+  return <View style={{ ...borderStyles }}></View>;
 }

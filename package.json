@@ -14,7 +14,8 @@
     "jetify": "jetify",
     "xcode": "open ios/Chat.xcworkspace",
     "bump": "npx react-native bump-version --skip-semver-for android --skip-code-for android",
-    "t": "tsc"
+    "t": "tsc",
+    "prettier":"prettier src/ --write"
   },
   "build": {
     "appId": "Zion.chat",

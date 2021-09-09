@@ -1,40 +1,40 @@
-import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
-import { Button } from 'react-native-paper'
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
-import { constants } from '../../../constants'
-import { useStores, useTheme } from '../../../store'
-import { calcExpiry } from './utils'
-import shared from './sharedStyles'
+import React from "react";
+import { View, Text, StyleSheet } from "react-native";
+import { Button } from "react-native-paper";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import { constants } from "../../../constants";
+import { useStores, useTheme } from "../../../store";
+import { calcExpiry } from "./utils";
+import shared from "./sharedStyles";
 
 export default function Invoice(props) {
-  const { ui } = useStores()
-  const theme = useTheme()
+  const { ui } = useStores();
+  const theme = useTheme();
 
-  const { amount } = props
-  const isMe = props.sender === props.myid
-  const isPaid = props.status === constants.statuses.confirmed
+  const { amount } = props;
+  const isMe = props.sender === props.myid;
+  const isPaid = props.status === constants.statuses.confirmed;
 
-  const { isExpired } = calcExpiry(props)
+  const { isExpired } = calcExpiry(props);
 
-  let label = isMe ? 'REQUEST SENT' : 'REQUEST'
-  let color = '#555'
-  let opacity = 1
+  let label = isMe ? "REQUEST SENT" : "REQUEST";
+  let color = "#555";
+  let opacity = 1;
   if (isPaid) {
-    color = isMe ? '#555' : '#74ABFF'
-    label = 'REQUEST PAID'
+    color = isMe ? "#555" : "#74ABFF";
+    label = "REQUEST PAID";
   } else {
     // if unpaid, check expiry
-    if (isExpired) opacity = 0.35
+    if (isExpired) opacity = 0.35;
   }
 
-  const showPayButton = !isPaid && !isMe
-  const hasContent = props.message_content ? true : false
+  const showPayButton = !isPaid && !isMe;
+  const hasContent = props.message_content ? true : false;
 
   function openConfirmModal() {
-    const checkAgain = calcExpiry(props)
+    const checkAgain = calcExpiry(props);
     if (!checkAgain.isExpired) {
-      ui.setConfirmInvoiceMsg(props)
+      ui.setConfirmInvoiceMsg(props);
     }
   }
 
@@ -42,7 +42,7 @@ export default function Invoice(props) {
     <View style={{ ...styles.bub, opacity, ...shared.innerPad }}>
       <View style={styles.row}>
         <View style={styles.iconWrap}>
-          <Icon name='qrcode' size={22} color={color} />
+          <Icon name="qrcode" size={22} color={color} />
         </View>
         <Text style={{ ...styles.label, color }}>{label}</Text>
       </View>
@@ -61,58 +61,58 @@ export default function Invoice(props) {
         <View style={{ ...styles.row, marginTop: 12 }}>
           <Button
             style={styles.payButton}
-            mode='contained'
+            mode="contained"
             dark={true}
             onPress={openConfirmModal}
-            icon='arrow-top-right'
+            icon="arrow-top-right"
           >
             Pay
           </Button>
         </View>
       )}
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
   bub: {
     minWidth: 200,
-    maxWidth: 200
+    maxWidth: 200,
   },
   amount: {
     fontSize: 28,
-    marginRight: 8
+    marginRight: 8,
   },
   sat: {
-    color: '#aaa',
-    fontSize: 14
+    color: "#aaa",
+    fontSize: 14,
   },
   label: {
-    color: '#74ABFF',
-    fontSize: 10
+    color: "#74ABFF",
+    fontSize: 10,
   },
   iconWrap: {
     height: 25,
     width: 25,
     borderRadius: 3,
     marginRight: 8,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center'
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
   },
   row: {
     marginTop: 8,
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center'
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    alignItems: "center",
   },
   text: {
-    fontSize: 16
+    fontSize: 16,
   },
   payButton: {
-    backgroundColor: '#4AC998',
-    width: '100%',
-    borderRadius: 5
-  }
-})
+    backgroundColor: "#4AC998",
+    width: "100%",
+    borderRadius: 5,
+  },
+});

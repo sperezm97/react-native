@@ -1,12 +1,12 @@
-import React from 'react'
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
-import { Appbar } from 'react-native-paper'
-import { useObserver } from 'mobx-react-lite'
+import React from "react";
+import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import { Appbar } from "react-native-paper";
+import { useObserver } from "mobx-react-lite";
 
-import { useTheme } from '../../store'
+import { useTheme } from "../../store";
 
 export default function Header(props) {
-  const theme = useTheme()
+  const theme = useTheme();
 
   return useObserver(() => {
     return (
@@ -20,40 +20,40 @@ export default function Header(props) {
           </View>
         </View>
       </Appbar.Header>
-    )
-  })
+    );
+  });
 }
 
 const styles = StyleSheet.create({
   appBar: {
-    elevation: 0
+    elevation: 0,
     // height: 20
   },
   flex: {
-    display: 'flex',
-    alignItems: 'center',
-    flexDirection: 'row'
+    display: "flex",
+    alignItems: "center",
+    flexDirection: "row",
   },
   content: {
-    justifyContent: 'space-between',
-    width: '100%'
+    justifyContent: "space-between",
+    width: "100%",
   },
   left: {
-    justifyContent: 'space-between',
+    justifyContent: "space-between",
     width: 50,
-    marginLeft: 14
+    marginLeft: 14,
   },
   right: {
     marginRight: 14,
-    justifyContent: 'flex-end'
+    justifyContent: "flex-end",
   },
   brand: {
     width: 65,
     height: 65,
     maxWidth: 65,
-    marginLeft: 14
+    marginLeft: 14,
   },
   edit: {
-    fontSize: 16
-  }
-})
+    fontSize: 16,
+  },
+});

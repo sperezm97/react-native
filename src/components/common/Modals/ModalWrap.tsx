@@ -1,9 +1,9 @@
-import React from 'react'
-import { StyleSheet, View, Dimensions } from 'react-native'
-import Modal from 'react-native-modal'
-import { isIphoneX, getStatusBarHeight } from 'react-native-iphone-x-helper'
+import React from "react";
+import { StyleSheet, View, Dimensions } from "react-native";
+import Modal from "react-native-modal";
+import { isIphoneX, getStatusBarHeight } from "react-native-iphone-x-helper";
 
-import { useTheme } from '../../../store'
+import { useTheme } from "../../../store";
 
 export default function ModalWrap(props) {
   const {
@@ -19,16 +19,19 @@ export default function ModalWrap(props) {
     fullscreen,
     animationIn,
     animationOut,
-    children
-  } = props
-  const theme = useTheme()
+    children,
+  } = props;
+  const theme = useTheme();
 
-  const paddingTop = noHeader ? 0 : fullscreen ? getStatusBarHeight() : 0
+  const paddingTop = noHeader ? 0 : fullscreen ? getStatusBarHeight() : 0;
 
   return (
     <Modal
       isVisible={visible}
-      style={{ ...styles.modal, justifyContent: fullscreen ? 'center' : 'flex-end' }}
+      style={{
+        ...styles.modal,
+        justifyContent: fullscreen ? "center" : "flex-end",
+      }}
       onSwipeComplete={() => onClose()}
       swipeDirection={noSwipe ? null : swipeDirection}
       onBackButtonPress={() => onClose()}
@@ -48,35 +51,35 @@ export default function ModalWrap(props) {
         style={{
           ...styles.main,
           backgroundColor: theme.bg,
-          height: fullscreen ? '100%' : 200,
-          paddingTop
+          height: fullscreen ? "100%" : 200,
+          paddingTop,
         }}
       >
         {children}
       </View>
     </Modal>
-  )
+  );
 }
 
 ModalWrap.defaultProps = {
   animationInTiming: 400,
   animationOutTiming: 400,
-  animationIn: 'slideInUp',
-  animationOut: 'slideOutDown',
-  swipeDirection: 'down',
+  animationIn: "slideInUp",
+  animationOut: "slideOutDown",
+  swipeDirection: "down",
   coverScreen: true,
   fullscreen: true,
   hasBackdrop: true,
-  noHeader: false
-}
+  noHeader: false,
+};
 
 const styles = StyleSheet.create({
   modal: {
     margin: 0,
-    flex: 1
+    flex: 1,
   },
   main: {
     borderTopLeftRadius: isIphoneX() ? 20 : 0,
-    borderTopRightRadius: isIphoneX() ? 20 : 0
-  }
-})
+    borderTopRightRadius: isIphoneX() ? 20 : 0,
+  },
+});

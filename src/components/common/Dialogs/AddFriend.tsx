@@ -1,43 +1,43 @@
-import React from 'react'
-import { useObserver } from 'mobx-react-lite'
-import { IconButton } from 'react-native-paper'
-import AntDesignIcon from 'react-native-vector-icons/AntDesign'
+import React from "react";
+import { useObserver } from "mobx-react-lite";
+import { IconButton } from "react-native-paper";
+import AntDesignIcon from "react-native-vector-icons/AntDesign";
 
-import { useStores, useTheme } from '../../../store'
-import Menu from '../ActionSheet/Menu'
+import { useStores, useTheme } from "../../../store";
+import Menu from "../ActionSheet/Menu";
 
 export default function AddFriend() {
-  const { ui } = useStores()
-  const theme = useTheme()
+  const { ui } = useStores();
+  const theme = useTheme();
 
   function close() {
-    ui.setAddFriendDialog(false)
+    ui.setAddFriendDialog(false);
   }
 
   const items = [
     {
-      title: 'Already on Zion',
+      title: "Already on Zion",
       thumbIcon: (
         <IconButton
           icon={({ size, color }) => (
-            <AntDesignIcon name='adduser' color={color} size={size} />
+            <AntDesignIcon name="adduser" color={color} size={size} />
           )}
           color={theme.white}
           size={18}
         />
       ),
-      description: 'Add to your contact',
+      description: "Add to your contact",
       thumbBgColor: theme.primary,
       action: () => {
-        close()
+        close();
         setTimeout(() => {
-          ui.setAddContactModal(true)
-        }, 400)
-      }
-    }
-  ]
+          ui.setAddContactModal(true);
+        }, 400);
+      },
+    },
+  ];
 
   return useObserver(() => (
     <Menu visible={ui.addFriendDialog} items={items} onCancel={close} />
-  ))
+  ));
 }

@@ -1,5 +1,5 @@
-import { realm } from './realm.instance'
-import { Get } from './types/get.interface'
+import { realm } from "./realm.instance";
+import { Get } from "./types/get.interface";
 
 /**
  * Get by id function
@@ -9,7 +9,9 @@ import { Get } from './types/get.interface'
 export default (props: Get) => {
   const { schema, id } = props;
   try {
-    const resp = realm.objects(schema).find((element: any) => element.id === id);
+    const resp = realm
+      .objects(schema)
+      .find((element: any) => element.id === id);
     return resp;
   } catch (e) {
     console.log(`Error on getting data from schema: ${schema}`);

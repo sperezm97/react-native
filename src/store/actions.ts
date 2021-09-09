@@ -1,38 +1,38 @@
-import { feedStore } from './feed'
-import { chatStore } from './chats'
-import { DEFAULT_TRIBE_SERVER } from '../config'
+import { feedStore } from "./feed";
+import { chatStore } from "./chats";
+import { DEFAULT_TRIBE_SERVER } from "../config";
 
 export default async function actions(action: string) {
-  if (!action) return
+  if (!action) return;
 
-  if (action.startsWith('create_podcast')) {
-    const arr = action.split(':')
-    if (arr.length < 2) return
-    const id = arr[1]
-    const r = await feedStore.loadFeedById(id)
-    if (!(r && r.title)) return
+  if (action.startsWith("create_podcast")) {
+    const arr = action.split(":");
+    if (arr.length < 2) return;
+    const id = arr[1];
+    const r = await feedStore.loadFeedById(id);
+    if (!(r && r.title)) return;
     await chatStore.createTribe({
       name: r.title,
       img: r.image,
       description: r.description,
       feed_url: r.url,
-      app_url: '',
-      tags: ['Podcast'],
+      app_url: "",
+      tags: ["Podcast"],
       price_per_message: 0,
       price_to_join: 0,
       escrow_amount: 0,
       escrow_time: 0,
       unlisted: false,
-      is_private: false
-    })
+      is_private: false,
+    });
   }
 
-  if (action.startsWith('join_tribe')) {
-    const arr = action.split(':')
-    if (arr.length < 2) return
-    const uuid = arr[1]
-    const host = arr.length === 3 ? arr[2] : DEFAULT_TRIBE_SERVER
-    const r = await chatStore.getTribeDetails(host, uuid)
+  if (action.startsWith("join_tribe")) {
+    const arr = action.split(":");
+    if (arr.length < 2) return;
+    const uuid = arr[1];
+    const host = arr.length === 3 ? arr[2] : DEFAULT_TRIBE_SERVER;
+    const r = await chatStore.getTribeDetails(host, uuid);
     await chatStore.joinTribe({
       name: r.title,
       uuid,
@@ -42,7 +42,7 @@ export default async function actions(action: string) {
       amount: r.price_to_join,
       owner_alias: r.owner_alias,
       owner_pubkey: r.owner_pubkey,
-      is_private: false
-    })
+      is_private: false,
+    });
   }
 }

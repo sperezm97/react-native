@@ -58,7 +58,9 @@ export default function ChatOptions({
       title: "Camera",
       thumbIcon: (
         <IconButton
-          icon={({ size, color }) => <AntDesignIcon name="camera" color={color} size={size} />}
+          icon={({ size, color }) => (
+            <AntDesignIcon name="camera" color={color} size={size} />
+          )}
           color={theme.white}
           size={18}
         />
@@ -75,7 +77,9 @@ export default function ChatOptions({
       title: "Photo Library",
       thumbIcon: (
         <IconButton
-          icon={({ size, color }) => <FontAwesomeIcon name="photo" color={color} size={size} />}
+          icon={({ size, color }) => (
+            <FontAwesomeIcon name="photo" color={color} size={size} />
+          )}
           color={theme.white}
           size={18}
         />
@@ -92,7 +96,9 @@ export default function ChatOptions({
       title: "Gif",
       thumbIcon: (
         <IconButton
-          icon={({ size, color }) => <MaterialIcons name="gif" color={color} size={size} />}
+          icon={({ size, color }) => (
+            <MaterialIcons name="gif" color={color} size={size} />
+          )}
           color={theme.white}
           size={22}
         />
@@ -107,7 +113,9 @@ export default function ChatOptions({
       title: "Embed Video",
       thumbIcon: (
         <IconButton
-          icon={({ size, color }) => <MaterialIcons name="video-library" color={color} size={size} />}
+          icon={({ size, color }) => (
+            <MaterialIcons name="video-library" color={color} size={size} />
+          )}
           color={theme.white}
           size={22}
         />
@@ -122,7 +130,9 @@ export default function ChatOptions({
       title: "Paid Message",
       thumbIcon: (
         <IconButton
-          icon={({ size, color }) => <MaterialIcons name="message" color={color} size={size} />}
+          icon={({ size, color }) => (
+            <MaterialIcons name="message" color={color} size={size} />
+          )}
           color={theme.white}
           size={22}
         />
@@ -140,7 +150,13 @@ export default function ChatOptions({
       title: "Request",
       thumbIcon: (
         <IconButton
-          icon={({ size, color }) => <MaterialCommunityIcons name="arrow-bottom-left" color={color} size={size} />}
+          icon={({ size, color }) => (
+            <MaterialCommunityIcons
+              name="arrow-bottom-left"
+              color={color}
+              size={size}
+            />
+          )}
           color={theme.white}
           size={22}
         />
@@ -157,7 +173,13 @@ export default function ChatOptions({
       title: "Send",
       thumbIcon: (
         <IconButton
-          icon={({ size, color }) => <MaterialCommunityIcons name="arrow-top-right" color={color} size={size} />}
+          icon={({ size, color }) => (
+            <MaterialCommunityIcons
+              name="arrow-top-right"
+              color={color}
+              size={size}
+            />
+          )}
           color={theme.white}
           size={22}
         />
@@ -174,7 +196,17 @@ export default function ChatOptions({
 
   const userItems = [];
 
-  const items = isConversation ? [...commonItems, ...conversationItems] : [...commonItems, ...userItems];
+  const items = isConversation
+    ? [...commonItems, ...conversationItems]
+    : [...commonItems, ...userItems];
 
-  return useObserver(() => <MenuSheet visible={visible} items={items} onCancel={close} noSwipe marginH={12} />);
+  return useObserver(() => (
+    <MenuSheet
+      visible={visible}
+      items={items}
+      onCancel={close}
+      noSwipe
+      marginH={12}
+    />
+  ));
 }
