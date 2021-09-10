@@ -1,46 +1,39 @@
-import React, { useState } from "react";
-import { StyleSheet, View } from "react-native";
-import { useObserver } from "mobx-react-lite";
-import MaterialIcon from "react-native-vector-icons/MaterialIcons";
-import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
+import React, { useState } from 'react'
+import { StyleSheet, View } from 'react-native'
+import { useObserver } from 'mobx-react-lite'
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
+import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
 
-import { useStores, useTheme, hooks } from "../../../store";
-import { useTribeHistory } from "../../../store/hooks/tribes";
-import Typography from "../../common/Typography";
-import Button from "../../common/Button";
-import BoxHeader from "../../common/Layout/BoxHeader";
-import Empty from "../../common/Empty";
-import DialogWrap from "../../common/Dialogs/DialogWrap";
-import TribeTags from "./TribeTags";
+import { useStores, useTheme, hooks } from '../../../store'
+import { useTribeHistory } from '../../../store/hooks/tribes'
+import Typography from '../../common/Typography'
+import Button from '../../common/Button'
+import BoxHeader from '../../common/Layout/BoxHeader'
+import Empty from '../../common/Empty'
+import DialogWrap from '../../common/Dialogs/DialogWrap'
+import TribeTags from './TribeTags'
 
-const { useTribes } = hooks;
+const { useTribes } = hooks
 
 function About({ tribe }) {
-  const theme = useTheme();
+  const theme = useTheme()
 
   return useObserver(() => {
-    const { createdDate, lastActiveDate } = useTribeHistory(
-      tribe.created,
-      tribe.last_active
-    );
+    const { createdDate, lastActiveDate } = useTribeHistory(tribe.created, tribe.last_active)
 
     return (
       <>
         <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
-          <Typography size={16} fw="500" style={{ marginBottom: 8 }}>
+          <Typography size={16} fw='500' style={{ marginBottom: 8 }}>
             Description
           </Typography>
 
-          <Typography
-            size={14}
-            color={theme.darkGrey}
-            style={{ marginBottom: 26 }}
-          >
+          <Typography size={14} color={theme.darkGrey} style={{ marginBottom: 26 }}>
             {tribe.description}
           </Typography>
 
           <View style={{ ...styles.description }}>
-            <MaterialIcon name="access-time" size={26} color={theme.grey} />
+            <MaterialIcon name='access-time' size={26} color={theme.grey} />
             <View style={{ ...styles.dContent }}>
               <Typography size={18} style={{ marginBottom: 6 }}>
                 History
@@ -68,59 +61,47 @@ function About({ tribe }) {
           <Tags theTribe={tribe} />
         </View>
       </>
-    );
-  });
+    )
+  })
 }
 
 function Tags(props) {
-  const { chats } = useStores();
-  const { theTribe } = props;
-  const [topicsEditDialog, setTopicsEditDialog] = useState(false);
+  const { chats } = useStores()
+  const { theTribe } = props
+  const [topicsEditDialog, setTopicsEditDialog] = useState(false)
 
   async function finish(tags) {
-    theTribe.tags = tags;
+    theTribe.tags = tags
     await chats.editTribe({
       ...theTribe,
       id: theTribe.chat.id,
-    });
+    })
 
-    chats.getTribes();
-    setTopicsEditDialog(false);
+    chats.getTribes()
+    setTopicsEditDialog(false)
   }
 
   return useObserver(() => {
-    const tribes = useTribes();
-    const tribe = tribes.find((t) => t.uuid === theTribe.uuid) || theTribe;
+    const tribes = useTribes()
+    const tribe = tribes.find((t) => t.uuid === theTribe.uuid) || theTribe
 
     return (
       <>
         {tribe.owner ? (
           <>
-            <BoxHeader title="Topics in this Community">
-              <Button
-                mode="text"
-                onPress={() => setTopicsEditDialog(true)}
-                size="small"
-              >
+            <BoxHeader title='Topics in this Community'>
+              <Button mode='text' onPress={() => setTopicsEditDialog(true)} size='small'>
                 Edit
               </Button>
             </BoxHeader>
             <>
               {tribe.tags && tribe.tags.length > 0 ? (
-                <TribeTags
-                  tags={tribe.tags}
-                  displayOnly={true}
-                  containerStyle={{ paddingTop: 18 }}
-                />
+                <TribeTags tags={tribe.tags} displayOnly={true} containerStyle={{ paddingTop: 18 }} />
               ) : (
-                <Empty text="No topics found." />
+                <Empty text='No topics found.' />
               )}
             </>
-            <DialogWrap
-              title="Edit Topics"
-              visible={topicsEditDialog}
-              onDismiss={() => setTopicsEditDialog(false)}
-            >
+            <DialogWrap title='Edit Topics' visible={topicsEditDialog} onDismiss={() => setTopicsEditDialog(false)}>
               <TribeTags tags={tribe.tags} finish={finish} />
             </DialogWrap>
           </>
@@ -128,19 +109,15 @@ function Tags(props) {
           <>
             {tribe.tags.length > 0 && (
               <>
-                <BoxHeader title="Topics in this Community" />
-                <TribeTags
-                  tags={tribe.tags}
-                  displayOnly={true}
-                  containerStyle={{ paddingTop: 18 }}
-                />
+                <BoxHeader title='Topics in this Community' />
+                <TribeTags tags={tribe.tags} displayOnly={true} containerStyle={{ paddingTop: 18 }} />
               </>
             )}
           </>
         )}
       </>
-    );
-  });
+    )
+  })
 }
 
 const styles = StyleSheet.create({
@@ -152,24 +129,24 @@ const styles = StyleSheet.create({
     paddingLeft: 18,
   },
   description: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
     marginBottom: 25,
   },
   dContent: {
-    display: "flex",
-    flexDirection: "column",
-    width: "80%",
+    display: 'flex',
+    flexDirection: 'column',
+    width: '80%',
     paddingLeft: 14,
   },
   badgeContainer: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    flexWrap: "wrap",
-    width: "100%",
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+    width: '100%',
   },
-});
+})
 
-export default React.memo(About);
+export default React.memo(About)

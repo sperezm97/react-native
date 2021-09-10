@@ -1,23 +1,23 @@
-import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import React from 'react'
+import { View, Text, StyleSheet } from 'react-native'
 
-import { useStores, useTheme } from "../../../store";
-import { constants } from "../../../constants";
-import Typography from "../../common/Typography";
+import { useStores, useTheme } from '../../../store'
+import { constants } from '../../../constants'
+import Typography from '../../common/Typography'
 
 export default function GroupNotification(props) {
-  const { contacts } = useStores();
-  const theme = useTheme();
+  const { contacts } = useStores()
+  const theme = useTheme()
 
-  let senderAlias = "Unknown";
+  let senderAlias = 'Unknown'
   if (props.isTribe) {
-    senderAlias = props.sender_alias;
+    senderAlias = props.sender_alias
   } else {
-    const sender = contacts.contacts.find((c) => c.id === props.sender);
-    senderAlias = sender && sender.alias;
+    const sender = contacts.contacts.find((c) => c.id === props.sender)
+    senderAlias = sender && sender.alias
   }
 
-  const isJoin = props.type === constants.message_types.group_join;
+  const isJoin = props.type === constants.message_types.group_join
 
   return (
     <View style={styles.wrap}>
@@ -28,21 +28,21 @@ export default function GroupNotification(props) {
         }}
       >
         <Typography size={12} color={theme.subtitle}>
-          {`${senderAlias} has ${isJoin ? "joined" : "left"} the group`}
+          {`${senderAlias} has ${isJoin ? 'joined' : 'left'} the group`}
         </Typography>
       </View>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
   wrap: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "center",
-    position: "relative",
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    position: 'relative',
     height: 22,
-    width: "100%",
+    width: '100%',
     marginTop: 30,
   },
   content: {
@@ -50,4 +50,4 @@ const styles = StyleSheet.create({
     paddingRight: 16,
     borderRadius: 15,
   },
-});
+})

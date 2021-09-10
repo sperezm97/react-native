@@ -1,34 +1,30 @@
-import React, { useState } from "react";
-import { Dimensions, View, Text } from "react-native";
-import { ActivityIndicator } from "react-native-paper";
-import { WebView } from "react-native-webview";
+import React, { useState } from 'react'
+import { Dimensions, View, Text } from 'react-native'
+import { ActivityIndicator } from 'react-native-paper'
+import { WebView } from 'react-native-webview'
 
 type WebViewVideoProps = {
-  embedLink: string;
-  squareSize?: number;
-  onLongPress: () => void;
-};
+  embedLink: string
+  squareSize?: number
+  onLongPress: () => void
+}
 
-const { width, height } = Dimensions.get("screen");
+const { width, height } = Dimensions.get('screen')
 
-const WebViewVideo: React.FC<WebViewVideoProps> = ({
-  embedLink,
-  onLongPress,
-  squareSize,
-}) => {
-  const [isLoading, setIsLoading] = useState(true);
+const WebViewVideo: React.FC<WebViewVideoProps> = ({ embedLink, onLongPress, squareSize }) => {
+  const [isLoading, setIsLoading] = useState(true)
   return (
     !!embedLink && (
       <>
         <View style={{ width: squareSize || 640, height: squareSize || 170 }}>
-          <View style={{ flex: 1, flexDirection: "row" }}>
+          <View style={{ flex: 1, flexDirection: 'row' }}>
             {/** This can't be a ternary as seen we need the
              * webView loading while we displays the activityIndicator
              */}
             {isLoading && (
               <ActivityIndicator
                 animating={true}
-                size="large"
+                size='large'
                 style={{ width: squareSize || 280 }} // 280 is the maxWidth defined at <MsgBubble>
               />
             )}
@@ -61,7 +57,7 @@ const WebViewVideo: React.FC<WebViewVideoProps> = ({
           })()
         `}
               onMessage={(event) => {
-                if (event.nativeEvent.data === "longPress") onLongPress();
+                if (event.nativeEvent.data === 'longPress') onLongPress()
               }}
               javaScriptEnabled={true}
               source={{ uri: embedLink }}
@@ -72,7 +68,7 @@ const WebViewVideo: React.FC<WebViewVideoProps> = ({
         </View>
       </>
     )
-  );
-};
+  )
+}
 
-export default WebViewVideo;
+export default WebViewVideo

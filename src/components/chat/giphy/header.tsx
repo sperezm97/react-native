@@ -1,24 +1,16 @@
-import React from "react";
-import { View } from "react-native";
-import { TextInput } from "react-native-paper";
-import Ionicons from "react-native-vector-icons/Ionicons";
+import React from 'react'
+import { View } from 'react-native'
+import { TextInput } from 'react-native-paper'
+import Ionicons from 'react-native-vector-icons/Ionicons'
 
-import { useTheme } from "../../../store";
-import { GiphyProps } from "./type";
-import styles from "./styles";
+import { useTheme } from '../../../store'
+import { GiphyProps } from './type'
+import styles from './styles'
 
-type HeaderProps = Pick<
-  GiphyProps,
-  "onClose" | "searchGif" | "setSearchGif" | "getGifsBySearch"
->;
+type HeaderProps = Pick<GiphyProps, 'onClose' | 'searchGif' | 'setSearchGif' | 'getGifsBySearch'>
 
-const Header: React.FC<HeaderProps> = ({
-  onClose,
-  searchGif,
-  setSearchGif,
-  getGifsBySearch,
-}) => {
-  const theme = useTheme();
+const Header: React.FC<HeaderProps> = ({ onClose, searchGif, setSearchGif, getGifsBySearch }) => {
+  const theme = useTheme()
 
   return (
     <View style={styles.header}>
@@ -29,25 +21,19 @@ const Header: React.FC<HeaderProps> = ({
             backgroundColor: theme.inputBg,
             color: theme.input,
           }}
-          placeholder="Search on GIPHY"
+          placeholder='Search on GIPHY'
           value={searchGif}
           onChangeText={setSearchGif}
           onSubmitEditing={(v) => {
-            if (!searchGif) return;
-            getGifsBySearch();
+            if (!searchGif) return
+            getGifsBySearch()
           }}
-          underlineColor="transparent"
-          left={
-            <TextInput.Icon
-              name={() => (
-                <Ionicons name="search" size={20} color={theme.primary} />
-              )}
-            />
-          }
+          underlineColor='transparent'
+          left={<TextInput.Icon name={() => <Ionicons name='search' size={20} color={theme.primary} />} />}
         />
       </View>
     </View>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header

@@ -1,14 +1,14 @@
-import React, { useRef } from "react";
-import { StyleSheet, View, Animated } from "react-native";
-import { TouchableRipple } from "react-native-paper";
-import Ionicon from "react-native-vector-icons/Ionicons";
+import React, { useRef } from 'react'
+import { StyleSheet, View, Animated } from 'react-native'
+import { TouchableRipple } from 'react-native-paper'
+import Ionicon from 'react-native-vector-icons/Ionicons'
 
-import { useTheme } from "../../../store";
-import CustomIcon from "../../utils/customIcons";
+import { useTheme } from '../../../store'
+import CustomIcon from '../../utils/customIcons'
 
 export default function Boost(props) {
-  const theme = useTheme();
-  const size = useRef(new Animated.Value(1)).current;
+  const theme = useTheme()
+  const size = useRef(new Animated.Value(1)).current
   const {
     onPress,
     bg = theme.primary,
@@ -19,7 +19,7 @@ export default function Boost(props) {
     rippleH = 45,
     rippleW = 45,
     rocketSize = 18,
-  } = props;
+  } = props
 
   function go() {
     Animated.sequence([
@@ -33,8 +33,8 @@ export default function Boost(props) {
         duration: 500,
         useNativeDriver: true,
       }),
-    ]).start();
-    onPress();
+    ]).start()
+    onPress()
   }
 
   return (
@@ -57,26 +57,26 @@ export default function Boost(props) {
             transform: [{ scale: size }],
           }}
         >
-          <Ionicon name="rocket-outline" color={color} size={rocketSize} />
+          <Ionicon name='rocket-outline' color={color} size={rocketSize} />
         </Animated.View>
       </View>
     </TouchableRipple>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
   rocketWrap: {
     borderRadius: 50,
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   circle: {
     borderRadius: 50,
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-});
+})

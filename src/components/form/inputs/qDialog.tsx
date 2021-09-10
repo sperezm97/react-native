@@ -1,34 +1,28 @@
-import React, { useState } from "react";
-import { Text, View } from "react-native";
-import { IconButton, Portal, Dialog, Button } from "react-native-paper";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import { useTheme } from "../../../store";
+import React, { useState } from 'react'
+import { Text, View } from 'react-native'
+import { IconButton, Portal, Dialog, Button } from 'react-native-paper'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+import { useTheme } from '../../../store'
 
 export default function QDialog({ description, label }) {
-  const [q, showQ] = useState(false);
-  const theme = useTheme();
+  const [q, showQ] = useState(false)
+  const theme = useTheme()
   return (
     <>
       <IconButton
-        icon="help"
+        icon='help'
         size={15}
-        color="#888"
-        style={{ position: "absolute", right: 5, top: 5 }}
+        color='#888'
+        style={{ position: 'absolute', right: 5, top: 5 }}
         onPress={() => showQ(true)}
       />
       <Portal>
         <Dialog visible={q} onDismiss={() => showQ(false)}>
           <Dialog.Title>{label}</Dialog.Title>
-          <Text style={{ padding: 30, fontSize: 15, color: theme.subtitle }}>
-            {description}
-          </Text>
+          <Text style={{ padding: 30, fontSize: 15, color: theme.subtitle }}>{description}</Text>
           <Dialog.Actions>
-            <Button
-              onPress={() => showQ(false)}
-              labelStyle={{ color: "grey" }}
-              style={{ marginRight: 15 }}
-            >
-              <Icon name="close" size={14} color="grey" />
+            <Button onPress={() => showQ(false)} labelStyle={{ color: 'grey' }} style={{ marginRight: 15 }}>
+              <Icon name='close' size={14} color='grey' />
               <View style={{ width: 6, height: 6 }}></View>
               <Text>OK</Text>
             </Button>
@@ -36,5 +30,5 @@ export default function QDialog({ description, label }) {
         </Dialog>
       </Portal>
     </>
-  );
+  )
 }

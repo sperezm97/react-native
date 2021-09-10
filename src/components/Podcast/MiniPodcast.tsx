@@ -1,18 +1,18 @@
-import React, { useState, useEffect } from "react";
-import { StyleSheet, View, TouchableOpacity } from "react-native";
-import { ActivityIndicator } from "react-native-paper";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import TrackPlayer from "react-native-track-player";
-import FastImage from "react-native-fast-image";
+import React, { useState, useEffect } from 'react'
+import { StyleSheet, View, TouchableOpacity } from 'react-native'
+import { ActivityIndicator } from 'react-native-paper'
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+import TrackPlayer from 'react-native-track-player'
+import FastImage from 'react-native-fast-image'
 
-import { useTheme } from "../../store";
-import CustomIcon from "../utils/customIcons";
-import TouchableIcon from "../utils/touchableIcon";
-import useInterval from "../utils/useInterval";
-import Rocket from "./Rocket";
-import { getPosition } from "./Position";
-import Typography from "../common/Typography";
-import Boost from "../common/Button/Boost";
+import { useTheme } from '../../store'
+import CustomIcon from '../utils/customIcons'
+import TouchableIcon from '../utils/touchableIcon'
+import useInterval from '../utils/useInterval'
+import Rocket from './Rocket'
+import { getPosition } from './Position'
+import Typography from '../common/Typography'
+import Boost from '../common/Button/Boost'
 
 export default function MinPodcast({
   duration,
@@ -25,31 +25,31 @@ export default function MinPodcast({
   podError,
   pod,
 }) {
-  const theme = useTheme();
-  const [pos, setPos] = useState(0);
+  const theme = useTheme()
+  const [pos, setPos] = useState(0)
 
   useEffect(() => {
-    const p = getPosition();
-    if (p !== pos) setPos(p);
-  }, []);
+    const p = getPosition()
+    if (p !== pos) setPos(p)
+  }, [])
 
   useInterval(() => {
-    const p = getPosition();
-    if (p !== pos) setPos(p);
-  }, 1000);
+    const p = getPosition()
+    if (p !== pos) setPos(p)
+  }, 1000)
 
   function getProgress() {
-    if (!duration || !pos) return 0;
-    return pos / duration;
+    if (!duration || !pos) return 0
+    return pos / duration
   }
 
   async function fastForward() {
-    const P = getPosition();
-    TrackPlayer.seekTo(P + 30);
-    setPos(P);
+    const P = getPosition()
+    TrackPlayer.seekTo(P + 30)
+    setPos(P)
   }
 
-  const height = 60;
+  const height = 60
 
   if (loading || podError) {
     return (
@@ -63,22 +63,14 @@ export default function MinPodcast({
       >
         <View style={styles.inner}>
           <View style={styles.title}>
-            <ActivityIndicator
-              animating={true}
-              color={theme.primary}
-              size={13}
-              style={{ marginLeft: 14 }}
-            />
-            <Typography
-              style={{ marginLeft: 14, maxWidth: "100%" }}
-              numberOfLines={1}
-            >
-              {podError ? "Error loading podcast" : "loading..."}
+            <ActivityIndicator animating={true} color={theme.primary} size={13} style={{ marginLeft: 14 }} />
+            <Typography style={{ marginLeft: 14, maxWidth: '100%' }} numberOfLines={1}>
+              {podError ? 'Error loading podcast' : 'loading...'}
             </Typography>
           </View>
         </View>
       </View>
-    );
+    )
   }
 
   return (
@@ -90,11 +82,7 @@ export default function MinPodcast({
         height,
       }}
     >
-      <TouchableOpacity
-        activeOpacity={0.6}
-        onPress={onShowFull}
-        style={styles.touchable}
-      >
+      <TouchableOpacity activeOpacity={0.6} onPress={onShowFull} style={styles.touchable}>
         <View style={styles.inner}>
           <View style={styles.image}>
             <FastImage
@@ -104,14 +92,11 @@ export default function MinPodcast({
                 height: 50,
                 borderRadius: 50,
               }}
-              resizeMode={"cover"}
+              resizeMode={'cover'}
             />
           </View>
           <View style={styles.title}>
-            <Typography
-              style={{ marginLeft: 10, maxWidth: "100%" }}
-              numberOfLines={1}
-            >
+            <Typography style={{ marginLeft: 10, maxWidth: '100%' }} numberOfLines={1}>
               {episode.title}
             </Typography>
           </View>
@@ -122,18 +107,10 @@ export default function MinPodcast({
                 ...styles.play,
               }}
             >
-              <MaterialCommunityIcons
-                name={playing ? "pause-circle" : "play-circle"}
-                size={40}
-                color={theme.primary}
-              />
+              <MaterialCommunityIcons name={playing ? 'pause-circle' : 'play-circle'} size={40} color={theme.primary} />
             </TouchableOpacity>
-            <TouchableIcon
-              rippleColor={theme.grey}
-              size={42}
-              onPress={fastForward}
-            >
-              <CustomIcon size={26} name="forward-30" color={theme.title} />
+            <TouchableIcon rippleColor={theme.grey} size={42} onPress={fastForward}>
+              <CustomIcon size={26} name='forward-30' color={theme.title} />
             </TouchableIcon>
             <Boost onPress={boost} />
             {/* <Rocket onPress={boost} /> */}
@@ -150,26 +127,26 @@ export default function MinPodcast({
         </View>
       </TouchableOpacity>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
   wrap: {
-    position: "relative",
-    width: "100%",
+    position: 'relative',
+    width: '100%',
     zIndex: 150,
     borderTopWidth: 1,
-    display: "flex",
+    display: 'flex',
   },
   touchable: {
-    display: "flex",
+    display: 'flex',
     flex: 1,
   },
   inner: {
-    display: "flex",
+    display: 'flex',
     flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   image: {
     width: 50,
@@ -178,16 +155,16 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
   },
   title: {
-    display: "flex",
+    display: 'flex',
     flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   iconz: {
-    display: "flex",
+    display: 'flex',
     flex: 1,
-    flexDirection: "row-reverse",
-    alignItems: "center",
+    flexDirection: 'row-reverse',
+    alignItems: 'center',
     paddingRight: 10,
   },
   play: {
@@ -198,10 +175,10 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
   progressWrap: {
-    width: "100%",
+    width: '100%',
     height: 3,
   },
   progress: {
     height: 3,
   },
-});
+})

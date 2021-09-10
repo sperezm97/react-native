@@ -1,4 +1,4 @@
 export interface Get {
-  schema: string;
-  id?: number;
+  schema: string
+  id?: number
 }

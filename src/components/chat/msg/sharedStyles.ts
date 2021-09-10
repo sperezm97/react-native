@@ -14,6 +14,6 @@ const styles = {
     paddingTop: 12,
     paddingBottom: 12,
   },
-};
+}
 
-export default styles;
+export default styles

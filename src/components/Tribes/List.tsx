@@ -1,24 +1,24 @@
-import React, { useState } from "react";
-import { StyleSheet, View, FlatList, TouchableOpacity } from "react-native";
-import { useObserver } from "mobx-react-lite";
-import { useNavigation } from "@react-navigation/native";
-import { ActivityIndicator } from "react-native-paper";
+import React, { useState } from 'react'
+import { StyleSheet, View, FlatList, TouchableOpacity } from 'react-native'
+import { useObserver } from 'mobx-react-lite'
+import { useNavigation } from '@react-navigation/native'
+import { ActivityIndicator } from 'react-native-paper'
 
-import { useStores, useTheme, hooks } from "../../store";
-import { SCREEN_WIDTH } from "../../constants";
-import Typography from "../common/Typography";
-import Avatar from "../common/Avatar";
-import Button from "../common/Button";
-import RefreshLoading from "../common/RefreshLoading";
-import JoinTribe from "../common/Modals/Tribe/JoinTribe";
+import { useStores, useTheme, hooks } from '../../store'
+import { SCREEN_WIDTH } from '../../constants'
+import Typography from '../common/Typography'
+import Avatar from '../common/Avatar'
+import Button from '../common/Button'
+import RefreshLoading from '../common/RefreshLoading'
+import JoinTribe from '../common/Modals/Tribe/JoinTribe'
 
-const { useChatRow } = hooks;
+const { useChatRow } = hooks
 
 export default function List(props) {
-  const { data, loading, listEmpty, refreshing, onRefresh } = props;
-  const theme = useTheme();
+  const { data, loading, listEmpty, refreshing, onRefresh } = props
+  const theme = useTheme()
 
-  const renderItem = ({ index, item }) => <Item {...item} />;
+  const renderItem = ({ index, item }) => <Item {...item} />
 
   return useObserver(() => {
     return (
@@ -38,35 +38,31 @@ export default function List(props) {
             ListEmptyComponent={listEmpty}
             refreshing={refreshing}
             onRefresh={onRefresh && onRefresh}
-            refreshControl={
-              <RefreshLoading refreshing={refreshing} onRefresh={onRefresh} />
-            }
+            refreshControl={<RefreshLoading refreshing={refreshing} onRefresh={onRefresh} />}
           />
         )}
       </View>
-    );
-  });
+    )
+  })
 }
 
 function Item(props) {
-  const { name, description, img, joined, uuid, owner, owner_alias, chat } =
-    props;
-  const { ui, chats } = useStores();
-  const theme = useTheme();
-  const navigation = useNavigation();
-  const [joinTribe, setJoinTribe] = useState({ visible: false, tribe: null });
-  const { unseenCount, hasUnseen } = useChatRow(chat?.id ?? "");
+  const { name, description, img, joined, uuid, owner, owner_alias, chat } = props
+  const { ui, chats } = useStores()
+  const theme = useTheme()
+  const navigation = useNavigation()
+  const [joinTribe, setJoinTribe] = useState({ visible: false, tribe: null })
+  const { unseenCount, hasUnseen } = useChatRow(chat?.id ?? '')
 
-  const onItemPress = () =>
-    navigation.navigate("Tribe", { tribe: { ...props } });
+  const onItemPress = () => navigation.navigate('Tribe', { tribe: { ...props } })
 
   async function onJoinPress() {
-    const host = chats.getDefaultTribeServer().host;
-    const tribeParams = await chats.getTribeDetails(host, uuid);
+    const host = chats.getDefaultTribeServer().host
+    const tribeParams = await chats.getTribeDetails(host, uuid)
     setJoinTribe({
       visible: true,
       tribe: tribeParams,
-    });
+    })
   }
 
   return (
@@ -84,10 +80,10 @@ function Item(props) {
 
       <View style={styles.itemContent}>
         <View style={{ ...styles.row }}>
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Typography
               size={16}
-              fw="500"
+              fw='500'
               // numberOfLines={1}
               style={{ width: SCREEN_WIDTH - 180 }}
             >
@@ -109,7 +105,7 @@ function Item(props) {
                     Joined
                   </Typography>
                 ) : (
-                  <Button size="small" tf="capitalize" onPress={onJoinPress}>
+                  <Button size='small' tf='capitalize' onPress={onJoinPress}>
                     Join
                   </Button>
                 )}
@@ -145,11 +141,11 @@ function Item(props) {
           setJoinTribe({
             visible: false,
             tribe: null,
-          });
+          })
         }}
       />
     </TouchableOpacity>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -160,9 +156,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   itemRow: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
     // marginVertical: 8,
     padding: 16,
   },
@@ -170,19 +166,19 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   avatarWrap: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
     paddingRight: 14,
     // width: 60,
     // height: 60,
     // paddingLeft: 4
   },
   row: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     flex: 1,
   },
   dot: {
@@ -192,18 +188,18 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
   },
   bottom: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   badge: {
     width: 22,
     height: 22,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
     borderRadius: 15,
     marginRight: 14,
   },
-});
+})

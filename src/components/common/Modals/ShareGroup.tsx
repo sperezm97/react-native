@@ -1,46 +1,46 @@
-import React from "react";
-import { useObserver } from "mobx-react-lite";
-import { StyleSheet, View } from "react-native";
-import Share from "react-native-share";
-import Clipboard from "@react-native-community/clipboard";
-import Toast from "react-native-simple-toast";
-import QRCode from "react-native-qrcode-svg";
-import { isIphoneX, getBottomSpace } from "react-native-iphone-x-helper";
+import React from 'react'
+import { useObserver } from 'mobx-react-lite'
+import { StyleSheet, View } from 'react-native'
+import Share from 'react-native-share'
+import Clipboard from '@react-native-community/clipboard'
+import Toast from 'react-native-simple-toast'
+import QRCode from 'react-native-qrcode-svg'
+import { isIphoneX, getBottomSpace } from 'react-native-iphone-x-helper'
 
-import { useStores, useTheme } from "../../../store";
-import { DEFAULT_DOMAIN } from "../../../config";
-import { SCREEN_WIDTH, TOAST_DURATION } from "../../../constants";
-import ModalWrap from "./ModalWrap";
-import ModalHeader from "./ModalHeader";
-import Button from "../Button";
-import Typography from "../Typography";
+import { useStores, useTheme } from '../../../store'
+import { DEFAULT_DOMAIN } from '../../../config'
+import { SCREEN_WIDTH, TOAST_DURATION } from '../../../constants'
+import ModalWrap from './ModalWrap'
+import ModalHeader from './ModalHeader'
+import Button from '../Button'
+import Typography from '../Typography'
 
 export default function ShareGroup() {
-  const { ui, chats } = useStores();
-  const theme = useTheme();
+  const { ui, chats } = useStores()
+  const theme = useTheme()
 
   function copy() {
-    Clipboard.setString(uuid);
-    Toast.showWithGravity("Tribe QR Copied!", TOAST_DURATION, Toast.CENTER);
+    Clipboard.setString(uuid)
+    Toast.showWithGravity('Tribe QR Copied!', TOAST_DURATION, Toast.CENTER)
   }
 
   async function share() {
     try {
-      await Share.open({ message: uuid });
+      await Share.open({ message: uuid })
     } catch (e) {}
   }
 
   function close() {
-    ui.setShareTribeUUID(null);
+    ui.setShareTribeUUID(null)
   }
 
-  const uuid = ui.shareTribeUUID;
-  const host = chats.getDefaultTribeServer().host;
-  const qr = `${DEFAULT_DOMAIN}://?action=tribe&uuid=${uuid}&host=${host}`;
+  const uuid = ui.shareTribeUUID
+  const host = chats.getDefaultTribeServer().host
+  const qr = `${DEFAULT_DOMAIN}://?action=tribe&uuid=${uuid}&host=${host}`
 
   return useObserver(() => (
     <ModalWrap visible={ui.shareTribeUUID ? true : false} onClose={close}>
-      <ModalHeader title="Community QR Code" onClose={close} />
+      <ModalHeader title='Community QR Code' onClose={close} />
       <View style={styles.wrap}>
         <View
           style={{
@@ -60,7 +60,7 @@ export default function ShareGroup() {
         </View>
       </View>
     </ModalWrap>
-  ));
+  ))
 }
 
 const styles = StyleSheet.create({
@@ -70,15 +70,15 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    alignSelf: "center",
+    alignSelf: 'center',
     width: SCREEN_WIDTH / 1.3,
   },
   buttonsWrap: {
-    display: "flex",
-    flexDirection: "row",
-    width: "100%",
-    justifyContent: "space-between",
+    display: 'flex',
+    flexDirection: 'row',
+    width: '100%',
+    justifyContent: 'space-between',
     paddingTop: 40,
     // marginBottom: isIphoneX() ? getBottomSpace() : 30
   },
-});
+})

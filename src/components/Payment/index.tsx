@@ -1,86 +1,77 @@
-import React, { useEffect, useState } from "react";
-import { StyleSheet, View, Image, Text } from "react-native";
-import { useObserver } from "mobx-react-lite";
+import React, { useEffect, useState } from 'react'
+import { StyleSheet, View, Image, Text } from 'react-native'
+import { useObserver } from 'mobx-react-lite'
 
-import { useStores, useTheme } from "../../store";
-import {
-  isLN,
-  parseLightningInvoice,
-  removeLightningPrefix,
-} from "../utils/ln";
-import TabBar from "../common/TabBar";
-import Header from "./Header";
-import Transactions from "./Transactions";
-import Button from "../common/Button";
-import QR from "../common/Accessories/QR";
-import Typography from "../common/Typography";
-import { setTint } from "../common/StatusBar";
+import { useStores, useTheme } from '../../store'
+import { isLN, parseLightningInvoice, removeLightningPrefix } from '../utils/ln'
+import TabBar from '../common/TabBar'
+import Header from './Header'
+import Transactions from './Transactions'
+import Button from '../common/Button'
+import QR from '../common/Accessories/QR'
+import Typography from '../common/Typography'
+import { setTint } from '../common/StatusBar'
 
 export default function Payment() {
-  const [scanning, setScanning] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-  const [payments, setPayments] = useState([]);
+  const [scanning, setScanning] = useState(false)
+  const [loading, setLoading] = useState(true)
+  const [refreshing, setRefreshing] = useState(false)
+  const [payments, setPayments] = useState([])
 
-  const { ui, details, chats } = useStores();
-  const theme = useTheme();
+  const { ui, details, chats } = useStores()
+  const theme = useTheme()
 
   function isMsgs(msgs): boolean {
-    const m = msgs && msgs.length && msgs[0];
-    if (
-      m.message_content ||
-      m.message_content === "" ||
-      m.message_content === null
-    ) {
+    const m = msgs && msgs.length && msgs[0]
+    if (m.message_content || m.message_content === '' || m.message_content === null) {
       // needs this field
-      return true;
+      return true
     }
-    return false;
+    return false
   }
 
   useEffect(() => {
-    setLoading(true);
-    fetchBalance();
-    fetchPayments();
+    setLoading(true)
+    fetchBalance()
+    fetchPayments()
     setTimeout(() => {
-      setLoading(false);
-    }, 400);
-  }, []);
+      setLoading(false)
+    }, 400)
+  }, [])
 
   async function fetchBalance() {
-    await details.getChannelBalance();
-    await details.getBalance();
-    await details.getUSDollarRate();
+    await details.getChannelBalance()
+    await details.getBalance()
+    await details.getUSDollarRate()
   }
 
   async function fetchPayments() {
-    const ps = await details.getPayments();
+    const ps = await details.getPayments()
 
-    if (!isMsgs(ps)) return;
-    setPayments(ps);
+    if (!isMsgs(ps)) return
+    setPayments(ps)
   }
 
   async function onRefresh() {
-    setRefreshing(true);
-    fetchPayments();
-    fetchBalance();
+    setRefreshing(true)
+    fetchPayments()
+    fetchBalance()
 
-    setRefreshing(false);
+    setRefreshing(false)
   }
 
   async function scanningDone(data) {
     if (isLN(data)) {
-      const theData = removeLightningPrefix(data);
-      const inv = parseLightningInvoice(data);
-      if (!(inv && inv.human_readable_part && inv.human_readable_part.amount))
-        return;
-      const millisats = parseInt(inv.human_readable_part.amount);
-      const sats = millisats && Math.round(millisats / 1000);
-      setScanning(false);
+      const theData = removeLightningPrefix(data)
+      const inv = parseLightningInvoice(data)
+      if (!(inv && inv.human_readable_part && inv.human_readable_part.amount)) return
+      const millisats = parseInt(inv.human_readable_part.amount)
+      const sats = millisats && Math.round(millisats / 1000)
+      setScanning(false)
 
       setTimeout(() => {
-        ui.setConfirmInvoiceMsg({ payment_request: theData, amount: sats });
-      }, 150);
+        ui.setConfirmInvoiceMsg({ payment_request: theData, amount: sats })
+      }, 150)
     }
   }
 
@@ -89,8 +80,8 @@ export default function Payment() {
       <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
         <Header
           onScanClick={() => {
-            setTint("dark");
-            setScanning(true);
+            setTint('dark')
+            setScanning(true)
           }}
         />
 
@@ -104,43 +95,38 @@ export default function Payment() {
         <QR
           visible={scanning}
           onCancel={() => {
-            setTint(theme.dark ? "dark" : "light");
-            setScanning(false);
+            setTint(theme.dark ? 'dark' : 'light')
+            setScanning(false)
           }}
           confirm={scanningDone}
           showPaster={true}
-          inputPlaceholder="Paste Invoice or Subscription code"
+          inputPlaceholder='Paste Invoice or Subscription code'
         />
         <TabBar />
       </View>
-    );
-  });
+    )
+  })
 }
 
 const ListHeader = () => {
-  const { ui, details, chats } = useStores();
-  const theme = useTheme();
+  const { ui, details, chats } = useStores()
+  const theme = useTheme()
 
   return (
     <>
       <View style={{ ...styles.headerActions }}>
         <View style={styles.wallet}>
-          <Typography size={30} fw="500" style={{ marginBottom: 10 }}>
+          <Typography size={30} fw='500' style={{ marginBottom: 10 }}>
             My Wallet
           </Typography>
           <View>
-            <Typography
-              size={12}
-              fw="500"
-              textAlign="center"
-              color={theme.subtitle}
-            >
+            <Typography size={12} fw='500' textAlign='center' color={theme.subtitle}>
               Total balance
             </Typography>
-            <Typography size={18} fw="500">
-              {details?.fullBalance}{" "}
-              <Typography color={theme.subtitle} fw="400">
-                {" "}
+            <Typography size={18} fw='500'>
+              {details?.fullBalance}{' '}
+              <Typography color={theme.subtitle} fw='400'>
+                {' '}
                 sat
               </Typography>
             </Typography>
@@ -163,18 +149,12 @@ const ListHeader = () => {
           <View
             style={{
               marginTop: 14,
-              alignItems: "center",
-              justifyContent: "center",
-              width: "100%",
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '100%',
             }}
           >
-            <Typography
-              size={12}
-              fw="500"
-              textAlign="center"
-              color={theme.subtitle}
-              style={{ marginBottom: 4 }}
-            >
+            <Typography size={12} fw='500' textAlign='center' color={theme.subtitle} style={{ marginBottom: 4 }}>
               Your node capacity
             </Typography>
             <View
@@ -185,14 +165,8 @@ const ListHeader = () => {
                 width: 100,
               }}
             >
-              <Typography
-                size={16}
-                fw="500"
-                textAlign="center"
-                color={theme.white}
-                lh={30}
-              >
-                {details?.localBalance + details?.remoteBalance}{" "}
+              <Typography size={16} fw='500' textAlign='center' color={theme.white} lh={30}>
+                {details?.localBalance + details?.remoteBalance}{' '}
               </Typography>
             </View>
           </View>
@@ -220,54 +194,54 @@ const ListHeader = () => {
 
         <View style={styles.buttonWrap}>
           <Button
-            icon="arrow-bottom-left"
+            icon='arrow-bottom-left'
             w={125}
             h={40}
             round={5}
             style={{ borderColor: theme.border, marginRight: 6 }}
-            onPress={() => ui.setPayMode("invoice", null)}
+            onPress={() => ui.setPayMode('invoice', null)}
           >
             RECEIVE
           </Button>
           <Button
             color={theme.darkPrimary}
-            icon="arrow-top-right"
+            icon='arrow-top-right'
             w={125}
             h={40}
             round={5}
             style={{ borderColor: theme.border, marginLeft: 6 }}
-            onPress={() => ui.setPayMode("payment", null)}
+            onPress={() => ui.setPayMode('payment', null)}
           >
             SEND
           </Button>
         </View>
       </View>
     </>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   wrap: {
     flex: 1,
   },
   headerActions: {
-    display: "flex",
-    justifyContent: "center",
-    width: "100%",
+    display: 'flex',
+    justifyContent: 'center',
+    width: '100%',
     marginTop: 20,
   },
   wallet: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   buttonWrap: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    width: "100%",
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
     marginVertical: 30,
   },
-});
+})

@@ -1,3 +1,3 @@
-const VERSION = 80;
+const VERSION = 80
 
-export default VERSION;
+export default VERSION

@@ -1,14 +1,14 @@
-import React from "react";
-import { StyleSheet, View } from "react-native";
-import { useObserver } from "mobx-react-lite";
+import React from 'react'
+import { StyleSheet, View } from 'react-native'
+import { useObserver } from 'mobx-react-lite'
 
-import { useTheme } from "../../store";
-import TabBar from "../common/TabBar";
-import Header from "./Header";
-import OwnedTribes from "./OwnedTribes";
+import { useTheme } from '../../store'
+import TabBar from '../common/TabBar'
+import Header from './Header'
+import OwnedTribes from './OwnedTribes'
 
 export default function Tribes() {
-  const theme = useTheme();
+  const theme = useTheme()
 
   return useObserver(() => {
     return (
@@ -17,8 +17,8 @@ export default function Tribes() {
         <OwnedTribes />
         <TabBar />
       </View>
-    );
-  });
+    )
+  })
 }
 
 const styles = StyleSheet.create({
@@ -31,4 +31,4 @@ const styles = StyleSheet.create({
     paddingRight: 14,
     paddingLeft: 14,
   },
-});
+})

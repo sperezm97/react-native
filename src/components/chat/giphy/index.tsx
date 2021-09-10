@@ -1,14 +1,14 @@
-import React from "react";
-import MasonryList from "@react-native-seoul/masonry-list";
-import { Modalize } from "react-native-modalize";
-import { Portal } from "react-native-portalize";
-import { useKeyboard } from "@react-native-community/hooks";
-import { useTheme } from "../../../store";
-import { GiphyProps } from "./type";
-import styles from "./styles";
-import Header from "./header";
-import Footer from "./footer";
-import Item from "./item";
+import React from 'react'
+import MasonryList from '@react-native-seoul/masonry-list'
+import { Modalize } from 'react-native-modalize'
+import { Portal } from 'react-native-portalize'
+import { useKeyboard } from '@react-native-community/hooks'
+import { useTheme } from '../../../store'
+import { GiphyProps } from './type'
+import styles from './styles'
+import Header from './header'
+import Footer from './footer'
+import Item from './item'
 
 /**
  * Component that shows a modal with specific gifs
@@ -21,35 +21,19 @@ import Item from "./item";
  * @param {Function} onSubmitEditing - function that search the type of gifs
  */
 const Giphy = React.forwardRef<Modalize | null, GiphyProps>(
-  (
-    {
-      gifs,
-      open,
-      onClose,
-      searchGif,
-      onSendGifHandler,
-      setSearchGif,
-      getGifsBySearch,
-    },
-    modalizeRef
-  ) => {
-    const { keyboardHeight } = useKeyboard();
-    const modalHeight = keyboardHeight + 100;
-    const theme = useTheme();
+  ({ gifs, open, onClose, searchGif, onSendGifHandler, setSearchGif, getGifsBySearch }, modalizeRef) => {
+    const { keyboardHeight } = useKeyboard()
+    const modalHeight = keyboardHeight + 100
+    const theme = useTheme()
 
     const onSearchGIF = () => {
-      setSearchGif(searchGif);
-      getGifsBySearch();
-    };
+      setSearchGif(searchGif)
+      getGifsBySearch()
+    }
 
     const CustomHeader = () => (
-      <Header
-        onClose={onClose}
-        searchGif={searchGif}
-        setSearchGif={setSearchGif}
-        getGifsBySearch={getGifsBySearch}
-      />
-    );
+      <Header onClose={onClose} searchGif={searchGif} setSearchGif={setSearchGif} getGifsBySearch={getGifsBySearch} />
+    )
 
     return (
       <Portal>
@@ -68,8 +52,8 @@ const Giphy = React.forwardRef<Modalize | null, GiphyProps>(
           />
         </Modalize>
       </Portal>
-    );
+    )
   }
-);
+)
 
-export default Giphy;
+export default Giphy

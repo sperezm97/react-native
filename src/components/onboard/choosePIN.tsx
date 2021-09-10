@@ -1,15 +1,15 @@
-import React from "react";
-import { useObserver } from "mobx-react-lite";
+import React from 'react'
+import { useObserver } from 'mobx-react-lite'
 
-import Slider from "../utils/slider";
-import PIN from "../utils/pin";
+import Slider from '../utils/slider'
+import PIN from '../utils/pin'
 
 export default function ChoosePIN(props) {
-  const { onDone, z, show } = props;
+  const { onDone, z, show } = props
 
   return useObserver(() => (
-    <Slider z={z} show={show} accessibilityLabel="onboard-PIN">
-      <PIN mode="choose" onFinish={onDone} />
+    <Slider z={z} show={show} accessibilityLabel='onboard-PIN'>
+      <PIN mode='choose' onFinish={onDone} />
     </Slider>
-  ));
+  ))
 }

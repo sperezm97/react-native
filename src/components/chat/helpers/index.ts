@@ -1,3 +1,3 @@
-import fetchGifs from "./fetchGifs";
+import fetchGifs from './fetchGifs'
 
-export { fetchGifs };
+export { fetchGifs }

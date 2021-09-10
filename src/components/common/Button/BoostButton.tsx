@@ -1,14 +1,14 @@
-import React, { useRef } from "react";
-import { StyleSheet, Animated, View } from "react-native";
-import { TouchableRipple } from "react-native-paper";
-import Ionicon from "react-native-vector-icons/Ionicons";
+import React, { useRef } from 'react'
+import { StyleSheet, Animated, View } from 'react-native'
+import { TouchableRipple } from 'react-native-paper'
+import Ionicon from 'react-native-vector-icons/Ionicons'
 
-import { useTheme } from "../../../store";
-import Typography from "../Typography";
+import { useTheme } from '../../../store'
+import Typography from '../Typography'
 
 export default function BoostButton({ onPress }) {
-  const theme = useTheme();
-  const size = useRef(new Animated.Value(1)).current;
+  const theme = useTheme()
+  const size = useRef(new Animated.Value(1)).current
   function go() {
     Animated.sequence([
       Animated.timing(size, {
@@ -21,8 +21,8 @@ export default function BoostButton({ onPress }) {
         duration: 500,
         useNativeDriver: true,
       }),
-    ]).start();
-    onPress();
+    ]).start()
+    onPress()
   }
   return (
     <TouchableRipple
@@ -37,26 +37,22 @@ export default function BoostButton({ onPress }) {
             transform: [{ scale: size }],
           }}
         >
-          <Ionicon name="rocket-outline" color={theme.primary} size={22} />
+          <Ionicon name='rocket-outline' color={theme.primary} size={22} />
         </Animated.View>
-        <Typography
-          size={15}
-          color={theme.primary}
-          style={{ paddingHorizontal: 6 }}
-        >
+        <Typography size={15} color={theme.primary} style={{ paddingHorizontal: 6 }}>
           Boost
         </Typography>
       </View>
     </TouchableRipple>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
   boostButton: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
     borderWidth: 1,
     borderRadius: 5,
     width: 100,
@@ -64,9 +60,9 @@ const styles = StyleSheet.create({
   },
   circle: {
     borderRadius: 15,
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-});
+})

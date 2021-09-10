@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { StyleSheet, View } from "react-native";
-import { TextInput, Chip } from "react-native-paper";
+import React, { useEffect, useState } from 'react'
+import { StyleSheet, View } from 'react-native'
+import { TextInput, Chip } from 'react-native-paper'
 
-import { useTheme } from "../../../store";
-import Button from "../../common/Button";
-import InputAccessoryView from "../../common/Accessories/InputAccessoryView";
-import Typography from "../../common/Typography";
+import { useTheme } from '../../../store'
+import Button from '../../common/Button'
+import InputAccessoryView from '../../common/Accessories/InputAccessoryView'
+import Typography from '../../common/Typography'
 
 // const tagz = [
 //   'Mobile',
@@ -24,43 +24,43 @@ export default function TribeTags(props) {
     tags,
     displayOnly = false,
     saveAction = true,
-    saveText = "Save",
-    btnMode = "text",
+    saveText = 'Save',
+    btnMode = 'text',
     finish,
-  } = props;
+  } = props
 
-  const theme = useTheme();
-  const [tag, setTag] = useState("");
-  const [error, setError] = useState("");
-  const [tagz, setTagz] = useState([]);
-  const nativeID = "tag";
+  const theme = useTheme()
+  const [tag, setTag] = useState('')
+  const [error, setError] = useState('')
+  const [tagz, setTagz] = useState([])
+  const nativeID = 'tag'
 
   useEffect(() => {
-    setTagz(tags);
-  }, [tags]);
+    setTagz(tags)
+  }, [tags])
 
   // const [selectedTags, setSelectedTags] = useState(tags)
 
   function addTag() {
-    if (!tag) return;
-    const newValues = [...tagz];
+    if (!tag) return
+    const newValues = [...tagz]
 
     if (tagz.length >= 5) {
-      setError("Only five values are allowed!");
+      setError('Only five values are allowed!')
     } else if (newValues.includes(tag)) {
-      setError("Value already exist!");
+      setError('Value already exist!')
     } else if (tagz.length < 5) {
-      setTagz([tag, ...newValues]);
+      setTagz([tag, ...newValues])
     } else {
     }
 
-    setTag("");
+    setTag('')
   }
 
   function removeTag(tag) {
-    const newValues = [...tagz];
-    setTagz(newValues.filter((t) => t !== tag));
-    setError("");
+    const newValues = [...tagz]
+    setTagz(newValues.filter((t) => t !== tag))
+    setError('')
   }
 
   // function onChipPress(tag) {
@@ -90,10 +90,10 @@ export default function TribeTags(props) {
                   {t}
                 </Chip>
               </View>
-            );
+            )
           })}
         </>
-      );
+      )
     } else {
       return (
         <>
@@ -114,14 +114,14 @@ export default function TribeTags(props) {
                       {t}
                     </Chip>
                   </View>
-                );
+                )
               })}
             </>
           ) : (
             <Typography size={16}></Typography>
           )}
         </>
-      );
+      )
     }
   }
 
@@ -133,10 +133,10 @@ export default function TribeTags(props) {
             <View style={{ ...styles.inputWrap }}>
               <TextInput
                 inputAccessoryViewID={nativeID}
-                placeholder="Type topic: Art or Music..."
+                placeholder='Type topic: Art or Music...'
                 value={tag}
                 onChangeText={setTag}
-                onFocus={() => setError("")}
+                onFocus={() => setError('')}
                 style={{ ...styles.input, backgroundColor: theme.bg }}
                 underlineColor={theme.border}
               />
@@ -144,11 +144,7 @@ export default function TribeTags(props) {
                 {error}
               </Typography>
             </View>
-            <InputAccessoryView
-              nativeID={nativeID}
-              done={addTag}
-              doneText="Add"
-            />
+            <InputAccessoryView nativeID={nativeID} done={addTag} doneText='Add' />
           </>
         )}
 
@@ -159,47 +155,43 @@ export default function TribeTags(props) {
           style={{
             ...styles.buttonWrap,
 
-            justifyContent: saveAction ? "flex-end" : "center",
+            justifyContent: saveAction ? 'flex-end' : 'center',
           }}
         >
-          <Button
-            mode={btnMode}
-            onPress={() => finish(tagz)}
-            w={props.btnW ? props.btnW : 100}
-          >
+          <Button mode={btnMode} onPress={() => finish(tagz)} w={props.btnW ? props.btnW : 100}>
             {saveText}
           </Button>
         </View>
       )}
     </View>
-  );
+  )
 }
 
 TribeTags.defaultProps = {
   containerStyle: null,
   finish: () => {},
-};
+}
 
 const styles = StyleSheet.create({
   content: {
-    flexDirection: "column",
-    width: "100%",
+    flexDirection: 'column',
+    width: '100%',
   },
   badgeContainer: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    flexWrap: "wrap",
-    width: "100%",
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+    width: '100%',
   },
   chip: {
     marginRight: 10,
     marginBottom: 10,
   },
   buttonWrap: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
     marginTop: 40,
   },
   inputWrap: {
@@ -207,6 +199,6 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 50,
-    textAlign: "auto",
+    textAlign: 'auto',
   },
-});
+})

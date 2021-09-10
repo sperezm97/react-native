@@ -1,29 +1,28 @@
-import React, { useState } from "react";
-import { StyleSheet, View, Image, TouchableOpacity } from "react-native";
-import Modal from "react-native-modal";
+import React, { useState } from 'react'
+import { StyleSheet, View, Image, TouchableOpacity } from 'react-native'
+import Modal from 'react-native-modal'
 
-import { useTheme } from "../../../store";
-import Icon from "../Icon";
-import Typography from "../Typography";
+import { useTheme } from '../../../store'
+import Icon from '../Icon'
+import Typography from '../Typography'
 
 export default function MenuSheet(props) {
-  const { visible, items, hasBackdrop, swipeDirection, onCancel, noSwipe } =
-    props;
-  const theme = useTheme();
-  const [disableAllFunctions, setDisableAllFunctions] = useState(true);
+  const { visible, items, hasBackdrop, swipeDirection, onCancel, noSwipe } = props
+  const theme = useTheme()
+  const [disableAllFunctions, setDisableAllFunctions] = useState(true)
 
-  let actionItems = [];
+  let actionItems = []
 
-  if (typeof onCancel === "function") {
+  if (typeof onCancel === 'function') {
     actionItems = [
       ...items,
       {
-        title: "Cancel",
+        title: 'Cancel',
         action: () => onCancel(),
       },
-    ];
+    ]
   } else {
-    actionItems = [...items];
+    actionItems = [...items]
   }
 
   return (
@@ -32,7 +31,7 @@ export default function MenuSheet(props) {
       style={{
         marginHorizontal: 0,
         marginVertical: 12,
-        justifyContent: "flex-end",
+        justifyContent: 'flex-end',
       }}
       hasBackdrop={hasBackdrop}
       onSwipeComplete={onCancel}
@@ -42,7 +41,7 @@ export default function MenuSheet(props) {
       swipeDirection={noSwipe ? null : swipeDirection}
     >
       {!noSwipe && (
-        <View style={{ flexDirection: "row", justifyContent: "center" }}>
+        <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
           <View style={styles.headLine} />
         </View>
       )}
@@ -53,7 +52,7 @@ export default function MenuSheet(props) {
         }}
       >
         {actionItems.map((item, i) => {
-          const iconProp = React.isValidElement(item.thumbIcon);
+          const iconProp = React.isValidElement(item.thumbIcon)
 
           return (
             <View
@@ -66,7 +65,7 @@ export default function MenuSheet(props) {
                   borderTopRightRadius: 12,
                   borderBottomLeftRadius: 12,
                   borderBottomRightRadius: 12,
-                  justifyContent: "center",
+                  justifyContent: 'center',
                 },
               ]}
               key={item.title}
@@ -96,13 +95,13 @@ export default function MenuSheet(props) {
                     borderTopRightRadius: 12,
                     borderBottomLeftRadius: 12,
                     borderBottomRightRadius: 12,
-                    justifyContent: "center",
+                    justifyContent: 'center',
                   },
                 ]}
                 onPress={disableAllFunctions ? () => null : item.action}
                 disabled={item.disabled}
               >
-                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                   <>
                     {item.thumbIcon && (
                       <View
@@ -114,21 +113,13 @@ export default function MenuSheet(props) {
                         {iconProp ? (
                           <>{item.thumbIcon}</>
                         ) : (
-                          <Icon
-                            name={item.thumbIcon}
-                            size={18}
-                            color={item.thumbColor}
-                          />
+                          <Icon name={item.thumbIcon} size={18} color={item.thumbColor} />
                         )}
                       </View>
                     )}
                     {item.thumbImage && (
                       <Image
-                        source={
-                          typeof item.thumbImage === "string"
-                            ? { uri: item.thumbImage }
-                            : item.thumbImage
-                        }
+                        source={typeof item.thumbImage === 'string' ? { uri: item.thumbImage } : item.thumbImage}
                         style={{ ...styles.thumbImage }}
                       />
                     )}
@@ -144,18 +135,18 @@ export default function MenuSheet(props) {
                 </View>
               </TouchableOpacity>
             </View>
-          );
+          )
         })}
       </View>
     </Modal>
-  );
+  )
 }
 
 MenuSheet.defaultProps = {
   items: [],
   hasBackdrop: true,
-  swipeDirection: "down",
-};
+  swipeDirection: 'down',
+}
 
 const styles = StyleSheet.create({
   wrap: {
@@ -167,9 +158,9 @@ const styles = StyleSheet.create({
     paddingBottom: 12,
   },
   row: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     paddingTop: 12,
     paddingBottom: 12,
   },
@@ -178,8 +169,8 @@ const styles = StyleSheet.create({
     height: 30,
     marginRight: 10,
     borderRadius: 50,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   thumbImage: {
     borderRadius: 10,
@@ -192,12 +183,12 @@ const styles = StyleSheet.create({
     width: 55,
     borderRadius: 5,
     marginBottom: 5,
-    backgroundColor: "#eaeaea",
+    backgroundColor: '#eaeaea',
   },
   actionSheetView: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
     padding: 16,
   },
-});
+})

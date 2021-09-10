@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from "react";
-import { StyleSheet, Animated, Dimensions } from "react-native";
+import React, { useEffect, useState } from 'react'
+import { StyleSheet, Animated, Dimensions } from 'react-native'
 
-import { useTheme } from "../../store";
+import { useTheme } from '../../store'
 
 export default function Slider(props) {
-  const screenWidth = Math.ceil(Dimensions.get("window").width);
-  const zero = new Animated.Value(0);
-  const w = new Animated.Value(screenWidth);
-  const [x] = useState(w);
-  const theme = useTheme();
+  const screenWidth = Math.ceil(Dimensions.get('window').width)
+  const zero = new Animated.Value(0)
+  const w = new Animated.Value(screenWidth)
+  const [x] = useState(w)
+  const theme = useTheme()
 
   useEffect(() => {
     if (props.show) {
@@ -16,21 +16,21 @@ export default function Slider(props) {
         toValue: 0,
         duration: 600,
         useNativeDriver: true,
-      }).start();
+      }).start()
     } else {
       Animated.timing(x, {
         toValue: screenWidth,
         duration: 600,
         useNativeDriver: true,
-      }).start();
+      }).start()
     }
-  }, [props.show]);
+  }, [props.show])
 
-  const addedStyles = props.style || {};
+  const addedStyles = props.style || {}
 
   return (
     <Animated.View
-      accessibilityLabel={props.accessibilityLabel || "slider"}
+      accessibilityLabel={props.accessibilityLabel || 'slider'}
       style={{
         ...styles.wrap,
         backgroundColor: theme.bg,
@@ -41,18 +41,18 @@ export default function Slider(props) {
     >
       {props.children}
     </Animated.View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
   wrap: {
     flex: 1,
-    position: "absolute",
+    position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
     bottom: 0,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-});
+})

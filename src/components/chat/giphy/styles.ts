@@ -1,5 +1,5 @@
-import { StyleSheet } from "react-native";
-import { SCREEN_HEIGHT } from "../../../constants";
+import { StyleSheet } from 'react-native'
+import { SCREEN_HEIGHT } from '../../../constants'
 
 export default StyleSheet.create({
   header: {
@@ -9,22 +9,22 @@ export default StyleSheet.create({
   },
   inputContainer: {
     borderRadius: 12,
-    overflow: "hidden",
+    overflow: 'hidden',
   },
   input: {
-    borderBottomColor: "transparent",
+    borderBottomColor: 'transparent',
     fontSize: 20,
   },
   mansoryContainer: {
-    alignSelf: "stretch",
+    alignSelf: 'stretch',
     paddingHorizontal: 10,
   },
   gifContainer: {
     flex: 1,
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "center",
-    width: "100%",
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    width: '100%',
   },
   gifWrapper: {
     padding: 3,
@@ -33,9 +33,9 @@ export default StyleSheet.create({
     borderRadius: 4,
   },
   loadingWrapper: {
-    alignItems: "center",
+    alignItems: 'center',
     flex: 1,
-    flexDirection: "row",
-    justifyContent: "center",
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
-});
+})

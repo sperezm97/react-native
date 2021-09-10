@@ -15,7 +15,7 @@
     "xcode": "open ios/Chat.xcworkspace",
     "bump": "npx react-native bump-version --skip-semver-for android --skip-code-for android",
     "t": "tsc",
-    "prettier":"prettier src/ --write"
+    "prettier": "prettier src/ --write"
   },
   "build": {
     "appId": "Zion.chat",
@@ -323,5 +323,23 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "prettier": {
+    "arrowParens": "always",
+    "bracketSpacing": true,
+    "embeddedLanguageFormatting": "auto",
+    "htmlWhitespaceSensitivity": "css",
+    "insertPragma": false,
+    "jsxBracketSameLine": false,
+    "jsxSingleQuote": true,
+    "printWidth": 120,
+    "proseWrap": "preserve",
+    "quoteProps": "as-needed",
+    "requirePragma": false,
+    "semi": false,
+    "singleQuote": true,
+    "tabWidth": 2,
+    "trailingComma": "es5",
+    "useTabs": false
   }
 }

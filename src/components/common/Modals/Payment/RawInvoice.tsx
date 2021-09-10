@@ -1,34 +1,30 @@
-import React from "react";
-import { View, Text, StyleSheet, Dimensions, Modal } from "react-native";
-import Share from "react-native-share";
-import Clipboard from "@react-native-community/clipboard";
-import Toast from "react-native-simple-toast";
-import QRCode from "react-native-qrcode-svg";
-import { isIphoneX, getBottomSpace } from "react-native-iphone-x-helper";
+import React from 'react'
+import { View, Text, StyleSheet, Dimensions, Modal } from 'react-native'
+import Share from 'react-native-share'
+import Clipboard from '@react-native-community/clipboard'
+import Toast from 'react-native-simple-toast'
+import QRCode from 'react-native-qrcode-svg'
+import { isIphoneX, getBottomSpace } from 'react-native-iphone-x-helper'
 
-import { useTheme } from "../../../../store";
-import { SCREEN_WIDTH, TOAST_DURATION } from "../../../../constants";
-import ModalWrap from "../ModalWrap";
-import ModalHeader from "../ModalHeader";
+import { useTheme } from '../../../../store'
+import { SCREEN_WIDTH, TOAST_DURATION } from '../../../../constants'
+import ModalWrap from '../ModalWrap'
+import ModalHeader from '../ModalHeader'
 // import QRCode from '../../../utils/qrcode'
-import Button from "../../Button";
-import Typography from "../../Typography";
+import Button from '../../Button'
+import Typography from '../../Typography'
 
 export default function RawInvoice({ visible, onClose, amount, payreq, paid }) {
-  const theme = useTheme();
+  const theme = useTheme()
 
   function copy() {
-    Clipboard.setString(payreq);
-    Toast.showWithGravity(
-      "Payment Request Copied",
-      TOAST_DURATION,
-      Toast.CENTER
-    );
+    Clipboard.setString(payreq)
+    Toast.showWithGravity('Payment Request Copied', TOAST_DURATION, Toast.CENTER)
   }
 
   async function share() {
     try {
-      await Share.open({ message: payreq });
+      await Share.open({ message: payreq })
     } catch (e) {}
   }
 
@@ -36,12 +32,12 @@ export default function RawInvoice({ visible, onClose, amount, payreq, paid }) {
     <ModalWrap
       visible={visible}
       nopad
-      animationIn={"slideInRight"}
-      animationOut={"slideOutRight"}
-      swipeDirection="right"
+      animationIn={'slideInRight'}
+      animationOut={'slideOutRight'}
+      swipeDirection='right'
       hasBackdrop={false}
     >
-      <ModalHeader title="Payment Request" onClose={onClose} />
+      <ModalHeader title='Payment Request' onClose={onClose} />
       <View style={{ ...styles.wrap }}>
         <View
           style={{
@@ -51,33 +47,22 @@ export default function RawInvoice({ visible, onClose, amount, payreq, paid }) {
           <View
             style={{
               flex: 1,
-              alignItems: "center",
-              justifyContent: "center",
+              alignItems: 'center',
+              justifyContent: 'center',
               marginTop: 10,
             }}
           >
             {amount && (
-              <Typography
-                size={16}
-                color={theme.title}
-                style={{ marginBottom: 20 }}
-              >
+              <Typography size={16} color={theme.title} style={{ marginBottom: 20 }}>
                 {`Amount:  ${amount}`}
                 <Typography color={theme.subtitle}>{` sats`}</Typography>
               </Typography>
             )}
-            <View style={{ position: "relative" }}>
+            <View style={{ position: 'relative' }}>
               <QRCode value={payreq} size={SCREEN_WIDTH / 1.2} />
               {paid && (
                 <View style={styles.paidWrap}>
-                  <Typography
-                    style={styles.paid}
-                    color="#55D1A9"
-                    fw="500"
-                    bg={theme.white}
-                    textAlign="center"
-                    lh={30}
-                  >
+                  <Typography style={styles.paid} color='#55D1A9' fw='500' bg={theme.white} textAlign='center' lh={30}>
                     PAID
                   </Typography>
                 </View>
@@ -105,7 +90,7 @@ export default function RawInvoice({ visible, onClose, amount, payreq, paid }) {
         </View>
       </View>
     </ModalWrap>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -114,32 +99,32 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    alignSelf: "center",
+    alignSelf: 'center',
     width: SCREEN_WIDTH / 1.2,
   },
   buttonsWrap: {
-    display: "flex",
-    flexDirection: "row",
-    width: "100%",
-    justifyContent: "space-around",
+    display: 'flex',
+    flexDirection: 'row',
+    width: '100%',
+    justifyContent: 'space-around',
     marginTop: 40,
     marginBottom: isIphoneX() ? getBottomSpace() : 30,
   },
   paidWrap: {
-    position: "absolute",
+    position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
     bottom: 0,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
     zIndex: 1001,
   },
   paid: {
     borderWidth: 4,
     height: 41,
     width: 80,
-    borderColor: "#55D1A9",
+    borderColor: '#55D1A9',
   },
-});
+})

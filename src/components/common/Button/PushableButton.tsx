@@ -1,10 +1,10 @@
-import React from "react";
+import React from 'react'
 
-import Pushable from "../Pushable";
-import Button from "./index";
+import Pushable from '../Pushable'
+import Button from './index'
 
 export default function PushableButton(props) {
-  let { onPress, scale, children } = props;
+  let { onPress, scale, children } = props
 
   return (
     <Pushable onPress={onPress} scale={scale}>
@@ -12,11 +12,11 @@ export default function PushableButton(props) {
         {children}
       </Button>
     </Pushable>
-  );
+  )
 }
 
 PushableButton.defaultProps = {
-  mode: "contained",
+  mode: 'contained',
   scale: 0.9,
-  size: "medium",
-};
+  size: 'medium',
+}

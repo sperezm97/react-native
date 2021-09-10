@@ -1,12 +1,12 @@
-import { observable, action } from "mobx";
-import { persist } from "mobx-persist";
+import { observable, action } from 'mobx'
+import { persist } from 'mobx-persist'
 
-import { DEFAULT_TRIBE_SERVER, DEFAULT_TRIBE_UUID } from "../config";
-import { Invite, contactStore } from "./contacts";
-import { relay } from "../api";
-import { constants } from "../constants";
-import { detailsStore } from "./details";
-import * as api from "../api";
+import { DEFAULT_TRIBE_SERVER, DEFAULT_TRIBE_UUID } from '../config'
+import { Invite, contactStore } from './contacts'
+import { relay } from '../api'
+import { constants } from '../constants'
+import { detailsStore } from './details'
+import * as api from '../api'
 /*
 disconneted - socket?
 03eab50cef61b9360bc24f0fd8a8cb3ebd7cec226d9f6fd39150594e0da8bd58a7
@@ -17,140 +17,140 @@ only send confirmation if u are trbie owner/??
 */
 
 export interface Chat {
-  id: number;
-  uuid: string;
-  name: string;
-  photo_url: string;
-  type: number;
-  status: number;
-  contact_ids: number[];
-  is_muted: boolean;
-  created_at: string;
-  updated_at: string;
-  deleted: boolean;
+  id: number
+  uuid: string
+  name: string
+  photo_url: string
+  type: number
+  status: number
+  contact_ids: number[]
+  is_muted: boolean
+  created_at: string
+  updated_at: string
+  deleted: boolean
 
-  feed_url: string;
-  app_url: string;
+  feed_url: string
+  app_url: string
 
-  group_key: string;
-  host: string;
-  price_to_join: number;
-  price_per_message: number;
-  escrow_amount: number;
-  escrow_millis: number;
-  owner_pubkey: string;
-  unlisted: boolean;
-  private: boolean;
+  group_key: string
+  host: string
+  price_to_join: number
+  price_per_message: number
+  escrow_amount: number
+  escrow_millis: number
+  owner_pubkey: string
+  unlisted: boolean
+  private: boolean
 
-  pending_contact_ids: number[];
+  pending_contact_ids: number[]
 
-  invite: Invite;
+  invite: Invite
 
-  photo_uri: string;
+  photo_uri: string
 
-  pricePerMinute: number; // for setting in group modal
+  pricePerMinute: number // for setting in group modal
 
-  meta: { [k: string]: any };
-  my_alias: string;
-  my_photo_url: string;
+  meta: { [k: string]: any }
+  my_alias: string
+  my_photo_url: string
 }
 
 export interface TribeServer {
-  host: string;
+  host: string
 }
 
 export class ChatStore {
-  @persist("list")
+  @persist('list')
   @observable
-  chats: Chat[] = [];
+  chats: Chat[] = []
 
   @observable
-  tribes = [];
+  tribes = []
 
-  @persist("object")
+  @persist('object')
   @observable
-  pricesPerMinute: { [k: number]: number } = {};
+  pricesPerMinute: { [k: number]: number } = {}
 
   @action
   setChats(chats: Chat[]) {
-    this.chats = chats.map((c) => this.parseChat(c));
+    this.chats = chats.map((c) => this.parseChat(c))
   }
 
   @action
   setPricePerMinute(chatID: number, ppm: number) {
-    if (!chatID) return;
-    this.pricesPerMinute[chatID] = ppm;
+    if (!chatID) return
+    this.pricesPerMinute[chatID] = ppm
   }
 
-  @persist("list")
+  @persist('list')
   @observable
-  servers: TribeServer[] = [{ host: DEFAULT_TRIBE_SERVER }];
+  servers: TribeServer[] = [{ host: DEFAULT_TRIBE_SERVER }]
 
   @action getDefaultTribeServer(): TribeServer {
-    const server = this.servers.find((s) => s.host === DEFAULT_TRIBE_SERVER);
+    const server = this.servers.find((s) => s.host === DEFAULT_TRIBE_SERVER)
     if (!server) {
-      this.updateServers();
-      return this.getDefaultTribeServer();
+      this.updateServers()
+      return this.getDefaultTribeServer()
     }
-    return server;
+    return server
   }
 
   @action updateServers(): void {
-    this.servers = [{ host: DEFAULT_TRIBE_SERVER }];
+    this.servers = [{ host: DEFAULT_TRIBE_SERVER }]
   }
 
   @action
   async muteChat(chatID: number, muted: boolean) {
-    relay.post(`chats/${chatID}/${muted ? "mute" : "unmute"}`);
+    relay.post(`chats/${chatID}/${muted ? 'mute' : 'unmute'}`)
     const chats = this.chats.map((c) => {
       if (c.id === chatID) {
-        return { ...c, is_muted: muted };
+        return { ...c, is_muted: muted }
       }
-      return c;
-    });
+      return c
+    })
 
-    this.chats = chats;
+    this.chats = chats
   }
 
   @action parseChat(c): Chat {
-    if (c.meta && typeof c.meta === "string") {
-      let meta;
+    if (c.meta && typeof c.meta === 'string') {
+      let meta
       try {
-        meta = JSON.parse(String(c.meta));
+        meta = JSON.parse(String(c.meta))
       } catch (e) {}
-      return { ...c, meta };
+      return { ...c, meta }
     }
-    return c;
+    return c
   }
 
   @action
   async getChats() {
-    const chats = await relay.get("chats");
-    if (!(chats && chats.length)) return;
-    this.chats = this.chats.map((c) => this.parseChat(c));
+    const chats = await relay.get('chats')
+    if (!(chats && chats.length)) return
+    this.chats = this.chats.map((c) => this.parseChat(c))
 
-    return this.chats;
+    return this.chats
   }
 
   @action
   gotChat(chat: Chat) {
-    const existingIndex = this.chats.findIndex((ch) => ch.id === chat.id);
+    const existingIndex = this.chats.findIndex((ch) => ch.id === chat.id)
     if (existingIndex > -1) {
-      this.chats[existingIndex] = this.parseChat(chat);
+      this.chats[existingIndex] = this.parseChat(chat)
     } else {
-      this.chats.unshift(this.parseChat(chat));
+      this.chats.unshift(this.parseChat(chat))
     }
   }
 
   @action
   async createGroup(contact_ids: number[], name: string) {
-    const r = await relay.post("group", {
+    const r = await relay.post('group', {
       name,
       contact_ids,
-    });
-    if (!r) return;
-    this.gotChat(r);
-    return r;
+    })
+    if (!r) return
+    this.gotChat(r)
+    return r
   }
 
   @action
@@ -169,7 +169,7 @@ export class ChatStore {
     feed_url,
     contact_ids = [],
   }) {
-    console.log("======>", {
+    console.log('======>', {
       name,
       description,
       tags,
@@ -182,9 +182,9 @@ export class ChatStore {
       is_private,
       app_url,
       feed_url,
-    });
-    await sleep(1);
-    const r = await relay.post("group", {
+    })
+    await sleep(1)
+    const r = await relay.post('group', {
       name,
       description,
       tags: tags || [],
@@ -194,16 +194,16 @@ export class ChatStore {
       price_to_join: price_to_join || 0,
       escrow_amount: escrow_amount || 0,
       escrow_millis: escrow_time ? escrow_time * 60 * 60 * 1000 : 0,
-      img: img || "",
+      img: img || '',
       unlisted: unlisted || false,
       private: is_private || false,
-      app_url: app_url || "",
-      feed_url: feed_url || "",
-    });
+      app_url: app_url || '',
+      feed_url: feed_url || '',
+    })
 
-    if (!r) return;
-    this.gotChat(r);
-    return r;
+    if (!r) return
+    this.gotChat(r)
+    return r
   }
 
   @action
@@ -233,16 +233,16 @@ export class ChatStore {
       price_to_join: price_to_join || 0,
       escrow_amount: escrow_amount || 0,
       escrow_millis: escrow_time ? escrow_time * 60 * 60 * 1000 : 0,
-      img: img || "",
+      img: img || '',
       unlisted: unlisted || false,
       private: is_private || false,
-      app_url: app_url || "",
-      feed_url: feed_url || "",
-    });
+      app_url: app_url || '',
+      feed_url: feed_url || '',
+    })
 
-    if (!r) return;
-    this.gotChat(r);
-    return r;
+    if (!r) return
+    this.gotChat(r)
+    return r
   }
 
   @action
@@ -259,20 +259,20 @@ export class ChatStore {
     my_alias,
     my_photo_url,
   }: {
-    name: string;
-    uuid: string;
-    group_key: string;
-    host: string;
-    amount: number;
-    img: string;
-    owner_alias: string;
-    owner_pubkey: string;
-    is_private: boolean;
-    my_alias?: string;
-    my_photo_url?: string;
+    name: string
+    uuid: string
+    group_key: string
+    host: string
+    amount: number
+    img: string
+    owner_alias: string
+    owner_pubkey: string
+    is_private: boolean
+    my_alias?: string
+    my_photo_url?: string
   }) {
     const r = await relay.post(
-      "tribe",
+      'tribe',
       {
         name,
         uuid,
@@ -283,29 +283,25 @@ export class ChatStore {
         owner_alias,
         owner_pubkey,
         private: is_private,
-        my_alias: my_alias || "",
-        my_photo_url: my_photo_url || "",
+        my_alias: my_alias || '',
+        my_photo_url: my_photo_url || '',
       },
-      "",
+      '',
       {
         // TODO: Create a util for this call
-        exceptionCallback: async (e) =>
-          api.invite.post("notify", { error: e }, "", { rawValue: true }),
+        exceptionCallback: async (e) => api.invite.post('notify', { error: e }, '', { rawValue: true }),
       }
-    );
+    )
 
-    if (!r) return;
-    this.gotChat(r);
-    if (amount) detailsStore.addToBalance(amount * -1);
-    return r;
+    if (!r) return
+    this.gotChat(r)
+    if (amount) detailsStore.addToBalance(amount * -1)
+    return r
   }
 
   @action
   async joinDefaultTribe() {
-    const params = await this.getTribeDetails(
-      DEFAULT_TRIBE_SERVER,
-      DEFAULT_TRIBE_UUID
-    );
+    const params = await this.getTribeDetails(DEFAULT_TRIBE_SERVER, DEFAULT_TRIBE_UUID)
 
     const r = await this.joinTribe({
       name: params.name,
@@ -317,166 +313,160 @@ export class ChatStore {
       img: params.img,
       amount: params.price_to_join || 0,
       is_private: params.private,
-    });
+    })
   }
 
   @action
   async addGroupMembers(chatID: number, contact_ids: number[]) {
     await relay.put(`chat/${chatID}`, {
       contact_ids,
-    });
+    })
   }
 
   @action
   async exitGroup(chatID: number) {
-    await relay.del(`chat/${chatID}`);
-    const chats = [...this.chats];
-    this.chats = chats.filter((c) => c.id !== chatID);
+    await relay.del(`chat/${chatID}`)
+    const chats = [...this.chats]
+    this.chats = chats.filter((c) => c.id !== chatID)
   }
 
   @action
   async kick(chatID, contactID) {
-    const r = await relay.put(`kick/${chatID}/${contactID}`);
+    const r = await relay.put(`kick/${chatID}/${contactID}`)
     if (r === true) {
       // success
-      const chat = this.chats.find((c) => c.id === chatID);
-      if (chat)
-        chat.contact_ids = chat.contact_ids.filter((cid) => cid !== contactID);
+      const chat = this.chats.find((c) => c.id === chatID)
+      if (chat) chat.contact_ids = chat.contact_ids.filter((cid) => cid !== contactID)
     }
   }
 
   @action
-  async updateMyInfoInChat(
-    tribeID: number,
-    my_alias: string,
-    my_photo_url: string
-  ) {
-    const r = await relay.put(`chats/${tribeID}`, { my_alias, my_photo_url });
+  async updateMyInfoInChat(tribeID: number, my_alias: string, my_photo_url: string) {
+    const r = await relay.put(`chats/${tribeID}`, { my_alias, my_photo_url })
     if (r) {
-      const cs = [...this.chats];
+      const cs = [...this.chats]
       this.chats = cs.map((c) => {
         if (c.id === tribeID) {
-          return { ...c, my_alias, my_photo_url };
+          return { ...c, my_alias, my_photo_url }
         }
-        return c;
-      });
+        return c
+      })
     }
   }
 
   @action
   async updateTribeAsNonAdmin(tribeID: number, name: string, img: string) {
-    const r = await relay.put(`group/${tribeID}`, { name, img });
+    const r = await relay.put(`group/${tribeID}`, { name, img })
     if (r) {
-      const cs = [...this.chats];
+      const cs = [...this.chats]
       this.chats = cs.map((c) => {
         if (c.id === tribeID) {
-          return { ...c, name, photo_url: img };
+          return { ...c, name, photo_url: img }
         }
-        return c;
-      });
+        return c
+      })
     }
   }
 
   @action
   updateChatPhotoURI(id, photo_uri) {
-    const cs = [...this.chats];
+    const cs = [...this.chats]
     this.chats = cs.map((c) => {
       if (c.id === id) {
-        return { ...c, photo_uri };
+        return { ...c, photo_uri }
       }
-      return c;
-    });
+      return c
+    })
   }
 
   @action
   updateChatMeta(chat_id, meta) {
-    const idx = this.chats.findIndex((c) => c.id === chat_id);
+    const idx = this.chats.findIndex((c) => c.id === chat_id)
     if (idx > -1) {
-      this.chats[idx].meta = meta;
+      this.chats[idx].meta = meta
     }
   }
 
   @action
   async getTribes() {
     try {
-      const r = await fetch(`https://${DEFAULT_TRIBE_SERVER}/tribes`);
-      const j = await r.json();
+      const r = await fetch(`https://${DEFAULT_TRIBE_SERVER}/tribes`)
+      const j = await r.json()
 
-      this.tribes = j;
+      this.tribes = j
 
-      return true;
+      return true
     } catch (e) {
-      console.log(e);
+      console.log(e)
     }
   }
 
   @action
   async getTribeDetails(host: string, uuid: string) {
-    if (!host || !uuid) return;
-    const theHost = host.includes("localhost") ? DEFAULT_TRIBE_SERVER : host;
+    if (!host || !uuid) return
+    const theHost = host.includes('localhost') ? DEFAULT_TRIBE_SERVER : host
     try {
-      const r = await fetch(`https://${theHost}/tribes/${uuid}`);
-      const j = await r.json();
+      const r = await fetch(`https://${theHost}/tribes/${uuid}`)
+      const j = await r.json()
       if (j.bots) {
         try {
-          const bots = JSON.parse(j.bots);
-          j.bots = bots;
+          const bots = JSON.parse(j.bots)
+          j.bots = bots
         } catch (e) {
-          j.bots = [];
+          j.bots = []
         }
       }
-      return j;
+      return j
     } catch (e) {
-      api.invite.post("notify", { error: e }, "", { rawValue: true }),
-        console.log(e);
+      api.invite.post('notify', { error: e }, '', { rawValue: true }), console.log(e)
     }
   }
 
   @action
   async checkRoute(cid, myid: number) {
-    const chat = this.chats.find((ch) => ch.id === cid);
+    const chat = this.chats.find((ch) => ch.id === cid)
 
-    if (!chat) return;
+    if (!chat) return
 
-    let pubkey;
+    let pubkey
     if (chat.type === constants.chat_types.tribe) {
-      pubkey = chat.owner_pubkey;
+      pubkey = chat.owner_pubkey
     } else if (chat.type === constants.chat_types.conversation) {
-      const contactid = chat.contact_ids.find((contid) => contid != myid);
-      const contact = contactStore.contacts.find((con) => con.id === contactid);
+      const contactid = chat.contact_ids.find((contid) => contid != myid)
+      const contact = contactStore.contacts.find((con) => con.id === contactid)
       if (contact) {
-        pubkey = contact.public_key;
+        pubkey = contact.public_key
       }
     }
 
-    if (!pubkey) return;
-    const r = await relay.get(`route?pubkey=${pubkey}`);
+    if (!pubkey) return
+    const r = await relay.get(`route?pubkey=${pubkey}`)
 
-    if (r) return r;
+    if (r) return r
   }
 
   @action
   async loadFeed(host: string, uuid: string, url: string) {
-    if (!host || !url) return;
-    const theHost = host.includes("localhost") ? DEFAULT_TRIBE_SERVER : host;
+    if (!host || !url) return
+    const theHost = host.includes('localhost') ? DEFAULT_TRIBE_SERVER : host
     try {
-      const r = await fetch(`https://${theHost}/podcast?url=${url}`);
-      const j = await r.json();
+      const r = await fetch(`https://${theHost}/podcast?url=${url}`)
+      const j = await r.json()
 
-      return j;
+      return j
     } catch (e) {
-      console.log("error loading podcast", e);
-      return null;
+      console.log('error loading podcast', e)
+      return null
     }
   }
 
   @action reset() {
-    this.chats = [];
+    this.chats = []
   }
 }
 
-export const chatStore = new ChatStore();
+export const chatStore = new ChatStore()
 
 async function sleep(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
+  return new Promise((resolve) => setTimeout(resolve, ms))
 }

@@ -1,11 +1,11 @@
-import React from "react";
-import { StyleSheet, View } from "react-native";
+import React from 'react'
+import { StyleSheet, View } from 'react-native'
 
-import { useTheme } from "../../store";
-import Media from "./Media";
+import { useTheme } from '../../store'
+import Media from './Media'
 
 export default function Feed({ feed }) {
-  const theme = useTheme();
+  const theme = useTheme()
 
   return (
     <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
@@ -20,14 +20,14 @@ export default function Feed({ feed }) {
             tribe={f.tribe}
             chat={f.tribe.chat}
           />
-        );
+        )
       })}
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
   wrap: {
     flex: 1,
   },
-});
+})

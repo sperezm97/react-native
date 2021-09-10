@@ -1,13 +1,13 @@
-import React, { useState } from "react";
-import { StyleSheet, View, Modal } from "react-native";
-import { TextInput } from "react-native-paper";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import React, { useState } from 'react'
+import { StyleSheet, View, Modal } from 'react-native'
+import { TextInput } from 'react-native-paper'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
-import { useTheme } from "../../../store";
-import { SCREEN_HEIGHT } from "../../../constants";
-import ModalHeader from "../Modals/ModalHeader";
-import QRScanner from "./QRScanner";
-import Button from "../Button";
+import { useTheme } from '../../../store'
+import { SCREEN_HEIGHT } from '../../../constants'
+import ModalHeader from '../Modals/ModalHeader'
+import QRScanner from './QRScanner'
+import Button from '../Button'
 
 export default function QR({
   visible,
@@ -20,44 +20,40 @@ export default function QR({
   confirm,
   scannerH = SCREEN_HEIGHT - 300,
 }) {
-  const theme = useTheme();
-  const [scanned, setScanned] = useState(false);
-  const [text, setText] = useState("");
+  const theme = useTheme()
+  const [scanned, setScanned] = useState(false)
+  const [text, setText] = useState('')
 
   function handleBarCodeScanned(data) {
-    setScanned(true);
+    setScanned(true)
 
     if (showPaster) {
-      setScannedInput(data);
+      setScannedInput(data)
     } else {
-      onScan(data);
+      onScan(data)
     }
   }
 
   function setScannedInput(data) {
     if (isLoopout) {
-      if (data.startsWith("bitcoin:")) {
-        const arr = data.split(":");
-        if (arr.length > 1) setText(arr[1]);
+      if (data.startsWith('bitcoin:')) {
+        const arr = data.split(':')
+        if (arr.length > 1) setText(arr[1])
       } else {
-        setText(data);
+        setText(data)
       }
-      return;
+      return
     } else {
-      setText(data);
+      setText(data)
     }
     // if (data.length === 66)
   }
 
-  const h = SCREEN_HEIGHT - 60;
+  const h = SCREEN_HEIGHT - 60
   return (
-    <Modal
-      visible={visible}
-      animationType="slide"
-      presentationStyle="pageSheet"
-    >
+    <Modal visible={visible} animationType='slide' presentationStyle='pageSheet'>
       <View style={{ ...styles.wrap, height: h, backgroundColor: theme.bg }}>
-        <ModalHeader title="Scan QR Code" onClose={onCancel} />
+        <ModalHeader title='Scan QR Code' onClose={onCancel} />
         <KeyboardAwareScrollView
           extraScrollHeight={120} // 70 + 50
           contentContainerStyle={{ ...styles.content }}
@@ -89,12 +85,7 @@ export default function QR({
                 }}
               >
                 {text.length > 0 && (
-                  <Button
-                    w={125}
-                    onPress={() => confirm(text)}
-                    disabled={!text || isLoading}
-                    loading={isLoading}
-                  >
+                  <Button w={125} onPress={() => confirm(text)} disabled={!text || isLoading} loading={isLoading}>
                     CONFIRM
                   </Button>
                 )}
@@ -104,19 +95,19 @@ export default function QR({
         </KeyboardAwareScrollView>
       </View>
     </Modal>
-  );
+  )
 }
 
 QR.defaultProps = {
-  inputPlaceholder: "Enter Address",
+  inputPlaceholder: 'Enter Address',
   onScan: () => {},
   confirm: () => {},
-};
+}
 
 const styles = StyleSheet.create({
   wrap: {
     flex: 1,
-    width: "100%",
+    width: '100%',
   },
   content: {
     flex: 1,
@@ -126,13 +117,13 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 70,
-    textAlign: "auto",
+    textAlign: 'auto',
   },
   buttonWrap: {
-    display: "flex",
-    alignItems: "center",
-    width: "100%",
+    display: 'flex',
+    alignItems: 'center',
+    width: '100%',
     height: 50,
     paddingTop: 20,
   },
-});
+})

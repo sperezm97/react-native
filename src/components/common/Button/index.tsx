@@ -1,10 +1,10 @@
-import React from "react";
-import { Button as PaperButton } from "react-native-paper";
+import React from 'react'
+import { Button as PaperButton } from 'react-native-paper'
 
-import { useTheme } from "../../../store";
+import { useTheme } from '../../../store'
 
 export default function Button(props) {
-  const theme = useTheme();
+  const theme = useTheme()
   let {
     pushable,
     mode,
@@ -26,26 +26,26 @@ export default function Button(props) {
     children,
     size,
     ph,
-  } = props;
+  } = props
 
-  let defaultFs = 13;
-  let defaultHeight = 45;
-  let defaultFw = "500";
+  let defaultFs = 13
+  let defaultHeight = 45
+  let defaultFw = '500'
 
-  if (size === "large") {
-    defaultFs = 14;
-    defaultHeight = 50;
-  } else if (size === "small") {
-    defaultHeight = 35;
+  if (size === 'large') {
+    defaultFs = 14
+    defaultHeight = 50
+  } else if (size === 'small') {
+    defaultHeight = 35
   } else {
     // medium size
-    defaultHeight = 45;
+    defaultHeight = 45
   }
 
-  const height = h ? h : defaultHeight;
-  const fontSize = fs ? fs : defaultFs;
-  const fontWeight = fw ? fw : defaultFw;
-  const borderRadius = round === 0 ? 0 : round ? round : 25;
+  const height = h ? h : defaultHeight
+  const fontSize = fs ? fs : defaultFs
+  const fontWeight = fw ? fw : defaultFw
+  const borderRadius = round === 0 ? 0 : round ? round : 25
 
   return (
     <PaperButton
@@ -59,7 +59,7 @@ export default function Button(props) {
         ...labelStyle,
         fontSize,
         fontWeight,
-        textTransform: tf ? tf : "uppercase",
+        textTransform: tf ? tf : 'uppercase',
       }}
       contentStyle={{ height, paddingHorizontal: ph }}
       dark={dark}
@@ -68,10 +68,10 @@ export default function Button(props) {
     >
       {children}
     </PaperButton>
-  );
+  )
 }
 
 Button.defaultProps = {
-  mode: "contained",
-  size: "medium",
-};
+  mode: 'contained',
+  size: 'medium',
+}

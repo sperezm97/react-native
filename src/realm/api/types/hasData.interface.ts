@@ -1,5 +1,5 @@
 export interface HasData {
-  contacts: boolean;
-  chats: boolean;
-  msg: boolean;
+  contacts: boolean
+  chats: boolean
+  msg: boolean
 }

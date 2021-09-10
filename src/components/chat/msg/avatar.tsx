@@ -1,18 +1,18 @@
-import React from "react";
-import { View, Text, StyleSheet } from "react-native";
-import FastImage from "react-native-fast-image";
-import { useAvatarColor } from "../../../store/hooks/msg";
+import React from 'react'
+import { View, Text, StyleSheet } from 'react-native'
+import FastImage from 'react-native-fast-image'
+import { useAvatarColor } from '../../../store/hooks/msg'
 
 export default function Avatar(props) {
-  const name = props.alias || "Sphinx";
-  const photo = props.photo;
-  const size = props.big ? 52 : 32;
-  const borderRadius = props.big ? 26 : 16;
-  let initial = "";
-  const arr = name.split(" ");
+  const name = props.alias || 'Sphinx'
+  const photo = props.photo
+  const size = props.big ? 52 : 32
+  const borderRadius = props.big ? 26 : 16
+  let initial = ''
+  const arr = name.split(' ')
   arr.forEach((str, i) => {
-    if (i < 2) initial += str.substring(0, 1).toUpperCase();
-  });
+    if (i < 2) initial += str.substring(0, 1).toUpperCase()
+  })
   if (photo) {
     return (
       <View
@@ -30,7 +30,7 @@ export default function Avatar(props) {
           resizeMode={FastImage.resizeMode.cover}
         />
       </View>
-    );
+    )
   }
   return (
     <View
@@ -53,29 +53,29 @@ export default function Avatar(props) {
         {initial}
       </Text>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
   wrap: {
     marginLeft: 8,
-    backgroundColor: "black",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: 'black',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   initial: {
-    color: "white",
+    color: 'white',
     marginBottom: 1,
     marginRight: 1,
   },
   avatar: {
     marginLeft: 8,
-    backgroundColor: "transparent",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    position: "relative",
-    overflow: "hidden",
+    backgroundColor: 'transparent',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'relative',
+    overflow: 'hidden',
   },
-});
+})

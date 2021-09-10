@@ -1,44 +1,42 @@
-import React, { useEffect, useState } from "react";
-import { StyleSheet, View, ScrollView } from "react-native";
-import { useObserver } from "mobx-react-lite";
-import { useNavigation } from "@react-navigation/native";
-import { IconButton } from "react-native-paper";
-import AntDesignIcon from "react-native-vector-icons/AntDesign";
+import React, { useEffect, useState } from 'react'
+import { StyleSheet, View, ScrollView } from 'react-native'
+import { useObserver } from 'mobx-react-lite'
+import { useNavigation } from '@react-navigation/native'
+import { IconButton } from 'react-native-paper'
+import AntDesignIcon from 'react-native-vector-icons/AntDesign'
 
-import { useStores, useTheme } from "../../../store";
-import BackHeader from "../../common/BackHeader";
-import List from "./List";
-import Pending from "./Pending";
-import AddMembers from "./AddMembers";
-import AddMemberModal from "../../common/Modals/Tribe/AddMembers";
-import Typography from "../../common/Typography";
-import Empty from "../../common/Empty";
-import Search from "../../common/Search";
-import { SCREEN_WIDTH } from "../../../constants";
+import { useStores, useTheme } from '../../../store'
+import BackHeader from '../../common/BackHeader'
+import List from './List'
+import Pending from './Pending'
+import AddMembers from './AddMembers'
+import AddMemberModal from '../../common/Modals/Tribe/AddMembers'
+import Typography from '../../common/Typography'
+import Empty from '../../common/Empty'
+import Search from '../../common/Search'
+import { SCREEN_WIDTH } from '../../../constants'
 
 export default function Members({ route }) {
-  const [addMember, setAddMember] = useState(false);
-  const { contacts } = useStores();
-  const theme = useTheme();
-  const navigation = useNavigation();
-  const [membersSearchText, setMembersSearchText] = useState("");
+  const [addMember, setAddMember] = useState(false)
+  const { contacts } = useStores()
+  const theme = useTheme()
+  const navigation = useNavigation()
+  const [membersSearchText, setMembersSearchText] = useState('')
 
-  const tribe = route.params.tribe;
+  const tribe = route.params.tribe
 
   useEffect(() => {
-    contacts.getContacts();
-  });
+    contacts.getContacts()
+  })
 
   const contactsToShow = contacts.contacts.filter((c) => {
-    return (
-      c.id > 1 && tribe && tribe.chat && tribe.chat.contact_ids.includes(c.id)
-    );
-  });
+    return c.id > 1 && tribe && tribe.chat && tribe.chat.contact_ids.includes(c.id)
+  })
 
   const searchedContacts = contactsToShow.filter((m) => {
-    if (!membersSearchText) return true;
-    return m.alias.toLowerCase().includes(membersSearchText.toLowerCase());
-  });
+    if (!membersSearchText) return true
+    return m.alias.toLowerCase().includes(membersSearchText.toLowerCase())
+  })
 
   const pendingContactsToShow =
     contacts.contacts.filter((c) => {
@@ -48,8 +46,8 @@ export default function Members({ route }) {
         tribe.chat &&
         tribe.chat.pending_contact_ids &&
         tribe.chat.pending_contact_ids.includes(c.id)
-      );
-    }) || [];
+      )
+    }) || []
 
   return useObserver(() => {
     return (
@@ -57,7 +55,7 @@ export default function Members({ route }) {
         <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
           <BackHeader
             // title={`${tribe.name} Members`}
-            title="Members"
+            title='Members'
             navigate={() => navigation.goBack()}
             // action={tribe.owner && <MemberHeader openDialog={() => setAddMember(true)} />}
           />
@@ -67,11 +65,7 @@ export default function Members({ route }) {
                 tribe={tribe}
                 members={searchedContacts}
                 listHeader={
-                  <ListHeader
-                    tribe={tribe}
-                    searchText={membersSearchText}
-                    setSearchText={setMembersSearchText}
-                  />
+                  <ListHeader tribe={tribe} searchText={membersSearchText} setSearchText={setMembersSearchText} />
                 }
               />
             ) : (
@@ -84,8 +78,8 @@ export default function Members({ route }) {
           </View>
         </View>
       </>
-    );
-  });
+    )
+  })
 }
 
 function ListHeader({ tribe, searchText, setSearchText }) {
@@ -93,24 +87,24 @@ function ListHeader({ tribe, searchText, setSearchText }) {
     <View style={{ ...styles.searchWrap }}>
       <Search
         // placeholder={`Search ${tribe.name} Members`}
-        placeholder="Search"
+        placeholder='Search'
         onChangeText={(value) => setSearchText(value)}
         value={searchText}
       />
     </View>
-  );
+  )
 }
 
 function EmptyMembers({ tribe }) {
-  const theme = useTheme();
+  const theme = useTheme()
 
   return (
     <Empty w={SCREEN_WIDTH - 100}>
-      <Typography color={theme.subtitle} size={14} textAlign="center">
+      <Typography color={theme.subtitle} size={14} textAlign='center'>
         {`There are no members in ${tribe.name}.`}
       </Typography>
     </Empty>
-  );
+  )
 }
 
 // function MemberHeader({ openDialog }) {
@@ -137,4 +131,4 @@ const styles = StyleSheet.create({
     paddingLeft: 14,
     paddingBottom: 14,
   },
-});
+})

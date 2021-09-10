@@ -1,11 +1,11 @@
-import React from "react";
-import { RefreshControl } from "react-native";
+import React from 'react'
+import { RefreshControl } from 'react-native'
 
-import { useTheme } from "../../../store";
+import { useTheme } from '../../../store'
 
 export default function RefreshLoading(props) {
-  const { refreshing, onRefresh, title } = props;
-  const theme = useTheme();
+  const { refreshing, onRefresh, title } = props
+  const theme = useTheme()
 
   return (
     <RefreshControl
@@ -15,9 +15,9 @@ export default function RefreshLoading(props) {
       tintColor={theme.icon}
       titleColor={theme.subtitle}
     />
-  );
+  )
 }
 
 RefreshLoading.defaultProps = {
-  title: "",
-};
+  title: '',
+}

@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from "react";
-import { StyleSheet, View } from "react-native";
-import { IconButton } from "react-native-paper";
-import Toast from "react-native-simple-toast";
+import React, { useEffect, useState } from 'react'
+import { StyleSheet, View } from 'react-native'
+import { IconButton } from 'react-native-paper'
+import Toast from 'react-native-simple-toast'
 
-import { useStores, useTheme } from "../../../store";
-import Typography from "../Typography";
+import { useStores, useTheme } from '../../../store'
+import Typography from '../Typography'
 
 const BoostControls = (props) => {
-  const { user, details, ui } = useStores();
+  const { user, details, ui } = useStores()
 
-  const [tip, setTip] = useState(100);
-  const [plusDisabled, setPlusDisabled] = useState(false);
-  const [minusDisabled, setMinusDisabled] = useState(tip <= 100 ? true : false);
-  const theme = useTheme();
+  const [tip, setTip] = useState(100)
+  const [plusDisabled, setPlusDisabled] = useState(false)
+  const [minusDisabled, setMinusDisabled] = useState(tip <= 100 ? true : false)
+  const theme = useTheme()
 
   useEffect(() => {
     // const amount = user.tipAmount || 100
@@ -24,8 +24,8 @@ const BoostControls = (props) => {
     //   setTip(amount)
     // }
 
-    ui.setPodcastBoostAmount(100);
-  }, []);
+    ui.setPodcastBoostAmount(100)
+  }, [])
 
   //   useEffect(() => {
   //     if (tip) {
@@ -34,40 +34,40 @@ const BoostControls = (props) => {
   //   }, [tip])
 
   function handleIncrease() {
-    setMinusDisabled(false);
+    setMinusDisabled(false)
 
     if (tip > details.balance) {
-      Toast.showWithGravity("Not Enough Balance", Toast.SHORT, Toast.CENTER);
-      setPlusDisabled(true);
-      return;
+      Toast.showWithGravity('Not Enough Balance', Toast.SHORT, Toast.CENTER)
+      setPlusDisabled(true)
+      return
     }
 
-    setTip((tip) => tip + 100);
+    setTip((tip) => tip + 100)
 
-    ui.setPodcastBoostAmount(tip + 100);
+    ui.setPodcastBoostAmount(tip + 100)
   }
 
   function handleDecrease() {
-    setPlusDisabled(false);
+    setPlusDisabled(false)
 
     if (tip <= 200) {
-      setMinusDisabled(true);
+      setMinusDisabled(true)
     }
 
-    setTip((tip) => tip - 100);
+    setTip((tip) => tip - 100)
 
-    ui.setPodcastBoostAmount(tip - 100);
+    ui.setPodcastBoostAmount(tip - 100)
   }
 
   return (
     <View style={styles.wrap}>
       <IconButton
-        icon="plus-circle-outline"
+        icon='plus-circle-outline'
         color={theme.primary}
         disabled={plusDisabled}
         onPress={() => {
           if (!plusDisabled) {
-            handleIncrease();
+            handleIncrease()
           }
         }}
       />
@@ -78,31 +78,31 @@ const BoostControls = (props) => {
       </View>
 
       <IconButton
-        icon="minus-circle-outline"
+        icon='minus-circle-outline'
         color={theme.primary}
         disabled={minusDisabled}
         onPress={() => {
           if (!minusDisabled) {
-            handleDecrease();
+            handleDecrease()
           }
         }}
       />
     </View>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   wrap: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   amount: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
   },
-});
+})
 
-export default React.memo(BoostControls);
+export default React.memo(BoostControls)

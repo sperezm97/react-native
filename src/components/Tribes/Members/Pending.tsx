@@ -1,35 +1,27 @@
-import React, { useState } from "react";
-import { StyleSheet, View, FlatList } from "react-native";
-import { useObserver } from "mobx-react-lite";
-import { useNavigation } from "@react-navigation/native";
+import React, { useState } from 'react'
+import { StyleSheet, View, FlatList } from 'react-native'
+import { useObserver } from 'mobx-react-lite'
+import { useNavigation } from '@react-navigation/native'
 
-import { useStores, useTheme } from "../../../store";
-import { constants } from "../../../constants";
-import { Contact, DeletableContact, PendingContact } from "./Items";
-import Typography from "../../common/Typography";
+import { useStores, useTheme } from '../../../store'
+import { constants } from '../../../constants'
+import { Contact, DeletableContact, PendingContact } from './Items'
+import Typography from '../../common/Typography'
 
 export default function Pending({ tribe, members }) {
-  const { chats, msg } = useStores();
+  const { chats, msg } = useStores()
 
   async function onApproveOrDenyMember(contactId, status) {
-    const msgs = msg.messages[tribe.id];
-    if (!msgs) return;
-    const theMsg = msgs.find(
-      (m) =>
-        m.sender === contactId &&
-        m.type === constants.message_types.member_request
-    );
-    if (!theMsg) return;
-    await msg.approveOrRejectMember(contactId, status, theMsg.id);
+    const msgs = msg.messages[tribe.id]
+    if (!msgs) return
+    const theMsg = msgs.find((m) => m.sender === contactId && m.type === constants.message_types.member_request)
+    if (!theMsg) return
+    await msg.approveOrRejectMember(contactId, status, theMsg.id)
   }
 
   const renderItem: any = ({ item, index }: any) => (
-    <PendingContact
-      key={index}
-      contact={item}
-      onApproveOrDenyMember={onApproveOrDenyMember}
-    />
-  );
+    <PendingContact key={index} contact={item} onApproveOrDenyMember={onApproveOrDenyMember} />
+  )
 
   return useObserver(() => {
     return (
@@ -41,13 +33,13 @@ export default function Pending({ tribe, members }) {
           keyExtractor={(item) => String(item.id)}
         />
       </>
-    );
-  });
+    )
+  })
 }
 
 const styles = StyleSheet.create({
   scroller: {
-    width: "100%",
-    position: "relative",
+    width: '100%',
+    position: 'relative',
   },
-});
+})

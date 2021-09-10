@@ -1,4 +1,4 @@
 export interface Create {
-  schema: string;
-  body: object | any;
+  schema: string
+  body: object | any
 }

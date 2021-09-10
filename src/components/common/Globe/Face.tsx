@@ -1,19 +1,15 @@
-import React from "react";
-import { StyleSheet } from "react-native";
+import React from 'react'
+import { StyleSheet } from 'react-native'
 // import { avg } from 'react-native-redash'
-import {
-  avg,
-  decompose2d,
-  transform2d,
-} from "react-native-redash/lib/module/v1";
+import { avg, decompose2d, transform2d } from 'react-native-redash/lib/module/v1'
 
-import Animated from "react-native-reanimated";
+import Animated from 'react-native-reanimated'
 
-import { SIZE, Vec3 } from "./Constants";
+import { SIZE, Vec3 } from './Constants'
 
 interface FaceProps {
-  points: [Vec3, Vec3, Vec3, Vec3];
-  backgroundColor: string;
+  points: [Vec3, Vec3, Vec3, Vec3]
+  backgroundColor: string
 }
 
 const canvas = {
@@ -33,7 +29,7 @@ const canvas = {
     x: SIZE / 2,
     y: SIZE / 2,
   },
-};
+}
 
 const Face = ({ backgroundColor, points: [p1, p2, p3, p4] }: FaceProps) => {
   const transform = decompose2d(
@@ -41,15 +37,15 @@ const Face = ({ backgroundColor, points: [p1, p2, p3, p4] }: FaceProps) => {
       canvas,
       projected: { p1, p2, p3, p4 },
     })
-  );
+  )
   return (
     <Animated.View
-      pointerEvents="none"
+      pointerEvents='none'
       style={{
         zIndex: avg(p1.z, p2.z, p3.z, p4.z),
         ...StyleSheet.absoluteFillObject,
-        justifyContent: "center",
-        alignItems: "center",
+        justifyContent: 'center',
+        alignItems: 'center',
       }}
     >
       <Animated.View
@@ -61,7 +57,7 @@ const Face = ({ backgroundColor, points: [p1, p2, p3, p4] }: FaceProps) => {
       // }}
       />
     </Animated.View>
-  );
-};
+  )
+}
 
-export default Face;
+export default Face

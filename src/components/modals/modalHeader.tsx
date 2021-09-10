@@ -1,12 +1,12 @@
-import React from "react";
-import { View, Text, StyleSheet } from "react-native";
-import { IconButton } from "react-native-paper";
+import React from 'react'
+import { View, Text, StyleSheet } from 'react-native'
+import { IconButton } from 'react-native-paper'
 
-import { useTheme } from "../../store";
+import { useTheme } from '../../store'
 
 export default function Header(props) {
-  const { title, onClose, leftArrow } = props;
-  const theme = useTheme();
+  const { title, onClose, leftArrow } = props
+  const theme = useTheme()
   return (
     <View
       style={{
@@ -17,7 +17,7 @@ export default function Header(props) {
       <View style={styles.headerLefty}>
         {leftArrow && (
           <IconButton
-            icon="arrow-left"
+            icon='arrow-left'
             color={theme.icon}
             size={22}
             style={{ marginRight: 14, marginTop: 8 }}
@@ -29,7 +29,7 @@ export default function Header(props) {
       <View style={styles.headerLefty}>
         {!leftArrow && (
           <IconButton
-            icon="close"
+            icon='close'
             color={theme.icon}
             size={22}
             style={{ marginRight: 14, marginTop: 8 }}
@@ -38,22 +38,22 @@ export default function Header(props) {
         )}
       </View>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
   header: {
     height: 60,
     minHeight: 60,
-    width: "100%",
+    width: '100%',
     paddingLeft: 0,
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   headerTitle: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
     fontSize: 16,
   },
   headerLefty: {
@@ -62,4 +62,4 @@ const styles = StyleSheet.create({
     borderRadius: 18,
     marginLeft: 5,
   },
-});
+})

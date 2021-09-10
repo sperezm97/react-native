@@ -1,59 +1,59 @@
-import React, { useEffect, useState } from "react";
-import { StyleSheet, View, Text, Image } from "react-native";
-import { Avatar as PaperAvatar } from "react-native-paper";
-import FastImage from "react-native-fast-image";
+import React, { useEffect, useState } from 'react'
+import { StyleSheet, View, Text, Image } from 'react-native'
+import { Avatar as PaperAvatar } from 'react-native-paper'
+import FastImage from 'react-native-fast-image'
 
-import { useStores, useTheme } from "../../../store";
-import { useAvatarColor } from "../../../store/hooks/msg";
+import { useStores, useTheme } from '../../../store'
+import { useAvatarColor } from '../../../store/hooks/msg'
 
 export default function Avatar(props) {
-  let { style, photo, alias, size, avatarSize, borderless } = props;
+  let { style, photo, alias, size, avatarSize, borderless } = props
 
-  const theme = useTheme();
+  const theme = useTheme()
   const [avatar, setAvatar] = useState({
-    newImage: require("../../../assets/avatars/balvin.png"),
+    newImage: require('../../../assets/avatars/balvin.png'),
     randomImages: [
       {
-        image: require("../../../assets/avatars/balvin.png"),
+        image: require('../../../assets/avatars/balvin.png'),
       },
       {
-        image: require("../../../assets/avatars/bieber.png"),
+        image: require('../../../assets/avatars/bieber.png'),
       },
       {
-        image: require("../../../assets/avatars/blu.png"),
+        image: require('../../../assets/avatars/blu.png'),
       },
       {
-        image: require("../../../assets/avatars/cardi.png"),
+        image: require('../../../assets/avatars/cardi.png'),
       },
       {
-        image: require("../../../assets/avatars/cardi2.png"),
+        image: require('../../../assets/avatars/cardi2.png'),
       },
       {
-        image: require("../../../assets/avatars/guy.png"),
+        image: require('../../../assets/avatars/guy.png'),
       },
       {
-        image: require("../../../assets/avatars/kittle.png"),
+        image: require('../../../assets/avatars/kittle.png'),
       },
     ],
-  });
+  })
 
   useEffect(() => {
     setAvatar({
       ...avatar,
       newImage: avatar.randomImages[Math.floor(Math.random() * 3)].image,
-    });
-  }, []);
+    })
+  }, [])
 
   const borderStyles = !borderless && {
     ...styles.image,
     borderColor: theme.border,
-  };
+  }
 
-  const borderRadius = props.round ? props.round : 25;
+  const borderRadius = props.round ? props.round : 25
 
   if (photo) {
-    if (!photo.startsWith("https")) {
-      photo = photo.replace("http", "https");
+    if (!photo.startsWith('https')) {
+      photo = photo.replace('http', 'https')
     }
 
     return (
@@ -73,13 +73,13 @@ export default function Avatar(props) {
           resizeMode={FastImage.resizeMode.cover}
         />
       </View>
-    );
+    )
   } else if (alias) {
-    let initial = "";
-    const arr = alias.split(" ");
+    let initial = ''
+    const arr = alias.split(' ')
     arr.forEach((str, i) => {
-      if (i < 2) initial += str.substring(0, 1).toUpperCase();
-    });
+      if (i < 2) initial += str.substring(0, 1).toUpperCase()
+    })
 
     return (
       <View
@@ -103,7 +103,7 @@ export default function Avatar(props) {
           {initial}
         </Text>
       </View>
-    );
+    )
   } else {
     return (
       <View
@@ -119,18 +119,18 @@ export default function Avatar(props) {
         <PaperAvatar.Image
           size={avatarSize ? avatarSize : size}
           source={avatar.newImage}
-          style={{ ...borderStyles, backgroundColor: "transparent" }}
+          style={{ ...borderStyles, backgroundColor: 'transparent' }}
         />
       </View>
-    );
+    )
   }
 }
 
 Avatar.defaultProps = {
-  photo: "",
+  photo: '',
   borderless: true,
   aliasSize: 15,
-};
+}
 
 const styles = StyleSheet.create({
   image: {
@@ -138,13 +138,13 @@ const styles = StyleSheet.create({
   },
   aliasWrap: {
     // marginLeft: 8,
-    backgroundColor: "black",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: 'black',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   initial: {
-    color: "white",
+    color: 'white',
     marginLeft: 1,
     // marginBottom: 1
     // marginRight: 1
@@ -158,4 +158,4 @@ const styles = StyleSheet.create({
     // position: 'relative',
     // overflow: 'hidden'
   },
-});
+})

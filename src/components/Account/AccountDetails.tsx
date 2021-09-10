@@ -1,65 +1,65 @@
-import React, { useEffect, useState } from "react";
-import { StyleSheet, View, Switch } from "react-native";
-import { TextInput } from "react-native-paper";
+import React, { useEffect, useState } from 'react'
+import { StyleSheet, View, Switch } from 'react-native'
+import { TextInput } from 'react-native-paper'
 
-import { useStores, useTheme } from "../../store";
-import BackHeader from "../common/BackHeader";
-import InputAccessoryView from "../common/Accessories/InputAccessoryView";
-import * as schemas from "../form/schemas";
-import Form from "../form";
-import Typography from "../common/Typography";
+import { useStores, useTheme } from '../../store'
+import BackHeader from '../common/BackHeader'
+import InputAccessoryView from '../common/Accessories/InputAccessoryView'
+import * as schemas from '../form/schemas'
+import Form from '../form'
+import Typography from '../common/Typography'
 
 export default function AccountDetails() {
-  const { user, contacts } = useStores();
-  const [tipAmount, setTipAmount] = useState(user.tipAmount + "");
-  const [loading, setLoading] = useState(false);
-  const [isEnabled, setIsEnabled] = useState(false);
-  const me = contacts.contacts.find((c) => c.id === user.myid);
-  const nativeID = "tipAmount";
+  const { user, contacts } = useStores()
+  const [tipAmount, setTipAmount] = useState(user.tipAmount + '')
+  const [loading, setLoading] = useState(false)
+  const [isEnabled, setIsEnabled] = useState(false)
+  const me = contacts.contacts.find((c) => c.id === user.myid)
+  const nativeID = 'tipAmount'
 
   useEffect(() => {
-    setIsEnabled(me?.private_photo || false);
-  }, []);
+    setIsEnabled(me?.private_photo || false)
+  }, [])
 
-  const theme = useTheme();
+  const theme = useTheme()
 
   function tipAmountChange(ta) {
-    const int = parseInt(ta);
-    setTipAmount(int ? int + "" : "");
+    const int = parseInt(ta)
+    setTipAmount(int ? int + '' : '')
   }
 
   function toggleSwitch() {
-    setIsEnabled((previousState) => !previousState);
-    shareContactKey();
+    setIsEnabled((previousState) => !previousState)
+    shareContactKey()
   }
 
   async function save() {
-    setLoading(true);
-    user.setTipAmount(parseInt(tipAmount));
+    setLoading(true)
+    user.setTipAmount(parseInt(tipAmount))
 
     await contacts.updateContact(user.myid, {
       tip_amount: user.tipAmount,
-    });
-    setLoading(false);
+    })
+    setLoading(false)
   }
 
   async function shareContactKey() {
-    const contact_key = me.contact_key;
+    const contact_key = me.contact_key
 
-    if (!contact_key) return;
-    await contacts.updateContact(user.myid, { contact_key });
+    if (!contact_key) return
+    await contacts.updateContact(user.myid, { contact_key })
   }
 
   return (
     <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
-      <BackHeader title="Details" />
+      <BackHeader title='Details' />
       <View style={styles.content}>
         <Form
           nopad
           displayOnly
           schema={schemas.pubKey}
           loading={loading}
-          buttonText="Save"
+          buttonText='Save'
           initialValues={
             user
               ? {
@@ -67,12 +67,10 @@ export default function AccountDetails() {
                 }
               : {}
           }
-          readOnlyFields={"public_key"}
+          readOnlyFields={'public_key'}
         />
         <View style={styles.shareWrap}>
-          <Typography size={14}>
-            Share my profile photo with contacts
-          </Typography>
+          <Typography size={14}>Share my profile photo with contacts</Typography>
           <Switch
             trackColor={{ false: theme.grey, true: theme.primary }}
             thumbColor={theme.white}
@@ -86,9 +84,9 @@ export default function AccountDetails() {
         <TextInput
           // returnKeyType='done'
           inputAccessoryViewID={nativeID}
-          keyboardType="number-pad"
-          placeholder="Default Tip Amount"
-          value={tipAmount + ""}
+          keyboardType='number-pad'
+          placeholder='Default Tip Amount'
+          value={tipAmount + ''}
           onChangeText={tipAmountChange}
           style={{ height: 50, backgroundColor: theme.bg }}
           underlineColor={theme.border}
@@ -96,7 +94,7 @@ export default function AccountDetails() {
         <InputAccessoryView nativeID={nativeID} done={save} />
       </View>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -109,10 +107,10 @@ const styles = StyleSheet.create({
     paddingLeft: 18,
   },
   shareWrap: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     marginBottom: 36,
   },
-});
+})

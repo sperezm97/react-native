@@ -1,5 +1,5 @@
-import { useChats, useChatRow } from "./chats";
-import { useMsgs } from "./msg";
-import { useTribes } from "./tribes";
+import { useChats, useChatRow } from './chats'
+import { useMsgs } from './msg'
+import { useTribes } from './tribes'
 
-export { useChats, useChatRow, useMsgs, useTribes };
+export { useChats, useChatRow, useMsgs, useTribes }

@@ -1,41 +1,39 @@
-import React from "react";
-import { View, Text, StyleSheet } from "react-native";
-import { useObserver } from "mobx-react-lite";
-import Clipboard from "@react-native-community/clipboard";
-import Share from "react-native-share";
-import Toast from "react-native-simple-toast";
+import React from 'react'
+import { View, Text, StyleSheet } from 'react-native'
+import { useObserver } from 'mobx-react-lite'
+import Clipboard from '@react-native-community/clipboard'
+import Share from 'react-native-share'
+import Toast from 'react-native-simple-toast'
 
-import { useStores, useTheme } from "../../store";
-import { TOAST_DURATION } from "../../constants";
-import QRCode from "../utils/qrcode";
-import Button from "../common/Button";
-import BackHeader from "../common/BackHeader";
+import { useStores, useTheme } from '../../store'
+import { TOAST_DURATION } from '../../constants'
+import QRCode from '../utils/qrcode'
+import Button from '../common/Button'
+import BackHeader from '../common/BackHeader'
 
 export default function PubKey() {
-  const { user } = useStores();
-  const theme = useTheme();
+  const { user } = useStores()
+  const theme = useTheme()
 
   function copy() {
-    Clipboard.setString(user.publicKey);
-    Toast.showWithGravity("Public Key Copied.", TOAST_DURATION, Toast.CENTER);
+    Clipboard.setString(user.publicKey)
+    Toast.showWithGravity('Public Key Copied.', TOAST_DURATION, Toast.CENTER)
   }
 
   async function share() {
     try {
-      await Share.open({ message: user.publicKey });
+      await Share.open({ message: user.publicKey })
     } catch (e) {}
   }
 
   return useObserver(() => (
     <View style={{ ...styles.wrap, backgroundColor: theme.main }}>
-      <BackHeader title="Public Key" screen="Settings" />
+      <BackHeader title='Public Key' screen='Settings' />
       <View style={{ ...styles.content, backgroundColor: theme.bg }}>
         <View style={styles.qrWrap}>
           <QRCode value={user.publicKey} size={710} />
         </View>
-        <Text style={{ ...styles.pubkeyText, color: theme.title }}>
-          {user.publicKey}
-        </Text>
+        <Text style={{ ...styles.pubkeyText, color: theme.title }}>{user.publicKey}</Text>
         <View style={styles.buttonsWrap}>
           <Button style={styles.button} onPress={() => share()}>
             Share
@@ -46,7 +44,7 @@ export default function PubKey() {
         </View>
       </View>
     </View>
-  ));
+  ))
 }
 
 const styles = StyleSheet.create({
@@ -65,27 +63,27 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   qrWrap: {
-    display: "flex",
-    flexDirection: "column",
-    width: "100%",
-    alignItems: "center",
-    justifyContent: "center",
+    display: 'flex',
+    flexDirection: 'column',
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   pubkeyText: {
     padding: 20,
-    width: "100%",
+    width: '100%',
   },
   buttonsWrap: {
     marginTop: 40,
-    display: "flex",
-    flexDirection: "row",
-    width: "100%",
-    justifyContent: "space-around",
+    display: 'flex',
+    flexDirection: 'row',
+    width: '100%',
+    justifyContent: 'space-around',
   },
   button: {
     borderRadius: 23,
-    display: "flex",
-    justifyContent: "center",
+    display: 'flex',
+    justifyContent: 'center',
     width: 120,
   },
-});
+})

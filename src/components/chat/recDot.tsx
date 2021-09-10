@@ -1,8 +1,8 @@
-import React, { useEffect, useMemo } from "react";
-import { View, StyleSheet, Animated } from "react-native";
+import React, { useEffect, useMemo } from 'react'
+import { View, StyleSheet, Animated } from 'react-native'
 
 const RecDot = React.memo(function () {
-  const color = new Animated.Value(0);
+  const color = new Animated.Value(0)
   useEffect(() => {
     Animated.loop(
       Animated.sequence([
@@ -20,20 +20,20 @@ const RecDot = React.memo(function () {
         }),
       ]),
       { iterations: 4 }
-    ).start();
-  }, []);
+    ).start()
+  }, [])
   const backgroundColor = color.interpolate({
     inputRange: [0, 100],
-    outputRange: ["rgb(250,0,0)", "rgb(250, 200, 200)"],
-  });
+    outputRange: ['rgb(250,0,0)', 'rgb(250, 200, 200)'],
+  })
   return (
     <View style={{ marginLeft: 10 }}>
       <Animated.View style={[styles.dot, { backgroundColor }]} />
     </View>
-  );
-});
+  )
+})
 
-export default RecDot;
+export default RecDot
 
 const styles = StyleSheet.create({
   dot: {
@@ -41,4 +41,4 @@ const styles = StyleSheet.create({
     height: 20,
     width: 20,
   },
-});
+})

@@ -1,10 +1,10 @@
-import React from "react";
-import { StyleSheet } from "react-native";
-import { TextInput } from "react-native-paper";
+import React from 'react'
+import { StyleSheet } from 'react-native'
+import { TextInput } from 'react-native-paper'
 
-import { useTheme } from "../../../store";
-import InputAccessoryView from "../../common/Accessories/InputAccessoryView";
-import Typography from "../../common/Typography";
+import { useTheme } from '../../../store'
+import InputAccessoryView from '../../common/Accessories/InputAccessoryView'
+import Typography from '../../common/Typography'
 
 export default function TheTextInput({
   mode,
@@ -22,20 +22,20 @@ export default function TheTextInput({
   style,
   hasAccessoryView = true,
 }) {
-  const theme = useTheme();
-  let lab = `${label.en}${required ? " *" : ""}`;
+  const theme = useTheme()
+  let lab = `${label.en}${required ? ' *' : ''}`
   // if (error) {
   //   lab = `${label.en} - ${error}`
   // }
 
-  if (displayOnly) lab = label.en;
+  if (displayOnly) lab = label.en
 
-  let inputStyles = null;
+  let inputStyles = null
   if (!multiline) {
     inputStyles = {
       height: 50,
       maxHeight: 50,
-    };
+    }
   }
 
   return (
@@ -60,16 +60,16 @@ export default function TheTextInput({
         underlineColor={theme.border}
         multiline={multiline}
         numberOfLines={numberOfLines}
-        textAlignVertical="auto"
+        textAlignVertical='auto'
         inputAccessoryViewID={name}
       />
       {hasAccessoryView && <InputAccessoryView nativeID={name} />}
     </>
-  );
+  )
 }
 
 TheTextInput.defaultProps = {
-  mode: "flat",
+  mode: 'flat',
   handleBlur: () => {},
   error: false,
   displayOnly: false,
@@ -77,11 +77,11 @@ TheTextInput.defaultProps = {
   style: null,
   multiline: false,
   numberOfLines: 0,
-};
+}
 
 const styles = StyleSheet.create({
   inputStyles: {
     marginBottom: 16,
-    textAlign: "auto",
+    textAlign: 'auto',
   },
-});
+})

@@ -1,50 +1,48 @@
-import React, { useState } from "react";
-import { StyleSheet, View, Text } from "react-native";
-import TrackPlayer from "react-native-track-player";
-import moment from "moment";
+import React, { useState } from 'react'
+import { StyleSheet, View, Text } from 'react-native'
+import TrackPlayer from 'react-native-track-player'
+import moment from 'moment'
 
-import { useTheme } from "../../store";
-import useInterval from "../utils/useInterval";
-import Avatar from "../chat/msg/avatar";
-import Rocket from "./Rocket";
+import { useTheme } from '../../store'
+import useInterval from '../utils/useInterval'
+import Avatar from '../chat/msg/avatar'
+import Rocket from './Rocket'
 
 export default function Replay({ msgs, playing }) {
-  const theme = useTheme();
-  const [messages, setMessages] = useState([]);
+  const theme = useTheme()
+  const [messages, setMessages] = useState([])
 
   async function getPosition() {
-    const posf = await TrackPlayer.getPosition();
-    const pos = Math.floor(posf);
-    const newms = msgs ? msgs.filter((m) => m.ts <= pos && m.ts > pos - 4) : [];
-    const msgsToShow = newms.map((m) => ({ ...m, fading: m.ts === pos - 3 }));
-    setMessages(msgsToShow.slice(Math.max(0, msgsToShow.length - 4)).reverse());
+    const posf = await TrackPlayer.getPosition()
+    const pos = Math.floor(posf)
+    const newms = msgs ? msgs.filter((m) => m.ts <= pos && m.ts > pos - 4) : []
+    const msgsToShow = newms.map((m) => ({ ...m, fading: m.ts === pos - 3 }))
+    setMessages(msgsToShow.slice(Math.max(0, msgsToShow.length - 4)).reverse())
   }
   useInterval(() => {
     if (playing) {
-      getPosition();
+      getPosition()
     }
-  }, 1000);
+  }, 1000)
 
   const renderItem: any = ({ item, index }) => {
-    const isBoost = item.type === "boost";
-    const bg = isBoost ? "#35806d" : "white";
-    let text = item.text;
+    const isBoost = item.type === 'boost'
+    const bg = isBoost ? '#35806d' : 'white'
+    let text = item.text
     return (
       <View style={styles.row}>
         <Avatar alias={item.alias} />
         <View style={styles.righty}>
           <View style={styles.infoBar}>
             <Text style={styles.infoName}>{item.alias}</Text>
-            <Text style={styles.infoDate}>
-              {moment(item.date).format("hh:mm A")}
-            </Text>
+            <Text style={styles.infoDate}>{moment(item.date).format('hh:mm A')}</Text>
           </View>
           <View style={{ ...styles.bubble, backgroundColor: bg }}>
             {isBoost ? (
               <View style={styles.boostWrap}>
                 <Rocket onPress={null} />
                 <View style={styles.boostTextWrap}>
-                  <Text style={styles.boostText}>{item.amount || "100"}</Text>
+                  <Text style={styles.boostText}>{item.amount || '100'}</Text>
                   <Text style={styles.boostSats}>sats</Text>
                 </View>
               </View>
@@ -54,9 +52,9 @@ export default function Replay({ msgs, playing }) {
           </View>
         </View>
       </View>
-    );
-  };
-  const showBackdrop = messages && messages.length ? true : false;
+    )
+  }
+  const showBackdrop = messages && messages.length ? true : false
   return (
     <>
       <View
@@ -66,13 +64,9 @@ export default function Replay({ msgs, playing }) {
           opacity: showBackdrop ? 0.5 : 0,
         }}
       />
-      <ItemList
-        style={{ ...styles.scroller }}
-        data={messages}
-        renderItem={renderItem}
-      />
+      <ItemList style={{ ...styles.scroller }} data={messages} renderItem={renderItem} />
     </>
-  );
+  )
 }
 
 function ItemList({ data, renderItem, style }) {
@@ -80,86 +74,86 @@ function ItemList({ data, renderItem, style }) {
     <View style={style}>
       {data &&
         data.map((item, index) => {
-          return renderItem({ item, index });
+          return renderItem({ item, index })
         })}
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
   scroller: {
-    position: "absolute",
+    position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
     bottom: 18,
-    display: "flex",
-    flexDirection: "column-reverse",
+    display: 'flex',
+    flexDirection: 'column-reverse',
   },
   backdrop: {
-    position: "absolute",
+    position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
     bottom: 18,
   },
   row: {
-    display: "flex",
-    flexDirection: "row",
+    display: 'flex',
+    flexDirection: 'row',
     padding: 5,
   },
   bubble: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     borderRadius: 10,
     borderTopLeftRadius: 0,
     opacity: 0.9,
   },
   text: {
     fontSize: 15,
-    color: "black",
+    color: 'black',
     paddingTop: 12,
     paddingBottom: 12,
     paddingLeft: 15,
     paddingRight: 15,
   },
   boostWrap: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   boostText: {
-    fontWeight: "bold",
-    color: "white",
+    fontWeight: 'bold',
+    color: 'white',
   },
   boostSats: {
     marginLeft: 8,
-    color: "#ccc",
+    color: '#ccc',
   },
   boostTextWrap: {
-    display: "flex",
-    alignItems: "center",
-    flexDirection: "row",
+    display: 'flex',
+    alignItems: 'center',
+    flexDirection: 'row',
     marginRight: 20,
   },
   righty: {
-    display: "flex",
-    flexDirection: "column",
+    display: 'flex',
+    flexDirection: 'column',
     marginLeft: 6,
   },
   infoBar: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   infoDate: {
-    color: "white",
+    color: 'white',
     opacity: 0.85,
     fontSize: 10,
     marginLeft: 6,
   },
   infoName: {
-    color: "white",
-    fontWeight: "bold",
+    color: 'white',
+    fontWeight: 'bold',
     fontSize: 11,
   },
-});
+})

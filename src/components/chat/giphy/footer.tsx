@@ -1,10 +1,10 @@
-import React from "react";
-import { View } from "react-native";
-import { isIphoneX, getBottomSpace } from "react-native-iphone-x-helper";
-import { useTheme } from "../../../store";
+import React from 'react'
+import { View } from 'react-native'
+import { isIphoneX, getBottomSpace } from 'react-native-iphone-x-helper'
+import { useTheme } from '../../../store'
 
 const Footer = () => {
-  const theme = useTheme();
+  const theme = useTheme()
 
   return (
     <View
@@ -13,7 +13,7 @@ const Footer = () => {
         paddingBottom: isIphoneX() ? getBottomSpace() : 5,
       }}
     />
-  );
-};
+  )
+}
 
-export default Footer;
+export default Footer

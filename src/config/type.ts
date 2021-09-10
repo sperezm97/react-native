@@ -1,24 +1,24 @@
 export type Config = {
-  host: string;
-  domain: string;
+  host: string
+  domain: string
   hub: {
-    api: string;
-  };
+    api: string
+  }
   shop: {
-    api: string;
-  };
+    api: string
+  }
   tribes: {
-    server: string;
-    uuid: string;
-  };
+    server: string
+    uuid: string
+  }
   memes: {
-    server: string;
-  };
+    server: string
+  }
   auth: {
-    server: string;
-  };
+    server: string
+  }
   inviter: {
-    key: string;
-  };
-  appstore: string;
-};
+    key: string
+  }
+  appstore: string
+}

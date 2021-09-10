@@ -1,19 +1,19 @@
-import React from "react";
-import { TouchableOpacity, Text, StyleSheet, Image } from "react-native";
-import HTML from "react-native-render-html";
+import React from 'react'
+import { TouchableOpacity, Text, StyleSheet, Image } from 'react-native'
+import HTML from 'react-native-render-html'
 
-import shared from "./sharedStyles";
-import { useTheme } from "../../../store";
+import shared from './sharedStyles'
+import { useTheme } from '../../../store'
 
 function makeHTML(html, theme) {
-  const color = theme.title;
-  return `<div style="color:${color};">${html}</div>`;
+  const color = theme.title
+  return `<div style="color:${color};">${html}</div>`
 }
 
 export default function TextMsg(props) {
-  const theme = useTheme();
-  const { message_content } = props;
-  const onLongPressHandler = () => props.onLongPress(props);
+  const theme = useTheme()
+  const { message_content } = props
+  const onLongPressHandler = () => props.onLongPress(props)
 
   return (
     <TouchableOpacity style={shared.innerPad} onLongPress={onLongPressHandler}>
@@ -22,12 +22,12 @@ export default function TextMsg(props) {
         // imagesMaxWidth={Dimensions.get("window").width}
       />
     </TouchableOpacity>
-  );
+  )
 }
 
 const linkStyles = {
   containerStyle: {
-    alignItems: "center",
+    alignItems: 'center',
   },
   imageStyle: {
     width: 80,
@@ -37,24 +37,24 @@ const linkStyles = {
   },
   titleStyle: {
     fontSize: 14,
-    color: "#000",
+    color: '#000',
     marginRight: 10,
     marginBottom: 5,
-    alignSelf: "flex-start",
-    fontFamily: "Helvetica",
+    alignSelf: 'flex-start',
+    fontFamily: 'Helvetica',
   },
   descriptionStyle: {
     fontSize: 11,
-    color: "#81848A",
+    color: '#81848A',
     marginRight: 10,
-    alignSelf: "flex-start",
-    fontFamily: "Helvetica",
+    alignSelf: 'flex-start',
+    fontFamily: 'Helvetica',
   },
-};
+}
 
 const styles = StyleSheet.create({
   text: {
-    color: "#333",
+    color: '#333',
     fontSize: 16,
   },
-});
+})

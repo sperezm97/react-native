@@ -1,29 +1,29 @@
-import React from "react";
-import { StyleSheet, View, Image, TouchableOpacity } from "react-native";
-import Modal from "react-native-modal";
+import React from 'react'
+import { StyleSheet, View, Image, TouchableOpacity } from 'react-native'
+import Modal from 'react-native-modal'
 
-import { useTheme } from "../../../store";
-import Icon from "../Icon";
-import Typography from "../Typography";
+import { useTheme } from '../../../store'
+import Icon from '../Icon'
+import Typography from '../Typography'
 
 export default function Menu(props) {
-  const { visible, items, hasBackdrop, swipeDirection, onCancel } = props;
-  const theme = useTheme();
+  const { visible, items, hasBackdrop, swipeDirection, onCancel } = props
+  const theme = useTheme()
 
-  let actionItems = [];
+  let actionItems = []
 
-  if (typeof onCancel === "function") {
+  if (typeof onCancel === 'function') {
     actionItems = [
       ...items,
       {
-        title: "Cancel",
-        thumbIcon: "Close",
+        title: 'Cancel',
+        thumbIcon: 'Close',
         thumbBgColor: theme.grey,
         action: () => onCancel(),
       },
-    ];
+    ]
   } else {
-    actionItems = [...items];
+    actionItems = [...items]
   }
 
   return (
@@ -31,20 +31,20 @@ export default function Menu(props) {
       isVisible={visible}
       style={{
         margin: 0,
-        justifyContent: "flex-end",
+        justifyContent: 'flex-end',
       }}
       hasBackdrop={hasBackdrop}
       onSwipeComplete={onCancel}
       onBackdropPress={onCancel}
       swipeDirection={swipeDirection}
     >
-      <View style={{ flexDirection: "row", justifyContent: "center" }}>
+      <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
         <View style={styles.headLine} />
       </View>
 
       <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
         {actionItems.map((item, i) => {
-          const iconProp = React.isValidElement(item.thumbIcon);
+          const iconProp = React.isValidElement(item.thumbIcon)
 
           return (
             <TouchableOpacity
@@ -58,7 +58,7 @@ export default function Menu(props) {
               onPress={item.action}
               disabled={item.disabled}
             >
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 {item.thumbIcon && (
                   <View
                     style={{
@@ -69,21 +69,13 @@ export default function Menu(props) {
                     {iconProp ? (
                       <>{item.thumbIcon}</>
                     ) : (
-                      <Icon
-                        name={item.thumbIcon}
-                        size={18}
-                        color={item.thumbColor}
-                      />
+                      <Icon name={item.thumbIcon} size={18} color={item.thumbColor} />
                     )}
                   </View>
                 )}
                 {item.thumbImage && (
                   <Image
-                    source={
-                      typeof item.thumbImage === "string"
-                        ? { uri: item.thumbImage }
-                        : item.thumbImage
-                    }
+                    source={typeof item.thumbImage === 'string' ? { uri: item.thumbImage } : item.thumbImage}
                     style={{ ...styles.thumbImage }}
                   />
                 )}
@@ -96,7 +88,7 @@ export default function Menu(props) {
                   )}
                 </View>
               </View>
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 {item.preview && (
                   <Typography
                     style={{
@@ -106,23 +98,21 @@ export default function Menu(props) {
                     {item.preview}
                   </Typography>
                 )}
-                {item.icon && (
-                  <Icon name={item.icon} color={theme.icon} size={25} />
-                )}
+                {item.icon && <Icon name={item.icon} color={theme.icon} size={25} />}
               </View>
             </TouchableOpacity>
-          );
+          )
         })}
       </View>
     </Modal>
-  );
+  )
 }
 
 Menu.defaultProps = {
   items: [],
   hasBackdrop: true,
-  swipeDirection: "down",
-};
+  swipeDirection: 'down',
+}
 
 const styles = StyleSheet.create({
   wrap: {
@@ -134,9 +124,9 @@ const styles = StyleSheet.create({
     paddingBottom: 12,
   },
   row: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     paddingTop: 12,
     paddingBottom: 12,
   },
@@ -145,8 +135,8 @@ const styles = StyleSheet.create({
     height: 30,
     marginRight: 10,
     borderRadius: 50,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   thumbImage: {
     borderRadius: 10,
@@ -159,6 +149,6 @@ const styles = StyleSheet.create({
     width: 55,
     borderRadius: 5,
     marginBottom: 5,
-    backgroundColor: "#eaeaea",
+    backgroundColor: '#eaeaea',
   },
-});
+})

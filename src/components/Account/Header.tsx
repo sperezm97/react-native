@@ -1,12 +1,12 @@
-import React from "react";
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
-import { Appbar } from "react-native-paper";
-import { useObserver } from "mobx-react-lite";
+import React from 'react'
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
+import { Appbar } from 'react-native-paper'
+import { useObserver } from 'mobx-react-lite'
 
-import { useTheme } from "../../store";
+import { useTheme } from '../../store'
 
 export default function Header(props) {
-  const theme = useTheme();
+  const theme = useTheme()
 
   return useObserver(() => {
     return (
@@ -20,8 +20,8 @@ export default function Header(props) {
           </View>
         </View>
       </Appbar.Header>
-    );
-  });
+    )
+  })
 }
 
 const styles = StyleSheet.create({
@@ -30,22 +30,22 @@ const styles = StyleSheet.create({
     // height: 20
   },
   flex: {
-    display: "flex",
-    alignItems: "center",
-    flexDirection: "row",
+    display: 'flex',
+    alignItems: 'center',
+    flexDirection: 'row',
   },
   content: {
-    justifyContent: "space-between",
-    width: "100%",
+    justifyContent: 'space-between',
+    width: '100%',
   },
   left: {
-    justifyContent: "space-between",
+    justifyContent: 'space-between',
     width: 50,
     marginLeft: 14,
   },
   right: {
     marginRight: 14,
-    justifyContent: "flex-end",
+    justifyContent: 'flex-end',
   },
   brand: {
     width: 65,
@@ -56,4 +56,4 @@ const styles = StyleSheet.create({
   edit: {
     fontSize: 16,
   },
-});
+})

@@ -1,80 +1,80 @@
-import React from "react";
-import { createStackNavigator } from "@react-navigation/stack";
+import React from 'react'
+import { createStackNavigator } from '@react-navigation/stack'
 
-import { useTheme } from "../../store";
-import { setTint } from "../common/StatusBar";
-import Account from "./index";
-import AccountDetails from "./AccountDetails";
-import Network from "./Network";
-import Security from "./Security";
-import Appearance from "./Appearance";
-import PublicKey from "./PublicKey";
-import Support from "./Support";
+import { useTheme } from '../../store'
+import { setTint } from '../common/StatusBar'
+import Account from './index'
+import AccountDetails from './AccountDetails'
+import Network from './Network'
+import Security from './Security'
+import Appearance from './Appearance'
+import PublicKey from './PublicKey'
+import Support from './Support'
 
-const Stack = createStackNavigator();
+const Stack = createStackNavigator()
 
 export default function Navigation() {
-  const theme = useTheme();
+  const theme = useTheme()
 
   return (
-    <Stack.Navigator initialRouteName="Account">
+    <Stack.Navigator initialRouteName='Account'>
       <Stack.Screen
-        name="Account"
+        name='Account'
         component={Account}
-        listeners={{ focus: () => setTint(theme.dark ? "dark" : "light") }}
+        listeners={{ focus: () => setTint(theme.dark ? 'dark' : 'light') }}
         options={{
           headerShown: false,
         }}
       />
       <Stack.Screen
-        name="Settings"
+        name='Settings'
         component={AccountDetails}
-        listeners={{ focus: () => setTint(theme.dark ? "dark" : "light") }}
+        listeners={{ focus: () => setTint(theme.dark ? 'dark' : 'light') }}
         options={{
           headerShown: false,
         }}
       />
       <Stack.Screen
-        name="Network"
+        name='Network'
         component={Network}
-        listeners={{ focus: () => setTint(theme.dark ? "dark" : "light") }}
+        listeners={{ focus: () => setTint(theme.dark ? 'dark' : 'light') }}
         options={{
           headerShown: false,
         }}
       />
       <Stack.Screen
-        name="Security"
+        name='Security'
         component={Security}
-        listeners={{ focus: () => setTint(theme.dark ? "dark" : "light") }}
+        listeners={{ focus: () => setTint(theme.dark ? 'dark' : 'light') }}
         options={{
           headerShown: false,
         }}
       />
       <Stack.Screen
-        name="Appearance"
+        name='Appearance'
         component={Appearance}
-        listeners={{ focus: () => setTint(theme.dark ? "dark" : "light") }}
+        listeners={{ focus: () => setTint(theme.dark ? 'dark' : 'light') }}
         options={{
           headerShown: false,
         }}
       />
       <Stack.Screen
-        name="QRCode"
+        name='QRCode'
         component={PublicKey}
-        listeners={{ focus: () => setTint(theme.dark ? "dark" : "light") }}
+        listeners={{ focus: () => setTint(theme.dark ? 'dark' : 'light') }}
         options={{
           headerShown: false,
         }}
       />
 
       <Stack.Screen
-        name="Support"
+        name='Support'
         component={Support}
-        listeners={{ focus: () => setTint(theme.dark ? "dark" : "light") }}
+        listeners={{ focus: () => setTint(theme.dark ? 'dark' : 'light') }}
         options={{
           headerShown: false,
         }}
       />
     </Stack.Navigator>
-  );
+  )
 }

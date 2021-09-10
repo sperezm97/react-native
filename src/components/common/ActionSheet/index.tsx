@@ -1,23 +1,23 @@
-import React from "react";
-import { StyleSheet, TouchableHighlight, View } from "react-native";
-import Modal from "react-native-modal";
+import React from 'react'
+import { StyleSheet, TouchableHighlight, View } from 'react-native'
+import Modal from 'react-native-modal'
 
-import Typography from "../Typography";
+import Typography from '../Typography'
 
-const PRIMARY_COLOR = "rgb(0,98,255)";
-const WHITE = "#ffffff";
-const BORDER_COLOR = "#DBDBDB";
+const PRIMARY_COLOR = 'rgb(0,98,255)'
+const WHITE = '#ffffff'
+const BORDER_COLOR = '#DBDBDB'
 
 export default function ActionSheet(props) {
-  const { visible, items } = props;
+  const { visible, items } = props
   const actionSheetItems = [
     ...items,
     {
-      id: "#cancel",
-      label: "Cancel",
+      id: '#cancel',
+      label: 'Cancel',
       onPress: props?.onCancel,
     },
-  ];
+  ]
 
   return (
     <Modal
@@ -26,7 +26,7 @@ export default function ActionSheet(props) {
       backdropOpacity={0.2}
       style={{
         margin: 0,
-        justifyContent: "flex-end",
+        justifyContent: 'flex-end',
       }}
     >
       <View style={styles.modalContent}>
@@ -53,7 +53,7 @@ export default function ActionSheet(props) {
                   borderBottomRightRadius: 12,
                 },
               ]}
-              underlayColor={"#f7f7f7"}
+              underlayColor={'#f7f7f7'}
               key={index}
               onPress={actionItem.onPress}
             >
@@ -61,20 +61,16 @@ export default function ActionSheet(props) {
                 allowFontScaling={false}
                 size={18}
                 lh={22}
-                color={
-                  actionItem?.actionTextColor
-                    ? actionItem?.actionTextColor
-                    : PRIMARY_COLOR
-                }
+                color={actionItem?.actionTextColor ? actionItem?.actionTextColor : PRIMARY_COLOR}
               >
                 {actionItem.label}
               </Typography>
             </TouchableHighlight>
-          );
+          )
         })}
       </View>
     </Modal>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -89,19 +85,19 @@ const styles = StyleSheet.create({
   },
   actionSheetView: {
     backgroundColor: WHITE,
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
     paddingTop: 16,
     paddingBottom: 16,
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderColor: BORDER_COLOR,
   },
-});
+})
 
 ActionSheet.defaultProps = {
   actionItems: [],
   onCancel: () => {},
   actionTextColor: null,
-};
+}

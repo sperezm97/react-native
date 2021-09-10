@@ -1,10 +1,10 @@
-import React from "react";
-import { Portal, Dialog } from "react-native-paper";
+import React from 'react'
+import { Portal, Dialog } from 'react-native-paper'
 
-import { useTheme } from "../../../store";
+import { useTheme } from '../../../store'
 
 export default function DialogWrap({
-  title = "",
+  title = '',
   dismissable = true,
   visible,
   onDismiss,
@@ -13,7 +13,7 @@ export default function DialogWrap({
   round = 5,
   ph = 12,
 }) {
-  const theme = useTheme();
+  const theme = useTheme()
 
   return (
     <Portal>
@@ -31,7 +31,7 @@ export default function DialogWrap({
         <Dialog.Title
           style={{
             color: theme.primary,
-            fontWeight: "400",
+            fontWeight: '400',
             paddingHorizontal: 0,
             marginHorizontal: ph,
           }}
@@ -47,5 +47,5 @@ export default function DialogWrap({
         </Dialog.Content>
       </Dialog>
     </Portal>
-  );
+  )
 }

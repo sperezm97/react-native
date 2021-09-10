@@ -1,14 +1,14 @@
-import React, { useState, useEffect, useRef } from "react";
-import { StyleSheet, View, TouchableOpacity } from "react-native";
-import { RNCamera } from "react-native-camera";
-import { Portal, Button } from "react-native-paper";
-import Modal from "react-native-modal";
+import React, { useState, useEffect, useRef } from 'react'
+import { StyleSheet, View, TouchableOpacity } from 'react-native'
+import { RNCamera } from 'react-native-camera'
+import { Portal, Button } from 'react-native-paper'
+import Modal from 'react-native-modal'
 
 export default function Camera({ visible, onCancel, onSnap }) {
   // const [hasPermission, setHasPermission] = useState(null)
-  const [type, setType] = useState(RNCamera.Constants.Type.back);
+  const [type, setType] = useState(RNCamera.Constants.Type.back)
 
-  const camRef: any = useRef(null);
+  const camRef: any = useRef(null)
 
   // useEffect(() => {
   //   (async () => {
@@ -22,8 +22,8 @@ export default function Camera({ visible, onCancel, onSnap }) {
       const pic = await camRef.current.takePictureAsync({
         quality: 0.5,
         // skipProcessing:true,
-      });
-      onSnap(pic);
+      })
+      onSnap(pic)
     }
   }
 
@@ -47,10 +47,10 @@ export default function Camera({ visible, onCancel, onSnap }) {
           captureAudio={false}
           flashMode={RNCamera.Constants.FlashMode.off}
           androidCameraPermissionOptions={{
-            title: "Permission to use camera",
-            message: "We need your permission to use your camera",
-            buttonPositive: "Ok",
-            buttonNegative: "Cancel",
+            title: 'Permission to use camera',
+            message: 'We need your permission to use your camera',
+            buttonPositive: 'Ok',
+            buttonNegative: 'Cancel',
           }}
           // androidRecordAudioPermissionOptions={{
           //   title: 'Permission to use audio recording',
@@ -60,18 +60,16 @@ export default function Camera({ visible, onCancel, onSnap }) {
           // }}
         />
         <View style={styles.toolbar}>
-          <Button icon="cancel" onPress={onCancel} color="white">
+          <Button icon='cancel' onPress={onCancel} color='white'>
             Cancel
           </Button>
           <Snapper snap={() => takePic()} />
           <Button
-            icon="rotate-left"
-            color="white"
+            icon='rotate-left'
+            color='white'
             onPress={() =>
               setType(
-                type === RNCamera.Constants.Type.back
-                  ? RNCamera.Constants.Type.front
-                  : RNCamera.Constants.Type.back
+                type === RNCamera.Constants.Type.back ? RNCamera.Constants.Type.front : RNCamera.Constants.Type.back
               )
             }
           >
@@ -80,40 +78,36 @@ export default function Camera({ visible, onCancel, onSnap }) {
         </View>
       </View>
     </Modal>
-  );
+  )
 }
 
 function Snapper({ snap }) {
   return (
     <View style={styles.snapWrap}>
       <View style={styles.innerSnap}>
-        <TouchableOpacity
-          style={styles.snap}
-          activeOpacity={0.5}
-          onPress={() => snap()}
-        ></TouchableOpacity>
+        <TouchableOpacity style={styles.snap} activeOpacity={0.5} onPress={() => snap()}></TouchableOpacity>
       </View>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
   wrap: {
     flex: 1,
-    backgroundColor: "transparent",
-    flexDirection: "column",
-    justifyContent: "flex-end",
+    backgroundColor: 'transparent',
+    flexDirection: 'column',
+    justifyContent: 'flex-end',
   },
   toolbar: {
     flex: 1,
-    flexDirection: "row",
-    marginLeft: "5%",
-    width: "90%",
+    flexDirection: 'row',
+    marginLeft: '5%',
+    width: '90%',
     marginBottom: 10,
     maxHeight: 52,
-    alignItems: "center",
-    justifyContent: "space-between",
-    position: "absolute",
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    position: 'absolute',
     bottom: 0,
     left: 0,
     right: 0,
@@ -121,35 +115,35 @@ const styles = StyleSheet.create({
   snapWrap: {
     width: 64,
     height: 64,
-    backgroundColor: "#ddd",
+    backgroundColor: '#ddd',
     borderRadius: 32,
     marginBottom: 48,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   innerSnap: {
     width: 55,
     height: 55,
-    backgroundColor: "#333",
+    backgroundColor: '#333',
     borderRadius: 35,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   snap: {
     width: 50,
     height: 50,
-    backgroundColor: "#ddd",
+    backgroundColor: '#ddd',
     borderRadius: 25,
   },
   capture: {
     flex: 0,
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     borderRadius: 5,
     padding: 15,
     paddingHorizontal: 20,
-    alignSelf: "center",
+    alignSelf: 'center',
     margin: 20,
   },
-});
+})
