@@ -15,7 +15,9 @@
     "xcode": "open ios/Chat.xcworkspace",
     "bump": "npx react-native bump-version --skip-semver-for android --skip-code-for android",
     "t": "tsc",
-    "prettier": "prettier src/ --write"
+    "prettier": "prettier {src,web} --write",
+    "electron": "ELECTRON_DEV_URL=http://localhost:3000 electron .",
+    "install-app-deps": "electron-builder install-app-deps"
   },
   "build": {
     "appId": "Zion.chat",
@@ -287,6 +289,8 @@
     "tls": false
   },
   "browser": {
+    "react-native-encrypted-storage": "./web/react-native-encrypted-storage.tsx",
+    "react-native-simple-toast": "./web/react-native-simple-toast.tsx",
     "zlib": "browserify-zlib",
     "console": "console-browserify",
     "constants": "constants-browserify",
