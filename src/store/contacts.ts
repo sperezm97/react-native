@@ -113,7 +113,6 @@ class ContactStore {
     } catch (e) {
       console.log('[Error - addContact]', e)
     }
-    return r
   }
 
   @action
