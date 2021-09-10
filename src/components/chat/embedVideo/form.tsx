@@ -22,7 +22,7 @@ const schema = Yup.object<FormValues>().shape({
   video: Yup.string()
     .required('Required')
     .matches(
-      /^(https:\/\/rumble\.com\/.+)|(?:youtube\.com\/\S*(?:(?:\/e(?:mbed))?\/|watch\?(?:\S*?&?v\=))|youtu\.be\/)([a-zA-Z0-9_-]{6,11})/,
+      /^(https:\/\/rumble\.com\/.+)|(?:youtube\.com\/\S*(?:(?:\/e(?:mbed))?\/|watch\?(?:\S*?&?v=))|youtu\.be\/)([a-zA-Z0-9_-]{6,11})/,
       'Rumble/Youtube link is incorrect'
     ),
 })
@@ -50,6 +50,7 @@ const Form: React.FC<FormTypes> = ({ onSubmit }) => {
               Embed Video Link
             </Typography>
             <TextInput
+              autoFocus
               mode='flat'
               accessibilityLabel='form-input-video'
               error={!!errors.video}
@@ -61,7 +62,6 @@ const Form: React.FC<FormTypes> = ({ onSubmit }) => {
               onChangeText={handleChange('video')}
               onBlur={handleBlur('video')}
               value={values.video}
-              disabled
               placeholderTextColor={theme.placeholder}
               underlineColor={theme.border}
               textAlignVertical='auto'
