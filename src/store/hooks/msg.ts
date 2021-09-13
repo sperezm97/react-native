@@ -7,7 +7,6 @@ import { Msg, BoostMsg } from '../msg'
 import { Contact } from '../contacts'
 import { parseLDAT, urlBase64FromAscii } from '../utils/ldat'
 
-const group = constants.chat_types.group
 const tribe = constants.chat_types.tribe
 
 export function useMsgs(chat, limit?: number) {
@@ -47,7 +46,7 @@ function processMsgs(incomingmsgs: Msg[], isTribe: boolean, contacts: Contact[],
     const msg = msgs[i]
 
     msg.showInfoBar = calcShowInfoBar(msgs, msg, i, isTribe, myid)
-    const typ = constantCodes['message_types'][msg.type]
+    const typ = constantCodes.message_types[msg.type]
 
     // attachment logic
     if (typ === 'attachment' && msg.sender !== myid) {
@@ -55,7 +54,7 @@ function processMsgs(incomingmsgs: Msg[], isTribe: boolean, contacts: Contact[],
       const ldat = parseLDAT(msg.media_token)
       if (ldat.muid && ldat.meta && ldat.meta.amt) {
         const accepted = msgs.find((m) => {
-          const mtype = constantCodes['message_types'][m.type]
+          const mtype = constantCodes.message_types[m.type]
           const start = urlBase64FromAscii(ldat.host) + '.' + ldat.muid
           return (
             (mtype === 'purchase_accept' && m.media_token.startsWith(start)) ||
@@ -74,7 +73,7 @@ function processMsgs(incomingmsgs: Msg[], isTribe: boolean, contacts: Contact[],
       const ldat = parseLDAT(msg.media_token)
       if (ldat && ldat.muid && ldat.meta && ldat.meta.amt) {
         const purchase = msgs.find((m) => {
-          const mtype = constantCodes['message_types'][m.type]
+          const mtype = constantCodes.message_types[m.type]
           const start = urlBase64FromAscii(ldat.host) + '.' + ldat.muid
           return mtype === 'purchase' && m.media_token.startsWith(start)
         })
@@ -130,7 +129,7 @@ function processMsgs(incomingmsgs: Msg[], isTribe: boolean, contacts: Contact[],
 function getPrevious(msgs: Msg[], i: number) {
   if (i === 0) return null
   const previous = msgs[i - 1]
-  const mtype = constantCodes['message_types'][previous.type]
+  const mtype = constantCodes.message_types[previous.type]
   if (hideTypes.includes(mtype)) {
     return getPrevious(msgs, i - 1)
   }
@@ -201,8 +200,6 @@ function arraysEqual(_arr1, _arr2) {
   return true
 }
 
-export function useMsgsFilter(msgs: Msg[], filter: string) {}
-
 function rando() {
   return Math.random().toString(12).substring(0)
 }
@@ -224,15 +221,18 @@ export function useBoostSender(m, contactList, isTribe) {
   const sender = contactList.find((c) => c.id === m.sender)
   return {
     senderAlias: !isTribe ? sender?.alias : m.sender_alias,
-    senderPic: isTribe ? (m.sender_pic || '') : (sender?.photo_url || ''),
+    senderPic: isTribe ? m.sender_pic || '' : sender?.photo_url || '',
   }
 }
 
+// TODO: Fix this custom hook logic in the future
+/* eslint-disable react-hooks/rules-of-hooks */
 export function useParsedJsonOrClipMsg(message_content) {
   if (!message_content) return {}
   if (message_content.includes('::')) return useParsedClipMsg(message_content)
   return useParsedJsonMsg(message_content)
 }
+/* eslint-enable react-hooks/rules-of-hooks */
 
 export function useParsedJsonMsg(message_content: string) {
   if (!message_content) return {}
