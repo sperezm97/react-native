@@ -272,6 +272,8 @@
   },
   "private": true,
   "react-native": {
+    "react-native-encrypted-storage": "react-native-encrypted-storage",
+    "react-native-simple-toast": "react-native-simple-toast",
     "zlib": "browserify-zlib",
     "console": "console-browserify",
     "constants": "constants-browserify",
