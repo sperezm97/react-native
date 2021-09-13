@@ -221,18 +221,11 @@ export function useMsgSender(m, contactList, isTribe) {
 }
 
 export function useBoostSender(m, contactList, isTribe) {
-  let senderAlias = ''
   const sender = contactList.find((c) => c.id === m.sender)
-  let senderPic = (!isTribe && sender && sender.photo_url) || ''
-
-  if (isTribe) {
-    senderAlias = m.sender_alias
-
-    if (m.sender_pic) senderPic = m.sender_pic
-  } else {
-    senderAlias = sender && sender.alias
+  return {
+    senderAlias: !isTribe ? sender?.alias : m.sender_alias,
+    senderPic: isTribe ? (m.sender_pic || '') : (sender?.photo_url || ''),
   }
-  return { senderAlias, senderPic }
 }
 
 export function useParsedJsonOrClipMsg(message_content) {

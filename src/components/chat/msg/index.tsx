@@ -36,12 +36,7 @@ export default function MsgRow(props) {
   const swipeRowRef = useRef<any>(null)
 
   const isMe = props.sender === props.myid
-  let isTribe = false
-  let isTribeOwner = false
-  if (props.chat) {
-    isTribe = props.chat.type === constants.chat_types.tribe
-    isTribeOwner = props.chat.owner_pubkey === props.myPubkey
-  }
+  const isTribeOwner = props?.chat?.owner_pubkey === props.myPubkey
 
   useLayoutEffect(() => {
     EE.on(CLEAR_REPLY_UUID, clearReplyUUID)
@@ -145,7 +140,6 @@ export default function MsgRow(props) {
               {props.showInfoBar && <InfoBar {...props} senderAlias={props.senderAlias} />}
               <MsgBubble
                 {...props}
-                isTribe={isTribe}
                 isTribeOwner={isTribeOwner}
                 myAlias={props.myAlias}
                 myid={props.myid}
