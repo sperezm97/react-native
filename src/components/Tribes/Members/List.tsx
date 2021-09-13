@@ -41,7 +41,7 @@ export default function List({ tribe, members, listHeader }) {
           </View>
         )}
         ListHeaderComponent={listHeader}
-        keyExtractor={item => String(item.id)}
+        keyExtractor={(item) => String(item.id)}
       />
     )
   })
@@ -56,7 +56,7 @@ function grouper(data) {
     else r[title].data.push(e)
     return r
   }, {})
-  Object.values(groups).forEach(g => {
+  Object.values(groups).forEach((g) => {
     ret.push(g)
   })
   return ret
@@ -65,13 +65,13 @@ function grouper(data) {
 const styles = StyleSheet.create({
   wrap: {
     width: '100%',
-    position: 'relative'
+    position: 'relative',
   },
   section: {
     paddingLeft: 24,
     height: 35,
     flex: 1,
     flexDirection: 'row',
-    alignItems: 'center'
-  }
+    alignItems: 'center',
+  },
 })

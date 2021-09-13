@@ -11,7 +11,14 @@ import { TOAST_DURATION } from '../../constants'
 import BackHeader from '../common/BackHeader'
 import Button from '../common/Button'
 
-const apps = [{ name: 'cash', label: 'Cash App', url: 'https://cash.app/$', img: require('../../../android_assets/apps/cash.png') }]
+const apps = [
+  {
+    name: 'cash',
+    label: 'Cash App',
+    url: 'https://cash.app/$',
+    img: require('../../../android_assets/apps/cash.png'),
+  },
+]
 
 export default function AddSats() {
   const [selectedApp, setSelectedApp] = useState(null)
@@ -28,9 +35,17 @@ export default function AddSats() {
         <View style={styles.content}>
           {!selectedApp && (
             <>
-              {apps.map(app => {
+              {apps.map((app) => {
                 return (
-                  <TouchableOpacity key={app.name} style={{ ...styles.appWrap, borderColor: theme.border, backgroundColor: theme.main }} onPress={() => selectApp(app)}>
+                  <TouchableOpacity
+                    key={app.name}
+                    style={{
+                      ...styles.appWrap,
+                      borderColor: theme.border,
+                      backgroundColor: theme.main,
+                    }}
+                    onPress={() => selectApp(app)}
+                  >
                     <FastImage source={app.img} style={{ height: 48, width: 48, marginRight: 12 }} />
                     <Text style={{ ...styles.appLabel, color: theme.title }}>{app.label}</Text>
                   </TouchableOpacity>
@@ -99,17 +114,30 @@ function Do({ app }) {
       </View> */}
       <View style={styles.stuffWrap}>
         <Text style={{ color: theme.text, marginBottom: 8 }}>Address</Text>
-        <TextInput placeholder='Bitcoin Address' value={addy} editable={false} style={{ ...styles.addressInput, backgroundColor: theme.main }} underlineColor={theme.border} />
+        <TextInput
+          placeholder='Bitcoin Address'
+          value={addy}
+          editable={false}
+          style={{ ...styles.addressInput, backgroundColor: theme.main }}
+          underlineColor={theme.border}
+        />
         <Button mode='text' onPress={copyAddy} disabled={!addy ? true : false} loading={loading}>
           Tap to Copy
         </Button>
         <View style={styles.pleaseWrap}>
-          <Text style={{ color: theme.subtitle }}>Please send between 0.0005 and 0.005 Bitcoin. After the transaction is confirmed, it will be added to your account.</Text>
+          <Text style={{ color: theme.subtitle }}>
+            Please send between 0.0005 and 0.005 Bitcoin. After the transaction is confirmed, it will be added to your
+            account.
+          </Text>
         </View>
       </View>
 
       <View style={{ ...styles.bottom }}>
-        <TouchableOpacity style={{ ...styles.linkWrap, opacity: canLink ? 1 : 0.5 }} onPress={openLink} disabled={!canLink}>
+        <TouchableOpacity
+          style={{ ...styles.linkWrap, opacity: canLink ? 1 : 0.5 }}
+          onPress={openLink}
+          disabled={!canLink}
+        >
           <FastImage source={img} style={{ height: 48, width: 48, marginRight: 12 }} />
           <Text style={{ ...styles.appLabel, color: theme.title }}>{`Open ${label} ➞`}</Text>
         </TouchableOpacity>
@@ -120,15 +148,15 @@ function Do({ app }) {
 
 const styles = StyleSheet.create({
   wrap: {
-    flex: 1
+    flex: 1,
   },
   content: {
     flex: 1,
-    marginTop: 40
+    marginTop: 40,
   },
   appsWrap: {
     display: 'flex',
-    padding: 12
+    padding: 12,
   },
   appWrap: {
     display: 'flex',
@@ -140,13 +168,13 @@ const styles = StyleSheet.create({
     paddingTop: 14,
     paddingBottom: 14,
     paddingRight: 10,
-    paddingLeft: 10
+    paddingLeft: 10,
   },
   buttonWrap: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   addButton: {
     backgroundColor: '#6289FD',
@@ -155,34 +183,34 @@ const styles = StyleSheet.create({
     height: 60,
     display: 'flex',
     justifyContent: 'center',
-    marginTop: 28
+    marginTop: 28,
   },
   appLabel: {
-    fontSize: 18
+    fontSize: 18,
   },
   do: {
     flex: 1,
     width: '100%',
     paddingLeft: 14,
-    paddingRight: 14
+    paddingRight: 14,
   },
   bottom: {
     flex: 1,
     marginTop: 40,
     paddingRight: 14,
     paddingLeft: 14,
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-end',
   },
   stuffWrap: {
-    flex: 1
+    flex: 1,
   },
   addressInput: {
     marginBottom: 18,
     height: 50,
-    borderBottomWidth: 0
+    borderBottomWidth: 0,
   },
   pleaseWrap: {
-    marginTop: 18
+    marginTop: 18,
   },
   linkWrap: {
     display: 'flex',
@@ -191,6 +219,6 @@ const styles = StyleSheet.create({
     width: '100%',
     minHeight: 200,
     paddingTop: 20,
-    paddingBottom: 20
-  }
+    paddingBottom: 20,
+  },
 })

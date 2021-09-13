@@ -20,51 +20,40 @@ import Item from './item'
  * @param {Function} onSendGifHandler - callback function that return the selected gif
  * @param {Function} onSubmitEditing - function that search the type of gifs
  */
-const Giphy = React.forwardRef<Modalize | null, GiphyProps>(({
-  gifs,
-  open,
-  onClose,
-  searchGif,
-  onSendGifHandler,
-  setSearchGif,
-  getGifsBySearch,
-}, modalizeRef) => {
-  const { keyboardHeight } = useKeyboard();
-  const modalHeight = keyboardHeight + 100;
-  const theme = useTheme();
+const Giphy = React.forwardRef<Modalize | null, GiphyProps>(
+  ({ gifs, open, onClose, searchGif, onSendGifHandler, setSearchGif, getGifsBySearch }, modalizeRef) => {
+    const { keyboardHeight } = useKeyboard()
+    const modalHeight = keyboardHeight + 100
+    const theme = useTheme()
 
-  const onSearchGIF = () => {
-    setSearchGif(searchGif)
-    getGifsBySearch()
+    const onSearchGIF = () => {
+      setSearchGif(searchGif)
+      getGifsBySearch()
+    }
+
+    const CustomHeader = () => (
+      <Header onClose={onClose} searchGif={searchGif} setSearchGif={setSearchGif} getGifsBySearch={getGifsBySearch} />
+    )
+
+    return (
+      <Portal>
+        <Modalize
+          ref={modalizeRef}
+          modalHeight={Math.max(modalHeight, 450)}
+          HeaderComponent={CustomHeader}
+          FooterComponent={Footer}
+          modalStyle={{ backgroundColor: theme.main }}
+        >
+          <MasonryList
+            contentContainerStyle={styles.mansoryContainer}
+            numColumns={3}
+            data={gifs}
+            renderItem={Item(onSendGifHandler)}
+          />
+        </Modalize>
+      </Portal>
+    )
   }
-
-  const CustomHeader = () => (
-    <Header
-      onClose={onClose}
-      searchGif={searchGif}
-      setSearchGif={setSearchGif}
-      getGifsBySearch={getGifsBySearch}
-    />
-  )
-
-  return (
-    <Portal>
-      <Modalize
-        ref={modalizeRef}
-        modalHeight={Math.max(modalHeight, 450)}
-        HeaderComponent={CustomHeader}
-        FooterComponent={Footer}
-        modalStyle={{ backgroundColor: theme.main }}
-      >
-        <MasonryList
-          contentContainerStyle={styles.mansoryContainer}
-          numColumns={3}
-          data={gifs}
-          renderItem={Item(onSendGifHandler)}
-        />
-      </Modalize>
-    </Portal>
-  )
-})
+)
 
 export default Giphy

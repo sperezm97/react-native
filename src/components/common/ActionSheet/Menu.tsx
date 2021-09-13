@@ -19,8 +19,8 @@ export default function Menu(props) {
         title: 'Cancel',
         thumbIcon: 'Close',
         thumbBgColor: theme.grey,
-        action: () => onCancel()
-      }
+        action: () => onCancel(),
+      },
     ]
   } else {
     actionItems = [...items]
@@ -31,7 +31,7 @@ export default function Menu(props) {
       isVisible={visible}
       style={{
         margin: 0,
-        justifyContent: 'flex-end'
+        justifyContent: 'flex-end',
       }}
       hasBackdrop={hasBackdrop}
       onSwipeComplete={onCancel}
@@ -53,7 +53,7 @@ export default function Menu(props) {
               style={{
                 ...styles.row,
                 height: item.description ? 60 : 55,
-                maxHeight: item.description ? 60 : 55
+                maxHeight: item.description ? 60 : 55,
               }}
               onPress={item.action}
               disabled={item.disabled}
@@ -61,7 +61,10 @@ export default function Menu(props) {
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 {item.thumbIcon && (
                   <View
-                    style={{ ...styles.thumbWrapper, backgroundColor: item.thumbBgColor }}
+                    style={{
+                      ...styles.thumbWrapper,
+                      backgroundColor: item.thumbBgColor,
+                    }}
                   >
                     {iconProp ? (
                       <>{item.thumbIcon}</>
@@ -72,11 +75,7 @@ export default function Menu(props) {
                 )}
                 {item.thumbImage && (
                   <Image
-                    source={
-                      typeof item.thumbImage === 'string'
-                        ? { uri: item.thumbImage }
-                        : item.thumbImage
-                    }
+                    source={typeof item.thumbImage === 'string' ? { uri: item.thumbImage } : item.thumbImage}
                     style={{ ...styles.thumbImage }}
                   />
                 )}
@@ -93,7 +92,7 @@ export default function Menu(props) {
                 {item.preview && (
                   <Typography
                     style={{
-                      marginRight: 5
+                      marginRight: 5,
                     }}
                   >
                     {item.preview}
@@ -112,7 +111,7 @@ export default function Menu(props) {
 Menu.defaultProps = {
   items: [],
   hasBackdrop: true,
-  swipeDirection: 'down'
+  swipeDirection: 'down',
 }
 
 const styles = StyleSheet.create({
@@ -122,14 +121,14 @@ const styles = StyleSheet.create({
     paddingRight: 14,
     paddingLeft: 14,
     paddingTop: 12,
-    paddingBottom: 12
+    paddingBottom: 12,
   },
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingTop: 12,
-    paddingBottom: 12
+    paddingBottom: 12,
   },
   thumbWrapper: {
     width: 30,
@@ -137,19 +136,19 @@ const styles = StyleSheet.create({
     marginRight: 10,
     borderRadius: 50,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   thumbImage: {
     borderRadius: 10,
     height: 70,
     width: 70,
-    marginRight: 20
+    marginRight: 20,
   },
   headLine: {
     height: 6,
     width: 55,
     borderRadius: 5,
     marginBottom: 5,
-    backgroundColor: '#eaeaea'
-  }
+    backgroundColor: '#eaeaea',
+  },
 })

@@ -9,18 +9,18 @@ import { HasData } from './types/hasData.interface'
  */
 export default () => {
   try {
-    const contacts: Array<any> = get({ schema: 'Contacts' });
-    const chats: Array<any> = get({ schema: 'Chats' });
-    const msg: Array<any> = get({ schema: 'Msg' });
+    const contacts: Array<any> = get({ schema: 'Contacts' })
+    const chats: Array<any> = get({ schema: 'Chats' })
+    const msg: Array<any> = get({ schema: 'Msg' })
 
     return {
       contacts: contacts.length ? true : false,
       chats: chats.length ? true : false,
       msg: msg.length ? true : false,
-    } as HasData;
+    } as HasData
   } catch (e) {
-    console.log(`Error at checking if data exist`);
-    console.log(`error: ${e}`);
-    return e;
+    console.log(`Error at checking if data exist`)
+    console.log(`error: ${e}`)
+    return e
   }
-};
+}

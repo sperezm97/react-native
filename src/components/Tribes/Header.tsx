@@ -31,12 +31,7 @@ export default function Header({}) {
               onPress={() => navigation.navigate('DiscoverTribes')}
             />
             <Pushable onPress={() => ui.setNewTribeModal(true)}>
-              <IconButton
-                icon='plus'
-                color={theme.primary}
-                size={24}
-                style={{ backgroundColor: theme.lightGrey }}
-              />
+              <IconButton icon='plus' color={theme.primary} size={24} style={{ backgroundColor: theme.lightGrey }} />
             </Pushable>
           </View>
         </View>
@@ -47,21 +42,21 @@ export default function Header({}) {
 
 const styles = StyleSheet.create({
   appBar: {
-    elevation: 0
+    elevation: 0,
   },
   flex: {
     display: 'flex',
     alignItems: 'center',
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   content: {
     justifyContent: 'space-between',
-    width: '100%'
+    width: '100%',
   },
   left: {
-    marginLeft: 10
+    marginLeft: 10,
   },
   right: {
-    marginRight: 2
-  }
+    marginRight: 2,
+  },
 })

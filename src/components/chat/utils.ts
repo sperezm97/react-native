@@ -8,11 +8,11 @@ const group = constants.chat_types.conversation
 const expiredInvite = constants.invite_statuses.expired
 
 export function allChats(chats: Chat[], contacts: Contact[], myid: number): Chat[] {
-  const groupChats = chats.filter(c => c.type !== conversation).map(c => ({ ...c }))
+  const groupChats = chats.filter((c) => c.type !== conversation).map((c) => ({ ...c }))
   const conversations = []
-  contacts.forEach(contact => {
+  contacts.forEach((contact) => {
     if (contact.id !== myid && !contact.from_group) {
-      const chatForContact = chats.find(c => {
+      const chatForContact = chats.find((c) => {
         return c.type === conversation && c.contact_ids.includes(contact.id)
       })
       if (chatForContact) {
@@ -26,22 +26,20 @@ export function allChats(chats: Chat[], contacts: Contact[], myid: number): Chat
           updated_at: new Date().toJSON(),
           contact_ids: [myid, contact.id],
           invite: contact.invite,
-          type: conversation
+          type: conversation,
         })
       }
     }
   })
-  const convs = conversations.filter(
-    c => !(c.invite && c.invite.status === expiredInvite)
-  )
+  const convs = conversations.filter((c) => !(c.invite && c.invite.status === expiredInvite))
   const all = groupChats.concat(convs)
   return all
 }
 
 export function contactForConversation(chat: Chat, contacts: Contact[], myid: number) {
   if (chat && chat.type === conversation) {
-    const cid = chat.contact_ids.find(id => id !== myid)
-    return contacts.find(c => c.id === cid)
+    const cid = chat.contact_ids.find((id) => id !== myid)
+    return contacts.find((c) => c.id === cid)
   }
   return null
 }
@@ -57,17 +55,15 @@ export function sortChats(chatsToShow, messages) {
     const bdate = blastMsg && blastMsg.date ? moment(blastMsg.date) : then
     return adate.isBefore(bdate) ? 0 : -1
   })
-  chatsToShow.sort(a => {
+  chatsToShow.sort((a) => {
     if (a.invite && a.invite.status !== 4) return -1
     return 0
   })
 }
 
 export function filterChats(theChats, searchTerm) {
-  return theChats.filter(c => {
+  return theChats.filter((c) => {
     if (!searchTerm) return true
-    return (
-      (c.invite ? true : false) || c.name.toLowerCase().includes(searchTerm.toLowerCase())
-    )
+    return (c.invite ? true : false) || c.name.toLowerCase().includes(searchTerm.toLowerCase())
   })
 }

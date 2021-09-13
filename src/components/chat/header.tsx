@@ -30,7 +30,7 @@ export default function Header({
   tribeParams,
   earned,
   spent,
-  pricePerMinute
+  pricePerMinute,
 }: {
   chat: Chat
   appMode: boolean
@@ -54,7 +54,7 @@ export default function Header({
   }, [])
 
   return useObserver(() => {
-    const theChat = chats.chats.find(c => c.id === chat.id)
+    const theChat = chats.chats.find((c) => c.id === chat.id)
 
     let contact
     if (chat && chat.type === conversation) {
@@ -66,7 +66,7 @@ export default function Header({
         if (contact) navigation.navigate('Contact', { contact: { ...contact } })
       } else {
         navigation.navigate('ChatDetails', {
-          group: { ...theChat, ...tribeParams, pricePerMinute }
+          group: { ...theChat, ...tribeParams, pricePerMinute },
         })
       }
     }
@@ -82,7 +82,7 @@ export default function Header({
         // })
         // ui.setEditContactModal(contact)
       } else {
-        const tribe = tribes.find(t => t.chat?.uuid === chat?.uuid)
+        const tribe = tribes.find((t) => t.chat?.uuid === chat?.uuid)
         navigation.navigate('Tribe', { tribe: { ...tribe } })
       }
     }
@@ -109,29 +109,22 @@ export default function Header({
         style={{
           ...styles.wrap,
           backgroundColor: theme.bg,
-          borderBottomColor: theme.border
+          borderBottomColor: theme.border,
         }}
       >
         <View style={styles.row}>
-          <TouchableOpacity
-            onPress={onBackPress}
-            style={{ marginLeft: 6, marginRight: 6 }}
-          >
+          <TouchableOpacity onPress={onBackPress} style={{ marginLeft: 6, marginRight: 6 }}>
             <FeatherIcon name='chevron-left' size={28} color={theme.icon} />
           </TouchableOpacity>
 
-          <TouchableOpacity
-            onPress={onChatTitlePress}
-            style={{ ...styles.row }}
-            activeOpacity={0.6}
-          >
+          <TouchableOpacity onPress={onChatTitlePress} style={{ ...styles.row }} activeOpacity={0.6}>
             <View style={{ marginRight: 10 }}>
               <Avatar alias={name} photo={uri || ''} size={38} big aliasSize={15} />
             </View>
             <View>
               <View
                 style={{
-                  ...styles.row
+                  ...styles.row,
                 }}
               >
                 <Typography
@@ -179,11 +172,11 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   row: {
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
     // justifyContent: 'center'
-  }
+  },
 })

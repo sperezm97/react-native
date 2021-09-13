@@ -11,15 +11,15 @@ import Boost from './Boost'
 const lens = {
   // min 1000
   confetti: {
-    time: 3000
-  }
+    time: 3000,
+  },
 }
 
 export default function Animation({ dark, myid }) {
   const { contacts } = useStores()
   const [show, setShow] = useState(false)
 
-  const meContact = contacts.contacts.find(c => c.id === myid)
+  const meContact = contacts.contacts.find((c) => c.id === myid)
   let meIMG = usePicSrc(meContact)
 
   const opacity = useRef(new Animated.Value(0)).current
@@ -31,14 +31,14 @@ export default function Animation({ dark, myid }) {
       Animated.timing(opacity, {
         toValue: 1,
         duration: 75,
-        useNativeDriver: true
+        useNativeDriver: true,
       }),
       Animated.timing(opacity, {
         toValue: 0,
         duration: 500,
         useNativeDriver: true,
-        delay: Math.max(len - 1000, 0)
-      })
+        delay: Math.max(len - 1000, 0),
+      }),
     ]).start()
   }
   function play() {
@@ -66,13 +66,13 @@ export default function Animation({ dark, myid }) {
       style={{
         ...styles.wrap,
         zIndex,
-        opacity
+        opacity,
       }}
     >
       <View
         style={{
           ...styles.backdrop,
-          backgroundColor: dark ? 'rgba(0,0,0,0.5)' : 'rgba(255,255,255,0.5)'
+          backgroundColor: dark ? 'rgba(0,0,0,0.5)' : 'rgba(255,255,255,0.5)',
         }}
       />
 
@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     right: 0,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   backdrop: {
     display: 'flex',
@@ -116,14 +116,14 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     bottom: 0,
-    right: 0
+    right: 0,
   },
   content: {
     display: 'flex',
-    alignItems: 'center'
-  }
+    alignItems: 'center',
+  },
 })
 
 async function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms))
+  return new Promise((resolve) => setTimeout(resolve, ms))
 }

@@ -6,7 +6,7 @@ import RNFetchBlob from 'rn-fetch-blob'
 
 export async function uploadAudioFile(uri, server, callback) {
   const pwd = await randString(32)
-  console.log("uploadAudioFile:", uri, server, callback)
+  console.log('uploadAudioFile:', uri, server, callback)
   if (!server) return
   if (!uri) return
 
@@ -20,16 +20,16 @@ export async function uploadAudioFile(uri, server, callback) {
     `https://${server.host}/file`,
     {
       Authorization: `Bearer ${server.token}`,
-      'Content-Type': 'multipart/form-data'
+      'Content-Type': 'multipart/form-data',
     },
     [
       {
         name: 'file',
         filename,
         type: type,
-        data: enc
+        data: enc,
       },
-      { name: 'name', data: filename }
+      { name: 'name', data: filename },
     ]
   )
     // listen to upload progress event, emit every 250ms
@@ -37,11 +37,11 @@ export async function uploadAudioFile(uri, server, callback) {
       console.log('uploaded', written / total)
       // setUploadedPercent(Math.round((written / total)*100))
     })
-    .then(async resp => {
+    .then(async (resp) => {
       let json = resp.json()
       callback(json.muid, pwd, type)
     })
-    .catch(err => {
+    .catch((err) => {
       console.log(err)
     })
 }
@@ -63,7 +63,7 @@ const requestWriteExternalStoragePermission = async () => {
   const storageResponse = await checkPermissions(
     PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
     PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE,
-    PERMISSIONS.IOS.MEDIA_LIBRARY,
+    PERMISSIONS.IOS.MEDIA_LIBRARY
   )
 
   if (storageResponse) {
@@ -74,10 +74,7 @@ const requestWriteExternalStoragePermission = async () => {
 }
 
 const requestRecordAudioPermission = async () => {
-  const microphoneResponse = await checkPermissions(
-    PERMISSIONS.ANDROID.RECORD_AUDIO,
-    PERMISSIONS.IOS.MICROPHONE,
-  )
+  const microphoneResponse = await checkPermissions(PERMISSIONS.ANDROID.RECORD_AUDIO, PERMISSIONS.IOS.MICROPHONE)
 
   if (microphoneResponse) {
     console.log('You can record audio')
@@ -87,8 +84,5 @@ const requestRecordAudioPermission = async () => {
 }
 
 export async function requestAudioPermissions() {
-  await Promise.all([
-    requestWriteExternalStoragePermission(),
-    requestRecordAudioPermission(),
-  ])
+  await Promise.all([requestWriteExternalStoragePermission(), requestRecordAudioPermission()])
 }

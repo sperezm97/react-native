@@ -44,14 +44,14 @@ export default function EditContact({ route }) {
     setLoading(true)
     if (contact.alias !== values.alias) {
       await contacts.updateContact(contact.id, {
-        alias: values.alias
+        alias: values.alias,
       })
     }
     setLoading(false)
   }
 
   function chatForContact() {
-    const cfc = chats.chats.find(c => {
+    const cfc = chats.chats.find((c) => {
       return c.type === conversation && c.contact_ids.includes(contact.id)
     })
     return cfc
@@ -60,7 +60,7 @@ export default function EditContact({ route }) {
   async function toggleSubscription(sid, paused: boolean) {
     const ok = await contacts.toggleSubscription(sid, paused)
     if (ok)
-      setExistingSub(current => {
+      setExistingSub((current) => {
         return { ...current, paused }
       })
   }
@@ -95,9 +95,7 @@ export default function EditContact({ route }) {
             </Typography>
             <Switch
               value={!subPaused}
-              onValueChange={() =>
-                toggleSubscription(existingSub.id, subPaused ? false : true)
-              }
+              onValueChange={() => toggleSubscription(existingSub.id, subPaused ? false : true)}
             />
           </View>
         </View>
@@ -107,11 +105,7 @@ export default function EditContact({ route }) {
 
   return useObserver(() => (
     <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
-      <BackHeader
-        title='Edit Contact'
-        navigate={() => navigation.goBack()}
-        action={Subscribe}
-      />
+      <BackHeader title='Edit Contact' navigate={() => navigation.goBack()} action={Subscribe} />
 
       <View style={styles.content}>
         <Form
@@ -122,12 +116,12 @@ export default function EditContact({ route }) {
             contact
               ? {
                   alias: contact.alias,
-                  public_key: contact.public_key
+                  public_key: contact.public_key,
                 }
               : {}
           }
           readOnlyFields={'public_key'}
-          onSubmit={values => updateContact(values)}
+          onSubmit={(values) => updateContact(values)}
         />
       </View>
 
@@ -147,18 +141,18 @@ export default function EditContact({ route }) {
 
 const styles = StyleSheet.create({
   wrap: {
-    flex: 1
+    flex: 1,
   },
   content: {
-    flex: 1
+    flex: 1,
   },
   row: {
     display: 'flex',
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   pausedText: {
     fontSize: 12,
-    minWidth: 50
-  }
+    minWidth: 50,
+  },
 })

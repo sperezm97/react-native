@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native'
 import { SCREEN_HEIGHT } from '../../../constants'
 
 export default StyleSheet.create({
@@ -7,4 +7,4 @@ export default StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 16,
   },
-});
+})

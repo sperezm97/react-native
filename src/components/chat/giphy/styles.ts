@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native'
 import { SCREEN_HEIGHT } from '../../../constants'
 
 export default StyleSheet.create({
@@ -27,7 +27,7 @@ export default StyleSheet.create({
     width: '100%',
   },
   gifWrapper: {
-    padding: 3
+    padding: 3,
   },
   gif: {
     borderRadius: 4,
@@ -35,7 +35,7 @@ export default StyleSheet.create({
   loadingWrapper: {
     alignItems: 'center',
     flex: 1,
-    flexDirection: "row",
+    flexDirection: 'row',
     justifyContent: 'center',
-  }
-});
+  },
+})

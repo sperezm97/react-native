@@ -51,22 +51,22 @@ export default function Account() {
       `https://${server.host}/public`,
       {
         Authorization: `Bearer ${server.token}`,
-        'Content-Type': 'multipart/form-data'
+        'Content-Type': 'multipart/form-data',
       },
       [
         {
           name: 'file',
           filename: name,
           type: type,
-          data: RNFetchBlob.wrap(uri)
+          data: RNFetchBlob.wrap(uri),
         },
-        { name: 'name', data: name }
+        { name: 'name', data: name },
       ]
     )
       .uploadProgress({ interval: 250 }, (written, total) => {
         setUploadedPercent(Math.round((written / total) * 100))
       })
-      .then(async resp => {
+      .then(async (resp) => {
         let json = resp.json()
 
         if (json.muid) {
@@ -74,11 +74,11 @@ export default function Account() {
         }
 
         await contacts.updateContact(user.myid, {
-          photo_url: `https://${server.host}/public/${json.muid}`
+          photo_url: `https://${server.host}/public/${json.muid}`,
         })
         setUploading(false)
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err)
         setUploading(false)
       })
@@ -87,7 +87,7 @@ export default function Account() {
   async function saveUser(values) {
     setSaving(true)
     await contacts.updateContact(user.myid, {
-      alias: values.alias
+      alias: values.alias,
     })
     setSaving(false)
     setUserDialog(false)
@@ -100,50 +100,50 @@ export default function Account() {
         icon: 'ChevronRight',
         thumbIcon: 'Settings',
         thumbBgColor: theme.primary,
-        action: () => navigation.navigate('Settings')
+        action: () => navigation.navigate('Settings'),
       },
       {
         title: 'Network',
         icon: 'ChevronRight',
         thumbIcon: 'Network',
         thumbBgColor: theme.primary,
-        action: () => navigation.navigate('Network')
+        action: () => navigation.navigate('Network'),
       },
       {
         title: 'Security & Backup',
         icon: 'ChevronRight',
         thumbIcon: 'Lock',
         thumbBgColor: theme.primary,
-        action: () => navigation.navigate('Security')
+        action: () => navigation.navigate('Security'),
       },
       {
         title: 'Appearance',
         icon: 'ChevronRight',
         thumbIcon: 'Moon',
         thumbBgColor: theme.primary,
-        action: () => navigation.navigate('Appearance')
+        action: () => navigation.navigate('Appearance'),
       },
       {
         title: 'Contacts',
         icon: 'ChevronRight',
         thumbIcon: <AntDesignIcon name='contacts' color={theme.white} size={18} />,
         thumbBgColor: theme.primary,
-        action: () => navigation.navigate('Contacts')
+        action: () => navigation.navigate('Contacts'),
       },
       {
         title: 'Support',
         icon: 'ChevronRight',
         thumbIcon: 'Mail',
         thumbBgColor: theme.primary,
-        action: () => navigation.navigate('Support')
-      }
-    ]
+        action: () => navigation.navigate('Support'),
+      },
+    ],
   ]
 
   return useObserver(() => {
     const myid = user.myid
 
-    const meContact = contacts.contacts.find(c => c.id === myid)
+    const meContact = contacts.contacts.find((c) => c.id === myid)
     let imgURI = usePicSrc(meContact)
 
     if (photo_url) imgURI = photo_url
@@ -152,10 +152,15 @@ export default function Account() {
       <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
         <Header onEdit={() => setUserDialog(true)} />
         <ScrollView>
-          <View style={{ ...styles.userInfoSection, borderBottomColor: theme.border }}>
+          <View
+            style={{
+              ...styles.userInfoSection,
+              borderBottomColor: theme.border,
+            }}
+          >
             <View
               style={{
-                ...styles.userInfoContent
+                ...styles.userInfoContent,
               }}
             >
               <AvatarEdit
@@ -174,7 +179,7 @@ export default function Account() {
                   fw='600'
                   style={{
                     marginTop: 20,
-                    marginBottom: 10
+                    marginBottom: 10,
                   }}
                 >
                   {meContact.alias}
@@ -192,11 +197,7 @@ export default function Account() {
             setImageDialog={setImageDialog}
           />
 
-          <DialogWrap
-            title='Edit Name'
-            visible={userDialog}
-            onDismiss={() => setUserDialog(false)}
-          >
+          <DialogWrap title='Edit Name' visible={userDialog} onDismiss={() => setUserDialog(false)}>
             <Form
               nopad
               schema={me}
@@ -205,9 +206,9 @@ export default function Account() {
               buttonText='Save'
               btnW='auto'
               initialValues={{
-                alias: meContact.alias
+                alias: meContact.alias,
               }}
-              onSubmit={values => saveUser(values)}
+              onSubmit={(values) => saveUser(values)}
               action
               actionType='Dialog'
             />
@@ -221,24 +222,24 @@ export default function Account() {
 
 const styles = StyleSheet.create({
   wrap: {
-    flex: 1
+    flex: 1,
   },
   userInfoSection: {
     paddingBottom: 10,
     borderBottomWidth: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   userInfoContent: {
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   spinner: {
     position: 'absolute',
     left: 19,
-    top: 19
-  }
+    top: 19,
+  },
 })

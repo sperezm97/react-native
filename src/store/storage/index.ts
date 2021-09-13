@@ -10,7 +10,7 @@ export function persistMsgLocalForage(msgStore) {
     const obj = {
       messages: msgStore.messages,
       lastSeen: msgStore.lastSeen,
-      lastFetched: msgStore.lastFetched
+      lastFetched: msgStore.lastFetched,
     }
     localForage.setItem('_msg', JSON.stringify(obj))
   }, DEBOUNCE_TIME)

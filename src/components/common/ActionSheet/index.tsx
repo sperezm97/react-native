@@ -15,8 +15,8 @@ export default function ActionSheet(props) {
     {
       id: '#cancel',
       label: 'Cancel',
-      onPress: props?.onCancel
-    }
+      onPress: props?.onCancel,
+    },
   ]
 
   return (
@@ -26,7 +26,7 @@ export default function ActionSheet(props) {
       backdropOpacity={0.2}
       style={{
         margin: 0,
-        justifyContent: 'flex-end'
+        justifyContent: 'flex-end',
       }}
     >
       <View style={styles.modalContent}>
@@ -37,11 +37,11 @@ export default function ActionSheet(props) {
                 styles.actionSheetView,
                 index === 0 && {
                   borderTopLeftRadius: 12,
-                  borderTopRightRadius: 12
+                  borderTopRightRadius: 12,
                 },
                 index === actionSheetItems.length - 2 && {
                   borderBottomLeftRadius: 12,
-                  borderBottomRightRadius: 12
+                  borderBottomRightRadius: 12,
                 },
                 index === actionSheetItems.length - 1 && {
                   borderBottomWidth: 0,
@@ -50,8 +50,8 @@ export default function ActionSheet(props) {
                   borderTopLeftRadius: 12,
                   borderTopRightRadius: 12,
                   borderBottomLeftRadius: 12,
-                  borderBottomRightRadius: 12
-                }
+                  borderBottomRightRadius: 12,
+                },
               ]}
               underlayColor={'#f7f7f7'}
               key={index}
@@ -61,11 +61,7 @@ export default function ActionSheet(props) {
                 allowFontScaling={false}
                 size={18}
                 lh={22}
-                color={
-                  actionItem?.actionTextColor
-                    ? actionItem?.actionTextColor
-                    : PRIMARY_COLOR
-                }
+                color={actionItem?.actionTextColor ? actionItem?.actionTextColor : PRIMARY_COLOR}
               >
                 {actionItem.label}
               </Typography>
@@ -85,7 +81,7 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 12,
     marginLeft: 8,
     marginRight: 8,
-    marginBottom: 20
+    marginBottom: 20,
   },
   actionSheetView: {
     backgroundColor: WHITE,
@@ -96,12 +92,12 @@ const styles = StyleSheet.create({
     paddingTop: 16,
     paddingBottom: 16,
     borderBottomWidth: StyleSheet.hairlineWidth,
-    borderColor: BORDER_COLOR
-  }
+    borderColor: BORDER_COLOR,
+  },
 })
 
 ActionSheet.defaultProps = {
   actionItems: [],
   onCancel: () => {},
-  actionTextColor: null
+  actionTextColor: null,
 }

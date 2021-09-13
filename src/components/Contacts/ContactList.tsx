@@ -17,15 +17,13 @@ export default function ContactList({ listHeader }) {
   const myid = user.myid
 
   return useObserver(() => {
-    const contactsToShow = contacts.contacts.filter(c => {
+    const contactsToShow = contacts.contacts.filter((c) => {
       if (!ui.contactsSearchTerm) return true
       return c.alias.toLowerCase().includes(ui.contactsSearchTerm.toLowerCase())
     })
-    const contactsNotMe = contactsToShow
-      .filter(c => c.id !== myid)
-      .sort((a, b) => (a.alias > b.alias ? 1 : -1))
+    const contactsNotMe = contactsToShow.filter((c) => c.id !== myid).sort((a, b) => (a.alias > b.alias ? 1 : -1))
 
-    const contactsNotFromGroups = contactsNotMe.filter(c => !c.from_group)
+    const contactsNotFromGroups = contactsNotMe.filter((c) => !c.from_group)
 
     return (
       <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
@@ -36,10 +34,7 @@ export default function ContactList({ listHeader }) {
             return item.alias + index + item.photo_url
           }}
           renderItem={({ item }) => (
-            <Item
-              contact={item}
-              onPress={contact => navigation.navigate('Contact', { contact })}
-            />
+            <Item contact={item} onPress={(contact) => navigation.navigate('Contact', { contact })} />
           )}
           renderSectionHeader={({ section: { title } }) => (
             <View style={{ ...styles.section, backgroundColor: theme.main }}>
@@ -62,12 +57,7 @@ function Item({ contact, onPress }) {
   const hasImg = uri ? true : false
 
   return (
-    <SwipeRow
-      disableRightSwipe={true}
-      friction={100}
-      rightOpenValue={-80}
-      stopRightSwipe={-80}
-    >
+    <SwipeRow disableRightSwipe={true} friction={100} rightOpenValue={-80} stopRightSwipe={-80}>
       <View style={styles.backSwipeRow}>
         <IconButton
           icon='trash-can-outline'
@@ -78,11 +68,7 @@ function Item({ contact, onPress }) {
         />
       </View>
       <View style={{ ...styles.frontSwipeRow, backgroundColor: theme.bg }}>
-        <TouchableOpacity
-          style={styles.contactTouch}
-          activeOpacity={0.5}
-          onPress={() => onPress(contact)}
-        >
+        <TouchableOpacity style={styles.contactTouch} activeOpacity={0.5} onPress={() => onPress(contact)}>
           <Avatar size={40} aliasSize={16} alias={contact.alias} photo={uri} />
           <View style={styles.contactContent}>
             <Typography size={16}>{contact.alias}</Typography>
@@ -102,7 +88,7 @@ function grouper(data) {
     else r[title].data.push(e)
     return r
   }, {})
-  Object.values(groups).forEach(g => {
+  Object.values(groups).forEach((g) => {
     ret.push(g)
   })
   return ret
@@ -110,39 +96,39 @@ function grouper(data) {
 
 const styles = StyleSheet.create({
   wrap: {
-    flex: 1
+    flex: 1,
   },
   list: {
-    flex: 1
+    flex: 1,
   },
   section: {
     paddingLeft: 24,
     height: 35,
     flex: 1,
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   contactTouch: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'center',
     height: 80,
-    alignItems: 'center'
+    alignItems: 'center',
   },
   contactContent: {
     flex: 1,
-    paddingLeft: 14
+    paddingLeft: 14,
   },
   backSwipeRow: {
     backgroundColor: '#DB5554',
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-end',
   },
   frontSwipeRow: {
     flex: 1,
     height: 80,
-    paddingLeft: 14
-  }
+    paddingLeft: 14,
+  },
 })

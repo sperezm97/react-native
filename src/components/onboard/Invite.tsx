@@ -49,17 +49,13 @@ export default function Invite(props) {
       }
 
       if (done.payload.duplicate) {
-        setEmail('');
+        setEmail('')
         Toast.showWithGravity(`Email already subscribed!`, 5, Toast.BOTTOM)
         return
       }
 
       setEmail('')
-      Toast.showWithGravity(
-        `Subscribed! You are the ${done.payload.id} number on the list`,
-        5,
-        Toast.BOTTOM,
-      )
+      Toast.showWithGravity(`Subscribed! You are the ${done.payload.id} number on the list`, 5, Toast.BOTTOM)
     } catch (error) {
       setError(error)
     } finally {
@@ -86,13 +82,10 @@ export default function Invite(props) {
           accessibilityLabel='onboard-profile-back'
         />
 
-        <KeyboardAwareScrollView
-          contentContainerStyle={{ ...styles.content }}
-          scrollEnabled={false}
-        >
+        <KeyboardAwareScrollView contentContainerStyle={{ ...styles.content }} scrollEnabled={false}>
           <Typography
             style={{
-              marginBottom: 10
+              marginBottom: 10,
             }}
             size={48}
             color={theme.white}
@@ -108,7 +101,7 @@ export default function Invite(props) {
             lh={29}
             style={{
               marginTop: 15,
-              maxWidth: 270
+              maxWidth: 270,
             }}
           >
             Enter your email and we will add you to the waitlist.
@@ -118,15 +111,15 @@ export default function Invite(props) {
               autoCorrect={false}
               accessibilityLabel='onboard-code-input'
               placeholder='Enter Email'
-              autoCapitalize="none"
+              autoCapitalize='none'
               style={{
                 ...styles.input,
                 backgroundColor: theme.white,
-                borderColor: theme.white
+                borderColor: theme.white,
               }}
               placeholderTextColor={theme.greySecondary}
               value={email}
-              onChangeText={text => setEmail(text)}
+              onChangeText={(text) => setEmail(text)}
               // onBlur={() => submitEmail(email)}
               onFocus={() => {
                 if (wrong) setWrong('')
@@ -139,7 +132,7 @@ export default function Invite(props) {
             size='large'
             style={{
               borderWidth: 2,
-              borderColor: theme.white
+              borderColor: theme.white,
             }}
             // onPress={submitEmail}
             onPress={() => submitEmail(email)}
@@ -149,16 +142,14 @@ export default function Invite(props) {
               Subscribe
             </Typography>
           </Button>
-          <View style={styles.spinWrap}>
-            {checking && <ActivityIndicator animating={true} color={theme.white} />}
-          </View>
+          <View style={styles.spinWrap}>{checking && <ActivityIndicator animating={true} color={theme.white} />}</View>
         </KeyboardAwareScrollView>
 
         {(wrong ? true : false) && (
           <View
             style={{
               ...styles.message,
-              backgroundColor: theme.transparent
+              backgroundColor: theme.transparent,
             }}
           >
             <Typography style={{ margin: 24 }} color={theme.white} textAlign='center'>
@@ -170,12 +161,12 @@ export default function Invite(props) {
           <View
             style={{
               ...styles.message,
-              backgroundColor: theme.transparent
+              backgroundColor: theme.transparent,
             }}
           >
             <Typography
               style={{
-                margin: 24
+                margin: 24,
               }}
               color={theme.white}
               textAlign='center'
@@ -196,14 +187,14 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     right: 0,
-    bottom: 0
+    bottom: 0,
   },
   gradient: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     height: '100%',
-    width: '100%'
+    width: '100%',
   },
   content: {
     flex: 1,
@@ -211,19 +202,19 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     height: '100%',
-    width: '100%'
+    width: '100%',
   },
   backArrow: {
     position: 'absolute',
     left: 15,
-    top: 45
+    top: 45,
   },
   inputWrap: {
     width: 320,
     maxWidth: '90%',
     position: 'relative',
     flexDirection: 'row',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   input: {
     width: '100%',
@@ -233,21 +224,21 @@ const styles = StyleSheet.create({
     fontSize: 21,
     paddingLeft: 30,
     paddingRight: 65,
-    marginBottom: 50
+    marginBottom: 50,
   },
   spinWrap: {
     marginTop: 40,
-    height: 20
+    height: 20,
   },
   message: {
     position: 'absolute',
     bottom: 32,
     width: '80%',
     left: '10%',
-    borderRadius: 10
-  }
+    borderRadius: 10,
+  },
 })
 
 async function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms))
+  return new Promise((resolve) => setTimeout(resolve, ms))
 }

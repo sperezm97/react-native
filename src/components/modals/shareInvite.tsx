@@ -48,16 +48,11 @@ function ShareInvite({ close }) {
       <TouchableWithoutFeedback style={styles.wrap} onPress={copy}>
         <View style={styles.wrap}>
           <View style={styles.tapWrap}>
-            <Image
-              style={{ height: 29, width: 17 }}
-              source={require('../../../android_assets/tap_to_copy.png')}
-            />
+            <Image style={{ height: 29, width: 17 }} source={require('../../../android_assets/tap_to_copy.png')} />
             <Text style={styles.tapToCopy}>TAP TO COPY</Text>
           </View>
           <View style={styles.qrWrap}>
-            {hasInvite && (
-              <QRCode value={ui.shareInviteString} size={SCREEN_WIDTH / 1.3} />
-            )}
+            {hasInvite && <QRCode value={ui.shareInviteString} size={SCREEN_WIDTH / 1.3} />}
           </View>
           {hasInvite && (
             <View style={styles.inviteStringWrap}>
@@ -75,10 +70,10 @@ function ShareInvite({ close }) {
 
 const styles = StyleSheet.create({
   modal: {
-    margin: 0
+    margin: 0,
   },
   wrap: {
-    flex: 1
+    flex: 1,
   },
   qrWrap: {
     display: 'flex',
@@ -86,19 +81,19 @@ const styles = StyleSheet.create({
     padding: 20,
     width: '100%',
     alignItems: 'center',
-    marginTop: 20
+    marginTop: 20,
   },
   content: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 40
+    marginBottom: 40,
   },
   former: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'flex-start',
-    width: '100%'
+    width: '100%',
   },
   tapWrap: {
     width: '100%',
@@ -107,29 +102,29 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 20,
-    opacity: 0.35
+    opacity: 0.35,
   },
   tapToCopy: {
     fontSize: 10,
     color: 'black',
-    marginLeft: 10
+    marginLeft: 10,
   },
   shareButton: {
     position: 'absolute',
     bottom: 25,
     left: 0,
-    right: 0
+    right: 0,
   },
   inviteStringWrap: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    width: '100%'
+    width: '100%',
   },
   inviteString: {
     fontSize: 12,
     color: 'grey',
-    marginTop: 20
-  }
+    marginTop: 20,
+  },
 })

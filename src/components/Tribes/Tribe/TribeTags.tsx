@@ -26,7 +26,7 @@ export default function TribeTags(props) {
     saveAction = true,
     saveText = 'Save',
     btnMode = 'text',
-    finish
+    finish,
   } = props
 
   const theme = useTheme()
@@ -59,7 +59,7 @@ export default function TribeTags(props) {
 
   function removeTag(tag) {
     const newValues = [...tagz]
-    setTagz(newValues.filter(t => t !== tag))
+    setTagz(newValues.filter((t) => t !== tag))
     setError('')
   }
 
@@ -83,7 +83,7 @@ export default function TribeTags(props) {
                   key={t}
                   style={{
                     ...styles.chip,
-                    backgroundColor: theme.main
+                    backgroundColor: theme.main,
                   }}
                   textStyle={{ color: theme.text }}
                 >
@@ -107,7 +107,7 @@ export default function TribeTags(props) {
                       key={t}
                       style={{
                         ...styles.chip,
-                        backgroundColor: theme.main
+                        backgroundColor: theme.main,
                       }}
                       textStyle={{ color: theme.text }}
                     >
@@ -155,14 +155,10 @@ export default function TribeTags(props) {
           style={{
             ...styles.buttonWrap,
 
-            justifyContent: saveAction ? 'flex-end' : 'center'
+            justifyContent: saveAction ? 'flex-end' : 'center',
           }}
         >
-          <Button
-            mode={btnMode}
-            onPress={() => finish(tagz)}
-            w={props.btnW ? props.btnW : 100}
-          >
+          <Button mode={btnMode} onPress={() => finish(tagz)} w={props.btnW ? props.btnW : 100}>
             {saveText}
           </Button>
         </View>
@@ -173,36 +169,36 @@ export default function TribeTags(props) {
 
 TribeTags.defaultProps = {
   containerStyle: null,
-  finish: () => {}
+  finish: () => {},
 }
 
 const styles = StyleSheet.create({
   content: {
     flexDirection: 'column',
-    width: '100%'
+    width: '100%',
   },
   badgeContainer: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
     flexWrap: 'wrap',
-    width: '100%'
+    width: '100%',
   },
   chip: {
     marginRight: 10,
-    marginBottom: 10
+    marginBottom: 10,
   },
   buttonWrap: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 40
+    marginTop: 40,
   },
   inputWrap: {
-    marginBottom: 16
+    marginBottom: 16,
   },
   input: {
     height: 50,
-    textAlign: 'auto'
-  }
+    textAlign: 'auto',
+  },
 })

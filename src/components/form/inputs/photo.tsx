@@ -26,29 +26,55 @@ export default function PhotoInput({ name, label, required, setValue, value, acc
         </View>
       </TouchableWithoutFeedback>
 
-      {!hasImgURI && <Icon name='picture' color='#888' size={25} style={{ position: 'absolute', right: 13, top: 17 }} onPress={() => setDialogOpen(true)} />}
+      {!hasImgURI && (
+        <Icon
+          name='picture'
+          color='#888'
+          size={25}
+          style={{ position: 'absolute', right: 13, top: 17 }}
+          onPress={() => setDialogOpen(true)}
+        />
+      )}
 
-      {hasImgURI && <Image source={{ uri: imgURI }} style={{ width: 52, height: 52, position: 'absolute', right: 0, top: 1, borderRadius: 3 }} />}
+      {hasImgURI && (
+        <Image
+          source={{ uri: imgURI }}
+          style={{
+            width: 52,
+            height: 52,
+            position: 'absolute',
+            right: 0,
+            top: 1,
+            borderRadius: 3,
+          }}
+        />
+      )}
 
-      <ImageDialog visible={dialogOpen} onCancel={() => setDialogOpen(false)} onPick={tookPic} onSnap={tookPic} setImageDialog={setDialogOpen} />
+      <ImageDialog
+        visible={dialogOpen}
+        onCancel={() => setDialogOpen(false)}
+        onPick={tookPic}
+        onSnap={tookPic}
+        setImageDialog={setDialogOpen}
+      />
     </View>
   )
 }
 
 const styles = {
   wrap: {
-    flex: 1
+    flex: 1,
   },
   box: {
     borderBottomColor: '#bbb',
     borderBottomWidth: 1,
     marginBottom: 25,
-    height: 55
+    height: 55,
   },
   label: {
     fontSize: 15,
     color: '#666',
     top: 20,
-    left: 12
-  }
+    left: 12,
+  },
 }

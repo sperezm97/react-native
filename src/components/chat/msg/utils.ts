@@ -17,14 +17,16 @@ export function calcExpiry(props) {
 }
 
 type Link = {
-  href: string;
+  href: string
 }
 
-const getLink = (linkFilter: (text: Link) => boolean) => (text: string): string => {
-  const messageLinks = linkify.find(text, 'url')
-  const filteredLink = messageLinks.find(linkFilter)
-  return filteredLink?.href ?? ''
-}
+const getLink =
+  (linkFilter: (text: Link) => boolean) =>
+  (text: string): string => {
+    const messageLinks = linkify.find(text, 'url')
+    const filteredLink = messageLinks.find(linkFilter)
+    return filteredLink?.href ?? ''
+  }
 const isLinkWithStart = (textToStart: string) => (link: Link) => link.href.startsWith(textToStart)
 
 const youtubeRegex = /(?:youtube\.com\/\S*(?:(?:\/e(?:mbed))?\/|watch\?(?:\S*?&?v\=))|youtu\.be\/)([a-zA-Z0-9_-]{6,11})/

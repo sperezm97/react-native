@@ -16,7 +16,7 @@ import {
   orgMsgsFromExisting,
   orgMsgs,
   putIn,
-  putInReverse
+  putInReverse,
 } from './msgHelpers'
 import { updateRealmMsg } from '../realm/exports'
 import { persistMsgLocalForage } from './storage'
@@ -125,7 +125,7 @@ class MsgStore {
 
   @action lengthOfAllMessages() {
     let l = 0
-    Object.values(this.messages).forEach(msgs => {
+    Object.values(this.messages).forEach((msgs) => {
       l += msgs.length
     })
     return l
@@ -172,9 +172,7 @@ class MsgStore {
     let route = 'messages'
     if (!forceMore && this.lastFetched) {
       const mult = 1
-      const dateq = moment
-        .utc(this.lastFetched - 1000 * mult)
-        .format('YYYY-MM-DD%20HH:mm:ss')
+      const dateq = moment.utc(this.lastFetched - 1000 * mult).format('YYYY-MM-DD%20HH:mm:ss')
       route += `?date=${dateq}`
     } else {
       // else just get last week
@@ -218,9 +216,8 @@ class MsgStore {
 
   sortAllMsgs(allms: { [k: number]: Msg[] }) {
     const final = {}
-    let toSort: { [k: number]: Msg[] } =
-      allms || JSON.parse(JSON.stringify(this.messages))
-    Object.entries(toSort).forEach(entries => {
+    let toSort: { [k: number]: Msg[] } = allms || JSON.parse(JSON.stringify(this.messages))
+    Object.entries(toSort).forEach((entries) => {
       const k = entries[0]
       const v: Msg[] = entries[1]
       v.sort((a, b) => moment(b.date).unix() - moment(a.date).unix())
@@ -233,12 +230,12 @@ class MsgStore {
   async messagePosted(m) {
     let newMsg = await decodeSingle(m)
     if (newMsg.chat_id) {
-      const idx = this.messages[newMsg.chat_id].findIndex(m => m.id === -1)
+      const idx = this.messages[newMsg.chat_id].findIndex((m) => m.id === -1)
       if (idx > -1) {
         this.messages[newMsg.chat_id][idx] = {
           ...m,
           // add alias?
-          status: this.messages[newMsg.chat_id][idx].status
+          status: this.messages[newMsg.chat_id][idx].status,
         }
         this.persister()
       }
@@ -250,7 +247,7 @@ class MsgStore {
     if (m.chat_id) {
       const msgs = this.messages[m.chat_id]
       if (msgs) {
-        const invoice = msgs.find(c => c.payment_hash === m.payment_hash)
+        const invoice = msgs.find((c) => c.payment_hash === m.payment_hash)
         if (invoice) {
           invoice.status = constants.statuses.confirmed
           this.persister()
@@ -268,7 +265,7 @@ class MsgStore {
     amount,
     reply_uuid,
     boost,
-    message_price
+    message_price,
   }: {
     contact_id: number | null
     text: string
@@ -282,7 +279,11 @@ class MsgStore {
       const myId = userStore.myid
       const encryptedText = await encryptText({ contact_id: myId, text })
 
-      const remote_text_map = await makeRemoteTextMap({ contact_id, text, chat_id })
+      const remote_text_map = await makeRemoteTextMap({
+        contact_id,
+        text,
+        chat_id,
+      })
 
       const v: { [k: string]: any } = {
         contact_id,
@@ -291,7 +292,7 @@ class MsgStore {
         remote_text_map,
         amount: amount || 0,
         reply_uuid,
-        boost: boost || false
+        boost: boost || false,
       }
 
       if (message_price) v.message_price = message_price
@@ -304,14 +305,9 @@ class MsgStore {
 
         this.gotNewMessage(r)
       } else {
-        const putInMsgType = boost
-          ? constants.message_types.boost
-          : constants.message_types.message
+        const putInMsgType = boost ? constants.message_types.boost : constants.message_types.message
 
-        const amt =
-          boost && message_price && message_price < amount
-            ? amount - message_price
-            : amount
+        const amt = boost && message_price && message_price < amount ? amount - message_price : amount
         putIn(
           this.messages,
           {
@@ -321,7 +317,7 @@ class MsgStore {
             amount: amt,
             date: moment().toISOString(),
             type: putInMsgType,
-            message_content: text
+            message_content: text,
           },
           chat_id
         )
@@ -338,34 +334,26 @@ class MsgStore {
   }
 
   @action
-  async sendAttachment({
-    contact_id,
-    text,
-    chat_id,
-    muid,
-    media_type,
-    media_key,
-    price,
-    amount
-  }) {
+  async sendAttachment({ contact_id, text, chat_id, muid, media_type, media_key, price, amount }) {
     try {
-      const media_key_map = await makeRemoteTextMap(
-        { contact_id, text: media_key, chat_id },
-        true
-      )
+      const media_key_map = await makeRemoteTextMap({ contact_id, text: media_key, chat_id }, true)
       const v: { [k: string]: any } = {
         contact_id,
         chat_id: chat_id || null,
         muid,
         media_type,
         media_key_map,
-        amount: amount || 0
+        amount: amount || 0,
       }
       if (price) v.price = price
       if (text) {
         const myid = userStore.myid
         const encryptedText = await encryptText({ contact_id: myid, text })
-        const remote_text_map = await makeRemoteTextMap({ contact_id, text, chat_id })
+        const remote_text_map = await makeRemoteTextMap({
+          contact_id,
+          text,
+          chat_id,
+        })
         v.text = encryptedText
         v.remote_text_map = remote_text_map
       }
@@ -383,8 +371,7 @@ class MsgStore {
   async setMessageAsReceived(m) {
     if (!m.chat_id) return
     const msgsForChat = this.messages[m.chat_id]
-    const ogMessage =
-      msgsForChat && msgsForChat.find(msg => msg.id === m.id || msg.id === -1)
+    const ogMessage = msgsForChat && msgsForChat.find((msg) => msg.id === m.id || msg.id === -1)
     if (ogMessage) {
       ogMessage.status = constants.statuses.received
     } else {
@@ -405,7 +392,7 @@ class MsgStore {
         amount: amt,
         destination_key,
         text: myenc,
-        remote_text: encMemo
+        remote_text: encMemo,
       }
       const r = await relay.post('payment', v)
       if (!r) return
@@ -422,7 +409,7 @@ class MsgStore {
       const v = {
         amount: amt,
         destination_key: dest,
-        text: memo
+        text: memo,
       }
       const r = await relay.post('payment', v)
       if (!r) return
@@ -439,7 +426,7 @@ class MsgStore {
         contact_id: contact_id || null,
         chat_id: chat_id || null,
         amount: amount,
-        media_token: media_token
+        media_token: media_token,
       }
 
       await relay.post('purchase', v)
@@ -459,7 +446,7 @@ class MsgStore {
         chat_id: chat_id || null,
         amount: amt,
         memo: myenc,
-        remote_memo: encMemo
+        remote_memo: encMemo,
       }
       const r = await relay.post('invoices', v) // raw invoice:
       if (!r) return
@@ -485,7 +472,7 @@ class MsgStore {
   filterMessagesByContent(chatID, filterString) {
     const list = this.messages[chatID]
     if (!list) return []
-    return list.filter(m => m.message_content.includes(filterString))
+    return list.filter((m) => m.message_content.includes(filterString))
   }
 
   @action
@@ -512,11 +499,10 @@ class MsgStore {
   }
 
   @action
-  seeChat(id) {
+  async seeChat(id) {
     if (!id) return
     this.lastSeen[id] = new Date().getTime()
-    const r = relay.post(`messages/${id}/read`)
-
+    await relay.post(`messages/${id}/read`)
     this.persister()
   }
 
@@ -527,7 +513,7 @@ class MsgStore {
     const lastSeenObj = this.lastSeen
     Object.entries(this.messages).forEach(function ([id, msgs]) {
       const lastSeen = lastSeenObj[id || '_'] || now
-      msgs.forEach(m => {
+      msgs.forEach((m) => {
         if (m.sender !== myid) {
           const unseen = moment(new Date(lastSeen)).isBefore(moment(m.date))
           if (unseen) unseenCount += 1
@@ -540,7 +526,7 @@ class MsgStore {
   @action
   initLastSeen() {
     const obj = this.lastSeen ? JSON.parse(JSON.stringify(this.lastSeen)) : {}
-    chatStore.chats.forEach(c => {
+    chatStore.chats.forEach((c) => {
       if (!obj[c.id]) obj[c.id] = new Date().getTime()
     })
     this.lastSeen = obj
@@ -551,7 +537,7 @@ class MsgStore {
     const r = await relay.put(`member/${contactID}/${status}/${msgId}`)
     if (r && r.chat && r.chat.id) {
       const msgs = this.messages[r.chat.id]
-      const msg = msgs.find(m => m.id === msgId)
+      const msg = msgs.find((m) => m.id === msgId)
       if (msg) {
         msg.type = r.message.type
         this.persister()

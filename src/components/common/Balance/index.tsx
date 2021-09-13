@@ -15,7 +15,7 @@ export default function Balance(props) {
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
       }}
     >
       <Icon name='Coins' size={20} />

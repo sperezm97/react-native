@@ -94,7 +94,7 @@ function SearchHeader() {
   const { ui, chats } = useStores()
   const [joinTribe, setJoinTribe] = useState({
     visible: false,
-    tribe: null
+    tribe: null,
   })
 
   const onTribesSearch = (txt: string) => ui.setTribesSearchTerm(txt)
@@ -109,7 +109,7 @@ function SearchHeader() {
 
       setJoinTribe({
         visible: true,
-        tribe: tribeParams
+        tribe: tribeParams,
       })
     }
   }
@@ -119,7 +119,7 @@ function SearchHeader() {
       style={{
         ...styles.appBar,
         backgroundColor: theme.bg,
-        borderBottomColor: theme.border
+        borderBottomColor: theme.border,
       }}
     >
       <View style={{ ...styles.left }}>
@@ -128,11 +128,7 @@ function SearchHeader() {
         </TouchableOpacity>
       </View>
       <View style={{ ...styles.middle }}>
-        <Search
-          placeholder='Search Communities'
-          value={ui.tribesSearchTerm}
-          onChangeText={onTribesSearch}
-        />
+        <Search placeholder='Search Communities' value={ui.tribesSearchTerm} onChangeText={onTribesSearch} />
       </View>
       <View style={{ ...styles.right }}>
         <IconButton
@@ -154,7 +150,7 @@ function SearchHeader() {
             setScanning(false)
             setTint(theme.dark ? 'dark' : 'light')
           }}
-          onScan={data => scan(data)}
+          onScan={(data) => scan(data)}
           showPaster={false}
         />
       )}
@@ -165,7 +161,7 @@ function SearchHeader() {
         close={() => {
           setJoinTribe({
             visible: false,
-            tribe: null
+            tribe: null,
           })
         }}
       />
@@ -175,11 +171,11 @@ function SearchHeader() {
 
 const styles = StyleSheet.create({
   wrap: {
-    flex: 1
+    flex: 1,
   },
   content: {
     flex: 1,
-    marginTop: 14
+    marginTop: 14,
   },
   appBar: {
     elevation: 0,
@@ -187,22 +183,22 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     position: 'relative',
     paddingHorizontal: 6,
-    width: '100%'
+    width: '100%',
   },
   left: {
-    width: '10%'
+    width: '10%',
   },
   middle: {
     flex: 1,
-    width: '80%'
+    width: '80%',
   },
   right: {
-    width: '10%'
+    width: '10%',
   },
   searchWrap: {
     paddingTop: 10,
     paddingBottom: 10,
     paddingRight: 14,
-    paddingLeft: 14
-  }
+    paddingLeft: 14,
+  },
 })

@@ -17,16 +17,13 @@ export default function Chats() {
   const theme = useTheme()
 
   return useObserver(() => (
-    <View
-      style={{ ...styles.wrap, backgroundColor: theme.bg }}
-      accessibilityLabel='dashboard'
-    >
+    <View style={{ ...styles.wrap, backgroundColor: theme.bg }} accessibilityLabel='dashboard'>
       <Header />
       <View style={{ ...styles.searchWrap }}>
         <Search
           placeholder='Search'
           value={ui.searchTerm}
-          onChangeText={txt => {
+          onChangeText={(txt) => {
             ui.setSearchTerm(txt)
           }}
           style={{ width: '100%' }}
@@ -48,10 +45,7 @@ function ListHeader() {
   return (
     <>
       <View style={{ ...styles.listHeader }}>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('Contacts')}
-          activeOpacity={0.6}
-        >
+        <TouchableOpacity onPress={() => navigation.navigate('Contacts')} activeOpacity={0.6}>
           <Button mode='text' size='small'>
             Contacts
           </Button>
@@ -75,7 +69,7 @@ function ListHeader() {
 const styles = StyleSheet.create({
   wrap: {
     width: '100%',
-    flex: 1
+    flex: 1,
   },
   listHeader: {
     display: 'flex',
@@ -83,7 +77,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     width: '100%',
-    marginTop: 15
+    marginTop: 15,
   },
   searchWrap: {
     display: 'flex',
@@ -91,6 +85,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     paddingRight: 14,
-    paddingLeft: 14
-  }
+    paddingLeft: 14,
+  },
 })

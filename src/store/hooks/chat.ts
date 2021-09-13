@@ -23,8 +23,7 @@ function toHHMMSS(ts) {
   return hours + ':' + minutes + ':' + seconds
 }
 function makeExtraTextContent(obj) {
-  const content =
-    obj.ts || obj.ts === 0 ? `Share audio clip: ${toHHMMSS(obj.ts)}` : 'Content'
+  const content = obj.ts || obj.ts === 0 ? `Share audio clip: ${toHHMMSS(obj.ts)}` : 'Content'
   const title = obj.title || 'Title'
   return { content, title, color: 'grey' }
 }
@@ -53,18 +52,15 @@ export function useReplyContent(msgs, replyUUID, extraTextContent): replyContent
     replyMessageContent = content
     replyColor = color
   } else {
-    const replyMsg = msgs && replyUUID && msgs.find(m => m.uuid === replyUUID)
+    const replyMsg = msgs && replyUUID && msgs.find((m) => m.uuid === replyUUID)
     replyMessageSenderAlias = replyMsg && replyMsg.sender_alias
 
     replyMessageExtraContent = replyMsg
 
-    replyMessageContent =
-      replyMsg && replyMsg.message_content
-        ? replyMsg.message_content
-        : replyMsg?.media_type
+    replyMessageContent = replyMsg && replyMsg.message_content ? replyMsg.message_content : replyMsg?.media_type
 
     if (!replyMessageSenderAlias && replyMsg && replyMsg.sender) {
-      const sender = contacts.contacts.find(c => c.id === replyMsg.sender)
+      const sender = contacts.contacts.find((c) => c.id === replyMsg.sender)
       if (sender) replyMessageSenderAlias = sender.alias
     }
     replyColor = useAvatarColor(replyMessageSenderAlias)
@@ -73,15 +69,15 @@ export function useReplyContent(msgs, replyUUID, extraTextContent): replyContent
     replyMessageSenderAlias,
     replyMessageContent,
     replyMessageExtraContent,
-    replyColor
+    replyColor,
   }
 }
 
 export function useChatReply(msgs, replyUUID) {
-  let replyMessage = msgs && replyUUID && msgs.find(m => m.uuid === replyUUID)
+  let replyMessage = msgs && replyUUID && msgs.find((m) => m.uuid === replyUUID)
 
   return {
-    replyMessage
+    replyMessage,
   }
 }
 
@@ -92,7 +88,7 @@ export function calcBotPrice(bots: Array<BotJSON>, text: string): CalcBotPriceRe
   if (!bots) {
     return { price, failureMessage }
   }
-  bots.forEach(b => {
+  bots.forEach((b) => {
     if (!text.startsWith(b.prefix)) return // skip this bot if not right prefix
     if (b.price && b.price > 0) {
       price = b.price
@@ -100,7 +96,7 @@ export function calcBotPrice(bots: Array<BotJSON>, text: string): CalcBotPriceRe
     if (b.commands && Array.isArray(b.commands)) {
       const arr = text.split(' ') // array of words in the message
       if (arr.length < 2) return
-      b.commands.forEach(cmd => {
+      b.commands.forEach((cmd) => {
         const theCommand = arr[1] // the "command" is the second item in the array
         if (cmd.command !== '*' && theCommand !== cmd.command) return // skip if wrong command (* means any)
 
@@ -154,10 +150,10 @@ function testCalcBotPrice(txt) {
             min_price: 250000,
             max_price: 16777215,
             price_index: 2,
-            admin_only: false
-          }
-        ]
-      }
+            admin_only: false,
+          },
+        ],
+      },
     ],
     txt
   )

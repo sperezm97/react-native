@@ -1,11 +1,5 @@
 import React, { useEffect } from 'react'
-import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  withRepeat,
-  withTiming,
-  Easing
-} from 'react-native-reanimated'
+import Animated, { useSharedValue, useAnimatedStyle, withRepeat, withTiming, Easing } from 'react-native-reanimated'
 
 const ANGLE = 360
 const TIME = 600
@@ -16,7 +10,7 @@ export default function Wobble({ children }) {
 
   const animatedStyle = useAnimatedStyle(() => {
     return {
-      transform: [{ rotateZ: `${rotation.value}deg` }]
+      transform: [{ rotateZ: `${rotation.value}deg` }],
     }
   })
 
@@ -24,7 +18,7 @@ export default function Wobble({ children }) {
     rotation.value = withRepeat(
       withTiming(ANGLE, {
         duration: TIME,
-        easing: EASING
+        easing: EASING,
       }),
       1,
       true

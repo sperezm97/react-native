@@ -6,7 +6,7 @@ import Toast from 'react-native-simple-toast'
 import { useStores, useTheme } from '../../../store'
 import Typography from '../Typography'
 
-const BoostControls = props => {
+const BoostControls = (props) => {
   const { user, details, ui } = useStores()
 
   const [tip, setTip] = useState(100)
@@ -42,7 +42,7 @@ const BoostControls = props => {
       return
     }
 
-    setTip(tip => tip + 100)
+    setTip((tip) => tip + 100)
 
     ui.setPodcastBoostAmount(tip + 100)
   }
@@ -54,7 +54,7 @@ const BoostControls = props => {
       setMinusDisabled(true)
     }
 
-    setTip(tip => tip - 100)
+    setTip((tip) => tip - 100)
 
     ui.setPodcastBoostAmount(tip - 100)
   }
@@ -96,13 +96,13 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   amount: {
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center'
-  }
+    alignItems: 'center',
+  },
 })
 
 export default React.memo(BoostControls)

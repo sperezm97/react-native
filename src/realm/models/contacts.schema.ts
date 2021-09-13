@@ -21,5 +21,5 @@ export default {
     remote_id: { type: 'int', default: 0, optional: true },
     status: { type: 'int', default: 0, optional: true },
     updated_at: { type: 'string', default: '', optional: true },
-  }
+  },
 }

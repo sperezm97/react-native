@@ -1,12 +1,6 @@
 import React, { useState, useRef } from 'react'
 import { useObserver } from 'mobx-react-lite'
-import {
-  StyleSheet,
-  View,
-  TextInput,
-  TouchableOpacity,
-  KeyboardAvoidingView
-} from 'react-native'
+import { StyleSheet, View, TextInput, TouchableOpacity, KeyboardAvoidingView } from 'react-native'
 import RNFetchBlob from 'rn-fetch-blob'
 import { ActivityIndicator, IconButton } from 'react-native-paper'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -15,12 +9,7 @@ import { isIphoneX, getBottomSpace } from 'react-native-iphone-x-helper'
 import * as base64 from 'base-64'
 
 import { useStores, useTheme } from '../../../../store'
-import {
-  constants,
-  SCREEN_HEIGHT,
-  SCREEN_WIDTH,
-  STATUS_BAR_HEIGHT
-} from '../../../../constants'
+import { constants, SCREEN_HEIGHT, SCREEN_WIDTH, STATUS_BAR_HEIGHT } from '../../../../constants'
 import { randString } from '../../../../crypto/rand'
 import * as e2e from '../../../../crypto/e2e'
 import ModalWrap from '../ModalWrap'
@@ -34,10 +23,7 @@ export default function PostPhotoWrap() {
     const theme = useTheme()
 
     const visible =
-      ui.imgViewerParams &&
-      (ui.imgViewerParams.data || ui.imgViewerParams.uri || ui.imgViewerParams.msg)
-        ? true
-        : false
+      ui.imgViewerParams && (ui.imgViewerParams.data || ui.imgViewerParams.uri || ui.imgViewerParams.msg) ? true : false
 
     const params = ui.imgViewerParams
 
@@ -81,7 +67,7 @@ function PostPhoto(props) {
       media_key,
       media_type,
       text: showMsgMessage ? '' : text,
-      amount: pricePerMessage || 0
+      amount: pricePerMessage || 0,
     })
     close()
   }
@@ -91,7 +77,7 @@ function PostPhoto(props) {
       id: params.id,
       url: params.uri,
       aspect_ratio: params.aspect_ratio,
-      text: showMsgMessage ? '' : text
+      text: showMsgMessage ? '' : text,
     })
     const b64 = base64.encode(gifJSON)
     await msg.sendMessage({
@@ -99,7 +85,7 @@ function PostPhoto(props) {
       chat_id,
       text: 'giphy::' + b64,
       reply_uuid: '',
-      amount: 0
+      amount: 0,
     })
     close()
   }
@@ -136,16 +122,16 @@ function PostPhoto(props) {
       `https://${server.host}/file`,
       {
         Authorization: `Bearer ${server.token}`,
-        'Content-Type': 'multipart/form-data'
+        'Content-Type': 'multipart/form-data',
       },
       [
         {
           name: 'file',
           filename: name,
           type: type,
-          data: enc
+          data: enc,
         },
-        { name: 'name', data: name }
+        { name: 'name', data: name },
       ]
     )
       // listen to upload progress event, emit every 250ms
@@ -153,17 +139,17 @@ function PostPhoto(props) {
         console.log('uploaded', written / total)
         setUploadedPercent(Math.round((written / total) * 100))
       })
-      .then(async resp => {
+      .then(async (resp) => {
         let json = resp.json()
         await sendFinalMsg({
           muid: json.muid,
           media_key: pwd,
           media_type: type,
-          price
+          price,
         })
         setUploading(false)
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err)
       })
   }
@@ -185,19 +171,13 @@ function PostPhoto(props) {
           onPress={close}
           style={{ ...styles.closeButton }}
         />
-        {showInput && <SetPrice setAmount={amt => setPrice(amt)} onShow={onShowAmount} />}
+        {showInput && <SetPrice setAmount={(amt) => setPrice(amt)} onShow={onShowAmount} />}
         {showImg && (
-          <FastImage
-            resizeMode='contain'
-            source={{ uri: uri || data }}
-            style={{ ...styles.img, ...boxStyles }}
-          />
+          <FastImage resizeMode='contain' source={{ uri: uri || data }} style={{ ...styles.img, ...boxStyles }} />
         )}
         {showMsgMessage && !uploading && (
           <View style={{ ...styles.msgMessage, ...boxStyles }}>
-            <Typography color={theme.white}>
-              Set a price and enter your message
-            </Typography>
+            <Typography color={theme.white}>Set a price and enter your message</Typography>
           </View>
         )}
 
@@ -206,7 +186,7 @@ function PostPhoto(props) {
             style={{
               ...styles.activityWrap,
               width: SCREEN_WIDTH,
-              height: SCREEN_HEIGHT - 180
+              height: SCREEN_HEIGHT - 180,
             }}
           >
             <ActivityIndicator animating={true} color='white' size='large' />
@@ -214,7 +194,7 @@ function PostPhoto(props) {
               color={theme.white}
               size={16}
               style={{
-                marginTop: 16
+                marginTop: 16,
               }}
             >{`${uploadPercent}%`}</Typography>
           </View>
@@ -229,7 +209,7 @@ function PostPhoto(props) {
             <View
               style={{
                 ...styles.inputWrap,
-                bottom: isIphoneX() ? getBottomSpace() : 15
+                bottom: isIphoneX() ? getBottomSpace() : 15,
               }}
             >
               <TextInput
@@ -238,12 +218,12 @@ function PostPhoto(props) {
                 style={{
                   ...styles.input,
                   backgroundColor: theme.inputBg,
-                  color: theme.input
+                  color: theme.input,
                 }}
                 placeholderTextColor={theme.subtitle}
                 onFocus={() => setInputFocused(true)}
                 onBlur={() => setInputFocused(false)}
-                onChangeText={e => setText(e)}
+                onChangeText={(e) => setText(e)}
                 value={text}
               />
               <TouchableOpacity
@@ -266,10 +246,10 @@ const styles = StyleSheet.create({
   wrap: {
     flex: 1,
     height: '100%',
-    position: 'relative'
+    position: 'relative',
   },
   img: {
-    width: '100%'
+    width: '100%',
   },
   activityWrap: {
     height: '80%',
@@ -278,7 +258,7 @@ const styles = StyleSheet.create({
     top: '10%',
     flexDirection: 'column',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   inputWrap: {
     position: 'absolute',
@@ -289,7 +269,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingLeft: 14,
-    paddingRight: 14
+    paddingRight: 14,
   },
   input: {
     flex: 1,
@@ -298,7 +278,7 @@ const styles = StyleSheet.create({
     paddingRight: 18,
     height: 40,
     fontSize: 17,
-    lineHeight: 20
+    lineHeight: 20,
   },
   sendButton: {
     marginLeft: 7,
@@ -309,17 +289,17 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   msgMessage: {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   closeButton: {
     position: 'absolute',
     top: STATUS_BAR_HEIGHT + 1,
     right: 0,
-    zIndex: 1
-  }
+    zIndex: 1,
+  },
 })

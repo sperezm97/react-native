@@ -54,8 +54,8 @@ export default function Security() {
 
       const myContactKey = user.contactKey
 
-      const meContact = contacts.contacts.find(c => c.id === user.myid) || {
-        contact_key: myContactKey
+      const meContact = contacts.contacts.find((c) => c.id === user.myid) || {
+        contact_key: myContactKey,
       }
 
       console.log('meContact', meContact)
@@ -98,9 +98,9 @@ export default function Security() {
       {
         title: 'Set Pin',
         icon: 'ChevronRight',
-        action: () => console.log('')
-      }
-    ]
+        action: () => console.log(''),
+      },
+    ],
   ]
 
   function finish(pin) {
@@ -117,9 +117,7 @@ export default function Security() {
         <View style={{ padding: 18 }}>
           <View style={styles.pinTimeoutTextWrap}>
             <Typography color={theme.subtitle}>PIN Timeout</Typography>
-            <Typography color={theme.title}>
-              {pinTimeout ? pinTimeout : 'Always Require PIN'}
-            </Typography>
+            <Typography color={theme.title}>{pinTimeout ? pinTimeout : 'Always Require PIN'}</Typography>
           </View>
           <Slider
             minimumValue={0}
@@ -141,7 +139,7 @@ export default function Security() {
               fw='500'
               textAlign='center'
               style={{
-                marginBottom: 14
+                marginBottom: 14,
               }}
             >
               Want to switch devices?
@@ -171,17 +169,17 @@ export default function Security() {
           scrollViewProps={{
             scrollEnabled: false,
             showsVerticalScrollIndicator: false,
-            stickyHeaderIndices: [0]
+            stickyHeaderIndices: [0],
           }}
           ref={modalizeRef}
           adjustToContentHeight={true}
           disableScrollIfPossible={true}
           openAnimationConfig={{
-            timing: { duration: 300 }
+            timing: { duration: 300 },
           }}
           modalTopOffset={getStatusBarHeight() + 30}
         >
-          <PIN forceEnterMode={true} onFinish={pin => finish(pin)} />
+          <PIN forceEnterMode={true} onFinish={(pin) => finish(pin)} />
         </Modalize>
       </View>
     )
@@ -191,16 +189,16 @@ export default function Security() {
 const styles = StyleSheet.create({
   wrap: {
     width: '100%',
-    flex: 1
+    flex: 1,
   },
   bottom: {
     flex: 1,
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-end',
   },
   exportWrap: {
     display: 'flex',
     justifyContent: 'center',
-    marginBottom: 40
+    marginBottom: 40,
   },
   pinTimeoutTextWrap: {
     width: '100%',
@@ -209,6 +207,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 15,
-    paddingRight: 14
-  }
+    paddingRight: 14,
+  },
 })

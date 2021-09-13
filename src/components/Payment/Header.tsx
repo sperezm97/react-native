@@ -80,16 +80,11 @@ export default function Header({ onScanClick }) {
                     style={{
                       flexDirection: 'row',
                       alignItems: 'center',
-                      marginTop: 25
+                      marginTop: 25,
                     }}
                   >
                     <MaterialIcon name='check' color={theme.green} size={22} />
-                    <Typography
-                      textAlign='center'
-                      size={17}
-                      color={theme.title}
-                      style={{ marginLeft: 5 }}
-                    >
+                    <Typography textAlign='center' size={17} color={theme.title} style={{ marginLeft: 5 }}>
                       Your request has been sent.
                     </Typography>
                   </View>
@@ -105,7 +100,7 @@ export default function Header({ onScanClick }) {
                         setRequestSent(false)
                       }}
                       style={{
-                        marginTop: 25
+                        marginTop: 25,
                         // borderWidth: 1,
                         // borderColor: theme.greyPrimary
                       }}
@@ -127,7 +122,7 @@ export default function Header({ onScanClick }) {
                   style={{
                     marginTop: 25,
                     borderWidth: 1,
-                    borderColor: theme.greyPrimary
+                    borderColor: theme.greyPrimary,
                   }}
                 >
                   Confirm
@@ -143,24 +138,24 @@ export default function Header({ onScanClick }) {
 
 const styles = StyleSheet.create({
   appBar: {
-    elevation: 0
+    elevation: 0,
   },
   flex: {
     display: 'flex',
     alignItems: 'center',
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   content: {
     justifyContent: 'space-between',
-    width: '100%'
+    width: '100%',
   },
   left: {
     justifyContent: 'space-between',
     width: 50,
-    marginLeft: 0
+    marginLeft: 0,
   },
   right: {
     marginRight: 12,
-    justifyContent: 'flex-end'
-  }
+    justifyContent: 'flex-end',
+  },
 })

@@ -17,13 +17,13 @@ export default function Search(props) {
     elevation: 0,
     height: h,
     backgroundColor: theme.inputBg,
-    borderRadius
+    borderRadius,
   }
   const iconColor = theme.icon
   const inputStyle = {
     color: theme.input,
     fontSize: 15,
-    paddingLeft: 0
+    paddingLeft: 0,
   }
   const placeholderTextColor = theme.placeholder
 
@@ -36,8 +36,8 @@ export default function Search(props) {
       inputStyle={inputStyle}
       iconColor={iconColor}
       placeholderTextColor={placeholderTextColor}
-      clearIcon={props => <ClearIcon value={value} />}
-      icon={props => <FeatherIcon name='search' color={theme.icon} size={18} />}
+      clearIcon={(props) => <ClearIcon value={value} />}
+      icon={(props) => <FeatherIcon name='search' color={theme.icon} size={18} />}
     />
   )
 }
@@ -48,5 +48,5 @@ function ClearIcon({ value }) {
 }
 
 Search.defaultProps = {
-  h: 40
+  h: 40,
 }

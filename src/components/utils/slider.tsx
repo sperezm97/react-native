@@ -15,13 +15,13 @@ export default function Slider(props) {
       Animated.timing(x, {
         toValue: 0,
         duration: 600,
-        useNativeDriver: true
+        useNativeDriver: true,
       }).start()
     } else {
       Animated.timing(x, {
         toValue: screenWidth,
         duration: 600,
-        useNativeDriver: true
+        useNativeDriver: true,
       }).start()
     }
   }, [props.show])
@@ -36,7 +36,7 @@ export default function Slider(props) {
         backgroundColor: theme.bg,
         zIndex: props.z || 1,
         transform: [{ translateX: x }],
-        ...addedStyles
+        ...addedStyles,
       }}
     >
       {props.children}
@@ -53,6 +53,6 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     alignItems: 'center',
-    justifyContent: 'center'
-  }
+    justifyContent: 'center',
+  },
 })

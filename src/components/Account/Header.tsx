@@ -26,34 +26,34 @@ export default function Header(props) {
 
 const styles = StyleSheet.create({
   appBar: {
-    elevation: 0
+    elevation: 0,
     // height: 20
   },
   flex: {
     display: 'flex',
     alignItems: 'center',
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   content: {
     justifyContent: 'space-between',
-    width: '100%'
+    width: '100%',
   },
   left: {
     justifyContent: 'space-between',
     width: 50,
-    marginLeft: 14
+    marginLeft: 14,
   },
   right: {
     marginRight: 14,
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-end',
   },
   brand: {
     width: 65,
     height: 65,
     maxWidth: 65,
-    marginLeft: 14
+    marginLeft: 14,
   },
   edit: {
-    fontSize: 16
-  }
+    fontSize: 16,
+  },
 })

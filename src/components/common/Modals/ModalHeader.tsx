@@ -14,7 +14,7 @@ export default function ModalHeader(props) {
       style={{
         ...styles.appBar,
         backgroundColor: bg ? bg : theme.bg,
-        borderBottomColor: theme.border
+        borderBottomColor: theme.border,
       }}
     >
       <TouchableOpacity onPress={onClose} style={{ ...styles.left, ...style }}>
@@ -36,18 +36,18 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     position: 'relative',
-    height: 60
+    height: 60,
   },
   left: {
     position: 'absolute',
-    left: 10
+    left: 10,
   },
   right: {
     position: 'absolute',
-    right: 12
+    right: 12,
   },
   title: {
     fontSize: 17,
-    fontWeight: '500'
-  }
+    fontWeight: '500',
+  },
 })

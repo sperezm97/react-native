@@ -15,8 +15,20 @@ export default function Avatar(props) {
   })
   if (photo) {
     return (
-      <View style={{ ...styles.avatar, height: size, width: size, borderRadius, opacity: props.hide ? 0 : 1 }}>
-        <FastImage source={{ uri: photo }} style={{ width: size, height: size }} resizeMode={FastImage.resizeMode.cover} />
+      <View
+        style={{
+          ...styles.avatar,
+          height: size,
+          width: size,
+          borderRadius,
+          opacity: props.hide ? 0 : 1,
+        }}
+      >
+        <FastImage
+          source={{ uri: photo }}
+          style={{ width: size, height: size }}
+          resizeMode={FastImage.resizeMode.cover}
+        />
       </View>
     )
   }
@@ -28,14 +40,14 @@ export default function Avatar(props) {
         width: size,
         borderRadius,
         opacity: props.hide ? 0 : 1,
-        backgroundColor: useAvatarColor(name)
+        backgroundColor: useAvatarColor(name),
       }}
     >
       <Text
         style={{
           ...styles.initial,
           letterSpacing: props.big ? 2 : 0,
-          fontSize: props.big ? 18 : 15
+          fontSize: props.big ? 18 : 15,
         }}
       >
         {initial}
@@ -50,12 +62,12 @@ const styles = StyleSheet.create({
     backgroundColor: 'black',
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   initial: {
     color: 'white',
     marginBottom: 1,
-    marginRight: 1
+    marginRight: 1,
   },
   avatar: {
     marginLeft: 8,
@@ -64,6 +76,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     position: 'relative',
-    overflow: 'hidden'
-  }
+    overflow: 'hidden',
+  },
 })

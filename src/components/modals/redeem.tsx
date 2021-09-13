@@ -35,8 +35,8 @@ function Redeem({ close }) {
         method: 'POST',
         body: JSON.stringify({
           token: params.token,
-          pubkey: user.publicKey
-        })
+          pubkey: user.publicKey,
+        }),
       })
       const j = await r.json()
       console.log(j)
@@ -68,20 +68,20 @@ const styles = StyleSheet.create({
     display: 'flex',
     flex: 1,
     flexDirection: 'column',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   amt: {
-    margin: 25
+    margin: 25,
   },
   host: {
     margin: 25,
-    fontSize: 20
+    fontSize: 20,
   },
   button: {
     borderRadius: 30,
     width: '80%',
     height: 60,
     display: 'flex',
-    justifyContent: 'center'
-  }
+    justifyContent: 'center',
+  },
 })

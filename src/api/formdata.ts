@@ -5,13 +5,13 @@ export function createFormData(photo, body) {
     JSON.stringify({
       name: photo.fileName || 'photo',
       type: 'image/jpeg', //photo.type,
-      uri: photo.uri // if ios need to remove file://
+      uri: photo.uri, // if ios need to remove file://
     })
   )
 
   data.append('file', dat)
 
-  Object.keys(body).forEach(key => {
+  Object.keys(body).forEach((key) => {
     data.append(key, body[key])
   })
 

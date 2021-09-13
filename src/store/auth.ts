@@ -16,7 +16,7 @@ class AuthStore {
   servers: Server[] = [{ host: DEFAULT_AUTH_SERVER }]
 
   @action getDefaultServer(): Server {
-    const server = this.servers.find(s => s.host === DEFAULT_AUTH_SERVER)
+    const server = this.servers.find((s) => s.host === DEFAULT_AUTH_SERVER)
     return server
   }
 
@@ -33,11 +33,11 @@ class AuthStore {
     var q = new URLSearchParams({
       id,
       sig: r.sig,
-      pubkey: pubkey
+      pubkey: pubkey,
     }).toString()
     const url = 'https://' + authServer.host + '/oauth_verify?' + q
 
-    Linking.canOpenURL(url).then(supported => {
+    Linking.canOpenURL(url).then((supported) => {
       if (supported) {
         Linking.openURL(url)
       } else {

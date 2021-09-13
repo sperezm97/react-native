@@ -18,7 +18,7 @@ export default function QR({
   isLoading = false,
   isLoopout = false,
   confirm,
-  scannerH = SCREEN_HEIGHT - 300
+  scannerH = SCREEN_HEIGHT - 300,
 }) {
   const theme = useTheme()
   const [scanned, setScanned] = useState(false)
@@ -71,7 +71,7 @@ export default function QR({
                 <TextInput
                   placeholder={inputPlaceholder}
                   value={text}
-                  onChangeText={e => setText(e)}
+                  onChangeText={(e) => setText(e)}
                   style={{ ...styles.input, backgroundColor: theme.bg }}
                   underlineColor={theme.border}
                   selectionColor={theme.primary}
@@ -81,7 +81,7 @@ export default function QR({
               <View
                 style={{
                   ...styles.buttonWrap,
-                  backgroundColor: theme.bg
+                  backgroundColor: theme.bg,
                 }}
               >
                 {text.length > 0 && (
@@ -101,29 +101,29 @@ export default function QR({
 QR.defaultProps = {
   inputPlaceholder: 'Enter Address',
   onScan: () => {},
-  confirm: () => {}
+  confirm: () => {},
 }
 
 const styles = StyleSheet.create({
   wrap: {
     flex: 1,
-    width: '100%'
+    width: '100%',
   },
   content: {
-    flex: 1
+    flex: 1,
   },
   inputWrap: {
-    paddingHorizontal: 30
+    paddingHorizontal: 30,
   },
   input: {
     height: 70,
-    textAlign: 'auto'
+    textAlign: 'auto',
   },
   buttonWrap: {
     display: 'flex',
     alignItems: 'center',
     width: '100%',
     height: 50,
-    paddingTop: 20
-  }
+    paddingTop: 20,
+  },
 })

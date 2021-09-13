@@ -13,7 +13,10 @@ export default function ModalWrap(props) {
   return (
     <Modal
       isVisible={visible}
-      style={{ ...styles.modal, justifyContent: fullscreen ? 'center' : 'flex-end' }}
+      style={{
+        ...styles.modal,
+        justifyContent: fullscreen ? 'center' : 'flex-end',
+      }}
       onSwipeComplete={() => onClose()}
       swipeDirection={noSwipe ? null : 'down'}
       onBackButtonPress={() => onClose()}
@@ -27,7 +30,16 @@ export default function ModalWrap(props) {
       // useNativeDriver={true}
       // statusBarTranslucent={true}
     >
-      <View style={{ ...styles.main, backgroundColor: theme.bg, height: fullscreen ? '100%' : 200, paddingTop: fullscreen ? 45 : 0 }}>{children}</View>
+      <View
+        style={{
+          ...styles.main,
+          backgroundColor: theme.bg,
+          height: fullscreen ? '100%' : 200,
+          paddingTop: fullscreen ? 45 : 0,
+        }}
+      >
+        {children}
+      </View>
     </Modal>
   )
 }
@@ -35,17 +47,17 @@ export default function ModalWrap(props) {
 ModalWrap.defaultProps = {
   animationOutTiming: 400,
   coverScreen: true,
-  fullscreen: true
+  fullscreen: true,
 }
 
 const styles = StyleSheet.create({
   modal: {
     margin: 0,
-    flex: 1
+    flex: 1,
   },
   main: {
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-    backgroundColor: 'white'
-  }
+    backgroundColor: 'white',
+  },
 })

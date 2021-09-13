@@ -41,11 +41,7 @@ export default function InviteNewUser() {
     <>
       {hasPrice && (
         <View style={styles.estimatedCost}>
-          <Typography
-            color={theme.title}
-            fw='500'
-            style={{ ...styles.estimatedCostText }}
-          >
+          <Typography color={theme.title} fw='500' style={{ ...styles.estimatedCostText }}>
             ESTIMATED COST
           </Typography>
           <View style={styles.estimatedCostBottom}>
@@ -71,7 +67,7 @@ export default function InviteNewUser() {
           btnW='50%'
           actionType='Row'
           rowContent={RowContent}
-          onSubmit={values => invite(values)}
+          onSubmit={(values) => invite(values)}
         />
       </View>
     </ModalWrap>
@@ -80,19 +76,19 @@ export default function InviteNewUser() {
 
 const styles = StyleSheet.create({
   content: {
-    flex: 1
+    flex: 1,
   },
   estimatedCost: {
-    flexDirection: 'column'
+    flexDirection: 'column',
   },
   estimatedCostText: {
     fontSize: 10,
-    color: '#aaa'
+    color: '#aaa',
   },
   estimatedCostBottom: {
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   estimatedCostNum: {
-    marginRight: 5
-  }
+    marginRight: 5,
+  },
 })

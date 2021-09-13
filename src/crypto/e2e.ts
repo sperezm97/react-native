@@ -4,11 +4,11 @@ import { Platform } from 'react-native'
 
 const rsaConfig = {
   ios: rsaMobile,
-  android: rsaMobile
+  android: rsaMobile,
 }
 const aesConfig = {
   ios: aesMobile,
-  android: aesMobile
+  android: aesMobile,
 }
 
 const rsa = rsaConfig[Platform.OS]

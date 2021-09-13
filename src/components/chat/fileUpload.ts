@@ -2,17 +2,7 @@ import { randString } from '../../crypto/rand'
 import RNFetchBlob from 'rn-fetch-blob'
 import * as e2e from '../../crypto/e2e'
 
-export async function fileUpload({
-  server,
-  uri,
-  filename,
-  filetype,
-  text,
-  isTextMsg,
-  setUploadedPercent,
-  finished,
-}) {
-
+export async function fileUpload({ server, uri, filename, filetype, text, isTextMsg, setUploadedPercent, finished }) {
   const type = filename
   const name = filetype
   const pwd = await randString(32)
@@ -25,16 +15,23 @@ export async function fileUpload({
   } else {
     enc = await e2e.encryptFile(uri, pwd)
   }
-  RNFetchBlob.fetch('POST', `https://${server.host}/file`, {
-    Authorization: `Bearer ${server.token}`,
-    'Content-Type': 'multipart/form-data'
-  }, [{
-    name: 'file',
-    filename: name,
-    type: type,
-    data: enc,
-  }, { name: 'name', data: name }
-  ])
+  RNFetchBlob.fetch(
+    'POST',
+    `https://${server.host}/file`,
+    {
+      Authorization: `Bearer ${server.token}`,
+      'Content-Type': 'multipart/form-data',
+    },
+    [
+      {
+        name: 'file',
+        filename: name,
+        type: type,
+        data: enc,
+      },
+      { name: 'name', data: name },
+    ]
+  )
     // listen to upload progress event, emit every 250ms
     .uploadProgress({ interval: 250 }, (written, total) => {
       console.log('uploaded', written / total)

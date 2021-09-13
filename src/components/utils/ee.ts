@@ -2,7 +2,6 @@ import EventEmitter from 'eventemitter3'
 
 var EE = new EventEmitter()
 
-
 export const CLIP_PAYMENT = 'clip-payment'
 export const EXTRA_TEXT_CONTENT = 'extra-text-content'
 export const REPLY_UUID = 'reply-uuid'

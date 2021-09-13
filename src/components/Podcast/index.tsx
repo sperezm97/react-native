@@ -3,10 +3,7 @@ import { StyleSheet, View, AppState } from 'react-native'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import FastImage from 'react-native-fast-image'
 import TrackPlayer, { TrackPlayerEvents } from 'react-native-track-player'
-import {
-  useTrackPlayerProgress,
-  useTrackPlayerEvents
-} from 'react-native-track-player/lib/hooks'
+import { useTrackPlayerProgress, useTrackPlayerEvents } from 'react-native-track-player/lib/hooks'
 import { Modalize } from 'react-native-modalize'
 import { isIphoneX, getStatusBarHeight } from 'react-native-iphone-x-helper'
 import Toast from 'react-native-simple-toast'
@@ -67,13 +64,13 @@ export default function Podcast({ pod, chat, onBoost, podError }) {
       url: episode.enclosureUrl,
       title: episode.title,
       artist: episode.author || 'author',
-      artwork: episode.image
+      artwork: episode.image,
     })
 
     await TrackPlayer.updateMetadataForTrack(`${episode.id}`, {
       title: episode.title,
       artist: episode.author || 'author',
-      artwork: episode.image
+      artwork: episode.image,
     })
   }
 
@@ -96,7 +93,7 @@ export default function Podcast({ pod, chat, onBoost, podError }) {
     TrackPlayer.setRate(1)
   }
 
-  useTrackPlayerEvents([TrackPlayerEvents.PLAYBACK_STATE], async event => {
+  useTrackPlayerEvents([TrackPlayerEvents.PLAYBACK_STATE], async (event) => {
     // console.log("EVENT === ", event)
     if (event.state === TrackPlayer.STATE_STOPPED) {
       // console.log("STOPPING")
@@ -122,14 +119,13 @@ export default function Podcast({ pod, chat, onBoost, podError }) {
         TrackPlayer.CAPABILITY_SKIP_TO_NEXT,
         TrackPlayer.CAPABILITY_STOP,
         TrackPlayer.CAPABILITY_SKIP_TO_PREVIOUS,
-        TrackPlayer.CAPABILITY_STOP
+        TrackPlayer.CAPABILITY_STOP,
       ],
-      compactCapabilities: [TrackPlayer.CAPABILITY_PLAY, TrackPlayer.CAPABILITY_PAUSE]
+      compactCapabilities: [TrackPlayer.CAPABILITY_PLAY, TrackPlayer.CAPABILITY_PAUSE],
     })
 
     if (theID) {
-      const qe =
-        ps && ps.episodes && ps.episodes.length && ps.episodes.find(e => e.id == theID)
+      const qe = ps && ps.episodes && ps.episodes.length && ps.episodes.find((e) => e.id == theID)
       if (qe) episode = qe
       else {
         TrackPlayer.reset()
@@ -196,7 +192,7 @@ export default function Podcast({ pod, chat, onBoost, podError }) {
       feedID: pod.id,
       itemID: selectedEpisodeID,
       ts: Math.round(pos) || 0,
-      speed: speed
+      speed: speed,
     }
     const memo = JSON.stringify(sp)
     feed.sendPayments(dests, memo, pricePerMinute * mult || 1, chatID, true)
@@ -257,13 +253,13 @@ export default function Podcast({ pod, chat, onBoost, podError }) {
       const extraDest: Destination = {
         address: d.pubkey,
         split: 1,
-        type: 'node'
+        type: 'node',
       }
       const finalDests = dests.concat(extraDest)
       const sp: StreamPayment = {
         feedID: pod.id,
         itemID: selectedEpisodeID,
-        ts: d.ts || 0
+        ts: d.ts || 0,
       }
       if (d.uuid) sp.uuid = d.uuid
       const memo = JSON.stringify(sp)
@@ -283,7 +279,7 @@ export default function Podcast({ pod, chat, onBoost, podError }) {
     pod &&
     pod.episodes &&
     pod.episodes.length &&
-    pod.episodes.find(e => e.id === selectedEpisodeID)
+    pod.episodes.find((e) => e.id === selectedEpisodeID)
 
   const replayMsgs = useRef([])
 
@@ -300,13 +296,10 @@ export default function Podcast({ pod, chat, onBoost, podError }) {
     if (!chatID) return
     const msgs = msg.messages[chatID] || []
     const msgsForEpisode = msgs.filter(
-      m =>
-        m.message_content &&
-        m.message_content.includes('::') &&
-        m.message_content.includes(episode.id)
+      (m) => m.message_content && m.message_content.includes('::') && m.message_content.includes(episode.id)
     )
     const msgsforReplay = []
-    msgsForEpisode.forEach(m => {
+    msgsForEpisode.forEach((m) => {
       const arr = m.message_content.split('::')
       if (arr.length < 2) return
       try {
@@ -316,7 +309,7 @@ export default function Podcast({ pod, chat, onBoost, podError }) {
             ...dat,
             type: arr[0],
             alias: m.sender_alias || (m.sender === myid ? user.alias : ''),
-            date: m.date
+            date: m.date,
           })
       } catch (e) {}
     })
@@ -339,7 +332,7 @@ export default function Podcast({ pod, chat, onBoost, podError }) {
         feedID: pod.id,
         itemID: selectedEpisodeID,
         ts: Math.round(pos) || 0,
-        amount
+        amount,
       }
       onBoost(sp)
       const dests = pod && pod.value && pod.value.destinations
@@ -358,7 +351,7 @@ export default function Podcast({ pod, chat, onBoost, podError }) {
         style={{
           ...styles.footer,
           backgroundColor: theme.main,
-          borderTopColor: theme.border
+          borderTopColor: theme.border,
         }}
       >
         <BoostButton
@@ -383,7 +376,7 @@ export default function Podcast({ pod, chat, onBoost, podError }) {
             style={{
               ...styles.imgWrap,
               width: SCREEN_WIDTH,
-              height: SCREEN_WIDTH - 140
+              height: SCREEN_WIDTH - 140,
             }}
           >
             <FastImage
@@ -391,7 +384,7 @@ export default function Podcast({ pod, chat, onBoost, podError }) {
               style={{
                 width: SCREEN_WIDTH - 180,
                 height: SCREEN_WIDTH - 180,
-                borderRadius: 25
+                borderRadius: 25,
               }}
               resizeMode={'cover'}
             />
@@ -423,7 +416,12 @@ export default function Podcast({ pod, chat, onBoost, podError }) {
 
         {(pod.episodes ? true : false) && (
           <View style={styles.list}>
-            <View style={{ ...styles.episodesLabel, borderBottomColor: theme.border }}>
+            <View
+              style={{
+                ...styles.episodesLabel,
+                borderBottomColor: theme.border,
+              }}
+            >
               <Typography color={theme.subtitle} size={12} fw='500'>
                 EPISODES
               </Typography>
@@ -432,7 +430,7 @@ export default function Podcast({ pod, chat, onBoost, podError }) {
                 size={12}
                 style={{
                   opacity: 0.85,
-                  marginLeft: 10
+                  marginLeft: 10,
                 }}
               >
                 {pod.episodes.length}
@@ -458,30 +456,36 @@ export default function Podcast({ pod, chat, onBoost, podError }) {
           style={{
             ...styles.episode,
             borderBottomColor: theme.border,
-            backgroundColor: selected ? theme.main : theme.bg
+            backgroundColor: selected ? theme.main : theme.bg,
           }}
           onPress={() => selectEpisode(item)}
         >
-          <View style={{ flexDirection: 'row', alignItems: 'center', width: '100%' }}>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              width: '100%',
+            }}
+          >
             <View
               style={{
                 justifyContent: 'center',
                 alignItems: 'center',
-                width: 20
+                width: 20,
               }}
             >
-              <MaterialCommunityIcons
-                name='play'
-                color={theme.icon}
-                size={18}
-                style={{ opacity: selected ? 1 : 0 }}
-              />
+              <MaterialCommunityIcons name='play' color={theme.icon} size={18} style={{ opacity: selected ? 1 : 0 }} />
             </View>
 
             <View style={{ width: 45 }}>
               <FastImage
                 source={{ uri: item.image || fallbackImage }}
-                style={{ width: 42, height: 42, marginLeft: 8, marginRight: 12 }}
+                style={{
+                  width: 42,
+                  height: 42,
+                  marginLeft: 8,
+                  marginRight: 12,
+                }}
                 resizeMode={'cover'}
               />
             </View>
@@ -494,7 +498,7 @@ export default function Podcast({ pod, chat, onBoost, podError }) {
                 flexDirection: 'row',
                 paddingLeft: 15,
                 flex: 1,
-                flexWrap: 'wrap'
+                flexWrap: 'wrap',
               }}
             >
               {item.title}
@@ -512,13 +516,13 @@ export default function Podcast({ pod, chat, onBoost, podError }) {
         // adjustToContentHeight={true}
         modalTopOffset={getStatusBarHeight()}
         openAnimationConfig={{
-          timing: { duration: 300 }
+          timing: { duration: 300 },
         }}
         onClose={onClose}
         HeaderComponent={<Header />}
         FooterComponent={<Footer />}
         childrenStyle={{
-          backgroundColor: theme.bg
+          backgroundColor: theme.bg,
         }}
         rootStyle={
           {
@@ -528,8 +532,8 @@ export default function Podcast({ pod, chat, onBoost, podError }) {
         flatListProps={{
           data: pod?.episodes,
           renderItem: renderItem,
-          keyExtractor: item => item.id,
-          showsVerticalScrollIndicator: false
+          keyExtractor: (item) => item.id,
+          showsVerticalScrollIndicator: false,
         }}
       />
 
@@ -575,17 +579,17 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    flex: 1
+    flex: 1,
   },
   list: {
-    width: '100%'
+    width: '100%',
   },
   top: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    width: '90%'
+    width: '90%',
     // paddingHorizontal:14
   },
   imgWrap: {
@@ -593,7 +597,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    width: '100%'
+    width: '100%',
   },
   spinWrap: {
     display: 'flex',
@@ -601,29 +605,29 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: '100%',
     position: 'absolute',
-    top: 20
+    top: 20,
   },
   track: {
-    width: '90%'
+    width: '90%',
     // height: 128
   },
   clickList: {
     position: 'absolute',
     top: 6,
     right: 6,
-    zIndex: 150
+    zIndex: 150,
   },
   episode: {
     borderBottomWidth: 1,
     width: '100%',
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   episodeInner: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'flex-start'
+    justifyContent: 'flex-start',
   },
   episodesLabel: {
     display: 'flex',
@@ -632,7 +636,7 @@ const styles = StyleSheet.create({
     width: '100%',
     borderBottomWidth: 2,
     paddingHorizontal: 14,
-    paddingBottom: 14
+    paddingBottom: 14,
   },
   footer: {
     display: 'flex',
@@ -642,7 +646,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     height: isIphoneX() ? 80 : 65,
     paddingBottom: isIphoneX() ? 10 : 0,
-    borderTopWidth: 1
+    borderTopWidth: 1,
     // paddingTop: isIphoneX() ? 30 : 0
-  }
+  },
 })

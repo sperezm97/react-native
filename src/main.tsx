@@ -56,7 +56,7 @@ export default function Main() {
   async function createPrivateKeyIfNotExists(contacts, user) {
     // const priv = null
     const priv = await rsa.getPrivateKey()
-    const me = contacts.contacts.find(c => c.id === user.myid)
+    const me = contacts.contacts.find((c) => c.id === user.myid)
 
     // private key has been made
     if (priv) {
@@ -64,19 +64,19 @@ export default function Main() {
       if (me?.contact_key && !user.contactKey) {
         user.setContactKey(me.contact_key)
         contacts.updateContact(user.myid, {
-          contact_key: me.contact_key
+          contact_key: me.contact_key,
         })
         // set into me Contact
       } else if (user.contactKey) {
         contacts.updateContact(user.myid, {
-          contact_key: user.contactKey
+          contact_key: user.contactKey,
         })
       } else {
         // need to regen :(
         const keyPair = await rsa.generateKeyPair()
         user.setContactKey(keyPair.public)
         contacts.updateContact(user.myid, {
-          contact_key: keyPair.public
+          contact_key: keyPair.public,
         })
 
         showToast('generated new keypair!!!')
@@ -86,7 +86,7 @@ export default function Main() {
       const keyPair = await rsa.generateKeyPair()
       user.setContactKey(keyPair.public)
       contacts.updateContact(user.myid, {
-        contact_key: keyPair.public
+        contact_key: keyPair.public,
       })
       showToast('generated key pair')
     }
@@ -125,7 +125,7 @@ export default function Main() {
 
   useEffect(() => {
     if (chatID) {
-      const chat = chats.find(c => c.id === chatID)
+      const chat = chats.find((c) => c.id === chatID)
       if (chat) {
         navigate('Chat', { ...chat })
         setChatID(null)
@@ -136,12 +136,12 @@ export default function Main() {
   useEffect(() => {
     ;(async () => {
       apn.configure(
-        token => {
+        (token) => {
           if ((token && !user.deviceId) || user.deviceId !== token) {
             user.registerMyDeviceId(token, user.myid)
           }
         },
-        notification => {
+        (notification) => {
           const id = notification.data.aps.alert.action
 
           if (notification.userInteraction && notification.finish) {
@@ -162,7 +162,7 @@ export default function Main() {
 
       const version = await checkVersion({
         bundleId,
-        currentVersion: currentVersion.toString()
+        currentVersion: currentVersion.toString(),
       })
 
       await utils.sleep(300)
@@ -179,14 +179,11 @@ export default function Main() {
       <Modals />
       <ModalsN />
       <Dialogs />
-      <AppVersionUpdate
-        visible={versionUpdateVisible}
-        close={() => setVersionUpdateVisible(false)}
-      />
+      <AppVersionUpdate visible={versionUpdateVisible} close={() => setVersionUpdateVisible(false)} />
     </>
   )
 }
 
 async function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms))
+  return new Promise((resolve) => setTimeout(resolve, ms))
 }

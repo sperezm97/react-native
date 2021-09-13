@@ -29,17 +29,17 @@ export default function Members({ route }) {
     contacts.getContacts()
   })
 
-  const contactsToShow = contacts.contacts.filter(c => {
+  const contactsToShow = contacts.contacts.filter((c) => {
     return c.id > 1 && tribe && tribe.chat && tribe.chat.contact_ids.includes(c.id)
   })
 
-  const searchedContacts = contactsToShow.filter(m => {
+  const searchedContacts = contactsToShow.filter((m) => {
     if (!membersSearchText) return true
     return m.alias.toLowerCase().includes(membersSearchText.toLowerCase())
   })
 
   const pendingContactsToShow =
-    contacts.contacts.filter(c => {
+    contacts.contacts.filter((c) => {
       return (
         c.id > 1 &&
         tribe &&
@@ -65,11 +65,7 @@ export default function Members({ route }) {
                 tribe={tribe}
                 members={searchedContacts}
                 listHeader={
-                  <ListHeader
-                    tribe={tribe}
-                    searchText={membersSearchText}
-                    setSearchText={setMembersSearchText}
-                  />
+                  <ListHeader tribe={tribe} searchText={membersSearchText} setSearchText={setMembersSearchText} />
                 }
               />
             ) : (
@@ -92,7 +88,7 @@ function ListHeader({ tribe, searchText, setSearchText }) {
       <Search
         // placeholder={`Search ${tribe.name} Members`}
         placeholder='Search'
-        onChangeText={value => setSearchText(value)}
+        onChangeText={(value) => setSearchText(value)}
         value={searchText}
       />
     </View>
@@ -125,14 +121,14 @@ function EmptyMembers({ tribe }) {
 
 const styles = StyleSheet.create({
   wrap: {
-    flex: 1
+    flex: 1,
   },
   content: {
-    flex: 1
+    flex: 1,
   },
   searchWrap: {
     paddingRight: 14,
     paddingLeft: 14,
-    paddingBottom: 14
-  }
+    paddingBottom: 14,
+  },
 })

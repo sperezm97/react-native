@@ -9,11 +9,11 @@ const constants = {
     in_progress: 3,
     complete: 4,
     expired: 5,
-    payment_pending: 6
+    payment_pending: 6,
   },
   contact_statuses: {
     pending: 0,
-    confirmed: 1
+    confirmed: 1,
   },
   statuses: {
     pending: 0,
@@ -21,12 +21,12 @@ const constants = {
     cancelled: 2,
     received: 3,
     failed: 4,
-    deleted: 5
+    deleted: 5,
   },
   chat_statuses: {
     approved: 0,
     pending: 1,
-    rejected: 2
+    rejected: 2,
   },
   message_types: {
     message: 0,
@@ -56,33 +56,38 @@ const constants = {
     bot_cmd: 24,
     bot_res: 25,
     keysend: 28,
-    boost: 29
+    boost: 29,
   },
   payment_errors: {
     timeout: 'Timed Out',
     no_route: 'No Route To Receiver',
     error: 'Error',
     incorrect_payment_details: 'Incorrect Payment Details',
-    unknown: 'Unknown'
+    unknown: 'Unknown',
   },
   chat_types: {
     conversation: 0,
     group: 1,
-    tribe: 2
+    tribe: 2,
+  },
+}
+
+type SwitcherReturn = {
+  [key: string]: {
+    [nestedKey: number]: string
   }
 }
 
-function switcher(consts) {
+const switcher: (value: typeof constants) => SwitcherReturn = (consts: typeof constants) => {
   const codes = {}
-  for (let [k, obj] of Object.entries(consts)) {
-    for (let [str, num] of Object.entries(obj)) {
+  for (const [k, obj] of Object.entries(consts)) {
+    for (const [str, num] of Object.entries(obj)) {
       if (!codes[k]) codes[k] = {}
       codes[k][num] = str
     }
   }
   // dont switch this one
-  codes['payment_errors'] = consts['payment_errors']
-  return codes
+  return { ...codes, payment_errors: consts.payment_errors }
 }
 
 const constantCodes = switcher(constants)

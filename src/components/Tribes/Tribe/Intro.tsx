@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
 import { useNavigation } from '@react-navigation/native'
 import RNFetchBlob from 'rn-fetch-blob'
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
-import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import Ionicon from 'react-native-vector-icons/Ionicons'
-import { isIphoneX } from 'react-native-iphone-x-helper'
 
 import { useStores, useTheme } from '../../../store'
 import Typography from '../../common/Typography'
@@ -50,22 +48,22 @@ export default function Intro({ tribe }) {
       `https://${server.host}/public`,
       {
         Authorization: `Bearer ${server.token}`,
-        'Content-Type': 'multipart/form-data'
+        'Content-Type': 'multipart/form-data',
       },
       [
         {
           name: 'file',
           filename: name,
           type: type,
-          data: RNFetchBlob.wrap(uri)
+          data: RNFetchBlob.wrap(uri),
         },
-        { name: 'name', data: name }
+        { name: 'name', data: name },
       ]
     )
       .uploadProgress({ interval: 250 }, (written, total) => {
         setUploadedPercent(Math.round((written / total) * 100))
       })
-      .then(async resp => {
+      .then(async (resp) => {
         let json = resp.json()
 
         if (json.muid) {
@@ -73,13 +71,13 @@ export default function Intro({ tribe }) {
 
           await chats.editTribe({
             ...tribe,
-            id: tribe.chat.id
+            id: tribe.chat.id,
           })
         }
 
         setUploading(false)
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err)
         setUploading(false)
       })
@@ -125,7 +123,7 @@ export default function Intro({ tribe }) {
               style={{
                 ...styles.row,
                 flex: 1,
-                flexWrap: 'wrap'
+                flexWrap: 'wrap',
               }}
             >
               <Typography size={22} fw='600' numberOfLines={1}>
@@ -145,12 +143,12 @@ export default function Intro({ tribe }) {
               style={{
                 ...styles.row,
                 marginTop: 6,
-                marginBottom: 14
+                marginBottom: 14,
               }}
             >
               <View
                 style={{
-                  ...styles.row
+                  ...styles.row,
                 }}
               >
                 <MaterialIcon name='public' size={18} color={theme.grey} />
@@ -164,7 +162,7 @@ export default function Intro({ tribe }) {
               <TouchableOpacity
                 style={{
                   ...styles.row,
-                  flex: 1
+                  flex: 1,
                 }}
                 onPress={onTribeMembersPress}
               >
@@ -212,9 +210,10 @@ function TribeActions({ tribe }) {
   const { chats, msg, ui } = useStores()
   const theme = useTheme()
   const navigation = useNavigation()
+  const [loading, setLoading] = useState(false)
   const [joinTribe, setJoinTribe] = useState({
     visible: false,
-    tribe: null
+    tribe: null,
   })
 
   async function onJoinPress() {
@@ -223,14 +222,21 @@ function TribeActions({ tribe }) {
 
     setJoinTribe({
       visible: true,
-      tribe: tribeParams
+      tribe: tribeParams,
     })
   }
 
   async function onChatPress() {
-    msg.seeChat(tribe.chat.id)
-    msg.getMessages()
-    navigation.navigate('Chat', { ...tribe.chat })
+    setLoading(true)
+    try {
+      await msg.seeChat(tribe.chat.id) // Ping relay to read message
+      await msg.getMessages()
+      navigation.navigate('Chat', { ...tribe.chat })
+    } catch (e) {
+      console.log(e)
+    } finally {
+      setLoading(false)
+    }
   }
 
   return useObserver(() => {
@@ -241,14 +247,10 @@ function TribeActions({ tribe }) {
             <>
               {tribe.joined ? (
                 <View style={{ ...styles.headerActions }}>
-                  {/* <Button color={theme.primary} onPress={onExitTribePress} w='35%'>
-                Joined
-              </Button> */}
                   <Button
-                    icon={() => (
-                      <Ionicon name='chatbubbles-outline' color={theme.white} size={20} />
-                    )}
+                    icon={() => <Ionicon name='chatbubbles-outline' color={theme.white} size={20} />}
                     onPress={onChatPress}
+                    loading={loading}
                     w='60%'
                   >
                     Chat
@@ -262,10 +264,9 @@ function TribeActions({ tribe }) {
             </>
           ) : (
             <Button
-              icon={() => (
-                <Ionicon name='chatbubbles-outline' color={theme.white} size={20} />
-              )}
+              icon={() => <Ionicon name='chatbubbles-outline' color={theme.white} size={20} />}
               onPress={onChatPress}
+              loading={loading}
               w='60%'
             >
               Chat
@@ -278,7 +279,7 @@ function TribeActions({ tribe }) {
           close={() => {
             setJoinTribe({
               visible: false,
-              tribe: null
+              tribe: null,
             })
           }}
         />
@@ -291,7 +292,7 @@ const styles = StyleSheet.create({
   wrap: {
     flex: 1,
     paddingRight: 14,
-    paddingLeft: 14
+    paddingLeft: 14,
   },
   header: {
     display: 'flex',
@@ -299,33 +300,33 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     // alignItems: 'center',
     flexWrap: 'wrap',
-    width: '100%'
+    width: '100%',
   },
   headerContent: {
     display: 'flex',
     width: '80%',
-    paddingLeft: 25
+    paddingLeft: 25,
   },
   avatarWrap: {
     display: 'flex',
     alignItems: 'center',
-    width: '20%'
+    width: '20%',
     // justifyContent: 'center'
   },
   row: {
     display: 'flex',
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   dot: {
     width: 3,
     height: 3,
     borderRadius: 5,
-    marginHorizontal: 10
+    marginHorizontal: 10,
   },
   headerActions: {
     display: 'flex',
     flexDirection: 'row',
-    flex: 1
-  }
+    flex: 1,
+  },
 })

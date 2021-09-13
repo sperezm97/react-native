@@ -41,11 +41,11 @@ const styles = StyleSheet.create({
   amount: {
     color: '#333',
     fontSize: 18,
-    marginRight: 8
+    marginRight: 8,
   },
   sat: {
     color: '#aaa',
-    fontSize: 14
+    fontSize: 14,
   },
   iconWrap: {
     backgroundColor: '#74ABFF',
@@ -54,13 +54,13 @@ const styles = StyleSheet.create({
     marginRight: 14,
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   row: {
     // marginTop:8,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'flex-start',
-    alignItems: 'center'
-  }
+    alignItems: 'center',
+  },
 })

@@ -34,7 +34,7 @@ export default function TheTextInput({
   if (!multiline) {
     inputStyles = {
       height: 50,
-      maxHeight: 50
+      maxHeight: 50,
     }
   }
 
@@ -51,7 +51,7 @@ export default function TheTextInput({
           ...styles.inputStyles,
           ...style,
           backgroundColor: theme.bg,
-          ...inputStyles
+          ...inputStyles,
         }}
         onChangeText={handleChange(name)}
         onBlur={handleBlur(name)}
@@ -76,12 +76,12 @@ TheTextInput.defaultProps = {
   required: false,
   style: null,
   multiline: false,
-  numberOfLines: 0
+  numberOfLines: 0,
 }
 
 const styles = StyleSheet.create({
   inputStyles: {
     marginBottom: 16,
-    textAlign: 'auto'
-  }
+    textAlign: 'auto',
+  },
 })

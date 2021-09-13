@@ -22,7 +22,7 @@ export default function NameAndKey(props) {
       const keyPair = await rsa.generateKeyPair()
       await contacts.updateContact(user.myid, {
         alias: text,
-        contact_key: keyPair.public
+        contact_key: keyPair.public,
       })
       user.setAlias(text)
       inputRef.current.blur()
@@ -31,16 +31,11 @@ export default function NameAndKey(props) {
         setUpdating(false)
       }, 500)
     } catch (error) {
-      await user.reportError("NameAndKey component - ok function", error);
+      await user.reportError('NameAndKey component - ok function', error)
     }
   }
   return (
-    <Slider
-      z={z}
-      show={show}
-      style={{ backgroundColor: theme.bg }}
-      accessibilityLabel='onboard-name'
-    >
+    <Slider z={z} show={show} style={{ backgroundColor: theme.bg }} accessibilityLabel='onboard-name'>
       <TextInput
         value={text}
         ref={inputRef}
@@ -49,10 +44,10 @@ export default function NameAndKey(props) {
         style={{
           ...styles.input,
           backgroundColor: theme.dark ? theme.white : theme.lightGrey,
-          borderColor: theme.white
+          borderColor: theme.white,
         }}
         placeholderTextColor={theme.greySecondary}
-        onChangeText={text => setText(text)}
+        onChangeText={(text) => setText(text)}
       />
       <View style={styles.buttonWrap} accessibilityLabel='onboard-name-button-wrap'>
         <Button
@@ -78,10 +73,10 @@ const styles = StyleSheet.create({
     bottom: 42,
     width: '100%',
     display: 'flex',
-    flexDirection: 'row-reverse'
+    flexDirection: 'row-reverse',
   },
   button: {
-    marginRight: '12.5%'
+    marginRight: '12.5%',
   },
   input: {
     width: '75%',
@@ -93,6 +88,6 @@ const styles = StyleSheet.create({
     paddingRight: 25,
     marginLeft: '12.5%',
     marginRight: '12.5%',
-    marginBottom: 100
-  }
+    marginBottom: 100,
+  },
 })

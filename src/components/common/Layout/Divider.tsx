@@ -20,7 +20,7 @@ export default function Divider(props) {
     marginBottom: mb,
     marginLeft: 'auto',
     marginRight: 'auto',
-    width: w
+    width: w,
   }
 
   return <View style={{ ...borderStyles }}></View>

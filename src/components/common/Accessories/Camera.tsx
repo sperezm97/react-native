@@ -20,7 +20,7 @@ export default function Camera({ visible, onCancel, onSnap }) {
   async function takePic() {
     if (camRef && camRef.current) {
       const pic = await camRef.current.takePictureAsync({
-        quality: 0.5
+        quality: 0.5,
         // skipProcessing:true,
       })
       onSnap(pic)
@@ -35,7 +35,7 @@ export default function Camera({ visible, onCancel, onSnap }) {
       isVisible={visible}
       style={{
         margin: 0,
-        flex: 1
+        flex: 1,
         // justifyContent: 'flex-end'
       }}
     >
@@ -50,7 +50,7 @@ export default function Camera({ visible, onCancel, onSnap }) {
             title: 'Permission to use camera',
             message: 'We need your permission to use your camera',
             buttonPositive: 'Ok',
-            buttonNegative: 'Cancel'
+            buttonNegative: 'Cancel',
           }}
           // androidRecordAudioPermissionOptions={{
           //   title: 'Permission to use audio recording',
@@ -69,9 +69,7 @@ export default function Camera({ visible, onCancel, onSnap }) {
             color='white'
             onPress={() =>
               setType(
-                type === RNCamera.Constants.Type.back
-                  ? RNCamera.Constants.Type.front
-                  : RNCamera.Constants.Type.back
+                type === RNCamera.Constants.Type.back ? RNCamera.Constants.Type.front : RNCamera.Constants.Type.back
               )
             }
           >
@@ -87,11 +85,7 @@ function Snapper({ snap }) {
   return (
     <View style={styles.snapWrap}>
       <View style={styles.innerSnap}>
-        <TouchableOpacity
-          style={styles.snap}
-          activeOpacity={0.5}
-          onPress={() => snap()}
-        ></TouchableOpacity>
+        <TouchableOpacity style={styles.snap} activeOpacity={0.5} onPress={() => snap()}></TouchableOpacity>
       </View>
     </View>
   )
@@ -102,7 +96,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'transparent',
     flexDirection: 'column',
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-end',
   },
   toolbar: {
     flex: 1,
@@ -116,7 +110,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     left: 0,
-    right: 0
+    right: 0,
   },
   snapWrap: {
     width: 64,
@@ -126,7 +120,7 @@ const styles = StyleSheet.create({
     marginBottom: 48,
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   innerSnap: {
     width: 55,
@@ -135,13 +129,13 @@ const styles = StyleSheet.create({
     borderRadius: 35,
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   snap: {
     width: 50,
     height: 50,
     backgroundColor: '#ddd',
-    borderRadius: 25
+    borderRadius: 25,
   },
   capture: {
     flex: 0,
@@ -150,6 +144,6 @@ const styles = StyleSheet.create({
     padding: 15,
     paddingHorizontal: 20,
     alignSelf: 'center',
-    margin: 20
-  }
+    margin: 20,
+  },
 })

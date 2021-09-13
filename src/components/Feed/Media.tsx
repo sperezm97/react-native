@@ -33,7 +33,7 @@ function Media(props) {
     onMediaPress,
     created_at,
     tribe,
-    boosts_total_sats
+    boosts_total_sats,
   } = props
   const [boosted, setBoosted] = useState(false)
   const { msg, ui, user, contacts, chats } = useStores()
@@ -42,10 +42,7 @@ function Media(props) {
 
   const ldat = parseLDAT(media_token)
 
-  let { data, uri, loading, trigger, paidMessageText } = useCachedEncryptedFile(
-    props,
-    ldat
-  )
+  let { data, uri, loading, trigger, paidMessageText } = useCachedEncryptedFile(props, ldat)
 
   let amt = null
   let purchased = false
@@ -71,7 +68,7 @@ function Media(props) {
       amount,
       chat_id: chat.id || null,
       reply_uuid: uuid,
-      message_price: pricePerMessage
+      message_price: pricePerMessage,
     })
     if (r) {
       setBoosted(true)
@@ -82,7 +79,7 @@ function Media(props) {
 
   const showBoostRow = boosts_total_sats ? true : false
 
-  const meContact = contacts.contacts.find(c => c.id === user.myid)
+  const meContact = contacts.contacts.find((c) => c.id === user.myid)
   const myPhoto = usePicSrc(meContact)
 
   return (
@@ -104,22 +101,11 @@ function Media(props) {
             </Typography>
           </View>
 
-          {!loading ? (
-            <MediaType type={media_type} data={data} uri={uri} />
-          ) : (
-            <ActivityIndicator animating={true} />
-          )}
+          {!loading ? <MediaType type={media_type} data={data} uri={uri} /> : <ActivityIndicator animating={true} />}
 
           <View style={{ ...styles.footer }}>
             <Boost onPress={onBoostPress} circleH={30} circleW={30} />
-            {showBoostRow && (
-              <BoostDetails
-                {...props}
-                myAlias={user.alias}
-                myPhoto={myPhoto}
-                myid={user.myid}
-              />
-            )}
+            {showBoostRow && <BoostDetails {...props} myAlias={user.alias} myPhoto={myPhoto} myid={user.myid} />}
           </View>
           {/* <View style={{ ...styles.meta }}></View> */}
 
@@ -142,14 +128,14 @@ function MediaType({ type, data, uri }) {
       <View
         style={{
           width: w,
-          height: photoH
+          height: photoH,
         }}
       >
         <FastImage
           resizeMode='contain'
           source={{ uri: uri || data }}
           style={{ ...styles.photo }}
-          onLoad={evt => {
+          onLoad={(evt) => {
             setPhotoH((evt.nativeEvent.height / evt.nativeEvent.width) * w)
           }}
         />
@@ -169,13 +155,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: 14
+    padding: 14,
     // marginBottom: 10
   },
   headerInfo: {
     display: 'flex',
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   footer: {
     display: 'flex',
@@ -184,7 +170,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingTop: 10,
     paddingRight: 5,
-    paddingLeft: 5
+    paddingLeft: 5,
     // marginBottom: 10
   },
   meta: {
@@ -192,13 +178,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingRight: 5,
-    paddingLeft: 14
+    paddingLeft: 14,
   },
   avatarWrap: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingRight: 10
+    paddingRight: 10,
     // width: 60,
     // height: 60,
     // paddingLeft: 4
@@ -207,12 +193,12 @@ const styles = StyleSheet.create({
     position: 'relative',
     width: SCREEN_WIDTH / 3 - 10 / 3,
     height: SCREEN_WIDTH / 3 - 10 / 3,
-    marginBottom: 5
+    marginBottom: 5,
   },
   photo: {
     width: '100%',
-    height: '100%'
-  }
+    height: '100%',
+  },
 })
 
 export default React.memo(Media)

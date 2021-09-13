@@ -53,14 +53,22 @@ function RawInvoiceModal({ close }) {
               {params.amount && <Text style={styles.amt}>{params.amount}</Text>}
               {params.amount && <Text style={styles.sat}>sat</Text>}
               <View style={styles.confirmWrap}>
-                <Button style={styles.confirm} loading={loading} onPress={() => createInvoice()} mode='contained' dark={true}>
+                <Button
+                  style={styles.confirm}
+                  loading={loading}
+                  onPress={() => createInvoice()}
+                  mode='contained'
+                  dark={true}
+                >
                   CONFIRM
                 </Button>
               </View>
             </View>
           )}
 
-          {hasPayreq && <ShowRawInvoice amount={params && params.amount} payreq={payreq} paid={payreq === ui.lastPaidInvoice} />}
+          {hasPayreq && (
+            <ShowRawInvoice amount={params && params.amount} payreq={payreq} paid={payreq === ui.lastPaidInvoice} />
+          )}
         </View>
       </Portal.Host>
     )
@@ -74,40 +82,40 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-end',
     minHeight: '90%',
-    maxHeight: '90%'
+    maxHeight: '90%',
   },
   innerWrap: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    width: '100%'
+    width: '100%',
   },
   genText: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 25
+    marginBottom: 25,
   },
   amt: {
     fontSize: 42,
-    color: '#333'
+    color: '#333',
   },
   sat: {
     fontSize: 16,
     color: '#aaa',
-    marginBottom: 15
+    marginBottom: 15,
   },
   img: {
     height: 130,
     width: 130,
     borderRadius: 10,
-    marginBottom: 25
+    marginBottom: 25,
   },
   confirmWrap: {
     width: '100%',
     display: 'flex',
     alignItems: 'center',
     height: 100,
-    marginTop: 12
+    marginTop: 12,
   },
   confirm: {
     backgroundColor: '#6289FD',
@@ -117,6 +125,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 20
-  }
+    borderRadius: 20,
+  },
 })

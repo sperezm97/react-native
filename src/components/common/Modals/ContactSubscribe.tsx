@@ -21,7 +21,7 @@ export default function ContactSubscribe() {
   const contact = ui.contactSubscribeParams
 
   function chatForContact() {
-    const cfc = chats.chats.find(c => {
+    const cfc = chats.chats.find((c) => {
       return c.type === conversation && c.contact_ids.includes(contact.id)
     })
     return cfc
@@ -32,15 +32,24 @@ export default function ContactSubscribe() {
     if (existingSub) {
       const amountIsCustom = existingSub.amount !== 500 && existingSub.amount !== 1000 && existingSub.amount !== 2000
       if (amountIsCustom) {
-        initialSubValues.amount = { selected: 'custom', custom: existingSub.amount }
+        initialSubValues.amount = {
+          selected: 'custom',
+          custom: existingSub.amount,
+        }
       } else {
         initialSubValues.amount = { selected: existingSub.amount }
       }
       initialSubValues.interval = { selected: existingSub.interval }
       if (existingSub.end_number) {
-        initialSubValues.endRule = { selected: 'number', custom: existingSub.end_number }
+        initialSubValues.endRule = {
+          selected: 'number',
+          custom: existingSub.end_number,
+        }
       } else if (existingSub.end_date) {
-        initialSubValues.endRule = { selected: 'date', custom: existingSub.end_date }
+        initialSubValues.endRule = {
+          selected: 'date',
+          custom: existingSub.end_date,
+        }
       }
     }
     return initialSubValues
@@ -54,7 +63,7 @@ export default function ContactSubscribe() {
       amount: amountIsCustom ? v.amount.custom : v.amount.selected,
       interval: v.interval.selected,
       ...(endRuleIsNumber && { end_number: v.endRule.custom }),
-      ...(endRuleIsDate && { end_date: v.endDate.custom })
+      ...(endRuleIsDate && { end_date: v.endDate.custom }),
     }
     return body
   }
@@ -67,14 +76,14 @@ export default function ContactSubscribe() {
       const s = await contacts.editSubscription(existingSub.id, {
         ...v,
         chat_id: cfc.id,
-        contact_id: contact.id
+        contact_id: contact.id,
       })
       setExistingSub(s)
     } else {
       const s = await contacts.createSubscription({
         ...v,
         chat_id: cfc.id,
-        contact_id: contact.id
+        contact_id: contact.id,
       })
       setExistingSub(s)
     }
@@ -86,7 +95,14 @@ export default function ContactSubscribe() {
   }
 
   return useObserver(() => (
-    <ModalWrap onClose={close} visible={ui.contactSubscribeModal} animationIn={'slideInRight'} animationOut={'slideOutRight'} swipeDirection='right' hasBackdrop={false}>
+    <ModalWrap
+      onClose={close}
+      visible={ui.contactSubscribeModal}
+      animationIn={'slideInRight'}
+      animationOut={'slideOutRight'}
+      swipeDirection='right'
+      hasBackdrop={false}
+    >
       <ModalHeader title='Recurring' onClose={close} leftArrow />
       <View style={{ flex: 1 }}>
         <ScrollView style={styles.scroller} contentContainerStyle={styles.container}>
@@ -96,7 +112,7 @@ export default function ContactSubscribe() {
             nopad
             buttonText='Subscribe'
             initialValues={makeSubValues()}
-            onSubmit={v => {
+            onSubmit={(v) => {
               const body = parseSubValues(v)
               createOrEditSubscription(body)
             }}
@@ -120,7 +136,7 @@ export default function ContactSubscribe() {
 
 const styles = StyleSheet.create({
   modal: {
-    margin: 0
+    margin: 0,
   },
   header: {
     height: 50,
@@ -130,22 +146,22 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   headerTitle: {
     fontWeight: 'bold',
-    fontSize: 16
+    fontSize: 16,
   },
   headerLefty: {
     width: 101,
     height: 50,
     borderRadius: 18,
-    marginLeft: 5
+    marginLeft: 5,
   },
   subWrap: {
     minWidth: 111,
     borderRadius: 18,
-    marginRight: 12
+    marginRight: 12,
   },
   subscribe: {
     backgroundColor: '#6289FD',
@@ -155,35 +171,35 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 20
+    borderRadius: 20,
   },
   fader: {
-    flex: 1
+    flex: 1,
   },
   former: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'flex-start',
     width: '100%',
-    paddingBottom: 20
+    paddingBottom: 20,
   },
   scroller: {
     width: '100%',
     flex: 1,
-    display: 'flex'
+    display: 'flex',
   },
   container: {
     width: '100%',
-    paddingBottom: 20
+    paddingBottom: 20,
   },
   pausedText: {
     fontSize: 12,
     color: 'grey',
-    minWidth: 50
+    minWidth: 50,
   },
   row: {
     display: 'flex',
     flexDirection: 'row',
-    alignItems: 'center'
-  }
+    alignItems: 'center',
+  },
 })

@@ -52,11 +52,9 @@ export default function Home() {
             <ScrollView
               keyboardDismissMode='on-drag'
               style={{
-                height: SCREEN_HEIGHT - STATUS_BAR_HEIGHT - 44
+                height: SCREEN_HEIGHT - STATUS_BAR_HEIGHT - 44,
               }}
-              refreshControl={
-                <RefreshLoading refreshing={refreshing} onRefresh={onRefresh} />
-              }
+              refreshControl={<RefreshLoading refreshing={refreshing} onRefresh={onRefresh} />}
               showsVerticalScrollIndicator={false}
             >
               <Feed feed={feed} />
@@ -72,6 +70,6 @@ export default function Home() {
 
 const styles = StyleSheet.create({
   wrap: {
-    flex: 1
-  }
+    flex: 1,
+  },
 })

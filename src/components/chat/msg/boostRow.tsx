@@ -15,12 +15,8 @@ export default function BoostRow({ isTribe = true, ...props }) {
 
   const theBoosts = []
   if (props.boosts) {
-    props.boosts.forEach(b => {
-      if (
-        !theBoosts.find(
-          bb => (bb.sender_alias || bb.sender) === (b.sender_alias || b.sender)
-        )
-      ) {
+    props.boosts.forEach((b) => {
+      if (!theBoosts.find((bb) => (bb.sender_alias || bb.sender) === (b.sender_alias || b.sender))) {
         theBoosts.push(b)
       }
     })
@@ -28,16 +24,16 @@ export default function BoostRow({ isTribe = true, ...props }) {
 
   const paddStyles = props.pad
     ? {
-      ...shared.innerPad,
-      ...(props.customPad && props.customPad),
-    }
+        ...shared.innerPad,
+        ...(props.customPad && props.customPad),
+      }
     : {}
 
   const wrapStyles = {
     ...styles.row,
     maxWidth: '100%',
     height: props.pad ? 50 : 35,
-    ...paddStyles
+    ...paddStyles,
   }
 
   const hasBoosts = theBoosts ? true : false
@@ -58,23 +54,19 @@ export default function BoostRow({ isTribe = true, ...props }) {
       <View style={{ ...styles.right }}>
         {hasBoosts && (
           <AvatarsRow
-            aliases={theBoosts.map(b => {
-              const { senderAlias, senderPic } = useBoostSender(
-                b,
-                contacts.contacts,
-                isTribe
-              )
+            aliases={theBoosts.map((b) => {
+              const { senderAlias, senderPic } = useBoostSender(b, contacts.contacts, isTribe)
 
               if (b.sender === props.myid) {
                 return {
                   alias: props.myAlias || 'Me',
-                  photo: props.myPhoto
+                  photo: props.myPhoto,
                 }
               }
 
               return {
                 alias: senderAlias,
-                photo: senderPic
+                photo: senderPic,
               }
             })}
             borderColor={theme.border}
@@ -92,18 +84,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     width: '100%',
-    height: 35
+    height: 35,
   },
   left: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    maxWidth: 99
+    maxWidth: 99,
   },
   right: {
     display: 'flex',
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   rocketWrap: {
     height: 17,
@@ -111,14 +103,14 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   amt: {
     marginLeft: 6,
-    fontSize: 10
+    fontSize: 10,
   },
   sats: {
     marginLeft: 4,
-    fontSize: 10
-  }
+    fontSize: 10,
+  },
 })

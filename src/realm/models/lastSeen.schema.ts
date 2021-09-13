@@ -6,5 +6,5 @@ export default {
   properties: {
     key: { type: 'int', default: null, optional: true },
     seen: { type: 'double', default: null, optional: true },
-  }
+  },
 }

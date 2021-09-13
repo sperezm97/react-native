@@ -1,3 +1,3 @@
 export interface EmbedVideoProps {
-  onSendEmbedVideo: any;
+  onSendEmbedVideo: any
 }

@@ -29,7 +29,7 @@ export default function Header({ border = false }) {
           ...styles.appBar,
           backgroundColor: theme.bg,
           borderBottomWidth: border ? 1 : 0,
-          borderBottomColor: theme.border
+          borderBottomColor: theme.border,
         }}
       >
         <View style={{ ...styles.flex, ...styles.content }}>
@@ -40,25 +40,13 @@ export default function Header({ border = false }) {
               resizeMode={'contain'}
             />
           </View>
-          <Balance
-            balance={details.balance}
-            color={theme.dark ? theme.white : theme.black}
-          />
+          <Balance balance={details.fullBalance} color={theme.dark ? theme.white : theme.black} />
           <View style={{ ...styles.flex, ...styles.right }}>
             {ui.loadingHistory ? (
-              <ActivityIndicator
-                animating={true}
-                color={theme.grey}
-                size={18}
-                style={{}}
-              />
+              <ActivityIndicator animating={true} color={theme.grey} size={18} style={{}} />
             ) : (
               <TouchableOpacity onPress={showStatusHandler} style={{ ...styles.status }}>
-                <MaterialIcon
-                  name='lightning-bolt'
-                  size={20}
-                  color={ui.connected ? '#49ca97' : '#febd59'}
-                />
+                <MaterialIcon name='lightning-bolt' size={20} color={ui.connected ? '#49ca97' : '#febd59'} />
               </TouchableOpacity>
             )}
           </View>
@@ -71,32 +59,32 @@ export default function Header({ border = false }) {
 const styles = StyleSheet.create({
   appBar: {
     elevation: 0,
-    height: 60
+    height: 60,
   },
   flex: {
     display: 'flex',
     alignItems: 'center',
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   content: {
     justifyContent: 'space-between',
-    width: '100%'
+    width: '100%',
   },
   left: {
     justifyContent: 'space-between',
     width: 50,
-    marginLeft: 12
+    marginLeft: 12,
   },
   right: {
     justifyContent: 'flex-end',
-    marginRight: 12
+    marginRight: 12,
   },
   brand: {
     width: 70,
     height: 70,
-    maxWidth: 70
+    maxWidth: 70,
   },
   status: {
-    width: 20
-  }
+    width: 20,
+  },
 })

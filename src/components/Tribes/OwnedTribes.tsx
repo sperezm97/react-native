@@ -79,11 +79,11 @@ function ListEmpty() {
 
 const styles = StyleSheet.create({
   wrap: {
-    flex: 1
+    flex: 1,
   },
   content: {
     flex: 1,
-    marginTop: 14
+    marginTop: 14,
   },
   buttonWrap: {
     display: 'flex',
@@ -91,14 +91,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingLeft: 14,
     paddingTop: 6,
-    paddingBottom: 8
+    paddingBottom: 8,
   },
   headerWrap: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
     paddingRight: 14,
-    paddingLeft: 14
+    paddingLeft: 14,
   },
-  emptyWrap: {}
+  emptyWrap: {},
 })

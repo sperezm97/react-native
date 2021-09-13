@@ -19,26 +19,21 @@
 - `cd ios` and `pod install` to install the dependecies
 - From project root: `npm run ios` to run IOS app on the IOS simulator
 
-
 ### Code Formatter
+
+Code formatting is enforced via prettier with config in package.json.
+
+You can run `yarn prettier` to format all code in /src at once.
+
+You should turn on "format on save" in your editor. Instructions for VSCode:
 
 - Add a `.vscode` directory
 - Create a file `settings.json` inside `.vscode`
 - Install Prettier - Code formatter in VSCode
-- Add the following snippets:  
+- Add the following snippets:
 
 ```json
-
-   {
-     "editor.formatOnSave": true,
-     "prettier.singleQuote": true,
-     "prettier.arrowParens": "avoid",
-     "prettier.jsxSingleQuote": true,
-     "prettier.trailingComma": "none",
-     "prettier.semi": false,
-     "prettier.printWidth": 90,
-     "javascript.preferences.quoteStyle": "single",
-     "typescript.preferences.quoteStyle": "single"
-    }
-
+{
+  "editor.formatOnSave": true
+}
 ```

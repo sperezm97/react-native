@@ -52,9 +52,7 @@ export default function Invoice(props) {
       </View>
       {hasContent && (
         <View style={{ ...styles.row, marginTop: 12 }}>
-          <Text style={{ ...styles.text, color: theme.title }}>
-            {props.message_content}
-          </Text>
+          <Text style={{ ...styles.text, color: theme.title }}>{props.message_content}</Text>
         </View>
       )}
       {showPayButton && !isExpired && (
@@ -77,19 +75,19 @@ export default function Invoice(props) {
 const styles = StyleSheet.create({
   bub: {
     minWidth: 200,
-    maxWidth: 200
+    maxWidth: 200,
   },
   amount: {
     fontSize: 28,
-    marginRight: 8
+    marginRight: 8,
   },
   sat: {
     color: '#aaa',
-    fontSize: 14
+    fontSize: 14,
   },
   label: {
     color: '#74ABFF',
-    fontSize: 10
+    fontSize: 10,
   },
   iconWrap: {
     height: 25,
@@ -98,21 +96,21 @@ const styles = StyleSheet.create({
     marginRight: 8,
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   row: {
     marginTop: 8,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'flex-start',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   text: {
-    fontSize: 16
+    fontSize: 16,
   },
   payButton: {
     backgroundColor: '#4AC998',
     width: '100%',
-    borderRadius: 5
-  }
+    borderRadius: 5,
+  },
 })

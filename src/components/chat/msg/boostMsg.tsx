@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    minWidth: 150
+    minWidth: 150,
   },
   rocketWrap: {
     height: 30,
@@ -49,6 +49,6 @@ const styles = StyleSheet.create({
     top: 6,
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center'
-  }
+    justifyContent: 'center',
+  },
 })

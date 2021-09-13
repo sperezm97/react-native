@@ -35,8 +35,12 @@ export default {
     sold: { type: 'bool', default: null, optional: true },
     showInfoBar: { type: 'bool', default: null, optional: true },
     reply_message_content: { type: 'string', default: null, optional: true },
-    reply_message_sender_alias: { type: 'string', default: null, optional: true },
+    reply_message_sender_alias: {
+      type: 'string',
+      default: null,
+      optional: true,
+    },
     reply_message_sender: { type: 'int', default: null, optional: true },
     temp_uid: { type: 'string', default: null, optional: true },
-  }
+  },
 }

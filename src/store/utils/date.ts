@@ -7,6 +7,6 @@ export function calendarDate(date, format?) {
     nextDay: '[Tomorrow]',
     lastWeek: 'dddd',
     nextWeek: 'dddd',
-    sameElse: format ? format : 'ddd MMM DD, hh:mm A'
+    sameElse: format ? format : 'ddd MMM DD, hh:mm A',
   })
 }

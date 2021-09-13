@@ -41,7 +41,7 @@ export default function RawInvoice({ visible, onClose, amount, payreq, paid }) {
       <View style={{ ...styles.wrap }}>
         <View
           style={{
-            ...styles.content
+            ...styles.content,
           }}
         >
           <View
@@ -49,7 +49,7 @@ export default function RawInvoice({ visible, onClose, amount, payreq, paid }) {
               flex: 1,
               alignItems: 'center',
               justifyContent: 'center',
-              marginTop: 10
+              marginTop: 10,
             }}
           >
             {amount && (
@@ -62,14 +62,7 @@ export default function RawInvoice({ visible, onClose, amount, payreq, paid }) {
               <QRCode value={payreq} size={SCREEN_WIDTH / 1.2} />
               {paid && (
                 <View style={styles.paidWrap}>
-                  <Typography
-                    style={styles.paid}
-                    color='#55D1A9'
-                    fw='500'
-                    bg={theme.white}
-                    textAlign='center'
-                    lh={30}
-                  >
+                  <Typography style={styles.paid} color='#55D1A9' fw='500' bg={theme.white} textAlign='center' lh={30}>
                     PAID
                   </Typography>
                 </View>
@@ -80,7 +73,7 @@ export default function RawInvoice({ visible, onClose, amount, payreq, paid }) {
               color={theme.title}
               numberOfLines={4}
               style={{
-                marginTop: 20
+                marginTop: 20,
               }}
             >
               {payreq}
@@ -102,12 +95,12 @@ export default function RawInvoice({ visible, onClose, amount, payreq, paid }) {
 
 const styles = StyleSheet.create({
   wrap: {
-    flex: 1
+    flex: 1,
   },
   content: {
     flex: 1,
     alignSelf: 'center',
-    width: SCREEN_WIDTH / 1.2
+    width: SCREEN_WIDTH / 1.2,
   },
   buttonsWrap: {
     display: 'flex',
@@ -115,7 +108,7 @@ const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'space-around',
     marginTop: 40,
-    marginBottom: isIphoneX() ? getBottomSpace() : 30
+    marginBottom: isIphoneX() ? getBottomSpace() : 30,
   },
   paidWrap: {
     position: 'absolute',
@@ -126,12 +119,12 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    zIndex: 1001
+    zIndex: 1001,
   },
   paid: {
     borderWidth: 4,
     height: 41,
     width: 80,
-    borderColor: '#55D1A9'
-  }
+    borderColor: '#55D1A9',
+  },
 })

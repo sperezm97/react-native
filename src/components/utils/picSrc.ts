@@ -40,8 +40,8 @@ export function useChatPicSrc(chat: Chat) {
   const isConversation = chat && chat.type === conversation
   let s = ''
   if (isConversation) {
-    const cid = chat.contact_ids.find(id => id !== user.myid)
-    const contact = contacts.contacts.find(c => c.id === cid)
+    const cid = chat.contact_ids.find((id) => id !== user.myid)
+    const contact = contacts.contacts.find((c) => c.id === cid)
     s = (contact && contact.photo_url) || ''
   } else {
     s = (chat && chat.photo_url) || ''
@@ -60,7 +60,7 @@ export function useChatPicSrc(chat: Chat) {
       }
       const isConversation = chat.type === conversation
       if (isConversation) {
-        const cid = chat.contact_ids.find(id => id !== user.myid)
+        const cid = chat.contact_ids.find((id) => id !== user.myid)
         const src = await contactPicSrc(cid)
         if (src && src.uri) setURI('file://' + src.uri + rnd())
       } else {
@@ -74,7 +74,7 @@ export function useChatPicSrc(chat: Chat) {
 
 const inits = ['pics', 'attachments']
 export async function initPicSrc() {
-  inits.forEach(async i => {
+  inits.forEach(async (i) => {
     const path = dirs.CacheDir + '/' + i
     try {
       const is = await RNFetchBlob.fs.isDir(path)

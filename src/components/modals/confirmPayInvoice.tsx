@@ -15,7 +15,14 @@ export default function ConfirmPayInvoiceWrap({ visible }) {
   const height = Math.round(Dimensions.get('window').height)
 
   return (
-    <ModalWrap onClose={close} visible={visible} onSwipeComplete={close} style={{ ...styles.modal, top: height - 200 }} swipeDirection='down' swipeThreshold={20}>
+    <ModalWrap
+      onClose={close}
+      visible={visible}
+      onSwipeComplete={close}
+      style={{ ...styles.modal, top: height - 200 }}
+      swipeDirection='down'
+      swipeThreshold={20}
+    >
       {visible && <ConfirmPayInvoice close={close} />}
     </ModalWrap>
   )
@@ -50,7 +57,12 @@ function ConfirmPayInvoice({ close }) {
 function Header(props) {
   const { onClose } = props
   return (
-    <View style={{ ...styles.header, ...(props.background && { backgroundColor: props.background }) }}>
+    <View
+      style={{
+        ...styles.header,
+        ...(props.background && { backgroundColor: props.background }),
+      }}
+    >
       <View style={styles.headerLefty}>
         <Text style={styles.headerLabel}>REQUEST:</Text>
         <Text style={styles.headerAmt}>{props.amt || 0}</Text>
@@ -65,7 +77,7 @@ const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-end',
   },
   modal: {
     margin: 0,
@@ -73,7 +85,7 @@ const styles = StyleSheet.create({
     height: 200,
     position: 'absolute',
     width: '100%',
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-end',
   },
   main: {
     backgroundColor: 'white',
@@ -81,7 +93,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 20,
     marginTop: 5,
     flex: 1,
-    width: '100%'
+    width: '100%',
   },
   header: {
     height: 50,
@@ -93,29 +105,29 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   headerLabel: {
     fontWeight: 'bold',
     fontSize: 16,
     color: '#6289FD',
-    marginRight: 8
+    marginRight: 8,
   },
   headerAmt: {
     fontWeight: 'bold',
     fontSize: 20,
-    marginRight: 8
+    marginRight: 8,
   },
   headerSat: {
     fontSize: 12,
-    color: '#aaa'
+    color: '#aaa',
   },
   headerLefty: {
     backgroundColor: 'white',
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    marginLeft: 20
+    marginLeft: 20,
   },
   confirmWrap: {
     width: '100%',
@@ -123,7 +135,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: 100,
     marginTop: 25,
-    marginBottom: 20
+    marginBottom: 20,
   },
   confirm: {
     backgroundColor: '#6289FD',
@@ -133,6 +145,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 20
-  }
+    borderRadius: 20,
+  },
 })

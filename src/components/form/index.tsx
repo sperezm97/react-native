@@ -16,28 +16,18 @@ export default function Form(props) {
   return (
     <Formik
       initialValues={props.initialValues || {}}
-      onSubmit={values => {
+      onSubmit={(values) => {
         props.onSubmit(values)
       }}
       validationSchema={validator(props.schema)}
     >
-      {({
-        handleChange,
-        handleBlur,
-        handleSubmit,
-        values,
-        setFieldValue,
-        errors,
-        dirty,
-        isValid
-      }) => {
+      {({ handleChange, handleBlur, handleSubmit, values, setFieldValue, errors, dirty, isValid }) => {
         const d = !props.forceEnable && (!dirty || !isValid)
         return (
           <View style={styles.wrap}>
             <View style={{ padding: props.nopad ? 0 : 25 }}>
-              {props.schema.map(item => {
-                const readOnly =
-                  props.readOnlyFields && props.readOnlyFields.includes(item.name)
+              {props.schema.map((item) => {
+                const readOnly = props.readOnlyFields && props.readOnlyFields.includes(item.name)
                 return (
                   <Input
                     key={item.name}
@@ -47,7 +37,7 @@ export default function Form(props) {
                     displayOnly={props.displayOnly || readOnly}
                     handleChange={handleChange}
                     handleBlur={handleBlur}
-                    setValue={data => setFieldValue(item.name, data)}
+                    setValue={(data) => setFieldValue(item.name, data)}
                     error={errors[item.name]}
                     numberOfLines={item.numberOfLines}
                   />
@@ -56,11 +46,7 @@ export default function Form(props) {
             </View>
 
             {!props.displayOnly && (
-              <Action
-                type={props.actionType}
-                nopad={props.nopad}
-                rowContent={props.rowContent}
-              >
+              <Action type={props.actionType} nopad={props.nopad} rowContent={props.rowContent}>
                 <Button
                   mode={props.buttonMode}
                   accessibilityLabel={props.buttonAccessibilityLabel || 'form-button'}
@@ -93,7 +79,7 @@ function Action({ type, nopad, rowContent, children }) {
           style={{
             padding: nopad ? 0 : 25,
             flexDirection: 'row',
-            justifyContent: 'center'
+            justifyContent: 'center',
           }}
         >
           {children}
@@ -116,12 +102,12 @@ function Action({ type, nopad, rowContent, children }) {
 Form.defaultProps = {
   actionType: 'Wide',
   buttonMode: 'contained',
-  btnSize: 'large'
+  btnSize: 'large',
 }
 
 function validator(config) {
   const shape = {}
-  config.forEach(field => {
+  config.forEach((field) => {
     if (typeof field === 'object') {
       shape[field.name] = field.validator
     }
@@ -134,10 +120,10 @@ const styles = StyleSheet.create({
   rowWrap: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   rightButton: {
     flexDirection: 'row',
-    justifyContent: 'flex-end'
-  }
+    justifyContent: 'flex-end',
+  },
 })

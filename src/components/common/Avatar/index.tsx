@@ -14,39 +14,39 @@ export default function Avatar(props) {
     newImage: require('../../../assets/avatars/balvin.png'),
     randomImages: [
       {
-        image: require('../../../assets/avatars/balvin.png')
+        image: require('../../../assets/avatars/balvin.png'),
       },
       {
-        image: require('../../../assets/avatars/bieber.png')
+        image: require('../../../assets/avatars/bieber.png'),
       },
       {
-        image: require('../../../assets/avatars/blu.png')
+        image: require('../../../assets/avatars/blu.png'),
       },
       {
-        image: require('../../../assets/avatars/cardi.png')
+        image: require('../../../assets/avatars/cardi.png'),
       },
       {
-        image: require('../../../assets/avatars/cardi2.png')
+        image: require('../../../assets/avatars/cardi2.png'),
       },
       {
-        image: require('../../../assets/avatars/guy.png')
+        image: require('../../../assets/avatars/guy.png'),
       },
       {
-        image: require('../../../assets/avatars/kittle.png')
-      }
-    ]
+        image: require('../../../assets/avatars/kittle.png'),
+      },
+    ],
   })
 
   useEffect(() => {
     setAvatar({
       ...avatar,
-      newImage: avatar.randomImages[Math.floor(Math.random() * 3)].image
+      newImage: avatar.randomImages[Math.floor(Math.random() * 3)].image,
     })
   }, [])
 
   const borderStyles = !borderless && {
     ...styles.image,
-    borderColor: theme.border
+    borderColor: theme.border,
   }
 
   const borderRadius = props.round ? props.round : 25
@@ -64,7 +64,7 @@ export default function Avatar(props) {
           height: size,
           width: size,
           borderRadius,
-          opacity: props.hide ? 0 : 1
+          opacity: props.hide ? 0 : 1,
         }}
       >
         <FastImage
@@ -90,14 +90,14 @@ export default function Avatar(props) {
           width: size,
           borderRadius,
           opacity: props.hide ? 0 : 1,
-          backgroundColor: useAvatarColor(alias)
+          backgroundColor: useAvatarColor(alias),
         }}
       >
         <Text
           style={{
             ...styles.initial,
             letterSpacing: props.big ? 2 : 0,
-            fontSize: props.aliasSize
+            fontSize: props.aliasSize,
           }}
         >
           {initial}
@@ -113,7 +113,7 @@ export default function Avatar(props) {
           height: size,
           width: size,
           borderRadius,
-          opacity: props.hide ? 0 : 1
+          opacity: props.hide ? 0 : 1,
         }}
       >
         <PaperAvatar.Image
@@ -129,23 +129,23 @@ export default function Avatar(props) {
 Avatar.defaultProps = {
   photo: '',
   borderless: true,
-  aliasSize: 15
+  aliasSize: 15,
 }
 
 const styles = StyleSheet.create({
   image: {
-    borderWidth: 1
+    borderWidth: 1,
   },
   aliasWrap: {
     // marginLeft: 8,
     backgroundColor: 'black',
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   initial: {
     color: 'white',
-    marginLeft: 1
+    marginLeft: 1,
     // marginBottom: 1
     // marginRight: 1
   },
@@ -157,5 +157,5 @@ const styles = StyleSheet.create({
     // justifyContent: 'center',
     // position: 'relative',
     // overflow: 'hidden'
-  }
+  },
 })

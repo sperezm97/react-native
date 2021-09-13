@@ -8,13 +8,7 @@ import Ionicon from 'react-native-vector-icons/Ionicons'
 import { useStores, useTheme } from '../../../store'
 import Menu from '../ActionSheet/Menu'
 
-export default function TribeSettings({
-  visible,
-  owner,
-  onCancel,
-  onEditPress,
-  onMembersPress
-}) {
+export default function TribeSettings({ visible, owner, onCancel, onEditPress, onMembersPress }) {
   const { ui } = useStores()
   const theme = useTheme()
   const navigation = useNavigation()
@@ -24,9 +18,7 @@ export default function TribeSettings({
       title: 'Edit Community',
       thumbIcon: (
         <IconButton
-          icon={({ size, color }) => (
-            <AntDesignIcon name='edit' color={color} size={size} />
-          )}
+          icon={({ size, color }) => <AntDesignIcon name='edit' color={color} size={size} />}
           color={theme.white}
           size={18}
         />
@@ -35,8 +27,8 @@ export default function TribeSettings({
       action: () => {
         onCancel()
         onEditPress()
-      }
-    }
+      },
+    },
   ]
 
   const userItems = []
@@ -46,9 +38,7 @@ export default function TribeSettings({
       title: 'Members',
       thumbIcon: (
         <IconButton
-          icon={({ size, color }) => (
-            <FeatherIcon name='users' color={color} size={size} />
-          )}
+          icon={({ size, color }) => <FeatherIcon name='users' color={color} size={size} />}
           color={theme.white}
           size={18}
         />
@@ -57,8 +47,8 @@ export default function TribeSettings({
       action: () => {
         onCancel()
         onMembersPress()
-      }
-    }
+      },
+    },
   ]
 
   const items = owner ? [...commonItems, ...ownerItems] : [...commonItems, ...userItems]

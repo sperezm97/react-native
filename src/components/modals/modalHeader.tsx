@@ -8,10 +8,35 @@ export default function Header(props) {
   const { title, onClose, leftArrow } = props
   const theme = useTheme()
   return (
-    <View style={{ ...styles.header, ...(props.background && { backgroundColor: props.background }) }}>
-      <View style={styles.headerLefty}>{leftArrow && <IconButton icon='arrow-left' color={theme.icon} size={22} style={{ marginRight: 14, marginTop: 8 }} onPress={() => onClose()} />}</View>
+    <View
+      style={{
+        ...styles.header,
+        ...(props.background && { backgroundColor: props.background }),
+      }}
+    >
+      <View style={styles.headerLefty}>
+        {leftArrow && (
+          <IconButton
+            icon='arrow-left'
+            color={theme.icon}
+            size={22}
+            style={{ marginRight: 14, marginTop: 8 }}
+            onPress={() => onClose()}
+          />
+        )}
+      </View>
       <Text style={{ ...styles.headerTitle, color: theme.text }}>{title}</Text>
-      <View style={styles.headerLefty}>{!leftArrow && <IconButton icon='close' color={theme.icon} size={22} style={{ marginRight: 14, marginTop: 8 }} onPress={() => onClose()} />}</View>
+      <View style={styles.headerLefty}>
+        {!leftArrow && (
+          <IconButton
+            icon='close'
+            color={theme.icon}
+            size={22}
+            style={{ marginRight: 14, marginTop: 8 }}
+            onPress={() => onClose()}
+          />
+        )}
+      </View>
     </View>
   )
 }
@@ -25,16 +50,16 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   headerTitle: {
     fontWeight: 'bold',
-    fontSize: 16
+    fontSize: 16,
   },
   headerLefty: {
     width: 51,
     height: 50,
     borderRadius: 18,
-    marginLeft: 5
-  }
+    marginLeft: 5,
+  },
 })

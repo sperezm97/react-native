@@ -49,7 +49,7 @@ export default function PubKey() {
 
 const styles = StyleSheet.create({
   wrap: {
-    flex: 1
+    flex: 1,
   },
   content: {
     height: 500,
@@ -60,30 +60,30 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     paddingTop: 100,
     paddingBottom: 60,
-    borderRadius: 20
+    borderRadius: 20,
   },
   qrWrap: {
     display: 'flex',
     flexDirection: 'column',
     width: '100%',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   pubkeyText: {
     padding: 20,
-    width: '100%'
+    width: '100%',
   },
   buttonsWrap: {
     marginTop: 40,
     display: 'flex',
     flexDirection: 'row',
     width: '100%',
-    justifyContent: 'space-around'
+    justifyContent: 'space-around',
   },
   button: {
     borderRadius: 23,
     display: 'flex',
     justifyContent: 'center',
-    width: 120
-  }
+    width: 120,
+  },
 })

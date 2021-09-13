@@ -10,7 +10,7 @@ const keys = [
   [1, 2, 3],
   [4, 5, 6],
   [7, 8, 9],
-  ['_', 0, 'back']
+  ['_', 0, 'back'],
 ]
 
 export default function NumKey(props) {
@@ -25,20 +25,20 @@ export default function NumKey(props) {
         ...styles.wrap,
         backgroundColor: props.dark ? theme.black : theme.bg,
         paddingTop: inline ? 0 : 15,
-        paddingBottom: inline ? 0 : isIphoneX() ? getBottomSpace() : 0
+        paddingBottom: inline ? 0 : isIphoneX() ? getBottomSpace() : 0,
       }}
     >
       <View
         style={{
           height: h,
           maxHeight: h,
-          minHeight: h
+          minHeight: h,
         }}
       >
         {keys.map((row, i) => {
           return (
             <View key={i} style={{ ...styles.row }}>
-              {row.map(key => {
+              {row.map((key) => {
                 if (key === '_') return <View key={key} style={styles.empty} />
                 if (key === 'back') {
                   return (
@@ -66,11 +66,7 @@ export default function NumKey(props) {
                       if (props.onKeyPress) props.onKeyPress(key)
                     }}
                   >
-                    <Typography
-                      size={24}
-                      color={props.dark ? theme.white : theme.subtitle}
-                      fw='500'
-                    >
+                    <Typography size={24} color={props.dark ? theme.white : theme.subtitle} fw='500'>
                       {key}
                     </Typography>
                   </TouchableOpacity>
@@ -85,7 +81,7 @@ export default function NumKey(props) {
 }
 
 NumKey.defaultProps = {
-  dark: false
+  dark: false,
 }
 
 const styles = StyleSheet.create({
@@ -99,21 +95,21 @@ const styles = StyleSheet.create({
     width: '100%',
     display: 'flex',
     flexDirection: 'row',
-    height: '25%'
+    height: '25%',
   },
   key: {
     width: '33.33%',
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   empty: {
-    width: '33.33%'
+    width: '33.33%',
   },
   backWrap: {
     width: '33.33%',
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center'
-  }
+    justifyContent: 'center',
+  },
 })

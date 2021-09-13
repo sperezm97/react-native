@@ -18,7 +18,7 @@ export default function Boost(props) {
     circleW = 35,
     rippleH = 45,
     rippleW = 45,
-    rocketSize = 18
+    rocketSize = 18,
   } = props
 
   function go() {
@@ -26,13 +26,13 @@ export default function Boost(props) {
       Animated.timing(size, {
         toValue: 1.5,
         duration: 75,
-        useNativeDriver: true
+        useNativeDriver: true,
       }),
       Animated.timing(size, {
         toValue: 1,
         duration: 500,
-        useNativeDriver: true
-      })
+        useNativeDriver: true,
+      }),
     ]).start()
     onPress()
   }
@@ -45,11 +45,16 @@ export default function Boost(props) {
       borderless
     >
       <View
-        style={{ ...styles.circle, backgroundColor: bg, height: circleH, width: circleW }}
+        style={{
+          ...styles.circle,
+          backgroundColor: bg,
+          height: circleH,
+          width: circleW,
+        }}
       >
         <Animated.View
           style={{
-            transform: [{ scale: size }]
+            transform: [{ scale: size }],
           }}
         >
           <Ionicon name='rocket-outline' color={color} size={rocketSize} />
@@ -65,13 +70,13 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   circle: {
     borderRadius: 50,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
-    alignItems: 'center'
-  }
+    alignItems: 'center',
+  },
 })

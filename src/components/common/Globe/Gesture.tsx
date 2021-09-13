@@ -15,7 +15,13 @@ const Gesture = ({ rotateX, rotateY }: GestureProps) => {
   const { gestureHandler, translation, velocity, state } = usePanGestureHandler()
   const x = withDecay({ value: translation.x, velocity: velocity.x, state })
   const y = withDecay({ value: translation.y, velocity: velocity.y, state })
-  useCode(() => [set(rotateY, multiply(divide(x, width), 2 * Math.PI)), set(rotateX, multiply(divide(y, height), 2 * Math.PI))], [rotateX, rotateY, x, y])
+  useCode(
+    () => [
+      set(rotateY, multiply(divide(x, width), 2 * Math.PI)),
+      set(rotateX, multiply(divide(y, height), 2 * Math.PI)),
+    ],
+    [rotateX, rotateY, x, y]
+  )
   return (
     <PanGestureHandler {...gestureHandler}>
       <Animated.View style={StyleSheet.absoluteFill} />

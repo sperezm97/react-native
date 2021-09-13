@@ -60,7 +60,7 @@ class ContactStore {
       if (!r) return
       if (r.contacts) {
         this.contacts = r.contacts
-        const me = r.contacts.find(c => c.is_owner)
+        const me = r.contacts.find((c) => c.is_owner)
         if (me) {
           userStore.setMyID(me.id)
           userStore.setAlias(me.alias)
@@ -77,14 +77,14 @@ class ContactStore {
       if (r.subscriptions) subStore.setSubs(r.subscriptions)
 
       return r
-    } catch (e) { }
+    } catch (e) {}
   }
 
   @action
   async deleteContact(id) {
     try {
       await relay.del(`contacts/${id}`)
-      this.contacts = this.contacts.filter(c => c.id !== id)
+      this.contacts = this.contacts.filter((c) => c.id !== id)
     } catch (e) {
       console.log(e)
     }
@@ -94,15 +94,14 @@ class ContactStore {
   async addContact(v) {
     try {
       if (!v.public_key) {
-        throw new Error("Not able to addContact, public key is missing.");
+        throw new Error('Not able to addContact, public key is missing.')
       }
-      const r = await relay.post("contacts", { ...v, status: 1 }, "", {
+      const r = await relay.post('contacts', { ...v, status: 1 }, '', {
         // TODO: Create a util for this call
-        exceptionCallback: async (e) =>
-          invite.post("notify", { error: e }, "", { rawValue: true }),
-      });
+        exceptionCallback: async (e) => invite.post('notify', { error: e }, '', { rawValue: true }),
+      })
       if (!r) return
-      const existingContact = this.contacts.find(c => c.id === r.id)
+      const existingContact = this.contacts.find((c) => c.id === r.id)
       if (existingContact) {
         if (r.alias) existingContact.alias = r.alias
         if (r.photo_url) existingContact.photo_url = r.photo_url
@@ -112,22 +111,20 @@ class ContactStore {
       }
       return r
     } catch (e) {
-      console.log("[Error - addContact]", e)
+      console.log('[Error - addContact]', e)
     }
-    return r
   }
 
   @action
   async updateContact(id, v) {
     try {
-      const r = await relay.put(`contacts/${id}`, v, "", {
+      const r = await relay.put(`contacts/${id}`, v, '', {
         // TODO: Create a util for this call
-        exceptionCallback: async (e) =>
-          invite.post("notify", { error: e }, "", { rawValue: true }),
-      });
+        exceptionCallback: async (e) => invite.post('notify', { error: e }, '', { rawValue: true }),
+      })
       if (!r) return
       const cs = [...this.contacts]
-      this.contacts = cs.map(c => {
+      this.contacts = cs.map((c) => {
         if (c.id === id) {
           return { ...c, ...v }
         }
@@ -141,7 +138,7 @@ class ContactStore {
   @action
   updatePhotoURI(id, photo_uri) {
     const cs = [...this.contacts]
-    this.contacts = cs.map(c => {
+    this.contacts = cs.map((c) => {
       if (c.id === id) {
         return { ...c, photo_uri }
       }
@@ -151,7 +148,7 @@ class ContactStore {
 
   @action
   async contactUpdated(contact) {
-    const ei = this.contacts.findIndex(c => c.id === contact.id)
+    const ei = this.contacts.findIndex((c) => c.id === contact.id)
     if (ei >= 0) {
       this.contacts[ei] = contact
     } else {
@@ -174,7 +171,7 @@ class ContactStore {
   @action
   async exchangeKeys(id) {
     try {
-      const r = await relay.post(`contacts/${id}/keys`, { })
+      const r = await relay.post(`contacts/${id}/keys`, {})
       console.log('r', r)
     } catch (e) {
       console.log(e)
@@ -186,7 +183,7 @@ class ContactStore {
     try {
       await relay.post('invites', {
         nickname,
-        welcome_message: welcome_message || 'Welcome to Zion!'
+        welcome_message: welcome_message || 'Welcome to Zion!',
       })
       this.getContacts()
     } catch (e) {
@@ -196,7 +193,7 @@ class ContactStore {
 
   @action
   updateInvite(inv: Invite) {
-    const inviteContact = this.contacts.find(c => {
+    const inviteContact = this.contacts.find((c) => {
       return c.invite && c.invite.id === inv.id
     })
     if (inviteContact) {
@@ -208,7 +205,7 @@ class ContactStore {
   @action
   async payInvite(invite_string) {
     try {
-      const inv = await relay.post(`invites/${invite_string}/pay`, { })
+      const inv = await relay.post(`invites/${invite_string}/pay`, {})
       if (!inv) return
       console.log('inv', inv)
 

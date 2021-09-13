@@ -23,7 +23,7 @@ export default function Navigation() {
         component={Account}
         listeners={{ focus: () => setTint(theme.dark ? 'dark' : 'light') }}
         options={{
-          headerShown: false
+          headerShown: false,
         }}
       />
       <Stack.Screen
@@ -31,7 +31,7 @@ export default function Navigation() {
         component={AccountDetails}
         listeners={{ focus: () => setTint(theme.dark ? 'dark' : 'light') }}
         options={{
-          headerShown: false
+          headerShown: false,
         }}
       />
       <Stack.Screen
@@ -39,7 +39,7 @@ export default function Navigation() {
         component={Network}
         listeners={{ focus: () => setTint(theme.dark ? 'dark' : 'light') }}
         options={{
-          headerShown: false
+          headerShown: false,
         }}
       />
       <Stack.Screen
@@ -47,7 +47,7 @@ export default function Navigation() {
         component={Security}
         listeners={{ focus: () => setTint(theme.dark ? 'dark' : 'light') }}
         options={{
-          headerShown: false
+          headerShown: false,
         }}
       />
       <Stack.Screen
@@ -55,7 +55,7 @@ export default function Navigation() {
         component={Appearance}
         listeners={{ focus: () => setTint(theme.dark ? 'dark' : 'light') }}
         options={{
-          headerShown: false
+          headerShown: false,
         }}
       />
       <Stack.Screen
@@ -63,7 +63,7 @@ export default function Navigation() {
         component={PublicKey}
         listeners={{ focus: () => setTint(theme.dark ? 'dark' : 'light') }}
         options={{
-          headerShown: false
+          headerShown: false,
         }}
       />
 
@@ -72,7 +72,7 @@ export default function Navigation() {
         component={Support}
         listeners={{ focus: () => setTint(theme.dark ? 'dark' : 'light') }}
         options={{
-          headerShown: false
+          headerShown: false,
         }}
       />
     </Stack.Navigator>

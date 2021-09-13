@@ -1,8 +1,4 @@
-import {
-  DefaultTheme,
-  Provider as PaperProvider,
-  configureFonts
-} from 'react-native-paper'
+import { DefaultTheme, Provider as PaperProvider, configureFonts } from 'react-native-paper'
 
 import { useStores, useTheme } from '../store'
 import { Font } from '../types'
@@ -11,21 +7,21 @@ const fontConfig = {
   default: {
     regular: <Font>{
       fontFamily: 'Proxima Nova Regular',
-      fontWeight: '400'
+      fontWeight: '400',
     },
     medium: <Font>{
       fontFamily: 'Proxima Nova Regular',
-      fontWeight: '400'
+      fontWeight: '400',
     },
     light: <Font>{
       fontFamily: 'Proxima Nova Regular',
-      fontWeight: '400'
+      fontWeight: '400',
     },
     thin: <Font>{
       fontFamily: 'Proxima Nova Regular',
-      fontWeight: '400'
-    }
-  }
+      fontWeight: '400',
+    },
+  },
 }
 
 export function paperTheme(theme) {
@@ -41,9 +37,9 @@ export function paperTheme(theme) {
       placeholder: theme.placeholder,
       background: theme.bg,
       surface: theme.main,
-      error: theme.error
+      error: theme.error,
     },
-    dark: theme.dark
+    dark: theme.dark,
   }
 }
 // fontFamily: 'Icomoon'

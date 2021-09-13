@@ -22,7 +22,7 @@ class MemeStore {
   lastAuthenticated: number
 
   @action getDefaultServer(): Server {
-    const server = this.servers.find(s => s.host === DEFAULT_MEME_SERVER)
+    const server = this.servers.find((s) => s.host === DEFAULT_MEME_SERVER)
 
     return server
   }
@@ -31,11 +31,9 @@ class MemeStore {
   async authenticateAll() {
     const lastAuth = this.lastAuthenticated || 0
     const days = 0 // one week
-    const isOld = moment(new Date(lastAuth)).isBefore(
-      moment().subtract(days * 24 - 1, 'hours')
-    )
+    const isOld = moment(new Date(lastAuth)).isBefore(moment().subtract(days * 24 - 1, 'hours'))
     if (isOld) {
-      await asyncForEach(this.servers, async s => {
+      await asyncForEach(this.servers, async (s) => {
         await this.authenticate(s)
       })
       this.lastAuthenticated = new Date().getTime()
@@ -62,7 +60,7 @@ class MemeStore {
       {
         id: r.id,
         sig: r2.sig,
-        pubkey
+        pubkey,
       },
       'application/x-www-form-urlencoded'
     )

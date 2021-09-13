@@ -27,11 +27,13 @@ const Tribe = ({ route }) => {
   const [index, setIndex] = React.useState(0)
   const [routes] = React.useState([
     { key: 'first', title: 'Media' },
-    { key: 'second', title: 'About' }
+    { key: 'second', title: 'About' },
   ])
 
-  const tribe =
-    useMemo(() => tribes.find(t => t.uuid === route.params.tribe.uuid) || route.params.tribe, [tribes.length])
+  const tribe = useMemo(
+    () => tribes.find((t) => t.uuid === route.params.tribe.uuid) || route.params.tribe,
+    [tribes.length]
+  )
 
   useEffect(() => {
     chats.getTribes()
@@ -66,12 +68,7 @@ const Tribe = ({ route }) => {
 
   return (
     <SafeAreaView style={{ ...styles.wrap, backgroundColor: theme.bg }}>
-      <BackHeader
-        navigate={navigationBack}
-        action={
-          <TribeHeader tribe={tribe} openDialog={openDialog} />
-        }
-      />
+      <BackHeader navigate={navigationBack} action={<TribeHeader tribe={tribe} openDialog={openDialog} />} />
 
       <ScrollView>
         <View style={styles.content}>
@@ -81,7 +78,7 @@ const Tribe = ({ route }) => {
             navigationState={{ index, routes }}
             renderScene={renderScene}
             onIndexChange={setIndex}
-            renderTabBar={props => <Tabs {...props} />}
+            renderTabBar={(props) => <Tabs {...props} />}
           />
         </View>
       </ScrollView>
@@ -102,9 +99,7 @@ function TribeHeader({ tribe, openDialog }) {
 
   return (
     <IconButton
-      icon={() => (
-        <MaterialCommunityIcon name='dots-horizontal' color={theme.icon} size={30} />
-      )}
+      icon={() => <MaterialCommunityIcon name='dots-horizontal' color={theme.icon} size={30} />}
       onPress={openDialog}
     />
   )
@@ -112,15 +107,15 @@ function TribeHeader({ tribe, openDialog }) {
 
 const styles = StyleSheet.create({
   wrap: {
-    flex: 1
+    flex: 1,
     // paddingBottom: 30
   },
   content: {
     flex: 1,
-    paddingTop: 10
+    paddingTop: 10,
     // paddingRight: 14,
     // paddingLeft: 14
-  }
+  },
 })
 
 export default observer(Tribe)

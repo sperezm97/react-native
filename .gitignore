@@ -1,4 +1,5 @@
-dist 
+.env
+dist
 
 notes.md
 todo.md

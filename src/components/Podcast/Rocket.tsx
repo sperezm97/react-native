@@ -13,27 +13,22 @@ export default function Rocket({ onPress }) {
       Animated.timing(size, {
         toValue: 2.5,
         duration: 75,
-        useNativeDriver: true
+        useNativeDriver: true,
       }),
       Animated.timing(size, {
         toValue: 1,
         duration: 500,
-        useNativeDriver: true
-      })
+        useNativeDriver: true,
+      }),
     ]).start()
     onPress()
   }
   return (
-    <TouchableRipple
-      style={styles.rocketWrap}
-      rippleColor={theme.primary}
-      onPress={go}
-      borderless
-    >
+    <TouchableRipple style={styles.rocketWrap} rippleColor={theme.primary} onPress={go} borderless>
       <View style={{ ...styles.circle, backgroundColor: theme.primary }}>
         <Animated.View
           style={{
-            transform: [{ scale: size }]
+            transform: [{ scale: size }],
           }}
         >
           <CustomIcon name='fireworks' color={theme.white} size={20} />
@@ -52,7 +47,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 5
+    marginRight: 5,
   },
   circle: {
     height: 30,
@@ -61,6 +56,6 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
-    alignItems: 'center'
-  }
+    alignItems: 'center',
+  },
 })

@@ -19,7 +19,7 @@ export default function Auth() {
           component={Home}
           listeners={{ focus: () => setTint('dark') }}
           options={{
-            headerShown: false
+            headerShown: false,
           }}
         />
         <AuthRootStack.Screen
@@ -27,7 +27,7 @@ export default function Auth() {
           component={Invite}
           listeners={{ focus: () => setTint('dark') }}
           options={{
-            headerShown: false
+            headerShown: false,
           }}
         />
         <AuthRootStack.Screen
@@ -35,7 +35,7 @@ export default function Auth() {
           component={Onboard}
           listeners={{ focus: () => setTint('dark') }}
           options={{
-            headerShown: false
+            headerShown: false,
           }}
         />
       </AuthRootStack.Navigator>

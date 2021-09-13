@@ -3,7 +3,8 @@ import { contactStore } from './contacts'
 import { uiStore } from './ui'
 import { chatStore } from './chats'
 
-export function contact(data) { // on contact_key msg
+export function contact(data) {
+  // on contact_key msg
   log('[ws] contact', data)
   contactStore.contactUpdated(data.response)
 }
@@ -28,61 +29,61 @@ export function message(data) {
 }
 
 export function confirmation(data) {
-  log("[ws] confirmation", data)
+  log('[ws] confirmation', data)
   msgStore.setMessageAsReceived(data.response)
 }
 
 export function invoice(data) {
-  log("[ws] invoice", data)
+  log('[ws] invoice', data)
   msgStore.gotNewMessageFromWS(data.response)
 }
 
 export function payment(data) {
-  log("[ws] payment", data)
+  log('[ws] payment', data)
   msgStore.invoicePaid(data.response)
 }
 
 export function cancellation(data) {
-  log("[ws] cancellation", data)
+  log('[ws] cancellation', data)
 }
 
 export function direct_payment(data) {
-  log("[ws] direct_payment", data)
+  log('[ws] direct_payment', data)
   msgStore.gotNewMessageFromWS(data.response)
 }
 
 export function attachment(data) {
-  log("[ws] attachment", data)
+  log('[ws] attachment', data)
   msgStore.gotNewMessageFromWS(data.response)
 }
 
 export function purchase(data) {
-  log("[ws] purchase", data)
+  log('[ws] purchase', data)
   msgStore.gotNewMessageFromWS(data.response)
 }
 
 export function purchase_accept(data) {
-  log("[ws] purchase_accept", data)
+  log('[ws] purchase_accept', data)
   msgStore.gotNewMessageFromWS(data.response)
 }
 
 export function purchase_deny(data) {
-  log("[ws] purchase_deny", data)
+  log('[ws] purchase_deny', data)
   msgStore.gotNewMessageFromWS(data.response)
 }
 
 export function keysend(data) {
-  log("[ws] keysend", data)
+  log('[ws] keysend', data)
   msgStore.gotNewMessageFromWS(data.response)
 }
 
 export function group_create(data) {
-  log("[ws] group_create", data)
+  log('[ws] group_create', data)
   chatStore.gotChat(data.response.chat)
 }
 
 export function group_join(data) {
-  log("[ws] group_join", data)
+  log('[ws] group_join', data)
   const msg = data.response && data.response.message
   if (msg && data.response.chat) {
     msg.chat = data.response.chat
@@ -91,7 +92,7 @@ export function group_join(data) {
 }
 
 export function group_leave(data) {
-  log("[ws] group_leave", data)
+  log('[ws] group_leave', data)
   const msg = data.response && data.response.message
   if (msg && data.response.chat) {
     msg.chat = data.response.chat

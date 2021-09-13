@@ -27,7 +27,7 @@ export default function BackHeader({ title, screen, action, navigate, border }) 
         ...styles.appBar,
         backgroundColor: theme.bg,
         borderBottomColor: theme.border,
-        borderBottomWidth: border ? 1 : 0
+        borderBottomWidth: border ? 1 : 0,
       }}
     >
       <TouchableOpacity onPress={onBack} style={{ ...styles.left }}>
@@ -49,7 +49,7 @@ BackHeader.defaultProps = {
   action: null,
   navigate: null,
   title: '',
-  border: false
+  border: false,
 }
 
 const styles = StyleSheet.create({
@@ -58,14 +58,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     position: 'relative',
-    height: 60
+    height: 60,
   },
   left: {
     position: 'absolute',
-    left: 10
+    left: 10,
   },
   right: {
     position: 'absolute',
-    right: 10
-  }
+    right: 10,
+  },
 })

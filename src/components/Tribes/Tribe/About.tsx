@@ -19,10 +19,7 @@ function About({ tribe }) {
   const theme = useTheme()
 
   return useObserver(() => {
-    const { createdDate, lastActiveDate } = useTribeHistory(
-      tribe.created,
-      tribe.last_active
-    )
+    const { createdDate, lastActiveDate } = useTribeHistory(tribe.created, tribe.last_active)
 
     return (
       <>
@@ -77,7 +74,7 @@ function Tags(props) {
     theTribe.tags = tags
     await chats.editTribe({
       ...theTribe,
-      id: theTribe.chat.id
+      id: theTribe.chat.id,
     })
 
     chats.getTribes()
@@ -86,7 +83,7 @@ function Tags(props) {
 
   return useObserver(() => {
     const tribes = useTribes()
-    const tribe = tribes.find(t => t.uuid === theTribe.uuid) || theTribe
+    const tribe = tribes.find((t) => t.uuid === theTribe.uuid) || theTribe
 
     return (
       <>
@@ -99,20 +96,12 @@ function Tags(props) {
             </BoxHeader>
             <>
               {tribe.tags && tribe.tags.length > 0 ? (
-                <TribeTags
-                  tags={tribe.tags}
-                  displayOnly={true}
-                  containerStyle={{ paddingTop: 18 }}
-                />
+                <TribeTags tags={tribe.tags} displayOnly={true} containerStyle={{ paddingTop: 18 }} />
               ) : (
                 <Empty text='No topics found.' />
               )}
             </>
-            <DialogWrap
-              title='Edit Topics'
-              visible={topicsEditDialog}
-              onDismiss={() => setTopicsEditDialog(false)}
-            >
+            <DialogWrap title='Edit Topics' visible={topicsEditDialog} onDismiss={() => setTopicsEditDialog(false)}>
               <TribeTags tags={tribe.tags} finish={finish} />
             </DialogWrap>
           </>
@@ -121,11 +110,7 @@ function Tags(props) {
             {tribe.tags.length > 0 && (
               <>
                 <BoxHeader title='Topics in this Community' />
-                <TribeTags
-                  tags={tribe.tags}
-                  displayOnly={true}
-                  containerStyle={{ paddingTop: 18 }}
-                />
+                <TribeTags tags={tribe.tags} displayOnly={true} containerStyle={{ paddingTop: 18 }} />
               </>
             )}
           </>
@@ -141,27 +126,27 @@ const styles = StyleSheet.create({
     paddingTop: 30,
     paddingBottom: 30,
     paddingRight: 18,
-    paddingLeft: 18
+    paddingLeft: 18,
   },
   description: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 25
+    marginBottom: 25,
   },
   dContent: {
     display: 'flex',
     flexDirection: 'column',
     width: '80%',
-    paddingLeft: 14
+    paddingLeft: 14,
   },
   badgeContainer: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
     flexWrap: 'wrap',
-    width: '100%'
-  }
+    width: '100%',
+  },
 })
 
 export default React.memo(About)

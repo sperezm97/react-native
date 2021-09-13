@@ -25,42 +25,76 @@ export default function MemberRequest(props) {
     await props.onApproveOrDenyMember(props.sender, status, props.id)
     setLoadingStatus('')
   }
-  return <View style={styles.row}>
-    <View style={{ ...styles.wrap, backgroundColor:theme.deep, borderColor:theme.border, width: props.isTribeOwner ? 280 : 'auto' }}>
-      <Text style={{...styles.text,color:theme.title}} numberOfLines={2}>{msg}</Text>
-      {props.isTribeOwner && <View style={styles.right}>
-        <ApproveButton disabled={typ === 'member_reject'}
-          onPress={() => press('approved')} loading={loadingStatus === 'approved'}
-        />
-        <RejectButton disabled={typ === 'member_approve'}
-          onPress={() => press('rejected')} loading={loadingStatus === 'rejected'}
-        />
-      </View>}
-      {!props.isTribeOwner && typ === 'member_reject' && <View style={styles.del}>
-        <Button color="#ff5e61" style={{ width: 90, borderRadius: 5 }} labelStyle={{ color: 'white' }} mode="contained"
-          onPress={props.onDeleteChat}>
-          Delete
-        </Button>
-      </View>}
+  return (
+    <View style={styles.row}>
+      <View
+        style={{
+          ...styles.wrap,
+          backgroundColor: theme.deep,
+          borderColor: theme.border,
+          width: props.isTribeOwner ? 280 : 'auto',
+        }}
+      >
+        <Text style={{ ...styles.text, color: theme.title }} numberOfLines={2}>
+          {msg}
+        </Text>
+        {props.isTribeOwner && (
+          <View style={styles.right}>
+            <ApproveButton
+              disabled={typ === 'member_reject'}
+              onPress={() => press('approved')}
+              loading={loadingStatus === 'approved'}
+            />
+            <RejectButton
+              disabled={typ === 'member_approve'}
+              onPress={() => press('rejected')}
+              loading={loadingStatus === 'rejected'}
+            />
+          </View>
+        )}
+        {!props.isTribeOwner && typ === 'member_reject' && (
+          <View style={styles.del}>
+            <Button
+              color='#ff5e61'
+              style={{ width: 90, borderRadius: 5 }}
+              labelStyle={{ color: 'white' }}
+              mode='contained'
+              onPress={props.onDeleteChat}
+            >
+              Delete
+            </Button>
+          </View>
+        )}
+      </View>
     </View>
-  </View>
+  )
 }
 
 export function ApproveButton({ onPress, disabled, loading }) {
-  return <IconButton icon={loading ? 'loading' : 'check'}
-    color="white" style={{ backgroundColor: '#3dba83' }}
-    disabled={disabled} onPress={() => {
-      if (!disabled) onPress()
-    }}
-  />
+  return (
+    <IconButton
+      icon={loading ? 'loading' : 'check'}
+      color='white'
+      style={{ backgroundColor: '#3dba83' }}
+      disabled={disabled}
+      onPress={() => {
+        if (!disabled) onPress()
+      }}
+    />
+  )
 }
 export function RejectButton({ onPress, disabled, loading }) {
-  return <IconButton icon={loading ? 'loading' : 'close'}
-    color="white" style={{ backgroundColor: '#ff5e61' }}
-    disabled={disabled} onPress={() => {
-      if (!disabled) onPress()
-    }}
-  />
+  return (
+    <IconButton
+      icon={loading ? 'loading' : 'close'}
+      color='white'
+      style={{ backgroundColor: '#ff5e61' }}
+      disabled={disabled}
+      onPress={() => {
+        if (!disabled) onPress()
+      }}
+    />
+  )
 }
 
 const styles = StyleSheet.create({
@@ -101,11 +135,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   button: {
-    height: 32, width: 32,
+    height: 32,
+    width: 32,
     borderRadius: 24,
   },
   del: {
     width: 85,
     flexShrink: 0,
-  }
+  },
 })

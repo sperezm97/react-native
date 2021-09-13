@@ -1,27 +1,27 @@
 import { hasData, get, update, initialLoad } from './api'
 import { Platform } from 'react-native'
-import {Msg} from '../store/msg'
-import {orgMsgsFromRealm} from '../store/msgHelpers'
+import { Msg } from '../store/msg'
+import { orgMsgsFromRealm } from '../store/msgHelpers'
 
-export {hasData, initialLoad}
-/*** 
+export { hasData, initialLoad }
+/***
  * Update Msg schema in realm
-***/
+ ***/
 interface Data {
-  messages: {[k: number]: Msg[]},
-  lastSeen: {[k: number]: number},
-  lastFetched: number,
+  messages: { [k: number]: Msg[] }
+  lastSeen: { [k: number]: number }
+  lastFetched: number
 }
 
 export function getRealmMessages() {
-  const ret:Data = {
+  const ret: Data = {
     messages: {},
     lastSeen: {},
-    lastFetched: new Date().getTime()
+    lastFetched: new Date().getTime(),
   }
   const hasRealmData = hasData()
   if (hasRealmData.msg) {
-    const [realmMsg] = get({ schema: 'Msg' });
+    const [realmMsg] = get({ schema: 'Msg' })
     const parsedData = JSON.parse(JSON.stringify(realmMsg))
     if (parsedData.messages) {
       const organizedMsgs = orgMsgsFromRealm(parsedData.messages)
@@ -38,14 +38,14 @@ export function getRealmMessages() {
   return ret
 }
 
-export function updateRealmMsg(data:Data) {
-  if(Platform.OS==='web') return
+export function updateRealmMsg(data: Data) {
+  if (Platform.OS === 'web') return
 
-  console.log("UPDATE DATA IN REALM NOW!")
+  console.log('UPDATE DATA IN REALM NOW!')
 
-  const hasRealmData = hasData();
+  const hasRealmData = hasData()
   if (hasRealmData.msg) {
-    const allMessages: any = [];
+    const allMessages: any = []
     Object.values(data.messages).forEach((c: any) => {
       c.forEach((msg: any) => {
         allMessages.push({
@@ -53,12 +53,12 @@ export function updateRealmMsg(data:Data) {
           amount: parseInt(msg.amount) || 0,
         })
       })
-    });
+    })
 
     const lastSeen = Object.keys(data.lastSeen).map((key) => ({
       key: parseInt(key),
       seen: data.lastSeen[key],
-    }));
+    }))
 
     const msgStructure = {
       messages: allMessages,
@@ -69,6 +69,6 @@ export function updateRealmMsg(data:Data) {
     update({
       schema: 'Msg',
       body: { ...msgStructure },
-    });
+    })
   }
 }

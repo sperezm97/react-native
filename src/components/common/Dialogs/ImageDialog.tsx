@@ -10,9 +10,9 @@ export default function ImageDialog({ visible, onCancel, onSnap, onPick, setImag
   async function pickImage() {
     ImagePicker.launchImageLibrary(
       {
-        mediaType: 'photo'
+        mediaType: 'photo',
       },
-      result => {
+      (result) => {
         setImageDialog(false)
         if (!result.didCancel) {
           onPick(result)
@@ -32,15 +32,15 @@ export default function ImageDialog({ visible, onCancel, onSnap, onPick, setImag
         setTimeout(() => {
           setCameraOpen(true)
         }, 400)
-      }
+      },
     },
     {
       id: 2,
       label: 'Photo Library',
       onPress: () => {
         pickImage()
-      }
-    }
+      },
+    },
   ]
 
   function handleOnSnap(result) {

@@ -39,12 +39,9 @@ export function getTags(num = 6) {
 
 export function isIphoneXorAbove() {
   const d = Dimensions.get('window')
-  return (
-    Platform.OS === 'ios' &&
-    (d.height === 812 || d.width === 812 || d.height === 896 || d.width === 896)
-  )
+  return Platform.OS === 'ios' && (d.height === 812 || d.width === 812 || d.height === 896 || d.width === 896)
 }
 
 export async function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms))
+  return new Promise((resolve) => setTimeout(resolve, ms))
 }

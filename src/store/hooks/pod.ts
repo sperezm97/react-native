@@ -8,7 +8,7 @@ export function useIncomingPayments(podID, myid) {
   if (podID) {
     incomingPayments = msg.filterMessagesByContent(0, `"feedID":${podID}`)
     if (incomingPayments) {
-      incomingPayments.forEach(m => {
+      incomingPayments.forEach((m) => {
         if (m.sender !== myid && m.amount) {
           earned += Number(m.amount)
         }

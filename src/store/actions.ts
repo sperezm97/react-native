@@ -23,7 +23,7 @@ export default async function actions(action: string) {
       escrow_amount: 0,
       escrow_time: 0,
       unlisted: false,
-      is_private: false
+      is_private: false,
     })
   }
 
@@ -42,7 +42,7 @@ export default async function actions(action: string) {
       amount: r.price_to_join,
       owner_alias: r.owner_alias,
       owner_pubkey: r.owner_pubkey,
-      is_private: false
+      is_private: false,
     })
   }
 }

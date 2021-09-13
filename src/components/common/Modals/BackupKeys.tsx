@@ -30,8 +30,8 @@ export default function BackupKeys({ visible, close }) {
 
       const myContactKey = user.contactKey
 
-      const meContact = contacts.contacts.find(c => c.id === user.myid) || {
-        contact_key: myContactKey
+      const meContact = contacts.contacts.find((c) => c.id === user.myid) || {
+        contact_key: myContactKey,
       }
 
       let pub = myContactKey
@@ -69,7 +69,7 @@ export default function BackupKeys({ visible, close }) {
 
   return useObserver(() => (
     <ModalWrap visible={visible} onClose={close} noHeader>
-      <PIN forceEnterMode={true} onFinish={pin => finish(pin)} />
+      <PIN forceEnterMode={true} onFinish={(pin) => finish(pin)} />
     </ModalWrap>
   ))
 }

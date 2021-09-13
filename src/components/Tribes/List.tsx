@@ -32,15 +32,13 @@ export default function List(props) {
             showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}
             data={data}
-            keyExtractor={item => item.uuid}
+            keyExtractor={(item) => item.uuid}
             renderItem={renderItem}
             // ListHeaderComponent={listHeader}
             ListEmptyComponent={listEmpty}
             refreshing={refreshing}
             onRefresh={onRefresh && onRefresh}
-            refreshControl={
-              <RefreshLoading refreshing={refreshing} onRefresh={onRefresh} />
-            }
+            refreshControl={<RefreshLoading refreshing={refreshing} onRefresh={onRefresh} />}
           />
         )}
       </View>
@@ -63,7 +61,7 @@ function Item(props) {
     const tribeParams = await chats.getTribeDetails(host, uuid)
     setJoinTribe({
       visible: true,
-      tribe: tribeParams
+      tribe: tribeParams,
     })
   }
 
@@ -71,7 +69,7 @@ function Item(props) {
     <TouchableOpacity
       style={{
         ...styles.itemRow,
-        backgroundColor: theme.main
+        backgroundColor: theme.main,
       }}
       activeOpacity={0.5}
       onPress={onItemPress}
@@ -121,7 +119,7 @@ function Item(props) {
             size={13}
             numberOfLines={1}
             style={{
-              maxWidth: SCREEN_WIDTH - 175
+              maxWidth: SCREEN_WIDTH - 175,
             }}
           >
             {description}
@@ -142,7 +140,7 @@ function Item(props) {
         close={() => {
           setJoinTribe({
             visible: false,
-            tribe: null
+            tribe: null,
           })
         }}
       />
@@ -152,26 +150,26 @@ function Item(props) {
 
 const styles = StyleSheet.create({
   wrap: {
-    flex: 1
+    flex: 1,
   },
   container: {
-    flex: 1
+    flex: 1,
   },
   itemRow: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
     // marginVertical: 8,
-    padding: 16
+    padding: 16,
   },
   itemContent: {
-    flex: 1
+    flex: 1,
   },
   avatarWrap: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingRight: 14
+    paddingRight: 14,
     // width: 60,
     // height: 60,
     // paddingLeft: 4
@@ -181,19 +179,19 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    flex: 1
+    flex: 1,
   },
   dot: {
     width: 3,
     height: 3,
     borderRadius: 5,
-    marginHorizontal: 10
+    marginHorizontal: 10,
   },
   bottom: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   badge: {
     width: 22,
@@ -202,6 +200,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 15,
-    marginRight: 14
-  }
+    marginRight: 14,
+  },
 })

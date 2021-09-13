@@ -18,7 +18,7 @@ export default function Typography(props) {
     textAlign,
     numberOfLines,
     allowFontScaling,
-    onPress
+    onPress,
   } = props
 
   let lineHeight = 20
@@ -42,7 +42,7 @@ export default function Typography(props) {
         fontWeight: fw,
         letterSpacing: ls,
         lineHeight: lh ? lh : lineHeight,
-        textAlign
+        textAlign,
       }}
       numberOfLines={numberOfLines}
     >

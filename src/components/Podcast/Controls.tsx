@@ -53,7 +53,7 @@ export default function Controls(props) {
       feedID: pod.id,
       title: ep.title,
       url: ep.enclosureUrl,
-      type: 'clip'
+      type: 'clip',
     }
     if (props.myPubkey) obj.pubkey = props.myPubkey
     EE.emit(EXTRA_TEXT_CONTENT, obj)
@@ -115,11 +115,7 @@ export default function Controls(props) {
       {!selectSpeed && (
         <View style={styles.speedWrap}>
           <View style={styles.speedWrapInner}>
-            <TouchableOpacity
-              activeOpacity={0.6}
-              style={styles.speedClickable}
-              onPress={() => setSelectSpeed(true)}
-            >
+            <TouchableOpacity activeOpacity={0.6} style={styles.speedClickable} onPress={() => setSelectSpeed(true)}>
               <Typography color={theme.subtitle} size={14}>
                 {`${props.speed || '1'}x`}
               </Typography>
@@ -131,7 +127,7 @@ export default function Controls(props) {
       {selectSpeed && (
         <View style={styles.selectSpeed}>
           <View style={styles.selectSpeedInner}>
-            {ratez.map(s => {
+            {ratez.map((s) => {
               return (
                 <TouchableOpacity
                   activeOpacity={0.6}
@@ -139,13 +135,10 @@ export default function Controls(props) {
                   onPress={() => doSelectSpeed(s)}
                   style={{
                     ...styles.speedBubble,
-                    backgroundColor: s === props.speed ? theme.primary : theme.deep
+                    backgroundColor: s === props.speed ? theme.primary : theme.deep,
                   }}
                 >
-                  <Typography
-                    size={12}
-                    color={s === props.speed ? theme.white : theme.text}
-                  >{`${s}x`}</Typography>
+                  <Typography size={12} color={s === props.speed ? theme.white : theme.text}>{`${s}x`}</Typography>
                 </TouchableOpacity>
               )
             })}
@@ -155,7 +148,12 @@ export default function Controls(props) {
 
       <View style={styles.progressWrapBottom}>
         <View
-          style={{ height: 55, width: 50, display: 'flex', justifyContent: 'flex-end' }}
+          style={{
+            height: 55,
+            width: 50,
+            display: 'flex',
+            justifyContent: 'flex-end',
+          }}
         >
           {/* <Rocket onPress={props.boost} /> */}
         </View>
@@ -167,14 +165,10 @@ export default function Controls(props) {
             onPress={onToggle}
             style={{
               marginLeft: 18,
-              marginRight: 18
+              marginRight: 18,
             }}
           >
-            <MaterialCommunityIcons
-              name={playing ? 'pause-circle' : 'play-circle'}
-              size={52}
-              color={theme.primary}
-            />
+            <MaterialCommunityIcons name={playing ? 'pause-circle' : 'play-circle'} size={52} color={theme.primary} />
           </TouchableOpacity>
           <TouchableIcon rippleColor={theme.grey} size={48} onPress={fastForward}>
             <CustomIcon name='forward-30' color={theme.title} size={28} />
@@ -195,11 +189,11 @@ const styles = StyleSheet.create({
   controls: {
     display: 'flex',
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   progressWrap: {
     display: 'flex',
-    width: '100%'
+    width: '100%',
     // marginTop: 5
   },
   speedWrap: {
@@ -208,7 +202,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    position: 'relative'
+    position: 'relative',
   },
   speedWrapInner: {
     position: 'absolute',
@@ -219,26 +213,26 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   speedClickable: {
     width: 32,
     height: 32,
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'flex-start'
+    justifyContent: 'flex-start',
   },
   selectSpeed: {
     height: 50,
     width: '100%',
     position: 'relative',
-    paddingTop: 22
+    paddingTop: 22,
   },
   selectSpeedInner: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   speedBubble: {
     width: 36,
@@ -249,17 +243,17 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   barWrap: {
     width: '100%',
-    position: 'relative'
+    position: 'relative',
   },
   progressBarWrap: {
     height: 30,
     marginTop: 10,
     display: 'flex',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   progressWrapBottom: {
     display: 'flex',
@@ -267,16 +261,16 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     maxWidth: '100%',
-    marginTop: 20
+    marginTop: 20,
   },
   progressText: {
     position: 'absolute',
     top: 42,
-    left: 0
+    left: 0,
   },
   durationText: {
     position: 'absolute',
     top: 39,
-    right: 0
-  }
+    right: 0,
+  },
 })

@@ -33,25 +33,25 @@ export default function TabBar() {
     // },
     {
       name: 'Chats',
-      icon: color => <IonIcon name='chatbubbles-outline' color={color} size={24} />,
-      key: 'chats'
+      icon: (color) => <IonIcon name='chatbubbles-outline' color={color} size={24} />,
+      key: 'chats',
     },
     {
       name: 'Tribes',
-      icon: color => <FontAwesome5Icon name='users' color={color} size={20} />,
-      key: 'tribes'
+      icon: (color) => <FontAwesome5Icon name='users' color={color} size={20} />,
+      key: 'tribes',
     },
     {
       name: 'Payment',
       // icon: 'wallet',
-      icon: color => <SimpleIcon name='wallet' color={color} size={20} />,
-      key: 'payment'
+      icon: (color) => <SimpleIcon name='wallet' color={color} size={20} />,
+      key: 'payment',
     },
     {
       name: 'Account',
       icon: 'account',
-      key: 'account'
-    }
+      key: 'account',
+    },
   ]
 
   return useObserver(() => {
@@ -60,11 +60,11 @@ export default function TabBar() {
         style={{
           ...styles.wrap,
           backgroundColor: theme.bg,
-          borderTopColor: theme.border
+          borderTopColor: theme.border,
         }}
       >
         <View style={{ ...styles.tabBar }}>
-          {routes.map(route => {
+          {routes.map((route) => {
             return (
               <Pushable
                 key={route.key}
@@ -75,7 +75,7 @@ export default function TabBar() {
                 <View
                   style={{
                     ...styles.iconWrap,
-                    width: tabbarWidth / 4
+                    width: tabbarWidth / 4,
                   }}
                 >
                   {renderIcon(route, current, theme)}
@@ -97,11 +97,7 @@ function renderIcon(route, current, theme) {
       {iconElement ? (
         <>{route.icon(route.name === current.name ? theme.primary : theme.icon)}</>
       ) : (
-        <Icon
-          name={route.name}
-          color={route.name === current.name ? theme.primary : theme.icon}
-          size={24}
-        />
+        <Icon name={route.name} color={route.name === current.name ? theme.primary : theme.icon} size={24} />
       )}
     </>
   )
@@ -111,14 +107,14 @@ function renderIcon(route, current, theme) {
 
 const styles = StyleSheet.create({
   wrap: {
-    borderTopWidth: 1
+    borderTopWidth: 1,
   },
   tabBar: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingLeft: 16,
     paddingRight: 16,
-    height: isIphoneX() ? 50 + getBottomSpace() : 60
+    height: isIphoneX() ? 50 + getBottomSpace() : 60,
     // ...ifIphoneX({
     // height: 50 + getBottomSpace()
     // })
@@ -133,16 +129,16 @@ const styles = StyleSheet.create({
     // height: 60 + getBottomSpace(),
     // height: isIphoneXorAbove() ? 80 : 60,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   tabIndicatorWrap: {
     alignItems: 'center',
     position: 'absolute',
-    bottom: 10
+    bottom: 10,
   },
   tabIndicator: {
     height: 4,
     borderRadius: 2,
-    width: '50%'
-  }
+    width: '50%',
+  },
 })

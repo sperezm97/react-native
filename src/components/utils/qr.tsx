@@ -46,7 +46,12 @@ export default function QR({ visible, onCancel, onScan, showPaster }) {
         {showPaster && (
           <View style={{ ...styles.bottom, backgroundColor: theme.main }}>
             <View style={styles.textInputWrap}>
-              <TextInput value={text} onChangeText={e => setText(e)} label='Paste invoice or Sphinx code' mode='outlined' />
+              <TextInput
+                value={text}
+                onChangeText={(e) => setText(e)}
+                label='Paste invoice or Sphinx code'
+                mode='outlined'
+              />
             </View>
             <View style={styles.confirmWrap}>
               {(text ? true : false) && (
@@ -55,7 +60,7 @@ export default function QR({ visible, onCancel, onScan, showPaster }) {
                   onPress={() =>
                     handleBarCodeScanned({
                       data: text,
-                      type: 'text'
+                      type: 'text',
                     })
                   }
                   mode='contained'
@@ -74,7 +79,7 @@ export default function QR({ visible, onCancel, onScan, showPaster }) {
 
 const styles = StyleSheet.create({
   wrap: {
-    flex: 1
+    flex: 1,
     // flexDirection: 'column',
     // justifyContent: 'flex-start',
     // position: 'relative',
@@ -92,23 +97,23 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 20,
     overflow: 'hidden',
     width: '100%',
-    backgroundColor: 'black'
+    backgroundColor: 'black',
   },
   bottom: {
     width: '100%',
-    height: 153
+    height: 153,
   },
   textInputWrap: {
     marginLeft: 20,
     marginRight: 20,
     marginTop: 20,
-    marginBottom: 15
+    marginBottom: 15,
   },
   confirmWrap: {
     width: '100%',
     display: 'flex',
     alignItems: 'center',
-    height: 50
+    height: 50,
   },
   confirm: {
     backgroundColor: '#6289FD',
@@ -118,6 +123,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 20
-  }
+    borderRadius: 20,
+  },
 })

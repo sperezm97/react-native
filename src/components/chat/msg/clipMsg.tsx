@@ -25,7 +25,7 @@ export default function ClipMessage(props) {
         itemID,
         pubkey,
         ts: Math.round(count.current),
-        uuid
+        uuid,
       }
       EE.emit(CLIP_PAYMENT, sp)
     }

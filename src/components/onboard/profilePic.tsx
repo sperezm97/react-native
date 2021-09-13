@@ -30,13 +30,13 @@ export default function ProfilePic({ z, show, onDone, onBack }) {
 
         if (url) {
           await contacts.updateContact(user.myid, {
-            photo_url: url
+            photo_url: url,
           })
         }
         setUploading(false)
       }
-    } catch(error) {
-      await user.reportError("ProfilePic component - finish function", error);
+    } catch (error) {
+      await user.reportError('ProfilePic component - finish function', error)
     } finally {
       onDone()
     }
@@ -59,22 +59,22 @@ export default function ProfilePic({ z, show, onDone, onBack }) {
         `https://${server.host}/public`,
         {
           Authorization: `Bearer ${server.token}`,
-          'Content-Type': 'multipart/form-data'
+          'Content-Type': 'multipart/form-data',
         },
         [
           {
             name: 'file',
             filename: name,
             type: type,
-            data: RNFetchBlob.wrap(uri)
+            data: RNFetchBlob.wrap(uri),
           },
-          { name: 'name', data: name }
+          { name: 'name', data: name },
         ]
       )
         .uploadProgress({ interval: 250 }, (written, total) => {
           console.log('uploaded', written / total)
         })
-        .then(async resp => {
+        .then(async (resp) => {
           let json = resp.json()
           if (json.muid) {
             resolve(`https://${server.host}/public/${json.muid}`)
@@ -82,8 +82,8 @@ export default function ProfilePic({ z, show, onDone, onBack }) {
           setUploading(false)
           return
         })
-        .catch(async err => {
-          await user.reportError("ProfilePic component - uploadSync function", err);
+        .catch(async (err) => {
+          await user.reportError('ProfilePic component - uploadSync function', err)
           setUploading(false)
           resolve('')
           return
@@ -93,12 +93,7 @@ export default function ProfilePic({ z, show, onDone, onBack }) {
 
   return useObserver(() => {
     return (
-      <Slider
-        z={z}
-        show={show}
-        style={{ backgroundColor: theme.bg }}
-        accessibilityLabel='onboard-profile'
-      >
+      <Slider z={z} show={show} style={{ backgroundColor: theme.bg }} accessibilityLabel='onboard-profile'>
         <IconButton
           icon='arrow-left'
           color={theme.grey}
@@ -107,10 +102,7 @@ export default function ProfilePic({ z, show, onDone, onBack }) {
           onPress={onBack}
           accessibilityLabel='onboard-profile-back'
         />
-        <View
-          style={styles.nicknameWrap}
-          accessibilityLabel='onboard-profile-nickname-wrap'
-        >
+        <View style={styles.nicknameWrap} accessibilityLabel='onboard-profile-nickname-wrap'>
           <Typography size={32} textAlign='center' style={styles.nickname}>
             {user.alias}
           </Typography>
@@ -156,34 +148,34 @@ const styles = StyleSheet.create({
   backArrow: {
     position: 'absolute',
     left: 15,
-    top: 45
+    top: 45,
   },
   nicknameWrap: {
     position: 'absolute',
-    top: 12
+    top: 12,
   },
   nickname: {
     marginTop: 60,
     marginLeft: 50,
-    marginRight: 50
+    marginRight: 50,
   },
   mid: {
     width: '100%',
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   selectButton: {
-    marginTop: 20
+    marginTop: 20,
   },
   buttonWrap: {
     position: 'absolute',
     bottom: 42,
     width: '100%',
     display: 'flex',
-    flexDirection: 'row-reverse'
+    flexDirection: 'row-reverse',
   },
   button: {
-    marginRight: '12.5%'
-  }
+    marginRight: '12.5%',
+  },
 })

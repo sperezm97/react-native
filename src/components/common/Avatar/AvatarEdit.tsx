@@ -15,7 +15,7 @@ export default function AvatarEdit({
   top = '43%',
   size,
   round = 25,
-  percentSize = 14
+  percentSize = 14,
 }) {
   const theme = useTheme()
 
@@ -38,7 +38,7 @@ export default function AvatarEdit({
               backgroundColor: theme.transparent,
               width: size,
               height: size,
-              borderRadius: round
+              borderRadius: round,
             }}
           ></View>
         )}
@@ -69,23 +69,23 @@ export default function AvatarEdit({
 
 const styles = StyleSheet.create({
   imgWrap: {
-    position: 'relative'
+    position: 'relative',
   },
   backDrop: {
     position: 'absolute',
     height: '100%',
     width: '100%',
-    fontWeight: '500'
+    fontWeight: '500',
   },
   uploadPercent: {
     position: 'absolute',
     height: '100%',
     width: '100%',
-    zIndex: 1
+    zIndex: 1,
   },
   imgIcon: {
     position: 'absolute',
     right: -5,
-    top: '50%'
-  }
+    top: '50%',
+  },
 })

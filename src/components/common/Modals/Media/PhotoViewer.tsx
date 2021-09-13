@@ -25,27 +25,14 @@ export default function PhotoViewer({ visible, close, photos, chat, initialIndex
 
   // return useObserver(() => (
   return (
-    <Modal
-      visible={visible}
-      animationType='slide'
-      presentationStyle='fullScreen'
-      onDismiss={close}
-    >
+    <Modal visible={visible} animationType='slide' presentationStyle='fullScreen' onDismiss={close}>
       <View style={{ ...styles.wrap, backgroundColor: theme.black }}>
         <IconButton
-          icon={() => (
-            <MaterialCommunityIcon name='close' color={theme.white} size={30} />
-          )}
+          icon={() => <MaterialCommunityIcon name='close' color={theme.white} size={30} />}
           onPress={close}
           style={{ ...styles.closeButton }}
         />
-        <Swiper
-          horizontal={false}
-          showsButtons={false}
-          showsPagination={false}
-          index={initialIndex}
-          loop={false}
-        >
+        <Swiper horizontal={false} showsButtons={false} showsPagination={false} index={initialIndex} loop={false}>
           {photos.map((p, index) => (
             <SwipeItem key={index} {...p} chat={chat} />
           ))}
@@ -58,8 +45,7 @@ export default function PhotoViewer({ visible, close, photos, chat, initialIndex
 
 function SwipeItem(props) {
   const [photoH, setPhotoH] = useState(0)
-  const { uuid, message_content, media_type, media_token, chat, boosts_total_sats } =
-    props
+  const { uuid, message_content, media_type, media_token, chat, boosts_total_sats } = props
 
   const [onlyOneClick, setOnlyOnClick] = useState(false)
   const [buying, setBuying] = useState(false)
@@ -68,10 +54,7 @@ function SwipeItem(props) {
   const theme = useTheme()
 
   const ldat = parseLDAT(media_token)
-  let { data, uri, loading, trigger, paidMessageText } = useCachedEncryptedFile(
-    props,
-    ldat
-  )
+  let { data, uri, loading, trigger, paidMessageText } = useCachedEncryptedFile(props, ldat)
 
   useEffect(() => {
     fetchTribeDetails()
@@ -117,14 +100,14 @@ function SwipeItem(props) {
     setBuying(true)
     let contact_id = props.sender
     if (!contact_id) {
-      contact_id = chat.contact_ids && chat.contact_ids.find(cid => cid !== user.myid)
+      contact_id = chat.contact_ids && chat.contact_ids.find((cid) => cid !== user.myid)
     }
 
     await msg.purchaseMedia({
       chat_id: chat.id,
       media_token,
       amount,
-      contact_id
+      contact_id,
     })
 
     setBuying(false)
@@ -150,7 +133,7 @@ function SwipeItem(props) {
       amount,
       chat_id: chat.id || null,
       reply_uuid: uuid,
-      message_price: pricePerMessage
+      message_price: pricePerMessage,
     })
   }
 
@@ -182,12 +165,7 @@ function SwipeItem(props) {
           <>
             <Ionicon name='lock-closed' color={theme.silver} size={50} />
             {showPurchaseButton && (
-              <Button
-                w='50%'
-                onPress={onPurchasePress}
-                loading={buying}
-                style={{ marginTop: 14 }}
-              >
+              <Button w='50%' onPress={onPurchasePress} loading={buying} style={{ marginTop: 14 }}>
                 {purchased ? 'Purchased' : `Pay ${amt} sat`}
               </Button>
             )}
@@ -229,13 +207,13 @@ function SwipeItem(props) {
           <FastImage
             resizeMode='cover'
             source={{ uri: data || uri }}
-            onLoad={evt => {
+            onLoad={(evt) => {
               setPhotoH((evt.nativeEvent.height / evt.nativeEvent.width) * w)
             }}
             style={{
               ...styles.photo,
               width: w,
-              height: photoH
+              height: photoH,
             }}
           />
           {/* </View> */}
@@ -247,11 +225,7 @@ function SwipeItem(props) {
           {hasContent && (
             <>
               {message_content.length > 50 ? (
-                <ViewMoreText
-                  numberOfLines={1}
-                  renderViewMore={renderViewMore}
-                  renderViewLess={renderViewLess}
-                >
+                <ViewMoreText numberOfLines={1} renderViewMore={renderViewMore} renderViewLess={renderViewLess}>
                   <Typography size={16} color={theme.white}>
                     {message_content}
                   </Typography>
@@ -268,11 +242,7 @@ function SwipeItem(props) {
         <View style={styles.row}>
           {!isMe ? <Boost onPress={onBoostPress} /> : <View></View>}
 
-          <View>
-            {showBoostRow && (
-              <BoostDetails {...props} myAlias={user.alias} myid={user.myid} />
-            )}
-          </View>
+          <View>{showBoostRow && <BoostDetails {...props} myAlias={user.alias} myid={user.myid} />}</View>
         </View>
       </View>
     </View>
@@ -283,7 +253,7 @@ const styles = StyleSheet.create({
   wrap: {
     flex: 1,
     height: '100%',
-    position: 'relative'
+    position: 'relative',
   },
   swipeItem: {
     flex: 1,
@@ -291,14 +261,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     height: '100%',
-    position: 'relative'
+    position: 'relative',
   },
   row: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    width: '100%'
+    width: '100%',
   },
   footer: {
     position: 'absolute',
@@ -310,25 +280,25 @@ const styles = StyleSheet.create({
     paddingLeft: 16,
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   closeButton: {
     position: 'absolute',
     top: STATUS_BAR_HEIGHT + 1,
     right: 0,
-    zIndex: 1
+    zIndex: 1,
   },
   photo: {
     alignSelf: 'center',
     width: '100%',
-    height: '100%'
+    height: '100%',
   },
   locked: {
     height: '100%',
     width: '100%',
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   stats: {
     position: 'absolute',
@@ -340,7 +310,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     padding: 16,
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   satStats: {
     paddingLeft: 8,
@@ -353,6 +323,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 4,
-    overflow: 'hidden'
-  }
+    overflow: 'hidden',
+  },
 })

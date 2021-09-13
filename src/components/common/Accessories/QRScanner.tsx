@@ -24,7 +24,7 @@ export default function QRScanner(props) {
         onRead={onSuccess}
         cameraType='back'
         cameraProps={{
-          flashMode: RNCamera.Constants.FlashMode.off
+          flashMode: RNCamera.Constants.FlashMode.off,
         }}
       />
       <Outliner size={w - 80} top={h / 2 - (w / 2 - 40)} />
@@ -40,19 +40,14 @@ const outlines = [
   { bottom: 0, right: 0, height: 50, width: 3 },
   { bottom: 0, right: 0, height: 3, width: 50 },
   { bottom: 0, left: 0, height: 50, width: 3 },
-  { bottom: 0, left: 0, height: 3, width: 50 }
+  { bottom: 0, left: 0, height: 3, width: 50 },
 ]
 
 function Outliner({ size, top }) {
   return (
     <View style={{ ...styles.outlineWrap, width: size, height: size, top }}>
       {outlines.map((o, i) => {
-        return (
-          <View
-            key={i}
-            style={{ position: 'absolute', backgroundColor: 'white', ...o }}
-          />
-        )
+        return <View key={i} style={{ position: 'absolute', backgroundColor: 'white', ...o }} />
       })}
     </View>
   )
@@ -65,10 +60,10 @@ const styles = StyleSheet.create({
     maxHeight: '100%',
     maxWidth: '100%',
     flexDirection: 'column',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   outlineWrap: {
     left: 40,
-    position: 'absolute'
-  }
+    position: 'absolute',
+  },
 })

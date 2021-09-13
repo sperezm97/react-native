@@ -151,16 +151,10 @@ const ListHeader = () => {
               marginTop: 14,
               alignItems: 'center',
               justifyContent: 'center',
-              width: '100%'
+              width: '100%',
             }}
           >
-            <Typography
-              size={12}
-              fw='500'
-              textAlign='center'
-              color={theme.subtitle}
-              style={{ marginBottom: 4 }}
-            >
+            <Typography size={12} fw='500' textAlign='center' color={theme.subtitle} style={{ marginBottom: 4 }}>
               Your node capacity
             </Typography>
             <View
@@ -168,16 +162,10 @@ const ListHeader = () => {
                 backgroundColor: theme.secondary,
                 borderRadius: 50,
                 height: 30,
-                width: 100
+                width: 100,
               }}
             >
-              <Typography
-                size={16}
-                fw='500'
-                textAlign='center'
-                color={theme.white}
-                lh={30}
-              >
+              <Typography size={16} fw='500' textAlign='center' color={theme.white} lh={30}>
                 {details?.localBalance + details?.remoteBalance}{' '}
               </Typography>
             </View>
@@ -234,19 +222,19 @@ const ListHeader = () => {
 
 const styles = StyleSheet.create({
   wrap: {
-    flex: 1
+    flex: 1,
   },
   headerActions: {
     display: 'flex',
     justifyContent: 'center',
     width: '100%',
-    marginTop: 20
+    marginTop: 20,
   },
   wallet: {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   buttonWrap: {
     display: 'flex',
@@ -254,6 +242,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     width: '100%',
-    marginVertical: 30
-  }
+    marginVertical: 30,
+  },
 })

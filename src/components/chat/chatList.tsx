@@ -22,7 +22,7 @@ export default function ChatList(props) {
   const onRefresh = useCallback(async () => {
     ReactNativeHapticFeedback.trigger('impactLight', {
       enableVibrateFallback: true,
-      ignoreAndroidSystemSettings: false
+      ignoreAndroidSystemSettings: false,
     })
 
     setRefreshing(true)
@@ -54,16 +54,14 @@ export default function ChatList(props) {
         <FlatList<any>
           data={chatsToShow}
           renderItem={renderItem}
-          keyExtractor={item => {
+          keyExtractor={(item) => {
             if (!item.id) {
-              const contact_id = item.contact_ids.find(id => id !== myid)
+              const contact_id = item.contact_ids.find((id) => id !== myid)
               return 'contact_' + String(contact_id)
             }
             return String(item.id)
           }}
-          refreshControl={
-            <RefreshLoading refreshing={refreshing} onRefresh={onRefresh} />
-          }
+          refreshControl={<RefreshLoading refreshing={refreshing} onRefresh={onRefresh} />}
           ListHeaderComponent={props.listHeader}
         />
       </View>
@@ -89,16 +87,14 @@ function ChatRow(props) {
     let uri = useChatPicSrc(props)
     const hasImg = uri ? true : false
 
-    const { lastMsgText, lastMsgDate, hasLastMsg, unseenCount, hasUnseen } = useChatRow(
-      props.id
-    )
+    const { lastMsgText, lastMsgDate, hasLastMsg, unseenCount, hasUnseen } = useChatRow(props.id)
 
     const w = Math.round(Dimensions.get('window').width)
     return (
       <TouchableOpacity
         style={{
           ...styles.chatRow,
-          backgroundColor: theme.main
+          backgroundColor: theme.main,
         }}
         activeOpacity={0.5}
         onPress={onSeeChatHandler}
@@ -123,7 +119,7 @@ function ChatRow(props) {
                 fw={hasUnseen ? '500' : '400'}
                 size={13}
                 style={{
-                  maxWidth: w - 150
+                  maxWidth: w - 150,
                 }}
               >
                 {lastMsgText}
@@ -137,9 +133,7 @@ function ChatRow(props) {
               </View>
             )}
           </View>
-          <View
-            style={{ ...styles.borderBottom, borderBottomColor: theme.border }}
-          ></View>
+          <View style={{ ...styles.borderBottom, borderBottomColor: theme.border }}></View>
         </View>
       </TouchableOpacity>
     )
@@ -153,12 +147,12 @@ const moreStyles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     width: '100%',
-    justifyContent: 'space-around'
+    justifyContent: 'space-around',
   },
   badgeWrap: {
     position: 'absolute',
     width: '100%',
-    height: '100%'
+    height: '100%',
   },
   badge: {
     width: 22,
@@ -167,8 +161,8 @@ const moreStyles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 15,
-    marginRight: 14
-  }
+    marginRight: 14,
+  },
 })
 
 function rando() {

@@ -34,7 +34,7 @@ export default function TribeMessage(props) {
       setError('Could not load Tribe.')
     }
     if (tribeParams) {
-      const AJ = chats.chats.find(c => c.uuid === tribeParams.uuid)
+      const AJ = chats.chats.find((c) => c.uuid === tribeParams.uuid)
       if (!AJ) setShowJoinButton(true)
     }
     setLoading(false)
@@ -45,7 +45,7 @@ export default function TribeMessage(props) {
   }, [])
 
   function seeTribe() {
-    ui.setJoinTribeModal(true, tribe)
+    // ui.setJoinTribeModal(true, tribe)
     navigation.navigate('Home', { params: { rnd: Math.random() } })
   }
 
@@ -55,17 +55,14 @@ export default function TribeMessage(props) {
         <ActivityIndicator animating={true} color={theme.subtitle} />
       </View>
     )
-  if (!(tribe && tribe.uuid))
-    return <View style={styles.wrap}>Could not load tribe...</View>
+  if (!(tribe && tribe.uuid)) return <View style={styles.wrap}>Could not load tribe...</View>
 
   const hasImg = tribe.img ? true : false
   return (
     <View style={{ ...styles.wrap }}>
       <View style={styles.tribeWrap}>
         <FastImage
-          source={
-            hasImg ? { uri: tribe.img } : require('../../../../android_assets/tent.png')
-          }
+          source={hasImg ? { uri: tribe.img } : require('../../../../android_assets/tent.png')}
           resizeMode={FastImage.resizeMode.cover}
           style={{ width: 70, height: 70, flexShrink: 0, minWidth: 75 }}
         />
@@ -73,10 +70,7 @@ export default function TribeMessage(props) {
           <Text style={{ ...styles.tribeName, color: theme.title }} numberOfLines={1}>
             {tribe.name}
           </Text>
-          <Text
-            style={{ ...styles.tribeDescription, color: theme.subtitle }}
-            numberOfLines={2}
-          >
+          <Text style={{ ...styles.tribeDescription, color: theme.subtitle }} numberOfLines={2}>
             {tribe.description}
           </Text>
         </View>
@@ -103,26 +97,26 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    flexDirection: 'column'
+    flexDirection: 'column',
   },
   tribeWrap: {
     display: 'flex',
     justifyContent: 'center',
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   tribeText: {
     display: 'flex',
     flexDirection: 'column',
     marginLeft: 8,
-    maxWidth: 160
+    maxWidth: 160,
   },
   tribeName: {
     fontSize: 16,
-    marginBottom: 5
+    marginBottom: 5,
   },
   tribeDescription: {
-    fontSize: 14
-  }
+    fontSize: 14,
+  },
 })
 
 async function getTribeDetails(host: string, uuid: string) {

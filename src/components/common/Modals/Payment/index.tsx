@@ -45,10 +45,9 @@ function Payment({ visible, close }) {
 
   const chat = ui.chatForPayModal
 
-  const contact_id =
-    chat && chat.contact_ids && chat.contact_ids.find(cid => cid !== user.myid)
+  const contact_id = chat && chat.contact_ids && chat.contact_ids.find((cid) => cid !== user.myid)
 
-  const contact = contact_id && contacts.contacts.find(c => c.id === contact_id)
+  const contact = contact_id && contacts.contacts.find((c) => c.id === contact_id)
 
   async function sendPayment(amt, text) {
     if (!amt || loading) return
@@ -58,7 +57,7 @@ function Payment({ visible, close }) {
       amt,
       chat_id: (chat && chat.id) || null,
       destination_key: '',
-      memo: text
+      memo: text,
     })
     setLoading(false)
     ui.clearPayModal()
@@ -71,7 +70,7 @@ function Payment({ visible, close }) {
       contact_id: contact_id || null,
       amt,
       memo: text,
-      chat_id: (chat && chat.id) || null
+      chat_id: (chat && chat.id) || null,
     })
     setLoading(false)
     if (chat) ui.clearPayModal() // done (if in a chat)
@@ -118,7 +117,7 @@ function Payment({ visible, close }) {
       chat_id: chat.id,
       text,
       amount: amtToPay,
-      reply_uuid: ''
+      reply_uuid: '',
     })
     setLoading(false)
     close()
@@ -135,7 +134,7 @@ function Payment({ visible, close }) {
       chat_id: null,
       destination_key: addy,
       amt: amtToPay,
-      memo: ''
+      memo: '',
     })
     setLoading(false)
     close()
@@ -177,12 +176,7 @@ function Payment({ visible, close }) {
   const hasRawInvoice = rawInvoice ? true : false
 
   return useObserver(() => {
-    const label =
-      ui.payMode === 'payment'
-        ? 'Send Payment'
-        : isLoopout
-        ? 'Send Bitcoin'
-        : 'Request Payment'
+    const label = ui.payMode === 'payment' ? 'Send Payment' : isLoopout ? 'Send Bitcoin' : 'Request Payment'
 
     return (
       <Portal.Host>

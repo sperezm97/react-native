@@ -14,19 +14,13 @@ export default function Pending({ tribe, members }) {
   async function onApproveOrDenyMember(contactId, status) {
     const msgs = msg.messages[tribe.id]
     if (!msgs) return
-    const theMsg = msgs.find(
-      m => m.sender === contactId && m.type === constants.message_types.member_request
-    )
+    const theMsg = msgs.find((m) => m.sender === contactId && m.type === constants.message_types.member_request)
     if (!theMsg) return
     await msg.approveOrRejectMember(contactId, status, theMsg.id)
   }
 
   const renderItem: any = ({ item, index }: any) => (
-    <PendingContact
-      key={index}
-      contact={item}
-      onApproveOrDenyMember={onApproveOrDenyMember}
-    />
+    <PendingContact key={index} contact={item} onApproveOrDenyMember={onApproveOrDenyMember} />
   )
 
   return useObserver(() => {
@@ -36,7 +30,7 @@ export default function Pending({ tribe, members }) {
           style={styles.scroller}
           data={members}
           renderItem={renderItem}
-          keyExtractor={item => String(item.id)}
+          keyExtractor={(item) => String(item.id)}
         />
       </>
     )
@@ -46,6 +40,6 @@ export default function Pending({ tribe, members }) {
 const styles = StyleSheet.create({
   scroller: {
     width: '100%',
-    position: 'relative'
-  }
+    position: 'relative',
+  },
 })

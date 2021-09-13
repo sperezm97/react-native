@@ -4,7 +4,7 @@ import PushNotificationIOS from '@react-native-community/push-notification-ios'
 
 export const APNContext = React.createContext({
   token: '',
-  configure: (callback, finishCallback) => {}
+  configure: (callback, finishCallback) => {},
 })
 
 export const useApn = () => React.useContext(APNContext)
@@ -23,14 +23,14 @@ export default function APNManager(props) {
 
         finishCallback(notification)
       },
-      onError: error => {},
+      onError: (error) => {},
       permissions: {
         alert: true,
         badge: true,
-        sound: true
+        sound: true,
       },
       popInitialNotification: true,
-      requestPermissions: true
+      requestPermissions: true,
     })
   }
 
@@ -38,7 +38,7 @@ export default function APNManager(props) {
     <APNContext.Provider
       value={{
         configure,
-        token
+        token,
       }}
     >
       {props.children}

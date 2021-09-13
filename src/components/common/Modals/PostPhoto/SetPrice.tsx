@@ -53,21 +53,16 @@ export default function SetPrice({ setAmount, onShow }) {
           <View
             style={{
               justifyContent: 'flex-end',
-              width: '100%'
+              width: '100%',
             }}
           >
-            <NumKey
-              onKeyPress={v => go(v)}
-              onBackspace={() => backspace()}
-              squish
-              inline
-            />
+            <NumKey onKeyPress={(v) => go(v)} onBackspace={() => backspace()} squish inline />
           </View>
 
           <View
             style={{
               ...styles.confirmWrap,
-              opacity: amt && amt !== '0' ? 1 : 0
+              opacity: amt && amt !== '0' ? 1 : 0,
             }}
           >
             <Button
@@ -100,7 +95,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 5
+    borderRadius: 5,
   },
   num: {
     borderRadius: 10,
@@ -114,23 +109,23 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center',
     paddingTop: 14,
-    paddingBottom: 14
+    paddingBottom: 14,
   },
   amtWrap: {
     width: '100%',
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
-    position: 'relative'
+    position: 'relative',
   },
   sat: {
     position: 'absolute',
     right: 28,
-    top: 5
+    top: 5,
   },
   confirmWrap: {
     width: '100%',
     flexDirection: 'row',
-    justifyContent: 'center'
-  }
+    justifyContent: 'center',
+  },
 })

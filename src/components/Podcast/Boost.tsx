@@ -15,13 +15,13 @@ export default function Boost({ style, onPress, inert }) {
       Animated.timing(size, {
         toValue: 2.5,
         duration: 75,
-        useNativeDriver: true
+        useNativeDriver: true,
       }),
       Animated.timing(size, {
         toValue: 1,
         duration: 500,
-        useNativeDriver: true
-      })
+        useNativeDriver: true,
+      }),
     ]).start()
     onPress()
   }
@@ -38,7 +38,7 @@ export default function Boost({ style, onPress, inert }) {
         <Animated.View
           style={{
             ...styles.rocketWrap,
-            transform: [{ scale: size }]
+            transform: [{ scale: size }],
           }}
         >
           <CustomIcon color={theme.accent} size={20} name='fireworks' />
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     height: 72,
     width: 120,
     borderRadius: 36,
-    position: 'relative'
+    position: 'relative',
   },
   wrap: {
     height: 38,
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
     borderRadius: 19,
     position: 'absolute',
     left: 17,
-    top: 17
+    top: 17,
   },
   rocketWrap: {
     height: 30,
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     top: 4,
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   hundred: {
     color: 'white',
@@ -81,6 +81,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     position: 'absolute',
     top: 8,
-    left: 14
-  }
+    left: 14,
+  },
 })

@@ -7,37 +7,29 @@ import { useTheme } from '../../../store'
 import { GiphyProps } from './type'
 import styles from './styles'
 
-type HeaderProps = Pick<
-  GiphyProps,
-  'onClose' | 'searchGif' | 'setSearchGif' | 'getGifsBySearch'
->
+type HeaderProps = Pick<GiphyProps, 'onClose' | 'searchGif' | 'setSearchGif' | 'getGifsBySearch'>
 
-const Header: React.FC<HeaderProps> = ({
-  onClose,
-  searchGif,
-  setSearchGif,
-  getGifsBySearch
-}) => {
+const Header: React.FC<HeaderProps> = ({ onClose, searchGif, setSearchGif, getGifsBySearch }) => {
   const theme = useTheme()
 
   return (
     <View style={styles.header}>
       <View style={styles.inputContainer}>
         <TextInput
-          style={{ ...styles.input, backgroundColor: theme.inputBg, color: theme.input }}
+          style={{
+            ...styles.input,
+            backgroundColor: theme.inputBg,
+            color: theme.input,
+          }}
           placeholder='Search on GIPHY'
           value={searchGif}
           onChangeText={setSearchGif}
-          onSubmitEditing={v => {
+          onSubmitEditing={(v) => {
             if (!searchGif) return
             getGifsBySearch()
           }}
           underlineColor='transparent'
-          left={
-            <TextInput.Icon
-              name={() => <Ionicons name='search' size={20} color={theme.primary} />}
-            />
-          }
+          left={<TextInput.Icon name={() => <Ionicons name='search' size={20} color={theme.primary} />} />}
         />
       </View>
     </View>

@@ -32,8 +32,8 @@ export default function Backup(props) {
 
       const myContactKey = user.contactKey
 
-      const meContact = contacts.contacts.find(c => c.id === user.myid) || {
-        contact_key: myContactKey
+      const meContact = contacts.contacts.find((c) => c.id === user.myid) || {
+        contact_key: myContactKey,
       }
 
       let pub = myContactKey
@@ -71,11 +71,7 @@ export default function Backup(props) {
 
   return useObserver(() => (
     <Slider z={z} show={show} accessibilityLabel='onboard-PIN'>
-      <PIN
-        forceEnterMode={true}
-        onFinish={pin => finish(pin)}
-        extraMessage='Backup your keys'
-      />
+      <PIN forceEnterMode={true} onFinish={(pin) => finish(pin)} extraMessage='Backup your keys' />
     </Slider>
   ))
 }

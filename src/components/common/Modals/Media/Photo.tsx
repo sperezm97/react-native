@@ -16,12 +16,7 @@ export default function Photo({ visible, close, photo }) {
   const w = SCREEN_WIDTH
 
   return useObserver(() => (
-    <Modal
-      visible={visible}
-      animationType='slide'
-      presentationStyle='fullScreen'
-      onDismiss={close}
-    >
+    <Modal visible={visible} animationType='slide' presentationStyle='fullScreen' onDismiss={close}>
       <View style={{ ...styles.wrap, backgroundColor: theme.black }}>
         <IconButton
           icon={() => <MaterialCommunityIcon name='close' color={theme.icon} size={30} />}
@@ -32,13 +27,13 @@ export default function Photo({ visible, close, photo }) {
           <FastImage
             resizeMode='cover'
             source={{ uri: photo }}
-            onLoad={evt => {
+            onLoad={(evt) => {
               setPhotoH((evt.nativeEvent.height / evt.nativeEvent.width) * w)
             }}
             style={{
               ...styles.photo,
               width: w,
-              height: photoH
+              height: photoH,
             }}
           />
         </View>
@@ -51,31 +46,31 @@ const styles = StyleSheet.create({
   wrap: {
     flex: 1,
     height: '100%',
-    position: 'relative'
+    position: 'relative',
   },
   content: {
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    height: '100%'
+    height: '100%',
   },
   closeButton: {
     position: 'absolute',
     top: STATUS_BAR_HEIGHT + 1,
     right: 0,
-    zIndex: 1
+    zIndex: 1,
   },
   photo: {
     alignSelf: 'center',
     width: '100%',
-    height: '100%'
+    height: '100%',
   },
   locked: {
     height: '100%',
     width: '100%',
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center'
-  }
+    justifyContent: 'center',
+  },
 })

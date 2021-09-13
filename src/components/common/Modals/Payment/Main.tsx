@@ -25,7 +25,7 @@ export default function Main({ contact, loading, confirmOrContinue, contactless 
   function go(n) {
     if (amt === '0') setAmt(`${n}`)
     else
-      setAmt(prevAmt => {
+      setAmt((prevAmt) => {
         const newAmount = `${amt}${n}`
         if (ui.payMode === 'payment' && details.balance < parseInt(newAmount)) {
           return prevAmt
@@ -51,16 +51,14 @@ export default function Main({ contact, loading, confirmOrContinue, contactless 
         ...styles.wrap,
         maxHeight: SCREEN_HEIGHT - 80,
         minHeight: SCREEN_HEIGHT - 80,
-        justifyContent: contact ? 'space-around' : 'center'
+        justifyContent: contact ? 'space-around' : 'center',
       }}
     >
       {contact && (
         <View style={styles.contactWrap}>
           <Avatar photo={contact.photo_url} size={40} />
           <View style={styles.contactAliasWrap}>
-            <Typography color={theme.subtitle}>
-              {ui.payMode === 'invoice' ? 'From' : 'To'}
-            </Typography>
+            <Typography color={theme.subtitle}>{ui.payMode === 'invoice' ? 'From' : 'To'}</Typography>
             <Typography color={nameColor}>{contact.alias}</Typography>
           </View>
         </View>
@@ -82,7 +80,7 @@ export default function Main({ contact, loading, confirmOrContinue, contactless 
           <TextInput
             value={text}
             placeholder='Add Message'
-            onChangeText={v => setText(v)}
+            onChangeText={(v) => setText(v)}
             style={{ ...styles.input, backgroundColor: theme.bg }}
             underlineColor={theme.border}
             onFocus={() => setInputFocused(true)}
@@ -90,15 +88,10 @@ export default function Main({ contact, loading, confirmOrContinue, contactless 
           />
         </View>
       )}
-      <NumKey onKeyPress={v => go(v)} onBackspace={() => backspace()} squish />
+      <NumKey onKeyPress={(v) => go(v)} onBackspace={() => backspace()} squish />
       <View style={styles.confirmWrap}>
         {amt !== '0' && (
-          <Button
-            w={125}
-            loading={loading}
-            disabled={loading}
-            onPress={() => confirmOrContinue(parseInt(amt), text)}
-          >
+          <Button w={125} loading={loading} disabled={loading} onPress={() => confirmOrContinue(parseInt(amt), text)}>
             {contactless || isLoopout ? 'CONTINUE' : 'CONFIRM'}
           </Button>
         )}
@@ -110,7 +103,7 @@ export default function Main({ contact, loading, confirmOrContinue, contactless 
 const styles = StyleSheet.create({
   wrap: {
     flex: 1,
-    width: '100%'
+    width: '100%',
   },
   contactWrap: {
     display: 'flex',
@@ -119,12 +112,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: '100%',
     marginTop: 10,
-    marginBottom: 30
+    marginBottom: 30,
   },
   contactAliasWrap: {
     display: 'flex',
     flexDirection: 'column',
-    marginLeft: 10
+    marginLeft: 10,
   },
   amtWrap: {
     display: 'flex',
@@ -132,7 +125,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     width: '100%',
-    marginBottom: 10
+    marginBottom: 10,
   },
   amtInnerWrap: {
     width: '100%',
@@ -140,11 +133,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    position: 'relative'
+    position: 'relative',
   },
   sat: {
     position: 'absolute',
-    right: 25
+    right: 25,
   },
   confirmWrap: {
     width: '100%',
@@ -152,7 +145,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: 60,
     marginTop: 14,
-    marginBottom: isIphoneX() ? getBottomSpace() : 10
+    marginBottom: isIphoneX() ? getBottomSpace() : 10,
   },
   memoWrap: {
     width: '80%',
@@ -162,13 +155,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 14,
-    marginBottom: 14
+    marginBottom: 14,
   },
   input: {
     height: 50,
     maxHeight: 50,
     flex: 1,
     textAlign: 'center',
-    fontSize: 18
-  }
+    fontSize: 18,
+  },
 })

@@ -18,7 +18,7 @@ export default function Transactions({ listHeader, ...props }) {
   const [index, setIndex] = useState(0)
   const [routes] = useState([
     { key: 'first', title: 'All Transactions' },
-    { key: 'second', title: 'Per Tribe' }
+    { key: 'second', title: 'Per Tribe' },
   ])
 
   const renderScene = ({ route: renderSceneRoute }) => {
@@ -39,7 +39,7 @@ export default function Transactions({ listHeader, ...props }) {
         navigationState={{ index, routes }}
         renderScene={renderScene}
         onIndexChange={setIndex}
-        renderTabBar={props => <Tabs {...props} />}
+        renderTabBar={(props) => <Tabs {...props} />}
       />
     </>
   ))
@@ -49,30 +49,29 @@ const PerTribe = (props) => {
   const { data, refreshing, loading, onRefresh } = props
   const { user, chats } = useStores()
 
-  const renderItem: any = ({ item, index }: any) => (
-    <Payment key={index} showTribeName showTime={false} {...item} />
-  )
+  const renderItem: any = ({ item, index }: any) => <Payment key={index} showTribeName showTime={false} {...item} />
 
   const tribesSpent = useMemo(() => {
     if (!data) return []
     return data
-      .filter(payment => payment.sender === user.myid)
-      .filter(payment => {
-        const chat = chats.chats.find(c => c.id === payment.chat_id)
+      .filter((payment) => payment.sender === user.myid)
+      .filter((payment) => {
+        const chat = chats.chats.find((c) => c.id === payment.chat_id)
         if (!chat) return false
         return chat?.type === constants.chat_types.tribe
       })
       .reduce((acc, payment) => {
-        const index = acc.findIndex(item => item.chat_id === payment.chat_id)
+        const index = acc.findIndex((item) => item.chat_id === payment.chat_id)
         return index === -1
-          ? [ ...acc, payment ]
-          : acc.map(item => {
-            if (item.chat_id === payment.chat_id) return {
-              ...item,
-              amount: item.amount + payment.amount,
-            }
-            return item
-          })
+          ? [...acc, payment]
+          : acc.map((item) => {
+              if (item.chat_id === payment.chat_id)
+                return {
+                  ...item,
+                  amount: item.amount + payment.amount,
+                }
+              return item
+            })
       }, [])
   }, [data, chats, user])
 
@@ -87,14 +86,12 @@ const PerTribe = (props) => {
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
           data={tribesSpent}
-          keyExtractor={item => String(item.id)}
+          keyExtractor={(item) => String(item.id)}
           renderItem={renderItem}
           ListEmptyComponent={<ListEmpty />}
           refreshing={refreshing}
           onRefresh={onRefresh && onRefresh}
-          refreshControl={
-            <RefreshLoading refreshing={refreshing} onRefresh={onRefresh} />
-          }
+          refreshControl={<RefreshLoading refreshing={refreshing} onRefresh={onRefresh} />}
         />
       )}
     </View>
@@ -117,20 +114,17 @@ const AllTransactions = (props) => {
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
           data={data}
-          keyExtractor={item => String(item.id)}
+          keyExtractor={(item) => String(item.id)}
           renderItem={renderItem}
           ListEmptyComponent={<ListEmpty />}
           refreshing={refreshing}
           onRefresh={onRefresh && onRefresh}
-          refreshControl={
-            <RefreshLoading refreshing={refreshing} onRefresh={onRefresh} />
-          }
+          refreshControl={<RefreshLoading refreshing={refreshing} onRefresh={onRefresh} />}
         />
       )}
     </View>
   ))
 }
-
 
 function ListEmpty() {
   return <Empty text='No transactions found' />
@@ -142,32 +136,32 @@ function Payment(props) {
   const { amount, date, sender, chat_id, showTribeName = false, showTime = true } = props
   const transactionDate = moment(date).format('dd MMM DD, hh:mm A')
 
-  const type = useMemo(() => sender === user.myid ? 'payment' : 'invoice', [sender, user.myid])
+  const type = useMemo(() => (sender === user.myid ? 'payment' : 'invoice'), [sender, user.myid])
   const params = {
     payment: {
       icon: 'arrow-top-right',
       color: '#FFA292',
-      background: theme.bg
+      background: theme.bg,
     },
     invoice: {
       icon: 'arrow-bottom-left',
       color: '#94C4FF',
-      background: theme.main
-    }
+      background: theme.main,
+    },
   }
 
   const text = useMemo(() => {
     if (type !== 'payment') {
-      const contact = contacts.contacts.find(c => c.id === sender)
+      const contact = contacts.contacts.find((c) => c.id === sender)
       return contact ? contact.alias || contact.public_key : 'Unknown'
     }
 
-    const chat = chats.chats.find(c => c.id === chat_id)
+    const chat = chats.chats.find((c) => c.id === chat_id)
     if (chat?.name && showTribeName) return chat.name
     if (chat?.contact_ids?.length !== 2) return '-'
 
-    const oid = chat.contact_ids.find(id => id !== user.myid)
-    const contact = contacts.contacts.find(c => c.id === oid)
+    const oid = chat.contact_ids.find((id) => id !== user.myid)
+    const contact = contacts.contacts.find((c) => c.id === oid)
     if (contact) return contact.alias || contact.public_key
     return '-'
   }, [contacts, chats, user, type])
@@ -177,12 +171,7 @@ function Payment(props) {
     <View style={{ backgroundColor: p.background }}>
       <View style={{ ...styles.paymentBox, borderBottomColor: theme.border }}>
         <View style={{ ...styles.payment }}>
-          <MaterialCommunityIcon
-            name={p.icon}
-            color={p.color}
-            size={28}
-            style={{ marginLeft: 10 }}
-          />
+          <MaterialCommunityIcon name={p.icon} color={p.color} size={28} style={{ marginLeft: 10 }} />
           <View style={styles.mid}>
             <Icon name='Invoice' fill={theme.icon} size={14} />
             <Typography style={{ marginLeft: 10 }} numberOfLines={1}>
@@ -193,7 +182,7 @@ function Payment(props) {
             <Typography
               size={14}
               style={{
-                marginRight: 10
+                marginRight: 10,
               }}
             >
               {amount}
@@ -204,7 +193,13 @@ function Payment(props) {
           </View>
         </View>
         {showTime && (
-          <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end' }}>
+          <View
+            style={{
+              flex: 1,
+              flexDirection: 'row',
+              justifyContent: 'flex-end',
+            }}
+          >
             <Typography color={theme.subtitle} size={12}>
               {transactionDate}
             </Typography>
@@ -217,12 +212,12 @@ function Payment(props) {
 
 const styles = StyleSheet.create({
   wrap: {
-    flex: 1
+    flex: 1,
   },
   title: {
     paddingBottom: 14,
     paddingLeft: 14,
-    fontSize: 24
+    fontSize: 24,
   },
   paymentBox: {
     height: 70,
@@ -230,34 +225,34 @@ const styles = StyleSheet.create({
     minHeight: 70,
     paddingTop: 14,
     paddingRight: 14,
-    borderBottomWidth: 1
+    borderBottomWidth: 1,
   },
   payment: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    width: '100%'
+    width: '100%',
   },
   mid: {
     flex: 1,
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    marginLeft: 16
+    marginLeft: 16,
   },
   loading: {
     flexGrow: 1,
     width: '100%',
     justifyContent: 'center',
-    marginTop: 40
+    marginTop: 40,
   },
   amountWrap: {
     marginLeft: 40,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
-  contact: {}
+  contact: {},
 })

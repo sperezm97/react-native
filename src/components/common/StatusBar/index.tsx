@@ -2,12 +2,11 @@ import React from 'react'
 import { StyleSheet, Platform, StatusBar, View } from 'react-native'
 import { getStatusBarHeight } from 'react-native-iphone-x-helper'
 
-const STATUSBAR_HEIGHT =
-  Platform.OS === 'ios' ? getStatusBarHeight() : StatusBar.currentHeight
+const STATUSBAR_HEIGHT = Platform.OS === 'ios' ? getStatusBarHeight() : StatusBar.currentHeight
 
 type BarStyle = 'default' | 'light-content' | 'dark-content'
 
-const GeneralStatusBarColor = props => {
+const GeneralStatusBarColor = (props) => {
   const { primary } = props
   let backgroundColor = 'white'
   let barStyle: BarStyle = 'dark-content'
@@ -25,7 +24,7 @@ const GeneralStatusBarColor = props => {
 const styles = StyleSheet.create({
   statusBar: {
     // height: STATUSBAR_HEIGHT
-  }
+  },
 })
 
 export default GeneralStatusBarColor

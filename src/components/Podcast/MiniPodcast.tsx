@@ -23,7 +23,7 @@ export default function MinPodcast({
   boost,
   loading,
   podError,
-  pod
+  pod,
 }) {
   const theme = useTheme()
   const [pos, setPos] = useState(0)
@@ -58,17 +58,12 @@ export default function MinPodcast({
           ...styles.wrap,
           backgroundColor: theme.bg,
           borderTopColor: theme.border,
-          height
+          height,
         }}
       >
         <View style={styles.inner}>
           <View style={styles.title}>
-            <ActivityIndicator
-              animating={true}
-              color={theme.primary}
-              size={13}
-              style={{ marginLeft: 14 }}
-            />
+            <ActivityIndicator animating={true} color={theme.primary} size={13} style={{ marginLeft: 14 }} />
             <Typography style={{ marginLeft: 14, maxWidth: '100%' }} numberOfLines={1}>
               {podError ? 'Error loading podcast' : 'loading...'}
             </Typography>
@@ -84,7 +79,7 @@ export default function MinPodcast({
         ...styles.wrap,
         backgroundColor: theme.bg,
         borderTopColor: theme.border,
-        height
+        height,
       }}
     >
       <TouchableOpacity activeOpacity={0.6} onPress={onShowFull} style={styles.touchable}>
@@ -95,7 +90,7 @@ export default function MinPodcast({
               style={{
                 width: 50,
                 height: 50,
-                borderRadius: 50
+                borderRadius: 50,
               }}
               resizeMode={'cover'}
             />
@@ -109,14 +104,10 @@ export default function MinPodcast({
             <TouchableOpacity
               onPress={onToggle}
               style={{
-                ...styles.play
+                ...styles.play,
               }}
             >
-              <MaterialCommunityIcons
-                name={playing ? 'pause-circle' : 'play-circle'}
-                size={40}
-                color={theme.primary}
-              />
+              <MaterialCommunityIcons name={playing ? 'pause-circle' : 'play-circle'} size={40} color={theme.primary} />
             </TouchableOpacity>
             <TouchableIcon rippleColor={theme.grey} size={42} onPress={fastForward}>
               <CustomIcon size={26} name='forward-30' color={theme.title} />
@@ -130,7 +121,7 @@ export default function MinPodcast({
             style={{
               width: `${getProgress() * 100}%`,
               ...styles.progress,
-              backgroundColor: theme.primary
+              backgroundColor: theme.primary,
             }}
           />
         </View>
@@ -145,49 +136,49 @@ const styles = StyleSheet.create({
     width: '100%',
     zIndex: 150,
     borderTopWidth: 1,
-    display: 'flex'
+    display: 'flex',
   },
   touchable: {
     display: 'flex',
-    flex: 1
+    flex: 1,
   },
   inner: {
     display: 'flex',
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   image: {
     width: 50,
     height: 50,
     marginLeft: 10,
-    paddingVertical: 4
+    paddingVertical: 4,
   },
   title: {
     display: 'flex',
     flex: 1,
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   iconz: {
     display: 'flex',
     flex: 1,
     flexDirection: 'row-reverse',
     alignItems: 'center',
-    paddingRight: 10
+    paddingRight: 10,
   },
   play: {
     width: 40,
     height: 40,
     borderRadius: 40,
     marginRight: 15,
-    marginLeft: 5
+    marginLeft: 5,
   },
   progressWrap: {
     width: '100%',
-    height: 3
+    height: 3,
   },
   progress: {
-    height: 3
-  }
+    height: 3,
+  },
 })

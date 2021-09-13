@@ -12,5 +12,5 @@ export default function PinCodeModal({ visible, close, children }) {
 }
 
 PinCodeModal.defaultProps = {
-  close: () => {}
+  close: () => {},
 }

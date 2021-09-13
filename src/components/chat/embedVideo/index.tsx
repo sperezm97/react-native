@@ -7,10 +7,8 @@ import Header from './header'
 import Footer from './footer'
 import Form from './form'
 
-const EmbedVideo = React.forwardRef<Modalize | null, EmbedVideoProps>(({
-  onSendEmbedVideo,
-}, embedVideoModalRef) => {
-  const theme = useTheme();
+const EmbedVideo = React.forwardRef<Modalize | null, EmbedVideoProps>(({ onSendEmbedVideo }, embedVideoModalRef) => {
+  const theme = useTheme()
 
   return (
     <Portal>

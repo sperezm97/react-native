@@ -24,19 +24,12 @@ export default function Network() {
     <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
       <BackHeader title='Appearance' />
       <View style={{ ...styles.content }}>
-        <RadioButton.Group
-          onValueChange={value => selectAppearance(value)}
-          value={theme.mode}
-        >
+        <RadioButton.Group onValueChange={(value) => selectAppearance(value)} value={theme.mode}>
           <RadioButton.Item label='Dark' value='Dark' />
           <Border />
           <RadioButton.Item label='Light' value='Light' />
           <Border />
-          <RadioButton.Item
-            label='System'
-            value='System'
-            style={{ shadowColor: theme.primary }}
-          />
+          <RadioButton.Item label='System' value='System' style={{ shadowColor: theme.primary }} />
         </RadioButton.Group>
       </View>
     </View>
@@ -51,12 +44,12 @@ function Border() {
 
 const styles = StyleSheet.create({
   wrap: {
-    flex: 1
+    flex: 1,
   },
   content: {
-    marginTop: 40
+    marginTop: 40,
   },
   borderBottom: {
-    borderBottomWidth: 1
-  }
+    borderBottomWidth: 1,
+  },
 })

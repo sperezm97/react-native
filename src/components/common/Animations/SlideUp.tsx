@@ -12,7 +12,7 @@ function SlideUp(props) {
     Animated.timing(appearAnim, {
       toValue: -SCREEN_HEIGHT,
       duration: 600,
-      useNativeDriver: true
+      useNativeDriver: true,
     }).start()
   }, [])
 
@@ -21,9 +21,9 @@ function SlideUp(props) {
       style={{
         transform: [
           {
-            translateY: appearAnim
-          }
-        ]
+            translateY: appearAnim,
+          },
+        ],
       }}
     >
       {children}

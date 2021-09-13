@@ -24,12 +24,12 @@ import { DEBOUNCE_TIME, persistMsgLocalForage } from './storage'
 const strg = {
   ios: AsyncStorage,
   android: AsyncStorage,
-  web: localForage
+  web: localForage,
 }
 
 const hydrate = create({
   storage: strg[Platform.OS] || localStorage,
-  debounce: DEBOUNCE_TIME
+  debounce: DEBOUNCE_TIME,
 })
 
 async function testAsyncStorage() {
@@ -76,7 +76,13 @@ async function hydrateMessageStoreFromRealm() {
   }
 }
 function initAndroid() {
-  Promise.all([hydrate('user', userStore), hydrate('details', detailsStore), hydrate('contacts', contactStore), hydrate('chats', chatStore), hydrate('meme', memeStore)]).then(() => {
+  Promise.all([
+    hydrate('user', userStore),
+    hydrate('details', detailsStore),
+    hydrate('contacts', contactStore),
+    hydrate('chats', chatStore),
+    hydrate('meme', memeStore),
+  ]).then(() => {
     console.log('=> store initialized')
     uiStore.setReady(true)
     testAsyncStorage()
@@ -93,7 +99,7 @@ function initWeb() {
     hydrate('chats', chatStore),
     hydrate('meme', memeStore),
     // hydrate('msg', msgStore)
-    hydrateMessageStoreFromLocalforage()
+    hydrateMessageStoreFromLocalforage(),
   ]).then(() => {
     uiStore.setReady(true)
   })
@@ -101,7 +107,13 @@ function initWeb() {
 }
 
 function initIOS() {
-  Promise.all([hydrate('user', userStore), hydrate('details', detailsStore), hydrate('contacts', contactStore), hydrate('chats', chatStore), hydrate('meme', memeStore)]).then(() => {
+  Promise.all([
+    hydrate('user', userStore),
+    hydrate('details', detailsStore),
+    hydrate('contacts', contactStore),
+    hydrate('chats', chatStore),
+    hydrate('meme', memeStore),
+  ]).then(() => {
     uiStore.setReady(true)
     testAsyncStorage()
     hydrateMessageStoreFromRealm()
@@ -131,7 +143,7 @@ const ctx = React.createContext({
   auth: authStore,
   bots: botStore,
   feed: feedStore,
-  queries: queryStore
+  queries: queryStore,
 })
 
 export const useStores = () => React.useContext(ctx)
@@ -141,5 +153,5 @@ export const useTheme = () => React.useContext(React.createContext(themeStore))
 export const hooks = hookz
 
 async function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms))
+  return new Promise((resolve) => setTimeout(resolve, ms))
 }

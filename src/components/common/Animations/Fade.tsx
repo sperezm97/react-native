@@ -9,7 +9,7 @@ export default function Fade(props) {
     Animated.timing(fadeAnim, {
       toValue: props.opacity,
       duration: props.duration || 100,
-      useNativeDriver: true
+      useNativeDriver: true,
     }).start()
     if (props.opacity > 0 && hide) setHide(false)
     if (props.opacity === 0 && !hide) setHide(true)
@@ -20,7 +20,7 @@ export default function Fade(props) {
     <Animated.View
       style={{
         ...props.style,
-        opacity: fadeAnim
+        opacity: fadeAnim,
       }}
     >
       {props.children}

@@ -3,21 +3,15 @@ import { useTheme } from '../../../store'
 
 import ActionSheet from '../ActionSheet'
 
-export default function GroupSettings({
-  visible,
-  owner,
-  onCancel,
-  shareGroup,
-  exitGroup
-}) {
+export default function GroupSettings({ visible, owner, onCancel, shareGroup, exitGroup }) {
   const theme = useTheme()
   const ownerItems = [
     {
       id: 1,
       label: 'Delete Community',
       onPress: () => exitGroup(),
-      actionTextColor: theme.danger
-    }
+      actionTextColor: theme.danger,
+    },
   ]
 
   const userItems = [
@@ -25,16 +19,16 @@ export default function GroupSettings({
       id: 1,
       label: 'Exit Community',
       onPress: () => exitGroup(),
-      actionTextColor: theme.danger
-    }
+      actionTextColor: theme.danger,
+    },
   ]
 
   const commonItems = [
     {
       id: 1,
       label: 'Share Community',
-      onPress: () => shareGroup()
-    }
+      onPress: () => shareGroup(),
+    },
   ]
 
   const items = owner ? [...commonItems, ...ownerItems] : [...commonItems, ...userItems]

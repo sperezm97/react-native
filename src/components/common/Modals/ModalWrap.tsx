@@ -19,7 +19,7 @@ export default function ModalWrap(props) {
     fullscreen,
     animationIn,
     animationOut,
-    children
+    children,
   } = props
   const theme = useTheme()
 
@@ -28,7 +28,10 @@ export default function ModalWrap(props) {
   return (
     <Modal
       isVisible={visible}
-      style={{ ...styles.modal, justifyContent: fullscreen ? 'center' : 'flex-end' }}
+      style={{
+        ...styles.modal,
+        justifyContent: fullscreen ? 'center' : 'flex-end',
+      }}
       onSwipeComplete={() => onClose()}
       swipeDirection={noSwipe ? null : swipeDirection}
       onBackButtonPress={() => onClose()}
@@ -49,7 +52,7 @@ export default function ModalWrap(props) {
           ...styles.main,
           backgroundColor: theme.bg,
           height: fullscreen ? '100%' : 200,
-          paddingTop
+          paddingTop,
         }}
       >
         {children}
@@ -67,16 +70,16 @@ ModalWrap.defaultProps = {
   coverScreen: true,
   fullscreen: true,
   hasBackdrop: true,
-  noHeader: false
+  noHeader: false,
 }
 
 const styles = StyleSheet.create({
   modal: {
     margin: 0,
-    flex: 1
+    flex: 1,
   },
   main: {
     borderTopLeftRadius: isIphoneX() ? 20 : 0,
-    borderTopRightRadius: isIphoneX() ? 20 : 0
-  }
+    borderTopRightRadius: isIphoneX() ? 20 : 0,
+  },
 })

@@ -37,11 +37,14 @@ export default function InfoBar(props) {
         style={{
           ...styles.content,
           alignSelf: isMe ? 'flex-end' : 'flex-start',
-          flexDirection: isMe ? 'row-reverse' : 'row'
+          flexDirection: isMe ? 'row-reverse' : 'row',
         }}
       >
         <View
-          style={{ ...styles.innerContent, flexDirection: isMe ? 'row-reverse' : 'row' }}
+          style={{
+            ...styles.innerContent,
+            flexDirection: isMe ? 'row-reverse' : 'row',
+          }}
         >
           {senderAlias && !isMe && (
             <Typography style={{ ...styles.sender }} size={12} lh={13} color={nameColor}>
@@ -51,29 +54,13 @@ export default function InfoBar(props) {
           <Typography size={12} lh={13} color={theme.darkGrey}>
             {moment(props.date).format(timeFormat)}
           </Typography>
-          {showLock && (
-            <Icon
-              name='lock'
-              size={14}
-              color='#AFB6BC'
-              style={{ marginRight: 4, marginLeft: 4 }}
-            />
-          )}
+          {showLock && <Icon name='lock' size={14} color='#AFB6BC' style={{ marginRight: 4, marginLeft: 4 }} />}
           {isMe && isReceived && (
-            <Icon
-              name='flash'
-              size={14}
-              color='#64C684'
-              style={{ marginRight: showLock ? 0 : 4 }}
-            />
+            <Icon name='flash' size={14} color='#64C684' style={{ marginRight: showLock ? 0 : 4 }} />
           )}
         </View>
         {hasExpiry && !isExpired && (
-          <Typography
-            size={10}
-            lh={13}
-            color={theme.darkGrey}
-          >{`Expires in ${expiry} minutes`}</Typography>
+          <Typography size={10} lh={13} color={theme.darkGrey}>{`Expires in ${expiry} minutes`}</Typography>
         )}
       </View>
     </View>
@@ -84,7 +71,7 @@ const styles = StyleSheet.create({
   wrap: {
     height: 15,
     width: '100%',
-    display: 'flex'
+    display: 'flex',
   },
   content: {
     marginRight: 8,
@@ -92,13 +79,13 @@ const styles = StyleSheet.create({
     maxWidth: 234,
     minWidth: 234,
     display: 'flex',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   innerContent: {
-    display: 'flex'
+    display: 'flex',
   },
   sender: {
     marginRight: 6,
-    marginLeft: 6
-  }
+    marginLeft: 6,
+  },
 })

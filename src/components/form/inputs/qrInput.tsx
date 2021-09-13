@@ -19,7 +19,7 @@ export default function QrInput({
   setValue,
   value,
   displayOnly,
-  accessibilityLabel
+  accessibilityLabel,
 }) {
   const theme = useTheme()
 
@@ -48,7 +48,7 @@ export default function QrInput({
             style={{
               flexDirection: 'row',
               alignItems: 'center',
-              justifyContent: 'center'
+              justifyContent: 'center',
             }}
           >
             {value ? (
@@ -57,17 +57,12 @@ export default function QrInput({
                   numberOfLines={1}
                   style={{
                     flex: 1,
-                    paddingRight: 5
+                    paddingRight: 5,
                   }}
                 >
                   {value}
                 </Typography>
-                <IconButton
-                  icon='qrcode'
-                  color={theme.primary}
-                  size={26}
-                  onPress={() => setScanning(true)}
-                />
+                <IconButton icon='qrcode' color={theme.primary} size={26} onPress={() => setScanning(true)} />
               </>
             ) : (
               <Typography color={theme.subtitle}>No Public key found.</Typography>
@@ -78,7 +73,7 @@ export default function QrInput({
               style={{
                 borderBottomWidth: 1,
                 borderBottomColor: theme.border,
-                marginBottom: 25
+                marginBottom: 25,
               }}
             />
           )}
@@ -108,15 +103,11 @@ export default function QrInput({
         scannerH={SCREEN_HEIGHT - 60}
         visible={scanning && !displayOnly}
         onCancel={() => setScanning(false)}
-        onScan={data => scan(data)}
+        onScan={(data) => scan(data)}
         showPaster={false}
       />
 
-      <PublicKey
-        visible={scanning && displayOnly}
-        pubkey={value}
-        close={() => setScanning(false)}
-      />
+      <PublicKey visible={scanning && displayOnly} pubkey={value} close={() => setScanning(false)} />
     </>
   )
 }
@@ -126,7 +117,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'space-between',
     marginBottom: 26,
-    width: '100%'
+    width: '100%',
   },
   input: {
     display: 'flex',
@@ -134,11 +125,11 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 50,
     paddingRight: 40,
-    textAlign: 'auto'
+    textAlign: 'auto',
   },
   icon: {
     position: 'absolute',
     top: 0,
-    right: 0
-  }
+    right: 0,
+  },
 })

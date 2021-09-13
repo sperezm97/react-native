@@ -44,7 +44,7 @@ export default function ShareGroup() {
       <View style={styles.wrap}>
         <View
           style={{
-            ...styles.content
+            ...styles.content,
           }}
         >
           <QRCode value={qr} size={SCREEN_WIDTH / 1.3} />
@@ -66,19 +66,19 @@ export default function ShareGroup() {
 const styles = StyleSheet.create({
   wrap: {
     flex: 1,
-    marginTop: 40
+    marginTop: 40,
   },
   content: {
     flex: 1,
     alignSelf: 'center',
-    width: SCREEN_WIDTH / 1.3
+    width: SCREEN_WIDTH / 1.3,
   },
   buttonsWrap: {
     display: 'flex',
     flexDirection: 'row',
     width: '100%',
     justifyContent: 'space-between',
-    paddingTop: 40
+    paddingTop: 40,
     // marginBottom: isIphoneX() ? getBottomSpace() : 30
-  }
+  },
 })

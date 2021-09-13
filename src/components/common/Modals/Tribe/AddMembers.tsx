@@ -9,12 +9,7 @@ export default function AddMembers({ visible, close, children }) {
   const theme = useTheme()
 
   return useObserver(() => (
-    <Modal
-      visible={visible}
-      animationType='slide'
-      presentationStyle='pageSheet'
-      onDismiss={close}
-    >
+    <Modal visible={visible} animationType='slide' presentationStyle='pageSheet' onDismiss={close}>
       <ModalHeader title='Add Member' onClose={close} />
       <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>{children}</View>
     </Modal>
@@ -23,6 +18,6 @@ export default function AddMembers({ visible, close, children }) {
 
 const styles = StyleSheet.create({
   wrap: {
-    flex: 1
-  }
+    flex: 1,
+  },
 })

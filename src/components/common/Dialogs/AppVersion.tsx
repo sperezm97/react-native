@@ -16,17 +16,9 @@ export default function AppVersionUpdate({ visible, close }) {
   const [backupVisible, setBackupVisible] = useState(false)
   const [updateVisible, setUpdateVisible] = useState(false)
 
-
   return useObserver(() => {
     return (
-      <DialogWrap
-        visible={visible}
-        onDismiss={close}
-        minH={450}
-        round={20}
-        dismissable={false}
-        ph={0}
-      >
+      <DialogWrap visible={visible} onDismiss={close} minH={450} round={20} dismissable={false} ph={0}>
         <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
           <Image
             source={theme.dark ? require('../../../assets/zion-dark-theme.png') : require('../../../assets/zion.png')}
@@ -103,16 +95,16 @@ export default function AppVersionUpdate({ visible, close }) {
 const styles = StyleSheet.create({
   wrap: {
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   content: {
-    paddingHorizontal: 40
+    paddingHorizontal: 40,
   },
   buttonWrap: {
     display: 'flex',
     flexDirection: 'row',
     width: '100%',
     justifyContent: 'center',
-    paddingTop: 40
-  }
+    paddingTop: 40,
+  },
 })

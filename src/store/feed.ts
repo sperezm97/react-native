@@ -49,7 +49,7 @@ export class FeedStore {
       text,
       amount,
       chat_id,
-      update_meta
+      update_meta,
     })
     if (chat_id && update_meta && text) {
       let meta

@@ -8,7 +8,7 @@ export default function Pushable({ children, onPress, scale }) {
     Animated.timing(pressAnim, {
       toValue: scale,
       duration: 100,
-      useNativeDriver: true
+      useNativeDriver: true,
     }).start()
   }
 
@@ -16,7 +16,7 @@ export default function Pushable({ children, onPress, scale }) {
     Animated.timing(pressAnim, {
       toValue: 1,
       duration: 100,
-      useNativeDriver: true
+      useNativeDriver: true,
     }).start()
   }
 
@@ -25,8 +25,8 @@ export default function Pushable({ children, onPress, scale }) {
       <Animated.View
         style={[
           {
-            transform: [{ scale: pressAnim }]
-          }
+            transform: [{ scale: pressAnim }],
+          },
         ]}
       >
         {children}
@@ -36,5 +36,5 @@ export default function Pushable({ children, onPress, scale }) {
 }
 
 Pushable.defaultProps = {
-  scale: 0.8
+  scale: 0.8,
 }

@@ -58,12 +58,12 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   authorize: {
     fontWeight: 'bold',
     paddingTop: 10,
-    fontSize: 18
+    fontSize: 18,
   },
   host: {
     fontWeight: 'bold',
@@ -72,14 +72,14 @@ const styles = StyleSheet.create({
     borderColor: '#ccc',
     borderRadius: 4,
     padding: 10,
-    backgroundColor: '#eee'
+    backgroundColor: '#eee',
   },
   buttonWrap: {
     width: '100%',
     maxHeight: 60,
     flexDirection: 'row-reverse',
     justifyContent: 'center',
-    marginTop: 40
+    marginTop: 40,
   },
   button: {
     borderRadius: 30,
@@ -88,6 +88,6 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     zIndex: 999,
-    position: 'relative'
-  }
+    position: 'relative',
+  },
 })

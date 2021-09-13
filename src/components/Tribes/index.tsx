@@ -23,12 +23,12 @@ export default function Tribes() {
 
 const styles = StyleSheet.create({
   wrap: {
-    flex: 1
+    flex: 1,
   },
   searchWrap: {
     paddingTop: 10,
     paddingBottom: 10,
     paddingRight: 14,
-    paddingLeft: 14
-  }
+    paddingLeft: 14,
+  },
 })

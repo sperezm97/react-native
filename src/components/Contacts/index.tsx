@@ -28,11 +28,7 @@ export default function Contacts() {
 
   return useObserver(() => (
     <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
-      <BackHeader
-        title='Contacts'
-        action={AddContact}
-        navigate={() => navigation.goBack()}
-      />
+      <BackHeader title='Contacts' action={AddContact} navigate={() => navigation.goBack()} />
       <View style={{ ...styles.content }}>
         <ContactList listHeader={<ListHeader />} />
       </View>
@@ -47,25 +43,21 @@ function ListHeader() {
 
   return (
     <View style={{ ...styles.searchWrap }}>
-      <Search
-        placeholder='Search Contacts'
-        onChangeText={onChangeTextHandler}
-        value={ui.contactsSearchTerm}
-      />
+      <Search placeholder='Search Contacts' onChangeText={onChangeTextHandler} value={ui.contactsSearchTerm} />
     </View>
   )
 }
 
 const styles = StyleSheet.create({
   wrap: {
-    flex: 1
+    flex: 1,
   },
   content: {
-    flex: 1
+    flex: 1,
   },
   searchWrap: {
     paddingRight: 14,
     paddingLeft: 14,
-    paddingBottom: 14
-  }
+    paddingBottom: 14,
+  },
 })

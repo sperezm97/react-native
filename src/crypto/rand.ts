@@ -46,10 +46,7 @@ async function randAscii() {
 function replaceAll(str0, str1, str2) {
   const ignore = false
   return str0.replace(
-    new RegExp(
-      str1.replace(/([\/\,\!\\\^\$\{\}\[\]\(\)\.\*\+\?\|\<\>\-\&])/g, '\\$&'),
-      ignore ? 'gi' : 'g'
-    ),
+    new RegExp(str1.replace(/([\/\,\!\\\^\$\{\}\[\]\(\)\.\*\+\?\|\<\>\-\&])/g, '\\$&'), ignore ? 'gi' : 'g'),
     typeof str2 == 'string' ? str2.replace(/\$/g, '$$$$') : str2
   )
 }

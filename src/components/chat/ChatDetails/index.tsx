@@ -65,36 +65,32 @@ export default function ChatDetails({ route }) {
       `https://${server.host}/public`,
       {
         Authorization: `Bearer ${server.token}`,
-        'Content-Type': 'multipart/form-data'
+        'Content-Type': 'multipart/form-data',
       },
       [
         {
           name: 'file',
           filename: name,
           type: type,
-          data: RNFetchBlob.wrap(uri)
+          data: RNFetchBlob.wrap(uri),
         },
-        { name: 'name', data: name }
+        { name: 'name', data: name },
       ]
     )
       .uploadProgress({ interval: 250 }, (written, total) => {
         setUploadedPercent(Math.round((written / total) * 100))
       })
-      .then(async resp => {
+      .then(async (resp) => {
         let json = resp.json()
 
         if (json.muid) {
           setPhotoUrl(`https://${server.host}/public/${json.muid}`)
         }
 
-        chats.updateMyInfoInChat(
-          group.id,
-          alias,
-          `https://${server.host}/public/${json.muid}`
-        )
+        chats.updateMyInfoInChat(group.id, alias, `https://${server.host}/public/${json.muid}`)
         setUploading(false)
       })
-      .catch(err => {
+      .catch((err) => {
         setUploading(false)
       })
   }
@@ -135,8 +131,7 @@ export default function ChatDetails({ route }) {
   let sliderValue = fuzzyIndexOf(ppms, ppm)
   if (sliderValue < 0) sliderValue = 2
 
-  const showValueSlider =
-    isTribe && !isTribeAdmin && group && group.feed_url ? true : false
+  const showValueSlider = isTribe && !isTribeAdmin && group && group.feed_url ? true : false
 
   async function exitGroup() {
     setLoading(true)
@@ -159,7 +154,7 @@ export default function ChatDetails({ route }) {
   }
 
   return useObserver(() => {
-    const meContact = contacts.contacts.find(c => c.id === user.myid)
+    const meContact = contacts.contacts.find((c) => c.id === user.myid)
     let imgURI = usePicSrc(meContact)
 
     let myPhoto = group.my_photo_url || imgURI
@@ -179,22 +174,20 @@ export default function ChatDetails({ route }) {
           {hasGroup && (
             <View style={styles.groupInfo}>
               <View style={styles.groupInfoLeft}>
-                {group && (
-                  <Avatar size={50} aliasSize={18} big alias={group.name} photo={uri} />
-                )}
+                {group && <Avatar size={50} aliasSize={18} big alias={group.name} photo={uri} />}
                 <View style={styles.groupInfoText}>
                   <Typography size={16} style={{ marginBottom: 4 }}>
                     {group.name}
                   </Typography>
-                  <Typography
-                    color={theme.title}
-                    size={12}
-                    style={{ marginBottom: 4 }}
-                  >{`Created on ${moment(group.created_at).format('ll')}`}</Typography>
-                  <Typography
-                    size={12}
-                    color={theme.subtitle}
-                  >{`Price per message: ${group.price_per_message}, Amount to stake: ${group.escrow_amount}`}</Typography>
+                  <Typography color={theme.title} size={12} style={{ marginBottom: 4 }}>{`Created on ${moment(
+                    group.created_at
+                  ).format('ll')}`}</Typography>
+                  {Boolean(group.price_per_message !== null || group.escrow_amount !== null) && (
+                    <Typography
+                      size={12}
+                      color={theme.subtitle}
+                    >{`Price per message: ${group.price_per_message}, Amount to stake: ${group.escrow_amount}`}</Typography>
+                  )}
                 </View>
               </View>
 
@@ -205,14 +198,10 @@ export default function ChatDetails({ route }) {
                   marginLeft: 0,
                   marginRight: 0,
                   position: 'absolute',
-                  right: 8
+                  right: 8,
                 }}
               >
-                <MaterialCommunityIcon
-                  name='dots-vertical'
-                  size={25}
-                  color={theme.icon}
-                />
+                <MaterialCommunityIcon name='dots-vertical' size={25} color={theme.icon} />
               </TouchableOpacity>
             </View>
           )}
@@ -238,13 +227,7 @@ export default function ChatDetails({ route }) {
                     size={45}
                     top='27%'
                   >
-                    <Avatar
-                      size={45}
-                      aliasSize={18}
-                      big
-                      alias={group.my_alias}
-                      photo={myPhoto}
-                    />
+                    <Avatar size={45} aliasSize={18} big alias={group.my_alias} photo={myPhoto} />
                   </AvatarEdit>
                 </View>
               )}
@@ -300,7 +283,7 @@ function DetailsAction({ chat }) {
   const theme = useTheme()
 
   return useObserver(() => {
-    const theChat = chats.chats.find(c => c.id === chat.id)
+    const theChat = chats.chats.find((c) => c.id === chat.id)
     const isMuted = (theChat && theChat.is_muted) || false
 
     async function muteChat() {
@@ -311,13 +294,7 @@ function DetailsAction({ chat }) {
       <>
         {chat && (
           <IconButton
-            icon={() => (
-              <FeatherIcon
-                name={isMuted ? 'bell-off' : 'bell'}
-                size={22}
-                color={theme.icon}
-              />
-            )}
+            icon={() => <FeatherIcon name={isMuted ? 'bell-off' : 'bell'} size={22} color={theme.icon} />}
             onPress={muteChat}
           />
         )}
@@ -328,54 +305,54 @@ function DetailsAction({ chat }) {
 
 const styles = StyleSheet.create({
   wrap: {
-    flex: 1
+    flex: 1,
   },
   content: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'flex-start',
     marginBottom: 40,
-    paddingTop: 40
+    paddingTop: 40,
   },
   groupInfo: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    width: '100%'
+    width: '100%',
   },
   groupInfoLeft: {
     paddingLeft: 16,
     display: 'flex',
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   groupInfoText: {
     display: 'flex',
     height: 54,
     justifyContent: 'center',
     marginLeft: 14,
-    maxWidth: '77%'
+    maxWidth: '77%',
   },
   infoWrap: {
     display: 'flex',
     width: '100%',
     paddingTop: 30,
     paddingLeft: 18,
-    paddingRight: 18
+    paddingRight: 18,
   },
   input: {
     height: 50,
     paddingRight: 60,
-    textAlign: 'auto'
+    textAlign: 'auto',
   },
   infoImg: {
     position: 'absolute',
     right: 0,
-    top: 0
+    top: 0,
   },
   scroller: {
     width: '100%',
-    position: 'relative'
+    position: 'relative',
   },
   slideWrap: {
     width: '100%',
@@ -383,7 +360,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     height: 62,
-    marginTop: 20
+    marginTop: 20,
   },
   slideText: {
     width: '90%',
@@ -393,13 +370,13 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingLeft: 15,
     paddingRight: 15,
-    marginBottom: 10
+    marginBottom: 10,
   },
   slideLabel: {
-    fontSize: 13
+    fontSize: 13,
   },
   slideValue: {
     fontSize: 15,
-    fontWeight: 'bold'
-  }
+    fontWeight: 'bold',
+  },
 })

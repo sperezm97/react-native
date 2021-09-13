@@ -18,7 +18,7 @@ export default function NumberInput({
   displayOnly,
   description,
   accessibilityLabel,
-  style
+  style,
 }) {
   const theme = useTheme()
   let lab = `${label.en}${required ? ' *' : ''}`
@@ -37,7 +37,7 @@ export default function NumberInput({
         keyboardType='numeric'
         error={error}
         style={{ ...styles.inputStyles, ...style, backgroundColor: theme.bg }}
-        onChangeText={e => setValue(parseInt(e))}
+        onChangeText={(e) => setValue(parseInt(e))}
         onBlur={handleBlur(name)}
         value={value || value === 0 ? value + '' : ''}
         inputAccessoryViewID={name}
@@ -53,6 +53,6 @@ export default function NumberInput({
 const styles = StyleSheet.create({
   inputStyles: {
     marginBottom: 16,
-    maxHeight: 55
-  }
+    maxHeight: 55,
+  },
 })

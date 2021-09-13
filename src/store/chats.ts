@@ -6,7 +6,7 @@ import { Invite, contactStore } from './contacts'
 import { relay } from '../api'
 import { constants } from '../constants'
 import { detailsStore } from './details'
-import * as api from "../api";
+import * as api from '../api'
 /*
 disconneted - socket?
 03eab50cef61b9360bc24f0fd8a8cb3ebd7cec226d9f6fd39150594e0da8bd58a7
@@ -69,11 +69,11 @@ export class ChatStore {
 
   @persist('object')
   @observable
-  pricesPerMinute: { [k: number]: number } = { }
+  pricesPerMinute: { [k: number]: number } = {}
 
   @action
   setChats(chats: Chat[]) {
-    this.chats = chats.map(c => this.parseChat(c))
+    this.chats = chats.map((c) => this.parseChat(c))
   }
 
   @action
@@ -87,7 +87,7 @@ export class ChatStore {
   servers: TribeServer[] = [{ host: DEFAULT_TRIBE_SERVER }]
 
   @action getDefaultTribeServer(): TribeServer {
-    const server = this.servers.find(s => s.host === DEFAULT_TRIBE_SERVER)
+    const server = this.servers.find((s) => s.host === DEFAULT_TRIBE_SERVER)
     if (!server) {
       this.updateServers()
       return this.getDefaultTribeServer()
@@ -102,7 +102,7 @@ export class ChatStore {
   @action
   async muteChat(chatID: number, muted: boolean) {
     relay.post(`chats/${chatID}/${muted ? 'mute' : 'unmute'}`)
-    const chats = this.chats.map(c => {
+    const chats = this.chats.map((c) => {
       if (c.id === chatID) {
         return { ...c, is_muted: muted }
       }
@@ -117,7 +117,7 @@ export class ChatStore {
       let meta
       try {
         meta = JSON.parse(String(c.meta))
-      } catch (e) { }
+      } catch (e) {}
       return { ...c, meta }
     }
     return c
@@ -127,14 +127,14 @@ export class ChatStore {
   async getChats() {
     const chats = await relay.get('chats')
     if (!(chats && chats.length)) return
-    this.chats = this.chats.map(c => this.parseChat(c))
+    this.chats = this.chats.map((c) => this.parseChat(c))
 
     return this.chats
   }
 
   @action
   gotChat(chat: Chat) {
-    const existingIndex = this.chats.findIndex(ch => ch.id === chat.id)
+    const existingIndex = this.chats.findIndex((ch) => ch.id === chat.id)
     if (existingIndex > -1) {
       this.chats[existingIndex] = this.parseChat(chat)
     } else {
@@ -146,7 +146,7 @@ export class ChatStore {
   async createGroup(contact_ids: number[], name: string) {
     const r = await relay.post('group', {
       name,
-      contact_ids
+      contact_ids,
     })
     if (!r) return
     this.gotChat(r)
@@ -167,7 +167,7 @@ export class ChatStore {
     is_private,
     app_url,
     feed_url,
-    contact_ids = []
+    contact_ids = [],
   }) {
     console.log('======>', {
       name,
@@ -181,7 +181,7 @@ export class ChatStore {
       unlisted,
       is_private,
       app_url,
-      feed_url
+      feed_url,
     })
     await sleep(1)
     const r = await relay.post('group', {
@@ -198,7 +198,7 @@ export class ChatStore {
       unlisted: unlisted || false,
       private: is_private || false,
       app_url: app_url || '',
-      feed_url: feed_url || ''
+      feed_url: feed_url || '',
     })
 
     if (!r) return
@@ -221,7 +221,7 @@ export class ChatStore {
     unlisted,
     is_private,
     app_url,
-    feed_url
+    feed_url,
   }) {
     const r = await relay.put(`group/${id}`, {
       name,
@@ -237,7 +237,7 @@ export class ChatStore {
       unlisted: unlisted || false,
       private: is_private || false,
       app_url: app_url || '',
-      feed_url: feed_url || ''
+      feed_url: feed_url || '',
     })
 
     if (!r) return
@@ -257,7 +257,7 @@ export class ChatStore {
     owner_pubkey,
     is_private,
     my_alias,
-    my_photo_url
+    my_photo_url,
   }: {
     name: string
     uuid: string
@@ -271,26 +271,27 @@ export class ChatStore {
     my_alias?: string
     my_photo_url?: string
   }) {
-    const r = await relay.post('tribe', {
-      name,
-      uuid,
-      group_key,
-      amount,
-      host,
-      img,
-      owner_alias,
-      owner_pubkey,
-      private: is_private,
-      my_alias: my_alias || '',
-      my_photo_url: my_photo_url || ''
-    },
-      "",
+    const r = await relay.post(
+      'tribe',
+      {
+        name,
+        uuid,
+        group_key,
+        amount,
+        host,
+        img,
+        owner_alias,
+        owner_pubkey,
+        private: is_private,
+        my_alias: my_alias || '',
+        my_photo_url: my_photo_url || '',
+      },
+      '',
       {
         // TODO: Create a util for this call
-        exceptionCallback: async (e) =>
-          api.invite.post("notify", { error: e }, "", { rawValue: true }),
+        exceptionCallback: async (e) => api.invite.post('notify', { error: e }, '', { rawValue: true }),
       }
-    );
+    )
 
     if (!r) return
     this.gotChat(r)
@@ -311,14 +312,14 @@ export class ChatStore {
       uuid: params.uuid,
       img: params.img,
       amount: params.price_to_join || 0,
-      is_private: params.private
+      is_private: params.private,
     })
   }
 
   @action
   async addGroupMembers(chatID: number, contact_ids: number[]) {
     await relay.put(`chat/${chatID}`, {
-      contact_ids
+      contact_ids,
     })
   }
 
@@ -326,7 +327,7 @@ export class ChatStore {
   async exitGroup(chatID: number) {
     await relay.del(`chat/${chatID}`)
     const chats = [...this.chats]
-    this.chats = chats.filter(c => c.id !== chatID)
+    this.chats = chats.filter((c) => c.id !== chatID)
   }
 
   @action
@@ -334,8 +335,8 @@ export class ChatStore {
     const r = await relay.put(`kick/${chatID}/${contactID}`)
     if (r === true) {
       // success
-      const chat = this.chats.find(c => c.id === chatID)
-      if (chat) chat.contact_ids = chat.contact_ids.filter(cid => cid !== contactID)
+      const chat = this.chats.find((c) => c.id === chatID)
+      if (chat) chat.contact_ids = chat.contact_ids.filter((cid) => cid !== contactID)
     }
   }
 
@@ -344,7 +345,7 @@ export class ChatStore {
     const r = await relay.put(`chats/${tribeID}`, { my_alias, my_photo_url })
     if (r) {
       const cs = [...this.chats]
-      this.chats = cs.map(c => {
+      this.chats = cs.map((c) => {
         if (c.id === tribeID) {
           return { ...c, my_alias, my_photo_url }
         }
@@ -358,7 +359,7 @@ export class ChatStore {
     const r = await relay.put(`group/${tribeID}`, { name, img })
     if (r) {
       const cs = [...this.chats]
-      this.chats = cs.map(c => {
+      this.chats = cs.map((c) => {
         if (c.id === tribeID) {
           return { ...c, name, photo_url: img }
         }
@@ -370,7 +371,7 @@ export class ChatStore {
   @action
   updateChatPhotoURI(id, photo_uri) {
     const cs = [...this.chats]
-    this.chats = cs.map(c => {
+    this.chats = cs.map((c) => {
       if (c.id === id) {
         return { ...c, photo_uri }
       }
@@ -380,7 +381,7 @@ export class ChatStore {
 
   @action
   updateChatMeta(chat_id, meta) {
-    const idx = this.chats.findIndex(c => c.id === chat_id)
+    const idx = this.chats.findIndex((c) => c.id === chat_id)
     if (idx > -1) {
       this.chats[idx].meta = meta
     }
@@ -417,14 +418,13 @@ export class ChatStore {
       }
       return j
     } catch (e) {
-      api.invite.post("notify", { error: e }, "", { rawValue: true }),
-        console.log(e)
+      api.invite.post('notify', { error: e }, '', { rawValue: true }), console.log(e)
     }
   }
 
   @action
   async checkRoute(cid, myid: number) {
-    const chat = this.chats.find(ch => ch.id === cid)
+    const chat = this.chats.find((ch) => ch.id === cid)
 
     if (!chat) return
 
@@ -432,8 +432,8 @@ export class ChatStore {
     if (chat.type === constants.chat_types.tribe) {
       pubkey = chat.owner_pubkey
     } else if (chat.type === constants.chat_types.conversation) {
-      const contactid = chat.contact_ids.find(contid => contid != myid)
-      const contact = contactStore.contacts.find(con => con.id === contactid)
+      const contactid = chat.contact_ids.find((contid) => contid != myid)
+      const contact = contactStore.contacts.find((con) => con.id === contactid)
       if (contact) {
         pubkey = contact.public_key
       }
@@ -468,5 +468,5 @@ export class ChatStore {
 export const chatStore = new ChatStore()
 
 async function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms))
+  return new Promise((resolve) => setTimeout(resolve, ms))
 }

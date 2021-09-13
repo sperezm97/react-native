@@ -14,9 +14,7 @@ export default function FileMsg(props) {
   return (
     <View style={{ ...styles.wrap }}>
       <FeatherIcon name='file-text' color={theme.icon} size={27} />
-      <Typography style={{ marginLeft: 12, marginRight: 12 }}>
-        {filename || 'file'}
-      </Typography>
+      <Typography style={{ marginLeft: 12, marginRight: 12 }}>{filename || 'file'}</Typography>
       <MaterialCommunityIcon name='download' color={theme.icon} size={24} />
     </View>
   )
@@ -28,6 +26,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: 20
-  }
+    padding: 20,
+  },
 })

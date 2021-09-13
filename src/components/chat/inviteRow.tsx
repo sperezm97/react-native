@@ -31,14 +31,14 @@ export default function InviteRow(props) {
           {
             text: 'Cancel',
             onPress: () => console.log('Cancel Pressed'),
-            style: 'cancel'
+            style: 'cancel',
           },
-          { text: 'Confirm', onPress: () => onConfirmHandler() }
+          { text: 'Confirm', onPress: () => onConfirmHandler() },
         ])
       }
     },
     ready: () => ui.setShareInviteModal(invite.invite_string),
-    delivered: () => ui.setShareInviteModal(invite.invite_string)
+    delivered: () => ui.setShareInviteModal(invite.invite_string),
   }
   function doAction() {
     if (actions[statusString]) actions[statusString]()
@@ -64,16 +64,13 @@ export default function InviteRow(props) {
         ...styles.chatRow,
         backgroundColor: theme.main,
         ...styles.borderBottom,
-        borderBottomColor: theme.border
+        borderBottomColor: theme.border,
       }}
       activeOpacity={0.5}
       onPress={doAction}
     >
       <View style={styles.avatarWrap}>
-        <Image
-          style={{ height: 40, width: 40 }}
-          source={require('../../assets/invite-qr.png')}
-        />
+        <Image style={{ height: 40, width: 40 }} source={require('../../assets/invite-qr.png')} />
       </View>
       <View style={styles.inviteContent}>
         <View style={styles.top}>
@@ -86,9 +83,7 @@ export default function InviteRow(props) {
         </View>
         <View style={styles.inviteBottom}>
           {inviteIcon(statusString, theme)}
-          <Typography color={theme.subtitle}>
-            {inviteMsg(statusString, name, confirmed)}
-          </Typography>
+          <Typography color={theme.subtitle}>{inviteMsg(statusString, name, confirmed)}</Typography>
         </View>
       </View>
     </TouchableOpacity>
@@ -98,32 +93,11 @@ export default function InviteRow(props) {
 function inviteIcon(statusString, theme) {
   switch (statusString) {
     case 'payment_pending':
-      return (
-        <MaterialIcon
-          name='credit-card'
-          size={14}
-          color={theme.icon}
-          style={{ marginRight: 4 }}
-        />
-      )
+      return <MaterialIcon name='credit-card' size={14} color={theme.icon} style={{ marginRight: 4 }} />
     case 'ready':
-      return (
-        <MaterialIcon
-          name='check'
-          size={14}
-          color={theme.icon}
-          style={{ marginRight: 4 }}
-        />
-      )
+      return <MaterialIcon name='check' size={14} color={theme.icon} style={{ marginRight: 4 }} />
     case 'delivered':
-      return (
-        <MaterialIcon
-          name='check'
-          size={14}
-          color={theme.icon}
-          style={{ marginRight: 4 }}
-        />
-      )
+      return <MaterialIcon name='check' size={14} color={theme.icon} style={{ marginRight: 4 }} />
     default:
       return <></>
   }
@@ -152,25 +126,25 @@ export const styles = StyleSheet.create({
   chatRow: {
     display: 'flex',
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   borderBottom: {
     flexDirection: 'row',
     flex: 1,
-    borderBottomWidth: 1
+    borderBottomWidth: 1,
   },
   chatContent: {
     display: 'flex',
     flexDirection: 'column',
     flex: 1,
     paddingLeft: 16,
-    paddingTop: 16
+    paddingTop: 16,
   },
   inviteContent: {
     display: 'flex',
     flexDirection: 'column',
     flex: 1,
-    paddingLeft: 16
+    paddingLeft: 16,
   },
   top: {
     display: 'flex',
@@ -178,18 +152,18 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     flex: 1,
-    maxHeight: 28
+    maxHeight: 28,
   },
   bottom: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   inviteBottom: {
     display: 'flex',
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   avatarWrap: {
     display: 'flex',
@@ -197,12 +171,12 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingLeft: 16,
     width: 70,
-    height: 80
+    height: 80,
   },
   chatDate: {
-    marginRight: 14
+    marginRight: 14,
   },
   cancel: {
-    color: 'red'
-  }
+    color: 'red',
+  },
 })

@@ -13,7 +13,7 @@ export default function GroupNotification(props) {
   if (props.isTribe) {
     senderAlias = props.sender_alias
   } else {
-    const sender = contacts.contacts.find(c => c.id === props.sender)
+    const sender = contacts.contacts.find((c) => c.id === props.sender)
     senderAlias = sender && sender.alias
   }
 
@@ -24,7 +24,7 @@ export default function GroupNotification(props) {
       <View
         style={{
           ...styles.content,
-          backgroundColor: theme.main
+          backgroundColor: theme.main,
         }}
       >
         <Typography size={12} color={theme.subtitle}>
@@ -43,11 +43,11 @@ const styles = StyleSheet.create({
     position: 'relative',
     height: 22,
     width: '100%',
-    marginTop: 30
+    marginTop: 30,
   },
   content: {
     paddingLeft: 16,
     paddingRight: 16,
-    borderRadius: 15
-  }
+    borderRadius: 15,
+  },
 })

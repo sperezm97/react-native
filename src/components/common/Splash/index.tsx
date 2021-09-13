@@ -10,7 +10,10 @@ export default function Splash() {
   const isDarkMode = useDarkMode()
   return (
     <View
-      style={{ ...styles.wrap, backgroundColor: theme.dark ? theme.mirage : theme.white }}
+      style={{
+        ...styles.wrap,
+        backgroundColor: theme.dark ? theme.mirage : theme.white,
+      }}
     >
       <Wobble>
         <Image
@@ -33,6 +36,6 @@ const styles = StyleSheet.create({
   wrap: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center'
-  }
+    justifyContent: 'center',
+  },
 })

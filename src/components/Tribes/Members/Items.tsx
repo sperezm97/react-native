@@ -18,12 +18,7 @@ export function DeletableContact(props) {
   const hasImg = uri ? true : false
 
   return (
-    <SwipeRow
-      disableRightSwipe={true}
-      friction={100}
-      rightOpenValue={-80}
-      stopRightSwipe={-80}
-    >
+    <SwipeRow disableRightSwipe={true} friction={100} rightOpenValue={-80} stopRightSwipe={-80}>
       <View style={styles.backSwipeRow}>
         <IconButton
           icon='trash-can-outline'
@@ -51,11 +46,7 @@ export function Contact(props) {
   const uri = usePicSrc(contact)
   const hasImg = uri ? true : false
   return (
-    <TouchableOpacity
-      style={{ ...styles.contactTouch, backgroundColor: theme.bg }}
-      activeOpacity={1}
-      onPress={onPress}
-    >
+    <TouchableOpacity style={{ ...styles.contactTouch, backgroundColor: theme.bg }} activeOpacity={1} onPress={onPress}>
       <View style={{ ...styles.avatarWrap, borderColor: theme.border }}>
         <Avatar size={40} aliasSize={16} photo={uri} big alias={contact.alias} />
 
@@ -92,11 +83,7 @@ export function PendingContact(props) {
     setLoadingStatus('')
   }
   return (
-    <TouchableOpacity
-      style={{ ...styles.contactTouch, backgroundColor: theme.bg }}
-      activeOpacity={1}
-      onPress={onPress}
-    >
+    <TouchableOpacity style={{ ...styles.contactTouch, backgroundColor: theme.bg }} activeOpacity={1} onPress={onPress}>
       <View style={{ ...styles.avatarWrap, borderColor: theme.border }}>
         <Avatar size={40} photo={uri} big alias={contact.alias} aliasSize={20} />
       </View>
@@ -141,7 +128,7 @@ export function SelectedContact({ contact, onPress, removable }) {
 const styles = StyleSheet.create({
   avatarWrap: {
     marginRight: 18,
-    marginLeft: 18
+    marginLeft: 18,
   },
   contactTouch: {
     flex: 1,
@@ -149,22 +136,22 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     height: 80,
     alignItems: 'center',
-    width: '100%'
+    width: '100%',
   },
   contactContent: {
-    flex: 1
+    flex: 1,
   },
   contactName: {
     marginRight: 12,
     fontSize: 16,
-    fontWeight: '500'
+    fontWeight: '500',
   },
   checker: {
     width: 60,
     height: 80,
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   selectedContact: {
     width: 80,
@@ -172,15 +159,15 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   selName: {
     fontSize: 11,
     width: '100%',
-    textAlign: 'center'
+    textAlign: 'center',
   },
   selAvatar: {
-    position: 'relative'
+    position: 'relative',
   },
   tinyButton: {
     height: 18,
@@ -192,21 +179,21 @@ const styles = StyleSheet.create({
     right: 0,
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   backSwipeRow: {
     backgroundColor: '#DB5554',
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-end',
   },
   frontSwipeRow: {
     backgroundColor: 'white',
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    height: 80
+    height: 80,
   },
   buttonz: {
     display: 'flex',
@@ -216,6 +203,6 @@ const styles = StyleSheet.create({
     maxWidth: 100,
     width: 100,
     minWidth: 100,
-    marginRight: 12
-  }
+    marginRight: 12,
+  },
 })

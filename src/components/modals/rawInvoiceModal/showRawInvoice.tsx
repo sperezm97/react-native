@@ -56,13 +56,13 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    width: '100%'
+    width: '100%',
   },
   amtWrap: {
     display: 'flex',
     width: '100%',
     justifyContent: 'center',
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   qrWrap: {
     display: 'flex',
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     marginTop: 5,
-    position: 'relative'
+    position: 'relative',
   },
   payreqText: {
     paddingLeft: 20,
@@ -78,14 +78,14 @@ const styles = StyleSheet.create({
     marginTop: 40,
     marginBottom: 20,
     width: '100%',
-    flexWrap: 'wrap'
+    flexWrap: 'wrap',
   },
   buttonsWrap: {
     marginTop: 20,
     display: 'flex',
     flexDirection: 'row',
     width: '100%',
-    justifyContent: 'space-around'
+    justifyContent: 'space-around',
   },
   button: {
     height: 46,
@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
     width: 120,
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   paidWrap: {
     position: 'absolute',
@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    zIndex: 1001
+    zIndex: 1001,
   },
   paid: {
     color: '#55D1A9',
@@ -118,6 +118,6 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    textAlign: 'center'
-  }
+    textAlign: 'center',
+  },
 })

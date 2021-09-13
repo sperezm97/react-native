@@ -6,43 +6,43 @@ import { InitialLoad } from './types/initialLoad.interface'
  * @param {Array<object | any>} props.contacts - Array of all the contact data
  */
 export default (props: InitialLoad) => {
-  const { contacts, chats, msg } = props;
-  let response = null;
+  const { contacts, chats, msg } = props
+  let response = null
   try {
-    const hasRealmData = hasData();
+    const hasRealmData = hasData()
     if (contacts && !hasRealmData.contacts) {
       contacts.forEach((contact: any) => {
         create({
           schema: 'Contacts',
-          body: { ...contact }
+          body: { ...contact },
         })
-      });
+      })
     }
 
     if (chats && !hasRealmData.chats) {
       chats.forEach((chat: any) => {
         create({
           schema: 'Chats',
-          body: { ...chat }
+          body: { ...chat },
         })
-      });
+      })
     }
 
     if (msg && !hasRealmData.msg) {
-      const allMessages: any = [];
+      const allMessages: any = []
       Object.values(msg.messages).forEach((c: any) => {
         c.forEach((msg: any) => {
           allMessages.push({
-              ...msg,
-              amount: parseInt(msg.amount) || 0,
+            ...msg,
+            amount: parseInt(msg.amount) || 0,
           })
         })
-      });
+      })
 
       const lastSeen = Object.keys(msg.lastSeen).map((key) => ({
         key: parseInt(key),
         seen: msg.lastSeen[key],
-      }));
+      }))
 
       const msgStructure = {
         messages: allMessages,
@@ -52,18 +52,17 @@ export default (props: InitialLoad) => {
 
       create({
         schema: 'Msg',
-        body: { ...msgStructure }
+        body: { ...msgStructure },
       })
     }
 
-
-    return response = { success: true };
+    return (response = { success: true })
   } catch (e) {
-    console.log(`Error at initial load.`);
-    console.log(`error: ${e}`);
+    console.log(`Error at initial load.`)
+    console.log(`error: ${e}`)
     return {
       success: false,
       error: e,
-    };
+    }
   }
 }

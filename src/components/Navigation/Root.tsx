@@ -41,7 +41,7 @@ export default function Root() {
         listeners={{ focus: () => setTint(theme.dark ? 'dark' : 'light') }}
         options={{
           headerShown: false,
-          animationEnabled: false
+          animationEnabled: false,
         }}
       />
       <RootStack.Screen
@@ -49,7 +49,7 @@ export default function Root() {
         component={Chat}
         listeners={{ focus: () => setTint(theme.dark ? 'dark' : 'light') }}
         options={{
-          headerShown: false
+          headerShown: false,
         }}
       />
       <RootStack.Screen
@@ -57,7 +57,7 @@ export default function Root() {
         component={ChatDetails}
         listeners={{ focus: () => setTint(theme.dark ? 'dark' : 'light') }}
         options={{
-          headerShown: false
+          headerShown: false,
         }}
       />
       <RootStack.Screen
@@ -66,7 +66,7 @@ export default function Root() {
         listeners={{ focus: () => setTint(theme.dark ? 'dark' : 'light') }}
         options={{
           headerShown: false,
-          animationEnabled: false
+          animationEnabled: false,
         }}
       />
       <RootStack.Screen
@@ -74,7 +74,7 @@ export default function Root() {
         component={AddSats}
         listeners={{ focus: () => setTint(theme.dark ? 'dark' : 'light') }}
         options={{
-          headerShown: false
+          headerShown: false,
         }}
       />
       <RootStack.Screen
@@ -83,7 +83,7 @@ export default function Root() {
         listeners={{ focus: () => setTint(theme.dark ? 'dark' : 'light') }}
         options={{
           headerShown: false,
-          animationEnabled: false
+          animationEnabled: false,
         }}
       />
 
@@ -92,7 +92,7 @@ export default function Root() {
         component={Contacts}
         listeners={{ focus: () => setTint(theme.dark ? 'dark' : 'light') }}
         options={{
-          headerShown: false
+          headerShown: false,
         }}
       />
       <RootStack.Screen
@@ -100,7 +100,7 @@ export default function Root() {
         component={Contact}
         listeners={{ focus: () => setTint(theme.dark ? 'dark' : 'light') }}
         options={{
-          headerShown: false
+          headerShown: false,
         }}
       />
       <RootStack.Screen
@@ -109,7 +109,7 @@ export default function Root() {
         listeners={{ focus: () => setTint(theme.dark ? 'dark' : 'light') }}
         options={{
           headerShown: false,
-          animationEnabled: false
+          animationEnabled: false,
         }}
       />
       <RootStack.Screen
@@ -117,7 +117,7 @@ export default function Root() {
         component={DiscoverTribes}
         listeners={{ focus: () => setTint(theme.dark ? 'dark' : 'light') }}
         options={{
-          headerShown: false
+          headerShown: false,
         }}
       />
       <RootStack.Screen
@@ -125,7 +125,7 @@ export default function Root() {
         component={Tribe}
         listeners={{ focus: () => setTint(theme.dark ? 'dark' : 'light') }}
         options={{
-          headerShown: false
+          headerShown: false,
         }}
       />
       <RootStack.Screen
@@ -133,7 +133,7 @@ export default function Root() {
         component={EditTribe}
         listeners={{ focus: () => setTint(theme.dark ? 'dark' : 'light') }}
         options={{
-          headerShown: false
+          headerShown: false,
         }}
       />
       <RootStack.Screen
@@ -141,7 +141,7 @@ export default function Root() {
         component={TribeMembers}
         listeners={{ focus: () => setTint(theme.dark ? 'dark' : 'light') }}
         options={{
-          headerShown: false
+          headerShown: false,
         }}
       />
     </RootStack.Navigator>

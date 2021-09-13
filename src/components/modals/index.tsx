@@ -14,8 +14,7 @@ export default function Modals() {
   const { ui } = useStores()
 
   return useObserver(() => {
-    const showConfirmPayInvoice =
-      ui.confirmInvoiceMsg && ui.confirmInvoiceMsg.payment_request ? true : false
+    const showConfirmPayInvoice = ui.confirmInvoiceMsg && ui.confirmInvoiceMsg.payment_request ? true : false
     const showRawInvoiceModal = ui.rawInvoiceModal
     const showOauth = ui.oauthParams ? true : false
     const showSubModal = ui.subModalParams ? true : false

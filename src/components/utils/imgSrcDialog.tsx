@@ -10,9 +10,9 @@ export default function ImgSrcDialog({ open, onClose, onPick, onChooseCam }) {
   async function pickImage() {
     ImagePicker.launchImageLibrary(
       {
-        mediaType: 'photo'
+        mediaType: 'photo',
       },
-      result => {
+      (result) => {
         if (!result.didCancel) {
           onPick(result)
         } else {

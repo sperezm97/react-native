@@ -14,7 +14,7 @@ export default function AccountDetails() {
   const [tipAmount, setTipAmount] = useState(user.tipAmount + '')
   const [loading, setLoading] = useState(false)
   const [isEnabled, setIsEnabled] = useState(false)
-  const me = contacts.contacts.find(c => c.id === user.myid)
+  const me = contacts.contacts.find((c) => c.id === user.myid)
   const nativeID = 'tipAmount'
 
   useEffect(() => {
@@ -29,7 +29,7 @@ export default function AccountDetails() {
   }
 
   function toggleSwitch() {
-    setIsEnabled(previousState => !previousState)
+    setIsEnabled((previousState) => !previousState)
     shareContactKey()
   }
 
@@ -38,7 +38,7 @@ export default function AccountDetails() {
     user.setTipAmount(parseInt(tipAmount))
 
     await contacts.updateContact(user.myid, {
-      tip_amount: user.tipAmount
+      tip_amount: user.tipAmount,
     })
     setLoading(false)
   }
@@ -63,7 +63,7 @@ export default function AccountDetails() {
           initialValues={
             user
               ? {
-                  public_key: user.publicKey
+                  public_key: user.publicKey,
                 }
               : {}
           }
@@ -99,18 +99,18 @@ export default function AccountDetails() {
 
 const styles = StyleSheet.create({
   wrap: {
-    flex: 1
+    flex: 1,
   },
   content: {
     marginTop: 40,
     paddingRight: 18,
-    paddingLeft: 18
+    paddingLeft: 18,
   },
   shareWrap: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 36
-  }
+    marginBottom: 36,
+  },
 })

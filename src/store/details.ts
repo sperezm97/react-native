@@ -98,7 +98,7 @@ class DetailsStore {
   async requestCapacity(pubKey) {
     try {
       const payload = {
-        pubKey
+        pubKey,
       }
 
       const url = `${DEFAULT_HUB_API}request_capacity`
@@ -107,9 +107,9 @@ class DetailsStore {
         method: 'POST',
         headers: {
           Accept: 'application/json',
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(payload),
       })
 
       const j = await r.json()

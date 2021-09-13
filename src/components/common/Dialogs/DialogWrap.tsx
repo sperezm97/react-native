@@ -11,7 +11,7 @@ export default function DialogWrap({
   children,
   minH = 200,
   round = 5,
-  ph = 12
+  ph = 12,
 }) {
   const theme = useTheme()
 
@@ -25,7 +25,7 @@ export default function DialogWrap({
           backgroundColor: theme.bg,
           minHeight: minH,
           borderRadius: round,
-          paddingHorizontal: ph
+          paddingHorizontal: ph,
         }}
       >
         <Dialog.Title
@@ -33,14 +33,14 @@ export default function DialogWrap({
             color: theme.primary,
             fontWeight: '400',
             paddingHorizontal: 0,
-            marginHorizontal: ph
+            marginHorizontal: ph,
           }}
         >
           {title}
         </Dialog.Title>
         <Dialog.Content
           style={{
-            paddingHorizontal: ph
+            paddingHorizontal: ph,
           }}
         >
           {children}

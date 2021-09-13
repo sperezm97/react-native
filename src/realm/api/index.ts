@@ -6,12 +6,4 @@ import hasData from './hasData'
 import initialLoad from './initialLoad'
 import getById from './getById'
 
-export {
-  create,
-  get,
-  update,
-  delet,
-  hasData,
-  initialLoad,
-  getById,
-}
+export { create, get, update, delet, hasData, initialLoad, getById }

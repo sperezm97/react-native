@@ -18,17 +18,16 @@ const WebViewVideo: React.FC<WebViewVideoProps> = ({ embedLink, onLongPress, squ
       <>
         <View style={{ width: squareSize || 640, height: squareSize || 170 }}>
           <View style={{ flex: 1, flexDirection: 'row' }}>
-            {/** This can't be a ternary as seen we need the 
-              * webView loading while we displays the activityIndicator
-              */}
+            {/** This can't be a ternary as seen we need the
+             * webView loading while we displays the activityIndicator
+             */}
             {isLoading && (
               <ActivityIndicator
                 animating={true}
-                size="large"
-                style={{ width: squareSize || 280 }} // 280 is the maxWidth defined at <MsgBubble> 
+                size='large'
+                style={{ width: squareSize || 280 }} // 280 is the maxWidth defined at <MsgBubble>
               />
-            )
-            }
+            )}
             <WebView
               // This code will serve as an observer to long press actions in the webview so we can trigger the modal
               // in the react native side using injectedJavaScript + onMessage props
@@ -68,7 +67,8 @@ const WebViewVideo: React.FC<WebViewVideoProps> = ({ embedLink, onLongPress, squ
           </View>
         </View>
       </>
-    ))
+    )
+  )
 }
 
 export default WebViewVideo

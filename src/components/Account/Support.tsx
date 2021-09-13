@@ -57,13 +57,13 @@ export default function Support() {
           textAlignVertical='top'
           multiline={true}
           placeholder='Describe your problem here...'
-          onChangeText={e => setText(e)}
+          onChangeText={(e) => setText(e)}
           value={text}
           blurOnSubmit={true}
           style={{
             ...styles.input,
             backgroundColor: theme.bg,
-            borderColor: theme.border
+            borderColor: theme.border,
           }}
           placeholderTextColor={theme.placeholder}
         />
@@ -71,9 +71,7 @@ export default function Support() {
           {`App version: ${packageJSON.version}`}
         </Typography>
         <ScrollView style={styles.scroll} contentContainerStyle={styles.inner}>
-          <Typography size={14}>
-            {details.logs}
-          </Typography>
+          <Typography size={14}>{details.logs}</Typography>
         </ScrollView>
         {loading && (
           <View style={styles.spinWrap}>
@@ -99,19 +97,19 @@ export default function Support() {
 const styles = StyleSheet.create({
   wrap: {
     flex: 1,
-    width: '100%'
+    width: '100%',
   },
   scroll: {
     flex: 1,
     display: 'flex',
     maxHeight: '90%',
-    overflow: 'scroll'
+    overflow: 'scroll',
   },
   inner: {
     margin: 2,
     display: 'flex',
     position: 'relative',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   version: {
     marginTop: 6,
@@ -121,7 +119,7 @@ const styles = StyleSheet.create({
     marginTop: 40,
     paddingRight: 18,
     paddingLeft: 18,
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-end',
   },
   buttonWrap: {
     display: 'flex',
@@ -131,7 +129,7 @@ const styles = StyleSheet.create({
     width: '100%',
     minHeight: 200,
     paddingTop: 20,
-    paddingBottom: 20
+    paddingBottom: 20,
   },
   input: {
     flex: 1,
@@ -144,19 +142,19 @@ const styles = StyleSheet.create({
     lineHeight: 20,
     minHeight: 100,
     maxHeight: 100,
-    width: '100%'
+    width: '100%',
   },
   logsScroller: {
     flex: 1,
     minHeight: 100,
-    padding: 15
+    padding: 15,
   },
   logs: {
-    fontSize: 11
+    fontSize: 11,
   },
   spinWrap: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
-  }
+    alignItems: 'center',
+  },
 })

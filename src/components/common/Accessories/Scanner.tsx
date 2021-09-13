@@ -20,7 +20,7 @@ export default function Scanner(props) {
           title: 'Permission to use camera',
           message: 'We need your permission to use your camera',
           buttonPositive: 'Ok',
-          buttonNegative: 'Cancel'
+          buttonNegative: 'Cancel',
         }}
         onGoogleVisionBarcodesDetected={({ barcodes }) => {
           if (!scanned) {
@@ -43,7 +43,7 @@ const outlines = [
   { bottom: 0, right: 0, height: 50, width: 3 },
   { bottom: 0, right: 0, height: 3, width: 50 },
   { bottom: 0, left: 0, height: 50, width: 3 },
-  { bottom: 0, left: 0, height: 3, width: 50 }
+  { bottom: 0, left: 0, height: 3, width: 50 },
 ]
 
 function Outliner({ size, top }) {
@@ -63,10 +63,10 @@ const styles = StyleSheet.create({
     maxHeight: '100%',
     maxWidth: '100%',
     flexDirection: 'column',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   outlineWrap: {
     left: 40,
-    position: 'absolute'
-  }
+    position: 'absolute',
+  },
 })

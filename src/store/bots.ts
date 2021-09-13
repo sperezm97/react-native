@@ -32,7 +32,7 @@ class BotStore {
   @action async createBot(name: string, webhook: string) {
     const r = await relay.post('bot', {
       name,
-      webhook
+      webhook,
     })
     if (r) {
       console.log(r)
@@ -43,7 +43,7 @@ class BotStore {
   @action async deleteBot(id: string) {
     const r = await relay.del(`bot/${id}`)
     if (r) {
-      this.bots = this.bots.filter(b => b.id !== id)
+      this.bots = this.bots.filter((b) => b.id !== id)
     }
   }
 

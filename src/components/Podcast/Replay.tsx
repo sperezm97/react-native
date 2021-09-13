@@ -15,8 +15,8 @@ export default function Replay({ msgs, playing }) {
   async function getPosition() {
     const posf = await TrackPlayer.getPosition()
     const pos = Math.floor(posf)
-    const newms = msgs ? msgs.filter(m => m.ts <= pos && m.ts > pos - 4) : []
-    const msgsToShow = newms.map(m => ({ ...m, fading: m.ts === pos - 3 }))
+    const newms = msgs ? msgs.filter((m) => m.ts <= pos && m.ts > pos - 4) : []
+    const msgsToShow = newms.map((m) => ({ ...m, fading: m.ts === pos - 3 }))
     setMessages(msgsToShow.slice(Math.max(0, msgsToShow.length - 4)).reverse())
   }
   useInterval(() => {
@@ -61,7 +61,7 @@ export default function Replay({ msgs, playing }) {
         style={{
           ...styles.backdrop,
           backgroundColor: theme.main,
-          opacity: showBackdrop ? 0.5 : 0
+          opacity: showBackdrop ? 0.5 : 0,
         }}
       />
       <ItemList style={{ ...styles.scroller }} data={messages} renderItem={renderItem} />
@@ -88,25 +88,25 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 18,
     display: 'flex',
-    flexDirection: 'column-reverse'
+    flexDirection: 'column-reverse',
   },
   backdrop: {
     position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
-    bottom: 18
+    bottom: 18,
   },
   row: {
     display: 'flex',
     flexDirection: 'row',
-    padding: 5
+    padding: 5,
   },
   bubble: {
     backgroundColor: 'white',
     borderRadius: 10,
     borderTopLeftRadius: 0,
-    opacity: 0.9
+    opacity: 0.9,
   },
   text: {
     fontSize: 15,
@@ -114,46 +114,46 @@ const styles = StyleSheet.create({
     paddingTop: 12,
     paddingBottom: 12,
     paddingLeft: 15,
-    paddingRight: 15
+    paddingRight: 15,
   },
   boostWrap: {
     display: 'flex',
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   boostText: {
     fontWeight: 'bold',
-    color: 'white'
+    color: 'white',
   },
   boostSats: {
     marginLeft: 8,
-    color: '#ccc'
+    color: '#ccc',
   },
   boostTextWrap: {
     display: 'flex',
     alignItems: 'center',
     flexDirection: 'row',
-    marginRight: 20
+    marginRight: 20,
   },
   righty: {
     display: 'flex',
     flexDirection: 'column',
-    marginLeft: 6
+    marginLeft: 6,
   },
   infoBar: {
     display: 'flex',
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   infoDate: {
     color: 'white',
     opacity: 0.85,
     fontSize: 10,
-    marginLeft: 6
+    marginLeft: 6,
   },
   infoName: {
     color: 'white',
     fontWeight: 'bold',
-    fontSize: 11
-  }
+    fontSize: 11,
+  },
 })

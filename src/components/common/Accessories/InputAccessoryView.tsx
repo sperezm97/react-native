@@ -1,10 +1,5 @@
 import React from 'react'
-import {
-  StyleSheet,
-  View,
-  Keyboard,
-  InputAccessoryView as ReactInputAccessoryView
-} from 'react-native'
+import { StyleSheet, View, Keyboard, InputAccessoryView as ReactInputAccessoryView } from 'react-native'
 
 import { useTheme } from '../../../store'
 import Button from '../Button'
@@ -30,23 +25,10 @@ export default function InputAccessoryView(props) {
   return (
     <ReactInputAccessoryView nativeID={nativeID} backgroundColor={theme.bg}>
       <View style={styles.btnWrap}>
-        <Button
-          onPress={_cancel}
-          size='small'
-          style={{ ...styles.button }}
-          w='70%'
-          round={0}
-          color={theme.bg}
-        >
+        <Button onPress={_cancel} size='small' style={{ ...styles.button }} w='70%' round={0} color={theme.bg}>
           {cancelText}
         </Button>
-        <Button
-          onPress={_done}
-          size='small'
-          style={{ ...styles.button }}
-          w='30%'
-          round={0}
-        >
+        <Button onPress={_done} size='small' style={{ ...styles.button }} w='30%' round={0}>
           {doneText}
         </Button>
       </View>
@@ -56,7 +38,7 @@ export default function InputAccessoryView(props) {
 
 InputAccessoryView.defaultProps = {
   doneText: 'Done',
-  cancelText: 'Cancel'
+  cancelText: 'Cancel',
 }
 
 const styles = StyleSheet.create({
@@ -64,7 +46,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
-  button: {}
+  button: {},
 })

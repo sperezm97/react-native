@@ -2,7 +2,7 @@
   "name": "ZION",
   "description": "Bitcoin Lightning Powered Chat",
   "author": "",
-  "version": "1.12.0",
+  "version": "1.13.0",
   "main": "public/electron",
   "homepage": "./",
   "scripts": {
@@ -14,7 +14,18 @@
     "jetify": "jetify",
     "xcode": "open ios/Chat.xcworkspace",
     "bump": "npx react-native bump-version --skip-semver-for android --skip-code-for android",
-    "t": "tsc"
+    "t": "bash -c 'yarn tsc --noEmit -p ./tsconfig.json'",
+    "prepare": "husky install",
+    "lint": "eslint --fix",
+    "prettier": "prettier {src,web} --write",
+    "electron": "ELECTRON_DEV_URL=http://localhost:3000 electron .",
+    "install-app-deps": "electron-builder install-app-deps"
+  },
+  "lint-staged": {
+    "{src,web}/**/*.{js,ts,jsx,tsx}": [
+      "yarn lint",
+      "yarn t"
+    ]
   },
   "build": {
     "appId": "Zion.chat",
@@ -161,6 +172,7 @@
     "react-native-gesture-handler": "^1.6.1",
     "react-native-get-random-values": "^1.4.0",
     "react-native-haptic-feedback": "^1.9.0",
+    "react-native-hyperlink": "^0.0.19",
     "react-native-image-picker": "^3.3.2",
     "react-native-iphone-x-helper": "^1.3.1",
     "react-native-keyboard-aware-scroll-view": "^0.9.4",
@@ -240,17 +252,21 @@
     "@babel/core": "^7.8.4",
     "@iconify/icons-mdi": "^1.0.148",
     "@iconify/react": "^1.1.3",
+    "@react-native-community/eslint-config": "^3.0.0",
     "@types/lodash": "^4.14.149",
     "@types/react": "^16.9.23",
     "@types/react-native": "^0.63.20",
+    "@typescript-eslint/eslint-plugin": "^4.31.0",
+    "@typescript-eslint/parser": "^4.31.0",
     "babel-plugin-transform-remove-console": "^6.9.4",
     "customize-cra": "^1.0.0",
     "electron": "^9.2.0",
     "electron-builder": "^22.7.0",
     "eslint": "^7.32.0",
+    "husky": "^7.0.2",
     "jetifier": "~1.6.4",
+    "lint-staged": "^11.1.2",
     "metro-react-native-babel-preset": "^0.59.0",
-    "@react-native-community/eslint-config": "^3.0.0",
     "react-dev-utils": "^10.2.1",
     "react-native-cli-bump-version": "^1.3.0",
     "react-native-svg-transformer": "^0.14.3",
@@ -259,6 +275,8 @@
   },
   "private": true,
   "react-native": {
+    "react-native-encrypted-storage": "react-native-encrypted-storage",
+    "react-native-simple-toast": "react-native-simple-toast",
     "zlib": "browserify-zlib",
     "console": "console-browserify",
     "constants": "constants-browserify",
@@ -285,6 +303,8 @@
     "tls": false
   },
   "browser": {
+    "react-native-encrypted-storage": "./web/react-native-encrypted-storage.tsx",
+    "react-native-simple-toast": "./web/react-native-simple-toast.tsx",
     "zlib": "browserify-zlib",
     "console": "console-browserify",
     "constants": "constants-browserify",

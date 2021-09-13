@@ -36,7 +36,7 @@ export default function PubKey({ visible, close, pubkey }) {
       <View style={styles.wrap}>
         <View
           style={{
-            ...styles.content
+            ...styles.content,
           }}
         >
           {pubkey && <QRCode value={pubkey} size={SCREEN_WIDTH / 1.3} />}
@@ -64,12 +64,12 @@ export default function PubKey({ visible, close, pubkey }) {
 const styles = StyleSheet.create({
   wrap: {
     flex: 1,
-    marginTop: 40
+    marginTop: 40,
   },
   content: {
     flex: 1,
     alignSelf: 'center',
-    width: SCREEN_WIDTH / 1.3
+    width: SCREEN_WIDTH / 1.3,
   },
   buttonsWrap: {
     display: 'flex',
@@ -77,6 +77,6 @@ const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'space-between',
     marginTop: 40,
-    marginBottom: isIphoneX() ? getBottomSpace() : 30
-  }
+    marginBottom: isIphoneX() ? getBottomSpace() : 30,
+  },
 })

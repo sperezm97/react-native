@@ -19,9 +19,7 @@ export default function AddFriend() {
       title: 'Already on Zion',
       thumbIcon: (
         <IconButton
-          icon={({ size, color }) => (
-            <AntDesignIcon name='adduser' color={color} size={size} />
-          )}
+          icon={({ size, color }) => <AntDesignIcon name='adduser' color={color} size={size} />}
           color={theme.white}
           size={18}
         />
@@ -33,11 +31,9 @@ export default function AddFriend() {
         setTimeout(() => {
           ui.setAddContactModal(true)
         }, 400)
-      }
-    }
+      },
+    },
   ]
 
-  return useObserver(() => (
-    <Menu visible={ui.addFriendDialog} items={items} onCancel={close} />
-  ))
+  return useObserver(() => <Menu visible={ui.addFriendDialog} items={items} onCancel={close} />)
 }

@@ -28,6 +28,6 @@ export default function Feed({ feed }) {
 
 const styles = StyleSheet.create({
   wrap: {
-    flex: 1
-  }
+    flex: 1,
+  },
 })

@@ -14,13 +14,13 @@ export default function BoostButton({ onPress }) {
       Animated.timing(size, {
         toValue: 1.5,
         duration: 75,
-        useNativeDriver: true
+        useNativeDriver: true,
       }),
       Animated.timing(size, {
         toValue: 1,
         duration: 500,
-        useNativeDriver: true
-      })
+        useNativeDriver: true,
+      }),
     ]).start()
     onPress()
   }
@@ -34,7 +34,7 @@ export default function BoostButton({ onPress }) {
       <View style={{ ...styles.circle }}>
         <Animated.View
           style={{
-            transform: [{ scale: size }]
+            transform: [{ scale: size }],
           }}
         >
           <Ionicon name='rocket-outline' color={theme.primary} size={22} />
@@ -56,13 +56,13 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 5,
     width: 100,
-    height: 35
+    height: 35,
   },
   circle: {
     borderRadius: 15,
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center'
-  }
+    justifyContent: 'center',
+  },
 })

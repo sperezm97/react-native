@@ -51,11 +51,11 @@ export default function Network() {
 
 const styles = StyleSheet.create({
   wrap: {
-    flex: 1
+    flex: 1,
   },
   content: {
     marginTop: 40,
     paddingRight: 18,
-    paddingLeft: 18
-  }
+    paddingLeft: 18,
+  },
 })

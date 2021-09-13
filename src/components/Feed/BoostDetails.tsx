@@ -15,12 +15,8 @@ export default function BoostRow(props) {
 
   const theBoosts = []
   if (props.boosts) {
-    props.boosts.forEach(b => {
-      if (
-        !theBoosts.find(
-          bb => (bb.sender_alias || bb.sender) === (b.sender_alias || b.sender)
-        )
-      ) {
+    props.boosts.forEach((b) => {
+      if (!theBoosts.find((bb) => (bb.sender_alias || bb.sender) === (b.sender_alias || b.sender))) {
         theBoosts.push(b)
       }
     })
@@ -36,7 +32,7 @@ export default function BoostRow(props) {
         </View>
         <Typography
           style={{
-            marginLeft: 6
+            marginLeft: 6,
           }}
         >
           {props.boosts_total_sats}
@@ -48,23 +44,19 @@ export default function BoostRow(props) {
       <View style={{ ...styles.right }}>
         {hasBoosts && (
           <AvatarsRow
-            aliases={theBoosts.map(b => {
-              const { senderAlias, senderPic } = useBoostSender(
-                b,
-                contacts.contacts,
-                true
-              )
+            aliases={theBoosts.map((b) => {
+              const { senderAlias, senderPic } = useBoostSender(b, contacts.contacts, true)
 
               if (b.sender === 1) {
                 return {
                   alias: props.myAlias || 'Me',
-                  photo: props.myPhoto
+                  photo: props.myPhoto,
                 }
               }
 
               return {
                 alias: senderAlias,
-                photo: senderPic
+                photo: senderPic,
               }
             })}
             borderColor={theme.border}
@@ -80,19 +72,19 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   left: {
     display: 'flex',
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   right: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
     marginLeft: 20,
-    marginRight: 4
+    marginRight: 4,
   },
   rocketWrap: {
     display: 'flex',
@@ -100,6 +92,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     height: 17,
     width: 17,
-    borderRadius: 3
-  }
+    borderRadius: 3,
+  },
 })

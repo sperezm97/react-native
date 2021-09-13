@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react'
+import React, { useState, useMemo } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
 import { PERMISSIONS, check, request, RESULTS } from 'react-native-permissions'
@@ -24,7 +24,6 @@ import PhotoViewer from '../../common/Modals/Media/PhotoViewer'
 import { setTint } from '../../common/StatusBar'
 import EmbedVideo from './embedVideo'
 import { getRumbleLink, getYoutubeLink } from './utils'
-import { isBase64 } from '../../../crypto/Base64'
 
 const { useMsgs } = hooks
 
@@ -34,7 +33,7 @@ export default function MediaMsg(props) {
   const [buying, setBuying] = useState(false)
   const [mediaModal, setMediaModal] = useState(false)
   const [selectedMedia, setSelectedMedia] = useState(null)
-  const { meme, ui, msg, user } = useStores()
+  const { meme, msg } = useStores()
   const theme = useTheme()
   const isMe = props.sender === props.myid
 
@@ -46,16 +45,11 @@ export default function MediaMsg(props) {
     if (ldat.sig) purchased = true
   }
 
-  let { data, uri, loading, trigger, paidMessageText } = useCachedEncryptedFile(props, ldat)
+  let { data, uri, loading, paidMessageText } = useCachedEncryptedFile(props, ldat, true)
 
-  const decodedMessageInCaseOfEmbedVideo = isBase64(paidMessageText).text
-  const rumbleLink = useMemo(() => getRumbleLink(decodedMessageInCaseOfEmbedVideo), [decodedMessageInCaseOfEmbedVideo])
-  const youtubeLink = useMemo(() => getYoutubeLink(decodedMessageInCaseOfEmbedVideo), [decodedMessageInCaseOfEmbedVideo])
+  const rumbleLink = useMemo(() => paidMessageText && getRumbleLink(paidMessageText), [paidMessageText])
+  const youtubeLink = useMemo(() => paidMessageText && getYoutubeLink(paidMessageText), [paidMessageText])
   const isEmbedVideo = youtubeLink || rumbleLink
-
-  useEffect(() => {
-    trigger()
-  }, [props.media_token])
 
   const hasImgData = data || uri ? true : false
   const hasContent = message_content ? true : false
@@ -80,22 +74,19 @@ export default function MediaMsg(props) {
     isImg = true
   }
 
-  let wrapHeight = minHeight
-  if (showPurchaseButton) wrapHeight += 38
-
   const buy = async (amount) => {
     setOnlyOnClick(true)
     setBuying(true)
     let contact_id = props.sender
     if (!contact_id) {
-      contact_id = chat.contact_ids && chat.contact_ids.find(cid => cid !== props.myid)
+      contact_id = chat.contact_ids && chat.contact_ids.find((cid) => cid !== props.myid)
     }
 
     await msg.purchaseMedia({
       chat_id: chat.id,
       media_token,
       amount,
-      contact_id
+      contact_id,
     })
     setBuying(false)
   }
@@ -148,23 +139,46 @@ export default function MediaMsg(props) {
 
     return (
       <View collapsable={false}>
-        <TouchableOpacity
-          onLongPress={onLongPressHandler}
-          onPress={onMediaPress}
-          activeOpacity={0.8}
-        >
+        <TouchableOpacity onLongPress={onLongPressHandler} onPress={onMediaPress} activeOpacity={0.8}>
           {!hasImgData && (
-            <View style={{ minHeight, ...styles.loading, ...(isEmbedVideo && { width: 640 }) }}>
+            <View
+              style={{
+                minHeight,
+                ...styles.loading,
+                ...(isEmbedVideo && { width: 640 }),
+              }}
+            >
               {loading && (
                 <View style={{ minHeight, ...styles.loadingWrap }}>
                   <ActivityIndicator animating={true} color='grey' />
                 </View>
               )}
               {Boolean(paidMessageText) && (
-                <View style={{ minHeight, ...styles.paidAttachmentText, width: 640, backgroundColor: "transparent", ...(isEmbedVideo && { height: 170 }) }}>
-                  {!!rumbleLink ? <EmbedVideo type="rumble" link={rumbleLink} onLongPress={onLongPressHandler} /> : null}
-                  {!!youtubeLink ? <EmbedVideo type="youtube" link={youtubeLink} onLongPress={onLongPressHandler} /> : null}
-                  {!rumbleLink && !youtubeLink && <Text style={{ color: theme.title }}>{paidMessageText}</Text>}
+                <View
+                  style={{
+                    minHeight,
+                    ...styles.paidAttachmentText,
+                    width: 640,
+                    backgroundColor: 'transparent',
+                    ...(isEmbedVideo && { height: 170 }),
+                  }}
+                >
+                  {!!rumbleLink ? (
+                    <EmbedVideo type='rumble' link={rumbleLink} onLongPress={onLongPressHandler} />
+                  ) : null}
+                  {!!youtubeLink ? (
+                    <EmbedVideo type='youtube' link={youtubeLink} onLongPress={onLongPressHandler} />
+                  ) : null}
+                  {!rumbleLink && !youtubeLink && (
+                    <Text
+                      style={{
+                        color: theme.title,
+                        paddingTop: media_type === 'n2n2/text' ? 10 : 0,
+                      }}
+                    >
+                      {paidMessageText}
+                    </Text>
+                  )}
                 </View>
               )}
               {showPayToUnlockMessage && (
@@ -175,14 +189,7 @@ export default function MediaMsg(props) {
             </View>
           )}
 
-          {hasImgData && (
-            <Media
-              type={media_type}
-              data={data}
-              uri={uri}
-              filename={meme.filenameCache[props.id]}
-            />
-          )}
+          {hasImgData && <Media type={media_type} data={data} uri={uri} filename={meme.filenameCache[props.id]} />}
 
           {isImg && showPurchaseButton && !purchased && (
             <View style={styles.imgIconWrap}>
@@ -227,7 +234,7 @@ export default function MediaMsg(props) {
             {purchased ? (
               <View style={{ ...styles.purchasedWrap, backgroundColor: theme.main }}>
                 <MaterialCommunityIcon
-                  name="check"
+                  name='check'
                   color={theme.dark ? theme.white : theme.icon}
                   size={20}
                   style={{ paddingRight: 8 }}
@@ -244,7 +251,7 @@ export default function MediaMsg(props) {
                 loading={buying}
                 icon={() => (
                   <MaterialCommunityIcon
-                    name="arrow-top-right"
+                    name='arrow-top-right'
                     color={theme.dark ? theme.white : theme.icon}
                     size={18}
                   />
@@ -263,7 +270,7 @@ export default function MediaMsg(props) {
             setTint(theme.dark ? 'dark' : 'light')
           }}
           // photos={photos}
-          photos={photos && photos.filter(m => m.id === selectedMedia)}
+          photos={photos && photos.filter((m) => m.id === selectedMedia)}
           // initialIndex={photos && photos.findIndex(m => m.id === selectedMedia)}
           initialIndex={0}
           chat={chat}
@@ -282,9 +289,7 @@ function Media({ type, data, uri, filename }) {
     return <FileMsg type={type} uri={uri} filename={filename} />
   }
   if (type.startsWith('image')) {
-    return (
-      <FastImage style={styles.photo} resizeMode='cover' source={{ uri: uri || data }} />
-    )
+    return <FastImage style={styles.photo} resizeMode='cover' source={{ uri: uri || data }} />
   }
   if (type.startsWith('audio')) {
     return <AudioPlayer source={uri || data} />
@@ -298,7 +303,7 @@ function Media({ type, data, uri, filename }) {
 // video player component
 function VideoPlayer(props) {
   const { ui } = useStores()
-  function onEnd() { }
+  function onEnd() {}
   function onPlay() {
     ui.setVidViewerParams(props)
   }
@@ -315,7 +320,7 @@ function VideoPlayer(props) {
           left: 0,
           bottom: 0,
           right: 0,
-          zIndex: 100
+          zIndex: 100,
         }}
       />
       <IconButton
@@ -336,11 +341,11 @@ const styles = StyleSheet.create({
     // minHeight: 200,
     display: 'flex',
     justifyContent: 'flex-end',
-    paddingTop: 30
+    paddingTop: 30,
   },
   photo: {
     width: 200,
-    height: 200
+    height: 200,
   },
   stats: {
     position: 'absolute',
@@ -352,7 +357,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     // ...shared.innerPad,
     padding: 10,
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   satStats: {
     paddingLeft: 8,
@@ -365,7 +370,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 4,
-    overflow: 'hidden'
+    overflow: 'hidden',
   },
   paidAttachmentText: {
     width: '100%',
@@ -373,7 +378,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    ...shared.innerPad
+    ...shared.innerPad,
   },
   loading: {
     width: 200,
@@ -381,7 +386,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    position: 'relative'
+    position: 'relative',
   },
   loadingWrap: {
     display: 'flex',
@@ -391,7 +396,7 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     right: 0,
-    bottom: 0
+    bottom: 0,
   },
   imgIconWrap: {
     position: 'absolute',
@@ -399,14 +404,14 @@ const styles = StyleSheet.create({
     top: 80,
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   purchasedWrap: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    ...shared.innerPad
+    ...shared.innerPad,
   },
   msgContentWrap: {
     width: 200,
@@ -414,8 +419,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     flexWrap: 'nowrap',
-    ...shared.innerPad
+    ...shared.innerPad,
     // paddingTop: shared.innerPad.paddingTop,
     // paddingBottom: shared.innerPad.paddingBottom
-  }
+  },
 })

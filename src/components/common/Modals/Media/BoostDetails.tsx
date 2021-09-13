@@ -14,12 +14,8 @@ export default function BoostRow(props) {
 
   const theBoosts = []
   if (props.boosts) {
-    props.boosts.forEach(b => {
-      if (
-        !theBoosts.find(
-          bb => (bb.sender_alias || bb.sender) === (b.sender_alias || b.sender)
-        )
-      ) {
+    props.boosts.forEach((b) => {
+      if (!theBoosts.find((bb) => (bb.sender_alias || bb.sender) === (b.sender_alias || b.sender))) {
         theBoosts.push(b)
       }
     })
@@ -41,23 +37,19 @@ export default function BoostRow(props) {
       <View style={{ ...styles.right }}>
         {hasBoosts && (
           <AvatarsRow
-            aliases={theBoosts.map(b => {
-              const { senderAlias, senderPic } = useBoostSender(
-                b,
-                contacts.contacts,
-                true
-              )
+            aliases={theBoosts.map((b) => {
+              const { senderAlias, senderPic } = useBoostSender(b, contacts.contacts, true)
 
               if (b.sender === props.myid) {
                 return {
                   alias: props.myAlias || 'Me',
-                  photo: props.myPhoto
+                  photo: props.myPhoto,
                 }
               }
 
               return {
                 alias: senderAlias,
-                photo: senderPic
+                photo: senderPic,
               }
             })}
             borderColor={theme.border}
@@ -73,19 +65,19 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   left: {
     display: 'flex',
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   right: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
     marginLeft: 20,
-    marginRight: 4
+    marginRight: 4,
   },
   rocketWrap: {
     height: 17,
@@ -93,6 +85,6 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center'
-  }
+    justifyContent: 'center',
+  },
 })

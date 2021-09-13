@@ -59,7 +59,7 @@ function VideoViewer({ params, close }) {
           top: 0,
           left: 0,
           ...boxStyles,
-          zIndex: 100
+          zIndex: 100,
         }}
       />
       <IconButton
@@ -69,7 +69,7 @@ function VideoViewer({ params, close }) {
         style={{
           ...styles.play,
           left: Math.round(w / 2) - 50,
-          top: Math.round(h / 2) - 50
+          top: Math.round(h / 2) - 50,
         }}
         onPress={onPlay}
       />
@@ -88,17 +88,17 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    backgroundColor: 'black'
+    backgroundColor: 'black',
   },
   play: {
     position: 'absolute',
     left: 40,
     top: 40,
-    zIndex: 101
+    zIndex: 101,
   },
   back: {
     position: 'absolute',
     left: 4,
-    top: 31
-  }
+    top: 31,
+  },
 })
