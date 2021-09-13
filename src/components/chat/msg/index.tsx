@@ -9,7 +9,7 @@ import ReactNativeHapticFeedback from 'react-native-haptic-feedback'
 import Popover, { PopoverPlacement } from 'react-native-popover-view'
 import Clipboard from '@react-native-community/clipboard'
 
-import { useStores, useTheme, hooks } from '../../../store'
+import { useTheme, hooks } from '../../../store'
 import { useChatReply } from '../../../store/hooks/chat'
 import { constantCodes, constants, SCREEN_HEIGHT, SCREEN_WIDTH } from '../../../constants'
 import EE, { CLEAR_REPLY_UUID, REPLY_UUID } from '../../utils/ee'
@@ -31,7 +31,7 @@ const { useMsgs } = hooks
 
 export default function MsgRow(props) {
   const theme = useTheme()
-  const [showReply, setShowReply] = useState(false)
+  const [, setShowReply] = useState(false) // showReply
 
   const swipeRowRef = useRef<any>(null)
 
@@ -114,7 +114,7 @@ export default function MsgRow(props) {
           onRowDidOpen={onRowDidOpenHandler}
           // onRowClose={onRowCloseHandler}
         >
-          <View></View>
+          <View />
           <View
             style={{
               flexDirection: 'row',
@@ -138,12 +138,7 @@ export default function MsgRow(props) {
               }}
             >
               {props.showInfoBar && <InfoBar {...props} senderAlias={props.senderAlias} />}
-              <MsgBubble
-                {...props}
-                isTribeOwner={isTribeOwner}
-                myAlias={props.myAlias}
-                myid={props.myid}
-              />
+              <MsgBubble {...props} isTribeOwner={isTribeOwner} myAlias={props.myAlias} myid={props.myid} />
             </View>
             <View
               style={{
@@ -297,7 +292,7 @@ function MsgBubble(props) {
 
 // Message content component
 function Message(props) {
-  const typ = constantCodes['message_types'][props.type]
+  const typ = constantCodes?.message_types[props.type]
 
   switch (typ) {
     case 'message':

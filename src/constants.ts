@@ -72,17 +72,22 @@ const constants = {
   },
 }
 
-function switcher(consts) {
+type SwitcherReturn = {
+  [key: string]: {
+    [nestedKey: number]: string
+  }
+}
+
+const switcher: (value: typeof constants) => SwitcherReturn = (consts: typeof constants) => {
   const codes = {}
-  for (let [k, obj] of Object.entries(consts)) {
-    for (let [str, num] of Object.entries(obj)) {
+  for (const [k, obj] of Object.entries(consts)) {
+    for (const [str, num] of Object.entries(obj)) {
       if (!codes[k]) codes[k] = {}
       codes[k][num] = str
     }
   }
   // dont switch this one
-  codes['payment_errors'] = consts['payment_errors']
-  return codes
+  return { ...codes, payment_errors: consts.payment_errors }
 }
 
 const constantCodes = switcher(constants)
