@@ -19,14 +19,13 @@ import { getRumbleLink, getYoutubeLink } from './utils'
 export default function TextMsg(props) {
   const theme = useTheme()
 
-  const { message_content } = props
+  const { message_content, isTribe } = props
   const rumbleLink = useMemo(() => getRumbleLink(message_content), [message_content])
   const youtubeLink = useMemo(() => getYoutubeLink(message_content), [message_content])
   const showBoostRow = props.boosts_total_sats ? true : false
   const isGiphy = message_content && message_content.startsWith('giphy::')
   const isClip = message_content && message_content.startsWith('clip::')
   const isBoost = message_content?.startsWith('boost::')
-  const isTribe = message_content?.startsWith(`${DEFAULT_DOMAIN}://?action=tribe`)
   const isLink = linkify.find(message_content, 'url').length > 0
 
   const onLongPressHandler = () => props.onLongPress(props)
@@ -57,7 +56,6 @@ export default function TextMsg(props) {
       </View>
     )
   if (isBoost) return <BoostMessage {...props} />
-  if (isTribe) return <TribeMsg {...props} />
   if (rumbleLink || youtubeLink)
     return (
       <TouchableOpacity
