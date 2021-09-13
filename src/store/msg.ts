@@ -499,11 +499,10 @@ class MsgStore {
   }
 
   @action
-  seeChat(id) {
+  async seeChat(id) {
     if (!id) return
     this.lastSeen[id] = new Date().getTime()
-    const r = relay.post(`messages/${id}/read`)
-
+    await relay.post(`messages/${id}/read`)
     this.persister()
   }
 

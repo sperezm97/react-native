@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
 import { useNavigation } from '@react-navigation/native'
 import RNFetchBlob from 'rn-fetch-blob'
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
-import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import Ionicon from 'react-native-vector-icons/Ionicons'
-import { isIphoneX } from 'react-native-iphone-x-helper'
 
 import { useStores, useTheme } from '../../../store'
 import Typography from '../../common/Typography'
@@ -212,6 +210,7 @@ function TribeActions({ tribe }) {
   const { chats, msg, ui } = useStores()
   const theme = useTheme()
   const navigation = useNavigation()
+  const [loading, setLoading] = useState(false)
   const [joinTribe, setJoinTribe] = useState({
     visible: false,
     tribe: null,
@@ -228,9 +227,16 @@ function TribeActions({ tribe }) {
   }
 
   async function onChatPress() {
-    msg.seeChat(tribe.chat.id)
-    msg.getMessages()
-    navigation.navigate('Chat', { ...tribe.chat })
+    setLoading(true)
+    try {
+      await msg.seeChat(tribe.chat.id) // Ping relay to read message
+      await msg.getMessages()
+      navigation.navigate('Chat', { ...tribe.chat })
+    } catch (e) {
+      console.log(e)
+    } finally {
+      setLoading(false)
+    }
   }
 
   return useObserver(() => {
@@ -241,12 +247,10 @@ function TribeActions({ tribe }) {
             <>
               {tribe.joined ? (
                 <View style={{ ...styles.headerActions }}>
-                  {/* <Button color={theme.primary} onPress={onExitTribePress} w='35%'>
-                Joined
-              </Button> */}
                   <Button
                     icon={() => <Ionicon name='chatbubbles-outline' color={theme.white} size={20} />}
                     onPress={onChatPress}
+                    loading={loading}
                     w='60%'
                   >
                     Chat
@@ -262,6 +266,7 @@ function TribeActions({ tribe }) {
             <Button
               icon={() => <Ionicon name='chatbubbles-outline' color={theme.white} size={20} />}
               onPress={onChatPress}
+              loading={loading}
               w='60%'
             >
               Chat
