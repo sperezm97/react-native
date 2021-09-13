@@ -2,7 +2,7 @@
   "name": "ZION",
   "description": "Bitcoin Lightning Powered Chat",
   "author": "",
-  "version": "1.12.0",
+  "version": "1.13.0",
   "main": "public/electron",
   "homepage": "./",
   "scripts": {
@@ -22,7 +22,10 @@
     "install-app-deps": "electron-builder install-app-deps"
   },
   "lint-staged": {
-    "{src,web}/**/*.{js,ts,jsx,tsx}": ["yarn lint", "yarn t"]
+    "{src,web}/**/*.{js,ts,jsx,tsx}": [
+      "yarn lint",
+      "yarn t"
+    ]
   },
   "build": {
     "appId": "Zion.chat",
