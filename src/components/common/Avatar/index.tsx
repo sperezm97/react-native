@@ -1,38 +1,23 @@
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, View, Text, Image } from 'react-native'
+import { StyleSheet, View, Text } from 'react-native'
 import { Avatar as PaperAvatar } from 'react-native-paper'
 import FastImage from 'react-native-fast-image'
 
-import { useStores, useTheme } from '../../../store'
-import { useAvatarColor } from '../../../store/hooks/msg'
+import { useTheme } from '../../../store'
+import { useAvatarColor as getAvatarColor } from '../../../store/hooks/msg'
 
 export default function Avatar(props) {
   let { style, photo, alias, size, avatarSize, borderless } = props
 
   const theme = useTheme()
   const [avatar, setAvatar] = useState({
-    newImage: require('../../../assets/avatars/balvin.png'),
+    newImage: require('../../../assets/avatars/pic1.png'),
     randomImages: [
       {
-        image: require('../../../assets/avatars/balvin.png'),
+        image: require('../../../assets/avatars/pic1.png'),
       },
       {
-        image: require('../../../assets/avatars/bieber.png'),
-      },
-      {
-        image: require('../../../assets/avatars/blu.png'),
-      },
-      {
-        image: require('../../../assets/avatars/cardi.png'),
-      },
-      {
-        image: require('../../../assets/avatars/cardi2.png'),
-      },
-      {
-        image: require('../../../assets/avatars/guy.png'),
-      },
-      {
-        image: require('../../../assets/avatars/kittle.png'),
+        image: require('../../../assets/avatars/pic2.png'),
       },
     ],
   })
@@ -40,7 +25,7 @@ export default function Avatar(props) {
   useEffect(() => {
     setAvatar({
       ...avatar,
-      newImage: avatar.randomImages[Math.floor(Math.random() * 3)].image,
+      newImage: avatar.randomImages[Math.random() < 0.5 ? 0 : 1].image,
     })
   }, [])
 
@@ -90,7 +75,7 @@ export default function Avatar(props) {
           width: size,
           borderRadius,
           opacity: props.hide ? 0 : 1,
-          backgroundColor: useAvatarColor(alias),
+          backgroundColor: getAvatarColor(alias),
         }}
       >
         <Text
