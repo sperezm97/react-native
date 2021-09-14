@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { StyleSheet, View, ScrollView, SafeAreaView } from 'react-native'
 import { observer } from 'mobx-react-lite'
 import { useNavigation, useIsFocused } from '@react-navigation/native'
@@ -30,10 +30,7 @@ const Tribe = ({ route }) => {
     { key: 'second', title: 'About' },
   ])
 
-  const tribe = useMemo(
-    () => tribes.find((t) => t.uuid === route.params.tribe.uuid) || route.params.tribe,
-    [tribes.length]
-  )
+  const tribe = tribes.find((t) => t.uuid === route.params.tribe.uuid) || route.params.tribe
 
   useEffect(() => {
     chats.getTribes()
@@ -68,7 +65,7 @@ const Tribe = ({ route }) => {
 
   return (
     <SafeAreaView style={{ ...styles.wrap, backgroundColor: theme.bg }}>
-      <BackHeader navigate={navigationBack} action={<TribeHeader tribe={tribe} openDialog={openDialog} />} />
+      <BackHeader navigate={navigationBack} action={<TribeHeader openDialog={openDialog} />} />
 
       <ScrollView>
         <View style={styles.content}>
@@ -94,7 +91,8 @@ const Tribe = ({ route }) => {
   )
 }
 
-function TribeHeader({ tribe, openDialog }) {
+function TribeHeader({ openDialog }) {
+  // tribe
   const theme = useTheme()
 
   return (
