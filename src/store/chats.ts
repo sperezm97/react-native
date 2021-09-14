@@ -167,7 +167,7 @@ export class ChatStore {
     is_private,
     app_url,
     feed_url,
-    contact_ids = [],
+    // contact_ids = [],
   }) {
     console.log('======>', {
       name,
@@ -271,27 +271,36 @@ export class ChatStore {
     my_alias?: string
     my_photo_url?: string
   }) {
-    const r = await relay.post(
-      'tribe',
-      {
-        name,
-        uuid,
-        group_key,
-        amount,
-        host,
-        img,
-        owner_alias,
-        owner_pubkey,
-        private: is_private,
-        my_alias: my_alias || '',
-        my_photo_url: my_photo_url || '',
+    const tribePayload = {
+      name,
+      uuid,
+      group_key,
+      amount,
+      host,
+      img,
+      owner_alias,
+      owner_pubkey,
+      private: is_private,
+      my_alias: my_alias || '',
+      my_photo_url: my_photo_url || '',
+    }
+    const r = await relay.post('tribe', tribePayload, '', {
+      // TODO: Create a util for this call
+      exceptionCallback: async (e) => {
+        await api.invite.post(
+          'notify',
+          {
+            place: 'React Native APP',
+            tribeInfo: tribePayload,
+            isDevEnvironment: __DEV__,
+            label: 'Chat class - joinTribe',
+            error: e,
+          },
+          '',
+          { rawValue: true }
+        )
       },
-      '',
-      {
-        // TODO: Create a util for this call
-        exceptionCallback: async (e) => api.invite.post('notify', { error: e }, '', { rawValue: true }),
-      }
-    )
+    })
 
     if (!r) return
     this.gotChat(r)
@@ -303,7 +312,7 @@ export class ChatStore {
   async joinDefaultTribe() {
     const params = await this.getTribeDetails(DEFAULT_TRIBE_SERVER, DEFAULT_TRIBE_UUID)
 
-    const r = await this.joinTribe({
+    await this.joinTribe({
       name: params.name,
       group_key: params.group_key,
       owner_alias: params.owner_alias,
@@ -418,7 +427,8 @@ export class ChatStore {
       }
       return j
     } catch (e) {
-      api.invite.post('notify', { error: e }, '', { rawValue: true }), console.log(e)
+      api.invite.post('notify', { error: e }, '', { rawValue: true })
+      console.log(e)
     }
   }
 
@@ -432,6 +442,8 @@ export class ChatStore {
     if (chat.type === constants.chat_types.tribe) {
       pubkey = chat.owner_pubkey
     } else if (chat.type === constants.chat_types.conversation) {
+      // TODO: Check types later and fix eslint error
+      // eslint-disable-next-line eqeqeq
       const contactid = chat.contact_ids.find((contid) => contid != myid)
       const contact = contactStore.contacts.find((con) => con.id === contactid)
       if (contact) {

@@ -25,7 +25,7 @@ export default function JoinTribeWrap(props) {
 function JoinTribe(props) {
   const { visible, close, tribe } = props
 
-  const { ui, chats } = useStores()
+  const { chats } = useStores()
   const theme = useTheme()
   const [videoVisible, setVideoVisible] = useState(false)
   const [alias, setAlias] = useState('')
@@ -85,7 +85,7 @@ function JoinTribe(props) {
         <Modal visible={visible} animationType='slide' presentationStyle='fullScreen' onDismiss={close}>
           <SafeAreaView style={{ ...styles.wrap, backgroundColor: theme.bg }}>
             <KeyboardAvoidingView behavior='padding' style={{ flex: 1 }} keyboardVerticalOffset={1}>
-              <Header title='Join Community' onClose={() => close()} />
+              <Header title='Join Community' onClose={close} />
               <ScrollView>
                 {tribe && (
                   <View style={{ ...styles.content }}>
@@ -221,6 +221,7 @@ function VideoView({ videoVisible, tribe, joinTribe, close }) {
         <Video
           source={network}
           resizeMode='cover'
+          repeat
           style={{
             height: SCREEN_HEIGHT,
           }}
