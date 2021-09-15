@@ -17,6 +17,7 @@
 		2DCD954D1E0B4F2C00145EB5 /* ChatTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* ChatTests.m */; };
 		40945617261F88CA00270DEE /* void.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40945616261F88CA00270DEE /* void.swift */; };
 		5F14147C25F7DCFB00E39A40 /* icomoon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5F14147B25F7DCFB00E39A40 /* icomoon.ttf */; };
+		735634A226F23512006B3A72 /* BootSplash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 735634A126F23512006B3A72 /* BootSplash.storyboard */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		BF0AFC72771047B5A444057E /* ProximaNova-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = CAABD8DBB18148DB8E1D83E3 /* ProximaNova-Regular.otf */; };
 		E5384EB8F5B35112B2A8F0BD /* libPods-Chat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E8EFF043E30811C269A1786D /* libPods-Chat.a */; };
@@ -68,6 +69,7 @@
 		6324A58CBF4D4F00B115F76D /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
 		72D489CCF0834690BB56EEE7 /* Proxima Nova Thin.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Proxima Nova Thin.otf"; path = "../src/assets/fonts/Proxima Nova Thin.otf"; sourceTree = "<group>"; };
 		72E61A2EEE5E4DB28ED3AFC3 /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Brands.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; };
+		735634A126F23512006B3A72 /* BootSplash.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = BootSplash.storyboard; path = Chat/BootSplash.storyboard; sourceTree = "<group>"; };
 		7A0EA81B815E4B4DB9221ED8 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
 		7B0A09E013BA45128CF1C73E /* Proxima Nova Bold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Proxima Nova Bold.otf"; path = "../src/assets/fonts/Proxima Nova Bold.otf"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Chat/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -144,6 +146,7 @@
 				4030E6372616B3F100ED7F55 /* Chat.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
+				735634A126F23512006B3A72 /* BootSplash.storyboard */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
@@ -380,6 +383,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				735634A226F23512006B3A72 /* BootSplash.storyboard in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				5F14147C25F7DCFB00E39A40 /* icomoon.ttf in Resources */,
