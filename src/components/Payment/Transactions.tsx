@@ -18,7 +18,7 @@ export default function Transactions({ listHeader, ...props }) {
   const [index, setIndex] = useState(0)
   const [routes] = useState([
     { key: 'first', title: 'All Transactions' },
-    { key: 'second', title: 'Per Tribe' },
+    { key: 'second', title: 'Per Community' },
   ])
 
   const renderScene = ({ route: renderSceneRoute }) => {
