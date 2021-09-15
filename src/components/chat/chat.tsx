@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { KeyboardAvoidingView } from 'react-native'
+import { View } from 'react-native'
 import { useRoute, useNavigation } from '@react-navigation/native'
 
 import { useStores, useTheme } from '../../store'
@@ -129,7 +129,7 @@ export default function Chat() {
   const showPod = feedURL ? true : false
 
   return (
-    <KeyboardAvoidingView behavior='padding' style={{ flex: 1, backgroundColor: theme.bg }} keyboardVerticalOffset={1}>
+    <View style={{ flex: 1, backgroundColor: theme.bg }}>
       <Header
         chat={chat}
         appMode={appMode}
@@ -150,6 +150,6 @@ export default function Chat() {
       {showPod && <Podcast pod={pod} chat={chat} onBoost={onBoost} podError={podError} />}
 
       <BottomBar chat={chat} pricePerMessage={pricePerMessage} tribeBots={tribeBots} />
-    </KeyboardAvoidingView>
+    </View>
   )
 }

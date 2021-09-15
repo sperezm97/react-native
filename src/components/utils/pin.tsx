@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { StyleSheet, View } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
-import { ActivityIndicator, Colors } from 'react-native-paper'
+import { ActivityIndicator } from 'react-native-paper'
 import EncryptedStorage from 'react-native-encrypted-storage'
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback'
-import AsyncStorage from '@react-native-community/async-storage'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import moment from 'moment'
 // import SecureStorage from 'react-native-secure-storage'
 

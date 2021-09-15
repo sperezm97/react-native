@@ -172,7 +172,7 @@ function App() {
     return (
       <>
         <PaperProvider theme={pTheme}>
-          <StatusBar />
+          {ui.signedUp && <StatusBar />}
           <NavigationContainer ref={navigationRef}>
             <Host>
               {ui.signedUp && (

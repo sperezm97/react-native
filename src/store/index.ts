@@ -14,7 +14,7 @@ import { feedStore } from './feed'
 import { queryStore } from './queries'
 import { create } from 'mobx-persist'
 import { Platform } from 'react-native'
-import AsyncStorage from '@react-native-community/async-storage'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import * as hookz from './hooks'
 import * as localForage from 'localforage'
 import { getRealmMessages, updateRealmMsg } from '../realm/exports'
@@ -28,7 +28,7 @@ const strg = {
 }
 
 const hydrate = create({
-  storage: strg[Platform.OS] || localStorage,
+  storage: strg[Platform.OS] || localForage,
   debounce: DEBOUNCE_TIME,
 })
 
