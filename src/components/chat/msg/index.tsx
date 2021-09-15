@@ -93,7 +93,7 @@ export default function MsgRow(props) {
       style={{
         display: 'flex',
         width: '100%',
-        marginTop: props.showInfoBar ? 30 : 5,
+        marginTop: props.showInfoBar ? 16 : 5,
       }}
     >
       <View
