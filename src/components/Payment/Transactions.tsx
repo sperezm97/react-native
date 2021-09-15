@@ -45,6 +45,9 @@ export default function Transactions({ listHeader, ...props }) {
   ))
 }
 
+/**
+ * @todo rename component name and utils to make it match with tab title `Per Community`
+ */
 const PerTribe = (props) => {
   const { data, refreshing, loading, onRefresh } = props
   const { user, chats } = useStores()
