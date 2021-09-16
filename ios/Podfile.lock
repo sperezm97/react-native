@@ -37,7 +37,7 @@ PODS:
   - lottie-react-native (4.0.2):
     - lottie-ios (~> 3.1.8)
     - React-Core
-  - Permission-Camera (3.0.2):
+  - Permission-Camera (3.0.5):
     - RNPermissions
   - RCTRequired (0.63.4)
   - RCTTypeSafety (0.63.4):
@@ -205,37 +205,39 @@ PODS:
     - React-cxxreact (= 0.63.4)
     - React-jsi (= 0.63.4)
   - React-jsinspector (0.63.4)
-  - react-native-camera (3.43.3):
+  - react-native-camera (4.2.0):
     - React-Core
-    - react-native-camera/RCT (= 3.43.3)
-    - react-native-camera/RN (= 3.43.3)
-  - react-native-camera/RCT (3.43.3):
+    - react-native-camera/RCT (= 4.2.0)
+    - react-native-camera/RN (= 4.2.0)
+  - react-native-camera/RCT (4.2.0):
     - React-Core
-  - react-native-camera/RN (3.43.3):
+  - react-native-camera/RN (4.2.0):
     - React-Core
   - react-native-encrypted-storage (4.0.2):
     - React-Core
-  - react-native-get-random-values (1.6.0):
+  - react-native-get-random-values (1.7.0):
     - React-Core
-  - react-native-image-picker (3.3.2):
+  - react-native-image-picker (4.0.6):
     - React-Core
   - react-native-netinfo (5.9.6):
     - React
-  - react-native-notifications (3.4.2):
+  - react-native-notifications (3.5.0):
     - React-Core
-  - react-native-randombytes (3.6.0):
+  - react-native-pager-view (5.4.4):
+    - React-Core
+  - react-native-randombytes (3.6.1):
     - React-Core
   - react-native-rncryptor (1.0.0):
     - React-Core
-  - react-native-rsa-native (1.1.4):
+  - react-native-rsa-native (2.0.4):
     - React
-  - react-native-safe-area-context (3.2.0):
+  - react-native-safe-area-context (3.3.2):
     - React-Core
   - react-native-simple-toast (1.1.3):
     - React-Core
     - Toast (~> 4.0.0)
-  - react-native-slider (3.0.3):
-    - React
+  - react-native-slider (4.1.6):
+    - React-Core
   - react-native-track-player (1.2.7):
     - React-Core
   - react-native-udp (2.7.0):
@@ -245,7 +247,7 @@ PODS:
     - react-native-video/Video (= 5.1.1)
   - react-native-video/Video (5.1.1):
     - React-Core
-  - react-native-webview (11.6.5):
+  - react-native-webview (11.13.0):
     - React-Core
   - React-RCTActionSheet (0.63.4):
     - React-Core/RCTActionSheetHeaders (= 0.63.4)
@@ -309,42 +311,40 @@ PODS:
     - React-jsi (= 0.63.4)
   - ReactNativeAudioToolkit (2.0.3):
     - React
-  - RealmJS (10.3.0):
+  - RealmJS (10.8.0):
     - GCDWebServer
     - React
   - rn-fetch-blob (0.12.0):
     - React-Core
-  - RNAudioRecorderPlayer (2.6.2):
+  - RNAudioRecorderPlayer (2.7.0):
     - React
-  - RNCAsyncStorage (1.12.1):
+  - RNCAsyncStorage (1.15.8):
     - React-Core
   - RNCClipboard (1.5.1):
     - React-Core
-  - RNCMaskedView (0.1.11):
-    - React
-  - RNCPushNotificationIOS (1.8.0):
+  - RNCPushNotificationIOS (1.10.1):
     - React-Core
-  - RNDateTimePicker (2.6.2):
-    - React
-  - RNDeviceInfo (8.1.3):
+  - RNDateTimePicker (3.5.2):
+    - React-Core
+  - RNDeviceInfo (8.3.2):
     - React-Core
   - RNDeviceTimeFormat (2.0.0):
     - React
-  - RNFastImage (8.3.4):
-    - React-Core
-    - SDWebImage (~> 5.8)
-    - SDWebImageWebPCoder (~> 0.6.1)
+  - RNFastImage (8.1.5):
+    - React
+    - SDWebImage (~> 5.0)
+    - SDWebImageWebPCoder (~> 0.4.1)
   - RNGestureHandler (1.10.3):
     - React-Core
   - RNKeychain (4.0.5):
     - React
   - RNOS (1.2.6):
     - React
-  - RNPermissions (3.0.2):
+  - RNPermissions (3.0.5):
     - React-Core
   - RNReactNativeHapticFeedback (1.11.0):
     - React-Core
-  - RNReanimated (2.1.0):
+  - RNReanimated (2.3.0-alpha.2):
     - DoubleConversion
     - FBLazyVector
     - FBReactNativeSpec
@@ -379,17 +379,17 @@ PODS:
     - React
   - RNShare (3.8.5):
     - React-Core
-  - RNSVG (12.1.0):
+  - RNSVG (12.1.1):
     - React
-  - RNVectorIcons (7.1.0):
-    - React
-  - SDWebImage (5.10.4):
-    - SDWebImage/Core (= 5.10.4)
-  - SDWebImage/Core (5.10.4)
-  - SDWebImageWebPCoder (0.6.1):
+  - RNVectorIcons (8.1.0):
+    - React-Core
+  - SDWebImage (5.11.1):
+    - SDWebImage/Core (= 5.11.1)
+  - SDWebImage/Core (5.11.1)
+  - SDWebImageWebPCoder (0.4.1):
     - libwebp (~> 1.0)
-    - SDWebImage/Core (~> 5.7)
-  - SRSRadialGradient (1.0.8):
+    - SDWebImage/Core (~> 5.5)
+  - SRSRadialGradient (1.0.9):
     - React
   - TcpSockets (3.3.2):
     - React
@@ -426,6 +426,7 @@ DEPENDENCIES:
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - react-native-notifications (from `../node_modules/react-native-notifications`)
+  - react-native-pager-view (from `../node_modules/react-native-pager-view`)
   - react-native-randombytes (from `../node_modules/react-native-randombytes`)
   - react-native-rncryptor (from `../node_modules/react-native-rncryptor`)
   - react-native-rsa-native (from `../node_modules/react-native-rsa-native`)
@@ -450,9 +451,8 @@ DEPENDENCIES:
   - RealmJS (from `../node_modules/realm`)
   - rn-fetch-blob (from `../node_modules/rn-fetch-blob`)
   - RNAudioRecorderPlayer (from `../node_modules/react-native-audio-recorder-player`)
-  - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
+  - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - "RNCClipboard (from `../node_modules/@react-native-community/clipboard`)"
-  - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
   - "RNCPushNotificationIOS (from `../node_modules/@react-native-community/push-notification-ios`)"
   - "RNDateTimePicker (from `../node_modules/@react-native-community/datetimepicker`)"
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
@@ -534,6 +534,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/netinfo"
   react-native-notifications:
     :path: "../node_modules/react-native-notifications"
+  react-native-pager-view:
+    :path: "../node_modules/react-native-pager-view"
   react-native-randombytes:
     :path: "../node_modules/react-native-randombytes"
   react-native-rncryptor:
@@ -583,11 +585,9 @@ EXTERNAL SOURCES:
   RNAudioRecorderPlayer:
     :path: "../node_modules/react-native-audio-recorder-player"
   RNCAsyncStorage:
-    :path: "../node_modules/@react-native-community/async-storage"
+    :path: "../node_modules/@react-native-async-storage/async-storage"
   RNCClipboard:
     :path: "../node_modules/@react-native-community/clipboard"
-  RNCMaskedView:
-    :path: "../node_modules/@react-native-community/masked-view"
   RNCPushNotificationIOS:
     :path: "../node_modules/@react-native-community/push-notification-ios"
   RNDateTimePicker:
@@ -641,7 +641,7 @@ SPEC CHECKSUMS:
   libwebp: e90b9c01d99205d03b6bb8f2c8c415e5a4ef66f0
   lottie-ios: 48fac6be217c76937e36e340e2d09cf7b10b7f5f
   lottie-react-native: 4dff8fe8d10ddef9e7880e770080f4a56121397e
-  Permission-Camera: 7aa2f6b584f8b1396ae6abaf13093fb9b5212499
+  Permission-Camera: ac603073e4128e51e6ca3c39129778f05b4082fa
   RCTRequired: 082f10cd3f905d6c124597fd1c14f6f2655ff65e
   RCTTypeSafety: 8c9c544ecbf20337d069e4ae7fd9a377aadf504b
   React: b0a957a2c44da4113b0c4c9853d8387f8e64e615
@@ -652,22 +652,23 @@ SPEC CHECKSUMS:
   React-jsi: a0418934cf48f25b485631deb27c64dc40fb4c31
   React-jsiexecutor: 93bd528844ad21dc07aab1c67cb10abae6df6949
   React-jsinspector: 58aef7155bc9a9683f5b60b35eccea8722a4f53a
-  react-native-camera: 3d39a6120b9e99525bc9d7696a7232c4527c0d44
+  react-native-camera: fdfefd4139bbbb53f69e8b6fde1ee549b524eb88
   react-native-encrypted-storage: e78d848ce0fb663c2ce306e37921d026809322e6
-  react-native-get-random-values: f0fc24a5887a3341589515a86282a574407b59e4
-  react-native-image-picker: b42940647478bf106ad3c491d6f5d9d40916d865
+  react-native-get-random-values: 237bffb1c7e05fb142092681531810a29ba53015
+  react-native-image-picker: a6e56460d34905c849ada551db30897dc7f3d535
   react-native-netinfo: 38a1e0b3e89b48e4b5833ed475d8df5f049f6f90
-  react-native-notifications: 51ed8167f70f01c5000ba81a4465ea98b4612e23
-  react-native-randombytes: b6677f7d495c27e9ee0dbd77ebc97b3c59173729
+  react-native-notifications: 89a73cd2cd2648e1734fa10e3507681c9e4f14de
+  react-native-pager-view: 5ab4d0b4b44d89f77310cb3eb8129745f274ce55
+  react-native-randombytes: 421f1c7d48c0af8dbcd471b0324393ebf8fe7846
   react-native-rncryptor: e273429757c7b34d0b2f90f71ba8a592dd02f973
-  react-native-rsa-native: 348b5057073920db0e154724c3a49e6b34e1da6b
-  react-native-safe-area-context: f0906bf8bc9835ac9a9d3f97e8bde2a997d8da79
+  react-native-rsa-native: 1f6bba06dd02f0e652a66a384c75c270f7a0062f
+  react-native-safe-area-context: 584dc04881deb49474363f3be89e4ca0e854c057
   react-native-simple-toast: bf002828cf816775a6809f7a9ec3907509bce11f
-  react-native-slider: e99fc201cefe81270fc9d81714a7a0f5e566b168
+  react-native-slider: c983657bf7d95450c8d64cceb4b318452b24ccd0
   react-native-track-player: 6ec965317dbf9d49f2f4f87d050b53b3f994a5b7
   react-native-udp: ff9d13e523f2b58e6bc5d4d32321ac60671b5dc9
   react-native-video: 0bb76b6d6b77da3009611586c7dbf817b947f30e
-  react-native-webview: 2e8fe70dc32b50d3231c23043f8e8b5a5525d346
+  react-native-webview: 133a6a5149f963259646e710b4545c67ef35d7c9
   React-RCTActionSheet: 89a0ca9f4a06c1f93c26067af074ccdce0f40336
   React-RCTAnimation: 1bde3ecc0c104c55df246eda516e0deb03c4e49b
   React-RCTBlob: a97d378b527740cc667e03ebfa183a75231ab0f0
@@ -679,36 +680,35 @@ SPEC CHECKSUMS:
   React-RCTVibration: ae4f914cfe8de7d4de95ae1ea6cc8f6315d73d9d
   ReactCommon: 73d79c7039f473b76db6ff7c6b159c478acbbb3b
   ReactNativeAudioToolkit: de9610f323e855ac6574be8c99621f3d57c5df06
-  RealmJS: ca9b0c1677d5248c6c360bc1b733ed087d345c2f
+  RealmJS: 7271bc9f8579716260511cb43b0fb6b0321ce206
   rn-fetch-blob: f065bb7ab7fb48dd002629f8bdcb0336602d3cba
-  RNAudioRecorderPlayer: 3466c676143ea96d19fa1a6e5563f4d38a58a874
-  RNCAsyncStorage: b03032fdbdb725bea0bd9e5ec5a7272865ae7398
+  RNAudioRecorderPlayer: afbacfc9312e836a4299407b896d42cf3bab6c3a
+  RNCAsyncStorage: e8b8d6320a0dd90eb610fb0d0b1ef90596697c69
   RNCClipboard: 41d8d918092ae8e676f18adada19104fa3e68495
-  RNCMaskedView: 0e1bc4bfa8365eba5fbbb71e07fbdc0555249489
-  RNCPushNotificationIOS: 61a7c72bd1ebad3568025957d001e0f0e7b32191
-  RNDateTimePicker: 968ccf716b3b6aee07849641966005924de5c0f9
-  RNDeviceInfo: 8d3a29207835f972bce883723882980143270d55
+  RNCPushNotificationIOS: 87b8d16d3ede4532745e05b03c42cff33a36cc45
+  RNDateTimePicker: 7658208086d86d09e1627b5c34ba0cf237c60140
+  RNDeviceInfo: ca017abd037def669329ed4f34796f4ef63d7035
   RNDeviceTimeFormat: 02dcc604950b95af261902398d80288684dc5ad4
-  RNFastImage: d4870d58f5936111c56218dbd7fcfc18e65b58ff
+  RNFastImage: 35ae972d6727c84ee3f5c6897e07f84d0a3445e9
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
   RNKeychain: 840f8e6f13be0576202aefcdffd26a4f54bfe7b5
   RNOS: 6f2f9a70895bbbfbdad7196abd952e7b01d45027
-  RNPermissions: 58c1eb5638504e3afda963a8b0f43b6752132b05
+  RNPermissions: 7043bacbf928eae25808275cfe73799b8f618911
   RNReactNativeHapticFeedback: 653a8c126a0f5e88ce15ffe280b3ff37e1fbb285
-  RNReanimated: 70f662b5232dd5d19ccff581e919a54ea73df51c
+  RNReanimated: 46e4195e12e496ba33a1c70f4f93d508eac0056c
   RNScreens: f7ad633b2e0190b77b6a7aab7f914fad6f198d8d
   RNSecureKeyStore: f1ad870e53806453039f650720d2845c678d89c8
   RNShare: 7e22ba3bf66294ff7c122a1f2da8a8ec642091a0
-  RNSVG: ce9d996113475209013317e48b05c21ee988d42e
-  RNVectorIcons: bc69e6a278b14842063605de32bec61f0b251a59
-  SDWebImage: c666b97e1fa9c64b4909816a903322018f0a9c84
-  SDWebImageWebPCoder: d0dac55073088d24b2ac1b191a71a8f8d0adac21
-  SRSRadialGradient: 71378a83e52b616c40367c37ee7cb6865f9f7c6e
+  RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f
+  RNVectorIcons: 31cebfcf94e8cf8686eb5303ae0357da64d7a5a4
+  SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
+  SDWebImageWebPCoder: 36f8f47bd9879a8aea6044765c1351120fd8e3a8
+  SRSRadialGradient: 49ba49a7a8f257c3fe785c250867b07185d1d01e
   TcpSockets: 14306fb79f9750ea7d2ddd02d8bed182abb01797
   Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
   TouchID: ba4c656d849cceabc2e4eef722dea5e55959ecf4
   Yoga: 4bd86afe9883422a7c4028c00e34790f560923d6
 
-PODFILE CHECKSUM: 0258d001b7229f5a176ebf94c161a7b62fad309d
+PODFILE CHECKSUM: 89bd0928585dfca37beecec5de7d6c597acc499e
 
 COCOAPODS: 1.10.1
