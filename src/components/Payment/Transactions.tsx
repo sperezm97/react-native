@@ -115,8 +115,14 @@ const PerTribe = (props: PerTribeProps) => {
   ))
 }
 
-const AllTransactions = (props) => {
-  const { data, refreshing, loading, onRefresh } = props
+type AllTransactionsProps = {
+  payments: Msg[]
+  loading: boolean
+  refreshing: boolean
+  onRefresh: () => void
+}
+const AllTransactions = (props: AllTransactionsProps) => {
+  const { payments, refreshing, loading, onRefresh } = props
 
   const renderItem: any = ({ item, index }: any) => <Payment key={index} {...item} />
 
@@ -130,7 +136,7 @@ const AllTransactions = (props) => {
         <FlatList
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
-          data={data}
+          data={payments}
           keyExtractor={(item) => String(item.id)}
           renderItem={renderItem}
           ListEmptyComponent={<ListEmpty />}
