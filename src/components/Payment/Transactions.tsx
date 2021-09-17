@@ -13,8 +13,16 @@ import RefreshLoading from '../common/RefreshLoading'
 import Typography from '../common/Typography'
 import Tabs from '../common/Tabs'
 import { constants } from '../../constants'
+import { Msg } from '../../store/msg'
 
-export default function Transactions({ listHeader, ...props }) {
+type TransactionsProps = {
+  payments: Msg[]
+  loading: boolean
+  refreshing: boolean
+  onRefresh: () => void
+  listHeader: React.ReactElement
+}
+export default function Transactions({ listHeader, ...props }: TransactionsProps) {
   const [index, setIndex] = useState(0)
   const [routes] = useState([
     { key: 'first', title: 'All Transactions' },
@@ -39,7 +47,7 @@ export default function Transactions({ listHeader, ...props }) {
         navigationState={{ index, routes }}
         renderScene={renderScene}
         onIndexChange={setIndex}
-        renderTabBar={(props) => <Tabs {...props} />}
+        renderTabBar={(p) => <Tabs {...p} />}
       />
     </>
   ))
@@ -48,15 +56,21 @@ export default function Transactions({ listHeader, ...props }) {
 /**
  * @todo rename component name and utils to make it match with tab title `Per Community`
  */
-const PerTribe = (props) => {
-  const { data, refreshing, loading, onRefresh } = props
+type PerTribeProps = {
+  payments: Msg[]
+  loading: boolean
+  refreshing: boolean
+  onRefresh: () => void
+}
+const PerTribe = (props: PerTribeProps) => {
+  const { payments, refreshing, loading, onRefresh } = props
   const { user, chats } = useStores()
 
   const renderItem: any = ({ item, index }: any) => <Payment key={index} showTribeName showTime={false} {...item} />
 
   const tribesSpent = useMemo(() => {
-    if (!data) return []
-    return data
+    if (!payments) return []
+    return payments
       .filter((payment) => payment.sender === user.myid)
       .filter((payment) => {
         const chat = chats.chats.find((c) => c.id === payment.chat_id)
@@ -76,7 +90,7 @@ const PerTribe = (props) => {
               return item
             })
       }, [])
-  }, [data, chats, user])
+  }, [payments, chats, user])
 
   return useObserver(() => (
     <View style={styles.wrap}>
@@ -93,7 +107,7 @@ const PerTribe = (props) => {
           renderItem={renderItem}
           ListEmptyComponent={<ListEmpty />}
           refreshing={refreshing}
-          onRefresh={onRefresh && onRefresh}
+          onRefresh={onRefresh}
           refreshControl={<RefreshLoading refreshing={refreshing} onRefresh={onRefresh} />}
         />
       )}

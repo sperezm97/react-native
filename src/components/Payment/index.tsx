@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, View, Image, Text } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
 
 import { useStores, useTheme } from '../../store'
@@ -18,7 +18,7 @@ export default function Payment() {
   const [refreshing, setRefreshing] = useState(false)
   const [payments, setPayments] = useState([])
 
-  const { ui, details, chats } = useStores()
+  const { ui, details } = useStores()
   const theme = useTheme()
 
   function isMsgs(msgs): boolean {
@@ -65,7 +65,7 @@ export default function Payment() {
       const theData = removeLightningPrefix(data)
       const inv = parseLightningInvoice(data)
       if (!(inv && inv.human_readable_part && inv.human_readable_part.amount)) return
-      const millisats = parseInt(inv.human_readable_part.amount)
+      const millisats = parseInt(inv.human_readable_part.amount, 10)
       const sats = millisats && Math.round(millisats / 1000)
       setScanning(false)
 
@@ -86,7 +86,7 @@ export default function Payment() {
         />
 
         <Transactions
-          data={payments}
+          payments={payments}
           refreshing={refreshing}
           loading={loading}
           onRefresh={onRefresh}
@@ -109,7 +109,7 @@ export default function Payment() {
 }
 
 const ListHeader = () => {
-  const { ui, details, chats } = useStores()
+  const { ui, details } = useStores()
   const theme = useTheme()
 
   return (
