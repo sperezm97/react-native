@@ -14,6 +14,7 @@ import { constants } from '../../constants'
 import { RouteStatus } from './chat'
 import Avatar from '../common/Avatar'
 import Typography from '../common/Typography'
+import { useMemoizedIncomingPaymentsFromPodcast } from '../../store/hooks/pod'
 
 const { useTribes } = hooks
 
@@ -27,12 +28,11 @@ type HeaderProps = {
   tribeParams: {
     [k: string]: any
   }
-  earned: number
-  spent: number
   pricePerMinute: number
+  podId?: string
 }
 
-const Header = ({ chat, status, tribeParams, earned, spent, pricePerMinute }: HeaderProps) => {
+const Header = ({ chat, status, tribeParams, podId, pricePerMinute }: HeaderProps) => {
   const { contacts, user, details, chats } = useStores()
   const isTribeAdmin = tribeParams && tribeParams.owner_pubkey === user.publicKey
   const isPodcast = tribeParams && tribeParams.feed_url ? true : false
@@ -83,6 +83,8 @@ const Header = ({ chat, status, tribeParams, earned, spent, pricePerMinute }: He
   }
 
   let uri = useChatPicSrc(chat)
+
+  const { earned, spent } = useMemoizedIncomingPaymentsFromPodcast(podId, user.myid)
 
   return (
     <Appbar.Header

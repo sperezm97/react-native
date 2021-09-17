@@ -54,7 +54,7 @@ export default function Transactions({ listHeader, ...props }: TransactionsProps
 }
 
 /**
- * @todo rename component name and utils to make it match with tab title `Per Community`
+ * TODO: rename component name and utils to make it match with tab title `Per Community`
  */
 type PerTribeProps = {
   payments: Msg[]
