@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { StyleSheet, View, FlatList } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
 import { ActivityIndicator } from 'react-native-paper'
@@ -14,6 +14,7 @@ import Typography from '../common/Typography'
 import Tabs from '../common/Tabs'
 import { constants } from '../../constants'
 import { Msg } from '../../store/msg'
+import { useMemoizedIncomingPaymentsFromPodcast } from '../../store/hooks/pod'
 
 type TransactionsProps = {
   payments: Msg[]
@@ -66,16 +67,18 @@ const PerTribe = (props: PerTribeProps) => {
   const { payments, refreshing, loading, onRefresh } = props
   const { user, chats } = useStores()
 
-  const renderItem: any = ({ item, index }: any) => <Payment key={index} showTribeName showTime={false} {...item} />
+  const renderItem: any = ({ item, index }: any) => (
+    <Payment key={index} shouldSkipFetchOfPodcast={false} showTribeName showTime={false} {...item} />
+  )
 
   const tribesSpent = useMemo(() => {
     if (!payments) return []
     return payments
-      .filter((payment) => payment.sender === user.myid)
       .filter((payment) => {
         const chat = chats.chats.find((c) => c.id === payment.chat_id)
-        if (!chat) return false
-        return chat?.type === constants.chat_types.tribe
+        const msgShouldBeSendByTheUser = payment.sender === user.myid
+        const chatShouldBeATribe = chat?.type === constants.chat_types.tribe
+        return msgShouldBeSendByTheUser && chatShouldBeATribe
       })
       .reduce((acc, payment) => {
         const index = acc.findIndex((item) => item.chat_id === payment.chat_id)
@@ -153,11 +156,46 @@ function ListEmpty() {
   return <Empty text='No transactions found' />
 }
 
-function Payment(props) {
+type PaymentProps = {
+  amount: number
+  date: string
+  sender: number
+  chat_id: string
+  showTribeName: boolean
+  showTime: boolean
+  shouldSkipFetchOfPodcast?: boolean
+}
+function Payment(props: PaymentProps) {
   const { user, contacts, chats } = useStores()
   const theme = useTheme()
-  const { amount, date, sender, chat_id, showTribeName = false, showTime = true } = props
+  const {
+    amount,
+    date,
+    sender,
+    chat_id,
+    showTribeName = false,
+    showTime = true,
+    shouldSkipFetchOfPodcast = true,
+  } = props
   const transactionDate = moment(date).format('dd MMM DD, hh:mm A')
+  const [podId, setPodId] = useState(null)
+
+  //@ts-ignore
+  const chat = useMemo(() => chats.chats.find((c) => c.id === chat_id), [])
+
+  // TODO: check if is necessary to move it to <PerTribe/>
+  useEffect(() => {
+    // skip fetch podcast is the default as seen we
+    // just only this occur in `<PerTribe/>`
+    if (shouldSkipFetchOfPodcast) {
+      return // skip
+    }
+    ;(async () => {
+      const tr = await chats.getTribeDetails(chat.host, chat.uuid)
+      const params = await chats.loadFeed(chat.host, chat.uuid, tr.feed_url)
+      if (params) setPodId(params.id)
+    })()
+  }, [])
 
   const type = useMemo(() => (sender === user.myid ? 'payment' : 'invoice'), [sender, user.myid])
   const params = {
@@ -179,7 +217,6 @@ function Payment(props) {
       return contact ? contact.alias || contact.public_key : 'Unknown'
     }
 
-    const chat = chats.chats.find((c) => c.id === chat_id)
     if (chat?.name && showTribeName) return chat.name
     if (chat?.contact_ids?.length !== 2) return '-'
 
@@ -188,7 +225,7 @@ function Payment(props) {
     if (contact) return contact.alias || contact.public_key
     return '-'
   }, [contacts, chats, user, type])
-
+  const { earned, spent } = useMemoizedIncomingPaymentsFromPodcast(podId, user.myid)
   const p = params[type]
   return (
     <View style={{ backgroundColor: p.background }}>
@@ -208,7 +245,9 @@ function Payment(props) {
                 marginRight: 10,
               }}
             >
-              {amount}
+              {/* `spent` is > 0 if only if `earned` = 0 */}
+              {/* `earned` is > 0 if only if `spent` = 0 */}
+              {amount + spent + earned}
             </Typography>
             <Typography fw='600' color={theme.subtitle}>
               sat
