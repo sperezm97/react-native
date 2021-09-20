@@ -29,7 +29,7 @@ class UserStore {
 
   @persist
   @observable
-  myid: number = 0
+  myid: number = 0 // TODO: this should be a number ????
 
   @persist
   @observable

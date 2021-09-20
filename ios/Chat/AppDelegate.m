@@ -7,6 +7,7 @@
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTLinkingManager.h>
 #import <React/RCTRootView.h>
+#import "RNBootSplash.h"
 
 // #import <UMCore/UMModuleRegistry.h>
 // #import <UMReactNativeAdapter/UMNativeModulesProxy.h>
@@ -71,6 +72,8 @@ static void InitializeFlipper(UIApplication *application) {
   UNUserNotificationCenter *center =
       [UNUserNotificationCenter currentNotificationCenter];
   center.delegate = self;
+  
+  [RNBootSplash initWithStoryboard:@"BootSplash" rootView:rootView];
 
   return YES;
 }

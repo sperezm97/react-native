@@ -4,7 +4,6 @@ import { useRoute, useNavigation } from '@react-navigation/native'
 
 import { useStores, useTheme } from '../../store'
 import { StreamPayment } from '../../store/feed'
-import { useIncomingPayments } from '../../store/hooks/pod'
 import { constants } from '../../constants'
 import { ChatRouteProp } from '../../types'
 import { contactForConversation } from './utils'
@@ -118,9 +117,6 @@ export default function Chat() {
     })
   }
 
-  const podID = pod && pod.id
-  const { earned, spent } = useIncomingPayments(podID, myid)
-
   let pricePerMinute = 0
   if (pod && pod.value && pod.value.model && pod.value.model.suggested) {
     pricePerMinute = Math.round(parseFloat(pod.value.model.suggested) * 100000000)
@@ -136,9 +132,8 @@ export default function Chat() {
         setAppMode={setAppMode}
         status={status}
         tribeParams={tribeParams}
-        earned={earned}
-        spent={spent}
         pricePerMinute={pricePerMinute}
+        podId={pod?.id}
       />
 
       <MsgList chat={chat} pricePerMessage={pricePerMessage} />

@@ -14,7 +14,6 @@ import {
   decodeSingle,
   decodeMessages,
   orgMsgsFromExisting,
-  orgMsgs,
   putIn,
   putInReverse,
 } from './msgHelpers'
@@ -22,27 +21,32 @@ import { updateRealmMsg } from '../realm/exports'
 import { persistMsgLocalForage } from './storage'
 import { userStore } from './user'
 
-const DAYS = Platform.OS === 'android' ? 7 : 7
+const DAYS = 7
 export const MAX_MSGS_PER_CHAT = Platform.OS === 'android' ? 100 : 1000
 export const MAX_MSGS_RESTORE = Platform.OS === 'android' ? 5000 : 50000
 
+type Maybe<T> = T | null
+/**
+ * Maybe notation has been used used by experienced fields as null
+ * not as an ideal Interface
+ */
 export interface Msg {
   id: number
-  chat_id: number
+  chat_id: Maybe<number>
   type: number
-  uuid: string
+  uuid: Maybe<string>
   sender: number
   receiver: number
   amount: number
   amount_msat: number
-  payment_hash: string
+  payment_hash: Maybe<string>
   payment_request: string
   date: string
   expiration_date: string
-  message_content: string
-  remote_message_content: string
+  message_content: Maybe<string>
+  remote_message_content: Maybe<string>
   status: number
-  status_map: { [k: number]: number }
+  status_map: Maybe<{ [k: number]: number }>
   parent_id: number
   subscription_id: number
   media_type: string
@@ -55,7 +59,7 @@ export interface Msg {
   sender_pic: string
 
   original_muid: string
-  reply_uuid: string
+  reply_uuid: Maybe<string>
 
   text: string
 
@@ -593,10 +597,6 @@ class MsgStore {
 
 export const msgStore = new MsgStore()
 
-function rando() {
-  return Math.random().toString(12).substring(0)
-}
-
 let inDebounce
 function debounce(func, delay) {
   const context = this
@@ -606,9 +606,3 @@ function debounce(func, delay) {
 }
 
 let msgsBuffer = []
-
-async function asyncForEach(array, callback) {
-  for (let index = 0; index < array.length; index++) {
-    await callback(array[index], index, array)
-  }
-}

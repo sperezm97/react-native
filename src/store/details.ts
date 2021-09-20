@@ -3,6 +3,7 @@ import { persist } from 'mobx-persist'
 
 import { relay } from '../api'
 import { DEFAULT_HUB_API } from '../config'
+import { Msg } from './msg'
 
 class DetailsStore {
   @persist
@@ -68,7 +69,7 @@ class DetailsStore {
 
       if (!j) return
 
-      this.usRate = j['USD']
+      this.usRate = j.USD
 
       const value = this.usRate / 100000000
       let final = value * this.localBalance
@@ -87,7 +88,7 @@ class DetailsStore {
   @action
   async getPayments() {
     try {
-      const r = await relay.get('payments')
+      const r: Array<Msg> = await relay.get('payments')
       return r
     } catch (e) {
       console.log(e)

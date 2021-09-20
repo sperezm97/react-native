@@ -35,7 +35,7 @@ export function useJoinedTribes(tribes) {
 export function useOwnedTribes(tribes) {
   // tribes = tribes.filter(t => t.owner)
   tribes = tribes.filter((t) => t.joined)
-  return sortTribesByLastMsg(tribes)
+  return useSortTribesByLastMsg(tribes)
 
   // return tribes.sort((a, b) => {
   //   if (a.joined > b.owner && b.last_active > a.last_active) return -1
@@ -43,7 +43,7 @@ export function useOwnedTribes(tribes) {
   // })
 }
 
-function sortTribesByLastMsg(tribesToShow) {
+function useSortTribesByLastMsg(tribesToShow) {
   const {
     msg: { messages },
   } = useStores()
@@ -103,7 +103,7 @@ export function useTribeHistory(created, lastActive) {
  * - `matchTypeMessage` = Should have same type as required on param
  * - `ownerCriteria` = The owner of the message should be the owner of tribe
  * - `messageWithValidStatus` = Prevent deleted messages to be displayed
- * @todo as seen this only has been used in one component, i think we should make it specific to
+ * TODO: as seen this only has been used in one component, i think we should make it specific to
  * ony the covered cases
  */
 export function useOwnerMediaType(msgs, tribe, type, myId): Array<Msg> {
@@ -160,6 +160,8 @@ export function useTribeMediaType(msgs, type) {
 }
 
 export function processFeed(tribe, type, myid) {
+  // TODO: Fix this eslint disable
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   let msgs = useMsgs(tribe.chat)
 
   msgs = msgs.filter(
