@@ -2,7 +2,7 @@ module.exports = function (api) {
   api.cache(true)
   const config = {
     presets: ['module:metro-react-native-babel-preset'],
-    plugins: [[require('@babel/plugin-proposal-decorators'), { legacy: true }], 'react-native-reanimated/plugin']
+    plugins: [[require('@babel/plugin-proposal-decorators'), { legacy: true }], 'react-native-reanimated/plugin'],
   }
 
   if (getEnv() !== 'development') {

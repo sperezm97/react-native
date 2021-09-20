@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "590221421122",
+    "project_id": "zion-d23e1",
+    "storage_bucket": "zion-d23e1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:590221421122:android:1127fe157297c1d1c0dbdb",
+        "android_client_info": {
+          "package_name": "com.sphinx"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "590221421122-du0ts1engbf54m65hnalirnvbdlcthvt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD-a6384X1icNsl-47Rq9GreTenXrUI2HA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "590221421122-du0ts1engbf54m65hnalirnvbdlcthvt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
