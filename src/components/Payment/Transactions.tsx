@@ -12,9 +12,9 @@ import Icon from '../common/Icon'
 import RefreshLoading from '../common/RefreshLoading'
 import Typography from '../common/Typography'
 import Tabs from '../common/Tabs'
-import { constants } from '../../constants'
 import { Msg } from '../../store/msg'
 import { useMemoizedIncomingPaymentsFromPodcast } from '../../store/hooks/pod'
+import { transformPayments } from '../utils/payments/transformPayments'
 
 type TransactionsProps = {
   payments: Msg[]
@@ -73,26 +73,7 @@ const PerTribe = (props: PerTribeProps) => {
 
   const tribesSpent = useMemo(() => {
     if (!payments) return []
-    return payments
-      .filter((payment) => {
-        const chat = chats.chats.find((c) => c.id === payment.chat_id)
-        const msgShouldBeSendByTheUser = payment.sender === user.myid
-        const chatShouldBeATribe = chat?.type === constants.chat_types.tribe
-        return msgShouldBeSendByTheUser && chatShouldBeATribe
-      })
-      .reduce((acc, payment) => {
-        const index = acc.findIndex((item) => item.chat_id === payment.chat_id)
-        return index === -1
-          ? [...acc, payment]
-          : acc.map((item) => {
-              if (item.chat_id === payment.chat_id)
-                return {
-                  ...item,
-                  amount: item.amount + payment.amount,
-                }
-              return item
-            })
-      }, [])
+    return transformPayments({ payments, userId: user.myid, chats })
   }, [payments, chats, user])
 
   return useObserver(() => (

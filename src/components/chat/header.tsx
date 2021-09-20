@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import { observer } from 'mobx-react-lite'
 import { Appbar } from 'react-native-paper'
@@ -15,6 +15,7 @@ import { RouteStatus } from './chat'
 import Avatar from '../common/Avatar'
 import Typography from '../common/Typography'
 import { useMemoizedIncomingPaymentsFromPodcast } from '../../store/hooks/pod'
+import { transformPayments } from '../utils/payments/transformPayments'
 
 const { useTribes } = hooks
 
@@ -35,13 +36,18 @@ type HeaderProps = {
 const Header = ({ chat, status, tribeParams, podId, pricePerMinute }: HeaderProps) => {
   const { contacts, user, details, chats } = useStores()
   const isTribeAdmin = tribeParams && tribeParams.owner_pubkey === user.publicKey
-  const isPodcast = tribeParams && tribeParams.feed_url ? true : false
   const theme = useTheme()
   const navigation = useNavigation()
   const tribes = useTribes()
 
+  const [payments, setPayments] = useState([])
+
   useEffect(() => {
     chats.getTribes()
+    ;(async () => {
+      const ps = await details.getPayments()
+      setPayments(ps)
+    })()
   }, [])
 
   const theChat = chats.chats.find((c) => c.id === chat.id)
@@ -84,7 +90,12 @@ const Header = ({ chat, status, tribeParams, podId, pricePerMinute }: HeaderProp
 
   let uri = useChatPicSrc(chat)
 
+  // TODO: as you can see currently we have two different ways to fetch the total amount spend in a tribe, it should be unified
   const { earned, spent } = useMemoizedIncomingPaymentsFromPodcast(podId, user.myid)
+  const [spentInMessagesBoost] = useMemo(
+    () => transformPayments({ payments, userId: user.myid, chats }).filter((c) => c.chat_id === chat.id),
+    [payments.length, user.myid, chats]
+  )
 
   return (
     <Appbar.Header
@@ -126,11 +137,9 @@ const Header = ({ chat, status, tribeParams, podId, pricePerMinute }: HeaderProp
                 />
               )}
             </View>
-            {isPodcast && (
-              <Typography size={12} color={theme.subtitle}>
-                {isTribeAdmin ? `Earned: ${earned} sats` : `Contributed: ${spent} sats`}
-              </Typography>
-            )}
+            <Typography size={12} color={theme.subtitle}>
+              {isTribeAdmin ? `Earned: ${earned} sats` : `Contributed: ${spent + spentInMessagesBoost?.amount} sats`}
+            </Typography>
           </View>
         </TouchableOpacity>
       </View>
