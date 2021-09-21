@@ -1,3 +1,4 @@
+import { DEFAULT_TRIBE_SERVER } from 'config'
 import { Instance, SnapshotOut, types } from 'mobx-state-tree'
 import { withEnvironment } from '../extensions/with-environment'
 import * as actions from './chats-actions'
@@ -7,10 +8,13 @@ export const ChatsStoreModel = types
   .model('ChatsStore')
   .props({
     chats: types.optional(types.map(ChatModel), {}),
+    servers: types.frozen([{ host: DEFAULT_TRIBE_SERVER }]),
     tribes: types.optional(types.frozen(), {}),
   })
   .extend(withEnvironment)
   .actions((self) => ({
+    addGroupMembers: async (chatID: number, contact_ids: number[]): Promise<void> =>
+      await actions.addGroupMembers(chatID, contact_ids),
     createGroup: async (contact_ids: number[], name: string): Promise<any> =>
       await actions.createGroup(self as ChatsStore, contact_ids, name),
     createTribe: async (params: actions.CreateTribeParams): Promise<any> =>
@@ -18,6 +22,7 @@ export const ChatsStoreModel = types
     editTribe: async (params: actions.EditTribeParams): Promise<any> =>
       await actions.editTribe(self as ChatsStore, params),
     getChats: async (): Promise<boolean> => await actions.getChats(self as ChatsStore),
+    getDefaultTribeServer: async (): Promise<any> => await actions.getDefaultTribeServer(self as ChatsStore),
     getTribeDetails: async (host: string, uuid: string): Promise<any> =>
       await actions.getTribeDetails(self as ChatsStore, host, uuid),
     getTribes: async (): Promise<boolean> => await actions.getTribes(self as ChatsStore),
@@ -42,6 +47,9 @@ export const ChatsStoreModel = types
       chats.forEach((chat) => (self as ChatsStore).setChat(chat))
     },
     setTribes: (tribes: any) => (self.tribes = tribes),
+    updateServers: (): void => {
+      self.servers = [{ host: DEFAULT_TRIBE_SERVER }]
+    },
   }))
 
 type ChatsStoreType = Instance<typeof ChatsStoreModel>
