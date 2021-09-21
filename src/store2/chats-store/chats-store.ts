@@ -15,12 +15,15 @@ export const ChatsStoreModel = types
   .actions((self) => ({
     addGroupMembers: async (chatID: number, contact_ids: number[]): Promise<void> =>
       await actions.addGroupMembers(chatID, contact_ids),
+    checkRoute: async (cid: string, myid: number): Promise<void> =>
+      await actions.checkRoute(self as ChatsStore, cid, myid),
     createGroup: async (contact_ids: number[], name: string): Promise<any> =>
       await actions.createGroup(self as ChatsStore, contact_ids, name),
     createTribe: async (params: actions.CreateTribeParams): Promise<any> =>
       await actions.createTribe(self as ChatsStore, params),
     editTribe: async (params: actions.EditTribeParams): Promise<any> =>
       await actions.editTribe(self as ChatsStore, params),
+    exitGroup: async (chatID: number): Promise<void> => await actions.exitGroup(self as ChatsStore, chatID),
     getChats: async (): Promise<boolean> => await actions.getChats(self as ChatsStore),
     getDefaultTribeServer: async (): Promise<any> => await actions.getDefaultTribeServer(self as ChatsStore),
     getTribeDetails: async (host: string, uuid: string): Promise<any> =>
@@ -30,6 +33,15 @@ export const ChatsStoreModel = types
     joinDefaultTribe: async (): Promise<boolean> => await actions.joinDefaultTribe(self as ChatsStore),
     joinTribe: async (params: actions.JoinTribeParams): Promise<boolean> =>
       await actions.joinTribe(self as ChatsStore, params),
+    kick: async (chatID: number, contactID: number): Promise<void> =>
+      await actions.kick(self as ChatsStore, chatID, contactID),
+    loadFeed: async (host: string, url: string): Promise<void> => await actions.loadFeed(host, url),
+    muteChat: async (chatID: number, muted: boolean): Promise<void> =>
+      await actions.muteChat(self as ChatsStore, chatID, muted),
+    updateMyInfoInChat: async (tribeID: number, my_alias: string, my_photo_url: string): Promise<void> =>
+      await actions.updateMyInfoInChat(self as ChatsStore, tribeID, my_alias, my_photo_url),
+    updateTribeAsNonAdmin: async (tribeID: number, name: string, img: string): Promise<void> =>
+      await actions.updateTribeAsNonAdmin(self as ChatsStore, tribeID, name, img),
     parseChat: (c): Chat => {
       if (c.meta && typeof c.meta === 'string') {
         let meta
