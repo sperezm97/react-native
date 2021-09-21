@@ -75,7 +75,7 @@ function Media(props) {
     }
   }
 
-  const onTribeOwnerPress = () => navigation.navigate('Tribe', { tribe: { ...tribe } })
+  const onTribeOwnerPress = () => navigation.navigate('Tribe' as never, { tribe: { ...tribe } } as never)
 
   const showBoostRow = boosts_total_sats ? true : false
 

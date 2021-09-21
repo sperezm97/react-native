@@ -65,7 +65,7 @@ const MsgListWrap = ({ chat, pricePerMessage }: { chat: Chat; pricePerMessage: n
   )
 
   const onDeleteChat = useCallback(async () => {
-    navigation.navigate('Home', { params: { rnd: Math.random() } })
+    navigation.navigate('Home' as never, { params: { rnd: Math.random() } } as never)
     await chats.exitGroup(chat.id)
   }, [chat.id, chats, navigation])
 

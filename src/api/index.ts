@@ -37,11 +37,16 @@ export function instantiateRelay(
     relay = new API(`${protocol}${ip}/`)
   }
   console.log('=> instantiated relay!', `${protocol}${ip}/`, 'authToken?', authToken ? true : false)
+  console.tron.display({
+    name: 'instantiateRelay',
+    preview: `Instantiated relay!  - authToken: ${!!authToken}`,
+    value: `${protocol}${ip}/`,
+  })
 
   if (authToken) {
     // only connect here (to avoid double) if auth token means for real
     connectWebSocket(`${protocol}${ip}`, authToken, connectedCallback, disconnectCallback)
-    registerWsHandlers(wsHandlers)
+    // registerWsHandlers(wsHandlers)
   }
 
   // registerHandler each msg type here?

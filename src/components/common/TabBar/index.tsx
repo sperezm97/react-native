@@ -69,7 +69,7 @@ export default function TabBar() {
               <Pushable
                 key={route.key}
                 onPress={() => {
-                  navigation.navigate(route.name)
+                  navigation.navigate(route.name as never)
                 }}
               >
                 <View

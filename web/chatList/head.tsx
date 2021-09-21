@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { useStores } from '../../src/store'
+import { useStores } from 'stores'
 import { useObserver } from 'mobx-react-lite'
 import SearchIcon from '@material-ui/icons/Search'
 import theme from '../theme'
@@ -12,14 +12,32 @@ import ArrowBackIosButton from '@material-ui/icons/ArrowBackIos'
 import ArrowForwardIosButton from '@material-ui/icons/ArrowForwardIos'
 import PersonAddIcon from '@material-ui/icons/PersonAdd'
 import EE, { RESET_IP, RESET_IP_FINISHED } from '../utils/ee'
-import { urlBase64FromAscii } from '../../src/store/utils/ldat'
-import Button from '../utils/button'
+// import { urlBase64FromAscii } from '../../src/store/utils/ldat'
+// import Button from '../utils/button'
 import { whiteBitcoinIcon } from '../images'
 import * as rsa from '../crypto/rsa'
+import { Contact } from 'stores/contacts-store'
 
 async function createPrivateKeyIfNotExists(contacts, user) {
   const priv = await rsa.getPrivateKey()
-  const me = contacts.contacts.find((c) => c.is_owner)
+
+  const theseContacts: Contact[] = Array.from(contacts.contacts.values())
+  const me = theseContacts.find((c) => c.is_owner)
+  console.tron.display({
+    name: 'createPKIfNotExists',
+    preview: `Got priv? ${!!priv}`,
+    value: { me, priv, theseContacts },
+  })
+
+  if (!me) {
+    console.tron.display({
+      name: 'createPKIfNotExists',
+      preview: `No 'me'`,
+      important: true,
+    })
+    return
+  }
+
   // private key has been made
   if (priv) {
     // set into user.contactKey
@@ -61,11 +79,7 @@ export default function Head({ setWidth, width }) {
     const conts = await contacts.getContacts()
     createPrivateKeyIfNotExists(contacts, user)
 
-    await Promise.all([
-      details.getBalance(),
-      msg.getMessages(forceMore ? true : false),
-      // chats.getChats(),
-    ])
+    await Promise.all([details.getBalance(), msg.getMessages(forceMore ? true : false), chats.getChats()])
     setRefreshing(false)
   }
 

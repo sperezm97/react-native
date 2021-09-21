@@ -46,7 +46,7 @@ export default function TribeMessage(props) {
 
   function seeTribe() {
     // ui.setJoinTribeModal(true, tribe)
-    navigation.navigate('Home', { params: { rnd: Math.random() } })
+    navigation.navigate('Home' as never, { params: { rnd: Math.random() } } as never)
   }
 
   if (loading)

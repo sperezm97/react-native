@@ -46,7 +46,7 @@ body {
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  background: linear-gradient(145deg, #a68cff 0%, #6a8fff 55%) 0% 0% / cover;
+  background: linear-gradient(145deg, #f0665b 0%, #e45e53 55%) 0% 0% / cover;
 }
 
 .MuiTouchRipple-root .MuiTouchRipple-child {

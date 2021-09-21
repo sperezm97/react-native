@@ -42,7 +42,7 @@ export default function Home() {
               borderWidth: 2,
               borderColor: theme.white,
             }}
-            onPress={() => navigation.navigate('Invite')}
+            onPress={() => navigation.navigate('Invite' as never)}
           >
             <Typography color={theme.white} fw='700'>
               Subscribe to the waitlist
@@ -53,7 +53,7 @@ export default function Home() {
             color={theme.lightGrey}
             w='70%'
             style={{ marginTop: 15 }}
-            onPress={() => navigation.navigate('Onboard', { codeType: 'invite' })}
+            onPress={() => navigation.navigate('Onboard' as never, { codeType: 'invite' } as never)}
           >
             I have an invite code
           </Button>
@@ -62,7 +62,7 @@ export default function Home() {
             color={theme.lightGrey}
             w='70%'
             style={{ marginTop: 15 }}
-            onPress={() => navigation.navigate('Onboard', { codeType: 'backup' })}
+            onPress={() => navigation.navigate('Onboard' as never, { codeType: 'backup' } as never)}
           >
             I have a backup code
           </Button>

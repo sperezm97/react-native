@@ -54,7 +54,7 @@ function Item(props) {
   const [joinTribe, setJoinTribe] = useState({ visible: false, tribe: null })
   const { unseenCount, hasUnseen } = useChatRow(chat?.id ?? '')
 
-  const onItemPress = () => navigation.navigate('Tribe', { tribe: { ...props } })
+  const onItemPress = () => navigation.navigate('Tribe' as never, { tribe: { ...props } } as never)
 
   async function onJoinPress() {
     const host = chats.getDefaultTribeServer().host

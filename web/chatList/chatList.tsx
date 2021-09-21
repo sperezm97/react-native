@@ -1,59 +1,57 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import Dragger from './dragger'
-import { useObserver } from 'mobx-react-lite'
+import { observer } from 'mobx-react-lite'
 import Head from './head'
 import ChatRow from './chatRow'
 import InviteRow from './inviteRow'
-import { Chat } from '../../src/store/chats'
-import { Contact } from '../../src/store/contacts'
+import { Chat } from 'stores/chats-store'
+import { Contact } from 'stores/contacts-store'
 import { constants } from '../../src/constants'
-import { useStores, hooks } from '../../src/store'
+import { useStores, hooks } from 'stores'
 const { useChats } = hooks
 
-function ChatList() {
+const ChatList = observer(() => {
   const { msg, ui, contacts, chats, user } = useStores()
   const maxWidth = 350
   const [width, setWidth] = useState(maxWidth)
-  return useObserver(() => {
-    const theChats = useChats()
-    const scid = ui.selectedChat && ui.selectedChat.id
-    const scname = ui.selectedChat && ui.selectedChat.name
-    return (
-      <Section style={{ width, maxWidth: width, minWidth: width }}>
-        <Inner>
-          <Head setWidth={setWidth} width={width} />
-          <Chats>
-            {theChats.map((c, i) => {
-              const contact = contactForConversation(c, contacts.contacts, user.myid)
-              let showInvite = false
-              if (c.invite && c.invite.status !== 4) showInvite = true
-              if (showInvite) {
-                return <InviteRow key={i} {...c} />
-              }
-              return (
-                <ChatRow
-                  key={i}
-                  {...c}
-                  contact_photo={contact && contact.photo_url}
-                  selected={c.id === scid && c.name === scname}
-                  onClick={async () => {
-                    msg.seeChat(c.id)
-                    ui.setSelectedChat(c)
-                    ui.toggleBots(false)
-                    chats.checkRoute(c.id, user.myid)
-                    ui.setImgViewerParams(null)
-                  }}
-                />
-              )
-            })}
-          </Chats>
-        </Inner>
-        <Dragger setWidth={setWidth} maxWidth={maxWidth} />
-      </Section>
-    )
-  })
-}
+  const theChats = useChats()
+  const scid = ui.selectedChat && ui.selectedChat.id
+  const scname = ui.selectedChat && ui.selectedChat.name
+  return (
+    <Section style={{ width, maxWidth: width, minWidth: width, height: '100vh' }}>
+      <Inner>
+        <Head setWidth={setWidth} width={width} />
+        <Chats>
+          {theChats.map((c, i) => {
+            const contact = contactForConversation(c, Array.from(contacts.contacts.values()), user.myid)
+            let showInvite = false
+            if (c.invite && c.invite.status !== 4) showInvite = true
+            if (showInvite) {
+              return <InviteRow key={i} {...c} />
+            }
+            return (
+              <ChatRow
+                key={i}
+                {...c}
+                contact_photo={contact && contact.photo_url}
+                selected={c.id === scid && c.name === scname}
+                onClick={async () => {
+                  msg.seeChat(c.id)
+                  // ui.setSelectedChat(c)
+                  // ui.toggleBots(false)
+                  // chats.checkRoute(c.id, user.myid)
+                  // ui.setImgViewerParams(null)
+                }}
+              />
+            )
+          })}
+        </Chats>
+      </Inner>
+      <Dragger setWidth={setWidth} maxWidth={maxWidth} />
+    </Section>
+  )
+})
 
 export function contactForConversation(chat: Chat, contacts: Contact[], myid: number) {
   if (chat && chat.type === constants.chat_types.conversation) {

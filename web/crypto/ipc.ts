@@ -2,10 +2,14 @@ const electron = window.require ? window.require('electron') : {}
 
 const timeoutSeconds = 10
 export function send(k: string, args: object) {
+  // console.log('electron:', electron)
+  // console.log('in send w', k, args)
   const ipc = electron.ipcRenderer
+  // console.log('ipc:', ipc)
   if (!ipc) return
   const rid = `${k}_${Math.random().toString(36).substring(7)}`
   const v = args || {}
+  // console.log('sending to ipc:', v, rid)
   ipc.send(k, { ...v, rid })
   const timeout = new Promise((resolve, reject) => {
     const id = setTimeout(() => {

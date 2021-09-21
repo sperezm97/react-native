@@ -28,7 +28,7 @@ export default function Header({}) {
               icon={() => <FeatherIcon name='search' color={theme.primary} size={18} />}
               size={24}
               style={{ backgroundColor: theme.lightGrey, marginRight: 12 }}
-              onPress={() => navigation.navigate('DiscoverTribes')}
+              onPress={() => navigation.navigate('DiscoverTribes' as never)}
             />
             <Pushable onPress={() => ui.setNewTribeModal(true)}>
               <IconButton icon='plus' color={theme.primary} size={24} style={{ backgroundColor: theme.lightGrey }} />

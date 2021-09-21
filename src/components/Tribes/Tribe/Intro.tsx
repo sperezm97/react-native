@@ -84,7 +84,7 @@ export default function Intro({ tribe }) {
   }
 
   function onTribeMembersPress() {
-    navigation.navigate('TribeMembers', { tribe })
+    navigation.navigate('TribeMembers' as never, { tribe } as never)
   }
 
   return useObserver(() => {

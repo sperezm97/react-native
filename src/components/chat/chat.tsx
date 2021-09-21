@@ -96,7 +96,7 @@ export default function Chat() {
       contacts.exchangeKeys(contact.id)
     }
     EE.on(LEFT_GROUP, () => {
-      navigation.navigate('Tribes', { params: { rnd: Math.random() } })
+      navigation.navigate('Tribes' as never, { params: { rnd: Math.random() } } as never)
     })
 
     fetchTribeParams()

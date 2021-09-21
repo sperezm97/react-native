@@ -1,0 +1,35 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "animations": ["src/animations"],
+      "animations/*": ["src/animations/*"],
+      "api": ["src/api"],
+      "api/*": ["src/api/*"],
+      "assets": ["src/assets"],
+      "assets/*": ["src/assets/*"],
+      "components": ["web/components"],
+      "components/*": ["web/components/*"],
+      "config": ["src/config"],
+      "config/*": ["src/config/*"],
+      "crypto": ["src/crypto"],
+      "crypto/*": ["src/crypto/*"],
+      "hooks": ["src/hooks"],
+      "hooks/*": ["src/hooks/*"],
+      "i18n": ["web/i18n"],
+      "i18n/*": ["web/i18n/*"],
+      "navigation": ["web/navigation"],
+      "navigation/*": ["web/navigation/*"],
+      "services": ["web/services"],
+      "services/*": ["web/services/*"],
+      "store": ["src/store"],
+      "store/*": ["src/store/*"],
+      "stores": ["web/stores"],
+      "stores/*": ["web/stores/*"],
+      "theme": ["web/theme2"],
+      "theme/*": ["web/theme2/*"],
+      "types": ["src/types"],
+      "types/*": ["src/types/*"]
+    }
+  }
+}

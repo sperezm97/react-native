@@ -34,7 +34,7 @@ export default function ContactList({ listHeader }) {
             return item.alias + index + item.photo_url
           }}
           renderItem={({ item }) => (
-            <Item contact={item} onPress={(contact) => navigation.navigate('Contact', { contact })} />
+            <Item contact={item} onPress={(contact) => navigation.navigate('Contact' as never, { contact } as never)} />
           )}
           renderSectionHeader={({ section: { title } }) => (
             <View style={{ ...styles.section, backgroundColor: theme.main }}>

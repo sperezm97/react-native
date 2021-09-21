@@ -78,7 +78,7 @@ export default function Invite(props) {
           color={theme.grey}
           size={26}
           style={styles.backArrow}
-          onPress={() => navigation.navigate('Home')}
+          onPress={() => navigation.navigate('Home' as never)}
           accessibilityLabel='onboard-profile-back'
         />
 

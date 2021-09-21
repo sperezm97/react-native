@@ -7,7 +7,7 @@ import * as Audio from './audio'
 import theme from '../../theme'
 import SvgIcon from '@material-ui/core/SvgIcon'
 import { getColor } from '../../utils/avatar'
-import { resetGlobalState } from 'mobx/lib/internal'
+// import { resetGlobalState } from 'mobx/lib/internal'
 
 export default function Replay(props) {
   const { msg, user } = useStores()

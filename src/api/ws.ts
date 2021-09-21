@@ -18,6 +18,7 @@ export function connectWebSocket(
   connectedCallback?: Function,
   disconnectCallback?: Function
 ) {
+  // console.log('connectWebSocket with ip and authToken:', ip, authToken)
   if (io) {
     return // dont reconnect if already exists
   }
@@ -35,10 +36,18 @@ export function connectWebSocket(
 
   io.on('connect', (socket) => {
     console.log('=> socketio connected!')
+    console.tron.display({
+      name: 'connectWebSocket',
+      preview: 'SocketIO connected',
+    })
     if (connectedCallback) connectedCallback()
   })
 
   io.on('disconnect', (socket) => {
+    console.tron.display({
+      name: 'connectWebSocket',
+      preview: 'SocketIO disconnected',
+    })
     if (disconnectCallback) disconnectCallback()
   })
 
@@ -51,10 +60,16 @@ export function connectWebSocket(
       if (handler) {
         handler(msg)
       }
+      console.tron.display({
+        name: 'connectWebSocket',
+        preview: 'SocketIO message',
+        value: { msg },
+      })
     } catch (e) {}
   })
 
   io.on('error', function (e) {
     console.log('socketio error', e)
+    console.error(e)
   })
 }

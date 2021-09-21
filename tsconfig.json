@@ -1,8 +1,12 @@
 {
+  "extends": "./tsconfig.paths.json",
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "jsx": "react-native",
-    "lib": ["dom", "esnext"],
+    "lib": [
+      "dom",
+      "esnext"
+    ],
     "moduleResolution": "node",
     "noEmit": true,
     "skipLibCheck": true,
@@ -14,8 +18,11 @@
     "strict": false,
     "forceConsistentCasingInFileNames": true,
     "module": "esnext",
-    "isolatedModules": true
+    "isolatedModules": true,
+    "baseUrl": "./"
   },
-  "include": ["src"]
-  // "include": ["node_modules/react-native-redash/lib/typescript/v1/index.d.ts"]
+  "include": [
+    "src",
+    "web"
+  ]
 }

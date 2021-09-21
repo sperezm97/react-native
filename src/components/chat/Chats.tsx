@@ -45,7 +45,7 @@ function ListHeader() {
   return (
     <>
       <View style={{ ...styles.listHeader }}>
-        <TouchableOpacity onPress={() => navigation.navigate('Contacts')} activeOpacity={0.6}>
+        <TouchableOpacity onPress={() => navigation.navigate('Contacts' as never)} activeOpacity={0.6}>
           <Button mode='text' size='small'>
             Contacts
           </Button>

@@ -37,11 +37,11 @@ const Tribe = ({ route }) => {
   }, [isFocused])
 
   const onEditTribePress = useCallback(() => {
-    navigation.navigate('EditTribe', { tribe })
+    navigation.navigate('EditTribe' as never, { tribe } as never)
   }, [])
 
   const onTribeMembersPress = useCallback(() => {
-    navigation.navigate('TribeMembers', { tribe })
+    navigation.navigate('TribeMembers' as never, { tribe } as never)
   }, [])
 
   const navigationBack = useCallback(() => {
