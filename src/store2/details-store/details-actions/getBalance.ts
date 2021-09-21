@@ -1,7 +1,16 @@
-import { DetailsStore } from '../details-store'
 import { relay } from 'api'
-import { normalizeContact } from '../../normalize'
+import { DetailsStore } from '../details-store'
 
 export const getBalance = async (self: DetailsStore) => {
-  return true
+  try {
+    const r = await relay.get('balance')
+    if (!r) return
+
+    const b = r.balance && parseInt(r.balance, 10)
+    const fb = r.full_balance && parseInt(r.full_balance, 10)
+    self.balance = b || 0
+    self.fullBalance = fb || 0
+  } catch (e) {
+    console.log(e)
+  }
 }

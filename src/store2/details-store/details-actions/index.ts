@@ -1,1 +1,7 @@
+export * from './clearLogs'
 export * from './getBalance'
+export * from './getLogs'
+export * from './requestCapacity'
+export * from './getUSDollarRate'
+export * from './getVersions'
+export * from './reset'
