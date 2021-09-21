@@ -59,11 +59,14 @@ const Header = ({ chat, status, tribeParams, podId, pricePerMinute }: HeaderProp
 
   function onChatInfoPress() {
     if (chat.type === conversation) {
-      if (contact) navigation.navigate('Contact', { contact: { ...contact } })
+      if (contact) navigation.navigate('Contact' as never, { contact: { ...contact } } as never)
     } else {
-      navigation.navigate('ChatDetails', {
-        group: { ...theChat, ...tribeParams, pricePerMinute },
-      })
+      navigation.navigate(
+        'ChatDetails' as never,
+        {
+          group: { ...theChat, ...tribeParams, pricePerMinute },
+        } as never
+      )
     }
   }
 
@@ -74,7 +77,7 @@ const Header = ({ chat, status, tribeParams, podId, pricePerMinute }: HeaderProp
       }
     } else {
       const tribe = tribes.find((t) => t.chat?.uuid === chat?.uuid)
-      navigation.navigate('Tribe', { tribe: { ...tribe } })
+      navigation.navigate('Tribe' as never, { tribe: { ...tribe } } as never)
     }
   }
 

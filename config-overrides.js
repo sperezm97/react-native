@@ -57,6 +57,7 @@ module.exports = override(
     ['navigation']: path.resolve(__dirname, './web/navigation'),
     ['services']: path.resolve(__dirname, './web/services'),
     ['store']: path.resolve(__dirname, './src/store'),
+    ['store2']: path.resolve(__dirname, './src/store2'),
     ['stores']: path.resolve(__dirname, './web/stores'),
     ['theme']: path.resolve(__dirname, './web/theme2'),
     ['types']: path.resolve(__dirname, './src/types'),

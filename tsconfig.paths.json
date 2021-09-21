@@ -24,6 +24,8 @@
       "services/*": ["web/services/*"],
       "store": ["src/store"],
       "store/*": ["src/store/*"],
+      "store2": ["src/store2"],
+      "store2/*": ["src/store2/*"],
       "stores": ["web/stores"],
       "stores/*": ["web/stores/*"],
       "theme": ["web/theme2"],

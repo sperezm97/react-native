@@ -231,7 +231,7 @@ function TribeActions({ tribe }) {
     try {
       await msg.seeChat(tribe.chat.id) // Ping relay to read message
       await msg.getMessages()
-      navigation.navigate('Chat', { ...tribe.chat })
+      navigation.navigate('Chat' as never, { ...tribe.chat } as never)
     } catch (e) {
       console.log(e)
     } finally {
