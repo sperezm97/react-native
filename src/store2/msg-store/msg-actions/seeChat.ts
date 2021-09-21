@@ -1,6 +1,9 @@
 import { MsgStore } from '../msg-store'
-import * as api from 'api'
+import { relay } from 'api'
 
 export const seeChat = async (self: MsgStore, id: number) => {
-  return true
+  if (!id) return
+  self.lastSeen[id] = new Date().getTime()
+  await relay.post(`messages/${id}/read`)
+  // self.persister()
 }

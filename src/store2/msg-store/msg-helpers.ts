@@ -5,21 +5,23 @@ import * as e2e from '../../crypto/e2e'
 // import { userStore } from './user'
 import { constants } from '../../constants'
 import { Msg, MAX_MSGS_PER_CHAT } from './msg-models'
+import { RootStore } from 'store2'
+import { Contact } from 'store2/contacts-store'
 // import { Msg, MAX_MSGS_PER_CHAT } from './msg'
 
-// export async function encryptText({ contact_id, text }) {
-//   if (!text) return ''
-//   const contact = contactStore.contacts.find((c) => c.id === contact_id)
-//   if (!contact || !contact?.contact_key) return ''
-//   const encText = await e2e.encryptPublic(text, contact.contact_key) // contact.contact_key === null
-//   return encText
-// }
+export async function encryptText(root: RootStore, { contact_id, text }: { contact_id: number; text: string }) {
+  if (!text) return ''
+  const contact = root.contacts.contacts.get(contact_id.toString())
+  if (!contact || !contact?.contact_key) return ''
+  const encText = await e2e.encryptPublic(text, contact.contact_key) // contact.contact_key === null
+  return encText
+}
 
 const invalidContactKeyMessage = 'Invalid contact_key value'
 const throwInvalidContactKey = () => {
   throw new Error(invalidContactKeyMessage)
 }
-const isInvalidContactKeyError = (error: Error) => error.name === 'Error' && error.message === invalidContactKeyMessage
+// const isInvalidContactKeyError = (error: Error) => error.name === 'Error' && error.message === invalidContactKeyMessage
 // export const showToastIfContactKeyError = (error: Error) => {
 //   if (isInvalidContactKeyError(error)) {
 //     Toast.showWithGravity(
@@ -30,41 +32,46 @@ const isInvalidContactKeyError = (error: Error) => error.name === 'Error' && err
 //   }
 // }
 
-// export async function makeRemoteTextMap({ contact_id, text, chat_id }, includeSelf?) {
-//   const idToKeyMap = {}
-//   const remoteTextMap = {}
-//   const chat = chat_id && chatStore.chats.find((c) => c.id === chat_id)
-//   const myid = userStore.myid
-//   if (chat) {
-//     // TRIBE
-//     if (chat.type === constants.chat_types.tribe && chat.group_key) {
-//       idToKeyMap['chat'] = chat.group_key // "chat" is the key for tribes
-//       if (includeSelf) {
-//         const me = contactStore.contacts.find((c) => c.id === myid) // add in my own self (for media_key_map)
-//         if (me) idToKeyMap[myid] = me?.contact_key ?? ''
-//       }
-//     } else {
-//       // NON TRIBE
-//       const contactsInChat = contactStore.contacts.filter((c) => {
-//         if (includeSelf) {
-//           return chat.contact_ids.includes(c.id)
-//         } else {
-//           return chat.contact_ids.includes(c.id) && c.id !== myid
-//         }
-//       })
-//       contactsInChat.forEach((c) => (idToKeyMap[c.id] = c?.contact_key ?? ''))
-//     }
-//   } else {
-//     const contact = contactStore.contacts.find((c) => c.id === contact_id)
-//     if (contact) idToKeyMap[contact_id] = contact?.contact_key ?? ''
-//   }
-//   for (let [id, key] of Object.entries(idToKeyMap)) {
-//     if (!key) throwInvalidContactKey()
-//     const encText = await e2e.encryptPublic(text, String(key))
-//     remoteTextMap[id] = encText
-//   }
-//   return remoteTextMap
-// }
+export async function makeRemoteTextMap(
+  root: RootStore,
+  { contact_id, text, chat_id }: { contact_id: number; text: string; chat_id: number },
+  includeSelf?: boolean
+) {
+  const idToKeyMap: any = {}
+  const remoteTextMap = {}
+  const chat = chat_id && root.chats.chats.get(chat_id.toString()) //find((c) => c.id === chat_id)
+  const myid = root.user.myid
+  if (chat) {
+    // TRIBE
+    if (chat.type === constants.chat_types.tribe && chat.group_key) {
+      idToKeyMap.chat = chat.group_key // "chat" is the key for tribes
+      if (includeSelf) {
+        const me = root.contacts.contacts.get(myid.toString()) // add in my own self (for media_key_map)
+        if (me) idToKeyMap[myid] = me?.contact_key ?? ''
+      }
+    } else {
+      // NON TRIBE
+      const theseContacts: Contact[] = Array.from(root.contacts.contacts.values())
+      const contactsInChat = theseContacts.filter((c) => {
+        if (includeSelf) {
+          return chat.contact_ids.includes(c.id)
+        } else {
+          return chat.contact_ids.includes(c.id) && c.id !== myid
+        }
+      })
+      contactsInChat.forEach((c) => (idToKeyMap[c.id] = c?.contact_key ?? ''))
+    }
+  } else {
+    const contact = root.contacts.contacts.get(contact_id.toString())
+    if (contact) idToKeyMap[contact_id] = contact?.contact_key ?? ''
+  }
+  for (let [id, key] of Object.entries(idToKeyMap)) {
+    if (!key) throwInvalidContactKey()
+    const encText = await e2e.encryptPublic(text, String(key))
+    remoteTextMap[id] = encText
+  }
+  return remoteTextMap
+}
 
 export async function decodeSingle(m: Msg) {
   if (m.type === constants.message_types.keysend) {
@@ -191,20 +198,20 @@ export function putIn(orged, msg, chatID) {
   }
 }
 
-async function asyncForEach(array, callback) {
-  for (let index = 0; index < array.length; index++) {
-    await callback(array[index], index, array)
-  }
-}
-function chunkArray(arr, len) {
-  var chunks = [],
-    i = 0,
-    n = arr.length
-  while (i < n) {
-    chunks.push(arr.slice(i, (i += len)))
-  }
-  return chunks
-}
+// async function asyncForEach(array, callback) {
+//   for (let index = 0; index < array.length; index++) {
+//     await callback(array[index], index, array)
+//   }
+// }
+// function chunkArray(arr, len) {
+//   var chunks = [],
+//     i = 0,
+//     n = arr.length
+//   while (i < n) {
+//     chunks.push(arr.slice(i, (i += len)))
+//   }
+//   return chunks
+// }
 
 export function skinny(m: Msg): Msg {
   return { ...m, chat: null, remote_message_content: null }

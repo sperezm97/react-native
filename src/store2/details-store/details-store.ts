@@ -21,6 +21,9 @@ export const DetailsStoreModel = types
     getVersions: async (): Promise<any> => await actions.getVersions(self as DetailsStore),
     clearLogs: (): void => actions.clearLogs(self as DetailsStore),
     reset: (): void => actions.reset(self as DetailsStore),
+    addToBalance(x: number) {
+      self.balance = self.balance + x
+    },
   }))
 
 type DetailsStoreType = Instance<typeof DetailsStoreModel>
