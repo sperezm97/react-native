@@ -1,8 +1,6 @@
-import { useState } from 'react'
-import moment, { months } from 'moment'
-
-import { useStores } from '../index'
-import { DEFAULT_DOMAIN, INVITER_KEY } from 'config'
+import moment from 'moment'
+import { useStores } from 'store2'
+import { DEFAULT_DOMAIN } from 'config'
 import { Chat } from '../chats-store'
 import { Contact } from '../contacts-store'
 import { constants } from '../../constants'
@@ -110,7 +108,7 @@ function countUnseen(msgs, lastSeen: number, myid: number): number {
 }
 
 const conversation = constants.chat_types.conversation
-const group = constants.chat_types.conversation
+// const group = constants.chat_types.conversation
 const expiredInvite = constants.invite_statuses.expired
 
 export function allChats(chats: Chat[], contacts: Contact[], myid: number): Chat[] {

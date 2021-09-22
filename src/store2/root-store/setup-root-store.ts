@@ -1,7 +1,7 @@
 import { onSnapshot } from 'mobx-state-tree'
 import { RootStoreModel, RootStore } from './root-store'
 import { Environment } from '../environment'
-import { webStorage as storage } from 'store/storage'
+import storage from '@react-native-community/async-storage'
 import { isDev } from 'store/utils/isDev'
 
 const __DEV__ = isDev

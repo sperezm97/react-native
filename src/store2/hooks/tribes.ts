@@ -1,6 +1,6 @@
 import moment from 'moment'
 
-import { useStores } from '../index'
+import { useStores } from 'store2'
 import { useChats } from './chats'
 import { INVITER_KEY } from 'config'
 import { constants } from '../../constants'
@@ -35,7 +35,7 @@ export function useJoinedTribes(tribes) {
 export function useOwnedTribes(tribes) {
   // tribes = tribes.filter(t => t.owner)
   tribes = tribes.filter((t) => t.joined)
-  return sortTribesByLastMsg(tribes)
+  return useSortTribesByLastMsg(tribes)
 
   // return tribes.sort((a, b) => {
   //   if (a.joined > b.owner && b.last_active > a.last_active) return -1
@@ -43,7 +43,7 @@ export function useOwnedTribes(tribes) {
   // })
 }
 
-function sortTribesByLastMsg(tribesToShow) {
+function useSortTribesByLastMsg(tribesToShow) {
   const {
     msg: { messages },
   } = useStores()
@@ -163,6 +163,8 @@ export function useTribeMediaType(msgs, type) {
 }
 
 export function processFeed(tribe, type, myid) {
+  // TODO: Fix this eslint disable
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   let msgs = useMsgs(tribe.chat)
 
   msgs = msgs.filter(
