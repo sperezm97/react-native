@@ -6,28 +6,35 @@ import * as actions from './user-actions'
 export const UserStoreModel = types
   .model('UserStore')
   .props({
-    alias: types.optional(types.string, ''),
     // authToken: types.optional(types.string, 'EOqzXhndpa9XyMcCUAPK'),
+    // currentIP: types.optional(types.string, 'http://box-5.arcade.city:3001'),
+    // myid: types.optional(types.number, 1),
+    alias: types.optional(types.string, ''),
     authToken: types.optional(types.string, ''),
     code: types.optional(types.string, ''),
     contactKey: types.optional(types.string, ''),
-    // currentIP: types.optional(types.string, 'http://box-5.arcade.city:3001'),
     currentIP: types.optional(types.string, ''),
+    deviceId: types.optional(types.string, ''),
     invite: types.optional(UserInviteModel, {}),
-    // myid: types.optional(types.number, 1),
     myid: types.maybeNull(types.number),
+    onboardStep: types.optional(types.number, 0),
     publicKey: types.optional(types.string, ''),
+    tipAmount: types.optional(types.number, 100),
   })
   .extend(withEnvironment)
   .actions((self) => ({
     finishInvite: async (): Promise<boolean> => await actions.finishInvite(self as UserStore),
     generateToken: async (pwd: string): Promise<string> => await actions.generateToken(self as UserStore, pwd),
+    registerMyDeviceId: (device_id, myid): Promise<void> =>
+      actions.registerMyDeviceId(self as UserStore, device_id, myid),
     reportError: async (label: string, error: any): Promise<any> =>
       await actions.reportError(self as UserStore, label, error),
+    requestInvite: async (email) => await actions.requestInvite(self, email),
     resetIP: async (): Promise<any> => await actions.resetIP(self as UserStore),
     restore: async (restoreString: string): Promise<any> => await actions.restore(self as UserStore, restoreString),
     signupWithCode: async (code: string): Promise<ArrayObject> => await actions.signupWithCode(self as UserStore, code),
     signupWithIP: async (ip: string): Promise<string | null> => await actions.signupWithIP(self as UserStore, ip),
+    reset: () => actions.reset(self),
     setAuthToken: (authToken: string) => {
       self.authToken = authToken
     },
@@ -45,6 +52,27 @@ export const UserStoreModel = types
     },
     setMyID: (id: number) => {
       self.myid = id
+    },
+    setOnboardStep(s) {
+      self.onboardStep = s
+    },
+    setDeviceId(deviceId) {
+      self.deviceId = deviceId
+    },
+    setPublicKey(pubkey) {
+      self.publicKey = pubkey
+    },
+    setTipAmount(s: number) {
+      self.tipAmount = s
+    },
+    finishOnboard() {
+      self.onboardStep = 0
+      self.invite = {
+        inviterNickname: '',
+        inviterPubkey: '',
+        welcomeMessage: '',
+        action: '',
+      }
     },
   }))
   .views((self) => ({
