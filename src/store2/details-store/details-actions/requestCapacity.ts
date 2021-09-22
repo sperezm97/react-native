@@ -1,5 +1,5 @@
 import { DetailsStore } from 'store2/details-store'
-import { DEFAULT_HUB_API } from 'src/config'
+import { DEFAULT_HUB_API } from 'config'
 
 export async function requestCapacity(self: DetailsStore, pubKey: string) {
   try {

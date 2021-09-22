@@ -5,25 +5,26 @@ module.exports = function (api) {
     plugins: [
       [require('@babel/plugin-proposal-decorators'), { legacy: true }],
       'react-native-reanimated/plugin',
-      // [
-      //   'module-resolver',
-      //   {
-      //     root: ['./src'],
-      //     alias: {
-      //       animations: './src/animations',
-      //       api: './src/api',
-      //       assets: './src/assets',
-      //       components: './src/components',
-      //       config: './src/config',
-      //       crypto: './src/crypto',
-      //       hooks: './src/hooks',
-      //       services: './src/services',
-      //       store: './src/store',
-      //       theme: './src/theme',
-      //       types: './src/types',
-      //     },
-      //   },
-      // ],
+      [
+        'module-resolver',
+        {
+          root: ['./src'],
+          alias: {
+            animations: './src/animations',
+            api: './src/api',
+            assets: './src/assets',
+            components: './src/components',
+            config: './src/config',
+            crypto: './src/crypto',
+            hooks: './src/hooks',
+            services: './src/services',
+            store: './src/store',
+            store2: './src/store2',
+            theme: './src/theme',
+            types: './src/types',
+          },
+        },
+      ],
     ],
   }
 

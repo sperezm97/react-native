@@ -3,7 +3,6 @@
   "description": "Bitcoin Lightning Powered Chat",
   "author": "",
   "version": "1.14.0",
-  "main": "public/electron",
   "homepage": "./",
   "scripts": {
     "start": "react-native start",
@@ -102,9 +101,7 @@
     "dns.js": "^1.0.1",
     "domain-browser": "^1.2.0",
     "dompurify": "^2.0.15",
-    "electron-deeplink": "^1.0.6",
     "electron-default-menu": "^1.0.2",
-    "electron-log": "^4.2.2",
     "electron-unhandled": "^3.0.2",
     "emoji-mart": "^3.0.0",
     "eventemitter3": "^4.0.4",

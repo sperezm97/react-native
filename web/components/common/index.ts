@@ -1,5 +1,0 @@
-export * from './auto-image/auto-image'
-export * from './Button'
-export * from './gradient-background/gradient-background'
-export * from './screen/screen'
-export * from './text'

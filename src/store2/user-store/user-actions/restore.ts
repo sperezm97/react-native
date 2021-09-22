@@ -1,6 +1,6 @@
 import { UserStore } from '../user-store'
 import * as api from 'api'
-import { sleep } from 'components/utils/utils'
+import { sleep } from 'store2/utils/sleep'
 
 export const restore = async (self: UserStore, restoreString: string) => {
   const arr = restoreString.split('::')

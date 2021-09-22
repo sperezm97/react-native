@@ -2,9 +2,6 @@ import { onSnapshot } from 'mobx-state-tree'
 import { RootStoreModel, RootStore } from './root-store'
 import { Environment } from '../environment'
 import storage from '@react-native-community/async-storage'
-import { isDev } from 'store/utils/isDev'
-
-const __DEV__ = isDev
 
 /**
  * The key we'll be saving our state as within async storage.
@@ -49,6 +46,7 @@ export async function setupRootStore() {
 
   // reactotron logging
   if (__DEV__) {
+    // console.log("Skipping reactotron logging...")
     env.reactotron.setRootStore(rootStore, data)
   }
 

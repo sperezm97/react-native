@@ -1,10 +1,7 @@
 // import { Api } from 'services/api'
-import { isDev } from 'store/utils/isDev'
-
-const __DEV__ = isDev
 
 let ReactotronDev
-if (isDev) {
+if (__DEV__) {
   const { Reactotron } = require('../services/reactotron')
   ReactotronDev = Reactotron
 }
