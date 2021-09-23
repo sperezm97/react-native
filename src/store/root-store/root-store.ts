@@ -3,6 +3,7 @@ import { ChatsStoreModel } from '../chats-store/chats-store'
 import { ContactsStoreModel } from '../contacts-store/contacts-store'
 import { DetailsStoreModel } from '../details-store/details-store'
 import { MsgStoreModel } from '../msg-store/msg-store'
+import { ThemeStoreModel } from '../theme-store/theme-store'
 import { UiStoreModel } from '../ui-store/ui-store'
 import { UserStoreModel } from '../user-store/user-store'
 
@@ -15,8 +16,9 @@ export const RootStoreModel = types.model("RootStore").props({
   contacts: types.optional(ContactsStoreModel, {} as any),
   details: types.optional(DetailsStoreModel, {}),
   msg: types.optional(MsgStoreModel, {} as any),
+  theme: types.optional(ThemeStoreModel, {} as any),
   ui: types.optional(UiStoreModel, {} as any),
-  user: types.optional(UserStoreModel, {} as any)
+  user: types.optional(UserStoreModel, {} as any),
 })
 
 /**

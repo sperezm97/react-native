@@ -17,7 +17,6 @@ import {
   putIn,
   putInReverse,
 } from './msgHelpers'
-import { updateRealmMsg } from '../realm/exports'
 import { persistMsgLocalForage } from './storage'
 import { userStore } from './user'
 
@@ -120,7 +119,7 @@ class MsgStore {
 
   @action persister() {
     if (Platform.OS === 'android') {
-      updateRealmMsg(this)
+      // updateRealmMsg(this)
     }
     if (Platform.OS === 'web') {
       persistMsgLocalForage(this)

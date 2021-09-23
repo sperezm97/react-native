@@ -17,8 +17,6 @@ import { Platform } from 'react-native'
 import AsyncStorage from '@react-native-community/async-storage'
 import * as hookz from './hooks'
 import * as localForage from 'localforage'
-import { getRealmMessages, updateRealmMsg } from '../realm/exports'
-import { hasData } from '../realm/exports'
 import { DEBOUNCE_TIME, persistMsgLocalForage } from './storage'
 
 const strg = {
@@ -62,19 +60,19 @@ async function hydrateMessageStoreFromLocalforage() {
 // check if realm
 // if not, load from persist and into realm
 async function hydrateMessageStoreFromRealm() {
-  console.log('hydrateMessageStoreFromRealm')
-  const hasRealmData = hasData()
-  if (hasRealmData.msg) {
-    console.log('has msgs')
-    const rs = getRealmMessages()
-    msgStore.messages = rs.messages
-    msgStore.lastSeen = rs.lastSeen
-    msgStore.lastFetched = rs.lastFetched
-  } else {
-    await hydrate('msg', msgStore)
-    await sleep(DEBOUNCE_TIME)
-    updateRealmMsg(msgStore)
-  }
+  // console.log('hydrateMessageStoreFromRealm')
+  // const hasRealmData = hasData()
+  // if (hasRealmData.msg) {
+  //   console.log('has msgs')
+  //   const rs = getRealmMessages()
+  //   msgStore.messages = rs.messages
+  //   msgStore.lastSeen = rs.lastSeen
+  //   msgStore.lastFetched = rs.lastFetched
+  // } else {
+  //   await hydrate('msg', msgStore)
+  //   await sleep(DEBOUNCE_TIME)
+  //   updateRealmMsg(msgStore)
+  // }
 }
 function initAndroid() {
   Promise.all([
