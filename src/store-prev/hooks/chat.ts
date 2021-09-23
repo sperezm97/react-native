@@ -1,5 +1,4 @@
-import { useStores } from 'store'
-import { Contact } from 'store/contacts-store'
+import { useStores } from '../index'
 import { useAvatarColor } from './msg'
 
 interface CalcBotPriceResponse {
@@ -61,12 +60,11 @@ export function useReplyContent(msgs, replyUUID, extraTextContent): replyContent
     replyMessageContent = replyMsg && replyMsg.message_content ? replyMsg.message_content : replyMsg?.media_type
 
     if (!replyMessageSenderAlias && replyMsg && replyMsg.sender) {
-      const theseContacts: Contact[] = Array.from(contacts.contacts.values())
-      const sender = theseContacts.find((c) => c.id === replyMsg.sender)
+      const sender = contacts.contacts.find((c) => c.id === replyMsg.sender)
       if (sender) replyMessageSenderAlias = sender.alias
     }
+    replyColor = useAvatarColor(replyMessageSenderAlias)
   }
-  replyColor = useAvatarColor(replyMessageSenderAlias)
   return {
     replyMessageSenderAlias,
     replyMessageContent,
@@ -108,7 +106,7 @@ export function calcBotPrice(bots: Array<BotJSON>, text: string): CalcBotPriceRe
         } else if (cmd.price_index) {
           // calculate the price from the actual command text
           if (arr.length - 1 < cmd.price_index) return // skip if not enough words in the message
-          const amount = parseInt(arr[cmd.price_index], 10)
+          const amount = parseInt(arr[cmd.price_index])
           if (cmd.min_price && amount < cmd.min_price) {
             failureMessage = 'Amount too low' // min amount
             return
@@ -139,25 +137,25 @@ interface BotCommand {
   admin_only: boolean
 }
 
-// function testCalcBotPrice(txt) {
-//   const res = calcBotPrice(
-//     [
-//       {
-//         prefix: '/loopout',
-//         price: 0,
-//         commands: [
-//           {
-//             command: '*',
-//             price: 0,
-//             min_price: 250000,
-//             max_price: 16777215,
-//             price_index: 2,
-//             admin_only: false,
-//           },
-//         ],
-//       },
-//     ],
-//     txt
-//   )
-//   console.log(res)
-// }
+function testCalcBotPrice(txt) {
+  const res = calcBotPrice(
+    [
+      {
+        prefix: '/loopout',
+        price: 0,
+        commands: [
+          {
+            command: '*',
+            price: 0,
+            min_price: 250000,
+            max_price: 16777215,
+            price_index: 2,
+            admin_only: false,
+          },
+        ],
+      },
+    ],
+    txt
+  )
+  console.log(res)
+}

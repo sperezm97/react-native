@@ -33,27 +33,26 @@ export function parseLDAT(ldat) {
   const a = ldat.split('.')
   const o: { [k: string]: any } = {}
   termKeys.forEach((t, i) => {
-    // eslint-disable-next-line no-undef
     if (a[i]) o[t.key] = t.func(Buffer.from(a[i], 'base64'))
   })
   return o
 }
 
-// function serializeMeta(obj) {
-//   var str: string[] = []
-//   for (var p in obj) {
-//     if (obj.hasOwnProperty(p)) {
-//       str.push(encodeURIComponent(p) + '=' + encodeURIComponent(obj[p]))
-//     }
-//   }
-//   str.sort((a, b) => (a > b ? 1 : -1))
-//   return str.join('&')
-// }
+function serializeMeta(obj) {
+  var str: string[] = []
+  for (var p in obj) {
+    if (obj.hasOwnProperty(p)) {
+      str.push(encodeURIComponent(p) + '=' + encodeURIComponent(obj[p]))
+    }
+  }
+  str.sort((a, b) => (a > b ? 1 : -1))
+  return str.join('&')
+}
 
 function deserializeMeta(str) {
   const json =
     str && str.length > 2
-      ? JSON.parse('{"' + str.replace(/&/g, '","').replace(/[=]/g, '":"') + '"}', function (key, value) {
+      ? JSON.parse('{"' + str.replace(/&/g, '","').replace(/=/g, '":"') + '"}', function (key, value) {
           return key === '' ? value : decodeURIComponent(value)
         })
       : {}
@@ -68,13 +67,12 @@ function deserializeMeta(str) {
 function urlBase64(buf) {
   return buf.toString('base64').replace(/\//g, '_').replace(/\+/g, '-')
 }
-// function urlBase64FromBytes(buf) {
-//   return Buffer.from(buf).toString('base64').replace(/\//g, '_').replace(/\+/g, '-')
-// }
+function urlBase64FromBytes(buf) {
+  return Buffer.from(buf).toString('base64').replace(/\//g, '_').replace(/\+/g, '-')
+}
 export function urlBase64FromAscii(ascii) {
-  // eslint-disable-next-line no-undef
   return Buffer.from(ascii, 'ascii').toString('base64').replace(/\//g, '_').replace(/\+/g, '-')
 }
-// function urlBase64FromHex(ascii) {
-//   return Buffer.from(ascii, 'hex').toString('base64').replace(/\//g, '_').replace(/\+/g, '-')
-// }
+function urlBase64FromHex(ascii) {
+  return Buffer.from(ascii, 'hex').toString('base64').replace(/\//g, '_').replace(/\+/g, '-')
+}

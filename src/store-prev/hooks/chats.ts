@@ -1,16 +1,15 @@
-import moment from 'moment'
-import { useStores } from 'store'
-import { DEFAULT_DOMAIN } from 'config'
-import { Chat } from '../chats-store'
-import { Contact } from '../contacts-store'
+import { useState } from 'react'
+import moment, { months } from 'moment'
+
+import { useStores } from '../index'
+import { DEFAULT_DOMAIN, INVITER_KEY } from '../../config'
+import { Chat } from '../chats'
+import { Contact } from '../contacts'
 import { constants } from '../../constants'
 
 export function useChats() {
   const { chats, msg, contacts, user } = useStores()
-  // https://github.com/mobxjs/mobx-state-tree/issues/783#issuecomment-384209309
-  const theseChats: Chat[] = Array.from(chats.chats.values())
-  const theseContacts: Contact[] = Array.from(contacts.contacts.values())
-  const theChats = allChats(theseChats, theseContacts, user.myid)
+  const theChats = allChats(chats.chats, contacts.contacts, user.myid)
   const chatsToShow = theChats
   sortChats(chatsToShow, msg.messages)
 
@@ -108,7 +107,7 @@ function countUnseen(msgs, lastSeen: number, myid: number): number {
 }
 
 const conversation = constants.chat_types.conversation
-// const group = constants.chat_types.conversation
+const group = constants.chat_types.conversation
 const expiredInvite = constants.invite_statuses.expired
 
 export function allChats(chats: Chat[], contacts: Contact[], myid: number): Chat[] {
@@ -150,11 +149,6 @@ export function contactForConversation(chat: Chat, contacts: Contact[], myid: nu
 }
 
 export function sortChats(chatsToShow, messages) {
-  console.tron.display({
-    name: 'sortChats',
-    preview: `Starting to sort ${chatsToShow.length} chats and ${messages.length} messages`,
-    value: { chatsToShow, messages },
-  })
   chatsToShow.sort((a, b) => {
     const amsgs = messages[a.id]
     const alastMsg = amsgs && amsgs[0]

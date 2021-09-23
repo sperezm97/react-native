@@ -4,7 +4,7 @@
 const remote = window && window.require ? window.require('electron').remote : null
 
 function checkIfDev() {
-  return !!remote && remote.process.argv[2] === '--dev'
+  return !!remote && remote.process.argv[2] == '--dev'
 }
 
 export const isDev = checkIfDev()

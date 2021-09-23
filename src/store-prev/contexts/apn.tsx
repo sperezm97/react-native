@@ -1,11 +1,10 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import * as PushNotification from 'react-native-push-notification'
+import PushNotificationIOS from '@react-native-community/push-notification-ios'
 
 export const APNContext = React.createContext({
   token: '',
-  configure: (callback, finishCallback) => {
-    console.log(callback, finishCallback)
-  },
+  configure: (callback, finishCallback) => {},
 })
 
 export const useApn = () => React.useContext(APNContext)
@@ -15,18 +14,16 @@ export default function APNManager(props) {
 
   const configure = (callback, finishCallback) => {
     PushNotification.configure({
-      onRegister: function ({ token }) {
+      onRegister: function ({ token, os }) {
         setToken(token)
         if (callback) callback(token)
       },
       onNotification: function (notification) {
-        // const badge = notification.data.aps.badge
+        const badge = notification.data.aps.badge
 
         finishCallback(notification)
       },
-      onError: (error) => {
-        console.log(error)
-      },
+      onError: (error) => {},
       permissions: {
         alert: true,
         badge: true,

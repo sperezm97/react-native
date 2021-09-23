@@ -3,12 +3,10 @@ import * as base64 from 'base-64'
 
 import { useStores } from '../index'
 import { constants, constantCodes } from '../../constants'
-import { Msg, BoostMsg } from '../msg-store'
-import { Contact } from '../contacts-store'
-import { parseLDAT, urlBase64FromAscii } from 'store/utils/ldat'
-import { Chat } from 'store/chats-store'
+import { Msg, BoostMsg } from '../msg'
+import { Contact } from '../contacts'
+import { parseLDAT, urlBase64FromAscii } from '../utils/ldat'
 
-const group = constants.chat_types.group
 const tribe = constants.chat_types.tribe
 
 export function useMsgs(chat, limit?: number) {
@@ -21,16 +19,14 @@ export function useMsgs(chat, limit?: number) {
   const isTribe = chat.type === tribe
   if (!theID) {
     // for very beginning, where chat doesnt have id
-    const theseChats: Chat[] = Array.from(chats.chats.values())
-    const theChat = theseChats.find((ch) => ch.type === 0 && arraysEqual(ch.contact_ids, chat.contact_ids)) // this is the problem
+    const theChat = chats.chats.find((ch) => ch.type === 0 && arraysEqual(ch.contact_ids, chat.contact_ids)) // this is the problem
     if (theChat) theID = theChat.id // new chat pops in, from first message confirmation!
   }
   const msgs = msg.messages[theID]
 
   const shownMsgs = msgs && msgs.slice(0, limit || 1000)
 
-  const theseContacts: Contact[] = Array.from(contacts.contacts.values())
-  const messages = processMsgs(shownMsgs, isTribe, theseContacts, myid)
+  const messages = processMsgs(shownMsgs, isTribe, contacts.contacts, myid)
 
   const msgsWithDates = msgs && injectDates(messages)
   const ms = msgsWithDates || []
@@ -50,7 +46,7 @@ function processMsgs(incomingmsgs: Msg[], isTribe: boolean, contacts: Contact[],
     const msg = msgs[i]
 
     msg.showInfoBar = calcShowInfoBar(msgs, msg, i, isTribe, myid)
-    const typ = constantCodes['message_types'][msg.type]
+    const typ = constantCodes.message_types[msg.type]
 
     // attachment logic
     if (typ === 'attachment' && msg.sender !== myid) {
@@ -58,7 +54,7 @@ function processMsgs(incomingmsgs: Msg[], isTribe: boolean, contacts: Contact[],
       const ldat = parseLDAT(msg.media_token)
       if (ldat.muid && ldat.meta && ldat.meta.amt) {
         const accepted = msgs.find((m) => {
-          const mtype = constantCodes['message_types'][m.type]
+          const mtype = constantCodes.message_types[m.type]
           const start = urlBase64FromAscii(ldat.host) + '.' + ldat.muid
           return (
             (mtype === 'purchase_accept' && m.media_token.startsWith(start)) ||
@@ -77,7 +73,7 @@ function processMsgs(incomingmsgs: Msg[], isTribe: boolean, contacts: Contact[],
       const ldat = parseLDAT(msg.media_token)
       if (ldat && ldat.muid && ldat.meta && ldat.meta.amt) {
         const purchase = msgs.find((m) => {
-          const mtype = constantCodes['message_types'][m.type]
+          const mtype = constantCodes.message_types[m.type]
           const start = urlBase64FromAscii(ldat.host) + '.' + ldat.muid
           return mtype === 'purchase' && m.media_token.startsWith(start)
         })
@@ -133,7 +129,7 @@ function processMsgs(incomingmsgs: Msg[], isTribe: boolean, contacts: Contact[],
 function getPrevious(msgs: Msg[], i: number) {
   if (i === 0) return null
   const previous = msgs[i - 1]
-  const mtype = constantCodes['message_types'][previous.type]
+  const mtype = constantCodes.message_types[previous.type]
   if (hideTypes.includes(mtype)) {
     return getPrevious(msgs, i - 1)
   }
@@ -204,8 +200,6 @@ function arraysEqual(_arr1, _arr2) {
   return true
 }
 
-export function useMsgsFilter(msgs: Msg[], filter: string) {}
-
 function rando() {
   return Math.random().toString(12).substring(0)
 }
@@ -224,25 +218,21 @@ export function useMsgSender(m, contactList, isTribe) {
 }
 
 export function useBoostSender(m, contactList, isTribe) {
-  let senderAlias = ''
   const sender = contactList.find((c) => c.id === m.sender)
-  let senderPic = (!isTribe && sender && sender.photo_url) || ''
-
-  if (isTribe) {
-    senderAlias = m.sender_alias
-
-    if (m.sender_pic) senderPic = m.sender_pic
-  } else {
-    senderAlias = sender && sender.alias
+  return {
+    senderAlias: !isTribe ? sender?.alias : m.sender_alias,
+    senderPic: isTribe ? m.sender_pic || '' : sender?.photo_url || '',
   }
-  return { senderAlias, senderPic }
 }
 
+// TODO: Fix this custom hook logic in the future
+/* eslint-disable react-hooks/rules-of-hooks */
 export function useParsedJsonOrClipMsg(message_content) {
   if (!message_content) return {}
   if (message_content.includes('::')) return useParsedClipMsg(message_content)
   return useParsedJsonMsg(message_content)
 }
+/* eslint-enable react-hooks/rules-of-hooks */
 
 export function useParsedJsonMsg(message_content: string) {
   if (!message_content) return {}

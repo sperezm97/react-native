@@ -1,5 +1,5 @@
-import { Chat } from './store/chats'
-import { Contact } from './store/contacts'
+import { Chat } from 'store/chats-store'
+import { Contact } from 'store/contacts-store'
 import { RouteProp } from '@react-navigation/native'
 
 export type DashStackParamList = {

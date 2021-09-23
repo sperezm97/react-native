@@ -1,12 +1,12 @@
 import moment from 'moment'
 
-import { useStores } from 'store'
+import { useStores } from '../index'
 import { useChats } from './chats'
-import { INVITER_KEY } from 'config'
+import { INVITER_KEY } from '../../config'
 import { constants } from '../../constants'
-import { calendarDate } from 'store/utils/date'
+import { calendarDate } from '../utils/date'
 import { useMsgs } from './msg'
-import { Msg } from '../msg-store'
+import { Msg } from '../msg'
 
 export function useTribes() {
   const { chats, user } = useStores()
@@ -75,9 +75,7 @@ export function allTribes(tribes, chats, user) {
   const chatsuids = chats.map((c) => c.uuid)
   const ownedChats = chats.filter((c) => c.type === constants.chat_types.tribe && c.owner_pubkey === user.publicKey)
 
-  const tribesArray: any[] = Array.from(tribes)
-
-  return tribesArray.map((tribe) => {
+  return tribes.map((tribe) => {
     return {
       ...tribe,
       chat: chatsuids && chats.find((c) => c.uuid === tribe.uuid),
@@ -105,7 +103,7 @@ export function useTribeHistory(created, lastActive) {
  * - `matchTypeMessage` = Should have same type as required on param
  * - `ownerCriteria` = The owner of the message should be the owner of tribe
  * - `messageWithValidStatus` = Prevent deleted messages to be displayed
- * @todo as seen this only has been used in one component, i think we should make it specific to
+ * TODO: as seen this only has been used in one component, i think we should make it specific to
  * ony the covered cases
  */
 export function useOwnerMediaType(msgs, tribe, type, myId): Array<Msg> {
@@ -129,10 +127,9 @@ export function useOwnerMediaType(msgs, tribe, type, myId): Array<Msg> {
 
 // feed from joined tribes
 export function useFeed(tribes, myid) {
-  const tribesArray: any[] = Array.from(tribes.values())
-  const filteredTribesArray = tribesArray.filter((t) => t.joined && !t.owner && t.owner_pubkey !== INVITER_KEY)
+  tribes = tribes.filter((t) => t.joined && !t.owner && t.owner_pubkey !== INVITER_KEY)
 
-  let allTribes = filteredTribesArray.map((t) => processFeed(t, 6, myid))
+  let allTribes = tribes.map((t) => processFeed(t, 6, myid))
 
   let feed = []
 
