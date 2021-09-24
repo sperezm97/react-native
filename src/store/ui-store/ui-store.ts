@@ -1,7 +1,7 @@
 import { Instance, SnapshotOut, types } from 'mobx-state-tree'
 import { Chat, ChatModel } from 'store/chats-store'
 import { Contact, ContactModel } from '../contacts-store'
-import { Msg, MsgModel } from '../msg-store'
+import { InvoiceMsg, InvoiceMsgModel } from './ui-models'
 import { withEnvironment } from '../extensions/with-environment'
 
 export const UiStoreModel = types
@@ -36,7 +36,7 @@ export const UiStoreModel = types
     showPayModal: false,
     payMode: types.optional(types.enumeration('PayMode', ['', 'invoice', 'payment', 'loopout']), ''),
     chatForPayModal: types.maybe(types.reference(ChatModel)),
-    confirmInvoiceMsg: types.maybe(types.reference(MsgModel)),
+    confirmInvoiceMsg: types.maybe(types.reference(InvoiceMsgModel)),
     sendRequestModal: types.maybe(types.reference(ChatModel)),
     viewContact: types.maybe(types.reference(ContactModel)),
     rawInvoiceModal: false,
@@ -50,7 +50,6 @@ export const UiStoreModel = types
     is24HourFormat: false,
     extraTextContent: types.optional(types.map(types.frozen()), null),
     replyUUID: types.optional(types.string, ''),
-    oauthParams: types.optional(types.map(types.frozen()), null),
     connected: false,
     loadingHistory: false,
     showBots: false,
@@ -184,7 +183,7 @@ export const UiStoreModel = types
         self.chatForPayModal = null
       }, 500)
     },
-    setConfirmInvoiceMsg(msg: Msg) {
+    setConfirmInvoiceMsg(msg: InvoiceMsg) {
       self.confirmInvoiceMsg = msg
     },
     setSendRequestModal(chat: Chat) {
@@ -251,13 +250,6 @@ export const UiStoreModel = types
     },
     setReplyUUID(uuid: string) {
       self.replyUUID = uuid
-    },
-    setOauthParams(obj: { [k: string]: any } | null) {
-      if (!obj) {
-        self.oauthParams = null
-        return
-      }
-      self.oauthParams.replace(obj)
     },
     setConnected(connected: boolean) {
       self.connected = connected

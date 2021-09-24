@@ -1,7 +1,7 @@
-import { DEFAULT_TRIBE_SERVER } from 'config'
 import { Instance, SnapshotOut, types } from 'mobx-state-tree'
 import { withEnvironment } from '../extensions/with-environment'
 import * as actions from './feed-actions'
+import { Podcast } from './feed-models'
 
 export const FeedStoreModel = types
   .model('FeedStore')
@@ -12,6 +12,7 @@ export const FeedStoreModel = types
   .actions((self) => ({
     sendPayments: async (params: actions.SendPaymentParams): Promise<void> =>
       await actions.sendPayments(self as FeedStore, params),
+    loadFeedById: async (id: string): Promise<Podcast | null> => await actions.loadFeedById(id),
   }))
 
 type FeedStoreType = Instance<typeof FeedStoreModel>

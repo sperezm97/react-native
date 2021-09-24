@@ -1,5 +1,33 @@
 import { Instance, types } from 'mobx-state-tree'
 
+const EpisodeModel = types.model('Episode').props({
+  id: types.string,
+  title: types.string,
+  description: types.string,
+  datePublished: types.number,
+  enclosureUrl: types.string,
+  enclosureType: types.string,
+  enclosureLength: types.number,
+  image: types.string,
+  link: types.string,
+})
+
+export const PodcastModel = types.model('Podcast').props({
+  id: types.number,
+  title: types.string,
+  url: types.string,
+  description: types.string,
+  author: types.string,
+  image: types.string,
+  link: types.string,
+  lastUpdateTime: types.number,
+  contentType: types.string,
+  language: types.string,
+  episodes: types.array(types.reference(EpisodeModel)),
+})
+
+export interface Podcast extends Instance<typeof PodcastModel> {}
+
 export const StreamPaymentModel = types.model('StreamPayment').props({
   feedID: types.number,
   itemID: types.number,
