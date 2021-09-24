@@ -97,7 +97,7 @@ export default function ChatDetails({ route }) {
   if (!(initppm || initppm === 0)) initppm = group.pricePerMinute || 5
 
   const uri = useChatPicSrc(group)
-  const hasGroup = group ? true : false
+  const hasGroup = !!group
 
   const isTribe = group && group.type === constants.chat_types.tribe
   const isTribeAdmin = isTribe && group.owner_pubkey === user.publicKey
@@ -274,7 +274,7 @@ function DetailsAction({ chat }) {
     const isMuted = theChat?.is_muted || false
 
     async function muteChat() {
-      chats.muteChat(chat.id, isMuted ? false : true)
+      chats.muteChat(chat.id, !isMuted)
     }
 
     return (

@@ -75,7 +75,7 @@ export default function PhotoURIInput({
   }
 
   const imgURI = value
-  const hasImgURI = imgURI ? true : false
+  const hasImgURI = !!imgURI
 
   let lab = `${label.en}${required ? ' *' : ''}`
   if (error) {

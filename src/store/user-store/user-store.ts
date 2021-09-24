@@ -77,7 +77,7 @@ export const UserStoreModel = types
   }))
   .views((self) => ({
     loggedIn(): boolean {
-      return self.currentIP && self.authToken ? true : false
+      return !!(self.currentIP && self.authToken)
     },
   }))
 

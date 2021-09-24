@@ -145,7 +145,7 @@ export default function Invite() {
           <View style={styles.spinWrap}>{checking && <ActivityIndicator animating={true} color={theme.white} />}</View>
         </KeyboardAwareScrollView>
 
-        {(wrong ? true : false) && (
+        {!!wrong && (
           <View
             style={{
               ...styles.message,
@@ -157,7 +157,7 @@ export default function Invite() {
             </Typography>
           </View>
         )}
-        {(error ? true : false) && (
+        {!!error && (
           <View
             style={{
               ...styles.message,

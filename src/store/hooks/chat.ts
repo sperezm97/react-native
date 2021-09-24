@@ -31,7 +31,7 @@ function makeExtraTextContent(obj) {
 
 export function useHasReplyContent(): boolean {
   const { ui } = useStores()
-  return ui.replyUUID || ui.extraTextContent ? true : false
+  return !!(ui.replyUUID || ui.extraTextContent)
 }
 
 interface replyContent {

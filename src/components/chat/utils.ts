@@ -63,6 +63,6 @@ export function sortChats(chatsToShow, messages) {
 export function filterChats(theChats, searchTerm) {
   return theChats.filter((c) => {
     if (!searchTerm) return true
-    return (c.invite ? true : false) || c.name.toLowerCase().includes(searchTerm.toLowerCase())
+    return !!c.invite || c.name.toLowerCase().includes(searchTerm.toLowerCase())
   })
 }

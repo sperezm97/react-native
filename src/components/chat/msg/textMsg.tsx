@@ -20,7 +20,7 @@ export default function TextMsg(props) {
   const { message_content, isTribe } = props
   const rumbleLink = useMemo(() => getRumbleLink(message_content), [message_content])
   const youtubeLink = useMemo(() => getYoutubeLink(message_content), [message_content])
-  const showBoostRow = props.boosts_total_sats ? true : false
+  const showBoostRow = !!props.boosts_total_sats
   const isGiphy = message_content?.startsWith('giphy::')
   const isClip = message_content?.startsWith('clip::')
   const isBoost = message_content?.startsWith('boost::')
@@ -38,7 +38,7 @@ export default function TextMsg(props) {
     return (
       <TouchableOpacity style={{ ...styles.column, maxWidth: 200 }} onLongPress={onLongPressHandler}>
         <Image source={{ uri: url }} style={{ width: 200, height: 200 / (aspectRatio || 1) }} resizeMode={'cover'} />
-        {(text ? true : false) && (
+        {!!text && (
           <Typography color={props.isMe ? theme.white : theme.text} size={16} styles={styles.textPad}>
             {text}
           </Typography>

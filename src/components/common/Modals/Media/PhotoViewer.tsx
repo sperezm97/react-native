@@ -78,9 +78,9 @@ function SwipeItem(props) {
   }
 
   const isMe = props.sender === user.myid
-  const hasImgData = data || uri ? true : false
-  const hasContent = message_content ? true : false
-  const showPurchaseButton = amt && !isMe ? true : false
+  const hasImgData = !!(data || uri)
+  const hasContent = !!message_content
+  const showPurchaseButton = !!(amt && !isMe)
   const showStats = isMe && amt
   const sold = props.sold
 
@@ -133,7 +133,7 @@ function SwipeItem(props) {
 
   const w = SCREEN_WIDTH
 
-  const showBoostRow = boosts_total_sats ? true : false
+  const showBoostRow = !!boosts_total_sats
 
   function renderViewMore(onPress) {
     return (

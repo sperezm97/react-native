@@ -36,7 +36,7 @@ export default function ShareGroup() {
   const qr = `${DEFAULT_DOMAIN}://?action=tribe&uuid=${uuid}&host=${host}`
 
   return useObserver(() => (
-    <ModalWrap visible={ui.shareTribeUUID ? true : false} onClose={close}>
+    <ModalWrap visible={!!ui.shareTribeUUID} onClose={close}>
       <ModalHeader title='Community QR Code' onClose={close} />
       <View style={styles.wrap}>
         <View

@@ -3,7 +3,7 @@ import * as ln from './decode'
 const lnPrefixes = ['ln', 'LIGHTNING:ln']
 export function isLN(s) {
   const ok = lnPrefixes.find((p) => s.toLowerCase().startsWith(p.toLowerCase()))
-  return ok ? true : false
+  return !!ok
 }
 
 export function removeLightningPrefix(data) {

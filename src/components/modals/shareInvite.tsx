@@ -40,7 +40,7 @@ function ShareInvite({ close }) {
     } catch (e) {}
   }
 
-  const hasInvite = ui.shareInviteString ? true : false
+  const hasInvite = !!ui.shareInviteString
 
   return useObserver(() => (
     <Portal.Host>

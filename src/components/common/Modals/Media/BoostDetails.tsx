@@ -20,7 +20,7 @@ export default function BoostRow(props) {
     })
   }
 
-  const hasBoosts = theBoosts ? true : false
+  const hasBoosts = !!theBoosts
 
   return (
     <View style={{ ...styles.wrap }}>

@@ -24,11 +24,10 @@ export default function PostPhotoWrap() {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const theme = useTheme()
 
-    const visible =
+    const visible = !!(
       ui.imgViewerParams &&
       (ui.imgViewerParams.get('data') || ui.imgViewerParams.get('uri') || ui.imgViewerParams.get('msg'))
-        ? true
-        : false
+    )
 
     const params = ui.imgViewerParams
 
@@ -57,9 +56,9 @@ function PostPhoto(props) {
   const [uploadPercent, setUploadedPercent] = useState(0)
   const inputRef = useRef(null)
 
-  const showImg = uri || data ? true : false
-  const showInput = contact_id || chat_id ? true : false
-  const showMsgMessage = params.msg ? true : false
+  const showImg = !!(uri || data)
+  const showInput = !!(contact_id || chat_id)
+  const showMsgMessage = !!params.msg
   //   const title = showMsgMessage ? 'Send Paid Message' : 'Send Image'
 
   async function sendFinalMsg({ muid, media_key, media_type, price }) {

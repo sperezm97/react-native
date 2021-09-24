@@ -77,7 +77,7 @@ export default function Animation({ dark, myid }) {
       />
 
       <View style={styles.content}>
-        {(meIMG ? true : false) && (
+        {!!meIMG && (
           <FastImage
             resizeMode='cover'
             source={{ uri: meIMG }}

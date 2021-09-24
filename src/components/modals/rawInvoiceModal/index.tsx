@@ -40,7 +40,7 @@ function RawInvoiceModal({ close }) {
 
   return useObserver(() => {
     const params = ui.rawInvoiceModalParams
-    const hasPayreq = payreq ? true : false
+    const hasPayreq = !!payreq
     return (
       <Portal.Host>
         <Header title='Payment Request' onClose={close} />

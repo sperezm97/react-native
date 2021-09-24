@@ -35,7 +35,7 @@ export default function BoostRow({ isTribe = true, ...props }) {
     ...paddStyles,
   }
 
-  const hasBoosts = theBoosts ? true : false
+  const hasBoosts = !!theBoosts
 
   return (
     <View style={wrapStyles}>

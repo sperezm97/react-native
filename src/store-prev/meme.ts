@@ -71,7 +71,7 @@ class MemeStore {
 
   @observable cacheEnabled: boolean = false
   @action checkCacheEnabled() {
-    this.cacheEnabled = window?.indexedDB ? true : false
+    this.cacheEnabled = !!window?.indexedDB
   }
 
   @persist('object') @observable cache: { [k: string]: string } = {}

@@ -13,11 +13,11 @@ export default function Modals() {
   const { ui } = useStores()
 
   return useObserver(() => {
-    const showConfirmPayInvoice = ui.confirmInvoiceMsg?.payment_request ? true : false
+    const showConfirmPayInvoice = !!ui.confirmInvoiceMsg?.payment_request
     const showRawInvoiceModal = ui.rawInvoiceModal
-    const showSubModal = ui.subModalParams ? true : false
-    const showRedeemModal = ui.redeemModalParams ? true : false
-    const showVid = ui.vidViewerParams ? true : false
+    const showSubModal = !!ui.subModalParams
+    const showRedeemModal = !!ui.redeemModalParams
+    const showVid = !!ui.vidViewerParams
 
     return (
       <>

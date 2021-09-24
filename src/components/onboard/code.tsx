@@ -242,7 +242,7 @@ export default function Code(props) {
         </KeyboardAwareScrollView>
 
         <View style={styles.spinWrap}>{checking && <ActivityIndicator animating={true} color='white' />}</View>
-        {(wrong ? true : false) && (
+        {!!wrong && (
           <View
             style={{
               ...styles.message,
@@ -260,7 +260,7 @@ export default function Code(props) {
             </TouchableOpacity>
           </View>
         )}
-        {(error ? true : false) && (
+        {!!error && (
           <View
             style={{
               ...styles.message,

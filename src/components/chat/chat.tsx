@@ -122,7 +122,7 @@ export default function Chat() {
     pricePerMinute = Math.round(parseFloat(pod.value.model.suggested) * 100000000)
   }
 
-  const showPod = feedURL ? true : false
+  const showPod = !!feedURL
 
   return (
     <KeyboardAvoidingView behavior='padding' style={{ flex: 1, backgroundColor: theme.bg }} keyboardVerticalOffset={1}>

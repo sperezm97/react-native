@@ -118,7 +118,7 @@ function App() {
 
     // TrackPlayer.setupPlayer();
     ;(async () => {
-      const isSignedUp = user.currentIP && user.authToken && !user.onboardStep ? true : false
+      const isSignedUp = !!(user.currentIP && user.authToken && !user.onboardStep)
 
       ui.setSignedUp(isSignedUp)
 

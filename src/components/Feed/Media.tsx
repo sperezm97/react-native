@@ -30,7 +30,7 @@ function Media(props) {
     trigger()
   }, [media_token])
 
-  const hasImgData = data || uri ? true : false
+  const hasImgData = !!(data || uri)
 
   async function onBoostPress() {
     const pricePerMessage = tribe.price_per_message + tribe.escrow_amount
@@ -49,7 +49,7 @@ function Media(props) {
 
   const onTribeOwnerPress = () => navigation.navigate('Tribe' as never, { tribe: { ...tribe } } as never)
 
-  const showBoostRow = boosts_total_sats ? true : false
+  const showBoostRow = !!boosts_total_sats
 
   const meContact = contacts.contactsArray.find((c) => c.id === user.myid)
   const myPhoto = usePicSrc(meContact)

@@ -23,7 +23,7 @@ export default function ModalWrap(props) {
       animationIn={'slideInUp'}
       animationOut={'slideOutDown'}
       animationOutTiming={animationOutTiming}
-      propagateSwipe={props.propagateSwipe ? true : false}
+      propagateSwipe={!!props.propagateSwipe}
       swipeThreshold={20}
       coverScreen={coverScreen}
       // deviceHeight={Dimensions.get('screen').height}

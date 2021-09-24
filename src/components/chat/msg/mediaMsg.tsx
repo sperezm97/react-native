@@ -48,12 +48,12 @@ export default function MediaMsg(props) {
   const youtubeLink = useMemo(() => paidMessageText && getYoutubeLink(paidMessageText), [paidMessageText])
   const isEmbedVideo = youtubeLink || rumbleLink
 
-  const hasImgData = data || uri ? true : false
-  const hasContent = message_content ? true : false
-  const showPurchaseButton = amt && !isMe ? true : false
+  const hasImgData = !!(data || uri)
+  const hasContent = !!message_content
+  const showPurchaseButton = !!(amt && !isMe)
   const showStats = isMe && amt
   const sold = props.sold
-  const showBoostRow = props.boosts_total_sats ? true : false
+  const showBoostRow = !!props.boosts_total_sats
 
   let isImg = false
   let minHeight = 60

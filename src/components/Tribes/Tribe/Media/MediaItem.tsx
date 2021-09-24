@@ -29,8 +29,8 @@ function MediaItem(props) {
   }
 
   const isMe = props.sender === props.myid
-  const hasImgData = data || uri ? true : false
-  const showPurchaseButton = amt && !isMe ? true : false
+  const hasImgData = !!(data || uri)
+  const showPurchaseButton = !!(amt && !isMe)
 
   const decodedMessageInCaseOfEmbedVideo = isBase64(paidMessageText).text
   const rumbleLink = useMemo(() => getRumbleLink(decodedMessageInCaseOfEmbedVideo), [decodedMessageInCaseOfEmbedVideo])

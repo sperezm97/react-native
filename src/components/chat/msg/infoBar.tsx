@@ -25,7 +25,7 @@ export default function InfoBar(props) {
   const { expiry, isExpired } = calcExpiry(props)
 
   const isPaid = props.status === constants.statuses.confirmed
-  const hasExpiry = !isPaid && expiry ? true : false
+  const hasExpiry = !!(!isPaid && expiry)
 
   let senderAlias = props.senderAlias
   const nameColor = useAvatarColor(senderAlias)

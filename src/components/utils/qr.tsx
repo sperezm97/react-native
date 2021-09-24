@@ -40,7 +40,7 @@ export default function QR({ visible, onCancel, onScan, showPaster }) {
       <View style={styles.wrap}>
         {/* <Header title='Scan QR Code' onClose={() => onCancel()} background={theme.main} /> */}
         <View style={{ ...styles.content }} />
-        <Scanner scanned={scanned ? true : false} handleBarCodeScanned={handleBarCodeScanned} smaller />
+        <Scanner scanned={!!scanned} handleBarCodeScanned={handleBarCodeScanned} smaller />
         {showPaster && (
           <View style={{ ...styles.bottom, backgroundColor: theme.main }}>
             <View style={styles.textInputWrap}>
@@ -52,7 +52,7 @@ export default function QR({ visible, onCancel, onScan, showPaster }) {
               />
             </View>
             <View style={styles.confirmWrap}>
-              {(text ? true : false) && (
+              {!!text && (
                 <Button
                   style={styles.confirm}
                   onPress={() => handleBarCodeScanned({ data: text })}

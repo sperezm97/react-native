@@ -36,12 +36,12 @@ export function useChatRow(id) {
   const msgs = msg.messages[id || '_']
   const lastMsg = msgs?.[0]
   const lastMsgText = lastMessageText(lastMsg, myid)
-  const hasLastMsg = lastMsgText ? true : false
+  const hasLastMsg = !!lastMsgText
 
   const now = new Date().getTime()
   const lastSeen = msg.lastSeen[id || '_'] || now
   const unseenCount = countUnseen(msgs, lastSeen, myid)
-  const hasUnseen = unseenCount > 0 ? true : false
+  const hasUnseen = unseenCount > 0
 
   const lastMsgDate = lastMessageDate(lastMsg)
 
@@ -174,6 +174,6 @@ export function sortChats(chatsToShow, messages) {
 export function searchChats(theChats, searchTerm) {
   return theChats.filter((c) => {
     if (!searchTerm) return true
-    return (c.invite ? true : false) || c.name.toLowerCase().includes(searchTerm.toLowerCase())
+    return !!c.invite || c.name.toLowerCase().includes(searchTerm.toLowerCase())
   })
 }

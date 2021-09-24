@@ -57,7 +57,7 @@ export default function TribeMessage(props) {
     )
   if (!tribe?.uuid) return <View style={styles.wrap}>Could not load tribe...</View>
 
-  const hasImg = tribe.img ? true : false
+  const hasImg = !!tribe.img
   return (
     <View style={{ ...styles.wrap }}>
       <View style={styles.tribeWrap}>
