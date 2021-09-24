@@ -6,12 +6,10 @@ import * as linkify from 'linkifyjs'
 
 import { useTheme } from '../../../store'
 import { useParsedGiphyMsg } from 'store/hooks/msg'
-import { DEFAULT_DOMAIN } from '../../../config'
 import shared from './sharedStyles'
 import ClipMessage from './clipMsg'
 import BoostMessage from './boostMsg'
 import BoostRow from './boostRow'
-import TribeMsg from './tribeMsg'
 import EmbedVideo from './embedVideo'
 import Typography from '../../common/Typography'
 import { getRumbleLink, getYoutubeLink } from './utils'
@@ -23,8 +21,8 @@ export default function TextMsg(props) {
   const rumbleLink = useMemo(() => getRumbleLink(message_content), [message_content])
   const youtubeLink = useMemo(() => getYoutubeLink(message_content), [message_content])
   const showBoostRow = props.boosts_total_sats ? true : false
-  const isGiphy = message_content && message_content.startsWith('giphy::')
-  const isClip = message_content && message_content.startsWith('clip::')
+  const isGiphy = message_content?.startsWith('giphy::')
+  const isClip = message_content?.startsWith('clip::')
   const isBoost = message_content?.startsWith('boost::')
   const isLink = linkify.find(message_content, 'url').length > 0
 
@@ -35,6 +33,7 @@ export default function TextMsg(props) {
    */
   if (isGiphy) {
     // TODO: Move this block to a separated component
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const { url, aspectRatio, text } = useParsedGiphyMsg(message_content)
     return (
       <TouchableOpacity style={{ ...styles.column, maxWidth: 200 }} onLongPress={onLongPressHandler}>

@@ -4,7 +4,6 @@ import { TouchableRipple } from 'react-native-paper'
 import Ionicon from 'react-native-vector-icons/Ionicons'
 
 import { useTheme } from '../../../store'
-import CustomIcon from '../../utils/customIcons'
 
 export default function Boost(props) {
   const theme = useTheme()

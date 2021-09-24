@@ -8,7 +8,7 @@ import { useTheme } from '../../../store'
 import Typography from '../../common/Typography'
 
 export default function FileMsg(props) {
-  const { filename, uri, type } = props
+  const { filename } = props
   const theme = useTheme()
 
   return (

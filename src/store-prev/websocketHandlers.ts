@@ -16,7 +16,7 @@ export function invite(data) {
 
 export function invoice_payment(data) {
   log('[ws] invoice_payment', data.response)
-  if (data.response && data.response.invoice) {
+  if (data.response?.invoice) {
     uiStore.setLastPaidInvoice(data.response.invoice)
   }
 }
@@ -84,7 +84,7 @@ export function group_create(data) {
 
 export function group_join(data) {
   log('[ws] group_join', data)
-  const msg = data.response && data.response.message
+  const msg = data.response?.message
   if (msg && data.response.chat) {
     msg.chat = data.response.chat
     msgStore.gotNewMessageFromWS(msg)
@@ -93,7 +93,7 @@ export function group_join(data) {
 
 export function group_leave(data) {
   log('[ws] group_leave', data)
-  const msg = data.response && data.response.message
+  const msg = data.response?.message
   if (msg && data.response.chat) {
     msg.chat = data.response.chat
     msgStore.gotNewMessageFromWS(msg)

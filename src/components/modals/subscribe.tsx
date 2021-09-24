@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useObserver } from 'mobx-react-lite'
 import { View, Text, StyleSheet, Image } from 'react-native'
 import { Button, Portal } from 'react-native-paper'
@@ -49,7 +49,7 @@ function Subscribe({ close }) {
       })
       if (chatForContact) chatId = chatForContact.id
 
-      const contactId = contact && contact.id
+      const contactId = contact?.id
 
       await contacts.createSubscription({
         ...(contactId && { contact_id: contactId }),

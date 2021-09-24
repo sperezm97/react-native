@@ -6,13 +6,12 @@ import { IconButton } from 'react-native-paper'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 import { useTheme } from '../../../../store'
-import { SCREEN_WIDTH, SCREEN_HEIGHT, STATUS_BAR_HEIGHT } from '../../../../constants'
+import { SCREEN_WIDTH, STATUS_BAR_HEIGHT } from '../../../../constants'
 
 export default function Photo({ visible, close, photo }) {
   const [photoH, setPhotoH] = useState(0)
   const theme = useTheme()
 
-  const h = SCREEN_HEIGHT - STATUS_BAR_HEIGHT - 60
   const w = SCREEN_WIDTH
 
   return useObserver(() => (

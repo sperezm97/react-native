@@ -1,12 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { useObserver } from 'mobx-react-lite'
-import { useStores } from '../../../store'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import { WebView } from 'react-native-webview'
 
-let client: any
-
 function makeScript(v, s) {
+  console.log(v, s)
   return `
 <style>h1{color:white;}</style>
 <h1>YO</h1>
@@ -17,8 +15,6 @@ console.log('hi')
 }
 
 export default function ION(props) {
-  const { ui } = useStores()
-  const [joined, setJoined] = useState(false)
   function onMessage(data) {
     console.log(data)
   }

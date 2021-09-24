@@ -7,18 +7,9 @@ const {
   addWebpackExternals,
   addWebpackAlias,
   addBabelPlugin,
-  addWebpackPlugin,
 } = require('customize-cra')
 // const cspHtmlWebpackPlugin = require('csp-html-webpack-plugin')
 const path = require('path')
-
-const cspConfigPolicy = {
-  'default-src': "'none'",
-  'base-uri': "'self'",
-  'object-src': "'none'",
-  'script-src': ["'self'"],
-  'style-src': ["'self'"],
-}
 
 module.exports = override(
   // addWebpackPlugin(new cspHtmlWebpackPlugin(cspConfigPolicy)),

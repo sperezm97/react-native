@@ -1,11 +1,11 @@
-import React, { useEffect, useState, useRef, useMemo } from 'react'
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
+import React, { useEffect, useState, useMemo } from 'react'
+import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
 import FastImage from 'react-native-fast-image'
 import Ionicon from 'react-native-vector-icons/Ionicons'
 import { ActivityIndicator } from 'react-native-paper'
 
-import { useStores, useTheme } from '../../../../store'
+import { useTheme } from '../../../../store'
 import { parseLDAT } from '../../../utils/ldat'
 import { useCachedEncryptedFile } from '../../../chat/msg/hooks'
 import { SCREEN_WIDTH } from '../../../../constants'
@@ -14,17 +14,16 @@ import { getRumbleLink, getYoutubeLink } from '../../../chat/msg/utils'
 import EmbedVideo from '../../../chat/msg/embedVideo'
 
 function MediaItem(props) {
-  const { index, id, media_type, chat, media_token, onMediaPress } = props
+  const { index, id, media_type, media_token, onMediaPress } = props
   const ldat = parseLDAT(media_token)
 
-  const [buying, setBuying] = useState(false)
-  const { msg } = useStores()
+  const [buying] = useState(false)
   const theme = useTheme()
-  let { data, uri, loading, trigger, paidMessageText } = useCachedEncryptedFile(props, ldat)
+  let { data, uri, trigger, paidMessageText } = useCachedEncryptedFile(props, ldat)
 
   let amt = null
   let purchased = false
-  if (ldat.meta && ldat.meta.amt) {
+  if (ldat.meta?.amt) {
     amt = ldat.meta.amt
     if (ldat.sig) purchased = true
   }
@@ -32,14 +31,6 @@ function MediaItem(props) {
   const isMe = props.sender === props.myid
   const hasImgData = data || uri ? true : false
   const showPurchaseButton = amt && !isMe ? true : false
-  let isImg = false
-  let showPayToUnlockMessage = false
-  if (media_type === 'n2n2/text') {
-    if (!isMe && !loading && !paidMessageText) showPayToUnlockMessage = true
-  }
-  if (media_type.startsWith('image') || media_type.startsWith('video')) {
-    isImg = true
-  }
 
   const decodedMessageInCaseOfEmbedVideo = isBase64(paidMessageText).text
   const rumbleLink = useMemo(() => getRumbleLink(decodedMessageInCaseOfEmbedVideo), [decodedMessageInCaseOfEmbedVideo])
@@ -60,27 +51,11 @@ function MediaItem(props) {
     return onMediaPress(id)
   }
 
-  async function buy(amount) {
-    setBuying(true)
-    let contact_id = props.sender
-    if (!contact_id) {
-      contact_id = chat.contact_ids && chat.contact_ids.find((cid) => cid !== props.myid)
-    }
-
-    await msg.purchaseMedia({
-      chat_id: chat.id,
-      media_token,
-      amount,
-      contact_id,
-    })
-    setBuying(false)
-  }
-
   return useObserver(() => {
     return (
       <>
         <TouchableOpacity
-          onPress={Boolean(isEmbedVideo) ? () => null : handleMediaPress}
+          onPress={isEmbedVideo ? () => null : handleMediaPress}
           delayLongPress={150}
           activeOpacity={0.8}
           style={{

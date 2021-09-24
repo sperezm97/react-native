@@ -36,7 +36,7 @@ export const getMessages = async (self: MsgStore, forceMore: boolean) => {
       preview: `Returned with...`,
       value: { r },
     })
-    if (r.new_messages && r.new_messages.length) {
+    if (r.new_messages?.length) {
       await self.batchDecodeMessages(r.new_messages)
     } else {
       self.sortAllMsgs(null)

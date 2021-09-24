@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { useObserver } from 'mobx-react-lite'
 import { useStores } from '../../store'
-import { View, StyleSheet, Image, Dimensions, TextInput, Text, TouchableOpacity, BackHandler } from 'react-native'
+import { View, StyleSheet, Dimensions, BackHandler } from 'react-native'
 import { IconButton } from 'react-native-paper'
 import Video from 'react-native-video'
 

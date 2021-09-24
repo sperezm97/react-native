@@ -18,11 +18,9 @@ export default function ChatOptions({
   doPaidMessage,
   request,
   send,
-  loopout,
   isConversation,
   onGiphyHandler,
   onEmbedVideoHandler,
-  hasLoopout,
 }) {
   const theme = useTheme()
 
@@ -35,9 +33,8 @@ export default function ChatOptions({
         if (!result.didCancel) {
           onPick(result)
           return
-        } else {
-          onCancel()
         }
+        onCancel()
       }
     )
   }
@@ -47,7 +44,6 @@ export default function ChatOptions({
   const requestHandler = () => request()
   const sendHandler = () => send()
   const doPaidMessageHandler = () => doPaidMessage()
-  const loopoutHandler = () => loopout()
 
   function close() {
     onCancel()

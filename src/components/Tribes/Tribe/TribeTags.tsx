@@ -94,35 +94,34 @@ export default function TribeTags(props) {
           })}
         </>
       )
-    } else {
-      return (
-        <>
-          {tagz.length > 0 ? (
-            <>
-              {tagz.map((t, i) => {
-                return (
-                  <View key={i}>
-                    <Chip
-                      onClose={() => removeTag(t)}
-                      key={t}
-                      style={{
-                        ...styles.chip,
-                        backgroundColor: theme.main,
-                      }}
-                      textStyle={{ color: theme.text }}
-                    >
-                      {t}
-                    </Chip>
-                  </View>
-                )
-              })}
-            </>
-          ) : (
-            <Typography size={16}></Typography>
-          )}
-        </>
-      )
     }
+    return (
+      <>
+        {tagz.length > 0 ? (
+          <>
+            {tagz.map((t, i) => {
+              return (
+                <View key={i}>
+                  <Chip
+                    onClose={() => removeTag(t)}
+                    key={t}
+                    style={{
+                      ...styles.chip,
+                      backgroundColor: theme.main,
+                    }}
+                    textStyle={{ color: theme.text }}
+                  >
+                    {t}
+                  </Chip>
+                </View>
+              )
+            })}
+          </>
+        ) : (
+          <Typography size={16} />
+        )}
+      </>
+    )
   }
 
   return (

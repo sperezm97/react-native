@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, StyleSheet, Dimensions, Modal } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import Share from 'react-native-share'
 import Clipboard from '@react-native-community/clipboard'
 import Toast from 'react-native-simple-toast'

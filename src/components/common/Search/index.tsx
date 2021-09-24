@@ -36,8 +36,8 @@ export default function Search(props) {
       inputStyle={inputStyle}
       iconColor={iconColor}
       placeholderTextColor={placeholderTextColor}
-      clearIcon={(props) => <ClearIcon value={value} />}
-      icon={(props) => <FeatherIcon name='search' color={theme.icon} size={18} />}
+      clearIcon={() => <ClearIcon value={value} />}
+      icon={() => <FeatherIcon name='search' color={theme.icon} size={18} />}
     />
   )
 }

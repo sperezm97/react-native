@@ -5,7 +5,6 @@ import Ionicon from 'react-native-vector-icons/Ionicons'
 import { useParsedJsonOrClipMsg } from 'store/hooks/msg'
 import { useTheme } from '../../../store'
 import shared from './sharedStyles'
-import CustomIcon from '../../utils/customIcons'
 import Typography from '../../common/Typography'
 
 export default function BoostMessage(props) {
@@ -13,7 +12,7 @@ export default function BoostMessage(props) {
   const theme = useTheme()
 
   const obj = useParsedJsonOrClipMsg(message_content)
-  const { ts, feedID, itemID, amount } = obj
+  const { amount } = obj
 
   return (
     <View style={{ ...styles.wrap }}>

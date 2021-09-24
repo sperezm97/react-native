@@ -1,13 +1,11 @@
 import React from 'react'
 import { View, StyleSheet, Image } from 'react-native'
-import { useDarkMode } from 'react-native-dynamic'
 
 import { useTheme } from '../../../store'
 import Wobble from '../Animations/Wobble'
 
 export default function Splash() {
   const theme = useTheme()
-  const isDarkMode = useDarkMode()
   return (
     <View
       style={{

@@ -225,10 +225,3 @@ const tribe = [
 ]
 
 export { contact, contactEdit, me, pubKey, tribe, subscribe, inviteFriend }
-
-function emptyStringToNull(value, originalValue) {
-  if (typeof originalValue === 'string' && originalValue === '') {
-    return null
-  }
-  return value
-}

@@ -1,4 +1,3 @@
-import { PermissionsAndroid } from 'react-native'
 import { PERMISSIONS, check, request, RESULTS } from 'react-native-permissions'
 import * as e2e from '../../crypto/e2e'
 import { randString } from '../../crypto/rand'

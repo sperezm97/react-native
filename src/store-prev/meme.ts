@@ -50,10 +50,10 @@ class MemeStore {
 
     const r = await meme.get('ask')
 
-    if (!(r && r.challenge)) return
+    if (!r?.challenge) return
 
     const r2 = await relay.get(`signer/${r.challenge}`)
-    if (!(r2 && r2.sig)) return
+    if (!r2?.sig) return
 
     const r3 = await meme.post(
       'verify',
@@ -65,13 +65,13 @@ class MemeStore {
       'application/x-www-form-urlencoded'
     )
 
-    if (!(r3 && r3.token)) return
+    if (!r3?.token) return
     server.token = r3.token
   }
 
   @observable cacheEnabled: boolean = false
   @action checkCacheEnabled() {
-    this.cacheEnabled = window && window.indexedDB ? true : false
+    this.cacheEnabled = window?.indexedDB ? true : false
   }
 
   @persist('object') @observable cache: { [k: string]: string } = {}

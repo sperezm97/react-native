@@ -15,7 +15,6 @@ export const joinTribe = async (
     is_private,
     my_alias,
     my_photo_url,
-    owner_route_hint,
   }: JoinTribeParams
 ) => {
   const params = {

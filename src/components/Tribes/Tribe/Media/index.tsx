@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react'
+import React, { useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -74,7 +74,7 @@ function Media({ tribe }) {
               setMediaModal(false)
               setTint(theme.dark ? 'dark' : 'light')
             }}
-            photos={media && media.filter((m) => m.id === selectedMedia)}
+            photos={media?.filter((m) => m.id === selectedMedia)}
             // initialIndex={media && media.findIndex(m => m.id === selectedMedia)}
             initialIndex={0}
             chat={tribe.chat}
@@ -83,10 +83,6 @@ function Media({ tribe }) {
       </>
     )
   })
-}
-
-function Viewer(props) {
-  return useMemo(() => <PhotoViewer {...props} />, [props.visible])
 }
 
 const styles = StyleSheet.create({

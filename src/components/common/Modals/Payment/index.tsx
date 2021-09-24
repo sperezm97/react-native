@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useObserver } from 'mobx-react-lite'
 import { Portal } from 'react-native-paper'
-import { StyleSheet } from 'react-native'
 const basex = require('bs58-rn')
 
 import { useStores } from '../../../../store'
@@ -10,7 +9,6 @@ import ModalHeader from '../ModalHeader'
 import Main from './Main'
 import RawInvoice from './RawInvoice'
 import QR from '../../Accessories/QR'
-import { setTint } from '../../StatusBar'
 
 const ALPHABET = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
 const base58 = basex(ALPHABET)
@@ -36,7 +34,7 @@ function Payment({ visible, close }) {
   const [loading, setLoading] = useState(false)
   const [rawInvoice, setRawInvoice] = useState(null)
   const [amtToPay, setAmtToPay] = useState(null)
-  const [err, setErr] = useState('')
+  const [, setErr] = useState('')
 
   useEffect(() => {
     if (visible) setMain(true)
@@ -45,7 +43,7 @@ function Payment({ visible, close }) {
 
   const chat = ui.chatForPayModal
 
-  const contact_id = chat && chat.contact_ids && chat.contact_ids.find((cid) => cid !== user.myid)
+  const contact_id = chat?.contact_ids && chat.contact_ids.find((cid) => cid !== user.myid)
 
   const contact = contact_id && contacts.contactsArray.find((c) => c.id === contact_id)
 
@@ -55,7 +53,7 @@ function Payment({ visible, close }) {
     await msg.sendPayment({
       contact_id: contact_id || null,
       amt,
-      chat_id: (chat && chat.id) || null,
+      chat_id: chat?.id || null,
       destination_key: '',
       memo: text,
     })
@@ -70,7 +68,7 @@ function Payment({ visible, close }) {
       contact_id: contact_id || null,
       amt,
       memo: text,
-      chat_id: (chat && chat.id) || null,
+      chat_id: chat?.id || null,
     })
     setLoading(false)
     if (chat) ui.clearPayModal() // done (if in a chat)
@@ -176,7 +174,8 @@ function Payment({ visible, close }) {
   const hasRawInvoice = rawInvoice ? true : false
 
   return useObserver(() => {
-    const label = ui.payMode === 'payment' ? 'Send Payment' : isLoopout ? 'Send Bitcoin' : 'Request Payment'
+    const isLoopoutText = isLoopout ? 'Send Bitcoin' : 'Request Payment'
+    const label = ui.payMode === 'payment' ? 'Send Payment' : isLoopoutText
 
     return (
       <Portal.Host>

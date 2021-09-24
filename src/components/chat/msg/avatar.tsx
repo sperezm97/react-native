@@ -40,6 +40,7 @@ export default function Avatar(props) {
         width: size,
         borderRadius,
         opacity: props.hide ? 0 : 1,
+        // eslint-disable-next-line react-hooks/rules-of-hooks
         backgroundColor: useAvatarColor(name),
       }}
     >

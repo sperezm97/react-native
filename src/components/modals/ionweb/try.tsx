@@ -2,26 +2,7 @@ import 'react-native-get-random-values'
 import React from 'react'
 import { View, StyleSheet, Dimensions } from 'react-native'
 import { WebView } from 'react-native-webview'
-import qrious from '../../utils/qrcode/qrious'
 import { DEFAULT_MEME_SERVER } from '../../../config'
-
-function makeScript(value, size) {
-  return `
-<style>
-*{margin:0;padding:0;box-sizing:border-box;}
-canvas{transform:translateZ(0);width:${size}px;height:${size}px;}
-</style>
-<canvas id="qr"></canvas>
-<script>
-${qrious}
-var qr = new QRious({
-  element: document.getElementById('qr'),
-  value: '${value}',
-  size: ${size}
-});
-</script>
-`
-}
 
 export default function QRCode() {
   const { width, height } = Dimensions.get('window')

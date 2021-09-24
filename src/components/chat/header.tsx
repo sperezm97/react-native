@@ -81,7 +81,7 @@ const Header = ({ chat, status, tribeParams, podId, pricePerMinute }: HeaderProp
     }
   }
 
-  const name = (chat && chat.name) || (contact && contact.alias)
+  const name = chat?.name || contact?.alias
 
   function onBackPress() {
     requestAnimationFrame(() => {

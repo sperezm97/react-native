@@ -54,11 +54,11 @@ export function useReplyContent(msgs, replyUUID, extraTextContent): replyContent
     replyColor = color
   } else {
     const replyMsg = msgs && replyUUID && msgs.find((m) => m.uuid === replyUUID)
-    replyMessageSenderAlias = replyMsg && replyMsg.sender_alias
+    replyMessageSenderAlias = replyMsg?.sender_alias
 
     replyMessageExtraContent = replyMsg
 
-    replyMessageContent = replyMsg && replyMsg.message_content ? replyMsg.message_content : replyMsg?.media_type
+    replyMessageContent = replyMsg?.message_content ? replyMsg.message_content : replyMsg?.media_type
 
     if (!replyMessageSenderAlias && replyMsg && replyMsg.sender) {
       const theseContacts: Contact[] = Array.from(contacts.contacts.values())

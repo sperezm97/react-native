@@ -45,7 +45,8 @@ export default function Button(props) {
   const height = h ? h : defaultHeight
   const fontSize = fs ? fs : defaultFs
   const fontWeight = fw ? fw : defaultFw
-  const borderRadius = round === 0 ? 0 : round ? round : 25
+  const roundBorderRadius = round ? round : 25
+  const borderRadius = round === 0 ? 0 : roundBorderRadius
 
   return (
     <PaperButton

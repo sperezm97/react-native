@@ -23,11 +23,13 @@ const EmbedVideo: React.FC<EmbedVideoTypes> = ({ type, link, squareSize, onLongP
     return `https://www.youtube.com/embed/${youtubeVideoID}`
   }, [link, type])
 
-  return !!embedLink ? (
-    <PaidEmbedWrapper>
-      <WebViewVideo embedLink={embedLink} onLongPress={onLongPress} squareSize={squareSize} />
-    </PaidEmbedWrapper>
-  ) : null
+  return (
+    !!embedLink && (
+      <PaidEmbedWrapper>
+        <WebViewVideo embedLink={embedLink} onLongPress={onLongPress} squareSize={squareSize} />
+      </PaidEmbedWrapper>
+    )
+  )
 }
 
 const PaidEmbedWrapper = ({ children }) => {

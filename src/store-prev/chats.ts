@@ -126,7 +126,7 @@ export class ChatStore {
   @action
   async getChats() {
     const chats = await relay.get('chats')
-    if (!(chats && chats.length)) return
+    if (!chats?.length) return
     this.chats = this.chats.map((c) => this.parseChat(c))
 
     return this.chats

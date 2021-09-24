@@ -6,8 +6,8 @@ import Toast from 'react-native-simple-toast'
 import { useStores, useTheme } from '../../../store'
 import Typography from '../Typography'
 
-const BoostControls = (props) => {
-  const { user, details, ui } = useStores()
+const BoostControls = () => {
+  const { details, ui } = useStores()
 
   const [tip, setTip] = useState(100)
   const [plusDisabled, setPlusDisabled] = useState(false)

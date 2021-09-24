@@ -26,5 +26,4 @@ export default function Wobble({ children }) {
   }, [])
 
   return <Animated.View style={[animatedStyle]}>{children}</Animated.View>
-  return <>{children}</>
 }

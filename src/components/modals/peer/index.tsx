@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { useObserver } from 'mobx-react-lite'
 import { useStores } from '../../../store'
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
-import { Button, ActivityIndicator } from 'react-native-paper'
-// import { RTCView } from "react-native-webrtc";
+import { View, StyleSheet, TouchableOpacity } from 'react-native'
+import { ActivityIndicator } from 'react-native-paper'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { usePeer } from './usePeer'
 
-export default function PeerChat({ params }) {
+export default function PeerChat() {
   const { ui } = useStores()
 
   const peer = usePeer()
@@ -26,9 +25,9 @@ export default function PeerChat({ params }) {
 
   return useObserver(() => (
     <View style={styles.wrap}>
-      {hasLocalStream && <SmallVid streamURL={peer.localStreamID} />}
+      {hasLocalStream && <SmallVid />}
 
-      {hasRemoteStream && <BigVid streamURL={peer.remoteStreamID} />}
+      {hasRemoteStream && <BigVid />}
 
       {peer.joined && !hasRemoteStream && <ActivityIndicator color={peer.open ? 'white' : 'grey'} animating={true} />}
 
@@ -63,7 +62,7 @@ function HangUpButton({ onPress }) {
   )
 }
 
-function SmallVid({ streamURL }) {
+function SmallVid() {
   return (
     <View style={styles.smallVid}>
       {/* <RTCView
@@ -75,7 +74,7 @@ function SmallVid({ streamURL }) {
     </View>
   )
 }
-function BigVid({ streamURL }) {
+function BigVid() {
   return (
     <View style={styles.bigVid}>
       {/* <RTCView

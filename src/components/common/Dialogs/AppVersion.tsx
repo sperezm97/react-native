@@ -9,7 +9,6 @@ import Typography from '../Typography'
 import Button from '../Button'
 import BackupKeys from '../Modals/BackupKeys'
 import { setTint } from '../StatusBar'
-import { useDarkMode } from 'react-native-dynamic'
 
 export default function AppVersionUpdate({ visible, close }) {
   const theme = useTheme()

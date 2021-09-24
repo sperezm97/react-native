@@ -1,14 +1,11 @@
 import React, { useState, useMemo } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
-import { PERMISSIONS, check, request, RESULTS } from 'react-native-permissions'
 import { ActivityIndicator, IconButton } from 'react-native-paper'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import Ionicon from 'react-native-vector-icons/Ionicons'
 import Video from 'react-native-video'
 import FastImage from 'react-native-fast-image'
-import RNFetchBlob from 'rn-fetch-blob'
-import Toast from 'react-native-simple-toast'
 
 import { useStores, useTheme, hooks } from '../../../store'
 import { useTribeMediaType } from 'store/hooks/tribes'
@@ -40,7 +37,7 @@ export default function MediaMsg(props) {
   let ldat = parseLDAT(media_token)
   let amt = null
   let purchased = false
-  if (ldat.meta && ldat.meta.amt) {
+  if (ldat.meta?.amt) {
     amt = ldat.meta.amt
     if (ldat.sig) purchased = true
   }
@@ -79,7 +76,7 @@ export default function MediaMsg(props) {
     setBuying(true)
     let contact_id = props.sender
     if (!contact_id) {
-      contact_id = chat.contact_ids && chat.contact_ids.find((cid) => cid !== props.myid)
+      contact_id = chat.contact_ids?.find((cid) => cid !== props.myid)
     }
 
     await msg.purchaseMedia({
@@ -112,29 +109,10 @@ export default function MediaMsg(props) {
 
   const onLongPressHandler = () => props.onLongPress(props)
 
-  const downloadText = async (uri) => {
-    try {
-      let dirs = RNFetchBlob.fs.dirs
-      const filename = meme.filenameCache[props.id]
-
-      uri = uri.replace('file://', '')
-
-      const res = await check(PERMISSIONS.IOS.CAMERA)
-
-      if (res === RESULTS.GRANTED) {
-        await RNFetchBlob.fs.cp(uri, dirs.DownloadDir + '/' + filename)
-        Toast.showWithGravity('File Downloaded', Toast.SHORT, Toast.CENTER)
-      } else {
-        Toast.showWithGravity('Permission Denied', Toast.SHORT, Toast.CENTER)
-      }
-    } catch (err) {
-      // Toast.showWithGravity('Permission Denied', Toast.SHORT, Toast.CENTER)
-      console.warn(err)
-    }
-  }
-
   return useObserver(() => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const msgs = useMsgs(chat) || []
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const photos = useTribeMediaType(msgs, 6)
 
     return (
@@ -163,12 +141,8 @@ export default function MediaMsg(props) {
                     ...(isEmbedVideo && { height: 170 }),
                   }}
                 >
-                  {!!rumbleLink ? (
-                    <EmbedVideo type='rumble' link={rumbleLink} onLongPress={onLongPressHandler} />
-                  ) : null}
-                  {!!youtubeLink ? (
-                    <EmbedVideo type='youtube' link={youtubeLink} onLongPress={onLongPressHandler} />
-                  ) : null}
+                  {!!rumbleLink && <EmbedVideo type='rumble' link={rumbleLink} onLongPress={onLongPressHandler} />}
+                  {!!youtubeLink && <EmbedVideo type='youtube' link={youtubeLink} onLongPress={onLongPressHandler} />}
                   {!rumbleLink && !youtubeLink && (
                     <Text
                       style={{
@@ -270,7 +244,7 @@ export default function MediaMsg(props) {
             setTint(theme.dark ? 'dark' : 'light')
           }}
           // photos={photos}
-          photos={photos && photos.filter((m) => m.id === selectedMedia)}
+          photos={photos?.filter((m) => m.id === selectedMedia)}
           // initialIndex={photos && photos.findIndex(m => m.id === selectedMedia)}
           initialIndex={0}
           chat={chat}
@@ -278,10 +252,6 @@ export default function MediaMsg(props) {
       </View>
     )
   })
-}
-
-function Viewer(props) {
-  return useMemo(() => <PhotoViewer {...props} />, [props.visible])
 }
 
 function Media({ type, data, uri, filename }) {

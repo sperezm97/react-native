@@ -82,10 +82,3 @@ export async function decryptFileAndSaveReturningContent(filepath, pwd, extensio
     return ''
   }
 }
-
-async function testAES() {
-  const msg = 'hi'
-  const enc = await encrypt(msg, 'pass')
-  const dec = await decrypt(enc, 'pass')
-  console.log(dec, dec === msg)
-}

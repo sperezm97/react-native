@@ -10,7 +10,7 @@ export default async function actions(action: string) {
     if (arr.length < 2) return
     const id = arr[1]
     const r = await feedStore.loadFeedById(id)
-    if (!(r && r.title)) return
+    if (!r?.title) return
     await chatStore.createTribe({
       name: r.title,
       img: r.image,

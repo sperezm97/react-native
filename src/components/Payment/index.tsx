@@ -22,7 +22,7 @@ export default function Payment() {
   const theme = useTheme()
 
   function isMsgs(msgs): boolean {
-    const m = msgs && msgs.length && msgs[0]
+    const m = msgs?.length && msgs[0]
     if (m.message_content || m.message_content === '' || m.message_content === null) {
       // needs this field
       return true
@@ -64,7 +64,7 @@ export default function Payment() {
     if (isLN(data)) {
       const theData = removeLightningPrefix(data)
       const inv = parseLightningInvoice(data)
-      if (!(inv && inv.human_readable_part && inv.human_readable_part.amount)) return
+      if (!(inv?.human_readable_part && inv.human_readable_part.amount)) return
       const millisats = parseInt(inv.human_readable_part.amount, 10)
       const sats = millisats && Math.round(millisats / 1000)
       setScanning(false)

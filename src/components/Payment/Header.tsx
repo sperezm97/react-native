@@ -1,9 +1,7 @@
 import React, { useState } from 'react'
 import { View, StyleSheet, TouchableOpacity } from 'react-native'
-import { Appbar, IconButton, ActivityIndicator } from 'react-native-paper'
-import { useNavigation } from '@react-navigation/native'
+import { Appbar, IconButton } from 'react-native-paper'
 import { useObserver } from 'mobx-react-lite'
-import Toast from 'react-native-simple-toast'
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 import { useStores, useTheme } from '../../store'
@@ -14,18 +12,11 @@ import Typography from '../common/Typography'
 import DialogWrap from '../common/Dialogs/DialogWrap'
 
 export default function Header({ onScanClick }) {
-  const navigation = useNavigation()
-  const { ui, details, user } = useStores()
+  const { details, user } = useStores()
   const theme = useTheme()
   const [capacityDialog, setCapacityDialog] = useState(false)
   const [loading, setLoading] = useState(false)
   const [requestSent, setRequestSent] = useState(false)
-
-  const showStatusHandler = () => {
-    const status = ui.connected ? 'Connected node' : 'Disconnected node'
-
-    Toast.showWithGravity(status, 0.4, Toast.CENTER)
-  }
 
   async function onCapacityRequest() {
     try {

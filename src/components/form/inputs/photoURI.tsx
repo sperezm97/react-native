@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react'
-import { Dialog, Portal, TextInput, ActivityIndicator } from 'react-native-paper'
-import { View, Text, TouchableWithoutFeedback, Image, TouchableOpacity } from 'react-native'
+import React, { useState } from 'react'
+import { Portal, TextInput, ActivityIndicator } from 'react-native-paper'
+import { View, TouchableWithoutFeedback, Image } from 'react-native'
 import { inputStyles } from './shared'
 import Icon from 'react-native-vector-icons/AntDesign'
 import Cam from '../../utils/cam'
@@ -19,12 +19,11 @@ export default function PhotoURIInput({
   handleBlur,
   accessibilityLabel,
 }) {
-  const { ui, meme, msg } = useStores()
+  const { meme } = useStores()
 
   const [dialogOpen, setDialogOpen] = useState(false)
   const [takingPhoto, setTakingPhoto] = useState(false)
   const [uploading, setUploading] = useState(false)
-  const [uploadPercent, setUploadedPercent] = useState(0)
 
   function tookPic(uri) {
     setDialogOpen(false)
@@ -62,7 +61,6 @@ export default function PhotoURIInput({
       // listen to upload progress event, emit every 250ms
       .uploadProgress({ interval: 250 }, (written, total) => {
         console.log('uploaded', written / total)
-        setUploadedPercent(Math.round((written / total) * 100))
       })
       .then(async (resp) => {
         let json = resp.json()

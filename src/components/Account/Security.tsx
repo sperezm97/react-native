@@ -7,10 +7,10 @@ import Toast from 'react-native-simple-toast'
 import Slider from '@react-native-community/slider'
 import { encode as btoa } from 'base-64'
 import { Modalize } from 'react-native-modalize'
-import { isIphoneX, getStatusBarHeight } from 'react-native-iphone-x-helper'
+import { getStatusBarHeight } from 'react-native-iphone-x-helper'
 
 import { useStores, useTheme } from '../../store'
-import { SCREEN_HEIGHT, TOAST_DURATION } from '../../constants'
+import { TOAST_DURATION } from '../../constants'
 import { getPinTimeout, updatePinTimeout } from '../utils/pin'
 import PIN from '../utils/pin'
 import * as rsa from '../../crypto/rsa'
@@ -27,7 +27,7 @@ export default function Security() {
   const [pinTimeout, setPinTimeout] = useState(12)
   const [initialPinTimeout, setInitialPinTimeout] = useState(12)
   const theme = useTheme()
-  const { user, contacts, ui } = useStores()
+  const { user, contacts } = useStores()
 
   async function loadPinTimeout() {
     const pt = await getPinTimeout()
@@ -62,7 +62,7 @@ export default function Security() {
 
       let pub = myContactKey
       if (!pub) {
-        pub = meContact && meContact.contact_key
+        pub = meContact?.contact_key
       }
 
       if (!pub) return showError('CANT FIND CONTACT KEY')
@@ -158,7 +158,7 @@ export default function Security() {
                 h={50}
               >
                 <Typography color={theme.white}>Export keys</Typography>
-                <View style={{ width: 12, height: 1 }}></View>
+                <View style={{ width: 12, height: 1 }} />
                 <Icon name='key' color={theme.white} size={18} />
               </Button>
             </View>

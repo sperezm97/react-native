@@ -1,11 +1,9 @@
-import React, { useState } from 'react'
-import { StyleSheet, View, FlatList, SectionList } from 'react-native'
+import React from 'react'
+import { StyleSheet, View, SectionList } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
-import { useNavigation } from '@react-navigation/native'
 
 import { useStores, useTheme } from '../../../store'
-import { constants } from '../../../constants'
-import { Contact, DeletableContact, PendingContact } from './Items'
+import { Contact, DeletableContact } from './Items'
 import Typography from '../../common/Typography'
 
 export default function List({ tribe, members, listHeader }) {

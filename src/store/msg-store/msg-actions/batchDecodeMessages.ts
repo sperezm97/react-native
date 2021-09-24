@@ -1,4 +1,4 @@
-import { decodeMessages, orgMsgsFromExisting } from 'store/msg-store'
+import { decodeMessages } from 'store/msg-store'
 import { Msg, MsgStore } from '..'
 
 export const batchDecodeMessages = async (self: MsgStore, msgs: Msg[]) => {

@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 
 import { useStores, useTheme } from '../../../store'
 import { constants } from '../../../constants'
@@ -14,7 +14,7 @@ export default function GroupNotification(props) {
     senderAlias = props.sender_alias
   } else {
     const sender = contacts.contactsArray.find((c) => c.id === props.sender)
-    senderAlias = sender && sender.alias
+    senderAlias = sender?.alias
   }
 
   const isJoin = props.type === constants.message_types.group_join

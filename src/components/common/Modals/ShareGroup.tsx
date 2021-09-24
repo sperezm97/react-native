@@ -5,19 +5,16 @@ import Share from 'react-native-share'
 import Clipboard from '@react-native-community/clipboard'
 import Toast from 'react-native-simple-toast'
 import QRCode from 'react-native-qrcode-svg'
-import { isIphoneX, getBottomSpace } from 'react-native-iphone-x-helper'
 
-import { useStores, useTheme } from '../../../store'
+import { useStores } from '../../../store'
 import { DEFAULT_DOMAIN } from '../../../config'
 import { SCREEN_WIDTH, TOAST_DURATION } from '../../../constants'
 import ModalWrap from './ModalWrap'
 import ModalHeader from './ModalHeader'
 import Button from '../Button'
-import Typography from '../Typography'
 
 export default function ShareGroup() {
   const { ui, chats } = useStores()
-  const theme = useTheme()
 
   function copy() {
     Clipboard.setString(uuid)

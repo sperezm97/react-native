@@ -89,26 +89,25 @@ export default function Avatar(props) {
         </Text>
       </View>
     )
-  } else {
-    return (
-      <View
-        style={{
-          ...style,
-          ...styles.avatar,
-          height: size,
-          width: size,
-          borderRadius,
-          opacity: props.hide ? 0 : 1,
-        }}
-      >
-        <PaperAvatar.Image
-          size={avatarSize ? avatarSize : size}
-          source={avatar.newImage}
-          style={{ ...borderStyles, backgroundColor: 'transparent' }}
-        />
-      </View>
-    )
   }
+  return (
+    <View
+      style={{
+        ...style,
+        ...styles.avatar,
+        height: size,
+        width: size,
+        borderRadius,
+        opacity: props.hide ? 0 : 1,
+      }}
+    >
+      <PaperAvatar.Image
+        size={avatarSize ? avatarSize : size}
+        source={avatar.newImage}
+        style={{ ...borderStyles, backgroundColor: 'transparent' }}
+      />
+    </View>
+  )
 }
 
 Avatar.defaultProps = {

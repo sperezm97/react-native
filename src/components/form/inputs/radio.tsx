@@ -3,9 +3,9 @@ import { RadioButton } from 'react-native-paper'
 import { View, Text } from 'react-native'
 import { useTheme } from '../../../store'
 
-export default function Radio({ inverted, name, label, required, error, setValue, handleBlur, value }) {
+export default function Radio({ inverted, label, setValue, value }) {
   const theme = useTheme()
-  const val = inverted ? (value ? false : true) : value || false
+  const val = inverted ? !value : !!value
   return (
     <View
       style={{

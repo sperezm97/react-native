@@ -21,15 +21,10 @@ import Item from './item'
  * @param {Function} onSubmitEditing - function that search the type of gifs
  */
 const Giphy = React.forwardRef<Modalize | null, GiphyProps>(
-  ({ gifs, open, onClose, searchGif, onSendGifHandler, setSearchGif, getGifsBySearch }, modalizeRef) => {
+  ({ gifs, onClose, searchGif, onSendGifHandler, setSearchGif, getGifsBySearch }, modalizeRef) => {
     const { keyboardHeight } = useKeyboard()
     const modalHeight = keyboardHeight + 100
     const theme = useTheme()
-
-    const onSearchGIF = () => {
-      setSearchGif(searchGif)
-      getGifsBySearch()
-    }
 
     const CustomHeader = () => (
       <Header onClose={onClose} searchGif={searchGif} setSearchGif={setSearchGif} getGifsBySearch={getGifsBySearch} />

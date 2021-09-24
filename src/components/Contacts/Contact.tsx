@@ -6,21 +6,19 @@ import { useNavigation } from '@react-navigation/native'
 
 import { useStores, useTheme } from '../../store'
 import { constants } from '../../constants'
-import { usePicSrc } from '../utils/picSrc'
 import ConfirmDialog from '../utils/confirmDialog'
 import * as schemas from '../form/schemas'
 import Form from '../form'
 import BackHeader from '../common/BackHeader'
-import Button from '../common/Button'
 import Typography from '../common/Typography'
 
 const conversation = constants.chat_types.conversation
 
 export default function EditContact({ route }) {
-  const { ui, contacts, chats } = useStores()
+  const { contacts, chats } = useStores()
   const theme = useTheme()
   const [loading, setLoading] = useState(false)
-  const [sub, setSub] = useState(false)
+  const [sub] = useState(false)
   const [existingSub, setExistingSub] = useState(null)
   const [showConfirm, setShowConfirm] = useState(false)
   const navigation = useNavigation()
@@ -36,7 +34,7 @@ export default function EditContact({ route }) {
     const isConversation = chat && chat.type === constants.chat_types.conversation
     if (isConversation) {
       const s = await contacts.getSubscriptionForContact(contact.id)
-      if (s && s[0]) setExistingSub(s[0])
+      if (s?.[0]) setExistingSub(s[0])
     }
   }
 
@@ -65,9 +63,7 @@ export default function EditContact({ route }) {
       })
   }
 
-  const uri = usePicSrc(contact)
-
-  const subPaused = existingSub && existingSub.paused ? true : false
+  const subPaused = existingSub?.paused ? true : false
 
   const Subscribe = (
     <>

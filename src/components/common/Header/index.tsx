@@ -1,17 +1,14 @@
 import React from 'react'
 import { View, StyleSheet, Image, TouchableOpacity } from 'react-native'
 import { Appbar, ActivityIndicator } from 'react-native-paper'
-import { useNavigation } from '@react-navigation/native'
 import { useObserver } from 'mobx-react-lite'
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import Toast from 'react-native-simple-toast'
 
 import { useStores, useTheme } from '../../../store'
 import Balance from '../Balance'
-import { useDarkMode } from 'react-native-dynamic'
 
 export default function Header({ border = false }) {
-  const navigation = useNavigation()
   const { details, ui } = useStores()
   const theme = useTheme()
 
@@ -21,7 +18,6 @@ export default function Header({ border = false }) {
     Toast.showWithGravity(status, 0.4, Toast.CENTER)
   }
 
-  const isDarkMode = useDarkMode()
   return useObserver(() => {
     return (
       <Appbar.Header

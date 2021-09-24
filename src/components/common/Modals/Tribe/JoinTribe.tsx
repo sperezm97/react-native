@@ -31,7 +31,7 @@ function JoinTribe(props) {
   const [alias, setAlias] = useState('')
 
   const tribes = useTribes()
-  const tribeToCheck = tribes && tribes.find((t) => t.uuid === tribe.uuid)
+  const tribeToCheck = tribes?.find((t) => t.uuid === tribe.uuid)
   let joined = true
   if (tribeToCheck) {
     joined = tribeToCheck.joined
@@ -77,7 +77,7 @@ function JoinTribe(props) {
     ]
   }
 
-  const hasImg = tribe && tribe.img ? true : false
+  const hasImg = tribe?.img ? true : false
 
   return useObserver(() => {
     return (
@@ -112,22 +112,21 @@ function JoinTribe(props) {
                       {tribe.description}
                     </Typography>
                     <View style={{ ...styles.table, borderColor: theme.border }}>
-                      {prices &&
-                        prices.map((p, i) => {
-                          return (
-                            <View
-                              key={i}
-                              style={{
-                                ...styles.tableRow,
-                                borderBottomColor: theme.border,
-                                borderBottomWidth: i === prices.length - 1 ? 0 : 1,
-                              }}
-                            >
-                              <Typography color={theme.title}>{`${p.label}`}</Typography>
-                              <Typography fw='500'>{p.value || 0}</Typography>
-                            </View>
-                          )
-                        })}
+                      {prices?.map((p, i) => {
+                        return (
+                          <View
+                            key={i}
+                            style={{
+                              ...styles.tableRow,
+                              borderBottomColor: theme.border,
+                              borderBottomWidth: i === prices.length - 1 ? 0 : 1,
+                            }}
+                          >
+                            <Typography color={theme.title}>{`${p.label}`}</Typography>
+                            <Typography fw='500'>{p.value || 0}</Typography>
+                          </View>
+                        )
+                      })}
                     </View>
                     {!joined ? (
                       <>

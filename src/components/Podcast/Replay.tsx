@@ -25,10 +25,10 @@ export default function Replay({ msgs, playing }) {
     }
   }, 1000)
 
-  const renderItem: any = ({ item, index }) => {
+  const renderItem: any = ({ item }) => {
     const isBoost = item.type === 'boost'
     const bg = isBoost ? '#35806d' : 'white'
-    let text = item.text
+
     return (
       <View style={styles.row}>
         <Avatar alias={item.alias} />
@@ -54,7 +54,7 @@ export default function Replay({ msgs, playing }) {
       </View>
     )
   }
-  const showBackdrop = messages && messages.length ? true : false
+  const showBackdrop = messages?.length ? true : false
   return (
     <>
       <View
@@ -72,10 +72,9 @@ export default function Replay({ msgs, playing }) {
 function ItemList({ data, renderItem, style }) {
   return (
     <View style={style}>
-      {data &&
-        data.map((item, index) => {
-          return renderItem({ item, index })
-        })}
+      {data?.map((item, index) => {
+        return renderItem({ item, index })
+      })}
     </View>
   )
 }

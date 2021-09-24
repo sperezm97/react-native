@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import RNFetchBlob from 'rn-fetch-blob'
 
 import { Chat } from 'store/chats-store'
@@ -16,9 +16,9 @@ function rnd() {
 
 export function usePicSrc(contact: Contact) {
   const [uri, setURI] = useState('')
-  const s = contact && contact.photo_url
+  const s = contact?.photo_url
   useEffect(() => {
-    if (contact && contact.photo_url) {
+    if (contact?.photo_url) {
       setURI(contact.photo_url)
       return
     }
@@ -27,7 +27,7 @@ export function usePicSrc(contact: Contact) {
         setURI('')
       } else {
         const src = await contactPicSrc(contact.id)
-        if (src && src.uri) setURI('file://' + src.uri + rnd())
+        if (src?.uri) setURI('file://' + src.uri + rnd())
       }
     })()
   }, [s])
@@ -42,12 +42,12 @@ export function useChatPicSrc(chat: Chat) {
   if (isConversation) {
     const cid = chat.contact_ids.find((id) => id !== user.myid)
     const contact = contacts.contacts.get(cid.toString())
-    s = (contact && contact.photo_url) || ''
+    s = contact?.photo_url || ''
   } else {
-    s = (chat && chat.photo_url) || ''
+    s = chat?.photo_url || ''
   }
   let id = null
-  if (chat && chat.id) id = chat.id
+  if (chat?.id) id = chat.id
   useEffect(() => {
     ;(async () => {
       if (s) {
@@ -62,10 +62,10 @@ export function useChatPicSrc(chat: Chat) {
       if (isConversation) {
         const cid = chat.contact_ids.find((id) => id !== user.myid)
         const src = await contactPicSrc(cid)
-        if (src && src.uri) setURI('file://' + src.uri + rnd())
+        if (src?.uri) setURI('file://' + src.uri + rnd())
       } else {
         const src = await chatPicSrc(chat.id)
-        if (src && src.uri) setURI('file://' + src.uri + rnd())
+        if (src?.uri) setURI('file://' + src.uri + rnd())
       }
     })()
   }, [s, id])
@@ -112,7 +112,7 @@ export async function chatPicSrc(id): Promise<any> {
 export async function createContactPic(id, uri): Promise<any> {
   const path = dirs.CacheDir + `/pics/contact_${id}`
   try {
-    const r = await RNFetchBlob.fs.cp(uri, path)
+    await RNFetchBlob.fs.cp(uri, path)
     return path
   } catch (e) {
     console.log('error createContactPic', e)
@@ -122,7 +122,7 @@ export async function createContactPic(id, uri): Promise<any> {
 export async function createChatPic(id, uri): Promise<any> {
   const path = dirs.CacheDir + `/pics/chat_${id}`
   try {
-    const r = await RNFetchBlob.fs.cp(uri, path)
+    await RNFetchBlob.fs.cp(uri, path)
     return path
   } catch (e) {
     console.log('error createChatPic', e)

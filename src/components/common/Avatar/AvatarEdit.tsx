@@ -1,6 +1,6 @@
 import React from 'react'
 import { StyleSheet, View, TouchableOpacity } from 'react-native'
-import { Portal, Dialog, ActivityIndicator } from 'react-native-paper'
+import { Portal } from 'react-native-paper'
 
 import { useTheme } from '../../../store'
 import Typography from '../Typography'
@@ -40,7 +40,7 @@ export default function AvatarEdit({
               height: size,
               borderRadius: round,
             }}
-          ></View>
+          />
         )}
         {!display && (
           <View style={styles.imgIcon}>

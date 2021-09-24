@@ -3,7 +3,7 @@ import { StyleSheet, View, AppState } from 'react-native'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import FastImage from 'react-native-fast-image'
 import TrackPlayer, { TrackPlayerEvents } from 'react-native-track-player'
-import { useTrackPlayerProgress, useTrackPlayerEvents } from 'react-native-track-player/lib/hooks'
+import { useTrackPlayerEvents } from 'react-native-track-player/lib/hooks'
 import { Modalize } from 'react-native-modalize'
 import { isIphoneX, getStatusBarHeight } from 'react-native-iphone-x-helper'
 import Toast from 'react-native-simple-toast'
@@ -14,8 +14,6 @@ import { SCREEN_WIDTH } from '../../constants'
 import useInterval from '../utils/useInterval'
 import EE, { CLIP_PAYMENT, PLAY_ANIMATION } from '../utils/ee'
 import Controls from './Controls'
-import Replay from './Replay'
-import Rocket from './Rocket'
 import { getPosition, setPosition } from './Position'
 import MiniPodcast from './MiniPodcast'
 import Typography from '../common/Typography'
@@ -28,14 +26,12 @@ export default function Podcast({ pod, chat, onBoost, podError }) {
   const { feed, user, msg, chats, details, ui } = useStores()
   const chatID = chat.id
   const myid = user.myid
-  const [loading, setLoading] = useState(false)
   const [playing, setPlaying] = useState(false)
   const [duration, setDuration] = useState(0)
   const [selectedEpisodeID, setSelectedEpisodeID] = useState(null)
   const [queuedTrackID, setQueuedTrackID] = useState(null)
   const [speed, setSpeed] = useState('1')
   const modalizeRef = useRef<Modalize>(null)
-  //   const [currentTip, setCurrentTip] = useState()
 
   function getAndSetDuration() {
     setTimeout(async () => {
@@ -106,10 +102,10 @@ export default function Podcast({ pod, chat, onBoost, podError }) {
 
   async function initialSelect(ps) {
     let theID = queuedTrackID
-    if (chat.meta && chat.meta.itemID) {
+    if (chat.meta?.itemID) {
       theID = chat.meta.itemID
     }
-    let episode = ps && ps.episodes && ps.episodes.length && ps.episodes[0]
+    let episode = ps?.episodes && ps.episodes.length && ps.episodes[0]
     await TrackPlayer.setupPlayer({})
     await TrackPlayer.updateOptions({
       stopWithApp: true,
@@ -125,7 +121,7 @@ export default function Podcast({ pod, chat, onBoost, podError }) {
     })
 
     if (theID) {
-      const qe = ps && ps.episodes && ps.episodes.length && ps.episodes.find((e) => e.id == theID)
+      const qe = ps?.episodes && ps.episodes.length && ps.episodes.find((e) => e.id == theID)
       if (qe) episode = qe
       else {
         TrackPlayer.reset()
@@ -139,19 +135,19 @@ export default function Podcast({ pod, chat, onBoost, podError }) {
 
     // if its the same, dont seek
     if (queuedTrackID && queuedTrackID !== episode.id) {
-      const ts = chat.meta && chat.meta.ts
+      const ts = chat.meta?.ts
       if ((!playing && ts) || ts === 0) {
         await TrackPlayer.seekTo(ts)
         setPosition()
       }
     }
 
-    const spm = chat.meta && chat.meta.sats_per_minute
+    const spm = chat.meta?.sats_per_minute
     if (spm || spm === 0) {
       chats.setPricePerMinute(chatID, spm)
     }
 
-    const spee = chat.meta && chat.meta.speed
+    const spee = chat.meta?.speed
     if (spee) {
       setRate(spee)
     } else {
@@ -177,7 +173,7 @@ export default function Podcast({ pod, chat, onBoost, podError }) {
   let pricePerMinute = 0
   if (chats.pricesPerMinute[chatID] || chats.pricesPerMinute[chatID] === 0) {
     pricePerMinute = chats.pricesPerMinute[chatID]
-  } else if (pod && pod.value && pod.value.model && pod.value.model.suggested) {
+  } else if (pod?.value && pod.value.model && pod.value.model.suggested) {
     pricePerMinute = Math.round(parseFloat(pod.value.model.suggested) * 100000000)
   }
 
@@ -185,7 +181,7 @@ export default function Podcast({ pod, chat, onBoost, podError }) {
     if (!pricePerMinute) return
     console.log('=> sendPayments!')
     const pos = await TrackPlayer.getPosition()
-    const dests = pod && pod.value && pod.value.destinations
+    const dests = pod?.value && pod.value.destinations
     if (!dests) return
     if (!pod.id || !selectedEpisodeID) return
     const sp: StreamPayment = StreamPaymentModel.create({
@@ -241,10 +237,6 @@ export default function Podcast({ pod, chat, onBoost, podError }) {
   }, [])
 
   useEffect(() => {
-    setLoading(false)
-  }, [])
-
-  useEffect(() => {
     checkState()
   }, [])
 
@@ -254,7 +246,7 @@ export default function Podcast({ pod, chat, onBoost, podError }) {
 
   function onClipPayment(d) {
     if (pricePerMinute && d.pubkey && d.ts) {
-      const dests = pod && pod.value && pod.value.destinations
+      const dests = pod?.value && pod.value.destinations
       if (!dests) return
       const extraDest: Destination = {
         address: d.pubkey,
@@ -308,7 +300,7 @@ export default function Podcast({ pod, chat, onBoost, podError }) {
     if (!chatID) return
     const msgs = msg.messages[chatID] || []
     const msgsForEpisode = msgs.filter(
-      (m) => m.message_content && m.message_content.includes('::') && m.message_content.includes(episode.id)
+      (m) => m.message_content?.includes('::') && m.message_content.includes(episode.id)
     )
     const msgsforReplay = []
     msgsForEpisode.forEach((m) => {
@@ -347,7 +339,7 @@ export default function Podcast({ pod, chat, onBoost, podError }) {
         amount,
       })
       onBoost(sp)
-      const dests = pod && pod.value && pod.value.destinations
+      const dests = pod?.value && pod.value.destinations
       if (!dests) return
       if (!pod.id || !selectedEpisodeID) return
       const memo = JSON.stringify(sp)

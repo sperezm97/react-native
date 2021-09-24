@@ -34,7 +34,7 @@ export function connectWebSocket(
     },
   })
 
-  io.on('connect', (socket) => {
+  io.on('connect', () => {
     console.log('=> socketio connected!')
     console.tron.display({
       name: 'connectWebSocket',
@@ -43,7 +43,7 @@ export function connectWebSocket(
     if (connectedCallback) connectedCallback()
   })
 
-  io.on('disconnect', (socket) => {
+  io.on('disconnect', () => {
     console.tron.display({
       name: 'connectWebSocket',
       preview: 'SocketIO disconnected',

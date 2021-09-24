@@ -267,7 +267,7 @@ class UserStore {
     if (!(pubkey && pubkey.length === 66)) return
     try {
       const r = await api.invite.get(`nodes/${pubkey}`)
-      if (!(r && r.node_ip)) return
+      if (!r?.node_ip) return
       console.log('NEW IP', r.node_ip)
       this.currentIP = r.node_ip
       return r.node_ip

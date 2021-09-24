@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, View, Dimensions } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import Modal from 'react-native-modal'
 import { isIphoneX, getStatusBarHeight } from 'react-native-iphone-x-helper'
 
@@ -23,7 +23,8 @@ export default function ModalWrap(props) {
   } = props
   const theme = useTheme()
 
-  const paddingTop = noHeader ? 0 : fullscreen ? getStatusBarHeight() : 0
+  const fullscreenPaddingTop = fullscreen ? getStatusBarHeight() : 0
+  const paddingTop = noHeader ? 0 : fullscreenPaddingTop
 
   return (
     <Modal

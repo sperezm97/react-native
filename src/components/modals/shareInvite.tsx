@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useObserver } from 'mobx-react-lite'
 import { View, Text, StyleSheet, Image, TouchableWithoutFeedback } from 'react-native'
 import { Button, Portal } from 'react-native-paper'

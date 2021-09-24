@@ -5,7 +5,7 @@ import DateTimePicker from '@react-native-community/datetimepicker'
 import moment from 'moment'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
-export default function MultiBox({ inverted, name, label, required, error, setValue, handleBlur, value, options }) {
+export default function MultiBox({ label, setValue, value, options }) {
   return (
     <View style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <View style={styles.header}>
@@ -13,7 +13,7 @@ export default function MultiBox({ inverted, name, label, required, error, setVa
       </View>
       <View style={styles.body}>
         {options.map((o, i) => {
-          const isSelected = o.value === (value && value.selected)
+          const isSelected = o.value === value?.selected
           return (
             <View key={i} style={styles.optionWrap}>
               <Checkbox
@@ -30,7 +30,7 @@ export default function MultiBox({ inverted, name, label, required, error, setVa
                   onFocus={() =>
                     setValue({
                       selected: o.value,
-                      ...(value && value.custom && { custom: value.custom }),
+                      ...(value?.custom && { custom: value.custom }),
                     })
                   }
                   onChange={(v) =>
@@ -62,7 +62,7 @@ function Custom({ type, onFocus, onChange, value, isFocused }) {
         setShowDate(true)
       }
       if (type === 'number') {
-        if (numberInputRef && numberInputRef.current) {
+        if (numberInputRef?.current) {
           numberInputRef.current.focus()
         }
       }

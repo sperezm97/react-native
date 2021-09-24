@@ -21,7 +21,7 @@ export default function SuggestToUserToBackupTheirKeys({ onDone, z, isTheMainRen
   const videoRef = useRef(null)
 
   const restartVideo = () => {
-    videoRef.current && videoRef.current.seek(0)
+    videoRef.current?.seek(0)
     resetCounter()
   }
 

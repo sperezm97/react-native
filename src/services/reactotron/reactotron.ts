@@ -71,7 +71,7 @@ export class Reactotron {
       state: {
         initial: false,
         snapshots: false,
-        ...(config && config.state),
+        ...config?.state,
       },
     }
   }

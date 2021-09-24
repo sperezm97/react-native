@@ -15,7 +15,6 @@ export function DeletableContact(props) {
   const theme = useTheme()
   const { contact, onDelete } = props
   const uri = usePicSrc(contact)
-  const hasImg = uri ? true : false
 
   return (
     <SwipeRow disableRightSwipe={true} friction={100} rightOpenValue={-80} stopRightSwipe={-80}>
@@ -44,7 +43,7 @@ export function Contact(props) {
   const theme = useTheme()
   const { contact, onPress, selected, unselectable } = props
   const uri = usePicSrc(contact)
-  const hasImg = uri ? true : false
+
   return (
     <TouchableOpacity style={{ ...styles.contactTouch, backgroundColor: theme.bg }} activeOpacity={1} onPress={onPress}>
       <View style={{ ...styles.avatarWrap, borderColor: theme.border }}>
@@ -73,15 +72,16 @@ export function Contact(props) {
 export function PendingContact(props) {
   const theme = useTheme()
   const [loadingStatus, setLoadingStatus] = useState('')
-  const { contact, onPress, selected, unselectable } = props
+  const { contact, onPress } = props
   const uri = usePicSrc(contact)
-  const hasImg = uri ? true : false
+
   async function press(status: string) {
     if (loadingStatus) return
     setLoadingStatus(status)
     await props.onApproveOrDenyMember(contact.id, status)
     setLoadingStatus('')
   }
+
   return (
     <TouchableOpacity style={{ ...styles.contactTouch, backgroundColor: theme.bg }} activeOpacity={1} onPress={onPress}>
       <View style={{ ...styles.avatarWrap, borderColor: theme.border }}>
@@ -108,8 +108,7 @@ export function PendingContact(props) {
 
 export function SelectedContact({ contact, onPress, removable }) {
   const theme = useTheme()
-  const uri = usePicSrc(contact)
-  const hasImg = uri ? true : false
+
   return (
     <View style={{ ...styles.selectedContact, backgroundColor: theme.bg }}>
       <View style={{ ...styles.selAvatar, borderColor: theme.border }}>

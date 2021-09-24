@@ -1,5 +1,5 @@
 export async function qrActions(j, ui, chats) {
-  const action = j['action']
+  const action = j.action
 
   switch (action) {
     case 'tribe':

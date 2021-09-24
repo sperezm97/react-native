@@ -7,13 +7,12 @@ import { useAvatarColor } from 'store/hooks/msg'
 import Typography from '../../common/Typography'
 
 export default function AvatarsRow({ aliases, borderColor }) {
-  const theAliases = aliases && aliases.slice(0, 3)
+  const theAliases = aliases?.slice(0, 3)
   return (
     <View style={styles.row}>
-      {theAliases &&
-        theAliases.map((a, i) => {
-          return <AvatarTiny key={i} i={i} size={22} alias={a.alias} photo={a.photo} borderColor={borderColor} />
-        })}
+      {theAliases?.map((a, i) => {
+        return <AvatarTiny key={i} i={i} size={22} alias={a.alias} photo={a.photo} borderColor={borderColor} />
+      })}
     </View>
   )
 }
@@ -62,6 +61,7 @@ function AvatarTiny(props) {
         height: size,
         width: size,
         borderRadius,
+        // eslint-disable-next-line react-hooks/rules-of-hooks
         backgroundColor: useAvatarColor(name),
       }}
     >

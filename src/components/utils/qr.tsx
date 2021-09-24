@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { StyleSheet, View, BackHandler, Modal } from 'react-native'
-import { TextInput, Button, Portal } from 'react-native-paper'
+import { TextInput, Button } from 'react-native-paper'
 
 import { useTheme } from '../../store'
-import Header from '../modals/modalHeader'
 import Scanner from './scanner'
 
 export default function QR({ visible, onCancel, onScan, showPaster }) {
   const theme = useTheme()
-  const [hasPermission, setHasPermission] = useState(null)
   const [scanned, setScanned] = useState(false)
   const [text, setText] = useState('')
 
@@ -32,7 +30,7 @@ export default function QR({ visible, onCancel, onScan, showPaster }) {
   //   })()
   // }, [])
 
-  function handleBarCodeScanned({ type, data }) {
+  function handleBarCodeScanned({ data }) {
     setScanned(true)
     onScan(data)
   }
@@ -41,7 +39,7 @@ export default function QR({ visible, onCancel, onScan, showPaster }) {
     <Modal visible={visible} animationType='slide' presentationStyle='pageSheet'>
       <View style={styles.wrap}>
         {/* <Header title='Scan QR Code' onClose={() => onCancel()} background={theme.main} /> */}
-        <View style={{ ...styles.content }}></View>
+        <View style={{ ...styles.content }} />
         <Scanner scanned={scanned ? true : false} handleBarCodeScanned={handleBarCodeScanned} smaller />
         {showPaster && (
           <View style={{ ...styles.bottom, backgroundColor: theme.main }}>
@@ -57,12 +55,7 @@ export default function QR({ visible, onCancel, onScan, showPaster }) {
               {(text ? true : false) && (
                 <Button
                   style={styles.confirm}
-                  onPress={() =>
-                    handleBarCodeScanned({
-                      data: text,
-                      type: 'text',
-                    })
-                  }
+                  onPress={() => handleBarCodeScanned({ data: text })}
                   mode='contained'
                   dark={true}
                 >

@@ -1,9 +1,16 @@
 {
   "root": true,
+  "env": {
+    "node": true
+  },
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint", "@floydspace/rules"],
   "extends": ["@react-native-community", "prettier"],
   "rules": {
-    "no-unused-vars": 0,
+    "no-else-return": 2,
+    "no-nested-ternary": 2,
     "@typescript-eslint/no-unused-vars": 2,
+    "@floydspace/rules/prefer-optional-chaining": 2,
     "react-hooks/exhaustive-deps": 0
   }
 }

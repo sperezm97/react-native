@@ -131,7 +131,7 @@ export default function Intro({ tribe }) {
               </Typography>
               {!tribe.owner && (
                 <>
-                  <View style={{ ...styles.dot, backgroundColor: theme.text }}></View>
+                  <View style={{ ...styles.dot, backgroundColor: theme.text }} />
                   <Typography size={14} fw='500' color={theme.subtitle} numberOfLines={1}>
                     {tribe.owner_alias?.trim()}
                   </Typography>
@@ -155,7 +155,7 @@ export default function Intro({ tribe }) {
                 <Typography size={14} style={{ paddingLeft: 4 }}>
                   {tribe.private ? 'Private Community' : 'Public Community'}
                 </Typography>
-                <View style={{ ...styles.dot, backgroundColor: theme.text }}></View>
+                <View style={{ ...styles.dot, backgroundColor: theme.text }} />
               </View>
 
               {/* {tribe.owner ? ( */}
@@ -207,7 +207,7 @@ export default function Intro({ tribe }) {
 }
 
 function TribeActions({ tribe }) {
-  const { chats, msg, ui } = useStores()
+  const { chats, msg } = useStores()
   const theme = useTheme()
   const navigation = useNavigation()
   const [loading, setLoading] = useState(false)

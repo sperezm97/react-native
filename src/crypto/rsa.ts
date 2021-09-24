@@ -92,7 +92,7 @@ export async function keyGen() {
 
 export async function getPublicKey() {
   try {
-    const pub = await RSAKeychain.getPublicKey(KEY_TAG)
+    await RSAKeychain.getPublicKey(KEY_TAG)
   } catch (e) {
     console.log(e)
   }

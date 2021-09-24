@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, View } from 'react-native'
+import { View } from 'react-native'
 
 import { useTheme } from '../../../store'
 
@@ -23,5 +23,5 @@ export default function Divider(props) {
     width: w,
   }
 
-  return <View style={{ ...borderStyles }}></View>
+  return <View style={{ ...borderStyles }} />
 }

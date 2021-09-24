@@ -1,22 +1,18 @@
-import React, { useState, useEffect } from 'react'
-import { Dialog, Portal, TextInput, Button } from 'react-native-paper'
-import { View, Text, TouchableWithoutFeedback, Image, TouchableOpacity } from 'react-native'
+import React, { useState } from 'react'
+import { View, Text, TouchableWithoutFeedback, Image } from 'react-native'
 import Icon from 'react-native-vector-icons/AntDesign'
 
 import ImageDialog from '../../common/Dialogs/ImageDialog'
 
-export default function PhotoInput({ name, label, required, setValue, value, accessibilityLabel }) {
+export default function PhotoInput({ label, required, setValue, value }) {
   const [dialogOpen, setDialogOpen] = useState(false)
-  const [takingPhoto, setTakingPhoto] = useState(false)
 
   function tookPic(uri) {
-    // setDialogOpen(false)
-    // setTakingPhoto(false)
     setValue(uri)
   }
 
   const imgURI = value
-  const hasImgURI = imgURI ? true : false
+  const hasImgURI = !!imgURI
 
   return (
     <View style={{ ...styles.wrap }}>
@@ -26,17 +22,7 @@ export default function PhotoInput({ name, label, required, setValue, value, acc
         </View>
       </TouchableWithoutFeedback>
 
-      {!hasImgURI && (
-        <Icon
-          name='picture'
-          color='#888'
-          size={25}
-          style={{ position: 'absolute', right: 13, top: 17 }}
-          onPress={() => setDialogOpen(true)}
-        />
-      )}
-
-      {hasImgURI && (
+      {hasImgURI ? (
         <Image
           source={{ uri: imgURI }}
           style={{
@@ -47,6 +33,14 @@ export default function PhotoInput({ name, label, required, setValue, value, acc
             top: 1,
             borderRadius: 3,
           }}
+        />
+      ) : (
+        <Icon
+          name='picture'
+          color='#888'
+          size={25}
+          style={{ position: 'absolute', right: 13, top: 17 }}
+          onPress={() => setDialogOpen(true)}
         />
       )}
 

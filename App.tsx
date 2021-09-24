@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import AppRoot from './AppRoot'
 import { RootStore, RootStoreProvider, setupRootStore } from './src/store2'
 import Splash from './src/components/common/Splash'
-import { Alert } from 'react-native'
 
 export default function App() {
   const [rootStore, setRootStore] = useState<RootStore | undefined>(undefined)

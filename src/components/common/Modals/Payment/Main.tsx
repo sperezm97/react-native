@@ -7,7 +7,6 @@ import { useStores, useTheme } from '../../../../store'
 import { useAvatarColor } from '../../../../store/hooks/msg'
 import { SCREEN_HEIGHT } from '../../../../constants'
 import NumKey from '../../../utils/numkey'
-import { usePicSrc } from '../../../utils/picSrc'
 import Button from '../../Button'
 import Typography from '../../Typography'
 import Avatar from '../../Avatar'
@@ -17,10 +16,6 @@ export default function Main({ contact, loading, confirmOrContinue, contactless 
   const theme = useTheme()
   const [amt, setAmt] = useState('0')
   const [text, setText] = useState('')
-  const [inputFocused, setInputFocused] = useState(false)
-
-  const uri = usePicSrc(contact)
-  const hasImg = uri ? true : false
 
   function go(n) {
     if (amt === '0') setAmt(`${n}`)
@@ -44,6 +39,7 @@ export default function Main({ contact, loading, confirmOrContinue, contactless 
   }
 
   const isLoopout = ui.payMode === 'loopout'
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const nameColor = contact && useAvatarColor(contact.alias)
   return (
     <View
@@ -83,8 +79,6 @@ export default function Main({ contact, loading, confirmOrContinue, contactless 
             onChangeText={(v) => setText(v)}
             style={{ ...styles.input, backgroundColor: theme.bg }}
             underlineColor={theme.border}
-            onFocus={() => setInputFocused(true)}
-            onBlur={() => setInputFocused(false)}
           />
         </View>
       )}

@@ -6,14 +6,9 @@ import { useTheme } from '../../../store'
 
 const tagz = ['Bitcoin', 'Lightning', 'Sphinx', 'Podcast', 'Crypto', 'Tech', 'Altcoins', 'Music']
 
-export default function TheTextInput({ name, label, required, error, setValue, value, displayOnly }) {
+export default function TheTextInput({ setValue, value }) {
   const theme = useTheme()
   const [showDialog, setShowDialog] = useState(false)
-  let lab = `${label.en}${required ? ' *' : ''}`
-  if (error) {
-    lab = `${label.en} - ${error}`
-  }
-  if (displayOnly) lab = label.en
 
   function add(name) {
     const newVal = value ? [...value] : []
@@ -24,7 +19,7 @@ export default function TheTextInput({ name, label, required, error, setValue, v
       setValue(newVal)
     }
   }
-  const showTags = value && value.length && value.length > 0 ? true : false
+  const showTags = value?.length && value.length > 0 ? true : false
   return (
     <>
       <TouchableOpacity onPress={() => setShowDialog(!showDialog)}>
@@ -68,7 +63,7 @@ export default function TheTextInput({ name, label, required, error, setValue, v
       <Portal>
         <Dialog visible={showDialog} style={{ bottom: 10 }} onDismiss={() => setShowDialog(false)}>
           {tagz.map((name) => {
-            const selected = value && value.includes(name)
+            const selected = value?.includes(name)
             return (
               <Chip
                 key={name}

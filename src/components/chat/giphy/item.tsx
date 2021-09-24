@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Image, Text, TouchableOpacity } from 'react-native'
+import { Image, TouchableOpacity } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import styles from './styles'
 
@@ -20,11 +20,13 @@ interface ItemProps {
 
 const Item =
   (onSendGifHandler: (item: any) => void) =>
-  ({ item, i }: ItemProps) => {
+  ({ item }: ItemProps) => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const [imgAspectRatio, setImgAspectRatio] = useState(0)
 
     const thumb = item.images.original.url.replace(/giphy.gif/g, '100w.gif')
 
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     useEffect(() => {
       const getImageRatio = async () => {
         const imageSize = await getOriginalImageSize(thumb)

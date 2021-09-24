@@ -6,7 +6,7 @@ import FastImage from 'react-native-fast-image'
 import Clipboard from '@react-native-community/clipboard'
 import Toast from 'react-native-simple-toast'
 
-import { useStores, useTheme } from '../../store'
+import { useTheme } from '../../store'
 import { TOAST_DURATION } from '../../constants'
 import BackHeader from '../common/BackHeader'
 import Button from '../common/Button'
@@ -62,13 +62,11 @@ export default function AddSats() {
 
 function Do({ app }) {
   const { name, label, url, img } = app
-  const { ui } = useStores() // queries
   const theme = useTheme()
 
   const [loading, setLoading] = useState(true)
   const [addy, setAddy] = useState('')
-  const [err, setErr] = useState('')
-  const [spd, setSpd] = useState(5000)
+  const [, setErr] = useState('')
   const [canLink, setCanLink] = useState(false)
 
   async function gen() {

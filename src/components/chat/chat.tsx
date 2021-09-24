@@ -28,8 +28,8 @@ export default function Chat() {
   const [pod, setPod] = useState(null)
   const [podError, setPodError] = useState(null)
 
-  const feedURL = tribeParams && tribeParams.feed_url
-  const tribeBots = tribeParams && tribeParams.bots
+  const feedURL = tribeParams?.feed_url
+  const tribeBots = tribeParams?.bots
   const chatID = route.params.id
   const chat = useMemo(
     () => chats.chatsArray.find((c) => c.id === chatID) || route.params,
@@ -81,7 +81,7 @@ export default function Chat() {
 
     const r = await chats.checkRoute(chat.id.toString(), myid)
 
-    if (r && r.success_prob && r.success_prob > 0) {
+    if (r?.success_prob && r.success_prob > 0) {
       setStatus('active')
     } else {
       setStatus('inactive')
@@ -107,7 +107,7 @@ export default function Chat() {
   }, [chat, contacts, fetchTribeParams, myid, navigation])
 
   function onBoost(sp: StreamPayment) {
-    if (!(chat && chat.id)) return
+    if (!chat?.id) return
     msg.sendMessage({
       contact_id: null,
       text: `boost::${JSON.stringify(sp)}`,
@@ -118,7 +118,7 @@ export default function Chat() {
   }
 
   let pricePerMinute = 0
-  if (pod && pod.value && pod.value.model && pod.value.model.suggested) {
+  if (pod?.value && pod.value.model && pod.value.model.suggested) {
     pricePerMinute = Math.round(parseFloat(pod.value.model.suggested) * 100000000)
   }
 

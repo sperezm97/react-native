@@ -1,18 +1,15 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState } from 'react'
 import { StyleSheet, View, ActivityIndicator, TouchableOpacity } from 'react-native'
-import { useObserver } from 'mobx-react-lite'
 import { useNavigation } from '@react-navigation/native'
 import FastImage from 'react-native-fast-image'
-import { IconButton } from 'react-native-paper'
-import Ionicon from 'react-native-vector-icons/Ionicons'
 import moment from 'moment'
 
-import { useStores, useTheme, hooks } from '../../store'
+import { useStores, useTheme } from '../../store'
 import { calendarDate } from '../../store/utils/date'
 import { usePicSrc } from '../utils/picSrc'
 import { parseLDAT } from '../utils/ldat'
 import { useCachedEncryptedFile } from '../chat/msg/hooks'
-import { SCREEN_WIDTH, SCREEN_HEIGHT, STATUS_BAR_HEIGHT } from '../../constants'
+import { SCREEN_WIDTH } from '../../constants'
 import Typography from '../common/Typography'
 import Avatar from '../common/Avatar'
 import Divider from '../common/Layout/Divider'
@@ -20,36 +17,14 @@ import Boost from '../common/Button/Boost'
 import BoostDetails from './BoostDetails'
 
 function Media(props) {
-  const {
-    index,
-    mediaLength,
-    item,
-    id,
-    uuid,
-    message_content,
-    media_type,
-    chat,
-    media_token,
-    onMediaPress,
-    created_at,
-    tribe,
-    boosts_total_sats,
-  } = props
-  const [boosted, setBoosted] = useState(false)
-  const { msg, ui, user, contacts, chats } = useStores()
+  const { index, mediaLength, uuid, media_type, chat, media_token, created_at, tribe, boosts_total_sats } = props
+  const { msg, user, contacts } = useStores()
   const theme = useTheme()
   const navigation = useNavigation()
 
   const ldat = parseLDAT(media_token)
 
-  let { data, uri, loading, trigger, paidMessageText } = useCachedEncryptedFile(props, ldat)
-
-  let amt = null
-  let purchased = false
-  if (ldat.meta && ldat.meta.amt) {
-    amt = ldat.meta.amt
-    if (ldat.sig) purchased = true
-  }
+  let { data, uri, loading, trigger } = useCachedEncryptedFile(props, ldat)
 
   useEffect(() => {
     trigger()
@@ -61,7 +36,7 @@ function Media(props) {
     const pricePerMessage = tribe.price_per_message + tribe.escrow_amount
     if (!uuid) return
     const amount = (user.tipAmount || 100) + pricePerMessage
-    const r = msg.sendMessage({
+    msg.sendMessage({
       boost: true,
       contact_id: null,
       text: '',
@@ -70,9 +45,6 @@ function Media(props) {
       reply_uuid: uuid,
       message_price: pricePerMessage,
     })
-    if (r) {
-      setBoosted(true)
-    }
   }
 
   const onTribeOwnerPress = () => navigation.navigate('Tribe' as never, { tribe: { ...tribe } } as never)
@@ -117,7 +89,6 @@ function Media(props) {
 }
 
 function MediaType({ type, data, uri }) {
-  const h = SCREEN_HEIGHT - STATUS_BAR_HEIGHT - 60
   const w = SCREEN_WIDTH
   const [photoH, setPhotoH] = useState(0)
 
@@ -141,9 +112,8 @@ function MediaType({ type, data, uri }) {
         />
       </View>
     )
-  } else {
-    return <></>
   }
+  return <></>
 }
 
 const styles = StyleSheet.create({

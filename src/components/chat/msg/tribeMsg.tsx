@@ -17,9 +17,9 @@ interface Tribe {
 
 export default function TribeMessage(props) {
   const theme = useTheme()
-  const { ui, chats } = useStores()
+  const { chats } = useStores()
   const [tribe, setTribe] = useState<Tribe>()
-  const [error, setError] = useState('')
+  const [, setError] = useState('')
   const [loading, setLoading] = useState(true)
   const [showJoinButton, setShowJoinButton] = useState<boolean>(false)
 
@@ -27,7 +27,7 @@ export default function TribeMessage(props) {
 
   async function loadTribe() {
     const p = extractURLSearchParams(props.message_content)
-    const tribeParams = await getTribeDetails(p['host'], p['uuid'])
+    const tribeParams = await getTribeDetails(p.host, p.uuid)
     if (tribeParams) {
       setTribe(tribeParams)
     } else {
@@ -55,7 +55,7 @@ export default function TribeMessage(props) {
         <ActivityIndicator animating={true} color={theme.subtitle} />
       </View>
     )
-  if (!(tribe && tribe.uuid)) return <View style={styles.wrap}>Could not load tribe...</View>
+  if (!tribe?.uuid) return <View style={styles.wrap}>Could not load tribe...</View>
 
   const hasImg = tribe.img ? true : false
   return (
@@ -142,7 +142,7 @@ async function getTribeDetails(host: string, uuid: string) {
 function extractURLSearchParams(url: string) {
   let regex = /[?&]([^=#]+)=([^&#]*)/g
   let match
-  let params = {}
+  let params: { [k: string]: any } = {}
   while ((match = regex.exec(url))) {
     params[match[1]] = match[2]
   }

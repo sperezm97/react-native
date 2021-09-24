@@ -9,7 +9,6 @@ import Typography from '../common/Typography'
 
 export default function Network() {
   const [serverURL, setServerURL] = useState('')
-  const [loading, setLoading] = useState(false)
   const { user } = useStores()
   const theme = useTheme()
   const nativeID = 'serverUrl'
@@ -23,9 +22,7 @@ export default function Network() {
   }
 
   function saveServerURL() {
-    setLoading(true)
     user.setCurrentIP(serverURL)
-    setLoading(false)
   }
 
   return (

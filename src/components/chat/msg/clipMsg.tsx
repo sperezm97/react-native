@@ -1,7 +1,6 @@
 import React, { useRef } from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View } from 'react-native'
 
-import { useTheme } from '../../../store'
 import { StreamPayment, NUM_SECONDS, StreamPaymentModel } from 'store/feed-store'
 import { useParsedClipMsg } from 'store/hooks/msg'
 import EE, { CLIP_PAYMENT } from '../../utils/ee'
@@ -11,13 +10,12 @@ import Typography from '../../common/Typography'
 
 export default function ClipMessage(props) {
   const count = useRef(0)
-  const theme = useTheme()
   const { message_content, uuid } = props
 
   const obj = useParsedClipMsg(message_content)
   const { url, title, text, ts, feedID, itemID, pubkey } = obj
 
-  function onListenOneSecond(feedURL) {
+  function onListenOneSecond() {
     count.current = count.current + 1
     if (count.current && count.current % NUM_SECONDS === 0) {
       const sp: StreamPayment = StreamPaymentModel.create({
@@ -38,5 +36,3 @@ export default function ClipMessage(props) {
     </View>
   )
 }
-
-const styles = StyleSheet.create({})
