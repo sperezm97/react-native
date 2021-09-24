@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import RNFetchBlob from 'rn-fetch-blob'
 
-import { Chat } from '../../store/chats'
-import { Contact } from '../../store/contacts'
+import { Chat } from 'store/chats-store'
+import { Contact } from 'store/contacts-store'
 import { constants } from '../../constants'
 import { useStores } from '../../store'
 
@@ -41,7 +41,7 @@ export function useChatPicSrc(chat: Chat) {
   let s = ''
   if (isConversation) {
     const cid = chat.contact_ids.find((id) => id !== user.myid)
-    const contact = contacts.contacts.find((c) => c.id === cid)
+    const contact = contacts.contacts.get(cid.toString())
     s = (contact && contact.photo_url) || ''
   } else {
     s = (chat && chat.photo_url) || ''

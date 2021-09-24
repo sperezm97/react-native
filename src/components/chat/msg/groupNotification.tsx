@@ -13,7 +13,7 @@ export default function GroupNotification(props) {
   if (props.isTribe) {
     senderAlias = props.sender_alias
   } else {
-    const sender = contacts.contacts.find((c) => c.id === props.sender)
+    const sender = contacts.contactsArray.find((c) => c.id === props.sender)
     senderAlias = sender && sender.alias
   }
 

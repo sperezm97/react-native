@@ -5,7 +5,7 @@ import Hyperlink from 'react-native-hyperlink'
 import * as linkify from 'linkifyjs'
 
 import { useTheme } from '../../../store'
-import { useParsedGiphyMsg } from '../../../store/hooks/msg'
+import { useParsedGiphyMsg } from 'store/hooks/msg'
 import { DEFAULT_DOMAIN } from '../../../config'
 import shared from './sharedStyles'
 import ClipMessage from './clipMsg'

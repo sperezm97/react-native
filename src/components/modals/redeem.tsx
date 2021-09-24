@@ -25,7 +25,8 @@ function Redeem({ close }) {
   const { ui, user } = useStores()
   const [loading, setLoading] = useState(true)
 
-  const params = ui.redeemModalParams
+  // TODO: properly type this so no type errors are thrown when removing any
+  const params: any = ui.redeemModalParams
   const amt = (params.amount && parseInt(params.amount)) || 0
 
   async function redeem() {

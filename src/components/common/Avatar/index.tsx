@@ -4,7 +4,7 @@ import { Avatar as PaperAvatar } from 'react-native-paper'
 import FastImage from 'react-native-fast-image'
 
 import { useTheme } from '../../../store'
-import { useAvatarColor as getAvatarColor } from '../../../store/hooks/msg'
+import { useAvatarColor as getAvatarColor } from 'store/hooks/msg'
 
 export default function Avatar(props) {
   let { style, photo, alias, size, avatarSize, borderless } = props

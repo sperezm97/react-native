@@ -154,7 +154,7 @@ export default function ChatDetails({ route }) {
   }
 
   return useObserver(() => {
-    const meContact = contacts.contacts.find((c) => c.id === user.myid)
+    const meContact = contacts.contactsArray.find((c) => c.id === user.myid)
     let imgURI = usePicSrc(meContact)
 
     let myPhoto = group.my_photo_url || imgURI
@@ -283,7 +283,7 @@ function DetailsAction({ chat }) {
   const theme = useTheme()
 
   return useObserver(() => {
-    const theChat = chats.chats.find((c) => c.id === chat.id)
+    const theChat = chats.chatsArray.find((c) => c.id === chat.id)
     const isMuted = (theChat && theChat.is_muted) || false
 
     async function muteChat() {

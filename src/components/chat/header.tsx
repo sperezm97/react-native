@@ -7,7 +7,7 @@ import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import FeatherIcon from 'react-native-vector-icons/Feather'
 
 import { useStores, useTheme, hooks } from '../../store'
-import { Chat } from '../../store/chats'
+import { Chat } from 'store/chats-store'
 import { contactForConversation } from './utils'
 import { useChatPicSrc } from '../utils/picSrc'
 import { constants } from '../../constants'
@@ -50,11 +50,11 @@ const Header = ({ chat, status, tribeParams, podId, pricePerMinute }: HeaderProp
     })()
   }, [])
 
-  const theChat = chats.chats.find((c) => c.id === chat.id)
+  const theChat = chats.chatsArray.find((c) => c.id === chat.id)
 
   let contact
   if (chat && chat.type === conversation) {
-    contact = contactForConversation(chat, contacts.contacts, user.myid)
+    contact = contactForConversation(chat, contacts.contactsArray, user.myid)
   }
 
   function onChatInfoPress() {

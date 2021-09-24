@@ -15,6 +15,7 @@ import Typography from '../../common/Typography'
 import Empty from '../../common/Empty'
 import Search from '../../common/Search'
 import { SCREEN_WIDTH } from '../../../constants'
+import { Contact } from 'store/contacts-store'
 
 export default function Members({ route }) {
   const [addMember, setAddMember] = useState(false)
@@ -29,7 +30,8 @@ export default function Members({ route }) {
     contacts.getContacts()
   })
 
-  const contactsToShow = contacts.contacts.filter((c) => {
+  const theseContacts: Contact[] = Array.from(contacts.contacts.values())
+  const contactsToShow = theseContacts.filter((c) => {
     return c.id > 1 && tribe && tribe.chat && tribe.chat.contact_ids.includes(c.id)
   })
 
@@ -38,16 +40,16 @@ export default function Members({ route }) {
     return m.alias.toLowerCase().includes(membersSearchText.toLowerCase())
   })
 
-  const pendingContactsToShow =
-    contacts.contacts.filter((c) => {
-      return (
-        c.id > 1 &&
-        tribe &&
-        tribe.chat &&
-        tribe.chat.pending_contact_ids &&
-        tribe.chat.pending_contact_ids.includes(c.id)
-      )
-    }) || []
+  // const pendingContactsToShow =
+  //   contacts.contacts.filter((c) => {
+  //     return (
+  //       c.id > 1 &&
+  //       tribe &&
+  //       tribe.chat &&
+  //       tribe.chat.pending_contact_ids &&
+  //       tribe.chat.pending_contact_ids.includes(c.id)
+  //     )
+  //   }) || []
 
   return useObserver(() => {
     return (

@@ -57,7 +57,7 @@ function Item(props) {
   const onItemPress = () => navigation.navigate('Tribe' as never, { tribe: { ...props } } as never)
 
   async function onJoinPress() {
-    const host = chats.getDefaultTribeServer().host
+    const host = (await chats.getDefaultTribeServer()).host
     const tribeParams = await chats.getTribeDetails(host, uuid)
     setJoinTribe({
       visible: true,

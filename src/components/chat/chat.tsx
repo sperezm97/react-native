@@ -3,7 +3,7 @@ import { KeyboardAvoidingView } from 'react-native'
 import { useRoute, useNavigation } from '@react-navigation/native'
 
 import { useStores, useTheme } from '../../store'
-import { StreamPayment } from '../../store/feed'
+import { StreamPayment } from 'store/feed-store'
 import { constants } from '../../constants'
 import { ChatRouteProp } from '../../types'
 import { contactForConversation } from './utils'
@@ -32,7 +32,7 @@ export default function Chat() {
   const tribeBots = tribeParams && tribeParams.bots
   const chatID = route.params.id
   const chat = useMemo(
-    () => chats.chats.find((c) => c.id === chatID) || route.params,
+    () => chats.chatsArray.find((c) => c.id === chatID) || route.params,
     [chatID, chats.chats, route.params]
   )
 
@@ -79,7 +79,7 @@ export default function Chat() {
       setTribeParams(null)
     }
 
-    const r = await chats.checkRoute(chat.id, myid)
+    const r = await chats.checkRoute(chat.id.toString(), myid)
 
     if (r && r.success_prob && r.success_prob > 0) {
       setStatus('active')
@@ -90,7 +90,7 @@ export default function Chat() {
 
   useEffect(() => {
     // check for contact key, exchange if none
-    const contact = contactForConversation(chat, contacts.contacts, myid)
+    const contact = contactForConversation(chat, contacts.contactsArray, myid)
 
     if (contact && !contact.contact_key) {
       contacts.exchangeKeys(contact.id)

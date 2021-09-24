@@ -56,7 +56,7 @@ export default function Main() {
   async function createPrivateKeyIfNotExists(contacts, user) {
     // const priv = null
     const priv = await rsa.getPrivateKey()
-    const me = contacts.contacts.find((c) => c.id === user.myid)
+    const me = contacts.contactsArray.find((c) => c.id === user.myid)
 
     // private key has been made
     if (priv) {

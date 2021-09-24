@@ -6,7 +6,7 @@ import momentDurationFormatSetup from 'moment-duration-format'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import Slider from '@react-native-community/slider'
 
-import { StreamPayment } from '../../store/feed'
+import { StreamPayment, StreamPaymentModel } from 'store/feed-store'
 import EE, { EXTRA_TEXT_CONTENT } from '../utils/ee'
 import TouchableIcon from '../utils/touchableIcon'
 import CustomIcon from '../utils/customIcons'
@@ -47,14 +47,14 @@ export default function Controls(props) {
   function feedClip() {
     const { episode: ep, pod, quoteCallback } = props
     if (!ep || !pod) return
-    const obj: StreamPayment = {
+    const obj: StreamPayment = StreamPaymentModel.create({
       ts: pos,
       itemID: ep.id,
       feedID: pod.id,
       title: ep.title,
       url: ep.enclosureUrl,
       type: 'clip',
-    }
+    })
     if (props.myPubkey) obj.pubkey = props.myPubkey
     EE.emit(EXTRA_TEXT_CONTENT, obj)
     if (quoteCallback) quoteCallback()

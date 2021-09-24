@@ -12,7 +12,7 @@ import Icon from '../common/Icon'
 import RefreshLoading from '../common/RefreshLoading'
 import Typography from '../common/Typography'
 import Tabs from '../common/Tabs'
-import { Msg } from '../../store/msg'
+import { Msg } from 'store/msg-store'
 import { useMemoizedIncomingPaymentsFromPodcast } from '../../store/hooks/pod'
 import { transformPayments } from '../utils/payments/transformPayments'
 
@@ -162,7 +162,7 @@ function Payment(props: PaymentProps) {
   const [podId, setPodId] = useState(null)
 
   //@ts-ignore
-  const chat = useMemo(() => chats.chats.find((c) => c.id === chat_id), [])
+  const chat = useMemo(() => chats.chatsArray.find((c) => c.id === chat_id), [])
 
   // TODO: check if is necessary to move it to <PerTribe/>
   useEffect(() => {
@@ -194,7 +194,7 @@ function Payment(props: PaymentProps) {
 
   const text = useMemo(() => {
     if (type !== 'payment') {
-      const contact = contacts.contacts.find((c) => c.id === sender)
+      const contact = contacts.contactsArray.find((c) => c.id === sender)
       return contact ? contact.alias || contact.public_key : 'Unknown'
     }
 
@@ -202,7 +202,7 @@ function Payment(props: PaymentProps) {
     if (chat?.contact_ids?.length !== 2) return '-'
 
     const oid = chat.contact_ids.find((id) => id !== user.myid)
-    const contact = contacts.contacts.find((c) => c.id === oid)
+    const contact = contacts.contactsArray.find((c) => c.id === oid)
     if (contact) return contact.alias || contact.public_key
     return '-'
   }, [contacts, chats, user, type])

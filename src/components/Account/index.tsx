@@ -143,7 +143,7 @@ export default function Account() {
   return useObserver(() => {
     const myid = user.myid
 
-    const meContact = contacts.contacts.find((c) => c.id === myid)
+    const meContact = contacts.contactsArray.find((c) => c.id === myid)
     let imgURI = usePicSrc(meContact)
 
     if (photo_url) imgURI = photo_url

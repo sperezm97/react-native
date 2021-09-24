@@ -8,6 +8,7 @@ export const ChatsStoreModel = types
   .model('ChatsStore')
   .props({
     chats: types.optional(types.map(ChatModel), {}),
+    pricesPerMinute: types.frozen(),
     servers: types.frozen([{ host: DEFAULT_TRIBE_SERVER }]),
     tribes: types.optional(types.frozen(), {}),
   })
@@ -15,7 +16,7 @@ export const ChatsStoreModel = types
   .actions((self) => ({
     addGroupMembers: async (chatID: number, contact_ids: number[]): Promise<void> =>
       await actions.addGroupMembers(chatID, contact_ids),
-    checkRoute: async (cid: string, myid: number): Promise<void> =>
+    checkRoute: async (cid: string, myid: number): Promise<any> =>
       await actions.checkRoute(self as ChatsStore, cid, myid),
     createGroup: async (contact_ids: number[], name: string): Promise<any> =>
       await actions.createGroup(self as ChatsStore, contact_ids, name),
@@ -25,7 +26,7 @@ export const ChatsStoreModel = types
       await actions.editTribe(self as ChatsStore, params),
     exitGroup: async (chatID: number): Promise<void> => await actions.exitGroup(self as ChatsStore, chatID),
     getChats: async (): Promise<boolean> => await actions.getChats(self as ChatsStore),
-    getDefaultTribeServer: async (): Promise<any> => await actions.getDefaultTribeServer(self as ChatsStore),
+    getDefaultTribeServer: (): any => actions.getDefaultTribeServer(self as ChatsStore),
     getTribeDetails: async (host: string, uuid: string): Promise<any> =>
       await actions.getTribeDetails(self as ChatsStore, host, uuid),
     getTribes: async (): Promise<boolean> => await actions.getTribes(self as ChatsStore),
@@ -35,7 +36,7 @@ export const ChatsStoreModel = types
       await actions.joinTribe(self as ChatsStore, params),
     kick: async (chatID: number, contactID: number): Promise<void> =>
       await actions.kick(self as ChatsStore, chatID, contactID),
-    loadFeed: async (host: string, url: string): Promise<void> => await actions.loadFeed(host, url),
+    loadFeed: async (host: string, uuid: string, url: string): Promise<any> => await actions.loadFeed(host, uuid, url),
     muteChat: async (chatID: number, muted: boolean): Promise<void> =>
       await actions.muteChat(self as ChatsStore, chatID, muted),
     updateMyInfoInChat: async (tribeID: number, my_alias: string, my_photo_url: string): Promise<void> =>
@@ -58,9 +59,21 @@ export const ChatsStoreModel = types
     setChats: (chats: Chat[]) => {
       chats.forEach((chat) => (self as ChatsStore).setChat(chat))
     },
+    setPricePerMinute(chatID: number, ppm: number) {
+      if (!chatID) return
+      self.pricesPerMinute[chatID] = ppm
+    },
     setTribes: (tribes: any) => (self.tribes = tribes),
+    updateChatMeta: (chat_id: number, meta: any) => {
+      self.chats.get(chat_id.toString()).meta = meta
+    },
     updateServers: (): void => {
       self.servers = [{ host: DEFAULT_TRIBE_SERVER }]
+    },
+  }))
+  .views((self) => ({
+    get chatsArray(): Chat[] {
+      return Array.from(self.chats.values())
     },
   }))
 

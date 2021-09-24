@@ -62,7 +62,7 @@ export default function AddSats() {
 
 function Do({ app }) {
   const { name, label, url, img } = app
-  const { ui, queries } = useStores()
+  const { ui } = useStores() // queries
   const theme = useTheme()
 
   const [loading, setLoading] = useState(true)
@@ -85,13 +85,13 @@ function Do({ app }) {
     setAddy(addy)
   }
 
-  async function getExchangeRate() {
-    const spd = await queries.satsPerDollar()
-  }
+  // async function getExchangeRate() {
+  //   const spd = await queries.satsPerDollar()
+  // }
 
   useEffect(() => {
     gen()
-    getExchangeRate()
+    // getExchangeRate()
   }, [])
 
   function openLink() {

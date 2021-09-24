@@ -5,7 +5,7 @@ import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
 
 import { useStores, useTheme, hooks } from '../../../store'
-import { useTribeHistory } from '../../../store/hooks/tribes'
+import { useTribeHistory } from 'store/hooks/tribes'
 import Typography from '../../common/Typography'
 import Button from '../../common/Button'
 import BoxHeader from '../../common/Layout/BoxHeader'

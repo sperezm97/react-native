@@ -10,7 +10,7 @@ import { isIphoneX, getBottomSpace } from 'react-native-iphone-x-helper'
 import { Modalize } from 'react-native-modalize'
 
 import { useStores, useTheme, hooks } from '../../../store'
-import { calcBotPrice, useReplyContent } from '../../../store/hooks/chat'
+import { calcBotPrice, useReplyContent } from 'store/hooks/chat'
 import { randString } from '../../../crypto/rand'
 import * as e2e from '../../../crypto/e2e'
 import EE, { EXTRA_TEXT_CONTENT, REPLY_UUID, CANCEL_REPLY_UUID, CLEAR_REPLY_UUID } from '../../utils/ee'
@@ -26,7 +26,6 @@ import { setTint } from '../../common/StatusBar'
 import ChatOptions from '../../common/Dialogs/ChatOptions'
 import { styles } from './styles'
 import { RecordingBottomBar } from './RecordingBottomBar'
-import { ThemeStore } from '../../../store/theme'
 
 let dirs = RNFetchBlob.fs.dirs
 

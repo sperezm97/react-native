@@ -10,7 +10,7 @@ import Popover, { PopoverPlacement } from 'react-native-popover-view'
 import Clipboard from '@react-native-community/clipboard'
 
 import { useTheme, hooks } from '../../../store'
-import { useChatReply } from '../../../store/hooks/chat'
+import { useChatReply } from 'store/hooks/chat'
 import { constantCodes, constants, SCREEN_HEIGHT, SCREEN_WIDTH } from '../../../constants'
 import EE, { CLEAR_REPLY_UUID, REPLY_UUID } from '../../utils/ee'
 import TextMsg from './textMsg'

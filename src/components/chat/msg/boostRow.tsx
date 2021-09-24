@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleSheet, View } from 'react-native'
 
 import { useStores, useTheme } from '../../../store'
-import { useBoostSender } from '../../../store/hooks/msg'
+import { useBoostSender } from 'store/hooks/msg'
 import CustomIcon from '../../utils/customIcons'
 import shared from './sharedStyles'
 import Typography from '../../common/Typography'

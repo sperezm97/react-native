@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
 
 import { useTheme } from '../../../store'
-import { useAvatarColor } from '../../../store/hooks/msg'
+import { useAvatarColor } from 'store/hooks/msg'
 import Typography from '../../common/Typography'
 
 export default function AvatarsRow({ aliases, borderColor }) {

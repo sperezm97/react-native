@@ -47,7 +47,7 @@ function Payment({ visible, close }) {
 
   const contact_id = chat && chat.contact_ids && chat.contact_ids.find((cid) => cid !== user.myid)
 
-  const contact = contact_id && contacts.contacts.find((c) => c.id === contact_id)
+  const contact = contact_id && contacts.contactsArray.find((c) => c.id === contact_id)
 
   async function sendPayment(amt, text) {
     if (!amt || loading) return

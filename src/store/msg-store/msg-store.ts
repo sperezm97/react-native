@@ -25,10 +25,11 @@ export const MsgStoreModel = types
       await actions.approveOrRejectMember(self as MsgStore, contactID, status, msgId),
     batchDecodeMessages: async (msgs: any): Promise<boolean> =>
       await actions.batchDecodeMessages(self as MsgStore, msgs),
-    createRawInvoice: async ({ amt, memo }: { amt: number; memo: string }): Promise<void> =>
+    createRawInvoice: async ({ amt, memo }: { amt: number; memo: string }): Promise<any> =>
       await actions.createRawInvoice(amt, memo),
     deleteMessage: async (id: number): Promise<void> => await actions.deleteMessage(self as MsgStore, id),
-    getMessages: async (forceMore: boolean): Promise<any> => await actions.getMessages(self as MsgStore, forceMore),
+    getMessages: async (forceMore: boolean = false): Promise<any> =>
+      await actions.getMessages(self as MsgStore, forceMore),
     gotNewMessage: async (m: any): Promise<any> => await actions.gotNewMessage(self as MsgStore, m),
     gotNewMessageFromWS: async (m: any): Promise<any> => await actions.gotNewMessageFromWS(m),
     invoicePaid: async (m: any): Promise<any> => await actions.invoicePaid(self as MsgStore, m),
@@ -54,6 +55,21 @@ export const MsgStoreModel = types
     },
   }))
   .views((self) => ({
+    countUnseenMessages(myid: number): number {
+      const now = new Date().getTime()
+      let unseenCount = 0
+      const lastSeenObj = self.lastSeen
+      Object.entries(self.messages).forEach(function ([id, msgs]) {
+        const lastSeen = lastSeenObj[id || '_'] || now
+        msgs.forEach((m) => {
+          if (m.sender !== myid) {
+            const unseen = moment(new Date(lastSeen)).isBefore(moment(m.date))
+            if (unseen) unseenCount += 1
+          }
+        })
+      })
+      return unseenCount
+    },
     filterMessagesByContent(id, something): any {
       console.log(id, something)
       return []

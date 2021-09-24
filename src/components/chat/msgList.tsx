@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native'
 import Toast from 'react-native-simple-toast'
 
 import { useStores, useTheme, hooks } from '../../store'
-import { Chat } from '../../store/chats'
+import { Chat } from 'store/chats-store'
 import { useMsgSender } from '../../store/hooks/msg'
 import Message from './msg'
 import { constants } from '../../constants'

@@ -5,7 +5,7 @@ import { normalizeContact } from '../../normalize'
 export const addContact = async (self: ContactsStore, v: any) => {
   if (!v.public_key) {
     console.log('no pub key')
-    return false
+    return
   }
   try {
     const r = await relay.post('contacts', { ...v, status: 1 })
@@ -16,9 +16,9 @@ export const addContact = async (self: ContactsStore, v: any) => {
       preview: 'Added contact:',
       value: contact,
     })
-    return true
+    return contact
   } catch (e) {
     console.log(e)
-    return false
+    return
   }
 }

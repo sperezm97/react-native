@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import FastImage from 'react-native-fast-image'
-import { useAvatarColor } from '../../../store/hooks/msg'
+import { useAvatarColor } from 'store/hooks/msg'
 
 export default function Avatar(props) {
   const name = props.alias || 'Sphinx'

@@ -51,7 +51,7 @@ export default function EditContact({ route }) {
   }
 
   function chatForContact() {
-    const cfc = chats.chats.find((c) => {
+    const cfc = chats.chatsArray.find((c) => {
       return c.type === conversation && c.contact_ids.includes(contact.id)
     })
     return cfc

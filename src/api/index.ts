@@ -1,7 +1,7 @@
 import { DEFAULT_HUB_API, DEFAULT_SHOP_API } from '../config'
 import API from './api'
 import { connectWebSocket, registerWsHandlers } from './ws'
-import * as wsHandlers from '../store/websocketHandlers'
+// import * as wsHandlers from '../store/websocketHandlers'
 
 const invite = new API(DEFAULT_HUB_API, '', '')
 const shop = new API(DEFAULT_SHOP_API, '', '')

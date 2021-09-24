@@ -30,7 +30,7 @@ export default function BackupKeys({ visible, close }) {
 
       const myContactKey = user.contactKey
 
-      const meContact = contacts.contacts.find((c) => c.id === user.myid) || {
+      const meContact = contacts.contactsArray.find((c) => c.id === user.myid) || {
         contact_key: myContactKey,
       }
 

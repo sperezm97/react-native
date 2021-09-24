@@ -2,8 +2,8 @@ import React, { useRef } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 
 import { useTheme } from '../../../store'
-import { StreamPayment, NUM_SECONDS } from '../../../store/feed'
-import { useParsedClipMsg } from '../../../store/hooks/msg'
+import { StreamPayment, NUM_SECONDS, StreamPaymentModel } from 'store/feed-store'
+import { useParsedClipMsg } from 'store/hooks/msg'
 import EE, { CLIP_PAYMENT } from '../../utils/ee'
 import shared from './sharedStyles'
 import AudioPlayer from './audioPlayer'
@@ -20,13 +20,13 @@ export default function ClipMessage(props) {
   function onListenOneSecond(feedURL) {
     count.current = count.current + 1
     if (count.current && count.current % NUM_SECONDS === 0) {
-      const sp: StreamPayment = {
+      const sp: StreamPayment = StreamPaymentModel.create({
         feedID,
         itemID,
         pubkey,
         ts: Math.round(count.current),
         uuid,
-      }
+      })
       EE.emit(CLIP_PAYMENT, sp)
     }
   }

@@ -9,7 +9,7 @@ import { isIphoneX, getStatusBarHeight } from 'react-native-iphone-x-helper'
 import Toast from 'react-native-simple-toast'
 
 import { useStores, useTheme } from '../../store'
-import { Destination, StreamPayment, NUM_SECONDS } from '../../store/feed'
+import { Destination, StreamPayment, NUM_SECONDS, StreamPaymentModel } from 'store/feed-store'
 import { SCREEN_WIDTH } from '../../constants'
 import useInterval from '../utils/useInterval'
 import EE, { CLIP_PAYMENT, PLAY_ANIMATION } from '../utils/ee'
@@ -188,14 +188,20 @@ export default function Podcast({ pod, chat, onBoost, podError }) {
     const dests = pod && pod.value && pod.value.destinations
     if (!dests) return
     if (!pod.id || !selectedEpisodeID) return
-    const sp: StreamPayment = {
+    const sp: StreamPayment = StreamPaymentModel.create({
       feedID: pod.id,
       itemID: selectedEpisodeID,
       ts: Math.round(pos) || 0,
       speed: speed,
-    }
+    })
     const memo = JSON.stringify(sp)
-    feed.sendPayments(dests, memo, pricePerMinute * mult || 1, chatID, true)
+    feed.sendPayments({
+      destinations: dests,
+      text: memo,
+      amount: pricePerMinute * mult || 1,
+      chat_id: chatID,
+      update_meta: true,
+    })
   }
 
   const count = useRef(0)
@@ -256,14 +262,20 @@ export default function Podcast({ pod, chat, onBoost, podError }) {
         type: 'node',
       }
       const finalDests = dests.concat(extraDest)
-      const sp: StreamPayment = {
+      const sp: StreamPayment = StreamPaymentModel.create({
         feedID: pod.id,
         itemID: selectedEpisodeID,
         ts: d.ts || 0,
-      }
+      })
       if (d.uuid) sp.uuid = d.uuid
       const memo = JSON.stringify(sp)
-      feed.sendPayments(finalDests, memo, pricePerMinute, chatID, false)
+      feed.sendPayments({
+        destinations: finalDests,
+        text: memo,
+        amount: pricePerMinute,
+        chat_id: chatID,
+        update_meta: false,
+      })
     }
   }
 
@@ -328,18 +340,24 @@ export default function Podcast({ pod, chat, onBoost, podError }) {
     EE.emit(PLAY_ANIMATION)
     requestAnimationFrame(async () => {
       const pos = getPosition()
-      const sp: StreamPayment = {
+      const sp: StreamPayment = StreamPaymentModel.create({
         feedID: pod.id,
         itemID: selectedEpisodeID,
         ts: Math.round(pos) || 0,
         amount,
-      }
+      })
       onBoost(sp)
       const dests = pod && pod.value && pod.value.destinations
       if (!dests) return
       if (!pod.id || !selectedEpisodeID) return
       const memo = JSON.stringify(sp)
-      feed.sendPayments(dests, memo, amount, chatID, false)
+      feed.sendPayments({
+        destinations: dests,
+        text: memo,
+        amount,
+        chat_id: chatID,
+        update_meta: false,
+      })
     })
 
     ui.setPodcastBoostAmount(null)

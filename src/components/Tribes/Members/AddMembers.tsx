@@ -7,6 +7,7 @@ import { TRIBE_SIZE_LIMIT } from '../../../constants'
 import Button from '../../common/Button'
 import Typography from '../../common/Typography'
 import { Contact, SelectedContact } from './Items'
+import { Contact as ContactType } from 'store/contacts-store'
 
 export default function AddMembers({ initialMemberIds, loading, finish }) {
   const theme = useTheme()
@@ -30,13 +31,13 @@ export default function AddMembers({ initialMemberIds, loading, finish }) {
   }
 
   const initialContactIds = initialMemberIds || []
-  const initialContactsToShow = contacts.contacts.filter((c) => {
+  const initialContactsToShow = contacts.contactsArray.filter((c) => {
     return initialContactIds.includes(c.id)
   })
 
   const noInitials = !(initialMemberIds && initialMemberIds.length)
 
-  const contactsToShow = contacts.contacts.filter((c) => c.id > 1 && !initialContactIds.includes(c.id))
+  const contactsToShow = contacts.contactsArray.filter((c) => c.id > 1 && !initialContactIds.includes(c.id))
   const selectedContacts = contactsToShow.filter((c) => selected.includes(c.id))
 
   const showSelectedContacts = selectedContacts.length + initialContactsToShow.length > 0

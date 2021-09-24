@@ -17,7 +17,7 @@ export default function ContactList({ listHeader }) {
   const myid = user.myid
 
   return useObserver(() => {
-    const contactsToShow = contacts.contacts.filter((c) => {
+    const contactsToShow = contacts.contactsArray.filter((c) => {
       if (!ui.contactsSearchTerm) return true
       return c.alias.toLowerCase().includes(ui.contactsSearchTerm.toLowerCase())
     })

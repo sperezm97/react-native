@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import moment from 'moment'
 
 import { useStores, useTheme } from '../../../store'
-import { useAvatarColor } from '../../../store/hooks/msg'
+import { useAvatarColor } from 'store/hooks/msg'
 import { constants } from '../../../constants'
 import { calcExpiry } from './utils'
 import Typography from '../../common/Typography'

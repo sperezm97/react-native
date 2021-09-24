@@ -14,7 +14,7 @@ export default function AccountDetails() {
   const [tipAmount, setTipAmount] = useState(user.tipAmount + '')
   const [loading, setLoading] = useState(false)
   const [isEnabled, setIsEnabled] = useState(false)
-  const me = contacts.contacts.find((c) => c.id === user.myid)
+  const me = contacts.contactsArray.find((c) => c.id === user.myid)
   const nativeID = 'tipAmount'
 
   useEffect(() => {

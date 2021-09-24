@@ -6,7 +6,7 @@ import FastImage from 'react-native-fast-image'
 import Ionicon from 'react-native-vector-icons/Ionicons'
 
 import { useTheme } from '../../../store'
-import { useAvatarColor } from '../../../store/hooks/msg'
+import { useAvatarColor } from 'store/hooks/msg'
 import { useCachedEncryptedFile } from './hooks'
 import { constantCodes, constants } from '../../../constants'
 import { parseLDAT } from '../../utils/ldat'

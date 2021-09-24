@@ -19,7 +19,7 @@ export default function Animation({ dark, myid }) {
   const { contacts } = useStores()
   const [show, setShow] = useState(false)
 
-  const meContact = contacts.contacts.find((c) => c.id === myid)
+  const meContact = contacts.contacts.get(myid)
   let meIMG = usePicSrc(meContact)
 
   const opacity = useRef(new Animated.Value(0)).current

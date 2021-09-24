@@ -1,6 +1,6 @@
 import { DEFAULT_TRIBE_SERVER } from 'config'
 
-export const loadFeed = async (host: string, url: string) => {
+export const loadFeed = async (host: string, uuid: string, url: string) => {
   if (!host || !url) return
   const theHost = host.includes('localhost') ? DEFAULT_TRIBE_SERVER : host
   try {

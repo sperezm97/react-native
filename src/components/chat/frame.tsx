@@ -1,14 +1,14 @@
 import React, { useRef, useState } from 'react'
 import 'react-native-get-random-values'
 import { WebView } from 'react-native-webview'
-import { View, ActivityIndicator, StyleSheet, Text, TextInput } from 'react-native'
+import { View, ActivityIndicator, StyleSheet, Text, TextInput, Alert } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { Button } from 'react-native-paper'
 import { useStores } from '../../store'
 import { randString } from '../../crypto/rand'
 
 export default function Webview({ url }) {
-  const { user, msg, auth } = useStores()
+  const { user, msg } = useStores() // auth
   const [bridge, setBridge] = useState(null)
   const [password, setPassword] = useState('')
   const [savedPubkey, setSavedPubkey] = useState('')
@@ -86,7 +86,8 @@ export default function Webview({ url }) {
   async function authorize(amt, challenge: string) {
     let sig = ''
     if (challenge) {
-      sig = await auth.sign(challenge)
+      // sig = await auth.sign(challenge)
+      Alert.alert('Unimplemented')
     }
     postMessage({
       type: 'AUTHORIZE',

@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import Ionicon from 'react-native-vector-icons/Ionicons'
 
-import { useParsedJsonOrClipMsg } from '../../../store/hooks/msg'
+import { useParsedJsonOrClipMsg } from 'store/hooks/msg'
 import { useTheme } from '../../../store'
 import shared from './sharedStyles'
 import CustomIcon from '../../utils/customIcons'

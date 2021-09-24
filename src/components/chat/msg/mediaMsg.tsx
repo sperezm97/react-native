@@ -11,7 +11,7 @@ import RNFetchBlob from 'rn-fetch-blob'
 import Toast from 'react-native-simple-toast'
 
 import { useStores, useTheme, hooks } from '../../../store'
-import { useTribeMediaType } from '../../../store/hooks/tribes'
+import { useTribeMediaType } from 'store/hooks/tribes'
 import shared from './sharedStyles'
 import { useCachedEncryptedFile } from './hooks'
 import AudioPlayer from './audioPlayer'

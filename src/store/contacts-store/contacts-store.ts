@@ -11,7 +11,7 @@ export const ContactsStoreModel = types
   })
   .extend(withEnvironment)
   .actions((self) => ({
-    addContact: async (v: any): Promise<boolean> => await actions.addContact(self as ContactsStore, v),
+    addContact: async (v: any): Promise<any> => await actions.addContact(self as ContactsStore, v),
     createInvite: async (nickname: string, welcome_message: string): Promise<any> =>
       await actions.createInvite(self as ContactsStore, nickname, welcome_message),
     createSubscription: async (v: any): Promise<any> => await actions.createSubscription(v),
@@ -36,6 +36,11 @@ export const ContactsStoreModel = types
     },
     setContacts(contacts: any) {
       self.contacts = contacts
+    },
+  }))
+  .views((self) => ({
+    get contactsArray(): Contact[] {
+      return Array.from(self.contacts.values())
     },
   }))
 

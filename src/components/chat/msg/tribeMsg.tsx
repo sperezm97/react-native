@@ -34,7 +34,7 @@ export default function TribeMessage(props) {
       setError('Could not load Tribe.')
     }
     if (tribeParams) {
-      const AJ = chats.chats.find((c) => c.uuid === tribeParams.uuid)
+      const AJ = chats.chatsArray.find((c) => c.uuid === tribeParams.uuid)
       if (!AJ) setShowJoinButton(true)
     }
     setLoading(false)

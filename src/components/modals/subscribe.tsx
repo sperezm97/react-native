@@ -28,12 +28,13 @@ function Subscribe({ close }) {
   const { ui, chats, contacts, user } = useStores()
   const [loading, setLoading] = useState(false)
 
-  const params = ui.subModalParams
+  // TODO: properly type this so no type errors are thrown when removing any
+  const params: any = ui.subModalParams
 
   async function subscribe() {
     try {
       setLoading(true)
-      let contact = contacts.contacts.find((c) => c.public_key === params.publicKey)
+      let contact = contacts.contactsArray.find((c) => c.public_key === params.publicKey)
       if (!contact) {
         // create contact if not exist
         const r = await contacts.addContact({
@@ -43,7 +44,7 @@ function Subscribe({ close }) {
         contact = r
       }
       let chatId
-      const chatForContact = chats.chats.find((c) => {
+      const chatForContact = chats.chatsArray.find((c) => {
         return c.type === conversation && c.contact_ids.includes(contact.id)
       })
       if (chatForContact) chatId = chatForContact.id
