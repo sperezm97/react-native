@@ -1,11 +1,10 @@
 import React from 'react'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet } from 'react-native'
 import { TextInput } from 'react-native-paper'
 
 import { useTheme } from '../../../store'
 import InputAccessoryView from '../../common/Accessories/InputAccessoryView'
 import Typography from '../../common/Typography'
-// import QDialog from './qDialog'
 
 export default function NumberInput({
   name,
@@ -16,15 +15,11 @@ export default function NumberInput({
   setValue,
   value,
   displayOnly,
-  description,
   accessibilityLabel,
   style,
 }) {
   const theme = useTheme()
   let lab = `${label.en}${required ? ' *' : ''}`
-  // if (error) {
-  //   lab = `${label.en} - ${error}`
-  // }
   if (displayOnly) lab = label.en
 
   return (
@@ -43,7 +38,6 @@ export default function NumberInput({
         inputAccessoryViewID={name}
         underlineColor={theme.border}
       />
-      {/* {description && <QDialog description={description} label={label.en} />} */}
 
       <InputAccessoryView nativeID={name} />
     </>

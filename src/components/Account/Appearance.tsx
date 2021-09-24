@@ -39,7 +39,7 @@ export default function Network() {
 function Border() {
   const theme = useTheme()
 
-  return <View style={{ ...styles.borderBottom, borderBottomColor: theme.border }}></View>
+  return <View style={{ ...styles.borderBottom, borderBottomColor: theme.border }} />
 }
 
 const styles = StyleSheet.create({

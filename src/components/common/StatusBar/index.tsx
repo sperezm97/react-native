@@ -1,8 +1,5 @@
 import React from 'react'
-import { StyleSheet, Platform, StatusBar, View } from 'react-native'
-import { getStatusBarHeight } from 'react-native-iphone-x-helper'
-
-const STATUSBAR_HEIGHT = Platform.OS === 'ios' ? getStatusBarHeight() : StatusBar.currentHeight
+import { StyleSheet, StatusBar, View } from 'react-native'
 
 type BarStyle = 'default' | 'light-content' | 'dark-content'
 

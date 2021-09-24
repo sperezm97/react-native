@@ -21,9 +21,9 @@ type UseCachedEncryptedFile = {
 }
 export function useCachedEncryptedFile(props, ldat, dispatchTrigger = false): UseCachedEncryptedFile {
   const { meme } = useStores()
-  const { id, media_key, media_type, media_token, message_content } = props
+  const { id, media_key, media_type, media_token } = props
 
-  const [data, setData] = useState('')
+  const [data] = useState('')
   const [uri, setURI] = useState('')
   const [loading, setLoading] = useState(false)
   const [paidMessageText, setPaidMessageText] = useState(null)

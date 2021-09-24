@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react'
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
+import React, { useState, useRef } from 'react'
+import { View, TouchableOpacity, StyleSheet } from 'react-native'
 import { RNCamera } from 'react-native-camera'
 import { Button } from 'react-native-paper'
 
@@ -17,7 +17,7 @@ export default function Cam({ onCancel, onSnap }) {
   // }, [])
 
   async function takePic() {
-    if (camRef && camRef.current) {
+    if (camRef?.current) {
       const pic = await camRef.current.takePictureAsync({
         quality: 0.5,
         // skipProcessing:true,
@@ -75,7 +75,7 @@ function Snapper({ snap }) {
   return (
     <View style={styles.snapWrap}>
       <View style={styles.innerSnap}>
-        <TouchableOpacity style={styles.snap} activeOpacity={0.5} onPress={() => snap()}></TouchableOpacity>
+        <TouchableOpacity style={styles.snap} activeOpacity={0.5} onPress={() => snap()} />
       </View>
     </View>
   )

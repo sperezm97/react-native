@@ -1,10 +1,10 @@
-import React, { useEffect, useState, memo } from 'react'
-import { StyleSheet, View, ScrollView, Modal, Animated, Dimensions } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { StyleSheet, View, ScrollView, Modal, Animated } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
 import RNFetchBlob from 'rn-fetch-blob'
 
 import { useStores, useTheme } from '../../../../store'
-import { SCREEN_HEIGHT, SCREEN_WIDTH } from '../../../../constants'
+import { SCREEN_WIDTH } from '../../../../constants'
 import { DEFAULT_TRIBE_SERVER } from '../../../../config'
 import ModalHeader from '../ModalHeader'
 import Form from '../../../form'
@@ -13,7 +13,6 @@ import Avatar from '../../Avatar'
 import Button from '../../Button'
 import ImageDialog from '../../Dialogs/ImageDialog'
 import AvatarEdit from '../../Avatar/AvatarEdit'
-// import AddMembers from '../../../Tribes/Members/AddMembers'
 import TribeTags from '../../../Tribes/Tribe/TribeTags'
 
 export default function AddTribe() {
@@ -83,7 +82,7 @@ export default function AddTribe() {
     <Modal visible={ui.newTribeModal} animationType='slide' presentationStyle='pageSheet' onDismiss={close}>
       <ModalHeader title={getTitle()} onClose={close} />
       <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
-        {next === 1 ? (
+        {next === 1 && (
           <ScrollView style={styles.scroller} contentContainerStyle={styles.container}>
             <Form
               schema={schemas.tribe}
@@ -108,7 +107,8 @@ export default function AddTribe() {
               }}
             />
           </ScrollView>
-        ) : next === 2 ? (
+        )}
+        {next === 2 && (
           <Animated.View
             style={{
               transform: [
@@ -122,7 +122,8 @@ export default function AddTribe() {
 
             {/* <AddMembers initialMemberIds={[]} loading={loading} finish={finish} /> */}
           </Animated.View>
-        ) : (
+        )}
+        {![1, 2].includes(next) && (
           <Animated.View
             style={{
               transform: [
@@ -160,7 +161,7 @@ const AddPhoto = ({ finish }) => {
   const [showNext, setShowNext] = useState(false)
   const [uploadPercent, setUploadedPercent] = useState(0)
   const [photo, setPhoto] = useState('')
-  const { chats, meme } = useStores()
+  const { meme } = useStores()
   const theme = useTheme()
 
   async function tookPic(img) {

@@ -7,7 +7,7 @@ import { useTheme } from '../../../store'
 export default function MemberRequest(props) {
   const theme = useTheme()
   const [loadingStatus, setLoadingStatus] = useState('')
-  const typ = constantCodes['message_types'][props.type]
+  const typ = constantCodes.message_types[props.type]
 
   let msg = ''
   if (typ === 'member_approve') msg = 'Welcome!'

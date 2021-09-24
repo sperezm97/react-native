@@ -13,7 +13,6 @@ import CustomIcon from '../utils/customIcons'
 import useInterval from '../utils/useInterval'
 
 import { getPosition, setPosition } from './Position'
-import Rocket from './Rocket'
 import Typography from '../common/Typography'
 
 momentDurationFormatSetup(moment)

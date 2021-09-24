@@ -8,7 +8,6 @@ import { Contact } from '../contacts-store'
 import { parseLDAT, urlBase64FromAscii } from 'store/utils/ldat'
 import { Chat } from 'store/chats-store'
 
-const group = constants.chat_types.group
 const tribe = constants.chat_types.tribe
 
 export function useMsgs(chat, limit?: number) {
@@ -27,7 +26,7 @@ export function useMsgs(chat, limit?: number) {
   }
   const msgs = msg.messages[theID]
 
-  const shownMsgs = msgs && msgs.slice(0, limit || 1000)
+  const shownMsgs = msgs?.slice(0, limit || 1000)
 
   const theseContacts: Contact[] = Array.from(contacts.contacts.values())
   const messages = processMsgs(shownMsgs, isTribe, theseContacts, myid)
@@ -50,7 +49,7 @@ function processMsgs(incomingmsgs: Msg[], isTribe: boolean, contacts: Contact[],
     const msg = msgs[i]
 
     msg.showInfoBar = calcShowInfoBar(msgs, msg, i, isTribe, myid)
-    const typ = constantCodes['message_types'][msg.type]
+    const typ = constantCodes.message_types[msg.type]
 
     // attachment logic
     if (typ === 'attachment' && msg.sender !== myid) {
@@ -58,7 +57,7 @@ function processMsgs(incomingmsgs: Msg[], isTribe: boolean, contacts: Contact[],
       const ldat = parseLDAT(msg.media_token)
       if (ldat.muid && ldat.meta && ldat.meta.amt) {
         const accepted = msgs.find((m) => {
-          const mtype = constantCodes['message_types'][m.type]
+          const mtype = constantCodes.message_types[m.type]
           const start = urlBase64FromAscii(ldat.host) + '.' + ldat.muid
           return (
             (mtype === 'purchase_accept' && m.media_token.startsWith(start)) ||
@@ -75,9 +74,9 @@ function processMsgs(incomingmsgs: Msg[], isTribe: boolean, contacts: Contact[],
     if (typ === 'attachment' && msg.sender === myid) {
       // from me
       const ldat = parseLDAT(msg.media_token)
-      if (ldat && ldat.muid && ldat.meta && ldat.meta.amt) {
+      if (ldat?.muid && ldat.meta && ldat.meta.amt) {
         const purchase = msgs.find((m) => {
-          const mtype = constantCodes['message_types'][m.type]
+          const mtype = constantCodes.message_types[m.type]
           const start = urlBase64FromAscii(ldat.host) + '.' + ldat.muid
           return mtype === 'purchase' && m.media_token.startsWith(start)
         })
@@ -133,7 +132,7 @@ function processMsgs(incomingmsgs: Msg[], isTribe: boolean, contacts: Contact[],
 function getPrevious(msgs: Msg[], i: number) {
   if (i === 0) return null
   const previous = msgs[i - 1]
-  const mtype = constantCodes['message_types'][previous.type]
+  const mtype = constantCodes.message_types[previous.type]
   if (hideTypes.includes(mtype)) {
     return getPrevious(msgs, i - 1)
   }
@@ -204,7 +203,7 @@ function arraysEqual(_arr1, _arr2) {
   return true
 }
 
-export function useMsgsFilter(msgs: Msg[], filter: string) {}
+export function useMsgsFilter() {}
 
 function rando() {
   return Math.random().toString(12).substring(0)
@@ -218,7 +217,7 @@ export function useMsgSender(m, contactList, isTribe) {
     senderAlias = m.sender_alias
     if (m.sender_pic) senderPic = m.sender_pic
   } else {
-    senderAlias = sender && sender.alias
+    senderAlias = sender?.alias
   }
   return { senderAlias, senderPic }
 }
@@ -233,14 +232,16 @@ export function useBoostSender(m, contactList, isTribe) {
 
     if (m.sender_pic) senderPic = m.sender_pic
   } else {
-    senderAlias = sender && sender.alias
+    senderAlias = sender?.alias
   }
   return { senderAlias, senderPic }
 }
 
 export function useParsedJsonOrClipMsg(message_content) {
   if (!message_content) return {}
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   if (message_content.includes('::')) return useParsedClipMsg(message_content)
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   return useParsedJsonMsg(message_content)
 }
 
@@ -257,7 +258,7 @@ export function useParsedJsonMsg(message_content: string) {
 export function useParsedClipMsg(message_content: string) {
   if (!message_content) return {}
   const arr = message_content.split('::')
-  if (!(arr && arr[1])) return {}
+  if (!arr?.[1]) return {}
   try {
     const r = JSON.parse(arr[1])
     return r
@@ -268,7 +269,7 @@ export function useParsedClipMsg(message_content: string) {
 
 export function useParsedGiphyMsg(message_content: string) {
   const arr = message_content.split('::')
-  if (!(arr && arr[1])) return {}
+  if (!arr?.[1]) return {}
   const dec = base64.decode(arr[1])
   try {
     const r = JSON.parse(dec)

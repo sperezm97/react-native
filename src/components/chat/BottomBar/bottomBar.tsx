@@ -59,13 +59,6 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
 
   const inputRef = useRef(null)
 
-  const hasLoopout =
-    tribeBots &&
-    tribeBots.length &&
-    tribeBots.find((tb) => tb.prefix === '/loopout' && tb.commands && tb.commands.find((c) => c.command === '*'))
-      ? true
-      : false
-
   const waitingForAdminApproval = chat.status === constants.chat_statuses.pending
 
   const openGiphyModal = () => modalizeRef.current?.open()
@@ -146,7 +139,7 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
     setTakingPhoto(false)
 
     setTimeout(() => {
-      if (img && img.uri) {
+      if (img?.uri) {
         openImgViewer({ uri: img.uri })
         setTint('dark')
       }
@@ -229,7 +222,7 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
   const panResponder = React.useMemo(
     () =>
       PanResponder.create({
-        onStartShouldSetPanResponder: (evt, gestureState) => true,
+        onStartShouldSetPanResponder: () => true,
         onMoveShouldSetPanResponderCapture: () => true,
         onPanResponderStart: () => {
           nonStateRecordingStartTime = Date.now().valueOf()
@@ -256,7 +249,7 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
             return null
           })
         },
-        onPanResponderMove: (evt, gestureState) => {
+        onPanResponderMove: (_, gestureState) => {
           if (gestureState.dx < -70) {
             setRecordingStartTime((current) => {
               if (current) {
@@ -270,7 +263,7 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
             })
           }
         },
-        onPanResponderRelease: (evt, gestureState) => {},
+        onPanResponderRelease: () => {},
       }),
     []
   )
@@ -410,6 +403,8 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
   )
 
   const hasReplyContent = replyUuid || extraTextContent ? true : false
+  const inputFocusPaddingTop = inputFocused ? 10 : 5
+  const iphoneXPaddingBottom = isIphoneX() ? getBottomSpace() : 5
 
   return useObserver(() => (
     <View
@@ -438,8 +433,8 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
           ...styles.barInner,
           borderColor: theme.border,
           backgroundColor: theme.bg,
-          paddingTop: isIphoneX() ? (inputFocused ? 10 : 5) : 5,
-          paddingBottom: inputFocused ? 5 : isIphoneX() ? getBottomSpace() : 5,
+          paddingTop: isIphoneX() ? inputFocusPaddingTop : 5,
+          paddingBottom: inputFocused ? 5 : iphoneXPaddingBottom,
         }}
         accessibilityLabel='chat-bottombar-inner'
       >
@@ -460,7 +455,7 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
                 color: theme.input,
               }}
               placeholderTextColor={theme.subtitle}
-              onFocus={(e) => setInputFocused(true)}
+              onFocus={() => setInputFocused(true)}
               onBlur={() => setInputFocused(false)}
               onChangeText={(e) => setText(e)}
               value={text}
@@ -478,7 +473,6 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
         <ChatOptions
           visible={dialogOpen}
           onCancel={() => setDialogOpen(false)}
-          hasLoopout={hasLoopout}
           isConversation={isConversation}
           onPick={(res) => tookPic(res)}
           onChooseCam={() => setTakingPhoto(true)}
@@ -490,10 +484,6 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
           send={() => {
             // setDialogOpen(false)
             ui.setPayMode('payment', chat)
-          }}
-          loopout={() => {
-            // setDialogOpen(false)
-            ui.setPayMode('loopout', chat)
           }}
           onGiphyHandler={onGiphyHandler}
           onEmbedVideoHandler={onEmbedVideoHandler}

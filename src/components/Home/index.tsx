@@ -16,7 +16,7 @@ const { useTribes } = hooks
 export default function Home() {
   const [refreshing, setRefreshing] = useState(false)
   const [loading, setLoading] = useState(true)
-  const { ui, chats, user } = useStores()
+  const { chats, user } = useStores()
   const theme = useTheme()
 
   useEffect(() => {
@@ -37,7 +37,9 @@ export default function Home() {
   }
 
   return useObserver(() => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const allTribes = useTribes()
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const feed = useFeed(allTribes, user.myid)
 
     return (

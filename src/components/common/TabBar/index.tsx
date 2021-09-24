@@ -2,10 +2,7 @@ import React from 'react'
 import { View, StyleSheet, Dimensions } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
 import { useNavigation, useRoute } from '@react-navigation/native'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import AntDesignIcon from 'react-native-vector-icons/AntDesign'
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
-import MaterialIcon from 'react-native-vector-icons/AntDesign'
 import IonIcon from 'react-native-vector-icons/Ionicons'
 import SimpleIcon from 'react-native-vector-icons/SimpleLineIcons'
 
@@ -13,7 +10,6 @@ import SimpleIcon from 'react-native-vector-icons/SimpleLineIcons'
 import { isIphoneX, getBottomSpace } from 'react-native-iphone-x-helper'
 
 import { useTheme } from '../../../store'
-import { isIphoneXorAbove } from '../../utils/utils'
 import Pushable from '../Pushable'
 import Icon from '../Icon'
 
@@ -21,7 +17,6 @@ export default function TabBar() {
   const theme = useTheme()
   const navigation = useNavigation()
   const current = useRoute()
-  const insets = useSafeAreaInsets()
   const { width } = Dimensions.get('window')
   const tabbarWidth = width - 32
 

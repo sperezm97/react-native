@@ -9,7 +9,7 @@ import styles from './styles'
 
 type HeaderProps = Pick<GiphyProps, 'onClose' | 'searchGif' | 'setSearchGif' | 'getGifsBySearch'>
 
-const Header: React.FC<HeaderProps> = ({ onClose, searchGif, setSearchGif, getGifsBySearch }) => {
+const Header: React.FC<HeaderProps> = ({ searchGif, setSearchGif, getGifsBySearch }) => {
   const theme = useTheme()
 
   return (
@@ -24,7 +24,7 @@ const Header: React.FC<HeaderProps> = ({ onClose, searchGif, setSearchGif, getGi
           placeholder='Search on GIPHY'
           value={searchGif}
           onChangeText={setSearchGif}
-          onSubmitEditing={(v) => {
+          onSubmitEditing={() => {
             if (!searchGif) return
             getGifsBySearch()
           }}

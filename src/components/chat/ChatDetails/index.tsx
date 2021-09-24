@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { useObserver } from 'mobx-react-lite'
 import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import { IconButton, TextInput } from 'react-native-paper'
-import Slider from '@react-native-community/slider'
 import { useNavigation } from '@react-navigation/native'
 import RNFetchBlob from 'rn-fetch-blob'
 import moment from 'moment'
@@ -11,7 +10,7 @@ import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIc
 
 import { useStores, useTheme } from '../../../store'
 import { constants } from '../../../constants'
-import { useChatPicSrc, usePicSrc, createChatPic } from '../../utils/picSrc'
+import { useChatPicSrc, usePicSrc } from '../../utils/picSrc'
 import EE, { LEFT_GROUP } from '../../utils/ee'
 import BackHeader from '../../common/BackHeader'
 import GroupSettings from '../../common/Dialogs/GroupSettings'
@@ -27,7 +26,6 @@ export default function ChatDetails({ route }) {
   const [loading, setLoading] = useState(false)
   const [groupSettingsDialog, setGroupSettingsDialog] = useState(false)
   const [imageDialog, setImageDialog] = useState(false)
-  const [loadingTribe, setLoadingTribe] = useState(false)
   const [uploading, setUploading] = useState(false)
   const [uploadPercent, setUploadedPercent] = useState(0)
   const navigation = useNavigation()
@@ -35,10 +33,10 @@ export default function ChatDetails({ route }) {
 
   const group = route.params.group
   const [photo_url, setPhotoUrl] = useState(group.my_photo_url || '')
-  const [alias, setAlias] = useState((group && group['my_alias']) || '')
+  const [alias, setAlias] = useState(group?.my_alias || '')
   function updateAlias() {
-    if (!(group && group.id)) return
-    if (alias !== group['my_alias']) {
+    if (!group?.id) return
+    if (alias !== group.my_alias) {
       chats.updateMyInfoInChat(group.id, alias, photo_url)
     }
   }
@@ -90,18 +88,16 @@ export default function ChatDetails({ route }) {
         chats.updateMyInfoInChat(group.id, alias, `https://${server.host}/public/${json.muid}`)
         setUploading(false)
       })
-      .catch((err) => {
+      .catch(() => {
         setUploading(false)
       })
   }
 
   let initppm = chats.pricesPerMinute[group.id]
   if (!(initppm || initppm === 0)) initppm = group.pricePerMinute || 5
-  const [ppm, setPpm] = useState(initppm)
 
   const uri = useChatPicSrc(group)
   const hasGroup = group ? true : false
-  const hasImg = uri ? true : false
 
   const isTribe = group && group.type === constants.chat_types.tribe
   const isTribeAdmin = isTribe && group.owner_pubkey === user.publicKey
@@ -120,18 +116,8 @@ export default function ChatDetails({ route }) {
   }
 
   const ppms = [0, 3, 5, 10, 20, 50, 100]
-  function chooseSatsPerMinute(n) {
-    if (!group.id) return
-    const price = ppms[n] || 0
-    chats.setPricePerMinute(group.id, price)
-  }
-  function satsPerMinuteChanged(n) {
-    setPpm(ppms[n] || 0)
-  }
-  let sliderValue = fuzzyIndexOf(ppms, ppm)
+  let sliderValue = fuzzyIndexOf(ppms, initppm)
   if (sliderValue < 0) sliderValue = 2
-
-  const showValueSlider = isTribe && !isTribeAdmin && group && group.feed_url ? true : false
 
   async function exitGroup() {
     setLoading(true)
@@ -155,6 +141,7 @@ export default function ChatDetails({ route }) {
 
   return useObserver(() => {
     const meContact = contacts.contactsArray.find((c) => c.id === user.myid)
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     let imgURI = usePicSrc(meContact)
 
     let myPhoto = group.my_photo_url || imgURI
@@ -284,7 +271,7 @@ function DetailsAction({ chat }) {
 
   return useObserver(() => {
     const theChat = chats.chatsArray.find((c) => c.id === chat.id)
-    const isMuted = (theChat && theChat.is_muted) || false
+    const isMuted = theChat?.is_muted || false
 
     async function muteChat() {
       chats.muteChat(chat.id, isMuted ? false : true)

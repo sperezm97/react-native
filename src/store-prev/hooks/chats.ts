@@ -1,8 +1,7 @@
-import { useState } from 'react'
-import moment, { months } from 'moment'
+import moment from 'moment'
 
 import { useStores } from '../index'
-import { DEFAULT_DOMAIN, INVITER_KEY } from '../../config'
+import { DEFAULT_DOMAIN } from '../../config'
 import { Chat } from '../chats'
 import { Contact } from '../contacts'
 import { constants } from '../../constants'
@@ -33,7 +32,7 @@ export function useChatRow(id) {
   const myid = user.myid
 
   const msgs = msg.messages[id || '_']
-  const lastMsg = msgs && msgs[0]
+  const lastMsg = msgs?.[0]
   const lastMsgText = lastMessageText(lastMsg, myid)
   const hasLastMsg = lastMsgText ? true : false
 
@@ -107,7 +106,6 @@ function countUnseen(msgs, lastSeen: number, myid: number): number {
 }
 
 const conversation = constants.chat_types.conversation
-const group = constants.chat_types.conversation
 const expiredInvite = constants.invite_statuses.expired
 
 export function allChats(chats: Chat[], contacts: Contact[], myid: number): Chat[] {
@@ -151,12 +149,12 @@ export function contactForConversation(chat: Chat, contacts: Contact[], myid: nu
 export function sortChats(chatsToShow, messages) {
   chatsToShow.sort((a, b) => {
     const amsgs = messages[a.id]
-    const alastMsg = amsgs && amsgs[0]
+    const alastMsg = amsgs?.[0]
     const then = moment(new Date()).add(-30, 'days')
-    const adate = alastMsg && alastMsg.date ? moment(alastMsg.date) : then
+    const adate = alastMsg?.date ? moment(alastMsg.date) : then
     const bmsgs = messages[b.id]
-    const blastMsg = bmsgs && bmsgs[0]
-    const bdate = blastMsg && blastMsg.date ? moment(blastMsg.date) : then
+    const blastMsg = bmsgs?.[0]
+    const bdate = blastMsg?.date ? moment(blastMsg.date) : then
     return adate.isBefore(bdate) ? 0 : -1
   })
   chatsToShow.sort((a) => {

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { View, StyleSheet, TextInput } from 'react-native'
-import { IconButton, ActivityIndicator, Snackbar } from 'react-native-paper'
+import { IconButton, ActivityIndicator } from 'react-native-paper'
 import RadialGradient from 'react-native-radial-gradient'
 import Toast from 'react-native-simple-toast'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
@@ -10,7 +10,7 @@ import { useStores, useTheme } from '../../store'
 import Typography from '../common/Typography'
 import Button from '../common/Button'
 
-export default function Invite(props) {
+export default function Invite() {
   const [email, setEmail] = useState('')
   const [checking, setChecking] = useState(false)
   const [wrong, setWrong] = useState('')
@@ -238,7 +238,3 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
 })
-
-async function sleep(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms))
-}

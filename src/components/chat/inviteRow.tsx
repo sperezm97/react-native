@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { StyleSheet, TouchableOpacity, View, Image, Alert } from 'react-native'
-import { Dialog, Portal, Button } from 'react-native-paper'
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import moment from 'moment'
 import Toast from 'react-native-simple-toast'
@@ -13,9 +12,8 @@ export default function InviteRow(props) {
   const theme = useTheme()
   const { contacts, ui, details } = useStores()
   const { name, invite } = props
-  const [loading, setLoading] = useState(false)
   const [confirmed, setConfirmed] = useState(false)
-  const statusString = constantCodes['invite_statuses'][invite.status]
+  const statusString = constantCodes.invite_statuses[invite.status]
 
   const expiredStatus = props.invite.status === 5
   const yesterday = moment().utc().add(-24, 'hours')
@@ -49,10 +47,8 @@ export default function InviteRow(props) {
     if (balance < invite.price) {
       Toast.showWithGravity('Not Enough Balance', Toast.SHORT, Toast.TOP)
     } else {
-      setLoading(true)
       await contacts.payInvite(invite.invite_string)
       setConfirmed(true)
-      setLoading(false)
     }
   }
 

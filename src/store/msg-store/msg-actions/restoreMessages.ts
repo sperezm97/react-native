@@ -17,7 +17,7 @@ export const restoreMessages = async (self: MsgStore) => {
     while (!done) {
       const r = await relay.get(`msgs?limit=200&offset=${offset}&date=${dateq}`)
 
-      if (r.new_messages && r.new_messages.length) {
+      if (r.new_messages?.length) {
         const decodedMsgs = await decodeMessages(r.new_messages)
         msgs = orgMsgsFromExisting(msgs, decodedMsgs)
         if (r && r.new_messages.length < 200) {

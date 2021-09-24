@@ -47,8 +47,8 @@ export default function MsgRow(props) {
 
   const clearReplyUUID = () => {
     const sr = swipeRowRef.current
-    if (sr && sr.isOpen) {
-      if (sr && sr.closeRow) sr.closeRow()
+    if (sr?.isOpen) {
+      if (sr?.closeRow) sr.closeRow()
       setShowReply(false)
     }
   }
@@ -176,7 +176,8 @@ function MsgBubble(props) {
   const isDeleted = props.status === constants.statuses.deleted
   const allowBoost = !isMe && !(props.message_content || '').startsWith('boost::')
 
-  let backgroundColor = isMe ? (theme.dark ? theme.main : theme.lightGrey) : theme.bg
+  const isMeBgColor = theme.dark ? theme.main : theme.lightGrey
+  let backgroundColor = isMe ? isMeBgColor : theme.bg
   if (isInvoice && !isPaid) {
     backgroundColor = theme.dark ? '#202a36' : 'white'
   }

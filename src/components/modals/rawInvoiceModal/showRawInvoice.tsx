@@ -19,7 +19,7 @@ export default function ShowRawInvoice({ amount, payreq, paid }) {
       await Share.open({ message: payreq })
     } catch (e) {}
   }
-  const { height, width } = Dimensions.get('window')
+  const { height } = Dimensions.get('window')
   const h = height - 280
 
   return (

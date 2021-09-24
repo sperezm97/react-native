@@ -1,22 +1,14 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { useObserver } from 'mobx-react-lite'
-import { useStores } from '../../store'
-import { View, Text, StyleSheet } from 'react-native'
+import { View } from 'react-native'
 import Modal from './modalWrap'
-import { Button } from 'react-native-paper'
 import Header from './modalHeader'
 import { WebView } from 'react-native-webview'
 
 export default function Jitsi({ visible }) {
-  const { ui } = useStores()
-
   function close() {
     console.log('close')
   }
-
-  function jitsiDone() {}
-  function jitsiJoined() {}
-  function jitsiWillJoin() {}
 
   return useObserver(() => (
     <Modal visible={visible} onClose={close}>
@@ -27,21 +19,3 @@ export default function Jitsi({ visible }) {
     </Modal>
   ))
 }
-
-const styles = StyleSheet.create({
-  buttonsWrap: {
-    marginTop: 40,
-    display: 'flex',
-    flexDirection: 'row',
-    width: '100%',
-    justifyContent: 'space-around',
-  },
-  button: {
-    height: 46,
-    borderRadius: 23,
-    width: 120,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-})

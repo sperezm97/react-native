@@ -32,7 +32,7 @@ function RawInvoiceModal({ close }) {
     const params = ui.rawInvoiceModalParams
     const amt = parseInt(params.get('amount') || 0)
     const r = await msg.createRawInvoice({ amt, memo: '' })
-    if (r && r.invoice) {
+    if (r?.invoice) {
       setPayreq(r.invoice)
     }
     setLoading(false)

@@ -150,7 +150,3 @@ export const useStores = () => React.useContext(ctx)
 export const useTheme = () => React.useContext(React.createContext(themeStore))
 
 export const hooks = hookz
-
-async function sleep(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms))
-}

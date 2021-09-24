@@ -45,7 +45,9 @@ export default function Discover() {
   }
 
   return useObserver(() => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const tribes = useTribes()
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const tribesToShow = useSearchTribes(tribes)
 
     return (
@@ -104,7 +106,7 @@ function SearchHeader() {
     setScanning(false)
     const j = utils.jsonFromUrl(data)
 
-    if (j['action']) {
+    if (j.action) {
       const tribeParams = await chats.getTribeDetails(j.host, j.uuid)
 
       setJoinTribe({

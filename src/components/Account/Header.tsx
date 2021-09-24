@@ -12,7 +12,7 @@ export default function Header(props) {
     return (
       <Appbar.Header style={{ ...styles.appBar, backgroundColor: theme.bg }}>
         <View style={{ ...styles.flex, ...styles.content }}>
-          <View style={{ ...styles.flex, ...styles.left }}></View>
+          <View style={{ ...styles.flex, ...styles.left }} />
           <View style={{ ...styles.flex, ...styles.right }}>
             <TouchableOpacity onPress={props.onEdit}>
               <Text style={{ ...styles.edit, color: theme.primary }}>Edit</Text>

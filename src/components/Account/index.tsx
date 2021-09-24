@@ -144,6 +144,7 @@ export default function Account() {
     const myid = user.myid
 
     const meContact = contacts.contactsArray.find((c) => c.id === myid)
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     let imgURI = usePicSrc(meContact)
 
     if (photo_url) imgURI = photo_url

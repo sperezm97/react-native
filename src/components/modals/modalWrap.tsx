@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useLayoutEffect } from 'react'
-import { View, StyleSheet, Dimensions, Button, Text } from 'react-native'
+import React from 'react'
+import { View, StyleSheet } from 'react-native'
 import Modal from 'react-native-modal'
 
 import { useTheme } from '../../store'

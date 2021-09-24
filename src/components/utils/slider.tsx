@@ -5,7 +5,6 @@ import { useTheme } from '../../store'
 
 export default function Slider(props) {
   const screenWidth = Math.ceil(Dimensions.get('window').width)
-  const zero = new Animated.Value(0)
   const w = new Animated.Value(screenWidth)
   const [x] = useState(w)
   const theme = useTheme()

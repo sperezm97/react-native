@@ -54,7 +54,6 @@ function Item({ contact, onPress }) {
   const { contacts } = useStores()
   const theme = useTheme()
   let uri = usePicSrc(contact)
-  const hasImg = uri ? true : false
 
   return (
     <SwipeRow disableRightSwipe={true} friction={100} rightOpenValue={-80} stopRightSwipe={-80}>
@@ -83,7 +82,7 @@ function grouper(data) {
   // takes "alias"
   const ret = []
   const groups = data.reduce((r, e) => {
-    let title = e.alias && e.alias[0]
+    let title = e.alias?.[0]
     if (!r[title]) r[title] = { title, data: [e] }
     else r[title].data.push(e)
     return r

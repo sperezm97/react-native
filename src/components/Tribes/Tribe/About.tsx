@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
-import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
 
 import { useStores, useTheme, hooks } from '../../../store'
 import { useTribeHistory } from 'store/hooks/tribes'
@@ -19,6 +18,7 @@ function About({ tribe }) {
   const theme = useTheme()
 
   return useObserver(() => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const { createdDate, lastActiveDate } = useTribeHistory(tribe.created, tribe.last_active)
 
     return (
@@ -82,6 +82,7 @@ function Tags(props) {
   }
 
   return useObserver(() => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const tribes = useTribes()
     const tribe = tribes.find((t) => t.uuid === theTribe.uuid) || theTribe
 

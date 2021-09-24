@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { Animated, Text, View } from 'react-native'
+import React, { useState } from 'react'
+import { Animated } from 'react-native'
 
 export default function FadeView(props) {
   const [fadeAnim] = useState(new Animated.Value(props.opacity)) // Initial value for opacity: 0

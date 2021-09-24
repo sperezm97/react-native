@@ -30,7 +30,7 @@ export const UserStoreModel = types
     reportError: async (label: string, error: any): Promise<any> =>
       await actions.reportError(self as UserStore, label, error),
     requestInvite: async (email) => await actions.requestInvite(self, email),
-    resetIP: async (): Promise<any> => await actions.resetIP(self as UserStore),
+    resetIP: async (): Promise<any> => await actions.resetIP(),
     restore: async (restoreString: string): Promise<any> => await actions.restore(self as UserStore, restoreString),
     signupWithCode: async (code: string): Promise<ArrayObject> => await actions.signupWithCode(self as UserStore, code),
     signupWithIP: async (ip: string): Promise<string | null> => await actions.signupWithIP(self as UserStore, ip),

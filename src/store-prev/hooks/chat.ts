@@ -53,16 +53,17 @@ export function useReplyContent(msgs, replyUUID, extraTextContent): replyContent
     replyColor = color
   } else {
     const replyMsg = msgs && replyUUID && msgs.find((m) => m.uuid === replyUUID)
-    replyMessageSenderAlias = replyMsg && replyMsg.sender_alias
+    replyMessageSenderAlias = replyMsg?.sender_alias
 
     replyMessageExtraContent = replyMsg
 
-    replyMessageContent = replyMsg && replyMsg.message_content ? replyMsg.message_content : replyMsg?.media_type
+    replyMessageContent = replyMsg?.message_content ? replyMsg.message_content : replyMsg?.media_type
 
     if (!replyMessageSenderAlias && replyMsg && replyMsg.sender) {
       const sender = contacts.contacts.find((c) => c.id === replyMsg.sender)
       if (sender) replyMessageSenderAlias = sender.alias
     }
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     replyColor = useAvatarColor(replyMessageSenderAlias)
   }
   return {
@@ -135,27 +136,4 @@ interface BotCommand {
   max_price: number
   price_index: number
   admin_only: boolean
-}
-
-function testCalcBotPrice(txt) {
-  const res = calcBotPrice(
-    [
-      {
-        prefix: '/loopout',
-        price: 0,
-        commands: [
-          {
-            command: '*',
-            price: 0,
-            min_price: 250000,
-            max_price: 16777215,
-            price_index: 2,
-            admin_only: false,
-          },
-        ],
-      },
-    ],
-    txt
-  )
-  console.log(res)
 }

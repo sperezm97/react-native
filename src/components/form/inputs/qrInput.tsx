@@ -1,11 +1,9 @@
 import React, { useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { IconButton, TextInput } from 'react-native-paper'
-import Clipboard from '@react-native-community/clipboard'
-import Toast from 'react-native-simple-toast'
 
 import { useTheme } from '../../../store'
-import { SCREEN_HEIGHT, TOAST_DURATION } from '../../../constants'
+import { SCREEN_HEIGHT } from '../../../constants'
 import QR from '../../common/Accessories/QR'
 import PublicKey from '../../common/Modals/PublicKey'
 import Typography from '../../common/Typography'
@@ -31,11 +29,6 @@ export default function QrInput({
 
   let lab = `${label.en}${required ? ' *' : ''}`
   if (displayOnly) lab = label.en
-
-  function copyAddress(value) {
-    Clipboard.setString(value)
-    Toast.showWithGravity('Address copid to clipboard', TOAST_DURATION, Toast.CENTER)
-  }
 
   return (
     <>

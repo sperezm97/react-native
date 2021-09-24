@@ -1,18 +1,16 @@
 import React, { useEffect, useState } from 'react'
-import { useObserver } from 'mobx-react-lite'
-import { StyleSheet, View, Modal, Image } from 'react-native'
+import { StyleSheet, View, Modal } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import { IconButton } from 'react-native-paper'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import Swiper from 'react-native-swiper'
 import Ionicon from 'react-native-vector-icons/Ionicons'
-import { ActivityIndicator } from 'react-native-paper'
 import { isIphoneX, getBottomSpace } from 'react-native-iphone-x-helper'
 import ViewMoreText from 'react-native-view-more-text'
 import Toast from 'react-native-simple-toast'
 
 import { useStores, useTheme } from '../../../../store'
-import { SCREEN_WIDTH, SCREEN_HEIGHT, STATUS_BAR_HEIGHT } from '../../../../constants'
+import { SCREEN_WIDTH, STATUS_BAR_HEIGHT } from '../../../../constants'
 import { parseLDAT } from '../../../utils/ldat'
 import { useCachedEncryptedFile } from '../../../chat/msg/hooks'
 import Button from '../../../common/Button'
@@ -50,11 +48,11 @@ function SwipeItem(props) {
   const [onlyOneClick, setOnlyOnClick] = useState(false)
   const [buying, setBuying] = useState(false)
   const [pricePerMessage, setPricePerMessage] = useState(0)
-  const { meme, ui, chats, msg, user, details } = useStores()
+  const { chats, msg, user, details } = useStores()
   const theme = useTheme()
 
   const ldat = parseLDAT(media_token)
-  let { data, uri, loading, trigger, paidMessageText } = useCachedEncryptedFile(props, ldat)
+  let { data, uri, trigger } = useCachedEncryptedFile(props, ldat)
 
   useEffect(() => {
     fetchTribeDetails()
@@ -74,7 +72,7 @@ function SwipeItem(props) {
 
   let amt = null
   let purchased = false
-  if (ldat.meta && ldat.meta.amt) {
+  if (ldat.meta?.amt) {
     amt = ldat.meta.amt
     if (ldat.sig) purchased = true
   }
@@ -87,10 +85,6 @@ function SwipeItem(props) {
   const sold = props.sold
 
   let isImg = false
-  let showPayToUnlockMessage = false
-  if (media_type === 'n2n2/text') {
-    if (!isMe && !loading && !paidMessageText) showPayToUnlockMessage = true
-  }
   if (media_type.startsWith('image') || media_type.startsWith('video')) {
     isImg = true
   }
@@ -100,7 +94,7 @@ function SwipeItem(props) {
     setBuying(true)
     let contact_id = props.sender
     if (!contact_id) {
-      contact_id = chat.contact_ids && chat.contact_ids.find((cid) => cid !== user.myid)
+      contact_id = chat.contact_ids?.find((cid) => cid !== user.myid)
     }
 
     await msg.purchaseMedia({
@@ -137,7 +131,6 @@ function SwipeItem(props) {
     })
   }
 
-  const h = SCREEN_HEIGHT - STATUS_BAR_HEIGHT - 60
   const w = SCREEN_WIDTH
 
   const showBoostRow = boosts_total_sats ? true : false
@@ -240,7 +233,7 @@ function SwipeItem(props) {
         </View>
 
         <View style={styles.row}>
-          {!isMe ? <Boost onPress={onBoostPress} /> : <View></View>}
+          {!isMe ? <Boost onPress={onBoostPress} /> : <View />}
 
           <View>{showBoostRow && <BoostDetails {...props} myAlias={user.alias} myid={user.myid} />}</View>
         </View>

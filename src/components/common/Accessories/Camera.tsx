@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useRef } from 'react'
 import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import { RNCamera } from 'react-native-camera'
-import { Portal, Button } from 'react-native-paper'
+import { Button } from 'react-native-paper'
 import Modal from 'react-native-modal'
 
 export default function Camera({ visible, onCancel, onSnap }) {
@@ -18,7 +18,7 @@ export default function Camera({ visible, onCancel, onSnap }) {
   // }, [])
 
   async function takePic() {
-    if (camRef && camRef.current) {
+    if (camRef?.current) {
       const pic = await camRef.current.takePictureAsync({
         quality: 0.5,
         // skipProcessing:true,
@@ -85,7 +85,7 @@ function Snapper({ snap }) {
   return (
     <View style={styles.snapWrap}>
       <View style={styles.innerSnap}>
-        <TouchableOpacity style={styles.snap} activeOpacity={0.5} onPress={() => snap()}></TouchableOpacity>
+        <TouchableOpacity style={styles.snap} activeOpacity={0.5} onPress={() => snap()} />
       </View>
     </View>
   )

@@ -17,7 +17,8 @@ export default function NumKey(props) {
   const theme = useTheme()
   const h = props.squish ? 240 : 275
 
-  const inline = props.inline ? true : false
+  const inline = !!props.inline
+  const isIphoneXPaddingBottom = isIphoneX() ? getBottomSpace() : 0
 
   return (
     <View
@@ -25,7 +26,7 @@ export default function NumKey(props) {
         ...styles.wrap,
         backgroundColor: props.dark ? theme.black : theme.bg,
         paddingTop: inline ? 0 : 15,
-        paddingBottom: inline ? 0 : isIphoneX() ? getBottomSpace() : 0,
+        paddingBottom: inline ? 0 : isIphoneXPaddingBottom,
       }}
     >
       <View

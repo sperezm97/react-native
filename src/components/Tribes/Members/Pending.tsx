@@ -1,15 +1,13 @@
-import React, { useState } from 'react'
-import { StyleSheet, View, FlatList } from 'react-native'
+import React from 'react'
+import { StyleSheet, FlatList } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
-import { useNavigation } from '@react-navigation/native'
 
-import { useStores, useTheme } from '../../../store'
+import { useStores } from '../../../store'
 import { constants } from '../../../constants'
-import { Contact, DeletableContact, PendingContact } from './Items'
-import Typography from '../../common/Typography'
+import { PendingContact } from './Items'
 
 export default function Pending({ tribe, members }) {
-  const { chats, msg } = useStores()
+  const { msg } = useStores()
 
   async function onApproveOrDenyMember(contactId, status) {
     const msgs = msg.messages[tribe.id]

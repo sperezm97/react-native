@@ -36,7 +36,7 @@ export default function BackupKeys({ visible, close }) {
 
       let pub = myContactKey
       if (!pub) {
-        pub = meContact && meContact.contact_key
+        pub = meContact?.contact_key
       }
 
       if (!pub) return showError('CANT FIND CONTACT KEY')

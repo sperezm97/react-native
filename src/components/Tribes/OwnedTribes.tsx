@@ -36,7 +36,9 @@ export default function OwnedTribes() {
   }
 
   return useObserver(() => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const tribes = useTribes()
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const tribesToShow = useOwnedTribes(tribes)
 
     return (

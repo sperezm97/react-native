@@ -43,9 +43,9 @@ export default function QR({
         setText(data)
       }
       return
-    } else {
-      setText(data)
     }
+    setText(data)
+
     // if (data.length === 66)
   }
 

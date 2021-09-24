@@ -30,14 +30,14 @@ export const showToastIfContactKeyError = (error: Error) => {
 }
 
 export async function makeRemoteTextMap({ contact_id, text, chat_id }, includeSelf?) {
-  const idToKeyMap = {}
+  const idToKeyMap: { [k: string]: any } = {}
   const remoteTextMap = {}
   const chat = chat_id && chatStore.chats.find((c) => c.id === chat_id)
   const myid = userStore.myid
   if (chat) {
     // TRIBE
     if (chat.type === constants.chat_types.tribe && chat.group_key) {
-      idToKeyMap['chat'] = chat.group_key // "chat" is the key for tribes
+      idToKeyMap.chat = chat.group_key // "chat" is the key for tribes
       if (includeSelf) {
         const me = contactStore.contacts.find((c) => c.id === myid) // add in my own self (for media_key_map)
         if (me) idToKeyMap[myid] = me?.contact_key ?? ''
@@ -47,9 +47,8 @@ export async function makeRemoteTextMap({ contact_id, text, chat_id }, includeSe
       const contactsInChat = contactStore.contacts.filter((c) => {
         if (includeSelf) {
           return chat.contact_ids.includes(c.id)
-        } else {
-          return chat.contact_ids.includes(c.id) && c.id !== myid
         }
+        return chat.contact_ids.includes(c.id) && c.id !== myid
       })
       contactsInChat.forEach((c) => (idToKeyMap[c.id] = c?.contact_key ?? ''))
     }
@@ -173,21 +172,6 @@ export function putIn(orged, msg, chatID) {
   } else {
     orged[chatID] = [skinny(msg)]
   }
-}
-
-async function asyncForEach(array, callback) {
-  for (let index = 0; index < array.length; index++) {
-    await callback(array[index], index, array)
-  }
-}
-function chunkArray(arr, len) {
-  var chunks = [],
-    i = 0,
-    n = arr.length
-  while (i < n) {
-    chunks.push(arr.slice(i, (i += len)))
-  }
-  return chunks
 }
 
 export function skinny(m: Msg): Msg {

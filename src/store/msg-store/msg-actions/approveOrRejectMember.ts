@@ -5,7 +5,7 @@ import { MsgStore } from '..'
 
 export const approveOrRejectMember = async (self: MsgStore, contactID: number, status: string, msgId: number) => {
   const r = await relay.put(`member/${contactID}/${status}/${msgId}`)
-  if (r && r.chat && r.chat.id) {
+  if (r?.chat && r.chat.id) {
     const msgs = self.messages[r.chat.id]
     const msg = msgs.find((m) => m.id === msgId)
     if (msg) {

@@ -68,7 +68,7 @@ export default function Webview({ url }) {
   }
 
   async function postMessage(args) {
-    if (ref && ref.current) {
+    if (ref?.current) {
       const pass: string = await randString(16)
       setPassword(pass)
       if (args.budget || args.budget === 0) setSavedBudget(args.budget)
@@ -99,7 +99,7 @@ export default function Webview({ url }) {
   }
 
   function onErrorHandler() {
-    if (ref && ref.current) {
+    if (ref?.current) {
       ref.current.reload()
     }
   }
@@ -110,7 +110,7 @@ export default function Webview({ url }) {
 
   return (
     <View style={styles.webview}>
-      {bridge && bridge.url && <BridgeModal params={bridge} onClose={onCloseBridgeHandler} authorize={authorize} />}
+      {bridge?.url && <BridgeModal params={bridge} onClose={onCloseBridgeHandler} authorize={authorize} />}
       <WebView
         ref={ref}
         userAgent='Sphinx'

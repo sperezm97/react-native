@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useObserver } from 'mobx-react-lite'
-import { StyleSheet, View, Modal, ScrollView, FlatList, TouchableOpacity } from 'react-native'
+import { StyleSheet, View, FlatList, TouchableOpacity } from 'react-native'
 
 import { useTheme, useStores } from '../../../store'
 import { TRIBE_SIZE_LIMIT } from '../../../constants'
 import Button from '../../common/Button'
 import Typography from '../../common/Typography'
-import { Contact, SelectedContact } from './Items'
-import { Contact as ContactType } from 'store/contacts-store'
+import { Contact } from './Items'
 
 export default function AddMembers({ initialMemberIds, loading, finish }) {
   const theme = useTheme()
@@ -31,16 +30,11 @@ export default function AddMembers({ initialMemberIds, loading, finish }) {
   }
 
   const initialContactIds = initialMemberIds || []
-  const initialContactsToShow = contacts.contactsArray.filter((c) => {
-    return initialContactIds.includes(c.id)
-  })
 
-  const noInitials = !(initialMemberIds && initialMemberIds.length)
+  const noInitials = !initialMemberIds?.length
 
   const contactsToShow = contacts.contactsArray.filter((c) => c.id > 1 && !initialContactIds.includes(c.id))
-  const selectedContacts = contactsToShow.filter((c) => selected.includes(c.id))
 
-  const showSelectedContacts = selectedContacts.length + initialContactsToShow.length > 0
   function selectAll() {
     setSelected(contactsToShow.map((c) => c.id))
   }

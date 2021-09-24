@@ -144,7 +144,7 @@ class MsgStore {
       while (!done) {
         const r = await relay.get(`msgs?limit=200&offset=${offset}&date=${dateq}`)
 
-        if (r.new_messages && r.new_messages.length) {
+        if (r.new_messages?.length) {
           const decodedMsgs = await decodeMessages(r.new_messages)
           msgs = orgMsgsFromExisting(msgs, decodedMsgs)
           if (r && r.new_messages.length < 200) {
@@ -186,7 +186,7 @@ class MsgStore {
     try {
       const r = await relay.get(route)
       if (!r) return
-      if (r.new_messages && r.new_messages.length) {
+      if (r.new_messages?.length) {
         await this.batchDecodeMessages(r.new_messages)
       } else {
         this.sortAllMsgs(null)
@@ -374,7 +374,7 @@ class MsgStore {
   async setMessageAsReceived(m) {
     if (!m.chat_id) return
     const msgsForChat = this.messages[m.chat_id]
-    const ogMessage = msgsForChat && msgsForChat.find((msg) => msg.id === m.id || msg.id === -1)
+    const ogMessage = msgsForChat?.find((msg) => msg.id === m.id || msg.id === -1)
     if (ogMessage) {
       ogMessage.status = constants.statuses.received
     } else {
@@ -538,7 +538,7 @@ class MsgStore {
   @action
   async approveOrRejectMember(contactID, status, msgId) {
     const r = await relay.put(`member/${contactID}/${status}/${msgId}`)
-    if (r && r.chat && r.chat.id) {
+    if (r?.chat && r.chat.id) {
       const msgs = this.messages[r.chat.id]
       const msg = msgs.find((m) => m.id === msgId)
       if (msg) {

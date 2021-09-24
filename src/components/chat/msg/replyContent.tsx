@@ -8,7 +8,7 @@ import Ionicon from 'react-native-vector-icons/Ionicons'
 import { useTheme } from '../../../store'
 import { useAvatarColor } from 'store/hooks/msg'
 import { useCachedEncryptedFile } from './hooks'
-import { constantCodes, constants } from '../../../constants'
+import { constantCodes } from '../../../constants'
 import { parseLDAT } from '../../utils/ldat'
 import Typography from '../../common/Typography'
 
@@ -16,16 +16,17 @@ export default function ReplyContent(props) {
   const { shouldRender = true } = props
   const theme = useTheme()
 
-  const extraStyles = props.extraStyles || {}
   const onCloseHandler = () => {
     if (props.onClose) props.onClose()
   }
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const nameColor = props.color || useAvatarColor(props.senderAlias || '')
 
-  if (!Boolean(shouldRender)) {
+  if (!shouldRender) {
     return null
   }
 
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   return useObserver(() => {
     return (
       <View
@@ -59,7 +60,7 @@ export default function ReplyContent(props) {
 }
 
 function ReplySource(props) {
-  const type = constantCodes['message_types'][props.replyMessageExtraContent.type]
+  const type = constantCodes.message_types[props.replyMessageExtraContent.type]
 
   switch (type) {
     case 'message':
@@ -81,7 +82,7 @@ function Media(props) {
 
   const ldat = parseLDAT(media_token)
 
-  let { data, uri, loading, trigger } = useCachedEncryptedFile(props, ldat)
+  let { data, uri, trigger } = useCachedEncryptedFile(props, ldat)
 
   useEffect(() => {
     trigger()

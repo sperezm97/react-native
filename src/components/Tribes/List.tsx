@@ -18,7 +18,7 @@ export default function List(props) {
   const { data, loading, listEmpty, refreshing, onRefresh } = props
   const theme = useTheme()
 
-  const renderItem = ({ index, item }) => <Item {...item} />
+  const renderItem = ({ item }) => <Item {...item} />
 
   return useObserver(() => {
     return (
@@ -47,8 +47,8 @@ export default function List(props) {
 }
 
 function Item(props) {
-  const { name, description, img, joined, uuid, owner, owner_alias, chat } = props
-  const { ui, chats } = useStores()
+  const { name, description, img, joined, uuid, owner, chat } = props
+  const { chats } = useStores()
   const theme = useTheme()
   const navigation = useNavigation()
   const [joinTribe, setJoinTribe] = useState({ visible: false, tribe: null })

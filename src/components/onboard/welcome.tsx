@@ -49,7 +49,7 @@ export default function Welcome(props) {
             fs={16}
           >
             Get Started
-            <View style={{ width: 12, height: 1 }}></View>
+            <View style={{ width: 12, height: 1 }} />
             <Icon name='arrow-right' color={theme.white} size={18} />
           </Button>
         </View>

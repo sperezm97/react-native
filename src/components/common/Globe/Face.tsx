@@ -1,43 +1,18 @@
 import React from 'react'
 import { StyleSheet } from 'react-native'
 // import { avg } from 'react-native-redash'
-import { avg, decompose2d, transform2d } from 'react-native-redash/lib/module/v1'
+import { avg } from 'react-native-redash/lib/module/v1'
 
 import Animated from 'react-native-reanimated'
 
-import { SIZE, Vec3 } from './Constants'
+import { Vec3 } from './Constants'
 
 interface FaceProps {
   points: [Vec3, Vec3, Vec3, Vec3]
   backgroundColor: string
 }
 
-const canvas = {
-  p1: {
-    x: -SIZE / 2,
-    y: -SIZE / 2,
-  },
-  p2: {
-    x: SIZE / 2,
-    y: -SIZE / 2,
-  },
-  p3: {
-    x: -SIZE / 2,
-    y: SIZE / 2,
-  },
-  p4: {
-    x: SIZE / 2,
-    y: SIZE / 2,
-  },
-}
-
-const Face = ({ backgroundColor, points: [p1, p2, p3, p4] }: FaceProps) => {
-  const transform = decompose2d(
-    transform2d({
-      canvas,
-      projected: { p1, p2, p3, p4 },
-    })
-  )
+const Face = ({ points: [p1, p2, p3, p4] }: FaceProps) => {
   return (
     <Animated.View
       pointerEvents='none'

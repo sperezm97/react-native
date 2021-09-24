@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect } from 'react'
 import { View, StyleSheet, Animated } from 'react-native'
 
 const RecDot = React.memo(function () {

@@ -11,7 +11,6 @@ import AvatarsRow from './avatarsRow'
 export default function BoostRow({ isTribe = true, ...props }) {
   const { contacts } = useStores()
   const theme = useTheme()
-  const isMe = props.sender === props.myid
 
   const theBoosts = []
   if (props.boosts) {
@@ -55,6 +54,7 @@ export default function BoostRow({ isTribe = true, ...props }) {
         {hasBoosts && (
           <AvatarsRow
             aliases={theBoosts.map((b) => {
+              // eslint-disable-next-line react-hooks/rules-of-hooks
               const { senderAlias, senderPic } = useBoostSender(b, contacts.contacts, isTribe)
 
               if (b.sender === props.myid) {

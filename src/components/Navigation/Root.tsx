@@ -16,7 +16,6 @@ import DiscoverTribes from '../Tribes/Discover'
 import Tribe from '../Tribes/Tribe'
 import EditTribe from '../Tribes/Tribe/EditTribe'
 import TribeMembers from '../Tribes/Members'
-import Home from '../Home'
 import { setTint } from '../../components/common/StatusBar'
 
 const RootStack = createStackNavigator()

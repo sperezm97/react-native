@@ -23,7 +23,7 @@ export default function QDialog({ description, label }) {
           <Dialog.Actions>
             <Button onPress={() => showQ(false)} labelStyle={{ color: 'grey' }} style={{ marginRight: 15 }}>
               <Icon name='close' size={14} color='grey' />
-              <View style={{ width: 6, height: 6 }}></View>
+              <View style={{ width: 6, height: 6 }} />
               <Text>OK</Text>
             </Button>
           </Dialog.Actions>

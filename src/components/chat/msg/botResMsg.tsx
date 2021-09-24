@@ -1,5 +1,5 @@
 import React from 'react'
-import { TouchableOpacity, Text, StyleSheet, Image } from 'react-native'
+import { TouchableOpacity } from 'react-native'
 import HTML from 'react-native-render-html'
 
 import shared from './sharedStyles'
@@ -24,37 +24,3 @@ export default function TextMsg(props) {
     </TouchableOpacity>
   )
 }
-
-const linkStyles = {
-  containerStyle: {
-    alignItems: 'center',
-  },
-  imageStyle: {
-    width: 80,
-    height: 80,
-    paddingRight: 10,
-    paddingLeft: 10,
-  },
-  titleStyle: {
-    fontSize: 14,
-    color: '#000',
-    marginRight: 10,
-    marginBottom: 5,
-    alignSelf: 'flex-start',
-    fontFamily: 'Helvetica',
-  },
-  descriptionStyle: {
-    fontSize: 11,
-    color: '#81848A',
-    marginRight: 10,
-    alignSelf: 'flex-start',
-    fontFamily: 'Helvetica',
-  },
-}
-
-const styles = StyleSheet.create({
-  text: {
-    color: '#333',
-    fontSize: 16,
-  },
-})

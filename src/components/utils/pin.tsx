@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { StyleSheet, View } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
-import { ActivityIndicator, Colors } from 'react-native-paper'
+import { ActivityIndicator } from 'react-native-paper'
 import EncryptedStorage from 'react-native-encrypted-storage'
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback'
 import AsyncStorage from '@react-native-community/async-storage'
@@ -165,7 +165,7 @@ export async function userPinCode(): Promise<string> {
     const pin = await EncryptedStorage.getItem('pin')
 
     if (pin) return pin
-    else return ''
+    return ''
   } catch (e) {
     return ''
   }

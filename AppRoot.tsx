@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useRef, useCallback } from 'react'
-import { Linking, AppState } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { Linking } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
 import { Provider as PaperProvider } from 'react-native-paper'
 import { useDarkMode } from 'react-native-dynamic'
@@ -25,13 +25,10 @@ import PinCodeModal from './src/components/common/Modals/PinCode'
 import StatusBar from './src/components/common/StatusBar'
 import RNBootSplash from 'react-native-bootsplash'
 
-declare var global: { HermesInternal: null | {} }
-
 // splash screen
 export default function Wrap() {
   const { ui, chats } = useStores()
   const [wrapReady, setWrapReady] = useState(false)
-  const theme = useTheme()
   // const appState = useRef(AppState.currentState)
 
   // useEffect(() => {
@@ -64,7 +61,7 @@ export default function Wrap() {
   async function gotLink(e) {
     if (e && typeof e === 'string') {
       const j = utils.jsonFromUrl(e)
-      if (j['action']) await qrActions(j, ui, chats)
+      if (j.action) await qrActions(j, ui, chats)
     }
   }
 
@@ -146,6 +143,7 @@ function App() {
   }
 
   return useObserver(() => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const isConnected = useConnectionInfo()
 
     if (!isConnected && showDisconnectUI) return <Disconnect onClose={() => setShowDisconnectedUI(false)} />

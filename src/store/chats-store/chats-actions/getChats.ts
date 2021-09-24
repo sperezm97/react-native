@@ -4,7 +4,7 @@ import { normalizeChat } from 'store/normalize'
 
 export const getChats = async (self: ChatsStore) => {
   const chats = await relay.get('chats')
-  if (!(chats && chats.length)) return false
+  if (!chats?.length) return false
   // const parsedChats = chats.map((c) => self.parseChat(c))
   const parsedChats = chats.map((c) => normalizeChat(c))
   console.tron.display({

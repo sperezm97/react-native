@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Dimensions, View, Text } from 'react-native'
+import { View } from 'react-native'
 import { ActivityIndicator } from 'react-native-paper'
 import { WebView } from 'react-native-webview'
 
@@ -8,8 +8,6 @@ type WebViewVideoProps = {
   squareSize?: number
   onLongPress: () => void
 }
-
-const { width, height } = Dimensions.get('screen')
 
 const WebViewVideo: React.FC<WebViewVideoProps> = ({ embedLink, onLongPress, squareSize }) => {
   const [isLoading, setIsLoading] = useState(true)

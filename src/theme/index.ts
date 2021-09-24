@@ -1,6 +1,5 @@
-import { DefaultTheme, Provider as PaperProvider, configureFonts } from 'react-native-paper'
+import { DefaultTheme, configureFonts } from 'react-native-paper'
 
-import { useStores, useTheme } from '../store'
 import { Font } from '../types'
 
 const fontConfig = {

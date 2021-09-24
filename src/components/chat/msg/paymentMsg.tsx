@@ -8,14 +8,12 @@ export default function PaymentMsg(props) {
   const { amount, status } = props
   const isMe = props.sender === props.myid
 
-  let icon, label, color
+  let icon, color
   if (isMe) {
     icon = 'arrow-top-right'
-    // label = status === constants.statuses.failed ? 'FAILED' : 'SENT'
     color = status === constants.statuses.failed ? '#DB5554' : '#555'
   } else {
     icon = 'arrow-bottom-left'
-    // label = 'RECEIVED'
     color = '#74ABFF'
   }
 

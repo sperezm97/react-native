@@ -1,4 +1,4 @@
-import React, { useRef, useMemo, useState, useCallback, useEffect } from 'react'
+import React, { useRef, useState, useCallback, useEffect } from 'react'
 import { observer } from 'mobx-react-lite'
 import { StyleSheet, VirtualizedList, View, Text, Keyboard, Dimensions, ActivityIndicator } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
@@ -73,7 +73,7 @@ const MsgListWrap = ({ chat, pricePerMessage }: { chat: Chat; pricePerMessage: n
 
   return (
     <MsgList
-      msgsLength={(msgs && msgs.length) || 0}
+      msgsLength={msgs?.length || 0}
       msgs={msgs}
       chat={chat}
       onDelete={onDelete}
@@ -112,12 +112,12 @@ function MsgList({
   // Keyboard logic
   useEffect(() => {
     const ref = setTimeout(() => {
-      if (scrollViewRef && scrollViewRef.current && msgs && msgs.length) {
+      if (scrollViewRef?.current && msgs && msgs.length) {
         scrollViewRef.current.scrollToOffset({ offset: 0 })
       }
     }, 500)
-    Keyboard.addListener('keyboardDidShow', (e) => {
-      if (scrollViewRef && scrollViewRef.current && msgs && msgs.length) {
+    Keyboard.addListener('keyboardDidShow', () => {
+      if (scrollViewRef?.current && msgs && msgs.length) {
         scrollViewRef.current.scrollToOffset({ offset: 0 })
       }
     })

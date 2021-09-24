@@ -28,7 +28,7 @@ class AuthStore {
     const authServer = this.getDefaultServer()
 
     const r = await relay.get(`signer/${challenge}`)
-    if (!(r && r.sig)) return
+    if (!r?.sig) return
 
     var q = new URLSearchParams({
       id,
@@ -49,7 +49,7 @@ class AuthStore {
   @action
   async sign(challenge: string): Promise<string> {
     const r = await relay.get(`signer/${challenge}`)
-    if (!(r && r.sig)) return ''
+    if (!r?.sig) return ''
     return r.sig
   }
 }

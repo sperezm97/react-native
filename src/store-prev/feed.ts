@@ -94,9 +94,3 @@ export class FeedStore {
 }
 
 export const feedStore = new FeedStore()
-
-async function asyncForEach(array, callback) {
-  for (let index = 0; index < array.length; index++) {
-    await callback(array[index], index, array)
-  }
-}

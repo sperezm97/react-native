@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, StyleSheet } from 'react-native'
-// import {Player} from '@react-native-community/audio-toolkit'
 import { IconButton } from 'react-native-paper'
 import ARP from './audioRecorderPlayer'
 
@@ -54,13 +53,13 @@ export default function AudioPlayer(props) {
     <View style={styles.wrap}>
       <IconButton icon={playing ? 'pause' : 'play'} color='#ccc' size={27} onPress={toggle} />
       <View style={styles.barWrap}>
-        <View style={styles.barEmpty}></View>
+        <View style={styles.barEmpty} />
         <View
           style={{
             ...styles.barFull,
             width: `${percent}%`,
           }}
-        ></View>
+        />
       </View>
     </View>
   )

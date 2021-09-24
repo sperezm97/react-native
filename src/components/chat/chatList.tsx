@@ -7,7 +7,7 @@ import ReactNativeHapticFeedback from 'react-native-haptic-feedback'
 import { useStores, useTheme, hooks } from '../../store'
 import { useSearchChats } from '../../store/hooks/chats'
 import InviteRow, { styles } from './inviteRow'
-import { chatPicSrc, useChatPicSrc } from '../utils/picSrc'
+import { useChatPicSrc } from '../utils/picSrc'
 import RefreshLoading from '../common/RefreshLoading'
 import Avatar from '../common/Avatar'
 import Typography from '../common/Typography'
@@ -15,7 +15,7 @@ import Typography from '../common/Typography'
 const { useChats, useChatRow } = hooks
 
 export default function ChatList(props) {
-  const { ui, user, contacts, msg, details, chats } = useStores()
+  const { user, contacts, msg, details } = useStores()
   const myid = user.myid
 
   const [refreshing, setRefreshing] = useState(false)
@@ -46,7 +46,9 @@ export default function ChatList(props) {
   }
 
   return useObserver(() => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const chats = useChats()
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const chatsToShow = useSearchChats(chats)
 
     return (
@@ -70,9 +72,9 @@ export default function ChatList(props) {
 }
 
 function ChatRow(props) {
-  const { id, name, date, contact_ids } = props
+  const { name } = props
   const navigation = useNavigation()
-  const { msg, user } = useStores()
+  const { msg } = useStores()
 
   const onSeeChatHandler = () => {
     requestAnimationFrame(() => {
@@ -84,9 +86,10 @@ function ChatRow(props) {
 
   const theme = useTheme()
   return useObserver(() => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     let uri = useChatPicSrc(props)
-    const hasImg = uri ? true : false
 
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const { lastMsgText, lastMsgDate, hasLastMsg, unseenCount, hasUnseen } = useChatRow(props.id)
 
     const w = Math.round(Dimensions.get('window').width)
@@ -133,7 +136,7 @@ function ChatRow(props) {
               </View>
             )}
           </View>
-          <View style={{ ...styles.borderBottom, borderBottomColor: theme.border }}></View>
+          <View style={{ ...styles.borderBottom, borderBottomColor: theme.border }} />
         </View>
       </TouchableOpacity>
     )

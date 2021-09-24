@@ -43,7 +43,7 @@ export default function ProfilePic({ z, show, onDone, onBack }) {
   }
 
   async function uploadSync(uri) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       const type = 'image/jpg'
       const name = 'Image.jpg'
       const server = meme.getDefaultServer()
@@ -108,7 +108,7 @@ export default function ProfilePic({ z, show, onDone, onBack }) {
           </Typography>
         </View>
         <View style={styles.mid} accessibilityLabel='onboard-profile-middle'>
-          <Avatar size={200} photo={img && img.uri} round={100} />
+          <Avatar size={200} photo={img?.uri} round={100} />
           <Button
             accessibilityLabel='onboard-profile-choose-image'
             onPress={() => setDialogOpen(true)}

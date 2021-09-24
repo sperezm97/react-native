@@ -55,9 +55,8 @@ export async function makeRemoteTextMap(
       const contactsInChat = theseContacts.filter((c) => {
         if (includeSelf) {
           return chat.contact_ids.includes(c.id)
-        } else {
-          return chat.contact_ids.includes(c.id) && c.id !== myid
         }
+        return chat.contact_ids.includes(c.id) && c.id !== myid
       })
       contactsInChat.forEach((c) => (idToKeyMap[c.id] = c?.contact_key ?? ''))
     }

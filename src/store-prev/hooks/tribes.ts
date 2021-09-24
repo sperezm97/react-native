@@ -79,8 +79,8 @@ export function allTribes(tribes, chats, user) {
     return {
       ...tribe,
       chat: chatsuids && chats.find((c) => c.uuid === tribe.uuid),
-      joined: chatsuids ? (chatsuids.find((uuid) => uuid === tribe.uuid) ? true : false) : false,
-      owner: ownedChats ? (ownedChats.find((c) => c.uuid === tribe.uuid) ? true : false) : false,
+      joined: chatsuids ? chatsuids.some((uuid) => uuid === tribe.uuid) : false,
+      owner: ownedChats ? ownedChats.some((c) => c.uuid === tribe.uuid) : false,
     }
   })
 }

@@ -1,16 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, View, ScrollView } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
 import { useNavigation } from '@react-navigation/native'
-import { IconButton } from 'react-native-paper'
-import AntDesignIcon from 'react-native-vector-icons/AntDesign'
 
 import { useStores, useTheme } from '../../../store'
 import BackHeader from '../../common/BackHeader'
 import List from './List'
-import Pending from './Pending'
-import AddMembers from './AddMembers'
-import AddMemberModal from '../../common/Modals/Tribe/AddMembers'
 import Typography from '../../common/Typography'
 import Empty from '../../common/Empty'
 import Search from '../../common/Search'
@@ -18,7 +13,6 @@ import { SCREEN_WIDTH } from '../../../constants'
 import { Contact } from 'store/contacts-store'
 
 export default function Members({ route }) {
-  const [addMember, setAddMember] = useState(false)
   const { contacts } = useStores()
   const theme = useTheme()
   const navigation = useNavigation()
@@ -66,9 +60,7 @@ export default function Members({ route }) {
               <List
                 tribe={tribe}
                 members={searchedContacts}
-                listHeader={
-                  <ListHeader tribe={tribe} searchText={membersSearchText} setSearchText={setMembersSearchText} />
-                }
+                listHeader={<ListHeader searchText={membersSearchText} setSearchText={setMembersSearchText} />}
               />
             ) : (
               <EmptyMembers tribe={tribe} />
@@ -84,7 +76,7 @@ export default function Members({ route }) {
   })
 }
 
-function ListHeader({ tribe, searchText, setSearchText }) {
+function ListHeader({ searchText, setSearchText }) {
   return (
     <View style={{ ...styles.searchWrap }}>
       <Search

@@ -118,11 +118,6 @@ function isPublic(url: string) {
   return url.endsWith('login')
 }
 
-async function getToken(name: string) {
-  if (!name) return ''
-  // return localStorage.getItem(name)
-}
-
 function makeSearchParams(params) {
   return Object.keys(params)
     .map((key) => {
