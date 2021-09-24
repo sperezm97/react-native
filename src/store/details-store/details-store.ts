@@ -1,4 +1,5 @@
 import { Instance, SnapshotOut, types } from 'mobx-state-tree'
+import { Msg } from 'store/msg-store'
 import { withEnvironment } from '../extensions/with-environment'
 import * as actions from './details-actions'
 
@@ -14,6 +15,8 @@ export const DetailsStoreModel = types
   .extend(withEnvironment)
   .actions((self) => ({
     getBalance: async (): Promise<void> => await actions.getBalance(self as DetailsStore),
+    getPayments: async (): Promise<Msg[]> => await actions.getPayments(),
+    getChannelBalance: async (): Promise<void> => await actions.getChannelBalance(self as DetailsStore),
     requestCapacity: async (pubKey: string): Promise<boolean> =>
       await actions.requestCapacity(self as DetailsStore, pubKey),
     getLogs: async (): Promise<void> => await actions.getLogs(self as DetailsStore),

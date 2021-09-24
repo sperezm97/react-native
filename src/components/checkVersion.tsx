@@ -3,8 +3,6 @@ import moment from 'moment'
 import AsyncStorage from '@react-native-community/async-storage'
 import { Text, StyleSheet, TouchableOpacity, Linking, View } from 'react-native'
 
-import version from '../version'
-import { detailsStore } from '../store/details'
 import { Dialog, Button } from 'react-native-paper'
 import { useTheme } from '../store'
 import { DEFAULT_HOST } from '../config'
@@ -75,28 +73,4 @@ export async function wasCheckedRecently(): Promise<boolean> {
     return true
   }
   return false
-}
-
-// return IF to show dialog
-export async function check(): Promise<boolean> {
-  const was = await wasCheckedRecently()
-  if (was) {
-    return false
-  }
-
-  const vs = await detailsStore.getVersions()
-  const av = vs && vs.android
-  if (!av) {
-    return
-  }
-  AsyncStorage.setItem('version_checked', ts())
-  const currentVersion = parseInt(av)
-  if (currentVersion !== version) {
-    return true
-  }
-  return false
-}
-
-function ts() {
-  return moment().unix() + ''
 }

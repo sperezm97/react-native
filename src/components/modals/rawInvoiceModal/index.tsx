@@ -30,7 +30,7 @@ function RawInvoiceModal({ close }) {
   async function createInvoice() {
     setLoading(true)
     const params = ui.rawInvoiceModalParams
-    const amt = (params.amount && parseInt(params.amount)) || 0
+    const amt = parseInt(params.get('amount') || 0)
     const r = await msg.createRawInvoice({ amt, memo: '' })
     if (r && r.invoice) {
       setPayreq(r.invoice)
@@ -48,10 +48,10 @@ function RawInvoiceModal({ close }) {
           {params && !hasPayreq && (
             <View style={styles.innerWrap}>
               <Text style={styles.genText}>Generate Invoice</Text>
-              {params.imgurl && <Image source={{ uri: params.imgurl }} style={styles.img} />}
-              {params.name && <Text style={styles.genText}>{params.name}</Text>}
-              {params.amount && <Text style={styles.amt}>{params.amount}</Text>}
-              {params.amount && <Text style={styles.sat}>sat</Text>}
+              {params.get('imgurl') && <Image source={{ uri: params.get('imgurl') }} style={styles.img} />}
+              {params.get('name') && <Text style={styles.genText}>{params.get('name')}</Text>}
+              {params.get('amount') && <Text style={styles.amt}>{params.get('amount')}</Text>}
+              {params.get('amount') && <Text style={styles.sat}>sat</Text>}
               <View style={styles.confirmWrap}>
                 <Button
                   style={styles.confirm}
@@ -67,7 +67,7 @@ function RawInvoiceModal({ close }) {
           )}
 
           {hasPayreq && (
-            <ShowRawInvoice amount={params && params.amount} payreq={payreq} paid={payreq === ui.lastPaidInvoice} />
+            <ShowRawInvoice amount={params.get('amount')} payreq={payreq} paid={payreq === ui.lastPaidInvoice} />
           )}
         </View>
       </Portal.Host>

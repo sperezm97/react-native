@@ -4,15 +4,63 @@ import RadialGradient from 'react-native-radial-gradient'
 import { ActivityIndicator } from 'react-native-paper'
 
 import { useStores, useTheme } from '../../store'
-import actions from '../../store/actions'
 import { constants } from '../../constants'
 import Slider from '../utils/slider'
 import Button from '../common/Button'
 import Typography from '../common/Typography'
+import { DEFAULT_TRIBE_SERVER } from 'config'
+import { ChatsStore } from 'store/chats-store'
+import { FeedStore } from 'store/feed-store'
+
+// TODO: check if here is the best place the add this function
+async function actions(action: string, chatStore: ChatsStore, feedStore: FeedStore) {
+  if (!action) return
+
+  if (action.startsWith('create_podcast')) {
+    const arr = action.split(':')
+    if (arr.length < 2) return
+    const id = arr[1]
+    const r = await feedStore.loadFeedById(id)
+    if (!r?.title) return
+    await chatStore.createTribe({
+      name: r.title,
+      img: r.image,
+      description: r.description,
+      feed_url: r.url,
+      app_url: '',
+      tags: ['Podcast'],
+      price_per_message: 0,
+      price_to_join: 0,
+      escrow_amount: 0,
+      escrow_time: 0,
+      unlisted: false,
+      is_private: false,
+    })
+  }
+
+  if (action.startsWith('join_tribe')) {
+    const arr = action.split(':')
+    if (arr.length < 2) return
+    const uuid = arr[1]
+    const host = arr.length === 3 ? arr[2] : DEFAULT_TRIBE_SERVER
+    const r = await chatStore.getTribeDetails(host, uuid)
+    await chatStore.joinTribe({
+      name: r.title,
+      uuid,
+      group_key: r.group_key,
+      img: r.image,
+      host,
+      amount: r.price_to_join,
+      owner_alias: r.owner_alias,
+      owner_pubkey: r.owner_pubkey,
+      is_private: false,
+    })
+  }
+}
 
 export default function Ready(props) {
   const { z, show, onDone } = props
-  const { user, contacts, chats } = useStores()
+  const { user, contacts, chats, feed } = useStores()
   const [loading, setLoading] = useState(false)
   const theme = useTheme()
 
@@ -32,7 +80,7 @@ export default function Ready(props) {
 
       // await user.reportError("ready", { break: "B" });
 
-      await actions(user.invite.action)
+      await actions(user.invite.action, chats, feed)
 
       // await user.reportError("ready", { break: "C" });
 
@@ -116,7 +164,7 @@ export default function Ready(props) {
             fs={15}
           >
             {loading && <ActivityIndicator animating={loading} color={theme.grey} size={18} />}
-            {loading && <View style={{ width: 12, height: 1 }}></View>}
+            {loading && <View style={{ width: 12, height: 1 }} />}
             Finish
           </Button>
         </View>
@@ -167,7 +215,3 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 })
-
-async function sleep(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms))
-}

@@ -9,7 +9,7 @@ import { isIphoneX, getBottomSpace } from 'react-native-iphone-x-helper'
 import * as base64 from 'base-64'
 
 import { useStores, useTheme } from '../../../../store'
-import { constants, SCREEN_HEIGHT, SCREEN_WIDTH, STATUS_BAR_HEIGHT } from '../../../../constants'
+import { SCREEN_HEIGHT, SCREEN_WIDTH, STATUS_BAR_HEIGHT } from '../../../../constants'
 import { randString } from '../../../../crypto/rand'
 import * as e2e from '../../../../crypto/e2e'
 import ModalWrap from '../ModalWrap'
@@ -19,11 +19,16 @@ import { setTint } from '../../StatusBar'
 
 export default function PostPhotoWrap() {
   return useObserver(() => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const { ui } = useStores()
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const theme = useTheme()
 
     const visible =
-      ui.imgViewerParams && (ui.imgViewerParams.data || ui.imgViewerParams.uri || ui.imgViewerParams.msg) ? true : false
+      ui.imgViewerParams &&
+      (ui.imgViewerParams.get('data') || ui.imgViewerParams.get('uri') || ui.imgViewerParams.get('msg'))
+        ? true
+        : false
 
     const params = ui.imgViewerParams
 
@@ -48,7 +53,6 @@ function PostPhoto(props) {
   const theme = useTheme()
   const [text, setText] = useState('')
   const [price, setPrice] = useState(0)
-  const [inputFocused, setInputFocused] = useState(false)
   const [uploading, setUploading] = useState(false)
   const [uploadPercent, setUploadedPercent] = useState(0)
   const inputRef = useRef(null)
@@ -221,8 +225,6 @@ function PostPhoto(props) {
                   color: theme.input,
                 }}
                 placeholderTextColor={theme.subtitle}
-                onFocus={() => setInputFocused(true)}
-                onBlur={() => setInputFocused(false)}
                 onChangeText={(e) => setText(e)}
                 value={text}
               />

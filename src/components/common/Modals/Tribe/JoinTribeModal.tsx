@@ -5,7 +5,7 @@ import { useStores } from '../../../../store'
 import JoinTribe from './JoinTribe'
 
 export default function JoinTribeModal() {
-  const { ui, chats, msg, contacts } = useStores()
+  const { ui, chats } = useStores()
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -28,13 +28,13 @@ export default function JoinTribeModal() {
 
   return useObserver(() => {
     const params = ui.joinTribeParams
-    const showJoinTribe = ui.joinTribeParams ? true : false
+    const showJoinTribe = !!ui.joinTribeParams
 
-    if (!showJoinTribe || !params?.uuid) return <></>
+    if (!showJoinTribe || !params.get('uuid')) return <></>
 
     return (
       <>
-        {showJoinTribe && params?.uuid && !loading && (
+        {showJoinTribe && params.get('uuid') && !loading && (
           <JoinTribe visible={showJoinTribe} tribe={params} close={close} />
         )}
       </>

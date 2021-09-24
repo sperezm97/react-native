@@ -33,7 +33,7 @@ function ConfirmPayInvoice({ close }) {
   const [loading, setLoading] = useState(false)
 
   async function pay() {
-    const req = ui.confirmInvoiceMsg && ui.confirmInvoiceMsg.payment_request
+    const req = ui.confirmInvoiceMsg?.payment_request
     if (!req) return
     setLoading(true)
     await msg.payInvoice(ui.confirmInvoiceMsg)
@@ -41,7 +41,7 @@ function ConfirmPayInvoice({ close }) {
     close()
   }
 
-  const amt = ui.confirmInvoiceMsg && ui.confirmInvoiceMsg.amount
+  const amt = ui.confirmInvoiceMsg?.amount
   return (
     <View style={styles.main}>
       <Header amt={amt} onClose={close} />
