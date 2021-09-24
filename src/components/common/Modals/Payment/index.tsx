@@ -171,7 +171,7 @@ function Payment({ visible, close }) {
   }
 
   const isLoopout = ui.payMode === 'loopout'
-  const hasRawInvoice = rawInvoice ? true : false
+  const hasRawInvoice = !!rawInvoice
 
   return useObserver(() => {
     const isLoopoutText = isLoopout ? 'Send Bitcoin' : 'Request Payment'
@@ -182,7 +182,7 @@ function Payment({ visible, close }) {
         <ModalHeader title={label} onClose={handleOnClose} />
         {main && (
           <Main
-            contactless={!chat ? true : false}
+            contactless={!chat}
             contact={isLoopout ? null : contact}
             loading={loading}
             confirmOrContinue={confirmOrContinue}

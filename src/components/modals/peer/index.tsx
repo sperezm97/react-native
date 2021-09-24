@@ -20,8 +20,8 @@ export default function PeerChat() {
     setTimeout(() => peer.join(), 150)
   }, [])
 
-  const hasLocalStream = peer.localStreamID ? true : false
-  const hasRemoteStream = peer.remoteStreamID ? true : false
+  const hasLocalStream = !!peer.localStreamID
+  const hasRemoteStream = !!peer.remoteStreamID
 
   return useObserver(() => (
     <View style={styles.wrap}>

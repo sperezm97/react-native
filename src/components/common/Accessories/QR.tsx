@@ -59,12 +59,7 @@ export default function QR({
           contentContainerStyle={{ ...styles.content }}
           scrollEnabled={false}
         >
-          <QRScanner
-            smaller
-            height={scannerH}
-            scanned={scanned ? true : false}
-            handleBarCodeScanned={handleBarCodeScanned}
-          />
+          <QRScanner smaller height={scannerH} scanned={!!scanned} handleBarCodeScanned={handleBarCodeScanned} />
           {showPaster && (
             <>
               <View style={{ ...styles.inputWrap, backgroundColor: theme.bg }}>

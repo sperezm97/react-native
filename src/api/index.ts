@@ -36,7 +36,7 @@ export function instantiateRelay(
   } else {
     relay = new API(`${protocol}${ip}/`)
   }
-  console.log('=> instantiated relay!', `${protocol}${ip}/`, 'authToken?', authToken ? true : false)
+  console.log('=> instantiated relay!', `${protocol}${ip}/`, 'authToken?', !!authToken)
   console.tron.display({
     name: 'instantiateRelay',
     preview: `Instantiated relay!  - authToken: ${!!authToken}`,

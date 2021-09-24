@@ -402,7 +402,7 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
     extraTextContent
   )
 
-  const hasReplyContent = replyUuid || extraTextContent ? true : false
+  const hasReplyContent = !!(replyUuid || extraTextContent)
   const inputFocusPaddingTop = inputFocused ? 10 : 5
   const iphoneXPaddingBottom = isIphoneX() ? getBottomSpace() : 5
 

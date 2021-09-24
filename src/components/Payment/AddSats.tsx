@@ -119,7 +119,7 @@ function Do({ app }) {
           style={{ ...styles.addressInput, backgroundColor: theme.main }}
           underlineColor={theme.border}
         />
-        <Button mode='text' onPress={copyAddy} disabled={!addy ? true : false} loading={loading}>
+        <Button mode='text' onPress={copyAddy} disabled={!addy} loading={loading}>
           Tap to Copy
         </Button>
         <View style={styles.pleaseWrap}>

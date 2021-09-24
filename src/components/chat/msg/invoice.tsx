@@ -29,7 +29,7 @@ export default function Invoice(props) {
   }
 
   const showPayButton = !isPaid && !isMe
-  const hasContent = props.message_content ? true : false
+  const hasContent = !!props.message_content
 
   function openConfirmModal() {
     const checkAgain = calcExpiry(props)

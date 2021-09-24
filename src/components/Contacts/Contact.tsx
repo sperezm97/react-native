@@ -63,7 +63,7 @@ export default function EditContact({ route }) {
       })
   }
 
-  const subPaused = existingSub?.paused ? true : false
+  const subPaused = !!existingSub?.paused
 
   const Subscribe = (
     <>
@@ -89,10 +89,7 @@ export default function EditContact({ route }) {
             <Typography style={{ ...styles.pausedText, color: theme.subtitle }}>
               {subPaused ? 'PAUSED' : 'ACTIVE'}
             </Typography>
-            <Switch
-              value={!subPaused}
-              onValueChange={() => toggleSubscription(existingSub.id, subPaused ? false : true)}
-            />
+            <Switch value={!subPaused} onValueChange={() => toggleSubscription(existingSub.id, !subPaused)} />
           </View>
         </View>
       )}

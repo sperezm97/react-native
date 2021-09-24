@@ -54,7 +54,7 @@ export default function Replay({ msgs, playing }) {
       </View>
     )
   }
-  const showBackdrop = messages?.length ? true : false
+  const showBackdrop = !!messages?.length
   return (
     <>
       <View

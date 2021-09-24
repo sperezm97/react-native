@@ -88,7 +88,7 @@ function Media(props) {
     trigger()
   }, [media_token])
 
-  const hasImgData = data || uri ? true : false
+  const hasImgData = !!(data || uri)
 
   return (
     <View style={{ width: props.reply ? '15%' : '25%' }}>

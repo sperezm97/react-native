@@ -19,7 +19,7 @@ export default function TheTextInput({ setValue, value }) {
       setValue(newVal)
     }
   }
-  const showTags = value?.length && value.length > 0 ? true : false
+  const showTags = !!(value?.length && value.length > 0)
   return (
     <>
       <TouchableOpacity onPress={() => setShowDialog(!showDialog)}>

@@ -77,7 +77,7 @@ function JoinTribe(props) {
     ]
   }
 
-  const hasImg = tribe?.img ? true : false
+  const hasImg = !!tribe?.img
 
   return useObserver(() => {
     return (

@@ -424,7 +424,7 @@ export default function Podcast({ pod, chat, onBoost, podError }) {
           />
         </View>
 
-        {(pod.episodes ? true : false) && (
+        {!!pod.episodes && (
           <View style={styles.list}>
             <View
               style={{

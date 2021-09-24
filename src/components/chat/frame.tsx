@@ -143,7 +143,7 @@ function LoadingView() {
 function BridgeModal({ params, authorize, onClose }) {
   const [amt, setAmt] = useState('1000')
   const [authorizing, setAuthorizing] = useState(false)
-  const showBudget = params.noBudget ? false : true
+  const showBudget = !params.noBudget
 
   async function onAuthorizingHandler() {
     if (authorizing) return

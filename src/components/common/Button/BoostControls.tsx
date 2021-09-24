@@ -11,7 +11,7 @@ const BoostControls = () => {
 
   const [tip, setTip] = useState(100)
   const [plusDisabled, setPlusDisabled] = useState(false)
-  const [minusDisabled, setMinusDisabled] = useState(tip <= 100 ? true : false)
+  const [minusDisabled, setMinusDisabled] = useState(tip <= 100)
   const theme = useTheme()
 
   useEffect(() => {
