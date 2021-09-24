@@ -14,7 +14,7 @@ export default function SubscribeWrap({ visible }) {
   const { ui } = useStores()
 
   function close() {
-    ui.setSubModalParams(null)
+    ui.setSubModalParams({})
   }
 
   return (

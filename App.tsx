@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import AppRoot from './AppRoot'
-import { RootStore, RootStoreProvider, setupRootStore } from './src/store2'
+import { RootStore, RootStoreProvider, setupRootStore } from './src/store'
 import Splash from './src/components/common/Splash'
 
 export default function App() {
@@ -12,10 +12,6 @@ export default function App() {
       setupRootStore().then(setRootStore)
     })()
   }, [])
-
-  useEffect(() => {
-    console.log(rootStore)
-  }, [rootStore])
 
   if (!rootStore) return <Splash />
 

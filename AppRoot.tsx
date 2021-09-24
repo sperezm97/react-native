@@ -25,28 +25,9 @@ import PinCodeModal from './src/components/common/Modals/PinCode'
 import StatusBar from './src/components/common/StatusBar'
 import RNBootSplash from 'react-native-bootsplash'
 
-// splash screen
 export default function Wrap() {
   const { ui, chats } = useStores()
   const [wrapReady, setWrapReady] = useState(false)
-  // const appState = useRef(AppState.currentState)
-
-  // useEffect(() => {
-  //   AppState.addEventListener('change', handleAppStateChange)
-  //   return () => {
-  //     AppState.removeEventListener('change', handleAppStateChange)
-  //   }
-  // }, [])
-
-  // function handleAppStateChange(nextAppState) {
-  //   if (appState.current.match(/inactive|background/) && nextAppState === 'active') {
-  //     // handleDeepLink()
-  //   }
-  //   if (appState.current.match(/active/) && nextAppState === 'background') {
-  //   }
-
-  //   appState.current = nextAppState
-  // }
 
   useEffect(() => {
     handleDeepLink()
@@ -131,7 +112,7 @@ function App() {
 
       setLoading(false)
 
-      user.testinit()
+      // user.testinit()
     })()
   }, [])
 

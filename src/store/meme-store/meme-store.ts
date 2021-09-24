@@ -19,7 +19,7 @@ export const MemeStoreModel = types
     cacheTS: types.optional(types.map(types.frozen()), {}),
     cacheFileName: types.optional(types.map(types.frozen()), {}),
     filenameCache: types.optional(types.map(types.frozen()), {}),
-    userStore: types.reference(UserStoreModel),
+    userStore: types.maybe(types.reference(UserStoreModel)),
   })
   .extend(withEnvironment)
   .actions((self) => ({
