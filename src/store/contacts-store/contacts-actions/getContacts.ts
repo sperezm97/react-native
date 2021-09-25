@@ -3,6 +3,7 @@
 import { relay } from 'api'
 import { getRoot } from 'mobx-state-tree'
 import { RootStore } from 'store'
+import { normalizeChat, normalizeContact } from 'store/normalize'
 import { ContactsStore } from '../contacts-store'
 
 export const getContacts = async (self: ContactsStore) => {
@@ -12,11 +13,21 @@ export const getContacts = async (self: ContactsStore) => {
   const userStore = root.user
   try {
     const r = await relay.get('contacts')
+    console.tron.display({
+      name: 'getContacts',
+      preview: `Returned with...`,
+      value: { r },
+    })
 
     if (!r) return
     if (r.contacts) {
-      self.setContacts(r.contacts)
+      r.contacts.forEach((contact) => {
+        const normalizedContact = normalizeContact(contact)
+        self.setContact(normalizedContact)
+      })
+
       const me = r.contacts.find((c) => c.is_owner)
+
       if (me) {
         userStore.setMyID(me.id)
         userStore.setAlias(me.alias)
@@ -28,7 +39,12 @@ export const getContacts = async (self: ContactsStore) => {
       }
     }
 
-    if (r.chats) chatStore.setChats(r.chats)
+    if (r.chats) {
+      r.chats.forEach((chat) => {
+        const normalizedChat = normalizeChat(chat)
+        chatStore.setChat(normalizedChat)
+      })
+    }
 
     if (r.subscriptions) subStore.setSubs(r.subscriptions)
 

@@ -70,6 +70,12 @@ const MsgListWrap = ({ chat, pricePerMessage }: { chat: Chat; pricePerMessage: n
   }, [chat.id, chats, navigation])
 
   const msgs = useMsgs(chat, limit) || []
+  console.tron.display({
+    name: 'msgList',
+    preview: 'got these msgs',
+    value: { msgs },
+    important: true,
+  })
 
   return (
     <MsgList
@@ -246,7 +252,7 @@ const ListItem = React.memo(
   }: IListItem) => {
     const { contacts } = useStores()
 
-    const { senderAlias, senderPic } = useMsgSender(m, contacts.contacts, isTribe)
+    const { senderAlias, senderPic } = useMsgSender(m, contacts.contactsArray, isTribe)
 
     if (m.dateLine) {
       return <DateLine dateString={m.dateLine} />

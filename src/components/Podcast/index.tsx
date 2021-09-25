@@ -101,6 +101,12 @@ export default function Podcast({ pod, chat, onBoost, podError }) {
   })
 
   async function initialSelect(ps) {
+    console.tron.display({
+      name: 'podcast initialSelect',
+      preview: 'what we got',
+      value: ps,
+      important: true,
+    })
     let theID = queuedTrackID
     if (chat.meta?.itemID) {
       theID = chat.meta.itemID
@@ -171,10 +177,20 @@ export default function Podcast({ pod, chat, onBoost, podError }) {
   }
 
   let pricePerMinute = 0
-  if (chats.pricesPerMinute[chatID] || chats.pricesPerMinute[chatID] === 0) {
-    pricePerMinute = chats.pricesPerMinute[chatID]
-  } else if (pod?.value && pod.value.model && pod.value.model.suggested) {
-    pricePerMinute = Math.round(parseFloat(pod.value.model.suggested) * 100000000)
+  try {
+    if (!chats.pricesPerMinute[chatID]) {
+      console.tron.display({
+        name: 'podcast',
+        preview: "Couldn't get pricesPerMinute for chatID",
+        important: true,
+      })
+    } else if (chats.pricesPerMinute[chatID] || chats.pricesPerMinute[chatID] === 0) {
+      pricePerMinute = chats.pricesPerMinute[chatID]
+    } else if (pod?.value && pod.value.model && pod.value.model.suggested) {
+      pricePerMinute = Math.round(parseFloat(pod.value.model.suggested) * 100000000)
+    }
+  } catch (e) {
+    console.tron.error('couldnt fetch pricesPerMinute', e)
   }
 
   async function sendPayments(mult: number) {

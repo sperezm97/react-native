@@ -1,5 +1,6 @@
 import { Chat, ChatModel } from './chats-store'
 import { Contact, ContactModel } from './contacts-store'
+import { Msg, MsgModel } from './msg-store'
 
 export const normalizeChat = (raw: any) => {
   const normalized: Chat = ChatModel.create({
@@ -53,6 +54,74 @@ export const normalizeContact = (raw: any) => {
     updated_at: raw.updated_at,
   })
   return normalized
+}
+
+export const normalizeMessage = (raw: any) => {
+  // console.tron.display({
+  //   name: 'normalizeMessage',
+  //   value: raw,
+  //   important: true,
+  // })
+  try {
+    const normalized: Msg = MsgModel.create({
+      id: raw.id,
+      chat_id: raw.chat_id ?? 0, // ?
+      type: raw.type,
+      uuid: raw.uuid ?? '',
+      sender: raw.sender,
+      receiver: raw.receiver,
+      amount: raw.amount,
+      amount_msat: raw.amount_msat,
+      payment_hash: raw.payment_hash,
+      payment_request: raw.payment_request,
+      date: raw.date,
+      expiration_date: raw.expiration_date,
+      message_content: raw.message_content,
+      remote_message_content: raw.remote_message_content,
+      status: raw.status,
+      status_map: raw.status_map,
+      parent_id: raw.parent_id,
+      subscription_id: raw.subscription_id,
+      media_type: raw.media_type,
+      media_token: raw.media_token,
+      media_key: raw.media_key,
+      seen: parseBool(raw.seen),
+      created_at: raw.created_at,
+      updated_at: raw.updated_at,
+      sender_alias: raw.sender_alias,
+      sender_pic: raw.sender_pic,
+
+      original_muid: raw.original_muid,
+      reply_uuid: raw.reply_uuid,
+
+      text: raw.text,
+
+      chat: raw.chat, //ChatModel,
+
+      sold: raw.sold, // this is a marker to tell if a media has been sold
+      showInfoBar: raw.showInfoBar, // marks whether to show the date and name
+
+      reply_message_content: raw.reply_message_content,
+      reply_message_sender_alias: raw.reply_message_sender_alias,
+      reply_message_sender: raw.reply_message_sender,
+
+      boosts_total_sats: raw.boosts_total_sats,
+      boosts: raw.boosts,
+    })
+    console.tron.display({
+      name: 'normalizeMessage',
+      value: { raw, normalized },
+      important: true,
+    })
+    return normalized
+  } catch (e) {
+    console.tron.display({
+      name: 'Could not normalize msg',
+      preview: e.message,
+      value: e.message,
+      important: true,
+    })
+  }
 }
 
 const parseBool = (zeroorone: number) => {

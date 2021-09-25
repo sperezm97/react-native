@@ -11,8 +11,14 @@ type transformPaymentsParams = {
  * @returns the sum of amounts in a object with the shape of `Msg[]`
  */
 export const transformPayments = ({ payments, userId, chats }: transformPaymentsParams): Msg[] => {
+  console.tron.display({
+    name: 'transformPayments',
+    preview: 'Got what',
+    value: { payments, userId, chats },
+  })
   return payments
     .filter((payment) => {
+      if (!payment.chat_id) return false
       const chat = chats.chats.get(payment.chat_id.toString())
       const msgShouldBeSendByTheUser = payment.sender === userId
       const chatShouldBeATribe = chat?.type === constants.chat_types.tribe

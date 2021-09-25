@@ -68,7 +68,8 @@ export const ChatsStoreModel = types
       self.chats.get(chat_id.toString()).meta = meta
     },
     updateServers: (): void => {
-      self.servers = [{ host: DEFAULT_TRIBE_SERVER }]
+      // skipping for now
+      // self.servers = [{ host: DEFAULT_TRIBE_SERVER }]
     },
   }))
   .views((self) => ({

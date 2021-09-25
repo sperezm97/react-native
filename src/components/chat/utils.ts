@@ -44,6 +44,8 @@ export function contactForConversation(chat: Chat, contacts: Contact[], myid: nu
 }
 
 export function sortChats(chatsToShow, messages) {
+  console.tron.log('skipping sortChats.')
+  return
   chatsToShow.sort((a, b) => {
     const amsgs = messages[a.id]
     const alastMsg = amsgs?.[0]

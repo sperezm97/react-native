@@ -11,6 +11,12 @@ import { Chat } from 'store/chats-store'
 const tribe = constants.chat_types.tribe
 
 export function useMsgs(chat, limit?: number) {
+  console.tron.display({
+    name: 'useMsgs',
+    value: { chat, limit },
+    important: true,
+  })
+
   const { chats, user, msg, contacts } = useStores()
   const myid = user.myid
 
@@ -24,7 +30,8 @@ export function useMsgs(chat, limit?: number) {
     const theChat = theseChats.find((ch) => ch.type === 0 && arraysEqual(ch.contact_ids, chat.contact_ids)) // this is the problem
     if (theChat) theID = theChat.id // new chat pops in, from first message confirmation!
   }
-  const msgs = msg.messages[theID]
+  // const msgs = msg.messages[theID]
+  const msgs = msg.msgsForChatroom(theID)
 
   const shownMsgs = msgs?.slice(0, limit || 1000)
 

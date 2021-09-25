@@ -12,7 +12,7 @@ export function useChats() {
   const theseContacts: Contact[] = Array.from(contacts.contacts.values())
   const theChats = allChats(theseChats, theseContacts, user.myid)
   const chatsToShow = theChats
-  sortChats(chatsToShow, msg.messages)
+  // sortChats(chatsToShow, msg.messages)
 
   return chatsToShow
 }
@@ -150,11 +150,12 @@ export function contactForConversation(chat: Chat, contacts: Contact[], myid: nu
 }
 
 export function sortChats(chatsToShow, messages) {
-  console.tron.display({
-    name: 'sortChats',
-    preview: `Starting to sort ${chatsToShow.length} chats and ${messages.length} messages`,
-    value: { chatsToShow, messages },
-  })
+  console.tron.log('skipping sortChats.')
+  // console.tron.display({
+  //   name: 'sortChats',
+  //   preview: `Starting to sort ${chatsToShow.length} chats and ${messages.length} messages`,
+  //   value: { chatsToShow, messages },
+  // })
   chatsToShow.sort((a, b) => {
     const amsgs = messages[a.id]
     const alastMsg = amsgs?.[0]

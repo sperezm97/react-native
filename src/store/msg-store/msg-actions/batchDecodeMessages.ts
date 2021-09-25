@@ -1,4 +1,5 @@
 import { decodeMessages } from 'store/msg-store'
+import { normalizeMessage } from 'store/normalize'
 import { Msg, MsgStore } from '..'
 
 export const batchDecodeMessages = async (self: MsgStore, msgs: Msg[]) => {
@@ -17,13 +18,17 @@ export const batchDecodeMessages = async (self: MsgStore, msgs: Msg[]) => {
     value: { decodedMsgs, first10, rest },
   })
 
-  // const self.messages
-  // const watsThis = orgMsgsFromExisting(self.messages.values(), decodedMsgs)
+  first10.forEach((msg) => {
+    const normalizedMessage = normalizeMessage(msg)
+    self.setMessage(normalizedMessage)
+  })
 
-  // this.messages = orgMsgsFromExisting(this.messages, decodedMsgs)
-  // console.log('OK! FIRST 10!')
+  const decodedRest = await decodeMessages(rest)
 
-  // this.reverseDecodeMessages(rest.reverse())
+  decodedRest.forEach((msg) => {
+    const normalizedMessage = normalizeMessage(msg)
+    self.setMessage(normalizedMessage)
+  })
 
   return true
 }

@@ -8,8 +8,8 @@ export const getBalance = async (self: DetailsStore) => {
 
     const b = r.balance && parseInt(r.balance, 10)
     const fb = r.full_balance && parseInt(r.full_balance, 10)
-    self.balance = b || 0
-    self.fullBalance = fb || 0
+    self.setBalance(b || 0)
+    self.setFullBalance(fb || 0)
   } catch (e) {
     console.log(e)
   }

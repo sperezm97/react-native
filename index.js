@@ -5,7 +5,7 @@ import TrackPlayer from 'react-native-track-player'
 import App from './App'
 import { name as appName } from './app.json'
 
-LogBox.ignoreLogs(['Require cycle:'])
+LogBox.ignoreLogs(['Require cycle:', '[mobx-react-lite] ', 'o is not a function', 'Found screens', "Can't perform"])
 
 AppRegistry.registerComponent(appName, () => App)
 TrackPlayer.registerPlaybackService(() => require('./src/components/Podcast/Service'))

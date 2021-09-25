@@ -1,17 +1,19 @@
-import { Instance, SnapshotOut, types } from 'mobx-state-tree'
+import { getRoot, Instance, SnapshotOut, types } from 'mobx-state-tree'
 import moment from 'moment'
 import localforage from 'localforage'
 import { relay, composeAPI } from 'api'
 import { DEFAULT_MEME_SERVER } from 'config'
-import { UserStoreModel } from 'store/user-store/user-store'
 import { withEnvironment } from '../extensions/with-environment'
 import { ServerModal } from './meme-models'
 import { asyncForEach } from '../utils/async'
+import { RootStore } from 'store'
 
 export const MemeStoreModel = types
   .model('MemeStore')
   .props({
-    servers: types.optional(types.array(ServerModal), [{ host: DEFAULT_MEME_SERVER, token: '' }]),
+    servers: types.frozen([{ host: DEFAULT_MEME_SERVER }]),
+    // servers: types.frozen(),
+    // servers: types.optional(types.array(ServerModal), [{ host: DEFAULT_MEME_SERVER, token: '' }]),
     lastAuthenticated: types.optional(types.number, 0),
     cacheEnabled: false,
     // Reference to why using frozen https://github.com/mobxjs/mobx-state-tree/issues/415
@@ -19,12 +21,12 @@ export const MemeStoreModel = types
     cacheTS: types.optional(types.map(types.frozen()), {}),
     cacheFileName: types.optional(types.map(types.frozen()), {}),
     filenameCache: types.optional(types.map(types.frozen()), {}),
-    userStore: types.maybe(types.reference(UserStoreModel)),
   })
   .extend(withEnvironment)
   .actions((self) => ({
     async authenticate(server) {
-      const pubkey = self.userStore.publicKey
+      const root = getRoot(self) as RootStore
+      const pubkey = root.user.publicKey
       if (!pubkey) return
 
       const memesAPI = composeAPI(server.host)
@@ -54,7 +56,7 @@ export const MemeStoreModel = types
       const isOld = moment(new Date(lastAuth)).isBefore(moment().subtract(days * 24 - 1, 'hours'))
       if (isOld) {
         await asyncForEach(self.servers, self.authenticate)
-        self.lastAuthenticated = new Date().getTime()
+        ;(self as MemeStore).setLastAuthenticated(new Date().getTime())
       }
     },
     checkCacheEnabled() {
@@ -67,6 +69,9 @@ export const MemeStoreModel = types
     },
     addToFilenameCache(id: number, name: string) {
       self.filenameCache.set(id.toString(), name)
+    },
+    setLastAuthenticated(lastAuth: any) {
+      self.lastAuthenticated = lastAuth
     },
   }))
   .views((self) => ({

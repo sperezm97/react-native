@@ -27,6 +27,12 @@ export const DetailsStoreModel = types
     addToBalance(x: number) {
       self.balance = self.balance + x
     },
+    setBalance(balance: number) {
+      self.balance = balance
+    },
+    setFullBalance(balance: number) {
+      self.fullBalance = balance
+    },
   }))
 
 type DetailsStoreType = Instance<typeof DetailsStoreModel>

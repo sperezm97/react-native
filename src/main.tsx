@@ -99,7 +99,9 @@ export default function Main() {
       await contacts.getContacts()
     }
 
-    await msg.getMessages()
+    // await msg.getMessages()
+    // FOR NOW, FORCE
+    await msg.getMessages(true)
     ui.setLoadingHistory(false)
 
     // msg.initLastSeen()

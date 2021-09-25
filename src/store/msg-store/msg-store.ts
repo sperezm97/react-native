@@ -53,6 +53,12 @@ export const MsgStoreModel = types
     setLastFetched(lastFetched: number) {
       self.lastFetched = lastFetched
     },
+    setMessage: (msg: Msg) => {
+      self.messages.set(msg.id.toString(), msg)
+    },
+    setMessages: (msgs: Msg[]) => {
+      msgs.forEach((chat) => (self as MsgStore).setMessage(chat))
+    },
   }))
   .views((self) => ({
     countUnseenMessages(myid: number): number {
@@ -81,22 +87,37 @@ export const MsgStoreModel = types
       })
       return l
     },
+    get messagesArray(): Msg[] {
+      return Array.from(self.messages.values())
+    },
+    msgsForChatroom(chatId: number) {
+      console.tron.log(`msgsForChatroom start with ${chatId}`)
+      const msgs = (self as MsgStore).messagesArray.filter((msg) => msg.chat_id === chatId)
+      console.tron.display({
+        name: 'msg-store',
+        preview: 'msgsForChatroom',
+        value: { msgs, chatId },
+        important: true,
+      })
+      return msgs
+    },
     sortAllMsgs(allms: { [k: number]: Msg[] }) {
+      return false
       const final = {}
       let toSort: { [k: number]: Msg[] } = allms || JSON.parse(JSON.stringify(self.messages)) // ??
 
       console.tron.display({
         name: 'sortAllMsgs',
         preview: `Trying to sort...`,
-        value: { toSort },
+        value: { toSort, allms },
       })
 
-      Object.entries(toSort).forEach((entries) => {
-        const k = entries[0]
-        const v: Msg[] = entries[1]
-        v.sort((a, b) => moment(b.date).unix() - moment(a.date).unix())
-        final[k] = v
-      })
+      // Object.entries(toSort).forEach((entries) => {
+      //   const k = entries[0]
+      //   const v: Msg[] = entries[1]
+      //   v.sort((a, b) => moment(b.date).unix() - moment(a.date).unix())
+      //   final[k] = v
+      // })
 
       console.tron.display({
         name: 'sortAllMsgs',

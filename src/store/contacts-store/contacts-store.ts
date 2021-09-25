@@ -1,4 +1,6 @@
 import { Instance, SnapshotOut, types } from 'mobx-state-tree'
+import { SelectedContact } from 'src/components/Tribes/Members/Items'
+import { normalizeContact } from 'store/normalize'
 import { Invite } from '.'
 import { withEnvironment } from '../extensions/with-environment'
 import * as actions from './contacts-actions'
@@ -34,8 +36,11 @@ export const ContactsStoreModel = types
     setContact(contact: Contact) {
       self.contacts.put(contact)
     },
-    setContacts(contacts: any) {
-      self.contacts = contacts
+    setContacts(contacts: Contact[]) {
+      contacts.forEach((contact) => {
+        const normalizedContact = normalizeContact(contact)
+        ;(self as ContactsStore).setContact(normalizedContact)
+      })
     },
   }))
   .views((self) => ({
