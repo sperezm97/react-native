@@ -137,7 +137,7 @@ export default function MsgRow(props) {
                 width: '100%',
               }}
             >
-              {props.showInfoBar && <InfoBar {...props} senderAlias={props.senderAlias} />}
+              {props.showInfoBar ? <InfoBar {...props} senderAlias={props.senderAlias} /> : null}
               <MsgBubble {...props} isTribeOwner={isTribeOwner} myAlias={props.myAlias} myid={props.myid} />
             </View>
             <View
@@ -236,15 +236,15 @@ function MsgBubble(props) {
             msgRefHeight.current = event.nativeEvent.layout.height
           }}
         >
-          {isDeleted && <DeletedMsg />}
-          {!isDeleted && (props.reply_uuid ? true : false) && (
+          {isDeleted ? <DeletedMsg /> : null}
+          {!isDeleted && (props.reply_uuid ? true : false) ? (
             <ReplyContent
               content={props.reply_message_content}
               senderAlias={props.reply_message_sender_alias}
               replyMessageExtraContent={replyMessage}
             />
-          )}
-          {!isDeleted && (
+          ) : null}
+          {!isDeleted ? (
             <Message
               {...props}
               id={props.id}
@@ -252,11 +252,11 @@ function MsgBubble(props) {
               myAlias={props.myAlias}
               myid={props.myid}
             />
-          )}
+          ) : null}
         </View>
       }
     >
-      {allowBoost && (
+      {allowBoost ? (
         <IconButton
           onPress={onBoostHandler}
           icon={() => <Ionicon name='rocket' color={theme.primary} size={20} />}
@@ -265,7 +265,7 @@ function MsgBubble(props) {
             marginHorizontal: 14,
           }}
         />
-      )}
+      ) : null}
 
       <IconButton
         onPress={onCopyHandler}
