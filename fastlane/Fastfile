@@ -7,14 +7,15 @@ platform :ios do
  desc "Upload to Testflight (Staging)"
  lane :upload_testflight_staging do
 
-  build_number=latest_testflight_build_number(
-    initial_build_number: 1,
-    version: get_version_number(
-      xcodeproj: "ios/Chat.xcodeproj",
-      target: "Chat"
-    )
-  ) + 1
-  # build_number=23
+  # build_number=latest_testflight_build_number(
+  #   initial_build_number: 1,
+  #   version: get_version_number(
+  #     xcodeproj: "ios/Chat.xcodeproj",
+  #     target: "Chat"
+  #   )
+  # ) + 1
+
+  build_number=1
 
   increment_build_number(
     build_number:build_number,
