@@ -46,22 +46,22 @@ export default function InfoBar(props) {
             flexDirection: isMe ? 'row-reverse' : 'row',
           }}
         >
-          {senderAlias && !isMe && (
+          {senderAlias && !isMe ? (
             <Typography style={{ ...styles.sender }} size={12} lh={13} color={nameColor}>
               {senderAlias}
             </Typography>
-          )}
+          ) : null}
           <Typography size={12} lh={13} color={theme.darkGrey}>
             {moment(props.date).format(timeFormat)}
           </Typography>
           {showLock && <Icon name='lock' size={14} color='#AFB6BC' style={{ marginRight: 4, marginLeft: 4 }} />}
-          {isMe && isReceived && (
+          {isMe && isReceived ? (
             <Icon name='flash' size={14} color='#64C684' style={{ marginRight: showLock ? 0 : 4 }} />
-          )}
+          ) : null}
         </View>
-        {hasExpiry && !isExpired && (
+        {hasExpiry && !isExpired ? (
           <Typography size={10} lh={13} color={theme.darkGrey}>{`Expires in ${expiry} minutes`}</Typography>
-        )}
+        ) : null}
       </View>
     </View>
   )
