@@ -22,6 +22,7 @@ export const DetailsStoreModel = types
     getLogs: async (): Promise<void> => await actions.getLogs(self as DetailsStore),
     getUSDollarRate: async () => await actions.getUSDollarRate(self as DetailsStore),
     getVersions: async (): Promise<any> => await actions.getVersions(self as DetailsStore),
+    setLogs: (r) => (self.logs = r),
     clearLogs: (): void => actions.clearLogs(self as DetailsStore),
     reset: (): void => actions.reset(self as DetailsStore),
     addToBalance(x: number) {

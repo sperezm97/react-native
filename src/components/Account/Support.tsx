@@ -48,6 +48,8 @@ export default function Support() {
     }
   }, [])
 
+  console.log(details.logs.length)
+
   return useObserver(() => (
     <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
       <BackHeader title='Support' />
@@ -70,9 +72,13 @@ export default function Support() {
         <Typography size={14} style={styles.version}>
           {`App version: ${packageJSON.version}`}
         </Typography>
-        <ScrollView style={styles.scroll} contentContainerStyle={styles.inner}>
-          <Typography size={14}>{details.logs}</Typography>
-        </ScrollView>
+        <View style={{ flex: 1 }}>
+          <ScrollView style={styles.scroll} contentContainerStyle={styles.inner}>
+            {/* Limits the amount of logs to 10000 characters, if the user wants to see it complete can copy the log */}
+            {/* Previously to more than 25k characters was representing a issue of hiding all the messages inside Typography */}
+            <Typography>{String(details.logs).slice(0, 10000)}</Typography>
+          </ScrollView>
+        </View>
         {loading && (
           <View style={styles.spinWrap}>
             <ActivityIndicator animating={true} color={theme.icon} />
@@ -103,12 +109,10 @@ const styles = StyleSheet.create({
     flex: 1,
     display: 'flex',
     maxHeight: '90%',
-    overflow: 'scroll',
   },
   inner: {
     margin: 2,
     display: 'flex',
-    position: 'relative',
     alignItems: 'center',
   },
   version: {
