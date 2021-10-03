@@ -18,5 +18,5 @@
     "isolatedModules": true,
     "baseUrl": "./"
   },
-  "include": ["src"]
+  "include": ["src", "app"]
 }

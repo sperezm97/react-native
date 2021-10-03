@@ -1,6 +1,6 @@
 // import Toast from 'react-native-simple-toast'
 // import { contactStore } from './contacts'
-import * as e2e from '../../crypto/e2e'
+import * as e2e from 'lib/crypto/e2e'
 // import { chatStore } from './chats'
 // import { userStore } from './user'
 import { constants } from '../../constants'
@@ -9,7 +9,10 @@ import { RootStore } from 'store'
 import { Contact } from 'store/contacts-store'
 // import { Msg, MAX_MSGS_PER_CHAT } from './msg'
 
-export async function encryptText(root: RootStore, { contact_id, text }: { contact_id: number; text: string }) {
+export async function encryptText(
+  root: RootStore,
+  { contact_id, text }: { contact_id: number; text: string }
+) {
   if (!text) return ''
   const contact = root.contacts.contacts.get(contact_id.toString())
   if (!contact || !contact?.contact_key) return ''

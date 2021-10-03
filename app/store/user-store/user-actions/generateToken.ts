@@ -1,7 +1,7 @@
 import { UserStore } from '../user-store'
 import { sleep } from 'store/utils/sleep'
 import * as api from 'api'
-import { randString } from 'crypto/rand'
+import { randString } from 'lib/crypto/rand'
 
 export const generateToken = async (self: UserStore, pwd: string) => {
   if (api.relay === null && self.currentIP) {
