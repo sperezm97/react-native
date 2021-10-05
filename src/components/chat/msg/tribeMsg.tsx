@@ -4,7 +4,7 @@ import { ActivityIndicator, Button } from 'react-native-paper'
 import FastImage from 'react-native-fast-image'
 import { useNavigation } from '@react-navigation/native'
 
-import { useTheme, useStores } from '../../../store'
+import { useTheme, useStores } from 'store'
 import { DEFAULT_TRIBE_SERVER } from '../../../config'
 
 interface Tribe {

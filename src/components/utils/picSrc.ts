@@ -4,7 +4,7 @@ import RNFetchBlob from 'rn-fetch-blob'
 import { Chat } from 'store/chats-store'
 import { Contact } from 'store/contacts-store'
 import { constants } from '../../constants'
-import { useStores } from '../../store'
+import { useStores } from 'store'
 
 const conversation = constants.chat_types.conversation
 

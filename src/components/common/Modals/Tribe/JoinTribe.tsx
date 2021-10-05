@@ -1,12 +1,19 @@
 import React, { useState } from 'react'
-import { StyleSheet, View, Modal, SafeAreaView, ScrollView, KeyboardAvoidingView } from 'react-native'
+import {
+  StyleSheet,
+  View,
+  Modal,
+  SafeAreaView,
+  ScrollView,
+  KeyboardAvoidingView,
+} from 'react-native'
 import { useObserver } from 'mobx-react-lite'
 // import { useNavigation } from '@react-navigation/native'
 import Video from 'react-native-video'
 import { IconButton, TextInput } from 'react-native-paper'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 
-import { useStores, useTheme, hooks } from '../../../../store'
+import { useStores, useTheme, hooks } from 'store'
 import { navigate } from '../../../Navigation'
 import { DEFAULT_TRIBE_SERVER } from '../../../../config'
 import { SCREEN_HEIGHT, STATUS_BAR_HEIGHT } from '../../../../constants'
@@ -82,7 +89,12 @@ function JoinTribe(props) {
   return useObserver(() => {
     return (
       <>
-        <Modal visible={visible} animationType='slide' presentationStyle='fullScreen' onDismiss={close}>
+        <Modal
+          visible={visible}
+          animationType='slide'
+          presentationStyle='fullScreen'
+          onDismiss={close}
+        >
           <SafeAreaView style={{ ...styles.wrap, backgroundColor: theme.bg }}>
             <KeyboardAvoidingView behavior='padding' style={{ flex: 1 }} keyboardVerticalOffset={1}>
               <Header title='Join Community' onClose={close} />
@@ -141,7 +153,12 @@ function JoinTribe(props) {
                           }}
                           underlineColor={theme.border}
                         />
-                        <Button style={{ marginBottom: 20 }} onPress={onJoinPress} size='large' w={240}>
+                        <Button
+                          style={{ marginBottom: 20 }}
+                          onPress={onJoinPress}
+                          size='large'
+                          w={240}
+                        >
                           Join
                         </Button>
                       </>

@@ -2,7 +2,7 @@ import React from 'react'
 import { useObserver } from 'mobx-react-lite'
 import { StyleSheet, View, Modal } from 'react-native'
 
-import { useTheme } from '../../../../store'
+import { useTheme } from 'store'
 import ModalHeader from '../ModalHeader'
 
 export default function AddMembers({ visible, close, children }) {

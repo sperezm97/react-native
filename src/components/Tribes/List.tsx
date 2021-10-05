@@ -4,7 +4,7 @@ import { useObserver } from 'mobx-react-lite'
 import { useNavigation } from '@react-navigation/native'
 import { ActivityIndicator } from 'react-native-paper'
 
-import { useStores, useTheme, hooks } from '../../store'
+import { useStores, useTheme, hooks } from 'store'
 import { SCREEN_WIDTH } from '../../constants'
 import Typography from '../common/Typography'
 import Avatar from '../common/Avatar'

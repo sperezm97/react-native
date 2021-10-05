@@ -4,7 +4,7 @@ import { Appbar } from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native'
 import FeatherIcon from 'react-native-vector-icons/Feather'
 
-import { useTheme } from '../../../store'
+import { useTheme } from 'store'
 import Typography from '../Typography'
 
 export default function BackHeader({ title, screen, action, navigate, border }) {

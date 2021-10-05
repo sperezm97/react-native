@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { StyleSheet, View, Image, Linking } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
 
-import { useTheme } from '../../../store'
+import { useTheme } from 'store'
 import { APP_STORE } from '../../../config'
 import DialogWrap from '../Dialogs/DialogWrap'
 import Typography from '../Typography'
@@ -17,10 +17,21 @@ export default function AppVersionUpdate({ visible, close }) {
 
   return useObserver(() => {
     return (
-      <DialogWrap visible={visible} onDismiss={close} minH={450} round={20} dismissable={false} ph={0}>
+      <DialogWrap
+        visible={visible}
+        onDismiss={close}
+        minH={450}
+        round={20}
+        dismissable={false}
+        ph={0}
+      >
         <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
           <Image
-            source={theme.dark ? require('../../../assets/zion-dark-theme.png') : require('../../../assets/zion.png')}
+            source={
+              theme.dark
+                ? require('../../../assets/zion-dark-theme.png')
+                : require('../../../assets/zion.png')
+            }
             style={{ width: 120, height: 120 }}
             resizeMode={'contain'}
           />

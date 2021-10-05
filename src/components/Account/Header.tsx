@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
 import { Appbar } from 'react-native-paper'
 import { useObserver } from 'mobx-react-lite'
 
-import { useTheme } from '../../store'
+import { useTheme } from 'store'
 
 export default function Header(props) {
   const theme = useTheme()

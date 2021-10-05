@@ -3,7 +3,7 @@ import { TouchableOpacity } from 'react-native'
 import HTML from 'react-native-render-html'
 
 import shared from './sharedStyles'
-import { useTheme } from '../../../store'
+import { useTheme } from 'store'
 
 function makeHTML(html, theme) {
   const color = theme.title

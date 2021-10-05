@@ -9,7 +9,7 @@ import SimpleIcon from 'react-native-vector-icons/SimpleLineIcons'
 // import { ifIphoneX, } from 'react-native-iphone-x-helper'
 import { isIphoneX, getBottomSpace } from 'react-native-iphone-x-helper'
 
-import { useTheme } from '../../../store'
+import { useTheme } from 'store'
 import Pushable from '../Pushable'
 import Icon from '../Icon'
 
@@ -92,7 +92,11 @@ function renderIcon(route, current, theme) {
       {iconElement ? (
         <>{route.icon(route.name === current.name ? theme.primary : theme.icon)}</>
       ) : (
-        <Icon name={route.name} color={route.name === current.name ? theme.primary : theme.icon} size={24} />
+        <Icon
+          name={route.name}
+          color={route.name === current.name ? theme.primary : theme.icon}
+          size={24}
+        />
       )}
     </>
   )

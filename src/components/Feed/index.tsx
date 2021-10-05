@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
 
-import { useTheme } from '../../store'
+import { useTheme } from 'store'
 import Media from './Media'
 
 export default function Feed({ feed }) {

@@ -3,7 +3,7 @@ import { StyleSheet, Animated, View } from 'react-native'
 import { TouchableRipple } from 'react-native-paper'
 import Ionicon from 'react-native-vector-icons/Ionicons'
 
-import { useTheme } from '../../../store'
+import { useTheme } from 'store'
 import Typography from '../Typography'
 
 export default function BoostButton({ onPress }) {

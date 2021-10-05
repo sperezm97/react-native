@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleSheet } from 'react-native'
 import { TextInput } from 'react-native-paper'
 
-import { useTheme } from '../../../store'
+import { useTheme } from 'store'
 import InputAccessoryView from '../../common/Accessories/InputAccessoryView'
 import Typography from '../../common/Typography'
 

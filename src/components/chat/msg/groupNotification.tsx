@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
 
-import { useStores, useTheme } from '../../../store'
+import { useStores, useTheme } from 'store'
 import { constants } from '../../../constants'
 import Typography from '../../common/Typography'
 

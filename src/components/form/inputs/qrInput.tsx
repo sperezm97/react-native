@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { IconButton, TextInput } from 'react-native-paper'
 
-import { useTheme } from '../../../store'
+import { useTheme } from 'store'
 import { SCREEN_HEIGHT } from '../../../constants'
 import QR from '../../common/Accessories/QR'
 import PublicKey from '../../common/Modals/PublicKey'
@@ -55,7 +55,12 @@ export default function QrInput({
                 >
                   {value}
                 </Typography>
-                <IconButton icon='qrcode' color={theme.primary} size={26} onPress={() => setScanning(true)} />
+                <IconButton
+                  icon='qrcode'
+                  color={theme.primary}
+                  size={26}
+                  onPress={() => setScanning(true)}
+                />
               </>
             ) : (
               <Typography color={theme.subtitle}>No Public key found.</Typography>
@@ -100,7 +105,11 @@ export default function QrInput({
         showPaster={false}
       />
 
-      <PublicKey visible={scanning && displayOnly} pubkey={value} close={() => setScanning(false)} />
+      <PublicKey
+        visible={scanning && displayOnly}
+        pubkey={value}
+        close={() => setScanning(false)}
+      />
     </>
   )
 }

@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleSheet, FlatList } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
 
-import { useStores } from '../../../store'
+import { useStores } from 'store'
 import { constants } from '../../../constants'
 import { PendingContact } from './Items'
 
@@ -12,7 +12,9 @@ export default function Pending({ tribe, members }) {
   async function onApproveOrDenyMember(contactId, status) {
     const msgs = msg.messages[tribe.id]
     if (!msgs) return
-    const theMsg = msgs.find((m) => m.sender === contactId && m.type === constants.message_types.member_request)
+    const theMsg = msgs.find(
+      (m) => m.sender === contactId && m.type === constants.message_types.member_request
+    )
     if (!theMsg) return
     await msg.approveOrRejectMember(contactId, status, theMsg.id)
   }

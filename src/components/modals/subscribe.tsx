@@ -3,7 +3,7 @@ import { useObserver } from 'mobx-react-lite'
 import { View, Text, StyleSheet, Image } from 'react-native'
 import { Button, Portal } from 'react-native-paper'
 
-import { useStores } from '../../store'
+import { useStores } from 'store'
 import ModalWrap from './modalWrap'
 import Header from './modalHeader'
 import { constants } from '../../constants'
@@ -92,7 +92,9 @@ function Subscribe({ close }) {
           <Text style={{ marginTop: 32, fontWeight: 'bold', fontSize: 28 }}>{params.name}</Text>
 
           <Text style={{ marginTop: 32, fontSize: 52 }}>{params.amount}</Text>
-          <Text style={{ fontSize: 18, color: '#ccc' }}>sat/{intervals[params.interval] || 'day'}</Text>
+          <Text style={{ fontSize: 18, color: '#ccc' }}>
+            sat/{intervals[params.interval] || 'day'}
+          </Text>
 
           <View
             style={{
@@ -107,7 +109,13 @@ function Subscribe({ close }) {
             <Text style={{ fontSize: 18, color: '#aaa' }}>{params.endNumber}</Text>
           </View>
 
-          <Button onPress={subscribe} mode='contained' dark={true} style={styles.button} loading={loading}>
+          <Button
+            onPress={subscribe}
+            mode='contained'
+            dark={true}
+            style={styles.button}
+            loading={loading}
+          >
             Subscribe
           </Button>
         </View>

@@ -5,7 +5,7 @@ import { SwipeRow } from 'react-native-swipe-list-view'
 import { IconButton } from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native'
 
-import { useStores, useTheme } from '../../store'
+import { useStores, useTheme } from 'store'
 import { usePicSrc } from '../utils/picSrc'
 import Avatar from '../common/Avatar'
 import Typography from '../common/Typography'
@@ -21,7 +21,9 @@ export default function ContactList({ listHeader }) {
       if (!ui.contactsSearchTerm) return true
       return c.alias.toLowerCase().includes(ui.contactsSearchTerm.toLowerCase())
     })
-    const contactsNotMe = contactsToShow.filter((c) => c.id !== myid).sort((a, b) => (a.alias > b.alias ? 1 : -1))
+    const contactsNotMe = contactsToShow
+      .filter((c) => c.id !== myid)
+      .sort((a, b) => (a.alias > b.alias ? 1 : -1))
 
     const contactsNotFromGroups = contactsNotMe.filter((c) => !c.from_group)
 
@@ -34,7 +36,10 @@ export default function ContactList({ listHeader }) {
             return item.alias + index + item.photo_url
           }}
           renderItem={({ item }) => (
-            <Item contact={item} onPress={(contact) => navigation.navigate('Contact' as never, { contact } as never)} />
+            <Item
+              contact={item}
+              onPress={(contact) => navigation.navigate('Contact' as never, { contact } as never)}
+            />
           )}
           renderSectionHeader={({ section: { title } }) => (
             <View style={{ ...styles.section, backgroundColor: theme.main }}>
@@ -67,7 +72,11 @@ function Item({ contact, onPress }) {
         />
       </View>
       <View style={{ ...styles.frontSwipeRow, backgroundColor: theme.bg }}>
-        <TouchableOpacity style={styles.contactTouch} activeOpacity={0.5} onPress={() => onPress(contact)}>
+        <TouchableOpacity
+          style={styles.contactTouch}
+          activeOpacity={0.5}
+          onPress={() => onPress(contact)}
+        >
           <Avatar size={40} aliasSize={16} alias={contact.alias} photo={uri} />
           <View style={styles.contactContent}>
             <Typography size={16}>{contact.alias}</Typography>

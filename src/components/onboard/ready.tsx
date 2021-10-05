@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native'
 import RadialGradient from 'react-native-radial-gradient'
 import { ActivityIndicator } from 'react-native-paper'
 
-import { useStores, useTheme } from '../../store'
+import { useStores, useTheme } from 'store'
 import { constants } from '../../constants'
 import Slider from '../utils/slider'
 import Button from '../common/Button'

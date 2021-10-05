@@ -4,7 +4,7 @@ import { useObserver } from 'mobx-react-lite'
 import { useNavigation } from '@react-navigation/native'
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 
-import { useStores, useTheme } from '../../store'
+import { useStores, useTheme } from 'store'
 import ChatList from './chatList'
 import Search from '../common/Search'
 import Header from '../common/Header'
@@ -45,7 +45,10 @@ function ListHeader() {
   return (
     <>
       <View style={{ ...styles.listHeader }}>
-        <TouchableOpacity onPress={() => navigation.navigate('Contacts' as never)} activeOpacity={0.6}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('Contacts' as never)}
+          activeOpacity={0.6}
+        >
           <Button mode='text' size='small'>
             Contacts
           </Button>

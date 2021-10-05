@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
 
-import { useStores, useTheme } from '../../store'
+import { useStores, useTheme } from 'store'
 import { isLN, parseLightningInvoice, removeLightningPrefix } from '../utils/ln'
 import TabBar from '../common/TabBar'
 import Header from './Header'
@@ -154,7 +154,13 @@ const ListHeader = () => {
               width: '100%',
             }}
           >
-            <Typography size={12} fw='500' textAlign='center' color={theme.subtitle} style={{ marginBottom: 4 }}>
+            <Typography
+              size={12}
+              fw='500'
+              textAlign='center'
+              color={theme.subtitle}
+              style={{ marginBottom: 4 }}
+            >
               Your node capacity
             </Typography>
             <View

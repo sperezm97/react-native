@@ -5,7 +5,7 @@ import moment from 'moment'
 import Toast from 'react-native-simple-toast'
 
 import { constantCodes } from '../../constants'
-import { useStores, useTheme } from '../../store'
+import { useStores, useTheme } from 'store'
 import Typography from '../common/Typography'
 
 export default function InviteRow(props) {
@@ -89,7 +89,9 @@ export default function InviteRow(props) {
 function inviteIcon(statusString, theme) {
   switch (statusString) {
     case 'payment_pending':
-      return <MaterialIcon name='credit-card' size={14} color={theme.icon} style={{ marginRight: 4 }} />
+      return (
+        <MaterialIcon name='credit-card' size={14} color={theme.icon} style={{ marginRight: 4 }} />
+      )
     case 'ready':
       return <MaterialIcon name='check' size={14} color={theme.icon} style={{ marginRight: 4 }} />
     case 'delivered':

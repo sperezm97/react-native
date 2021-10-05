@@ -5,7 +5,7 @@ import RNFetchBlob from 'rn-fetch-blob'
 import { useNavigation } from '@react-navigation/native'
 import AntDesignIcon from 'react-native-vector-icons/AntDesign'
 
-import { useStores, useTheme } from '../../store'
+import { useStores, useTheme } from 'store'
 import Header from './Header'
 import { usePicSrc } from '../utils/picSrc'
 import ActionMenu from '../common/ActionMenu'

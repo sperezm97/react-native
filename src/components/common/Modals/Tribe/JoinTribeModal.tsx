@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useObserver } from 'mobx-react-lite'
 
-import { useStores } from '../../../../store'
+import { useStores } from 'store'
 import JoinTribe from './JoinTribe'
 
 export default function JoinTribeModal() {

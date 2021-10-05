@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { StyleSheet, View, ScrollView } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 
-import { useStores, useTheme } from '../../../store'
+import { useStores, useTheme } from 'store'
 
 import Form from '../../form'
 import * as schemas from '../../form/schemas'

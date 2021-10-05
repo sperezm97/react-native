@@ -4,7 +4,7 @@ import { useObserver } from 'mobx-react-lite'
 import { IconButton } from 'react-native-paper'
 import RNFetchBlob from 'rn-fetch-blob'
 
-import { useStores, useTheme } from '../../store'
+import { useStores, useTheme } from 'store'
 import Slider from '../utils/slider'
 import Button from '../common/Button'
 import ImageDialog from '../common/Dialogs/ImageDialog'
@@ -93,7 +93,12 @@ export default function ProfilePic({ z, show, onDone, onBack }) {
 
   return useObserver(() => {
     return (
-      <Slider z={z} show={show} style={{ backgroundColor: theme.bg }} accessibilityLabel='onboard-profile'>
+      <Slider
+        z={z}
+        show={show}
+        style={{ backgroundColor: theme.bg }}
+        accessibilityLabel='onboard-profile'
+      >
         <IconButton
           icon='arrow-left'
           color={theme.grey}

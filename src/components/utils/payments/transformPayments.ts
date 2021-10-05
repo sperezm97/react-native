@@ -16,6 +16,7 @@ export const transformPayments = ({ payments, userId, chats }: transformPayments
     preview: 'Got what',
     value: { payments, userId, chats },
   })
+  if (!payments) return []
   return payments
     .filter((payment) => {
       if (!payment.chat_id) return false

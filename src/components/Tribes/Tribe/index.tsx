@@ -6,7 +6,7 @@ import { IconButton } from 'react-native-paper'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { TabView } from 'react-native-tab-view'
 
-import { useStores, useTheme, hooks } from '../../../store'
+import { useStores, useTheme, hooks } from 'store'
 import BackHeader from '../../common/BackHeader'
 import Divider from '../../common/Layout/Divider'
 import TribeSettings from '../../common/Dialogs/TribeSettings'

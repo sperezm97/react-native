@@ -5,7 +5,7 @@ import FastImage from 'react-native-fast-image'
 import Ionicon from 'react-native-vector-icons/Ionicons'
 import { ActivityIndicator } from 'react-native-paper'
 
-import { useTheme } from '../../../../store'
+import { useTheme } from 'store'
 import { parseLDAT } from '../../../utils/ldat'
 import { useCachedEncryptedFile } from '../../../chat/msg/hooks'
 import { SCREEN_WIDTH } from '../../../../constants'
@@ -33,7 +33,10 @@ function MediaItem(props) {
   const showPurchaseButton = !!(amt && !isMe)
 
   const decodedMessageInCaseOfEmbedVideo = isBase64(paidMessageText).text
-  const rumbleLink = useMemo(() => getRumbleLink(decodedMessageInCaseOfEmbedVideo), [decodedMessageInCaseOfEmbedVideo])
+  const rumbleLink = useMemo(
+    () => getRumbleLink(decodedMessageInCaseOfEmbedVideo),
+    [decodedMessageInCaseOfEmbedVideo]
+  )
   const youtubeLink = useMemo(
     () => getYoutubeLink(decodedMessageInCaseOfEmbedVideo),
     [decodedMessageInCaseOfEmbedVideo]
@@ -79,7 +82,11 @@ function MediaItem(props) {
           {Boolean(youtubeLink || rumbleLink) && (
             <View style={{ width: 20 }}>
               <EmbedVideo squareSize={SCREEN_WIDTH / 3 - 10 / 3} type='rumble' link={rumbleLink} />
-              <EmbedVideo squareSize={SCREEN_WIDTH / 3 - 10 / 3} type='youtube' link={youtubeLink} />
+              <EmbedVideo
+                squareSize={SCREEN_WIDTH / 3 - 10 / 3}
+                type='youtube'
+                link={youtubeLink}
+              />
             </View>
           )}
         </TouchableOpacity>

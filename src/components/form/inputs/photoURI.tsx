@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/AntDesign'
 import Cam from '../../utils/cam'
 import ImgSrcDialog from '../../utils/imgSrcDialog'
 import RNFetchBlob from 'rn-fetch-blob'
-import { useStores } from '../../../store'
+import { useStores } from 'store'
 
 export default function PhotoURIInput({
   name,

@@ -1,7 +1,7 @@
 import React from 'react'
 import { View } from 'react-native'
 
-import { useTheme } from '../../../store'
+import { useTheme } from 'store'
 import Typography from '../Typography'
 import Icon from '../Icon'
 

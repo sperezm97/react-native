@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, Animated, Dimensions } from 'react-native'
 
-import { useTheme } from '../../store'
+import { useTheme } from 'store'
 
 export default function Slider(props) {
   const screenWidth = Math.ceil(Dimensions.get('window').width)

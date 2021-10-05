@@ -108,7 +108,9 @@ export async function encrypt(data, pubkey) {
     const n = Math.ceil(buf.length / MAX_CHUNK_SIZE)
     const arr = Array(n).fill(0)
     arr.forEach((_, i) => {
-      const sub = buf.subarray(i * MAX_CHUNK_SIZE, i * MAX_CHUNK_SIZE + MAX_CHUNK_SIZE).toString('utf8')
+      const sub = buf
+        .subarray(i * MAX_CHUNK_SIZE, i * MAX_CHUNK_SIZE + MAX_CHUNK_SIZE)
+        .toString('utf8')
       dataArray.push(sub)
     })
     await asyncForEach(dataArray, async (d) => {

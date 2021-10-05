@@ -3,7 +3,7 @@ import { StyleSheet, View, Animated } from 'react-native'
 import { TouchableRipple } from 'react-native-paper'
 import Ionicon from 'react-native-vector-icons/Ionicons'
 
-import { useTheme } from '../../../store'
+import { useTheme } from 'store'
 
 export default function Boost(props) {
   const theme = useTheme()

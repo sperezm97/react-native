@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
 
-import { useStores, useTheme } from '../../store'
+import { useStores, useTheme } from 'store'
 import { useBoostSender } from '../../store/hooks/msg'
 import CustomIcon from '../utils/customIcons'
 import Typography from '../common/Typography'
@@ -15,7 +15,9 @@ export default function BoostRow(props) {
   const theBoosts = []
   if (props.boosts) {
     props.boosts.forEach((b) => {
-      if (!theBoosts.find((bb) => (bb.sender_alias || bb.sender) === (b.sender_alias || b.sender))) {
+      if (
+        !theBoosts.find((bb) => (bb.sender_alias || bb.sender) === (b.sender_alias || b.sender))
+      ) {
         theBoosts.push(b)
       }
     })

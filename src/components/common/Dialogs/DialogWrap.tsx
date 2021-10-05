@@ -1,7 +1,7 @@
 import React from 'react'
 import { Portal, Dialog } from 'react-native-paper'
 
-import { useTheme } from '../../../store'
+import { useTheme } from 'store'
 
 export default function DialogWrap({
   title = '',

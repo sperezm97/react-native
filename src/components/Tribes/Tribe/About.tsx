@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
 
-import { useStores, useTheme, hooks } from '../../../store'
+import { useStores, useTheme, hooks } from 'store'
 import { useTribeHistory } from 'store/hooks/tribes'
 import Typography from '../../common/Typography'
 import Button from '../../common/Button'
@@ -97,12 +97,20 @@ function Tags(props) {
             </BoxHeader>
             <>
               {tribe.tags && tribe.tags.length > 0 ? (
-                <TribeTags tags={tribe.tags} displayOnly={true} containerStyle={{ paddingTop: 18 }} />
+                <TribeTags
+                  tags={tribe.tags}
+                  displayOnly={true}
+                  containerStyle={{ paddingTop: 18 }}
+                />
               ) : (
                 <Empty text='No topics found.' />
               )}
             </>
-            <DialogWrap title='Edit Topics' visible={topicsEditDialog} onDismiss={() => setTopicsEditDialog(false)}>
+            <DialogWrap
+              title='Edit Topics'
+              visible={topicsEditDialog}
+              onDismiss={() => setTopicsEditDialog(false)}
+            >
               <TribeTags tags={tribe.tags} finish={finish} />
             </DialogWrap>
           </>
@@ -111,7 +119,11 @@ function Tags(props) {
             {tribe.tags.length > 0 && (
               <>
                 <BoxHeader title='Topics in this Community' />
-                <TribeTags tags={tribe.tags} displayOnly={true} containerStyle={{ paddingTop: 18 }} />
+                <TribeTags
+                  tags={tribe.tags}
+                  displayOnly={true}
+                  containerStyle={{ paddingTop: 18 }}
+                />
               </>
             )}
           </>

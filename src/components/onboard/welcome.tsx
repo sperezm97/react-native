@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
-import { useStores, useTheme } from '../../store'
+import { useStores, useTheme } from 'store'
 import Slider from '../utils/slider'
 import Button from '../common/Button'
 import Avatar from '../common/Avatar'
@@ -32,7 +32,12 @@ export default function Welcome(props) {
               A message from your friend...
             </Typography>
             <Avatar size={200} />
-            <Typography style={{ ...styles.name }} size={24} fw='600' color={theme.dark ? theme.white : theme.black}>
+            <Typography
+              style={{ ...styles.name }}
+              size={24}
+              fw='600'
+              color={theme.dark ? theme.white : theme.black}
+            >
               {user.invite.inviterNickname || 'Inviter'}
             </Typography>
             <Typography style={{ ...styles.message }} size={20} color={theme.title}>{`${

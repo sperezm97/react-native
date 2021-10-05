@@ -6,7 +6,7 @@ import storage from '@react-native-community/async-storage'
 /**
  * The key we'll be saving our state as within async storage.
  */
-const ROOT_STATE_STORAGE_KEY = 'root20'
+const ROOT_STATE_STORAGE_KEY = 'root60'
 
 /**
  * Setup the environment that all the models will be sharing.
@@ -51,7 +51,9 @@ export async function setupRootStore() {
   }
 
   // track changes & save to storage
-  onSnapshot(rootStore, (snapshot) => storage.setItem(ROOT_STATE_STORAGE_KEY, JSON.stringify(snapshot)))
+  onSnapshot(rootStore, (snapshot) =>
+    storage.setItem(ROOT_STATE_STORAGE_KEY, JSON.stringify(snapshot))
+  )
 
   rootStore.ui.setReady(true)
 

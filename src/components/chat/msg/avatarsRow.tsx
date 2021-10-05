@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
 
-import { useTheme } from '../../../store'
+import { useTheme } from 'store'
 import { useAvatarColor } from 'store/hooks/msg'
 import Typography from '../../common/Typography'
 
@@ -11,7 +11,16 @@ export default function AvatarsRow({ aliases, borderColor }) {
   return (
     <View style={styles.row}>
       {theAliases?.map((a, i) => {
-        return <AvatarTiny key={i} i={i} size={22} alias={a.alias} photo={a.photo} borderColor={borderColor} />
+        return (
+          <AvatarTiny
+            key={i}
+            i={i}
+            size={22}
+            alias={a.alias}
+            photo={a.photo}
+            borderColor={borderColor}
+          />
+        )
       })}
     </View>
   )

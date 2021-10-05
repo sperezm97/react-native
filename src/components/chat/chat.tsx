@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { KeyboardAvoidingView } from 'react-native'
 import { useRoute, useNavigation } from '@react-navigation/native'
 
-import { useStores, useTheme } from '../../store'
+import { useStores, useTheme } from 'store'
 import { StreamPayment } from 'store/feed-store'
 import { constants } from '../../constants'
 import { ChatRouteProp } from '../../types'
@@ -125,7 +125,11 @@ export default function Chat() {
   const showPod = !!feedURL
 
   return (
-    <KeyboardAvoidingView behavior='padding' style={{ flex: 1, backgroundColor: theme.bg }} keyboardVerticalOffset={1}>
+    <KeyboardAvoidingView
+      behavior='padding'
+      style={{ flex: 1, backgroundColor: theme.bg }}
+      keyboardVerticalOffset={1}
+    >
       <Header
         chat={chat}
         appMode={appMode}

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
 
-import { useStores } from '../../../store'
+import { useStores } from 'store'
 import Form from '../../form'
 import * as schemas from '../../form/schemas'
 import ModalWrap from './ModalWrap'

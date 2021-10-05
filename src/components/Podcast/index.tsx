@@ -8,7 +8,7 @@ import { Modalize } from 'react-native-modalize'
 import { isIphoneX, getStatusBarHeight } from 'react-native-iphone-x-helper'
 import Toast from 'react-native-simple-toast'
 
-import { useStores, useTheme } from '../../store'
+import { useStores, useTheme } from 'store'
 import { Destination, StreamPayment, NUM_SECONDS, StreamPaymentModel } from 'store/feed-store'
 import { SCREEN_WIDTH } from '../../constants'
 import useInterval from '../utils/useInterval'
@@ -500,7 +500,12 @@ export default function Podcast({ pod, chat, onBoost, podError }) {
                 width: 20,
               }}
             >
-              <MaterialCommunityIcons name='play' color={theme.icon} size={18} style={{ opacity: selected ? 1 : 0 }} />
+              <MaterialCommunityIcons
+                name='play'
+                color={theme.icon}
+                size={18}
+                style={{ opacity: selected ? 1 : 0 }}
+              />
             </View>
 
             <View style={{ width: 45 }}>

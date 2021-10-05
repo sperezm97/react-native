@@ -3,7 +3,7 @@ import { StyleSheet, View, ScrollView, Modal, Animated } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
 import RNFetchBlob from 'rn-fetch-blob'
 
-import { useStores, useTheme } from '../../../../store'
+import { useStores, useTheme } from 'store'
 import { SCREEN_WIDTH } from '../../../../constants'
 import { DEFAULT_TRIBE_SERVER } from '../../../../config'
 import ModalHeader from '../ModalHeader'
@@ -79,7 +79,12 @@ export default function AddTribe() {
   }
 
   return useObserver(() => (
-    <Modal visible={ui.newTribeModal} animationType='slide' presentationStyle='pageSheet' onDismiss={close}>
+    <Modal
+      visible={ui.newTribeModal}
+      animationType='slide'
+      presentationStyle='pageSheet'
+      onDismiss={close}
+    >
       <ModalHeader title={getTitle()} onClose={close} />
       <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
         {next === 1 && (
@@ -251,7 +256,13 @@ const AddPhoto = ({ finish }) => {
         >
           {showNext ? 'Next' : 'Select Photo'}
         </Button>
-        <Button w={100} color={theme.special} onPress={() => finish(photo)} style={{ marginTop: 20 }} size='large'>
+        <Button
+          w={100}
+          color={theme.special}
+          onPress={() => finish(photo)}
+          style={{ marginTop: 20 }}
+          size='large'
+        >
           Skip
         </Button>
         <ImageDialog

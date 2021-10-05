@@ -4,7 +4,7 @@ import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIc
 import FeatherIcon from 'react-native-vector-icons/Feather'
 
 // import shared from './sharedStyles'
-import { useTheme } from '../../../store'
+import { useTheme } from 'store'
 import Typography from '../../common/Typography'
 
 export default function FileMsg(props) {

@@ -1,7 +1,7 @@
 import React from 'react'
 import { View } from 'react-native'
 
-import { useTheme } from '../../../store'
+import { useTheme } from 'store'
 
 export default function Divider(props) {
   let { color, h = 1, w = '100%', pt, pb, pr, pl, mt = 20, mb = 20 } = props

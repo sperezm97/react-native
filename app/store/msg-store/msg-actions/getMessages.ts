@@ -41,6 +41,7 @@ export const getMessages = async (self: MsgStore, forceMore: boolean) => {
     if (!r) return
 
     if (r.new_messages?.length) {
+      console.tron.log(`BATCH DECODING ${r.new_messages?.length} MESSAGES`)
       await self.batchDecodeMessages(r.new_messages)
     } else {
       console.log('skipping sortAllMsgs')

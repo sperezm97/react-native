@@ -3,7 +3,7 @@ import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import { IconButton } from 'react-native-paper'
 import { isIphoneX, getBottomSpace } from 'react-native-iphone-x-helper'
 
-import { useTheme } from '../../store'
+import { useTheme } from 'store'
 import Typography from '../common/Typography'
 
 const keys = [
@@ -67,7 +67,11 @@ export default function NumKey(props) {
                       if (props.onKeyPress) props.onKeyPress(key)
                     }}
                   >
-                    <Typography size={24} color={props.dark ? theme.white : theme.subtitle} fw='500'>
+                    <Typography
+                      size={24}
+                      color={props.dark ? theme.white : theme.subtitle}
+                      fw='500'
+                    >
                       {key}
                     </Typography>
                   </TouchableOpacity>

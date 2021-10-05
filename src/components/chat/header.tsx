@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native'
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import FeatherIcon from 'react-native-vector-icons/Feather'
 
-import { useStores, useTheme, hooks } from '../../store'
+import { useStores, useTheme, hooks } from 'store'
 import { Chat } from 'store/chats-store'
 import { contactForConversation } from './utils'
 import { useChatPicSrc } from '../utils/picSrc'
@@ -96,7 +96,10 @@ const Header = ({ chat, status, tribeParams, podId, pricePerMinute }: HeaderProp
   // TODO: as you can see currently we have two different ways to fetch the total amount spend in a tribe, it should be unified
   const { earned, spent } = useMemoizedIncomingPaymentsFromPodcast(podId, user.myid)
   const [spentInMessagesBoost] = useMemo(
-    () => transformPayments({ payments, userId: user.myid, chats }).filter((c) => c.chat_id === chat.id),
+    () =>
+      transformPayments({ payments, userId: user.myid, chats }).filter(
+        (c) => c.chat_id === chat.id
+      ),
     [payments.length, user.myid, chats]
   )
 
@@ -141,7 +144,9 @@ const Header = ({ chat, status, tribeParams, podId, pricePerMinute }: HeaderProp
               )}
             </View>
             <Typography size={12} color={theme.subtitle}>
-              {isTribeAdmin ? `Earned: ${earned} sats` : `Contributed: ${spent + spentInMessagesBoost?.amount} sats`}
+              {isTribeAdmin
+                ? `Earned: ${earned} sats`
+                : `Contributed: ${spent + spentInMessagesBoost?.amount} sats`}
             </Typography>
           </View>
         </TouchableOpacity>

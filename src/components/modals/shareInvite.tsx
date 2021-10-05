@@ -7,7 +7,7 @@ import Clipboard from '@react-native-community/clipboard'
 import Toast from 'react-native-simple-toast'
 import QRCode from 'react-native-qrcode-svg'
 
-import { useStores } from '../../store'
+import { useStores } from 'store'
 import { SCREEN_WIDTH, TOAST_DURATION } from '../../constants'
 import ModalWrap from './modalWrap'
 import Header from './modalHeader'
@@ -48,7 +48,10 @@ function ShareInvite({ close }) {
       <TouchableWithoutFeedback style={styles.wrap} onPress={copy}>
         <View style={styles.wrap}>
           <View style={styles.tapWrap}>
-            <Image style={{ height: 29, width: 17 }} source={require('../../../android_assets/tap_to_copy.png')} />
+            <Image
+              style={{ height: 29, width: 17 }}
+              source={require('../../../android_assets/tap_to_copy.png')}
+            />
             <Text style={styles.tapToCopy}>TAP TO COPY</Text>
           </View>
           <View style={styles.qrWrap}>

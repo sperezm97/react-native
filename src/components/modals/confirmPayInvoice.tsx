@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { View, StyleSheet, Text, Dimensions } from 'react-native'
 import { IconButton, Button } from 'react-native-paper'
 
-import { useStores } from '../../store'
+import { useStores } from 'store'
 import ModalWrap from './modalWrap'
 
 export default function ConfirmPayInvoiceWrap({ visible }) {
@@ -68,7 +68,13 @@ function Header(props) {
         <Text style={styles.headerAmt}>{props.amt || 0}</Text>
         <Text style={styles.headerSat}>sat</Text>
       </View>
-      <IconButton icon='close' color='#DB5554' size={22} style={{ marginRight: 32, marginTop: 8 }} onPress={onClose} />
+      <IconButton
+        icon='close'
+        color='#DB5554'
+        size={22}
+        style={{ marginRight: 32, marginTop: 8 }}
+        onPress={onClose}
+      />
     </View>
   )
 }

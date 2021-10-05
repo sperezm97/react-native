@@ -7,7 +7,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import * as ImagePicker from 'react-native-image-picker'
 
-import { useTheme } from '../../../store'
+import { useTheme } from 'store'
 import MenuSheet from '../ActionSheet/MenuSheet'
 
 export default function ChatOptions({
@@ -103,7 +103,9 @@ export default function ChatOptions({
       title: 'Embed Video',
       thumbIcon: (
         <IconButton
-          icon={({ size, color }) => <MaterialIcons name='video-library' color={color} size={size} />}
+          icon={({ size, color }) => (
+            <MaterialIcons name='video-library' color={color} size={size} />
+          )}
           color={theme.white}
           size={22}
         />
@@ -136,7 +138,9 @@ export default function ChatOptions({
       title: 'Request',
       thumbIcon: (
         <IconButton
-          icon={({ size, color }) => <MaterialCommunityIcons name='arrow-bottom-left' color={color} size={size} />}
+          icon={({ size, color }) => (
+            <MaterialCommunityIcons name='arrow-bottom-left' color={color} size={size} />
+          )}
           color={theme.white}
           size={22}
         />
@@ -153,7 +157,9 @@ export default function ChatOptions({
       title: 'Send',
       thumbIcon: (
         <IconButton
-          icon={({ size, color }) => <MaterialCommunityIcons name='arrow-top-right' color={color} size={size} />}
+          icon={({ size, color }) => (
+            <MaterialCommunityIcons name='arrow-top-right' color={color} size={size} />
+          )}
           color={theme.white}
           size={22}
         />
@@ -170,7 +176,11 @@ export default function ChatOptions({
 
   const userItems = []
 
-  const items = isConversation ? [...commonItems, ...conversationItems] : [...commonItems, ...userItems]
+  const items = isConversation
+    ? [...commonItems, ...conversationItems]
+    : [...commonItems, ...userItems]
 
-  return useObserver(() => <MenuSheet visible={visible} items={items} onCancel={close} noSwipe marginH={12} />)
+  return useObserver(() => (
+    <MenuSheet visible={visible} items={items} onCancel={close} noSwipe marginH={12} />
+  ))
 }

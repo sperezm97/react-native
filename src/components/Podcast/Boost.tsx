@@ -2,7 +2,7 @@ import React, { useRef } from 'react'
 import { Animated, StyleSheet, View, Text } from 'react-native'
 import { TouchableRipple } from 'react-native-paper'
 
-import { useTheme, useStores } from '../../store'
+import { useTheme, useStores } from 'store'
 import CustomIcon from '../utils/customIcons'
 
 export default function Boost({ style, onPress, inert }) {

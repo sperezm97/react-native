@@ -9,7 +9,7 @@ import { isIphoneX, getBottomSpace } from 'react-native-iphone-x-helper'
 import ViewMoreText from 'react-native-view-more-text'
 import Toast from 'react-native-simple-toast'
 
-import { useStores, useTheme } from '../../../../store'
+import { useStores, useTheme } from 'store'
 import { SCREEN_WIDTH, STATUS_BAR_HEIGHT } from '../../../../constants'
 import { parseLDAT } from '../../../utils/ldat'
 import { useCachedEncryptedFile } from '../../../chat/msg/hooks'
@@ -30,7 +30,13 @@ export default function PhotoViewer({ visible, close, photos, chat, initialIndex
           onPress={close}
           style={{ ...styles.closeButton }}
         />
-        <Swiper horizontal={false} showsButtons={false} showsPagination={false} index={initialIndex} loop={false}>
+        <Swiper
+          horizontal={false}
+          showsButtons={false}
+          showsPagination={false}
+          index={initialIndex}
+          loop={false}
+        >
           {photos.map((p, index) => (
             <SwipeItem key={index} {...p} chat={chat} />
           ))}
@@ -218,7 +224,11 @@ function SwipeItem(props) {
           {hasContent && (
             <>
               {message_content.length > 50 ? (
-                <ViewMoreText numberOfLines={1} renderViewMore={renderViewMore} renderViewLess={renderViewLess}>
+                <ViewMoreText
+                  numberOfLines={1}
+                  renderViewMore={renderViewMore}
+                  renderViewLess={renderViewLess}
+                >
                   <Typography size={16} color={theme.white}>
                     {message_content}
                   </Typography>
@@ -235,7 +245,9 @@ function SwipeItem(props) {
         <View style={styles.row}>
           {!isMe ? <Boost onPress={onBoostPress} /> : <View />}
 
-          <View>{showBoostRow && <BoostDetails {...props} myAlias={user.alias} myid={user.myid} />}</View>
+          <View>
+            {showBoostRow && <BoostDetails {...props} myAlias={user.alias} myid={user.myid} />}
+          </View>
         </View>
       </View>
     </View>

@@ -6,7 +6,7 @@ import FastImage from 'react-native-fast-image'
 import Clipboard from '@react-native-community/clipboard'
 import Toast from 'react-native-simple-toast'
 
-import { useTheme } from '../../store'
+import { useTheme } from 'store'
 import { TOAST_DURATION } from '../../constants'
 import BackHeader from '../common/BackHeader'
 import Button from '../common/Button'
@@ -46,7 +46,10 @@ export default function AddSats() {
                     }}
                     onPress={() => selectApp(app)}
                   >
-                    <FastImage source={app.img} style={{ height: 48, width: 48, marginRight: 12 }} />
+                    <FastImage
+                      source={app.img}
+                      style={{ height: 48, width: 48, marginRight: 12 }}
+                    />
                     <Text style={{ ...styles.appLabel, color: theme.title }}>{app.label}</Text>
                   </TouchableOpacity>
                 )
@@ -124,8 +127,8 @@ function Do({ app }) {
         </Button>
         <View style={styles.pleaseWrap}>
           <Text style={{ color: theme.subtitle }}>
-            Please send between 0.0005 and 0.005 Bitcoin. After the transaction is confirmed, it will be added to your
-            account.
+            Please send between 0.0005 and 0.005 Bitcoin. After the transaction is confirmed, it
+            will be added to your account.
           </Text>
         </View>
       </View>

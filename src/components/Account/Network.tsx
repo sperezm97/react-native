@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { TextInput } from 'react-native-paper'
 
-import { useStores, useTheme } from '../../store'
+import { useStores, useTheme } from 'store'
 import BackHeader from '../common/BackHeader'
 import InputAccessoryView from '../common/Accessories/InputAccessoryView'
 import Typography from '../common/Typography'

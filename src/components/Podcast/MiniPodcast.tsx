@@ -5,7 +5,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import TrackPlayer from 'react-native-track-player'
 import FastImage from 'react-native-fast-image'
 
-import { useTheme } from '../../store'
+import { useTheme } from 'store'
 import CustomIcon from '../utils/customIcons'
 import TouchableIcon from '../utils/touchableIcon'
 import useInterval from '../utils/useInterval'
@@ -62,7 +62,12 @@ export default function MinPodcast({
       >
         <View style={styles.inner}>
           <View style={styles.title}>
-            <ActivityIndicator animating={true} color={theme.primary} size={13} style={{ marginLeft: 14 }} />
+            <ActivityIndicator
+              animating={true}
+              color={theme.primary}
+              size={13}
+              style={{ marginLeft: 14 }}
+            />
             <Typography style={{ marginLeft: 14, maxWidth: '100%' }} numberOfLines={1}>
               {podError ? 'Error loading podcast' : 'loading...'}
             </Typography>
@@ -106,7 +111,11 @@ export default function MinPodcast({
                 ...styles.play,
               }}
             >
-              <MaterialCommunityIcons name={playing ? 'pause-circle' : 'play-circle'} size={40} color={theme.primary} />
+              <MaterialCommunityIcons
+                name={playing ? 'pause-circle' : 'play-circle'}
+                size={40}
+                color={theme.primary}
+              />
             </TouchableOpacity>
             <TouchableIcon rippleColor={theme.grey} size={42} onPress={fastForward}>
               <CustomIcon size={26} name='forward-30' color={theme.title} />

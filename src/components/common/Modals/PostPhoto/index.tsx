@@ -8,7 +8,7 @@ import FastImage from 'react-native-fast-image'
 import { isIphoneX, getBottomSpace } from 'react-native-iphone-x-helper'
 import * as base64 from 'base-64'
 
-import { useStores, useTheme } from '../../../../store'
+import { useStores, useTheme } from 'store'
 import { SCREEN_HEIGHT, SCREEN_WIDTH, STATUS_BAR_HEIGHT } from '../../../../constants'
 import { randString } from '../../../../crypto/rand'
 import * as e2e from '../../../../crypto/e2e'
@@ -26,7 +26,9 @@ export default function PostPhotoWrap() {
 
     const visible = !!(
       ui.imgViewerParams &&
-      (ui.imgViewerParams.get('data') || ui.imgViewerParams.get('uri') || ui.imgViewerParams.get('msg'))
+      (ui.imgViewerParams.get('data') ||
+        ui.imgViewerParams.get('uri') ||
+        ui.imgViewerParams.get('msg'))
     )
 
     const params = ui.imgViewerParams
@@ -176,7 +178,11 @@ function PostPhoto(props) {
         />
         {showInput && <SetPrice setAmount={(amt) => setPrice(amt)} onShow={onShowAmount} />}
         {showImg && (
-          <FastImage resizeMode='contain' source={{ uri: uri || data }} style={{ ...styles.img, ...boxStyles }} />
+          <FastImage
+            resizeMode='contain'
+            source={{ uri: uri || data }}
+            style={{ ...styles.img, ...boxStyles }}
+          />
         )}
         {showMsgMessage && !uploading && (
           <View style={{ ...styles.msgMessage, ...boxStyles }}>

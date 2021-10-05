@@ -5,7 +5,7 @@ import FastImage from 'react-native-fast-image'
 import { IconButton } from 'react-native-paper'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 
-import { useTheme } from '../../../../store'
+import { useTheme } from 'store'
 import { SCREEN_WIDTH, STATUS_BAR_HEIGHT } from '../../../../constants'
 
 export default function Photo({ visible, close, photo }) {

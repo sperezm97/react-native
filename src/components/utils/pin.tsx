@@ -8,7 +8,7 @@ import AsyncStorage from '@react-native-community/async-storage'
 import moment from 'moment'
 // import SecureStorage from 'react-native-secure-storage'
 
-import { useStores, useTheme } from '../../store'
+import { useStores, useTheme } from 'store'
 import { SCREEN_HEIGHT } from '../../constants'
 import NumKey from './numkey'
 import Typography from '../common/Typography'
@@ -152,7 +152,9 @@ export default function PIN(props) {
             />
           ))}
         </View>
-        <View style={styles.spinWrap}>{checking && <ActivityIndicator animating={true} color={theme.white} />}</View>
+        <View style={styles.spinWrap}>
+          {checking && <ActivityIndicator animating={true} color={theme.white} />}
+        </View>
       </View>
       <NumKey onKeyPress={(v) => go(v)} onBackspace={() => backspace()} dark />
     </View>

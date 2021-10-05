@@ -3,8 +3,8 @@ import { StyleSheet, View } from 'react-native'
 import { TextInput } from 'react-native-paper'
 import { getBottomSpace, isIphoneX } from 'react-native-iphone-x-helper'
 
-import { useStores, useTheme } from '../../../../store'
-import { useAvatarColor } from '../../../../store/hooks/msg'
+import { useStores, useTheme } from 'store'
+import { useAvatarColor } from 'store/hooks/msg'
 import { SCREEN_HEIGHT } from '../../../../constants'
 import NumKey from '../../../utils/numkey'
 import Button from '../../Button'
@@ -54,7 +54,9 @@ export default function Main({ contact, loading, confirmOrContinue, contactless 
         <View style={styles.contactWrap}>
           <Avatar photo={contact.photo_url} size={40} />
           <View style={styles.contactAliasWrap}>
-            <Typography color={theme.subtitle}>{ui.payMode === 'invoice' ? 'From' : 'To'}</Typography>
+            <Typography color={theme.subtitle}>
+              {ui.payMode === 'invoice' ? 'From' : 'To'}
+            </Typography>
             <Typography color={nameColor}>{contact.alias}</Typography>
           </View>
         </View>
@@ -85,7 +87,12 @@ export default function Main({ contact, loading, confirmOrContinue, contactless 
       <NumKey onKeyPress={(v) => go(v)} onBackspace={() => backspace()} squish />
       <View style={styles.confirmWrap}>
         {amt !== '0' && (
-          <Button w={125} loading={loading} disabled={loading} onPress={() => confirmOrContinue(parseInt(amt), text)}>
+          <Button
+            w={125}
+            loading={loading}
+            disabled={loading}
+            onPress={() => confirmOrContinue(parseInt(amt), text)}
+          >
             {contactless || isLoopout ? 'CONTINUE' : 'CONFIRM'}
           </Button>
         )}

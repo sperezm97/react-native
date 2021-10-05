@@ -1,7 +1,7 @@
 import React from 'react'
 import { TabBar } from 'react-native-tab-view'
 
-import { useTheme } from '../../../store'
+import { useTheme } from 'store'
 import Typography from '../Typography'
 
 export default function Tabs(props) {

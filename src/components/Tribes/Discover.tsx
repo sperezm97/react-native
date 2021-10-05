@@ -6,7 +6,7 @@ import { Appbar, IconButton } from 'react-native-paper'
 import FeatherIcon from 'react-native-vector-icons/Feather'
 import AntDesignIcon from 'react-native-vector-icons/AntDesign'
 
-import { useStores, useTheme, hooks } from '../../store'
+import { useStores, useTheme, hooks } from 'store'
 import { useSearchTribes } from '../../store/hooks/tribes'
 import { SCREEN_HEIGHT, STACK_HEADER_HEIGHT } from '../../constants'
 import * as utils from '../utils/utils'
@@ -130,7 +130,11 @@ function SearchHeader() {
         </TouchableOpacity>
       </View>
       <View style={{ ...styles.middle }}>
-        <Search placeholder='Search Communities' value={ui.tribesSearchTerm} onChangeText={onTribesSearch} />
+        <Search
+          placeholder='Search Communities'
+          value={ui.tribesSearchTerm}
+          onChangeText={onTribesSearch}
+        />
       </View>
       <View style={{ ...styles.right }}>
         <IconButton

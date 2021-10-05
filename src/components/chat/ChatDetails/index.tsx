@@ -8,7 +8,7 @@ import moment from 'moment'
 import FeatherIcon from 'react-native-vector-icons/Feather'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 
-import { useStores, useTheme } from '../../../store'
+import { useStores, useTheme } from 'store'
 import { constants } from '../../../constants'
 import { useChatPicSrc, usePicSrc } from '../../utils/picSrc'
 import EE, { LEFT_GROUP } from '../../utils/ee'
@@ -166,9 +166,11 @@ export default function ChatDetails({ route }) {
                   <Typography size={16} style={{ marginBottom: 4 }}>
                     {group.name}
                   </Typography>
-                  <Typography color={theme.title} size={12} style={{ marginBottom: 4 }}>{`Created on ${moment(
-                    group.created_at
-                  ).format('ll')}`}</Typography>
+                  <Typography
+                    color={theme.title}
+                    size={12}
+                    style={{ marginBottom: 4 }}
+                  >{`Created on ${moment(group.created_at).format('ll')}`}</Typography>
                   {Boolean(group.price_per_message !== null || group.escrow_amount !== null) && (
                     <Typography
                       size={12}
@@ -281,7 +283,9 @@ function DetailsAction({ chat }) {
       <>
         {chat && (
           <IconButton
-            icon={() => <FeatherIcon name={isMuted ? 'bell-off' : 'bell'} size={22} color={theme.icon} />}
+            icon={() => (
+              <FeatherIcon name={isMuted ? 'bell-off' : 'bell'} size={22} color={theme.icon} />
+            )}
             onPress={muteChat}
           />
         )}

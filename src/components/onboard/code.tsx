@@ -6,7 +6,7 @@ import { decode as atob } from 'base-64'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native'
 
-import { useStores, useTheme } from '../../store'
+import { useStores, useTheme } from 'store'
 import { DEFAULT_HOST } from '../../config'
 import * as e2e from '../../crypto/e2e'
 import * as rsa from '../../crypto/rsa'
@@ -104,7 +104,10 @@ export default function Code(props) {
       }
       user.reportError("Code Component - checkInvite function isn't keys or ip", { code: theCode })
     } catch (e) {
-      user.reportError('Code component - checkInvite function - try catch of checking keys prefix', e)
+      user.reportError(
+        'Code component - checkInvite function - try catch of checking keys prefix',
+        e
+      )
     }
 
     const isCorrect = theCode.length === 40 && theCode.match(/[0-9a-fA-F]+/g)
@@ -188,7 +191,10 @@ export default function Code(props) {
           onPress={() => navigation.navigate('Home' as never)}
           accessibilityLabel='onboard-profile-back'
         />
-        <KeyboardAwareScrollView contentContainerStyle={{ ...styles.content }} scrollEnabled={false}>
+        <KeyboardAwareScrollView
+          contentContainerStyle={{ ...styles.content }}
+          scrollEnabled={false}
+        >
           <Typography
             style={{
               marginBottom: 40,
@@ -210,7 +216,9 @@ export default function Code(props) {
               maxWidth: 240,
             }}
           >
-            {`Paste the ${route.params?.codeType === 'invite' ? 'invitation' : 'backup'} key or scan the QR code`}
+            {`Paste the ${
+              route.params?.codeType === 'invite' ? 'invitation' : 'backup'
+            } key or scan the QR code`}
           </Typography>
           <View style={styles.inputWrap} accessibilityLabel='onboard-code-input-wrap'>
             <TextInput
@@ -241,7 +249,9 @@ export default function Code(props) {
           </View>
         </KeyboardAwareScrollView>
 
-        <View style={styles.spinWrap}>{checking && <ActivityIndicator animating={true} color='white' />}</View>
+        <View style={styles.spinWrap}>
+          {checking && <ActivityIndicator animating={true} color='white' />}
+        </View>
         {!!wrong && (
           <View
             style={{

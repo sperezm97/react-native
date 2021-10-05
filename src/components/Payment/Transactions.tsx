@@ -6,7 +6,7 @@ import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIc
 import { TabView } from 'react-native-tab-view'
 import moment from 'moment'
 
-import { useStores, useTheme } from '../../store'
+import { useStores, useTheme } from 'store'
 import Empty from '../common/Empty'
 import Icon from '../common/Icon'
 import RefreshLoading from '../common/RefreshLoading'
@@ -68,7 +68,13 @@ const PerTribe = (props: PerTribeProps) => {
   const { user, chats } = useStores()
 
   const renderItem: any = ({ item, index }: any) => (
-    <Payment key={index} shouldSkipFetchOfPodcast={false} showTribeName showTime={false} {...item} />
+    <Payment
+      key={index}
+      shouldSkipFetchOfPodcast={false}
+      showTribeName
+      showTime={false}
+      {...item}
+    />
   )
 
   const tribesSpent = useMemo(() => {
@@ -212,7 +218,12 @@ function Payment(props: PaymentProps) {
     <View style={{ backgroundColor: p.background }}>
       <View style={{ ...styles.paymentBox, borderBottomColor: theme.border }}>
         <View style={{ ...styles.payment }}>
-          <MaterialCommunityIcon name={p.icon} color={p.color} size={28} style={{ marginLeft: 10 }} />
+          <MaterialCommunityIcon
+            name={p.icon}
+            color={p.color}
+            size={28}
+            style={{ marginLeft: 10 }}
+          />
           <View style={styles.mid}>
             <Icon name='Invoice' fill={theme.icon} size={14} />
             <Typography style={{ marginLeft: 10 }} numberOfLines={1}>

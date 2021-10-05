@@ -6,7 +6,7 @@ import RNFetchBlob from 'rn-fetch-blob'
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
 import Ionicon from 'react-native-vector-icons/Ionicons'
 
-import { useStores, useTheme } from '../../../store'
+import { useStores, useTheme } from 'store'
 import Typography from '../../common/Typography'
 import Avatar from '../../common/Avatar'
 import Button from '../../common/Button'
@@ -248,7 +248,9 @@ function TribeActions({ tribe }) {
               {tribe.joined ? (
                 <View style={{ ...styles.headerActions }}>
                   <Button
-                    icon={() => <Ionicon name='chatbubbles-outline' color={theme.white} size={20} />}
+                    icon={() => (
+                      <Ionicon name='chatbubbles-outline' color={theme.white} size={20} />
+                    )}
                     onPress={onChatPress}
                     loading={loading}
                     w='60%'

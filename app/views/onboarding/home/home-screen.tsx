@@ -14,11 +14,11 @@ import { observer } from 'mobx-react-lite'
 import LinearGradient from 'react-native-linear-gradient'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import { config, useSpring, animated } from '@react-spring/native'
-// import { useStores } from 'stores'
+import { useStores } from 'store'
 import { GradientBackground, Screen } from 'views/shared'
 
 export const HomeScreen: FC<{}> = observer(() => {
-  // const { relayStore } = useStores()
+  const { relay } = useStores()
   const placeholder = () => alert('Testing new home screen')
   const props = useSpring({
     to: { opacity: 1 },
@@ -52,7 +52,7 @@ export const HomeScreen: FC<{}> = observer(() => {
         <AnimatedView style={props2}>
           <Text style={headline}>Create Openly.</Text>
         </AnimatedView>
-        <TouchableOpacity style={styles.button} onPress={placeholder}>
+        <TouchableOpacity style={styles.button} onPress={relay.connect}>
           <AnimatedView style={{ ...container2, ...props3 }}>
             <LinearGradient
               colors={['#988DDD', '#6A5CC6']}
@@ -85,7 +85,7 @@ export const HomeScreen: FC<{}> = observer(() => {
             </LinearGradient>
           </AnimatedView>
         </TouchableOpacity>
-        <TouchableOpacity style={{ ...styles.button, marginTop: 32 }} onPress={placeholder}>
+        <TouchableOpacity style={{ ...styles.button, marginTop: 32 }} onPress={relay.connect}>
           <AnimatedView style={{ ...container2, ...props4, shadowOpacity: 0.3 }}>
             <LinearGradient
               colors={['#fff', '#fefefe']}

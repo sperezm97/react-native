@@ -3,7 +3,7 @@ import { useObserver } from 'mobx-react-lite'
 import { View, Text, Image, StyleSheet } from 'react-native'
 import { Button, Portal } from 'react-native-paper'
 
-import { useStores } from '../../../store'
+import { useStores } from 'store'
 import ModalWrap from '../modalWrap'
 import Header from '../modalHeader'
 import ShowRawInvoice from './showRawInvoice'
@@ -48,7 +48,9 @@ function RawInvoiceModal({ close }) {
           {params && !hasPayreq && (
             <View style={styles.innerWrap}>
               <Text style={styles.genText}>Generate Invoice</Text>
-              {params.get('imgurl') && <Image source={{ uri: params.get('imgurl') }} style={styles.img} />}
+              {params.get('imgurl') && (
+                <Image source={{ uri: params.get('imgurl') }} style={styles.img} />
+              )}
               {params.get('name') && <Text style={styles.genText}>{params.get('name')}</Text>}
               {params.get('amount') && <Text style={styles.amt}>{params.get('amount')}</Text>}
               {params.get('amount') && <Text style={styles.sat}>sat</Text>}
@@ -67,7 +69,11 @@ function RawInvoiceModal({ close }) {
           )}
 
           {hasPayreq && (
-            <ShowRawInvoice amount={params.get('amount')} payreq={payreq} paid={payreq === ui.lastPaidInvoice} />
+            <ShowRawInvoice
+              amount={params.get('amount')}
+              payreq={payreq}
+              paid={payreq === ui.lastPaidInvoice}
+            />
           )}
         </View>
       </Portal.Host>

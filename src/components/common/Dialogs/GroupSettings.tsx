@@ -1,5 +1,5 @@
 import React from 'react'
-import { useTheme } from '../../../store'
+import { useTheme } from 'store'
 
 import ActionSheet from '../ActionSheet'
 

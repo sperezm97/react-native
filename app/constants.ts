@@ -1,7 +1,7 @@
 import { Dimensions } from 'react-native'
 import { getStatusBarHeight } from 'react-native-status-bar-height'
 
-const constants = {
+export const appConstants = {
   invite_statuses: {
     pending: 0,
     ready: 1,
@@ -78,7 +78,7 @@ type SwitcherReturn = {
   }
 }
 
-const switcher: (value: typeof constants) => SwitcherReturn = (consts: typeof constants) => {
+const switcher: (value: typeof appConstants) => SwitcherReturn = (consts: typeof appConstants) => {
   const codes = {}
   for (const [k, obj] of Object.entries(consts)) {
     for (const [str, num] of Object.entries(obj)) {
@@ -90,7 +90,7 @@ const switcher: (value: typeof constants) => SwitcherReturn = (consts: typeof co
   return { ...codes, payment_errors: consts.payment_errors }
 }
 
-const constantCodes = switcher(constants)
+export const constantCodes = switcher(appConstants)
 
 export const TRIBE_SIZE_LIMIT = 20
 
@@ -101,5 +101,4 @@ export const TAB_HEIGHT = 50
 export const SCREEN_HEIGHT: number = Math.round(Dimensions.get('window').height)
 export const SCREEN_WIDTH: number = Math.round(Dimensions.get('window').width)
 export const STATUS_BAR_HEIGHT: number = getStatusBarHeight()
-
-export { constants, constantCodes }
+export const constants = appConstants

@@ -5,7 +5,7 @@ import Clipboard from '@react-native-community/clipboard'
 import Share from 'react-native-share'
 import Toast from 'react-native-simple-toast'
 
-import { useStores, useTheme } from '../../store'
+import { useStores, useTheme } from 'store'
 import { TOAST_DURATION } from '../../constants'
 import QRCode from '../utils/qrcode'
 import Button from '../common/Button'

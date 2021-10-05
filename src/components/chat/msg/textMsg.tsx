@@ -4,7 +4,7 @@ import RNUrlPreview from 'react-native-url-preview'
 import Hyperlink from 'react-native-hyperlink'
 import * as linkify from 'linkifyjs'
 
-import { useTheme } from '../../../store'
+import { useTheme } from 'store'
 import { useParsedGiphyMsg } from 'store/hooks/msg'
 import shared from './sharedStyles'
 import ClipMessage from './clipMsg'
@@ -36,10 +36,21 @@ export default function TextMsg(props) {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const { url, aspectRatio, text } = useParsedGiphyMsg(message_content)
     return (
-      <TouchableOpacity style={{ ...styles.column, maxWidth: 200 }} onLongPress={onLongPressHandler}>
-        <Image source={{ uri: url }} style={{ width: 200, height: 200 / (aspectRatio || 1) }} resizeMode={'cover'} />
+      <TouchableOpacity
+        style={{ ...styles.column, maxWidth: 200 }}
+        onLongPress={onLongPressHandler}
+      >
+        <Image
+          source={{ uri: url }}
+          style={{ width: 200, height: 200 / (aspectRatio || 1) }}
+          resizeMode={'cover'}
+        />
         {!!text && (
-          <Typography color={props.isMe ? theme.white : theme.text} size={16} styles={styles.textPad}>
+          <Typography
+            color={props.isMe ? theme.white : theme.text}
+            size={16}
+            styles={styles.textPad}
+          >
             {text}
           </Typography>
         )}
@@ -63,8 +74,12 @@ export default function TextMsg(props) {
         onLongPress={onLongPressHandler}
       >
         {/* TODO: Refactor with a better logic */}
-        {!!rumbleLink && <EmbedVideo type='rumble' link={rumbleLink} onLongPress={onLongPressHandler} />}
-        {!!youtubeLink && <EmbedVideo type='youtube' link={youtubeLink} onLongPress={onLongPressHandler} />}
+        {!!rumbleLink && (
+          <EmbedVideo type='rumble' link={rumbleLink} onLongPress={onLongPressHandler} />
+        )}
+        {!!youtubeLink && (
+          <EmbedVideo type='youtube' link={youtubeLink} onLongPress={onLongPressHandler} />
+        )}
         {showBoostRow && <BoostRow {...props} myAlias={props.myAlias} pad />}
       </TouchableOpacity>
     )

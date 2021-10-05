@@ -4,7 +4,7 @@ import AsyncStorage from '@react-native-community/async-storage'
 import { Text, StyleSheet, TouchableOpacity, Linking, View } from 'react-native'
 
 import { Dialog, Button } from 'react-native-paper'
-import { useTheme } from '../store'
+import { useTheme } from 'store'
 import { DEFAULT_HOST } from '../config'
 
 const HOURS = 12 // 0.001
@@ -22,7 +22,9 @@ export function VersionDialog({ showVersionDialog, onCloseVersionDialog }) {
           alignItems: 'flex-start',
         }}
       >
-        <Text style={{ color: theme.title, padding: 12 }}>Your app version is outdated. Please update!</Text>
+        <Text style={{ color: theme.title, padding: 12 }}>
+          Your app version is outdated. Please update!
+        </Text>
         <TouchableOpacity onPress={() => Linking.openURL(DEFAULT_HOST)} style={styles.linkWrap}>
           <Text style={styles.linkText}>{DEFAULT_HOST}</Text>
         </TouchableOpacity>

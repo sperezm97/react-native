@@ -1,7 +1,7 @@
 import React from 'react'
 import { RefreshControl } from 'react-native'
 
-import { useTheme } from '../../../store'
+import { useTheme } from 'store'
 
 export default function RefreshLoading(props) {
   const { refreshing, onRefresh, title } = props

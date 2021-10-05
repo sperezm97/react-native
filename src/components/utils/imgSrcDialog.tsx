@@ -2,7 +2,7 @@ import React from 'react'
 import { Portal, Button, Dialog } from 'react-native-paper'
 import * as ImagePicker from 'react-native-image-picker'
 
-import { useTheme } from '../../store'
+import { useTheme } from 'store'
 
 export default function ImgSrcDialog({ open, onClose, onPick, onChooseCam }) {
   const theme = useTheme()

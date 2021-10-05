@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native'
 import { IconButton } from 'react-native-paper'
 import Toast from 'react-native-simple-toast'
 
-import { useStores, useTheme } from '../../../store'
+import { useStores, useTheme } from 'store'
 import Typography from '../Typography'
 
 const BoostControls = () => {

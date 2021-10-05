@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useObserver } from 'mobx-react-lite'
-import { useStores } from '../../../store'
+import { useStores } from 'store'
 import { View, StyleSheet, TouchableOpacity } from 'react-native'
 import { ActivityIndicator } from 'react-native-paper'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -29,7 +29,9 @@ export default function PeerChat() {
 
       {hasRemoteStream && <BigVid />}
 
-      {peer.joined && !hasRemoteStream && <ActivityIndicator color={peer.open ? 'white' : 'grey'} animating={true} />}
+      {peer.joined && !hasRemoteStream && (
+        <ActivityIndicator color={peer.open ? 'white' : 'grey'} animating={true} />
+      )}
 
       <View style={styles.toolbar}>
         <HangUpButton onPress={leave} />

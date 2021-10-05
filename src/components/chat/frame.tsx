@@ -4,7 +4,7 @@ import { WebView } from 'react-native-webview'
 import { View, ActivityIndicator, StyleSheet, Text, TextInput, Alert } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { Button } from 'react-native-paper'
-import { useStores } from '../../store'
+import { useStores } from 'store'
 import { randString } from '../../crypto/rand'
 
 export default function Webview({ url }) {
@@ -110,7 +110,9 @@ export default function Webview({ url }) {
 
   return (
     <View style={styles.webview}>
-      {bridge?.url && <BridgeModal params={bridge} onClose={onCloseBridgeHandler} authorize={authorize} />}
+      {bridge?.url && (
+        <BridgeModal params={bridge} onClose={onCloseBridgeHandler} authorize={authorize} />
+      )}
       <WebView
         ref={ref}
         userAgent='Sphinx'
@@ -154,7 +156,12 @@ function BridgeModal({ params, authorize, onClose }) {
 
   return (
     <View style={styles.bridgeModal}>
-      <Icon name='shield-check' size={54} color='#6289FD' style={{ marginRight: 4, marginLeft: 4 }} />
+      <Icon
+        name='shield-check'
+        size={54}
+        color='#6289FD'
+        style={{ marginRight: 4, marginLeft: 4 }}
+      />
       <Text style={styles.modalText}>Do you want to authorize</Text>
       <Text style={styles.modalURL}>{params.url}</Text>
       {showBudget && (
@@ -162,7 +169,11 @@ function BridgeModal({ params, authorize, onClose }) {
           <Text style={styles.modalText}>To withdraw up to</Text>
           <View style={styles.inputWrap}>
             <View style={styles.inputInnerWrap}>
-              <TextInput value={amt} onChangeText={(t) => setAmt(t)} placeholder='Application Budget' />
+              <TextInput
+                value={amt}
+                onChangeText={(t) => setAmt(t)}
+                placeholder='Application Budget'
+              />
               <Text style={styles.modalSats}>sats</Text>
             </View>
           </View>

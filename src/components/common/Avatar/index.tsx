@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { StyleSheet, View, Text } from 'react-native'
 import { Avatar as PaperAvatar } from 'react-native-paper'
 import FastImage from 'react-native-fast-image'
-
-import { useTheme } from '../../../store'
+import { useTheme } from 'store'
 import { useAvatarColor as getAvatarColor } from 'store/hooks/msg'
 
 export default function Avatar(props) {

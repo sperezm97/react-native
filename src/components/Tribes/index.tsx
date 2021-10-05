@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
 
-import { useTheme } from '../../store'
+import { useTheme } from 'store'
 import TabBar from '../common/TabBar'
 import Header from './Header'
 import OwnedTribes from './OwnedTribes'

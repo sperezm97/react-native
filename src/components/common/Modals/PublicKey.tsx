@@ -7,7 +7,7 @@ import Toast from 'react-native-simple-toast'
 import QRCode from 'react-native-qrcode-svg'
 import { isIphoneX, getBottomSpace } from 'react-native-iphone-x-helper'
 
-import { useTheme } from '../../../store'
+import { useTheme } from 'store'
 import { SCREEN_WIDTH, TOAST_DURATION } from '../../../constants'
 import ModalWrap from './ModalWrap'
 import ModalHeader from './ModalHeader'

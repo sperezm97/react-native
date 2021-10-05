@@ -2,7 +2,7 @@ import React from 'react'
 import { Searchbar } from 'react-native-paper'
 import FeatherIcon from 'react-native-vector-icons/Feather'
 
-import { useTheme } from '../../../store'
+import { useTheme } from 'store'
 import Icon from '../Icon'
 
 export default function Search(props) {

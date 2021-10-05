@@ -3,7 +3,7 @@ import { useObserver } from 'mobx-react-lite'
 import { View, Text, StyleSheet } from 'react-native'
 import { Button, Portal } from 'react-native-paper'
 
-import { useStores } from '../../store'
+import { useStores } from 'store'
 import ModalWrap from './modalWrap'
 import Header from './modalHeader'
 
@@ -54,7 +54,13 @@ function Redeem({ close }) {
       <View style={styles.modal}>
         <Text style={styles.amt}>{`Redeem ${amt} sats from:`}</Text>
         <Text style={styles.host}>{params.name || ''}</Text>
-        <Button onPress={redeem} mode='contained' dark={true} style={styles.button} loading={loading}>
+        <Button
+          onPress={redeem}
+          mode='contained'
+          dark={true}
+          style={styles.button}
+          loading={loading}
+        >
           Confirm
         </Button>
       </View>

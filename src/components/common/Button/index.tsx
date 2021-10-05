@@ -1,7 +1,6 @@
 import React from 'react'
 import { Button as PaperButton } from 'react-native-paper'
-
-import { useTheme } from '../../../store'
+import { useTheme } from 'store'
 
 export default function Button(props) {
   const theme = useTheme()

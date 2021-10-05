@@ -1,7 +1,7 @@
 import React from 'react'
 import { View } from 'react-native'
 import { isIphoneX, getBottomSpace } from 'react-native-iphone-x-helper'
-import { useTheme } from '../../../store'
+import { useTheme } from 'store'
 
 const Footer = () => {
   const theme = useTheme()

@@ -5,7 +5,7 @@ import { useObserver } from 'mobx-react-lite'
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import Toast from 'react-native-simple-toast'
 
-import { useStores, useTheme } from '../../../store'
+import { useStores, useTheme } from 'store'
 import Balance from '../Balance'
 
 export default function Header({ border = false }) {
@@ -31,7 +31,11 @@ export default function Header({ border = false }) {
         <View style={{ ...styles.flex, ...styles.content }}>
           <View style={{ ...styles.flex, ...styles.left }}>
             <Image
-              source={theme.dark ? require('../../../assets/zion-dark-theme.png') : require('../../../assets/zion.png')}
+              source={
+                theme.dark
+                  ? require('../../../assets/zion-dark-theme.png')
+                  : require('../../../assets/zion.png')
+              }
               style={styles.brand}
               resizeMode={'contain'}
             />
@@ -42,7 +46,11 @@ export default function Header({ border = false }) {
               <ActivityIndicator animating={true} color={theme.grey} size={18} style={{}} />
             ) : (
               <TouchableOpacity onPress={showStatusHandler} style={{ ...styles.status }}>
-                <MaterialIcon name='lightning-bolt' size={20} color={ui.connected ? '#49ca97' : '#febd59'} />
+                <MaterialIcon
+                  name='lightning-bolt'
+                  size={20}
+                  color={ui.connected ? '#49ca97' : '#febd59'}
+                />
               </TouchableOpacity>
             )}
           </View>

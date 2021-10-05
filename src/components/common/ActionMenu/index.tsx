@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native'
 
-import { useTheme } from '../../../store'
+import { useTheme } from 'store'
 import Icon from '../Icon'
 
 export default function ActionMenu({ items }) {
@@ -43,14 +43,22 @@ export default function ActionMenu({ items }) {
                   )}
                   {item.thumbImage && (
                     <Image
-                      source={typeof item.thumbImage === 'string' ? { uri: item.thumbImage } : item.thumbImage}
+                      source={
+                        typeof item.thumbImage === 'string'
+                          ? { uri: item.thumbImage }
+                          : item.thumbImage
+                      }
                       style={{ ...styles.thumbImage }}
                     />
                   )}
                   <Text style={{ fontSize: 16, color: theme.text }}>{item.title}</Text>
                 </View>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  {item.preview && <Text style={{ ...styles.previewText, color: theme.accent }}>{item.preview}</Text>}
+                  {item.preview && (
+                    <Text style={{ ...styles.previewText, color: theme.accent }}>
+                      {item.preview}
+                    </Text>
+                  )}
                   <Icon name={item.icon} color={theme.icon} size={25} />
                 </View>
               </TouchableOpacity>

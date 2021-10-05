@@ -5,7 +5,7 @@ import { checkVersion } from 'react-native-check-version'
 import { getVersion, getBundleId } from 'react-native-device-info'
 import PushNotificationIOS from '@react-native-community/push-notification-ios'
 
-import { useStores, hooks } from './store'
+import { useStores, hooks } from 'store'
 import { useApn } from './store/contexts/apn'
 import { TOAST_DURATION } from './constants'
 import { navigate } from './components/Navigation'
@@ -56,6 +56,7 @@ export default function Main() {
   async function createPrivateKeyIfNotExists(contacts, user) {
     // const priv = null
     const priv = await rsa.getPrivateKey()
+    console.log('createPrivateKeyIfNotExists priv:', priv)
     const me = contacts.contactsArray.find((c) => c.id === user.myid)
 
     // private key has been made
@@ -181,7 +182,10 @@ export default function Main() {
       <Modals />
       <ModalsN />
       <Dialogs />
-      <AppVersionUpdate visible={versionUpdateVisible} close={() => setVersionUpdateVisible(false)} />
+      <AppVersionUpdate
+        visible={versionUpdateVisible}
+        close={() => setVersionUpdateVisible(false)}
+      />
     </>
   )
 }

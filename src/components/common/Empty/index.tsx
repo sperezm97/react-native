@@ -2,12 +2,21 @@ import React from 'react'
 
 import { View, StyleSheet } from 'react-native'
 
-import { useTheme } from '../../../store'
+import { useTheme } from 'store'
 import Typography from '../Typography'
 
 export default function Empty(props) {
   const theme = useTheme()
-  const { text, style, h, w, ml, mr, color = theme.dark ? theme.white : theme.darkGrey, children } = props
+  const {
+    text,
+    style,
+    h,
+    w,
+    ml,
+    mr,
+    color = theme.dark ? theme.white : theme.darkGrey,
+    children,
+  } = props
 
   const emptyBox = {
     display: 'flex',

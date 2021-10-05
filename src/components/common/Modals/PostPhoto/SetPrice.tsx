@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
 
-import { useTheme } from '../../../../store'
+import { useTheme } from 'store'
 import NumKey from '../../../utils/numkey'
 import Typography from '../../Typography'
 import Button from '../../Button'

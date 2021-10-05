@@ -3,7 +3,7 @@ import { useObserver } from 'mobx-react-lite'
 import { Portal } from 'react-native-paper'
 const basex = require('bs58-rn')
 
-import { useStores } from '../../../../store'
+import { useStores } from 'store'
 import ModalWrap from '../ModalWrap'
 import ModalHeader from '../ModalHeader'
 import Main from './Main'

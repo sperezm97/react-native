@@ -3,7 +3,7 @@ import { IconButton } from 'react-native-paper'
 import AntDesignIcon from 'react-native-vector-icons/AntDesign'
 import FeatherIcon from 'react-native-vector-icons/Feather'
 
-import { useTheme } from '../../../store'
+import { useTheme } from 'store'
 import Menu from '../ActionSheet/Menu'
 
 export default function TribeSettings({ visible, owner, onCancel, onEditPress, onMembersPress }) {

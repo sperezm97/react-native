@@ -4,7 +4,7 @@ import { Appbar, IconButton } from 'react-native-paper'
 import { useObserver } from 'mobx-react-lite'
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 
-import { useStores, useTheme } from '../../store'
+import { useStores, useTheme } from 'store'
 import * as utils from '../utils/utils'
 import Pushable from '../common/Pushable'
 import Button from '../common/Button'
@@ -75,7 +75,12 @@ export default function Header({ onScanClick }) {
                     }}
                   >
                     <MaterialIcon name='check' color={theme.green} size={22} />
-                    <Typography textAlign='center' size={17} color={theme.title} style={{ marginLeft: 5 }}>
+                    <Typography
+                      textAlign='center'
+                      size={17}
+                      color={theme.title}
+                      style={{ marginLeft: 5 }}
+                    >
                       Your request has been sent.
                     </Typography>
                   </View>

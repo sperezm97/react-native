@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
 import { Appbar } from 'react-native-paper'
 
-import { useTheme } from '../../../store'
+import { useTheme } from 'store'
 import Icon from '../Icon'
 
 export default function ModalHeader(props) {

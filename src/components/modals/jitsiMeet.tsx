@@ -1,7 +1,7 @@
 export {}
 // import React, { useState, useEffect } from 'react'
 // import { useObserver } from 'mobx-react-lite'
-// import { useStores } from '../../store'
+// import { useStores } from 'store'
 // import { View, Text, StyleSheet } from 'react-native'
 // import Modal from './modalWrap'
 // import { Button } from 'react-native-paper'

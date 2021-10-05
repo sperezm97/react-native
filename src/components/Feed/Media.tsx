@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native'
 import FastImage from 'react-native-fast-image'
 import moment from 'moment'
 
-import { useStores, useTheme } from '../../store'
+import { useStores, useTheme } from 'store'
 import { calendarDate } from '../../store/utils/date'
 import { usePicSrc } from '../utils/picSrc'
 import { parseLDAT } from '../utils/ldat'
@@ -17,7 +17,17 @@ import Boost from '../common/Button/Boost'
 import BoostDetails from './BoostDetails'
 
 function Media(props) {
-  const { index, mediaLength, uuid, media_type, chat, media_token, created_at, tribe, boosts_total_sats } = props
+  const {
+    index,
+    mediaLength,
+    uuid,
+    media_type,
+    chat,
+    media_token,
+    created_at,
+    tribe,
+    boosts_total_sats,
+  } = props
   const { msg, user, contacts } = useStores()
   const theme = useTheme()
   const navigation = useNavigation()
@@ -47,7 +57,8 @@ function Media(props) {
     })
   }
 
-  const onTribeOwnerPress = () => navigation.navigate('Tribe' as never, { tribe: { ...tribe } } as never)
+  const onTribeOwnerPress = () =>
+    navigation.navigate('Tribe' as never, { tribe: { ...tribe } } as never)
 
   const showBoostRow = !!boosts_total_sats
 
@@ -73,11 +84,17 @@ function Media(props) {
             </Typography>
           </View>
 
-          {!loading ? <MediaType type={media_type} data={data} uri={uri} /> : <ActivityIndicator animating={true} />}
+          {!loading ? (
+            <MediaType type={media_type} data={data} uri={uri} />
+          ) : (
+            <ActivityIndicator animating={true} />
+          )}
 
           <View style={{ ...styles.footer }}>
             <Boost onPress={onBoostPress} circleH={30} circleW={30} />
-            {showBoostRow && <BoostDetails {...props} myAlias={user.alias} myPhoto={myPhoto} myid={user.myid} />}
+            {showBoostRow && (
+              <BoostDetails {...props} myAlias={user.alias} myPhoto={myPhoto} myid={user.myid} />
+            )}
           </View>
           {/* <View style={{ ...styles.meta }}></View> */}
 

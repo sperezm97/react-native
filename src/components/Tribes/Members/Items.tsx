@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { SwipeRow } from 'react-native-swipe-list-view'
 import { IconButton } from 'react-native-paper'
 
-import { useTheme } from '../../../store'
+import { useTheme } from 'store'
 import { usePicSrc } from '../../utils/picSrc'
 import { ApproveButton, RejectButton } from '../../chat/msg/memberRequest'
 import Avatar from '../../common/Avatar'
@@ -45,7 +45,11 @@ export function Contact(props) {
   const uri = usePicSrc(contact)
 
   return (
-    <TouchableOpacity style={{ ...styles.contactTouch, backgroundColor: theme.bg }} activeOpacity={1} onPress={onPress}>
+    <TouchableOpacity
+      style={{ ...styles.contactTouch, backgroundColor: theme.bg }}
+      activeOpacity={1}
+      onPress={onPress}
+    >
       <View style={{ ...styles.avatarWrap, borderColor: theme.border }}>
         <Avatar size={40} aliasSize={16} photo={uri} big alias={contact.alias} />
 
@@ -83,7 +87,11 @@ export function PendingContact(props) {
   }
 
   return (
-    <TouchableOpacity style={{ ...styles.contactTouch, backgroundColor: theme.bg }} activeOpacity={1} onPress={onPress}>
+    <TouchableOpacity
+      style={{ ...styles.contactTouch, backgroundColor: theme.bg }}
+      activeOpacity={1}
+      onPress={onPress}
+    >
       <View style={{ ...styles.avatarWrap, borderColor: theme.border }}>
         <Avatar size={40} photo={uri} big alias={contact.alias} aliasSize={20} />
       </View>

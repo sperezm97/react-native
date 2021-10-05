@@ -24,16 +24,20 @@ export const UserStoreModel = types
   .extend(withEnvironment)
   .actions((self) => ({
     finishInvite: async (): Promise<boolean> => await actions.finishInvite(self as UserStore),
-    generateToken: async (pwd: string): Promise<string> => await actions.generateToken(self as UserStore, pwd),
+    generateToken: async (pwd: string): Promise<string> =>
+      await actions.generateToken(self as UserStore, pwd),
     registerMyDeviceId: (device_id, myid): Promise<void> =>
       actions.registerMyDeviceId(self as UserStore, device_id, myid),
     reportError: async (label: string, error: any): Promise<any> =>
       await actions.reportError(self as UserStore, label, error),
     requestInvite: async (email) => await actions.requestInvite(self, email),
     resetIP: async (): Promise<any> => await actions.resetIP(),
-    restore: async (restoreString: string): Promise<any> => await actions.restore(self as UserStore, restoreString),
-    signupWithCode: async (code: string): Promise<ArrayObject> => await actions.signupWithCode(self as UserStore, code),
-    signupWithIP: async (ip: string): Promise<string | null> => await actions.signupWithIP(self as UserStore, ip),
+    restore: async (restoreString: string): Promise<any> =>
+      await actions.restore(self as UserStore, restoreString),
+    signupWithCode: async (code: string): Promise<ArrayObject> =>
+      await actions.signupWithCode(self as UserStore, code),
+    signupWithIP: async (ip: string): Promise<string | null> =>
+      await actions.signupWithIP(self as UserStore, ip),
     reset: () => actions.reset(self),
     setAuthToken: (authToken: string) => {
       self.authToken = authToken

@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import { observer } from 'mobx-react-lite'
 
-import { useStores } from '../../store'
+import { useStores } from 'store'
 import Code from './code'
 import Welcome from './welcome'
 import NameAndKey from './nameAndKey'

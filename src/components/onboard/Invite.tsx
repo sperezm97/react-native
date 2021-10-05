@@ -6,7 +6,7 @@ import Toast from 'react-native-simple-toast'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { useNavigation } from '@react-navigation/native'
 
-import { useStores, useTheme } from '../../store'
+import { useStores, useTheme } from 'store'
 import Typography from '../common/Typography'
 import Button from '../common/Button'
 
@@ -55,7 +55,11 @@ export default function Invite() {
       }
 
       setEmail('')
-      Toast.showWithGravity(`Subscribed! You are the ${done.payload.id} number on the list`, 5, Toast.BOTTOM)
+      Toast.showWithGravity(
+        `Subscribed! You are the ${done.payload.id} number on the list`,
+        5,
+        Toast.BOTTOM
+      )
     } catch (error) {
       setError(error)
     } finally {
@@ -82,7 +86,10 @@ export default function Invite() {
           accessibilityLabel='onboard-profile-back'
         />
 
-        <KeyboardAwareScrollView contentContainerStyle={{ ...styles.content }} scrollEnabled={false}>
+        <KeyboardAwareScrollView
+          contentContainerStyle={{ ...styles.content }}
+          scrollEnabled={false}
+        >
           <Typography
             style={{
               marginBottom: 10,
@@ -142,7 +149,9 @@ export default function Invite() {
               Subscribe
             </Typography>
           </Button>
-          <View style={styles.spinWrap}>{checking && <ActivityIndicator animating={true} color={theme.white} />}</View>
+          <View style={styles.spinWrap}>
+            {checking && <ActivityIndicator animating={true} color={theme.white} />}
+          </View>
         </KeyboardAwareScrollView>
 
         {!!wrong && (

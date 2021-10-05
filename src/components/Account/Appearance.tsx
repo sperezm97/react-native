@@ -4,7 +4,7 @@ import { useDarkMode } from 'react-native-dynamic'
 import { useObserver } from 'mobx-react-lite'
 import { RadioButton } from 'react-native-paper'
 
-import { useTheme } from '../../store'
+import { useTheme } from 'store'
 import BackHeader from '../common/BackHeader'
 import { setTint } from '../common/StatusBar'
 

@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import moment from 'moment'
 
-import { useStores, useTheme } from '../../../store'
+import { useStores, useTheme } from 'store'
 import { useAvatarColor } from 'store/hooks/msg'
 import { constants } from '../../../constants'
 import { calcExpiry } from './utils'
@@ -54,13 +54,24 @@ export default function InfoBar(props) {
           <Typography size={12} lh={13} color={theme.darkGrey}>
             {moment(props.date).format(timeFormat)}
           </Typography>
-          {showLock && <Icon name='lock' size={14} color='#AFB6BC' style={{ marginRight: 4, marginLeft: 4 }} />}
+          {showLock && (
+            <Icon name='lock' size={14} color='#AFB6BC' style={{ marginRight: 4, marginLeft: 4 }} />
+          )}
           {isMe && isReceived ? (
-            <Icon name='flash' size={14} color='#64C684' style={{ marginRight: showLock ? 0 : 4 }} />
+            <Icon
+              name='flash'
+              size={14}
+              color='#64C684'
+              style={{ marginRight: showLock ? 0 : 4 }}
+            />
           ) : null}
         </View>
         {hasExpiry && !isExpired ? (
-          <Typography size={10} lh={13} color={theme.darkGrey}>{`Expires in ${expiry} minutes`}</Typography>
+          <Typography
+            size={10}
+            lh={13}
+            color={theme.darkGrey}
+          >{`Expires in ${expiry} minutes`}</Typography>
         ) : null}
       </View>
     </View>

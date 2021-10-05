@@ -2,7 +2,7 @@ import React from 'react'
 import { View, StyleSheet } from 'react-native'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 
-import { useTheme } from '../../store'
+import { useTheme } from 'store'
 import Button from '../common/Button'
 import Typography from '../common/Typography'
 

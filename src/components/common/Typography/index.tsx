@@ -1,7 +1,6 @@
 import React from 'react'
 import { Text } from 'react-native'
-
-import { useTheme } from '../../../store'
+import { useTheme } from 'store'
 
 export default function Typography(props) {
   const theme = useTheme()

@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleSheet, View, SectionList } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
 
-import { useStores, useTheme } from '../../../store'
+import { useStores, useTheme } from 'store'
 import { Contact, DeletableContact } from './Items'
 import Typography from '../../common/Typography'
 

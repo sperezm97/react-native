@@ -4,7 +4,7 @@ import { useObserver } from 'mobx-react-lite'
 import AntDesignIcon from 'react-native-vector-icons/AntDesign'
 import { useIsFocused } from '@react-navigation/native'
 
-import { useStores, useTheme, hooks } from '../../store'
+import { useStores, useTheme, hooks } from 'store'
 import { useOwnedTribes } from '../../store/hooks/tribes'
 import Typography from '../common/Typography'
 import Button from '../common/Button'

@@ -5,7 +5,7 @@ import { IconButton } from 'react-native-paper'
 import FastImage from 'react-native-fast-image'
 import Ionicon from 'react-native-vector-icons/Ionicons'
 
-import { useTheme } from '../../../store'
+import { useTheme } from 'store'
 import { useAvatarColor } from 'store/hooks/msg'
 import { useCachedEncryptedFile } from './hooks'
 import { constantCodes } from '../../../constants'
@@ -52,7 +52,13 @@ export default function ReplyContent(props) {
           </View>
         </View>
         {props.reply && (
-          <IconButton icon='close' size={18} color={theme.icon} style={{ ...styles.close }} onPress={onCloseHandler} />
+          <IconButton
+            icon='close'
+            size={18}
+            color={theme.icon}
+            style={{ ...styles.close }}
+            onPress={onCloseHandler}
+          />
         )}
       </View>
     )

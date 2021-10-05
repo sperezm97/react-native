@@ -2,7 +2,7 @@ import React, { useRef } from 'react'
 import { Animated, View, StyleSheet } from 'react-native'
 import { TouchableRipple } from 'react-native-paper'
 
-import { useTheme } from '../../store'
+import { useTheme } from 'store'
 import CustomIcon from '../utils/customIcons'
 
 export default function Rocket({ onPress }) {

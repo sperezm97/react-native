@@ -5,7 +5,7 @@ import Share from 'react-native-share'
 import Clipboard from '@react-native-community/clipboard'
 import Toast from 'react-native-simple-toast'
 
-import { useTheme } from '../../../store'
+import { useTheme } from 'store'
 import QRCode from '../../utils/qrcode'
 
 export default function ShowRawInvoice({ amount, payreq, paid }) {
@@ -26,7 +26,9 @@ export default function ShowRawInvoice({ amount, payreq, paid }) {
     <View style={{ ...styles.innerWrap, minHeight: h }}>
       {amount && (
         <View style={styles.amtWrap}>
-          <Text style={{ fontSize: 16, color: theme.title, marginBottom: 12 }}>{`Amount: ${amount} sats`}</Text>
+          <Text
+            style={{ fontSize: 16, color: theme.title, marginBottom: 12 }}
+          >{`Amount: ${amount} sats`}</Text>
         </View>
       )}
       <View style={styles.qrWrap}>

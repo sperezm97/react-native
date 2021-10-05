@@ -3,6 +3,7 @@ import { Contact, ContactModel } from './contacts-store'
 import { Msg, MsgModel } from './msg-store'
 
 export const normalizeChat = (raw: any) => {
+  // console.log(raw)
   const normalized: Chat = ChatModel.create({
     app_url: raw.app_url ?? '',
     created_at: raw.created_at,
@@ -17,7 +18,7 @@ export const normalizeChat = (raw: any) => {
     is_muted: parseBool(raw.is_muted),
     my_alias: raw.my_alias ?? '',
     my_photo_url: raw.my_photo_url ?? '',
-    name: raw.string ?? '',
+    name: raw.name ?? '',
     owner_pubkey: raw.owner_pubkey ?? '',
     photo_url: raw.photo_url ?? '',
     price_per_message: raw.price_per_message ?? 0,
@@ -29,6 +30,11 @@ export const normalizeChat = (raw: any) => {
     unlisted: parseBool(raw.unlisted),
     updated_at: raw.updated_at,
     uuid: raw.uuid,
+  })
+  console.tron.display({
+    name: 'normalizeChat',
+    value: { raw, normalized },
+    important: true,
   })
   return normalized
 }
@@ -57,6 +63,7 @@ export const normalizeContact = (raw: any) => {
 }
 
 export const normalizeMessage = (raw: any) => {
+  console.tron.log(raw)
   // console.tron.display({
   //   name: 'normalizeMessage',
   //   value: raw,
@@ -109,7 +116,8 @@ export const normalizeMessage = (raw: any) => {
       boosts: raw.boosts,
     })
     console.tron.display({
-      name: 'normalizeMessage',
+      name: `normalizeMessage `,
+      preview: `${normalized.id} - ${normalized.message_content}`,
       value: { raw, normalized },
       important: true,
     })

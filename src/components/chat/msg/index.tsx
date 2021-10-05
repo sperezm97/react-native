@@ -9,7 +9,7 @@ import ReactNativeHapticFeedback from 'react-native-haptic-feedback'
 import Popover, { PopoverPlacement } from 'react-native-popover-view'
 import Clipboard from '@react-native-community/clipboard'
 
-import { useTheme, hooks } from '../../../store'
+import { useTheme, hooks } from 'store'
 import { useChatReply } from 'store/hooks/chat'
 import { constantCodes, constants, SCREEN_HEIGHT, SCREEN_WIDTH } from '../../../constants'
 import EE, { CLEAR_REPLY_UUID, REPLY_UUID } from '../../utils/ee'
@@ -67,7 +67,8 @@ export default function MsgRow(props) {
   }
 
   const isGroupNotification =
-    props.type === constants.message_types.group_join || props.type === constants.message_types.group_leave
+    props.type === constants.message_types.group_join ||
+    props.type === constants.message_types.group_leave
 
   const memberReqTypes = [
     constants.message_types.member_request,
@@ -85,7 +86,9 @@ export default function MsgRow(props) {
   }
 
   if (isMemberRequest) {
-    return <MemberRequest {...props} isTribeOwner={isTribeOwner} onDeleteChat={props.onDeleteChat} />
+    return (
+      <MemberRequest {...props} isTribeOwner={isTribeOwner} onDeleteChat={props.onDeleteChat} />
+    )
   }
 
   return (
@@ -138,7 +141,12 @@ export default function MsgRow(props) {
               }}
             >
               {props.showInfoBar ? <InfoBar {...props} senderAlias={props.senderAlias} /> : null}
-              <MsgBubble {...props} isTribeOwner={isTribeOwner} myAlias={props.myAlias} myid={props.myid} />
+              <MsgBubble
+                {...props}
+                isTribeOwner={isTribeOwner}
+                myAlias={props.myAlias}
+                myid={props.myid}
+              />
             </View>
             <View
               style={{

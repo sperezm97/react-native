@@ -3,7 +3,7 @@ import { useObserver } from 'mobx-react-lite'
 import { IconButton } from 'react-native-paper'
 import AntDesignIcon from 'react-native-vector-icons/AntDesign'
 
-import { useStores, useTheme } from '../../../store'
+import { useStores, useTheme } from 'store'
 import Menu from '../ActionSheet/Menu'
 
 export default function AddFriend() {

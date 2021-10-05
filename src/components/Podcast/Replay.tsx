@@ -3,7 +3,7 @@ import { StyleSheet, View, Text } from 'react-native'
 import TrackPlayer from 'react-native-track-player'
 import moment from 'moment'
 
-import { useTheme } from '../../store'
+import { useTheme } from 'store'
 import useInterval from '../utils/useInterval'
 import Avatar from '../chat/msg/avatar'
 import Rocket from './Rocket'

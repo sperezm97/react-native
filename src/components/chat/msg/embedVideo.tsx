@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
-import { useTheme } from '../../../store'
+import { useTheme } from 'store'
 import Button from '../../common/Button'
 import Typography from '../../common/Typography'
 
@@ -14,7 +14,12 @@ type EmbedVideoTypes = {
   onLongPress?: () => void
 }
 
-const EmbedVideo: React.FC<EmbedVideoTypes> = ({ type, link, squareSize, onLongPress = () => {} }) => {
+const EmbedVideo: React.FC<EmbedVideoTypes> = ({
+  type,
+  link,
+  squareSize,
+  onLongPress = () => {},
+}) => {
   const embedLink = useMemo(() => {
     if (!link || !type) return ''
     if (type === 'rumble') return `${link.split('?')[0]}?rel=0`

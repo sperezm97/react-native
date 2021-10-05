@@ -4,7 +4,7 @@ import { useObserver } from 'mobx-react-lite'
 import { IconButton, Switch } from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native'
 
-import { useStores, useTheme } from '../../store'
+import { useStores, useTheme } from 'store'
 import { constants } from '../../constants'
 import ConfirmDialog from '../utils/confirmDialog'
 import * as schemas from '../form/schemas'
@@ -89,7 +89,10 @@ export default function EditContact({ route }) {
             <Typography style={{ ...styles.pausedText, color: theme.subtitle }}>
               {subPaused ? 'PAUSED' : 'ACTIVE'}
             </Typography>
-            <Switch value={!subPaused} onValueChange={() => toggleSubscription(existingSub.id, !subPaused)} />
+            <Switch
+              value={!subPaused}
+              onValueChange={() => toggleSubscription(existingSub.id, !subPaused)}
+            />
           </View>
         </View>
       )}

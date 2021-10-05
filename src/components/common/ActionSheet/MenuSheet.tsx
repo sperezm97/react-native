@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { StyleSheet, View, Image, TouchableOpacity } from 'react-native'
 import Modal from 'react-native-modal'
 
-import { useTheme } from '../../../store'
+import { useTheme } from 'store'
 import Icon from '../Icon'
 import Typography from '../Typography'
 
@@ -119,7 +119,11 @@ export default function MenuSheet(props) {
                     )}
                     {item.thumbImage && (
                       <Image
-                        source={typeof item.thumbImage === 'string' ? { uri: item.thumbImage } : item.thumbImage}
+                        source={
+                          typeof item.thumbImage === 'string'
+                            ? { uri: item.thumbImage }
+                            : item.thumbImage
+                        }
                         style={{ ...styles.thumbImage }}
                       />
                     )}

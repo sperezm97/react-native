@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useObserver } from 'mobx-react-lite'
 import { StyleSheet, View, ScrollView } from 'react-native'
 
-import { useStores } from '../../../store'
+import { useStores } from 'store'
 import { constants } from '../../../constants'
 import ConfirmDialog from '../../utils/confirmDialog'
 import * as schemas from '../../form/schemas'
@@ -30,7 +30,8 @@ export default function ContactSubscribe() {
   function makeSubValues() {
     const initialSubValues: { [k: string]: any } = {}
     if (existingSub) {
-      const amountIsCustom = existingSub.amount !== 500 && existingSub.amount !== 1000 && existingSub.amount !== 2000
+      const amountIsCustom =
+        existingSub.amount !== 500 && existingSub.amount !== 1000 && existingSub.amount !== 2000
       if (amountIsCustom) {
         initialSubValues.amount = {
           selected: 'custom',

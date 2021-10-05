@@ -9,7 +9,7 @@ import { encode as btoa } from 'base-64'
 import { Modalize } from 'react-native-modalize'
 import { getStatusBarHeight } from 'react-native-iphone-x-helper'
 
-import { useStores, useTheme } from '../../store'
+import { useStores, useTheme } from 'store'
 import { TOAST_DURATION } from '../../constants'
 import { getPinTimeout, updatePinTimeout } from '../utils/pin'
 import PIN from '../utils/pin'
@@ -117,7 +117,9 @@ export default function Security() {
         <View style={{ padding: 18 }}>
           <View style={styles.pinTimeoutTextWrap}>
             <Typography color={theme.subtitle}>PIN Timeout</Typography>
-            <Typography color={theme.title}>{pinTimeout ? pinTimeout : 'Always Require PIN'}</Typography>
+            <Typography color={theme.title}>
+              {pinTimeout ? pinTimeout : 'Always Require PIN'}
+            </Typography>
           </View>
           <Slider
             minimumValue={0}

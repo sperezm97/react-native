@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useObserver } from 'mobx-react-lite'
 import { StyleSheet, View, FlatList, TouchableOpacity } from 'react-native'
 
-import { useTheme, useStores } from '../../../store'
+import { useTheme, useStores } from 'store'
 import { TRIBE_SIZE_LIMIT } from '../../../constants'
 import Button from '../../common/Button'
 import Typography from '../../common/Typography'
@@ -33,21 +33,32 @@ export default function AddMembers({ initialMemberIds, loading, finish }) {
 
   const noInitials = !initialMemberIds?.length
 
-  const contactsToShow = contacts.contactsArray.filter((c) => c.id > 1 && !initialContactIds.includes(c.id))
+  const contactsToShow = contacts.contactsArray.filter(
+    (c) => c.id > 1 && !initialContactIds.includes(c.id)
+  )
 
   function selectAll() {
     setSelected(contactsToShow.map((c) => c.id))
   }
 
   const renderContactsToShow: any = ({ item, index }) => (
-    <Contact key={index} contact={item} onPress={() => add(item.id)} selected={selected.includes(item.id)} />
+    <Contact
+      key={index}
+      contact={item}
+      onPress={() => add(item.id)}
+      selected={selected.includes(item.id)}
+    />
   )
 
   const flatListHeader: any = () => (
     <View style={styles.topBar}>
       <Typography>CONTACTS</Typography>
       {!noInitials && (
-        <TouchableOpacity activeOpacity={0.6} onPress={selectAll} accessibilityLabel='people-select-all'>
+        <TouchableOpacity
+          activeOpacity={0.6}
+          onPress={selectAll}
+          accessibilityLabel='people-select-all'
+        >
           <Typography>SELECT ALL</Typography>
         </TouchableOpacity>
       )}
@@ -59,7 +70,12 @@ export default function AddMembers({ initialMemberIds, loading, finish }) {
       <Button w='25%' loading={loading} onPress={() => finish(selected)}>
         Finish
       </Button>
-      <Button onPress={() => finish([])} w='18%' color={theme.lightGrey} style={{ marginRight: 14, marginLeft: 20 }}>
+      <Button
+        onPress={() => finish([])}
+        w='18%'
+        color={theme.lightGrey}
+        style={{ marginRight: 14, marginLeft: 20 }}
+      >
         <Typography color={theme.black}> Skip</Typography>
       </Button>
     </View>

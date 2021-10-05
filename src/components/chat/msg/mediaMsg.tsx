@@ -7,7 +7,7 @@ import Ionicon from 'react-native-vector-icons/Ionicons'
 import Video from 'react-native-video'
 import FastImage from 'react-native-fast-image'
 
-import { useStores, useTheme, hooks } from '../../../store'
+import { useStores, useTheme, hooks } from 'store'
 import { useTribeMediaType } from 'store/hooks/tribes'
 import shared from './sharedStyles'
 import { useCachedEncryptedFile } from './hooks'
@@ -44,8 +44,14 @@ export default function MediaMsg(props) {
 
   let { data, uri, loading, paidMessageText } = useCachedEncryptedFile(props, ldat, true)
 
-  const rumbleLink = useMemo(() => paidMessageText && getRumbleLink(paidMessageText), [paidMessageText])
-  const youtubeLink = useMemo(() => paidMessageText && getYoutubeLink(paidMessageText), [paidMessageText])
+  const rumbleLink = useMemo(
+    () => paidMessageText && getRumbleLink(paidMessageText),
+    [paidMessageText]
+  )
+  const youtubeLink = useMemo(
+    () => paidMessageText && getYoutubeLink(paidMessageText),
+    [paidMessageText]
+  )
   const isEmbedVideo = youtubeLink || rumbleLink
 
   const hasImgData = !!(data || uri)
@@ -117,7 +123,11 @@ export default function MediaMsg(props) {
 
     return (
       <View collapsable={false}>
-        <TouchableOpacity onLongPress={onLongPressHandler} onPress={onMediaPress} activeOpacity={0.8}>
+        <TouchableOpacity
+          onLongPress={onLongPressHandler}
+          onPress={onMediaPress}
+          activeOpacity={0.8}
+        >
           {!hasImgData && (
             <View
               style={{
@@ -141,8 +151,16 @@ export default function MediaMsg(props) {
                     ...(isEmbedVideo && { height: 170 }),
                   }}
                 >
-                  {!!rumbleLink && <EmbedVideo type='rumble' link={rumbleLink} onLongPress={onLongPressHandler} />}
-                  {!!youtubeLink && <EmbedVideo type='youtube' link={youtubeLink} onLongPress={onLongPressHandler} />}
+                  {!!rumbleLink && (
+                    <EmbedVideo type='rumble' link={rumbleLink} onLongPress={onLongPressHandler} />
+                  )}
+                  {!!youtubeLink && (
+                    <EmbedVideo
+                      type='youtube'
+                      link={youtubeLink}
+                      onLongPress={onLongPressHandler}
+                    />
+                  )}
                   {!rumbleLink && !youtubeLink && (
                     <Text
                       style={{
@@ -163,7 +181,14 @@ export default function MediaMsg(props) {
             </View>
           )}
 
-          {hasImgData && <Media type={media_type} data={data} uri={uri} filename={meme.filenameCache[props.id]} />}
+          {hasImgData && (
+            <Media
+              type={media_type}
+              data={data}
+              uri={uri}
+              filename={meme.filenameCache[props.id]}
+            />
+          )}
 
           {isImg && showPurchaseButton && !purchased && (
             <View style={styles.imgIconWrap}>

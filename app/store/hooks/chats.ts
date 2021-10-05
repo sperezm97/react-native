@@ -33,7 +33,7 @@ export function useChatRow(id) {
   const { user, msg } = useStores()
   const myid = user.myid
 
-  const msgs = msg.messages[id || '_']
+  const msgs = msg.msgsForChatroom(id || '_')
   const lastMsg = msgs?.[0]
   const lastMsgText = lastMessageText(lastMsg, myid)
   const hasLastMsg = !!lastMsgText
@@ -45,6 +45,13 @@ export function useChatRow(id) {
 
   const lastMsgDate = lastMessageDate(lastMsg)
 
+  // console.log(`useChatRow ${id} returning `, {
+  //   lastMsgText,
+  //   lastMsgDate,
+  //   hasLastMsg,
+  //   unseenCount,
+  //   hasUnseen,
+  // })
   return { lastMsgText, lastMsgDate, hasLastMsg, unseenCount, hasUnseen }
 }
 
@@ -74,7 +81,8 @@ function lastMessageText(msg, myid) {
     if (msg.message_content.startsWith('giphy::')) return 'GIF ' + verb
     if (msg.message_content.startsWith('clip::')) return 'Clip ' + verb
     if (msg.message_content.startsWith('boost::')) return 'Boost ' + verb
-    if (msg.message_content.startsWith(`${DEFAULT_DOMAIN}://?action=tribe`)) return 'Tribe Link ' + verb
+    if (msg.message_content.startsWith(`${DEFAULT_DOMAIN}://?action=tribe`))
+      return 'Tribe Link ' + verb
     if (msg.message_content.startsWith('https://jitsi.sphinx.chat/')) return 'Join Call'
     return msg.message_content
   }

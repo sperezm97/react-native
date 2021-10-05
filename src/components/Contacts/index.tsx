@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native'
 import { IconButton } from 'react-native-paper'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 
-import { useStores, useTheme } from '../../store'
+import { useStores, useTheme } from 'store'
 import BackHeader from '../common/BackHeader'
 import Search from '../common/Search'
 import ContactList from './ContactList'
@@ -43,7 +43,11 @@ function ListHeader() {
 
   return (
     <View style={{ ...styles.searchWrap }}>
-      <Search placeholder='Search Contacts' onChangeText={onChangeTextHandler} value={ui.contactsSearchTerm} />
+      <Search
+        placeholder='Search Contacts'
+        onChangeText={onChangeTextHandler}
+        value={ui.contactsSearchTerm}
+      />
     </View>
   )
 }

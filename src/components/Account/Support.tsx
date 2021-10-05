@@ -6,7 +6,7 @@ import { ActivityIndicator } from 'react-native-paper'
 import Toast from 'react-native-simple-toast'
 import packageJSON from '../../../package.json'
 
-import { useStores, useTheme } from '../../store'
+import { useStores, useTheme } from 'store'
 import { TOAST_DURATION } from '../../constants'
 import Button from '../common/Button'
 import Typography from '../common/Typography'

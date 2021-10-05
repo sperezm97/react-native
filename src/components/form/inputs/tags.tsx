@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { View, Text, TouchableOpacity, Image } from 'react-native'
 import { Dialog, Chip, Portal } from 'react-native-paper'
 
-import { useTheme } from '../../../store'
+import { useTheme } from 'store'
 
 const tagz = ['Bitcoin', 'Lightning', 'Sphinx', 'Podcast', 'Crypto', 'Tech', 'Altcoins', 'Music']
 

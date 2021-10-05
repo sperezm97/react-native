@@ -21,21 +21,36 @@ export const MsgStoreModel = types
   })
   .extend(withEnvironment)
   .actions((self) => ({
-    approveOrRejectMember: async (contactID: number, status: string, msgId: number): Promise<void> =>
+    approveOrRejectMember: async (
+      contactID: number,
+      status: string,
+      msgId: number
+    ): Promise<void> =>
       await actions.approveOrRejectMember(self as MsgStore, contactID, status, msgId),
     batchDecodeMessages: async (msgs: any): Promise<boolean> =>
       await actions.batchDecodeMessages(self as MsgStore, msgs),
     createRawInvoice: async ({ amt, memo }: { amt: number; memo: string }): Promise<any> =>
       await actions.createRawInvoice(amt, memo),
-    deleteMessage: async (id: number): Promise<void> => await actions.deleteMessage(self as MsgStore, id),
+    deleteMessage: async (id: number): Promise<void> =>
+      await actions.deleteMessage(self as MsgStore, id),
     getMessages: async (forceMore: boolean = false): Promise<any> =>
       await actions.getMessages(self as MsgStore, forceMore),
     gotNewMessage: async (m: any): Promise<any> => await actions.gotNewMessage(self as MsgStore, m),
     gotNewMessageFromWS: async (m: any): Promise<any> => await actions.gotNewMessageFromWS(m),
     invoicePaid: async (m: any): Promise<any> => await actions.invoicePaid(self as MsgStore, m),
-    payInvoice: async ({ payment_request, amount }: { payment_request: string; amount: number }): Promise<void> =>
-      await actions.payInvoice(self as MsgStore, payment_request, amount),
-    purchaseMedia: async ({ contact_id, amount, chat_id, media_token }: PurchaseMediaParams): Promise<any> =>
+    payInvoice: async ({
+      payment_request,
+      amount,
+    }: {
+      payment_request: string
+      amount: number
+    }): Promise<void> => await actions.payInvoice(self as MsgStore, payment_request, amount),
+    purchaseMedia: async ({
+      contact_id,
+      amount,
+      chat_id,
+      media_token,
+    }: PurchaseMediaParams): Promise<any> =>
       await actions.purchaseMedia({ contact_id, amount, chat_id, media_token }),
     restoreMessages: async (): Promise<any> => await actions.restoreMessages(self as MsgStore),
     seeChat: async (id: number): Promise<any> => await actions.seeChat(self as MsgStore, id),
@@ -49,7 +64,8 @@ export const MsgStoreModel = types
       await actions.sendMessage(self as MsgStore, params),
     sendPayment: async (params: SendPaymentParams): Promise<void> =>
       await actions.sendPayment(self as MsgStore, params),
-    setMessageAsReceived: async (m: any): Promise<void> => await actions.setMessageAsReceived(self as MsgStore, m),
+    setMessageAsReceived: async (m: any): Promise<void> =>
+      await actions.setMessageAsReceived(self as MsgStore, m),
     setLastFetched(lastFetched: number) {
       self.lastFetched = lastFetched
     },
@@ -91,14 +107,14 @@ export const MsgStoreModel = types
       return Array.from(self.messages.values())
     },
     msgsForChatroom(chatId: number) {
-      console.tron.log(`msgsForChatroom start with ${chatId}`)
+      // console.tron.log(`msgsForChatroom start with ${chatId}`)
       const msgs = (self as MsgStore).messagesArray.filter((msg) => msg.chat_id === chatId)
-      console.tron.display({
-        name: 'msg-store',
-        preview: 'msgsForChatroom',
-        value: { msgs, chatId },
-        important: true,
-      })
+      // console.tron.display({
+      //   name: 'msg-store',
+      //   preview: 'msgsForChatroom',
+      //   value: { msgs, chatId },
+      //   important: true,
+      // })
       return msgs
     },
     sortAllMsgs(allms: { [k: number]: Msg[] }) {

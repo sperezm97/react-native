@@ -3,7 +3,7 @@ import { StyleSheet, View, Animated } from 'react-native'
 import LottieView from 'lottie-react-native'
 import FastImage from 'react-native-fast-image'
 
-import { useStores } from '../../store'
+import { useStores } from 'store'
 import EE, { PLAY_ANIMATION } from '../utils/ee'
 import { usePicSrc } from '../utils/picSrc'
 import Boost from './Boost'

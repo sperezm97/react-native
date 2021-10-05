@@ -2,7 +2,7 @@ import React from 'react'
 
 import { createStackNavigator } from '@react-navigation/stack'
 
-import { useTheme } from '../../store'
+import { useTheme } from 'store'
 import Chats from '../chat/Chats'
 import Chat from '../chat/chat'
 import ChatDetails from '../chat/ChatDetails'

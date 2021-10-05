@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { StyleSheet, View, BackHandler, Modal } from 'react-native'
 import { TextInput, Button } from 'react-native-paper'
 
-import { useTheme } from '../../store'
+import { useTheme } from 'store'
 import Scanner from './scanner'
 
 export default function QR({ visible, onCancel, onScan, showPaster }) {

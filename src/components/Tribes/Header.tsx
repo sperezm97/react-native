@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native'
 import { useObserver } from 'mobx-react-lite'
 import FeatherIcon from 'react-native-vector-icons/Feather'
 
-import { useStores, useTheme } from '../../store'
+import { useStores, useTheme } from 'store'
 import Pushable from '../common/Pushable'
 import Typography from '../common/Typography'
 
@@ -31,7 +31,12 @@ export default function Header({}) {
               onPress={() => navigation.navigate('DiscoverTribes' as never)}
             />
             <Pushable onPress={() => ui.setNewTribeModal(true)}>
-              <IconButton icon='plus' color={theme.primary} size={24} style={{ backgroundColor: theme.lightGrey }} />
+              <IconButton
+                icon='plus'
+                color={theme.primary}
+                size={24}
+                style={{ backgroundColor: theme.lightGrey }}
+              />
             </Pushable>
           </View>
         </View>

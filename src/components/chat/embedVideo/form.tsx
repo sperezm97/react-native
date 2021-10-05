@@ -6,7 +6,7 @@ import { Formik } from 'formik'
 import { Button, TextInput } from 'react-native-paper'
 
 import Typography from '../../common/Typography'
-import { useTheme } from '../../../store'
+import { useTheme } from 'store'
 
 type FormValues = { video: string; message_price: string }
 
@@ -31,7 +31,11 @@ const Form: React.FC<FormTypes> = ({ onSubmit }) => {
   const theme = useTheme()
 
   return (
-    <Formik initialValues={{ video: '', message_price: '' }} onSubmit={onSubmit} validationSchema={schema}>
+    <Formik
+      initialValues={{ video: '', message_price: '' }}
+      onSubmit={onSubmit}
+      validationSchema={schema}
+    >
       {({
         values,
         errors,

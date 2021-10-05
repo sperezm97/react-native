@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
 import { useNavigation } from '@react-navigation/native'
 
-import { useStores, useTheme } from '../../../store'
+import { useStores, useTheme } from 'store'
 import BackHeader from '../../common/BackHeader'
 import List from './List'
 import Typography from '../../common/Typography'
@@ -60,7 +60,9 @@ export default function Members({ route }) {
               <List
                 tribe={tribe}
                 members={searchedContacts}
-                listHeader={<ListHeader searchText={membersSearchText} setSearchText={setMembersSearchText} />}
+                listHeader={
+                  <ListHeader searchText={membersSearchText} setSearchText={setMembersSearchText} />
+                }
               />
             ) : (
               <EmptyMembers tribe={tribe} />

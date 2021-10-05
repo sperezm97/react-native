@@ -6,7 +6,7 @@ import Clipboard from '@react-native-community/clipboard'
 import Toast from 'react-native-simple-toast'
 import QRCode from 'react-native-qrcode-svg'
 
-import { useStores } from '../../../store'
+import { useStores } from 'store'
 import { DEFAULT_DOMAIN } from '../../../config'
 import { SCREEN_WIDTH, TOAST_DURATION } from '../../../constants'
 import ModalWrap from './ModalWrap'

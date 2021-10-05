@@ -2,7 +2,7 @@ import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import { IconButton } from 'react-native-paper'
 
-import { useTheme } from '../../store'
+import { useTheme } from 'store'
 
 export default function Header(props) {
   const { title, onClose, leftArrow } = props

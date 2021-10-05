@@ -4,7 +4,7 @@ import Toast from 'react-native-simple-toast'
 import Clipboard from '@react-native-community/clipboard'
 import { encode as btoa } from 'base-64'
 
-import { useStores } from '../../store'
+import { useStores } from 'store'
 import { TOAST_DURATION } from '../../constants'
 
 import * as rsa from '../../crypto/rsa'

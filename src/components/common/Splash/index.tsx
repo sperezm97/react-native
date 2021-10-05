@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, StyleSheet, Image } from 'react-native'
 
-import { useTheme } from '../../../store'
+import { useTheme } from 'store'
 import Wobble from '../Animations/Wobble'
 
 export default function Splash() {
@@ -24,7 +24,11 @@ export default function Splash() {
       </Wobble>
 
       <Image
-        source={dark ? require('../../../assets/zion-dark-theme.png') : require('../../../assets/zion.png')}
+        source={
+          dark
+            ? require('../../../assets/zion-dark-theme.png')
+            : require('../../../assets/zion.png')
+        }
         style={{ width: 120, height: 120 }}
         resizeMode={'contain'}
       />

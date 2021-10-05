@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react'
 import { StyleSheet, View, TextInput } from 'react-native'
 
-import { useStores, useTheme } from '../../store'
+import { useStores, useTheme } from 'store'
 import Slider from '../utils/slider'
 import * as rsa from '../../crypto/rsa'
 import Button from '../common/Button'
@@ -35,7 +35,12 @@ export default function NameAndKey(props) {
     }
   }
   return (
-    <Slider z={z} show={show} style={{ backgroundColor: theme.bg }} accessibilityLabel='onboard-name'>
+    <Slider
+      z={z}
+      show={show}
+      style={{ backgroundColor: theme.bg }}
+      accessibilityLabel='onboard-name'
+    >
       <TextInput
         value={text}
         ref={inputRef}

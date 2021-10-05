@@ -3,7 +3,7 @@ import { Image, StyleSheet, View } from 'react-native'
 import RadialGradient from 'react-native-radial-gradient'
 import { useNavigation } from '@react-navigation/native'
 
-import { useTheme } from '../../store'
+import { useTheme } from 'store'
 import Typography from '../common/Typography'
 import Button from '../common/Button'
 

@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import { Portal } from 'react-native-paper'
 
-import { useTheme } from '../../../store'
+import { useTheme } from 'store'
 import Typography from '../Typography'
 import Icon from '../Icon'
 

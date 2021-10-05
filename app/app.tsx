@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import RNBootSplash from 'react-native-bootsplash'
 import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context'
 import { RootStore, RootStoreProvider, setupRootStore } from 'store'
-import { HomeScreen } from 'views/onboarding'
+import { AppNavigator } from 'navigation'
 
 export const App = () => {
   const [rootStore, setRootStore] = useState<RootStore | undefined>(undefined)
@@ -18,7 +18,7 @@ export const App = () => {
   return (
     <RootStoreProvider value={rootStore}>
       <SafeAreaProvider initialMetrics={initialWindowMetrics}>
-        <HomeScreen />
+        <AppNavigator />
       </SafeAreaProvider>
     </RootStoreProvider>
   )

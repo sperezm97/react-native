@@ -6,7 +6,7 @@ import Toast from 'react-native-simple-toast'
 import QRCode from 'react-native-qrcode-svg'
 import { isIphoneX, getBottomSpace } from 'react-native-iphone-x-helper'
 
-import { useTheme } from '../../../../store'
+import { useTheme } from 'store'
 import { SCREEN_WIDTH, TOAST_DURATION } from '../../../../constants'
 import ModalWrap from '../ModalWrap'
 import ModalHeader from '../ModalHeader'
@@ -62,7 +62,14 @@ export default function RawInvoice({ visible, onClose, amount, payreq, paid }) {
               <QRCode value={payreq} size={SCREEN_WIDTH / 1.2} />
               {paid && (
                 <View style={styles.paidWrap}>
-                  <Typography style={styles.paid} color='#55D1A9' fw='500' bg={theme.white} textAlign='center' lh={30}>
+                  <Typography
+                    style={styles.paid}
+                    color='#55D1A9'
+                    fw='500'
+                    bg={theme.white}
+                    textAlign='center'
+                    lh={30}
+                  >
                     PAID
                   </Typography>
                 </View>

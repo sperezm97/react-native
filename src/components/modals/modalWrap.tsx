@@ -2,7 +2,7 @@ import React from 'react'
 import { View, StyleSheet } from 'react-native'
 import Modal from 'react-native-modal'
 
-import { useTheme } from '../../store'
+import { useTheme } from 'store'
 
 export default function ModalWrap(props) {
   const theme = useTheme()

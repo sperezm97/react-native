@@ -1,6 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { useObserver } from 'mobx-react-lite'
-import { Keyboard, View, TextInput, TouchableOpacity, PanResponder, Animated, Platform } from 'react-native'
+import {
+  Keyboard,
+  View,
+  TextInput,
+  TouchableOpacity,
+  PanResponder,
+  Animated,
+  Platform,
+} from 'react-native'
 import { IconButton, ActivityIndicator } from 'react-native-paper'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import AudioRecorderPlayer from 'react-native-audio-recorder-player'
@@ -9,11 +17,16 @@ import Toast from 'react-native-simple-toast'
 import { isIphoneX, getBottomSpace } from 'react-native-iphone-x-helper'
 import { Modalize } from 'react-native-modalize'
 
-import { useStores, useTheme, hooks } from '../../../store'
+import { useStores, useTheme, hooks } from 'store'
 import { calcBotPrice, useReplyContent } from 'store/hooks/chat'
-import { randString } from '../../../crypto/rand'
-import * as e2e from '../../../crypto/e2e'
-import EE, { EXTRA_TEXT_CONTENT, REPLY_UUID, CANCEL_REPLY_UUID, CLEAR_REPLY_UUID } from '../../utils/ee'
+import { randString } from 'lib/crypto/rand'
+import * as e2e from 'lib/crypto/e2e'
+import EE, {
+  EXTRA_TEXT_CONTENT,
+  REPLY_UUID,
+  CANCEL_REPLY_UUID,
+  CLEAR_REPLY_UUID,
+} from '../../utils/ee'
 import { constants } from '../../../constants'
 import { fetchGifs } from '../helpers'
 import ReplyContent from '../msg/replyContent'
@@ -396,11 +409,8 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
 
   const msgs = useMsgs(chat) || []
 
-  const { replyMessageSenderAlias, replyMessageContent, replyMessageExtraContent, replyColor } = useReplyContent(
-    msgs,
-    replyUuid,
-    extraTextContent
-  )
+  const { replyMessageSenderAlias, replyMessageContent, replyMessageExtraContent, replyColor } =
+    useReplyContent(msgs, replyUuid, extraTextContent)
 
   const hasReplyContent = !!(replyUuid || extraTextContent)
   const inputFocusPaddingTop = inputFocused ? 10 : 5
@@ -466,7 +476,11 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
         <RecordingBottomBar recordingStartTime={recordingStartTime} recordSecs={recordSecs} />
 
         {!hideMic && (
-          <MicButton panResponder={panResponder} uploading={uploading} recordingStartTime={recordingStartTime} />
+          <MicButton
+            panResponder={panResponder}
+            uploading={uploading}
+            recordingStartTime={recordingStartTime}
+          />
         )}
         {hideMic && <SendButton text={text} sendMessage={sendMessage} />}
 
@@ -523,13 +537,20 @@ type IMicButton = {
 }
 function MicButton({ panResponder, uploading, recordingStartTime }: IMicButton) {
   return (
-    <Animated.View style={{ marginLeft: 0, marginRight: 4, zIndex: 9 }} {...panResponder.panHandlers}>
+    <Animated.View
+      style={{ marginLeft: 0, marginRight: 4, zIndex: 9 }}
+      {...panResponder.panHandlers}
+    >
       {uploading ? (
         <View style={{ width: 42 }}>
           <ActivityIndicator size={20} color='grey' />
         </View>
       ) : (
-        <IconButton icon='microphone-outline' size={28} color={recordingStartTime ? 'white' : '#666'} />
+        <IconButton
+          icon='microphone-outline'
+          size={28}
+          color={recordingStartTime ? 'white' : '#666'}
+        />
       )}
     </Animated.View>
   )
