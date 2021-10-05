@@ -7,7 +7,7 @@ import FeatherIcon from 'react-native-vector-icons/Feather'
 import AntDesignIcon from 'react-native-vector-icons/AntDesign'
 
 import { useStores, useTheme, hooks } from 'store'
-import { useSearchTribes } from '../../store/hooks/tribes'
+import { useSearchTribes } from 'store/hooks/tribes'
 import { SCREEN_HEIGHT, STACK_HEADER_HEIGHT } from '../../constants'
 import * as utils from '../utils/utils'
 import TabBar from '../common/TabBar'

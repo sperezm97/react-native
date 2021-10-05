@@ -1,7 +1,8 @@
 import { DEFAULT_HUB_API, DEFAULT_SHOP_API } from '../config'
 import API from './api'
 import { connectWebSocket } from './ws'
-// import * as wsHandlers from '../store/websocketHandlers'
+import { display, log } from 'lib/logging'
+// import * as wsHandlers from 'store/websocketHandlers'
 
 const invite = new API(DEFAULT_HUB_API, '', '')
 const shop = new API(DEFAULT_SHOP_API, '', '')
@@ -37,7 +38,7 @@ export function instantiateRelay(
     relay = new API(`${protocol}${ip}/`)
   }
   console.log('=> instantiated relay!', `${protocol}${ip}/`, 'authToken?', !!authToken)
-  console.tron.display({
+  display({
     name: 'instantiateRelay',
     preview: `Instantiated relay!  - authToken: ${!!authToken}`,
     value: `${protocol}${ip}/`,

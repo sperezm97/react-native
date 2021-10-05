@@ -4,6 +4,7 @@ import { constants } from '../../../constants'
 import { RootStore } from 'store'
 import { encryptText, makeRemoteTextMap, MsgStore, putIn } from '..'
 import moment from 'moment'
+import { display, log } from 'lib/logging'
 
 export const sendMessage = async (
   self: MsgStore,
@@ -60,7 +61,7 @@ export const sendMessage = async (
 
       if (!r) return
       // self.messagePosted(r)
-      console.tron.display({
+      display({
         name: 'sendMessage',
         preview: 'messagePosted placeholder',
         value: { r },

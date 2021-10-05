@@ -7,6 +7,7 @@ import { useTrackPlayerEvents } from 'react-native-track-player/lib/hooks'
 import { Modalize } from 'react-native-modalize'
 import { isIphoneX, getStatusBarHeight } from 'react-native-iphone-x-helper'
 import Toast from 'react-native-simple-toast'
+import { display, log } from 'lib/logging'
 
 import { useStores, useTheme } from 'store'
 import { Destination, StreamPayment, NUM_SECONDS, StreamPaymentModel } from 'store/feed-store'
@@ -101,7 +102,7 @@ export default function Podcast({ pod, chat, onBoost, podError }) {
   })
 
   async function initialSelect(ps) {
-    console.tron.display({
+    display({
       name: 'podcast initialSelect',
       preview: 'what we got',
       value: ps,
@@ -179,7 +180,7 @@ export default function Podcast({ pod, chat, onBoost, podError }) {
   let pricePerMinute = 0
   try {
     if (!chats.pricesPerMinute[chatID]) {
-      console.tron.display({
+      display({
         name: 'podcast',
         preview: "Couldn't get pricesPerMinute for chatID",
         important: true,
@@ -190,7 +191,7 @@ export default function Podcast({ pod, chat, onBoost, podError }) {
       pricePerMinute = Math.round(parseFloat(pod.value.model.suggested) * 100000000)
     }
   } catch (e) {
-    console.tron.error('couldnt fetch pricesPerMinute', e)
+    log('couldnt fetch pricesPerMinute', e)
   }
 
   async function sendPayments(mult: number) {

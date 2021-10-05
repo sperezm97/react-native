@@ -1,5 +1,9 @@
 import { ChatsStore } from '../chats-store'
 import { relay } from 'api'
+import { getRoot } from 'mobx-state-tree'
+import { RootStore } from 'app/store'
+import { normalizeChat } from 'app/store/normalize'
+import { display, log } from 'lib/logging'
 
 export const joinTribe = async (
   self: ChatsStore,
@@ -31,18 +35,18 @@ export const joinTribe = async (
     my_photo_url: my_photo_url || '',
   }
 
-  console.tron.display({
+  display({
     name: 'joinTribe',
     preview: 'Attempting to join tribe with params:',
     value: params,
   })
 
+  const root = getRoot(self) as RootStore
   try {
     const r = await relay.post('tribe', params)
     if (!r) return
-    self.gotChat(r)
-    if (amount) console.log('amount...', amount)
-    // if (amount) detailsStore.addToBalance(amount * -1)
+    self.gotChat(normalizeChat(r))
+    if (amount) root.details.addToBalance(amount * -1)
     return r
   } catch (e) {
     console.log(e)

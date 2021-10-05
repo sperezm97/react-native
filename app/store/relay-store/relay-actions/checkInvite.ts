@@ -1,5 +1,6 @@
 import { RelayStore } from '../relay-store'
 import { decode as atob } from 'base-64'
+import { display, log } from 'lib/logging'
 import { getRoot } from 'mobx-state-tree'
 import { RootStore } from 'store'
 
@@ -20,13 +21,13 @@ export const checkInvite = async (self: RelayStore, theCode: string) => {
     const codeString = atob(theCode)
     if (codeString.startsWith('keys::')) {
       // setShowPin(true)
-      console.tron.log('Keys, entering PIN...')
+      log('Keys, entering PIN...')
       // temp
       await self.pinEntered('') // MYPLACEHOLDER pin here
       return
     }
     if (codeString.startsWith('ip::')) {
-      console.tron.log('Ready to signupWithIP...')
+      log('Ready to signupWithIP...')
       // signupWithIP(codeString)
       return
     }

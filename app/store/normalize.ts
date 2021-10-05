@@ -1,11 +1,12 @@
+import { display, log } from 'lib/logging'
 import { Chat, ChatModel } from './chats-store'
 import { Contact, ContactModel } from './contacts-store'
 import { Msg, MsgModel } from './msg-store'
 
 export const normalizeChat = (raw: any) => {
-  // console.log(raw)
   const normalized: Chat = ChatModel.create({
     app_url: raw.app_url ?? '',
+    contact_ids: raw.contact_ids ?? null,
     created_at: raw.created_at,
     deleted: parseBool(raw.deleted),
     escrow_amount: raw.escrow_amount ?? 0,
@@ -25,17 +26,17 @@ export const normalizeChat = (raw: any) => {
     pricePerMinute: raw.pricePerMinute ?? 0,
     price_to_join: raw.price_to_join ?? 0,
     private: parseBool(raw.private),
-    status: raw.status ?? '',
+    status: raw.status ?? 0, // unsure if this is the right default
     type: raw.type,
     unlisted: parseBool(raw.unlisted),
     updated_at: raw.updated_at,
     uuid: raw.uuid,
   })
-  console.tron.display({
-    name: 'normalizeChat',
-    value: { raw, normalized },
-    important: true,
-  })
+  // display({
+  //   name: 'normalizeChat',
+  //   value: { raw, normalized },
+  //   important: true,
+  // })
   return normalized
 }
 
@@ -63,8 +64,8 @@ export const normalizeContact = (raw: any) => {
 }
 
 export const normalizeMessage = (raw: any) => {
-  console.tron.log(raw)
-  // console.tron.display({
+  // log(raw)
+  // display({
   //   name: 'normalizeMessage',
   //   value: raw,
   //   important: true,
@@ -115,15 +116,15 @@ export const normalizeMessage = (raw: any) => {
       boosts_total_sats: raw.boosts_total_sats,
       boosts: raw.boosts,
     })
-    console.tron.display({
-      name: `normalizeMessage `,
-      preview: `${normalized.id} - ${normalized.message_content}`,
-      value: { raw, normalized },
-      important: true,
-    })
+    // display({
+    //   name: `normalizeMessage `,
+    //   preview: `${normalized.id} - ${normalized.message_content}`,
+    //   value: { raw, normalized },
+    //   important: true,
+    // })
     return normalized
   } catch (e) {
-    console.tron.display({
+    display({
       name: 'Could not normalize msg',
       preview: e.message,
       value: e.message,

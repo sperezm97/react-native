@@ -11,6 +11,7 @@ import {
   SendMessageParams,
   SendPaymentParams,
 } from './msg-actions'
+import { display, log } from 'lib/logging'
 
 export const MsgStoreModel = types
   .model('MsgStore')
@@ -73,7 +74,16 @@ export const MsgStoreModel = types
       self.messages.set(msg.id.toString(), msg)
     },
     setMessages: (msgs: Msg[]) => {
-      msgs.forEach((chat) => (self as MsgStore).setMessage(chat))
+      const formattedArray = []
+      msgs.forEach((msg) => {
+        formattedArray.push([msg.id, msg])
+      })
+      display({
+        name: 'setMessages',
+        preview: `Setting ${msgs.length} messages`,
+        value: { msgs, formattedArray },
+      })
+      self.messages.merge(formattedArray)
     },
   }))
   .views((self) => ({
@@ -107,9 +117,9 @@ export const MsgStoreModel = types
       return Array.from(self.messages.values())
     },
     msgsForChatroom(chatId: number) {
-      // console.tron.log(`msgsForChatroom start with ${chatId}`)
+      // log(`msgsForChatroom start with ${chatId}`)
       const msgs = (self as MsgStore).messagesArray.filter((msg) => msg.chat_id === chatId)
-      // console.tron.display({
+      // display({
       //   name: 'msg-store',
       //   preview: 'msgsForChatroom',
       //   value: { msgs, chatId },
@@ -122,7 +132,7 @@ export const MsgStoreModel = types
       const final = {}
       let toSort: { [k: number]: Msg[] } = allms || JSON.parse(JSON.stringify(self.messages)) // ??
 
-      console.tron.display({
+      display({
         name: 'sortAllMsgs',
         preview: `Trying to sort...`,
         value: { toSort, allms },
@@ -135,7 +145,7 @@ export const MsgStoreModel = types
       //   final[k] = v
       // })
 
-      console.tron.display({
+      display({
         name: 'sortAllMsgs',
         preview: `Skipping some set of messages...`,
         value: { final },

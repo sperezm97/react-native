@@ -1,9 +1,10 @@
 import { UserStore } from '../user-store'
 import * as api from 'api'
+import { display, log } from 'lib/logging'
 
 export const finishInvite = async (self: UserStore) => {
   // if (!self.code || self.code === '') {
-  //   console.tron.display({
+  //   display({
   //     name: 'finishInvite',
   //     preview: 'No invite code',
   //     important: true,

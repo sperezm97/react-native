@@ -4,7 +4,7 @@ import { useObserver } from 'mobx-react-lite'
 import { ActivityIndicator } from 'react-native-paper'
 
 import { useStores, useTheme, hooks } from 'store'
-import { useFeed } from '../../store/hooks/tribes'
+import { useFeed } from 'store/hooks/tribes'
 import { SCREEN_HEIGHT, STATUS_BAR_HEIGHT } from '../../constants'
 import TabBar from '../common/TabBar'
 import Header from '../common/Header'

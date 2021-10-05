@@ -5,7 +5,7 @@ import { View, ActivityIndicator, StyleSheet, Text, TextInput, Alert } from 'rea
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { Button } from 'react-native-paper'
 import { useStores } from 'store'
-import { randString } from '../../crypto/rand'
+import { randString } from 'lib/crypto/rand'
 
 export default function Webview({ url }) {
   const { user, msg } = useStores() // auth

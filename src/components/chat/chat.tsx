@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { KeyboardAvoidingView } from 'react-native'
 import { useRoute, useNavigation } from '@react-navigation/native'
+import { display, log } from 'lib/logging'
 
 import { useStores, useTheme } from 'store'
 import { StreamPayment } from 'store/feed-store'
@@ -36,6 +37,16 @@ export default function Chat() {
     [chatID, chats.chats, route.params]
   )
 
+  display({
+    name: 'Chat',
+    value: {
+      myid,
+      route,
+      chat,
+    },
+    important: true,
+  })
+
   const navigation = useNavigation()
 
   const loadPod = useCallback(
@@ -51,6 +62,7 @@ export default function Chat() {
   const fetchTribeParams = useCallback(async () => {
     const isTribe = chat && chat.type === constants.chat_types.tribe
     const isTribeAdmin = isTribe && chat.owner_pubkey === user.publicKey
+    if (!isTribe) return
     // let isAppURL = false
     // let isFeedURL = false
     if (isTribe) {

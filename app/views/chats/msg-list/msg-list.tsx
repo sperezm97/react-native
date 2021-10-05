@@ -11,6 +11,7 @@ import {
 } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import Toast from 'react-native-simple-toast'
+import { display, log } from 'lib/logging'
 
 import { useStores, useTheme, hooks } from 'store'
 import { Chat } from 'store/chats-store'
@@ -78,12 +79,12 @@ const MsgListWrap = ({ chat, pricePerMessage }: { chat: Chat; pricePerMessage: n
   }, [chat.id, chats, navigation])
 
   const msgs = useMsgs(chat, limit) || []
-  console.tron.display({
-    name: 'msgList',
-    preview: 'got these msgs',
-    value: { msgs },
-    important: true,
-  })
+  // display({
+  //   name: 'msgList',
+  //   preview: 'got these msgs',
+  //   value: { msgs },
+  //   important: true,
+  // })
 
   return (
     <MsgList

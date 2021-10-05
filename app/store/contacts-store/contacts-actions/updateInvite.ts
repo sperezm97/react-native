@@ -2,6 +2,7 @@ import { getRoot } from 'mobx-state-tree'
 import { RootStore } from 'store'
 import { Contact, Invite } from '..'
 import { ContactsStore } from '../contacts-store'
+import { display, log } from 'lib/logging'
 
 export const updateInvite = async (self: ContactsStore, inv: Invite) => {
   const theseContacts: Contact[] = Array.from(self.contacts.values())
@@ -10,7 +11,7 @@ export const updateInvite = async (self: ContactsStore, inv: Invite) => {
   })
   if (inviteContact) {
     // TODO: test this
-    console.tron.log('Attempting to updateInvite but may need to do as setter...')
+    log('Attempting to updateInvite but may need to do as setter...')
     inviteContact.invite = inv
   }
   const root = getRoot(self) as RootStore

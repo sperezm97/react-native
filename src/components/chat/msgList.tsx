@@ -1,5 +1,6 @@
 import React, { useRef, useState, useCallback, useEffect } from 'react'
 import { observer } from 'mobx-react-lite'
+import { display, log } from 'lib/logging'
 import {
   StyleSheet,
   VirtualizedList,
@@ -14,7 +15,7 @@ import Toast from 'react-native-simple-toast'
 
 import { useStores, useTheme, hooks } from 'store'
 import { Chat } from 'store/chats-store'
-import { useMsgSender } from '../../store/hooks/msg'
+import { useMsgSender } from 'store/hooks/msg'
 import Message from './msg'
 import { constants } from '../../constants'
 import EE, { SHOW_REFRESHER } from '../utils/ee'
@@ -78,12 +79,12 @@ const MsgListWrap = ({ chat, pricePerMessage }: { chat: Chat; pricePerMessage: n
   }, [chat.id, chats, navigation])
 
   const msgs = useMsgs(chat, limit) || []
-  console.tron.display({
-    name: 'msgList',
-    preview: 'got these msgs',
-    value: { msgs },
-    important: true,
-  })
+  // display({
+  //   name: 'msgList',
+  //   preview: 'got these msgs',
+  //   value: { msgs },
+  //   important: true,
+  // })
 
   return (
     <MsgList

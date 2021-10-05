@@ -4,6 +4,7 @@ import { useStores } from 'store'
 import * as aes from 'lib/crypto/aes'
 import { decode as atob } from 'base-64'
 import { isBase64 } from 'lib/crypto/Base64'
+import { display, log } from 'lib/logging'
 
 const sess = 'all'
 
@@ -47,7 +48,11 @@ export function useCachedEncryptedFile(
 
     const url = `https://${ldat.host}/file/${media_token}`
 
+    log('TRYING TO TRIGGER THIS URL?', url)
+
     const server = meme.servers.find((s) => s.host === ldat.host)
+
+    log('VIA SERVER', server)
 
     setLoading(true)
     // if img already exists return it
@@ -58,21 +63,26 @@ export function useCachedEncryptedFile(
       if (isPaidMessage) {
         const txt = await parsePaidMsg(id)
         setPaidMessageText(txt)
+        log('Paid message:', id, txt)
       } else {
         setURI('file://' + existingPath)
+        log('uri set to:', existingPath)
       }
       setLoading(false)
+      log('exists, going byebye?')
       return
     }
 
     if (!server) return
     try {
+      log('trying fetchblob...')
       const res = await RNFetchBlob.config({
         path: dirs.CacheDir + `/attachments/msg_${id}`,
       }).fetch('GET', url, {
         Authorization: `Bearer ${server.token}`,
       })
-      // console.log('The file saved to ', res.path())
+      log(res)
+      console.log('The file saved to ', res.path())
 
       const headers = res.info().headers
       const disp = headers['Content-Disposition']
@@ -96,9 +106,13 @@ export function useCachedEncryptedFile(
 
         if (isPaidMessage) {
           const txt = await aes.decryptFileAndSaveReturningContent(path, media_key, extension)
-          setPaidMessageText(media_type === 'n2n2/text' ? isBase64(txt).text : txt)
+          log('yo this is ', txt)
+          const textt = media_type === 'n2n2/text' ? isBase64(txt).text : txt
+          log('and this is:', textt)
+          setPaidMessageText(textt)
         } else {
           const newpath = await aes.decryptFileAndSave(path, media_key, extension)
+          log('is what?')
           setURI('file://' + newpath)
         }
         setLoading(false)
@@ -128,7 +142,9 @@ export function useCachedEncryptedFile(
   }
 
   useEffect(() => {
+    log('usething returning')
     if (!media_token || paidMessageText || !dispatchTrigger) return
+    log('triggering with', media_token, paidMessageText, ldat)
     trigger()
   }, [media_token, paidMessageText, ldat])
 

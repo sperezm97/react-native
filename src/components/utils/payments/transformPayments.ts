@@ -1,6 +1,7 @@
 import { constants } from '../../../constants'
 import { ChatsStore } from 'store/chats-store'
 import { Msg } from 'store/msg-store'
+import { display, log } from 'lib/logging'
 
 type transformPaymentsParams = {
   userId: number /** user.myid */
@@ -11,11 +12,11 @@ type transformPaymentsParams = {
  * @returns the sum of amounts in a object with the shape of `Msg[]`
  */
 export const transformPayments = ({ payments, userId, chats }: transformPaymentsParams): Msg[] => {
-  console.tron.display({
-    name: 'transformPayments',
-    preview: 'Got what',
-    value: { payments, userId, chats },
-  })
+  // display({
+  //   name: 'transformPayments',
+  //   preview: 'Got what',
+  //   value: { payments, userId, chats },
+  // })
   if (!payments) return []
   return payments
     .filter((payment) => {

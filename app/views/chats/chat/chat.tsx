@@ -8,6 +8,7 @@ import { ChatHeader } from '../chat-header'
 import MsgList from '../msg-list/msg-list'
 import BottomBar from '../BottomBar/bottomBar'
 import Podcast from 'components/Podcast'
+import { display, log } from 'lib/logging'
 import { StreamPayment } from 'store/feed-store'
 
 export const Chat = observer(() => {
@@ -50,7 +51,7 @@ export const Chat = observer(() => {
 
   const showPod = !!feedURL
 
-  console.tron.display({
+  display({
     name: 'Chat',
     value: chat,
     important: true,

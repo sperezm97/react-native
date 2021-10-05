@@ -6,12 +6,12 @@ import { getVersion, getBundleId } from 'react-native-device-info'
 import PushNotificationIOS from '@react-native-community/push-notification-ios'
 
 import { useStores, hooks } from 'store'
-import { useApn } from './store/contexts/apn'
+import { useApn } from 'store/contexts/apn'
 import { TOAST_DURATION } from './constants'
 import { navigate } from './components/Navigation'
 import * as utils from './components/utils/utils'
 import { initPicSrc } from './components/utils/picSrc'
-import * as rsa from './crypto/rsa'
+import * as rsa from 'lib/crypto/rsa'
 import EE, { RESET_IP_FINISHED } from './components/utils/ee'
 import Modals from './components/modals'
 import ModalsN from './components/common/Modals'
@@ -22,7 +22,7 @@ import AppVersionUpdate from './components/common/Dialogs/AppVersion'
 const { useChats } = hooks
 
 export default function Main() {
-  const { contacts, msg, details, user, meme, ui } = useStores()
+  const { chats: chatStore, contacts, msg, details, user, meme, ui } = useStores()
   const [versionUpdateVisible, setVersionUpdateVisible] = useState(false)
   const [chatID, setChatID] = useState(null)
   const chats = useChats()
@@ -56,7 +56,6 @@ export default function Main() {
   async function createPrivateKeyIfNotExists(contacts, user) {
     // const priv = null
     const priv = await rsa.getPrivateKey()
-    console.log('createPrivateKeyIfNotExists priv:', priv)
     const me = contacts.contactsArray.find((c) => c.id === user.myid)
 
     // private key has been made
@@ -99,6 +98,8 @@ export default function Main() {
     if (!skipLoadingContacts) {
       await contacts.getContacts()
     }
+
+    await chatStore.getChats()
 
     // await msg.getMessages()
     // FOR NOW, FORCE

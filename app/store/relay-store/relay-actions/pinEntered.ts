@@ -4,10 +4,11 @@ import * as e2e from 'lib/crypto/e2e'
 import { getRoot } from 'mobx-state-tree'
 import { RootStore } from 'store'
 import { rsa } from 'lib/crypto'
+import { display, log } from 'lib/logging'
 
 export const pinEntered = async (self: RelayStore, pin: string) => {
   const root = getRoot(self) as RootStore
-  console.tron.log(`PIN entered: ${pin}`)
+  log(`PIN entered: ${pin}`)
 
   const restoreString = atob(self.code)
 

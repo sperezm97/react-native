@@ -5,6 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { RootStore } from 'store'
 import { Tron } from './tron'
 import { ReactotronConfig, DEFAULT_REACTOTRON_CONFIG } from './reactotron-config'
+import { display, log } from 'lib/logging'
 
 // Teach TypeScript about the bad things we want to do.
 declare global {
@@ -91,12 +92,12 @@ export class Reactotron {
 
       // logging features
       if (initial) {
-        console.tron.display({ name, value: initialData, preview: 'Initial State' })
+        display({ name, value: initialData, preview: 'Initial State' })
       }
       // log state changes?
       if (snapshots) {
         onSnapshot(rootStore, (snapshot) => {
-          console.tron.display({ name, value: snapshot, preview: 'New State' })
+          display({ name, value: snapshot, preview: 'New State' })
         })
       }
 

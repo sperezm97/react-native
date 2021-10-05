@@ -3,7 +3,7 @@ import { StyleSheet, View, TextInput } from 'react-native'
 
 import { useStores, useTheme } from 'store'
 import Slider from '../utils/slider'
-import * as rsa from '../../crypto/rsa'
+import * as rsa from 'lib/crypto/rsa'
 import Button from '../common/Button'
 import Typography from '../common/Typography'
 

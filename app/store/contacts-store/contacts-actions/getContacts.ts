@@ -5,6 +5,7 @@ import { getRoot } from 'mobx-state-tree'
 import { RootStore } from 'store'
 import { normalizeChat, normalizeContact } from 'store/normalize'
 import { ContactsStore } from '../contacts-store'
+import { display, log } from 'lib/logging'
 
 export const getContacts = async (self: ContactsStore) => {
   const root = getRoot(self) as RootStore
@@ -13,7 +14,7 @@ export const getContacts = async (self: ContactsStore) => {
   const userStore = root.user
   try {
     const r = await relay.get('contacts')
-    console.tron.display({
+    display({
       name: 'getContacts',
       preview: `Returned with...`,
       value: { r },

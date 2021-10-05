@@ -16,6 +16,8 @@ export const RelayStoreModel = types
     checkInvite: async (code: string): Promise<void> =>
       await actions.checkInvite(self as RelayStore, code),
     connect: async (): Promise<boolean> => await actions.connect(self as RelayStore),
+    registerWebsocketHandlers: async (): Promise<boolean> =>
+      await actions.registerWebsocketHandlers(self as RelayStore),
     pinEntered: async (pin: string): Promise<boolean> =>
       await actions.pinEntered(self as RelayStore, pin),
     setCode(code: string) {

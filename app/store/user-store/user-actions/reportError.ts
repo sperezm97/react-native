@@ -1,8 +1,9 @@
 import { UserStore } from '../user-store'
+import { display, log } from 'lib/logging'
 
 export const reportError = async (self: UserStore, label: string, error: any) => {
   try {
-    console.tron.display({
+    display({
       name: 'reportError',
       preview: `Placeholder - ${label}`,
       value: { error },

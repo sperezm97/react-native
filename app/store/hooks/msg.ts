@@ -7,6 +7,7 @@ import { Msg, BoostMsg } from '../msg-store'
 import { Contact } from '../contacts-store'
 import { parseLDAT, urlBase64FromAscii } from 'store/utils/ldat'
 import { Chat } from 'store/chats-store'
+import { display, log } from 'lib/logging'
 
 const tribe = constants.chat_types.tribe
 
@@ -37,11 +38,11 @@ export function useMsgs(chat, limit?: number) {
   const msgsWithDates = msgs && injectDates(messages)
   const ms = msgsWithDates || []
 
-  console.tron.display({
-    name: 'useMsgs - returning ms',
-    value: { chat, limit, ms },
-    important: true,
-  })
+  // display({
+  //   name: 'useMsgs - returning ms',
+  //   value: { chat, limit, ms },
+  //   important: true,
+  // })
 
   return ms
 }

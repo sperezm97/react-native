@@ -1,9 +1,10 @@
 import { ChatsStore } from '../chats-store'
 import { relay } from 'api'
 import { sleep } from 'store/utils/sleep'
+import { display, log } from 'lib/logging'
 
 export const createTribe = async (self: ChatsStore, params: CreateTribeParams) => {
-  console.tron.display({
+  display({
     name: 'createTribe',
     preview: 'Attempting createTribe with params',
     value: params,

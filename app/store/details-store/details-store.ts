@@ -16,7 +16,8 @@ export const DetailsStoreModel = types
   .actions((self) => ({
     getBalance: async (): Promise<void> => await actions.getBalance(self as DetailsStore),
     getPayments: async (): Promise<Msg[]> => await actions.getPayments(),
-    getChannelBalance: async (): Promise<void> => await actions.getChannelBalance(self as DetailsStore),
+    getChannelBalance: async (): Promise<void> =>
+      await actions.getChannelBalance(self as DetailsStore),
     requestCapacity: async (pubKey: string): Promise<boolean> =>
       await actions.requestCapacity(self as DetailsStore, pubKey),
     getLogs: async (): Promise<void> => await actions.getLogs(self as DetailsStore),
@@ -30,10 +31,25 @@ export const DetailsStoreModel = types
     setBalance(balance: number) {
       self.balance = balance
     },
+    setLocalBalance(balance: number) {
+      self.localBalance = balance
+    },
     setFullBalance(balance: number) {
       self.fullBalance = balance
     },
+    setRemoteBalance(balance: number) {
+      self.remoteBalance = balance
+    },
+    setLogs(logs: string) {
+      self.logs = logs
+    },
   }))
+// .views((self) => ({
+//   get filteredLogs() {
+//     const blah = self.logs
+//     return blah.replace(/(\n)/g, '<br/>')
+//   },
+// }))
 
 type DetailsStoreType = Instance<typeof DetailsStoreModel>
 export interface DetailsStore extends DetailsStoreType {}

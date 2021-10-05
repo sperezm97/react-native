@@ -9,8 +9,8 @@ export const getChannelBalance = async (self: DetailsStore) => {
     const lb = r.local_balance && parseInt(r.local_balance)
     const rb = r.remote_balance && parseInt(r.remote_balance)
 
-    self.localBalance = lb || 0
-    self.remoteBalance = rb || 0
+    self.setLocalBalance(lb || 0)
+    self.setRemoteBalance(rb || 0)
   } catch (e) {
     console.log(e)
   }

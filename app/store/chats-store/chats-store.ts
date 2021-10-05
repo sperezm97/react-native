@@ -24,22 +24,29 @@ export const ChatsStoreModel = types
       await actions.createTribe(self as ChatsStore, params),
     editTribe: async (params: actions.EditTribeParams): Promise<any> =>
       await actions.editTribe(self as ChatsStore, params),
-    exitGroup: async (chatID: number): Promise<void> => await actions.exitGroup(self as ChatsStore, chatID),
+    exitGroup: async (chatID: number): Promise<void> =>
+      await actions.exitGroup(self as ChatsStore, chatID),
     getChats: async (): Promise<boolean> => await actions.getChats(self as ChatsStore),
     getDefaultTribeServer: (): any => actions.getDefaultTribeServer(self as ChatsStore),
     getTribeDetails: async (host: string, uuid: string): Promise<any> =>
       await actions.getTribeDetails(self as ChatsStore, host, uuid),
     getTribes: async (): Promise<boolean> => await actions.getTribes(self as ChatsStore),
     gotChat: async (chat: Chat): Promise<any> => await actions.gotChat(self as ChatsStore, chat),
-    joinDefaultTribe: async (): Promise<boolean> => await actions.joinDefaultTribe(self as ChatsStore),
+    joinDefaultTribe: async (): Promise<boolean> =>
+      await actions.joinDefaultTribe(self as ChatsStore),
     joinTribe: async (params: actions.JoinTribeParams): Promise<boolean> =>
       await actions.joinTribe(self as ChatsStore, params),
     kick: async (chatID: number, contactID: number): Promise<void> =>
       await actions.kick(self as ChatsStore, chatID, contactID),
-    loadFeed: async (host: string, uuid: string, url: string): Promise<any> => await actions.loadFeed(host, uuid, url),
+    loadFeed: async (host: string, uuid: string, url: string): Promise<any> =>
+      await actions.loadFeed(host, uuid, url),
     muteChat: async (chatID: number, muted: boolean): Promise<void> =>
       await actions.muteChat(self as ChatsStore, chatID, muted),
-    updateMyInfoInChat: async (tribeID: number, my_alias: string, my_photo_url: string): Promise<void> =>
+    updateMyInfoInChat: async (
+      tribeID: number,
+      my_alias: string,
+      my_photo_url: string
+    ): Promise<void> =>
       await actions.updateMyInfoInChat(self as ChatsStore, tribeID, my_alias, my_photo_url),
     updateTribeAsNonAdmin: async (tribeID: number, name: string, img: string): Promise<void> =>
       await actions.updateTribeAsNonAdmin(self as ChatsStore, tribeID, name, img),

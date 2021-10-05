@@ -1,9 +1,10 @@
 import { decodeSingle } from '..'
+import { display, log } from 'lib/logging'
 
 export const gotNewMessageFromWS = async (m: any) => {
   let newMsg = await decodeSingle(m)
 
-  console.tron.display({
+  display({
     name: 'gotNewMessageFromWS',
     preview: 'Placeholder - replace this buffer crap',
     value: { m, decoded: newMsg },

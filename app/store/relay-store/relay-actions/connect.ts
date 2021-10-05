@@ -1,12 +1,13 @@
 import { getRoot } from 'mobx-state-tree'
 import { RootStore } from 'store'
 import { RelayStore } from '../relay-store'
+import { display, log } from 'lib/logging'
 
 export const connect = async (self: RelayStore) => {
-  console.tron.log('Connecting to relay')
+  log('Connecting to relay')
   const root = getRoot(self) as RootStore
   await self.checkInvite(CODE)
-  console.tron.log('Fetching all stuff.')
+  log('Fetching all stuff.')
   await root.meme.authenticateAll()
   await Promise.all([
     root.contacts.getContacts(),
@@ -14,7 +15,7 @@ export const connect = async (self: RelayStore) => {
     root.details.getBalance(),
   ])
   self.setConnected(true)
-  console.tron.log('Done!')
+  log('Done!')
   // self.setupWebsocketHandlers
   return true
 }

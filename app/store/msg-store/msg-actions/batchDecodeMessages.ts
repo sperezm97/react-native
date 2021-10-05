@@ -1,10 +1,12 @@
 import { decodeMessages } from 'store/msg-store'
 import { normalizeMessage } from 'store/normalize'
 import { Msg, MsgStore } from '..'
+import { display, log } from 'lib/logging'
 
 export const batchDecodeMessages = async (self: MsgStore, msgs: Msg[]) => {
-  console.tron.display({
+  display({
     name: 'batchDecodeMessages',
+    preview: `Batch decoding ${msgs.length} messages`,
     value: { msgs },
   })
 
@@ -13,23 +15,22 @@ export const batchDecodeMessages = async (self: MsgStore, msgs: Msg[]) => {
   const rest = msgs.slice(0, msgs.length - 10)
   const decodedMsgs = await decodeMessages(first10)
 
-  // console.tron.display({
-  //   name: 'batchDecodeMessages',
-  //   value: { decodedMsgs, first10, rest },
-  // })
-
+  let messagesToSave = []
   decodedMsgs.forEach((msg) => {
     const normalizedMessage = normalizeMessage(msg)
-    self.setMessage(normalizedMessage)
+    messagesToSave.push(normalizedMessage)
   })
 
-  console.tron.log('Skipping after the first 10 for now')
+  self.setMessages(messagesToSave)
+
+  messagesToSave = []
   const decodedRest = await decodeMessages(rest)
 
   decodedRest.forEach((msg) => {
     const normalizedMessage = normalizeMessage(msg)
-    self.setMessage(normalizedMessage)
+    messagesToSave.push(normalizedMessage)
   })
+  self.setMessages(messagesToSave)
 
   return true
 }

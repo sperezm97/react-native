@@ -5,7 +5,7 @@ import FastImage from 'react-native-fast-image'
 import moment from 'moment'
 
 import { useStores, useTheme } from 'store'
-import { calendarDate } from '../../store/utils/date'
+import { calendarDate } from 'store/utils/date'
 import { usePicSrc } from '../utils/picSrc'
 import { parseLDAT } from '../utils/ldat'
 import { useCachedEncryptedFile } from '../chat/msg/hooks'

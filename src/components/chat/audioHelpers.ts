@@ -1,6 +1,6 @@
 import { PERMISSIONS, check, request, RESULTS } from 'react-native-permissions'
-import * as e2e from '../../crypto/e2e'
-import { randString } from '../../crypto/rand'
+import * as e2e from 'lib/crypto/e2e'
+import { randString } from 'lib/crypto/rand'
 import RNFetchBlob from 'rn-fetch-blob'
 
 export async function uploadAudioFile(uri, server, callback) {
@@ -73,13 +73,18 @@ const requestWriteExternalStoragePermission = async () => {
 }
 
 const requestRecordAudioPermission = async () => {
-  const microphoneResponse = await checkPermissions(PERMISSIONS.ANDROID.RECORD_AUDIO, PERMISSIONS.IOS.MICROPHONE)
+  const microphoneResponse = await checkPermissions(
+    PERMISSIONS.ANDROID.RECORD_AUDIO,
+    PERMISSIONS.IOS.MICROPHONE
+  )
 
   if (microphoneResponse) {
     console.log('You can record audio')
     return
   }
-  console.log(`${PERMISSIONS.ANDROID.RECORD_AUDIO}, ${PERMISSIONS.IOS.MICROPHONE} - permission denied`)
+  console.log(
+    `${PERMISSIONS.ANDROID.RECORD_AUDIO}, ${PERMISSIONS.IOS.MICROPHONE} - permission denied`
+  )
 }
 
 export async function requestAudioPermissions() {

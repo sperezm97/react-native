@@ -1,5 +1,5 @@
 import { DetailsStore } from 'store/details-store'
 export function reset(self: DetailsStore) {
-  self.balance = 0
-  self.logs = ''
+  self.setBalance(0)
+  self.setLogs('')
 }

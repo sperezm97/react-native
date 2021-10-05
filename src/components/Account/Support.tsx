@@ -34,7 +34,8 @@ export default function Support() {
     body += `Server URL (alias) of this user account: ${user.currentIP}<br/><br/>`
 
     if (details.logs) {
-      body += details.logs.replace(/(\n)/g, '<br/>')
+      const blah = details.logs
+      body += blah.replace(/(\n)/g, '<br/>')
     }
     const subject = 'Zion Support Request'
     Linking.openURL(`mailto:support@getzion.zendesk.com?subject=${subject}&body=${body}`)

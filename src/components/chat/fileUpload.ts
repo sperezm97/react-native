@@ -1,8 +1,17 @@
-import { randString } from '../../crypto/rand'
+import { randString } from 'lib/crypto/rand'
 import RNFetchBlob from 'rn-fetch-blob'
-import * as e2e from '../../crypto/e2e'
+import * as e2e from 'lib/crypto/e2e'
 
-export async function fileUpload({ server, uri, filename, filetype, text, isTextMsg, setUploadedPercent, finished }) {
+export async function fileUpload({
+  server,
+  uri,
+  filename,
+  filetype,
+  text,
+  isTextMsg,
+  setUploadedPercent,
+  finished,
+}) {
   const type = filename
   const name = filetype
   const pwd = await randString(32)

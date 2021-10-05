@@ -6,7 +6,7 @@ import storage from '@react-native-community/async-storage'
 /**
  * The key we'll be saving our state as within async storage.
  */
-const ROOT_STATE_STORAGE_KEY = 'root60'
+const ROOT_STATE_STORAGE_KEY = 'root70'
 
 /**
  * Setup the environment that all the models will be sharing.
@@ -50,10 +50,21 @@ export async function setupRootStore() {
     env.reactotron.setRootStore(rootStore, data)
   }
 
+  let lastSaved = new Date()
+  let secondsSinceLastSent = null
+  let SAVE_INTERVAL = 1
+
   // track changes & save to storage
-  onSnapshot(rootStore, (snapshot) =>
-    storage.setItem(ROOT_STATE_STORAGE_KEY, JSON.stringify(snapshot))
-  )
+  onSnapshot(rootStore, (snapshot) => {
+    const now = new Date()
+    const dif = now.getTime() - lastSaved.getTime()
+    secondsSinceLastSent = dif / 1000
+
+    if (!lastSaved || secondsSinceLastSent > SAVE_INTERVAL) {
+      lastSaved = new Date()
+      storage.setItem(ROOT_STATE_STORAGE_KEY, JSON.stringify(snapshot))
+    }
+  })
 
   rootStore.ui.setReady(true)
 

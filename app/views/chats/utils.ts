@@ -2,6 +2,7 @@ import { Chat } from 'store/chats-store'
 import { Contact } from 'store/contacts-store'
 import { constants } from 'app/constants'
 import moment from 'moment'
+import { display, log } from 'lib/logging'
 
 const conversation = constants.chat_types.conversation
 const expiredInvite = constants.invite_statuses.expired
@@ -44,7 +45,7 @@ export function contactForConversation(chat: Chat, contacts: Contact[], myid: nu
 }
 
 export function sortChats(chatsToShow, messages) {
-  console.tron.log('skipping sortChats.')
+  log('skipping sortChats.')
   return
   chatsToShow.sort((a, b) => {
     const amsgs = messages[a.id]

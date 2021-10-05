@@ -6,6 +6,7 @@ import {
   NavigationAction,
   createNavigationContainerRef,
 } from '@react-navigation/native'
+import { display, log } from 'lib/logging'
 
 /* eslint-disable */
 export const RootNavigation = {
@@ -98,7 +99,7 @@ export function useNavigationPersistence(storage: any, persistenceKey: string) {
 
     if (previousRouteName !== currentRouteName) {
       // track screens.
-      __DEV__ && console.tron.log(currentRouteName)
+      __DEV__ && log(currentRouteName)
     }
 
     // Save the current route name for later comparision

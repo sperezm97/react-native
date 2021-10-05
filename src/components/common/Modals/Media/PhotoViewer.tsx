@@ -8,6 +8,7 @@ import Ionicon from 'react-native-vector-icons/Ionicons'
 import { isIphoneX, getBottomSpace } from 'react-native-iphone-x-helper'
 import ViewMoreText from 'react-native-view-more-text'
 import Toast from 'react-native-simple-toast'
+import { display, log } from 'lib/logging'
 
 import { useStores, useTheme } from 'store'
 import { SCREEN_WIDTH, STATUS_BAR_HEIGHT } from '../../../../constants'
@@ -17,11 +18,11 @@ import Button from '../../../common/Button'
 import Boost from '../../../common/Button/Boost'
 import Typography from '../../../common/Typography'
 import BoostDetails from './BoostDetails'
+import { observer } from 'mobx-react-lite'
 
-export default function PhotoViewer({ visible, close, photos, chat, initialIndex }) {
+const PhotoViewer = observer(({ visible, close, photos, chat, initialIndex }: any) => {
   const theme = useTheme()
 
-  // return useObserver(() => (
   return (
     <Modal visible={visible} animationType='slide' presentationStyle='fullScreen' onDismiss={close}>
       <View style={{ ...styles.wrap, backgroundColor: theme.black }}>
@@ -44,8 +45,9 @@ export default function PhotoViewer({ visible, close, photos, chat, initialIndex
       </View>
     </Modal>
   )
-  // ))
-}
+})
+
+export default PhotoViewer
 
 function SwipeItem(props) {
   const [photoH, setPhotoH] = useState(0)
@@ -65,10 +67,12 @@ function SwipeItem(props) {
   }, [])
 
   async function fetchTribeDetails() {
+    log('PhotoViewer getTribeDetails')
     const tribe = await chats.getTribeDetails(chat.host, chat.uuid)
     if (tribe) {
       const price = tribe.price_per_message + tribe.escrow_amount
       setPricePerMessage(price)
+      log(`Setting price per message: ${price}`)
     }
   }
 
@@ -156,6 +160,17 @@ function SwipeItem(props) {
       </Typography>
     )
   }
+
+  display({
+    name: 'PhotoViewer',
+    value: {
+      media_type,
+      isImg,
+      showPurchaseButton,
+      purchased,
+    },
+    important: true,
+  })
 
   return (
     <View style={{ ...styles.swipeItem }}>

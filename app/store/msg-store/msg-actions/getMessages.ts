@@ -1,13 +1,14 @@
 import { MsgStore } from '../msg-store'
 import { relay } from 'api'
 import moment from 'moment'
+import { display, log } from 'lib/logging'
 
 const DAYS = 7
 
 export const getMessages = async (self: MsgStore, forceMore: boolean) => {
   const len = self.lengthOfAllMessages()
   if (len === 0) {
-    console.tron.display({
+    display({
       name: 'getMessages',
       preview: `Returning self.restoreMessages()`,
     })
@@ -26,14 +27,14 @@ export const getMessages = async (self: MsgStore, forceMore: boolean) => {
     const start = moment().subtract(DAYS, 'days').format('YYYY-MM-DD%20HH:mm:ss')
     route += `?date=${start}`
   }
-  console.tron.display({
+  display({
     name: 'getMessages',
     preview: `Fetching messages. forceMore: ${forceMore}`,
     value: { route },
   })
   try {
     const r = await relay.get(route)
-    console.tron.display({
+    display({
       name: 'getMessages',
       preview: `Returned with...`,
       value: { r },
@@ -41,7 +42,6 @@ export const getMessages = async (self: MsgStore, forceMore: boolean) => {
     if (!r) return
 
     if (r.new_messages?.length) {
-      console.tron.log(`BATCH DECODING ${r.new_messages?.length} MESSAGES`)
       await self.batchDecodeMessages(r.new_messages)
     } else {
       console.log('skipping sortAllMsgs')

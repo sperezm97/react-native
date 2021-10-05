@@ -1,4 +1,5 @@
 import socketio from 'socket.io-client'
+import { display, log } from 'lib/logging'
 
 type WSMessage = { [k: string]: any }
 
@@ -8,6 +9,7 @@ let handlers: { [k: string]: DataHandler } = {}
 
 export function registerWsHandlers(hs: { [k: string]: DataHandler }) {
   handlers = hs
+  log('Ws handlers registered?')
 }
 
 let io: any = null
@@ -36,7 +38,7 @@ export function connectWebSocket(
 
   io.on('connect', () => {
     console.log('=> socketio connected!')
-    console.tron.display({
+    display({
       name: 'connectWebSocket',
       preview: 'SocketIO connected',
     })
@@ -44,7 +46,7 @@ export function connectWebSocket(
   })
 
   io.on('disconnect', () => {
-    console.tron.display({
+    display({
       name: 'connectWebSocket',
       preview: 'SocketIO disconnected',
     })
@@ -54,17 +56,18 @@ export function connectWebSocket(
   io.on('message', (data) => {
     try {
       let msg: WSMessage = JSON.parse(data)
+      display({
+        name: 'connectWebSocket',
+        preview: 'SocketIO message',
+        value: { msg },
+        important: true,
+      })
       let typ = msg.type
       if (typ === 'delete') typ = 'deleteMessage'
       let handler = handlers[typ]
       if (handler) {
         handler(msg)
       }
-      console.tron.display({
-        name: 'connectWebSocket',
-        preview: 'SocketIO message',
-        value: { msg },
-      })
     } catch (e) {}
   })
 

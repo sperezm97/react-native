@@ -3,9 +3,10 @@ import { useObserver } from 'mobx-react-lite'
 import { StyleSheet, View, TouchableOpacity, FlatList, Dimensions } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback'
+import { display, log } from 'lib/logging'
 
 import { useStores, useTheme, hooks } from 'store'
-import { useSearchChats } from '../../store/hooks/chats'
+import { useSearchChats } from 'store/hooks/chats'
 import InviteRow, { styles } from './inviteRow'
 import { useChatPicSrc } from '../utils/picSrc'
 import RefreshLoading from '../common/RefreshLoading'
@@ -51,6 +52,8 @@ export default function ChatList(props) {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const chatsToShow = useSearchChats(chats)
 
+    log('chatsToShow:', chatsToShow)
+
     return (
       <View style={{ width: '100%', flex: 1 }} accessibilityLabel='chatlist'>
         <FlatList<any>
@@ -77,6 +80,12 @@ function ChatRow(props) {
   const { msg } = useStores()
 
   const onSeeChatHandler = () => {
+    display({
+      name: 'onSeeChat',
+      preview: name,
+      value: props,
+      important: true,
+    })
     requestAnimationFrame(() => {
       msg.seeChat(props.id)
       msg.getMessages()

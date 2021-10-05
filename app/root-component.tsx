@@ -1,31 +1,29 @@
 import React, { useEffect, useState } from 'react'
 import { Linking } from 'react-native'
-import { useObserver } from 'mobx-react-lite'
+import { observer, useObserver } from 'mobx-react-lite'
 import { Provider as PaperProvider } from 'react-native-paper'
 import { useDarkMode } from 'react-native-dynamic'
 import { is24HourFormat } from 'react-native-device-time-format'
 import { Host } from 'react-native-portalize'
 import { NavigationContainer } from '@react-navigation/native'
+import { useStores, useTheme } from 'store'
+import useConnectionInfo from 'hooks/useConnectionInfo'
+import APNManager from 'store/contexts/apn'
+import { instantiateRelay } from 'api'
+import { navigationRef } from 'components/Navigation'
+import * as utils from 'components/utils/utils'
+import PIN, { wasEnteredRecently } from 'components/utils/pin'
+import EE, { RESET_IP_FINISHED } from 'components/utils/ee'
+import { qrActions } from '../src/qrActions'
+import { paperTheme } from '../src/theme'
+import Main from '../src/main'
+import Disconnect from 'components/disconnect'
+import Auth from 'components/Navigation/Auth'
+import Splash from 'components/common/Splash'
+import PinCodeModal from 'components/common/Modals/PinCode'
+import StatusBar from 'components/common/StatusBar'
 
-import { useStores, useTheme } from './src/store'
-import useConnectionInfo from './src/hooks/useConnectionInfo'
-import APNManager from './src/store/contexts/apn'
-import { instantiateRelay } from './src/api'
-import { navigationRef } from './src/components/Navigation'
-import * as utils from './src/components/utils/utils'
-import PIN, { wasEnteredRecently } from './src/components/utils/pin'
-import EE, { RESET_IP_FINISHED } from './src/components/utils/ee'
-import { qrActions } from './src/qrActions'
-import { paperTheme } from './src/theme'
-import Main from './src/main'
-import Disconnect from './src/components/disconnect'
-import Auth from './src/components/Navigation/Auth'
-import Splash from './src/components/common/Splash'
-import PinCodeModal from './src/components/common/Modals/PinCode'
-import StatusBar from './src/components/common/StatusBar'
-import RNBootSplash from 'react-native-bootsplash'
-
-export default function Wrap() {
+export const RootComponent = observer(() => {
   const { ui, chats } = useStores()
   const [wrapReady, setWrapReady] = useState(false)
 
@@ -55,15 +53,13 @@ export default function Wrap() {
     if (url) return gotLink(url)
   }
 
-  return useObserver(() => {
-    if (ui.ready && wrapReady) return <App /> // hydrated and checked for deeplinks!
+  if (ui.ready && wrapReady) return <App /> // hydrated and checked for deeplinks!
 
-    return <Splash /> // full screen loading
-  })
-}
+  return <Splash /> // full screen loading
+})
 
-function App() {
-  const { user, ui } = useStores()
+const App = observer(() => {
+  const { relay, user, ui } = useStores()
   const theme = useTheme()
   const [loading, setLoading] = useState(true)
   const [showDisconnectUI, setShowDisconnectedUI] = useState(true)
@@ -80,13 +76,6 @@ function App() {
   }
 
   const isDarkMode = useDarkMode()
-
-  /**
-   *  Effect to Remove bootSplash @see https://github.com/zoontek/react-native-bootsplash#usage
-   */
-  useEffect(() => {
-    RNBootSplash.hide({ fade: true }) // fade
-  }, [])
 
   useEffect(() => {
     if (theme.mode === 'System') {
@@ -116,6 +105,9 @@ function App() {
 
       if (pinWasEnteredRecently) ui.setPinCodeModal(true)
 
+      utils.sleep(500)
+      relay.registerWebsocketHandlers()
+
       setLoading(false)
 
       // user.testinit()
@@ -129,44 +121,41 @@ function App() {
     EE.emit(RESET_IP_FINISHED)
   }
 
-  return useObserver(() => {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const isConnected = useConnectionInfo()
+  const isConnected = useConnectionInfo()
 
-    if (!isConnected && showDisconnectUI)
-      return <Disconnect onClose={() => setShowDisconnectedUI(false)} />
-    if (loading) return <Splash />
-    if (ui.signedUp && !ui.pinCodeModal) {
-      return (
-        <PinCodeModal visible={true}>
-          <PIN
-            onFinish={async () => {
-              await utils.sleep(240)
-              ui.setPinCodeModal(true)
-            }}
-          />
-        </PinCodeModal>
-      )
-    }
-
-    const pTheme = paperTheme(theme)
-
+  if (!isConnected && showDisconnectUI)
+    return <Disconnect onClose={() => setShowDisconnectedUI(false)} />
+  if (loading) return <Splash />
+  if (ui.signedUp && !ui.pinCodeModal) {
     return (
-      <>
-        <PaperProvider theme={pTheme}>
-          <StatusBar />
-          <NavigationContainer ref={navigationRef}>
-            <Host>
-              {ui.signedUp && (
-                <APNManager>
-                  <Main />
-                </APNManager>
-              )}
-              {!ui.signedUp && <Auth />}
-            </Host>
-          </NavigationContainer>
-        </PaperProvider>
-      </>
+      <PinCodeModal visible={true}>
+        <PIN
+          onFinish={async () => {
+            await utils.sleep(240)
+            ui.setPinCodeModal(true)
+          }}
+        />
+      </PinCodeModal>
     )
-  })
-}
+  }
+
+  const pTheme = paperTheme(theme)
+
+  return (
+    <>
+      <PaperProvider theme={pTheme}>
+        <StatusBar />
+        <NavigationContainer ref={navigationRef}>
+          <Host>
+            {ui.signedUp && (
+              <APNManager>
+                <Main />
+              </APNManager>
+            )}
+            {!ui.signedUp && <Auth />}
+          </Host>
+        </NavigationContainer>
+      </PaperProvider>
+    </>
+  )
+})

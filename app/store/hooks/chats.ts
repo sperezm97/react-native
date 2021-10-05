@@ -4,6 +4,7 @@ import { DEFAULT_DOMAIN } from 'config'
 import { Chat } from '../chats-store'
 import { Contact } from '../contacts-store'
 import { constants } from '../../constants'
+import { display, log } from 'lib/logging'
 
 export function useChats() {
   const { chats, msg, contacts, user } = useStores()
@@ -158,8 +159,8 @@ export function contactForConversation(chat: Chat, contacts: Contact[], myid: nu
 }
 
 export function sortChats(chatsToShow, messages) {
-  console.tron.log('skipping sortChats.')
-  // console.tron.display({
+  log('skipping sortChats.')
+  // display({
   //   name: 'sortChats',
   //   preview: `Starting to sort ${chatsToShow.length} chats and ${messages.length} messages`,
   //   value: { chatsToShow, messages },

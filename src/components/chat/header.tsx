@@ -14,7 +14,7 @@ import { constants } from '../../constants'
 import { RouteStatus } from './chat'
 import Avatar from '../common/Avatar'
 import Typography from '../common/Typography'
-import { useMemoizedIncomingPaymentsFromPodcast } from '../../store/hooks/pod'
+import { useMemoizedIncomingPaymentsFromPodcast } from 'store/hooks/pod'
 import { transformPayments } from '../utils/payments/transformPayments'
 
 const { useTribes } = hooks

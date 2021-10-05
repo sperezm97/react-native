@@ -4,12 +4,13 @@ import { observer } from 'mobx-react-lite'
 import { rando } from 'lib/utils'
 import { useStores } from 'store'
 import { ChatRow } from '../chat-row'
+import { display, log } from 'lib/logging'
 
 export const ChatList = observer(() => {
   const { chats, user } = useStores()
   const chatsToShow = chats.chatsArray
   const myid = user.myid
-  // console.tron.log(chats)
+  // log(chats)
 
   const renderItem: any = ({ item, index }) => {
     const chatID = (item.id || rando()) + ''

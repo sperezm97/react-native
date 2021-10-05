@@ -13,7 +13,7 @@ import RefreshLoading from '../common/RefreshLoading'
 import Typography from '../common/Typography'
 import Tabs from '../common/Tabs'
 import { Msg } from 'store/msg-store'
-import { useMemoizedIncomingPaymentsFromPodcast } from '../../store/hooks/pod'
+import { useMemoizedIncomingPaymentsFromPodcast } from 'store/hooks/pod'
 import { transformPayments } from '../utils/payments/transformPayments'
 
 type TransactionsProps = {

@@ -2,9 +2,10 @@ import { MsgStore } from '../msg-store'
 import { relay } from 'api'
 import moment from 'moment'
 import { decodeMessages, MAX_MSGS_RESTORE, Msg, orgMsgsFromExisting } from '..'
+import { display, log } from 'lib/logging'
 
 export const restoreMessages = async (self: MsgStore) => {
-  console.tron.display({
+  display({
     name: 'restoreMessages',
     preview: `Restoring messages...`,
   })
