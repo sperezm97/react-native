@@ -11,16 +11,11 @@ export const getChats = async (self: ChatsStore) => {
   const parsedChats = chats.map((c) => normalizeChat(c))
   display({
     name: 'getChats',
-    preview: `GETTING GOT PARSED`,
-    value: { chats, parsedChats },
-    important: true,
-  })
-  return
-  display({
-    name: 'getChats',
     preview: `Got ${chats.length} chats`,
     value: { chats, parsedChats },
   })
   self.setChats(parsedChats)
+  return
+
   return true
 }

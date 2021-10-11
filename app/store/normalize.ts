@@ -17,6 +17,7 @@ export const normalizeChat = (raw: any) => {
     id: raw.id,
     invite: raw.invite ?? null,
     is_muted: parseBool(raw.is_muted),
+    meta: !!raw.meta ? JSON.parse(raw.meta) : null,
     my_alias: raw.my_alias ?? '',
     my_photo_url: raw.my_photo_url ?? '',
     name: raw.name ?? '',
@@ -32,11 +33,11 @@ export const normalizeChat = (raw: any) => {
     updated_at: raw.updated_at,
     uuid: raw.uuid,
   })
-  // display({
-  //   name: 'normalizeChat',
-  //   value: { raw, normalized },
-  //   important: true,
-  // })
+  display({
+    name: `normalizeChat`,
+    preview: normalized.name,
+    value: { raw, normalized },
+  })
   return normalized
 }
 

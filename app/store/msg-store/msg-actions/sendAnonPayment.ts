@@ -1,9 +1,12 @@
 import { relay } from 'api'
 import { getRoot } from 'mobx-state-tree'
 import { RootStore } from 'store'
-import { MsgStore } from '..'
+import { MsgStore } from '../msg-store'
 
-export const sendAnonPayment = async (self: MsgStore, { amt, dest, memo }: SendAnonPaymentParams) => {
+export const sendAnonPayment = async (
+  self: MsgStore,
+  { amt, dest, memo }: SendAnonPaymentParams
+) => {
   try {
     const v = {
       amount: amt,

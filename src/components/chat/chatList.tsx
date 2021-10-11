@@ -52,7 +52,7 @@ export default function ChatList(props) {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const chatsToShow = useSearchChats(chats)
 
-    log('chatsToShow:', chatsToShow)
+    // log('chatsToShow:', chatsToShow)
 
     return (
       <View style={{ width: '100%', flex: 1 }} accessibilityLabel='chatlist'>
@@ -84,7 +84,6 @@ function ChatRow(props) {
       name: 'onSeeChat',
       preview: name,
       value: props,
-      important: true,
     })
     requestAnimationFrame(() => {
       msg.seeChat(props.id)

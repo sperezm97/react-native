@@ -21,8 +21,9 @@ import Typography from '../common/Typography'
 import Button from '../common/Button'
 import BoostButton from '../common/Button/BoostButton'
 import BoostControls from '../common/Button/BoostControls'
+import { observer } from 'mobx-react-lite'
 
-export default function Podcast({ pod, chat, onBoost, podError }) {
+const Podcast = observer(({ pod, chat, onBoost, podError }: any) => {
   const theme = useTheme()
   const { feed, user, msg, chats, details, ui } = useStores()
   const chatID = chat.id
@@ -102,12 +103,11 @@ export default function Podcast({ pod, chat, onBoost, podError }) {
   })
 
   async function initialSelect(ps) {
-    display({
-      name: 'podcast initialSelect',
-      preview: 'what we got',
-      value: ps,
-      important: true,
-    })
+    // display({
+    //   name: 'podcast initialSelect',
+    //   preview: 'what we got',
+    //   value: ps,
+    // })
     let theID = queuedTrackID
     if (chat.meta?.itemID) {
       theID = chat.meta.itemID
@@ -179,19 +179,34 @@ export default function Podcast({ pod, chat, onBoost, podError }) {
 
   let pricePerMinute = 0
   try {
-    if (!chats.pricesPerMinute[chatID]) {
-      display({
-        name: 'podcast',
-        preview: "Couldn't get pricesPerMinute for chatID",
-        important: true,
-      })
-    } else if (chats.pricesPerMinute[chatID] || chats.pricesPerMinute[chatID] === 0) {
-      pricePerMinute = chats.pricesPerMinute[chatID]
+    if (!!chat.pricePerMinute) {
+      pricePerMinute = chat.pricePerMinute
+      // display({
+      //   name: 'podcast',
+      //   preview: `pricePerMinute set via ppm to ${pricePerMinute}`,
+      //   important: true,
+      // })
     } else if (pod?.value && pod.value.model && pod.value.model.suggested) {
       pricePerMinute = Math.round(parseFloat(pod.value.model.suggested) * 100000000)
+      // display({
+      //   name: 'podcast',
+      //   preview: `pricePerMinute set via pod value thing to ${pricePerMinute}`,
+      //   important: true,
+      // })
+    } else {
+      // display({
+      //   name: 'podcast',
+      //   preview: "Didn't know how to set price per minute, left at 0",
+      //   important: true,
+      // })
     }
   } catch (e) {
-    log('couldnt fetch pricesPerMinute', e)
+    display({
+      name: 'podcast',
+      preview: "Error - Couldn't get pricesPerMinute for chatID",
+      important: true,
+      value: { emsg: e.message, ppmNow: chat.pricePerMinute },
+    })
   }
 
   async function sendPayments(mult: number) {
@@ -604,7 +619,7 @@ export default function Podcast({ pod, chat, onBoost, podError }) {
       )}
     </>
   )
-}
+})
 
 const styles = StyleSheet.create({
   content: {
@@ -682,3 +697,5 @@ const styles = StyleSheet.create({
     // paddingTop: isIphoneX() ? 30 : 0
   },
 })
+
+export default Podcast

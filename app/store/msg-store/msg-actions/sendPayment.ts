@@ -1,7 +1,7 @@
 import { relay } from 'api'
 import { getRoot } from 'mobx-state-tree'
 import { RootStore } from 'store'
-import { encryptText } from '..'
+import { encryptText } from '../msg-helpers'
 import { MsgStore } from '../msg-store'
 
 export const sendPayment = async (

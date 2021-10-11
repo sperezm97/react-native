@@ -1,6 +1,7 @@
 import { decodeMessages } from 'store/msg-store'
 import { normalizeMessage } from 'store/normalize'
-import { Msg, MsgStore } from '..'
+import { Msg } from '../msg-models'
+import { MsgStore } from '../msg-store'
 import { display, log } from 'lib/logging'
 
 export const batchDecodeMessages = async (self: MsgStore, msgs: Msg[]) => {

@@ -11,6 +11,8 @@ LogBox.ignoreLogs([
   'o is not a function',
   'Found screens',
   "Can't perform",
+  'Did not receive response to shouldStartLoad',
+  'startLoadWithResult invoked with',
 ])
 
 AppRegistry.registerComponent(appName, () => App)

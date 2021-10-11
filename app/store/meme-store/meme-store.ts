@@ -7,13 +7,12 @@ import { withEnvironment } from '../extensions/with-environment'
 import { ServerModal } from './meme-models'
 import { asyncForEach } from '../utils/async'
 import { RootStore } from 'store'
+import { display } from 'app/lib/logging'
 
 export const MemeStoreModel = types
   .model('MemeStore')
   .props({
-    servers: types.frozen([{ host: DEFAULT_MEME_SERVER }]),
-    // servers: types.frozen(),
-    // servers: types.optional(types.array(ServerModal), [{ host: DEFAULT_MEME_SERVER, token: '' }]),
+    servers: types.frozen([{ host: DEFAULT_MEME_SERVER, token: '' }]),
     lastAuthenticated: types.optional(types.number, 0),
     cacheEnabled: false,
     // Reference to why using frozen https://github.com/mobxjs/mobx-state-tree/issues/415
@@ -47,6 +46,11 @@ export const MemeStoreModel = types
       )
       if (!r3?.token) return
       server.token = r3.token
+      display({
+        name: 'meme.authenticateAll',
+        preview: 'Meme server access token was set',
+        value: { server, selfServers: self.servers },
+      })
     },
   }))
   .actions((self) => ({

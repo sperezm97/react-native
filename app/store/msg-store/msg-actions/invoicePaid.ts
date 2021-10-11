@@ -1,5 +1,5 @@
 import { constants } from '../../../constants'
-import { MsgStore } from '..'
+import { MsgStore } from '../msg-store'
 import { getRoot } from 'mobx-state-tree'
 import { RootStore } from 'store'
 

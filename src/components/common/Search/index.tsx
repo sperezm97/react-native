@@ -1,6 +1,6 @@
 import React from 'react'
 import { Searchbar } from 'react-native-paper'
-import FeatherIcon from 'react-native-vector-icons/Feather'
+import Ionicon from 'react-native-vector-icons/Ionicons'
 
 import { useTheme } from 'store'
 import Icon from '../Icon'
@@ -37,7 +37,7 @@ export default function Search(props) {
       iconColor={iconColor}
       placeholderTextColor={placeholderTextColor}
       clearIcon={() => <ClearIcon value={value} />}
-      icon={() => <FeatherIcon name='search' color={theme.icon} size={18} />}
+      icon={() => <Ionicon name='search' color={theme.icon} size={18} />}
     />
   )
 }

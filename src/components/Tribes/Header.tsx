@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, Text } from 'react-native'
 import { Appbar, IconButton } from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native'
 import { useObserver } from 'mobx-react-lite'
@@ -25,8 +25,8 @@ export default function Header({}) {
           </View>
           <View style={{ ...styles.flex, ...styles.right }}>
             <IconButton
-              icon={() => <FeatherIcon name='search' color={theme.primary} size={18} />}
-              size={24}
+              icon={() => <Text style={{ color: theme.primary }}>Join</Text>}
+              size={30}
               style={{ backgroundColor: theme.lightGrey, marginRight: 12 }}
               onPress={() => navigation.navigate('DiscoverTribes' as never)}
             />

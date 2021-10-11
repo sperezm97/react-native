@@ -47,7 +47,7 @@ export default function BoostRow(props) {
           <AvatarsRow
             aliases={theBoosts.map((b) => {
               // eslint-disable-next-line react-hooks/rules-of-hooks
-              const { senderAlias, senderPic } = useBoostSender(b, contacts.contacts, true)
+              const { senderAlias, senderPic } = useBoostSender(b, contacts.contactsArray, true)
 
               if (b.sender === 1) {
                 return {

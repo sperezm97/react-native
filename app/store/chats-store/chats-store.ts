@@ -1,3 +1,4 @@
+import { display } from 'lib/logging'
 import { DEFAULT_TRIBE_SERVER } from 'config'
 import { Instance, SnapshotOut, types } from 'mobx-state-tree'
 import { withEnvironment } from '../extensions/with-environment'
@@ -63,13 +64,10 @@ export const ChatsStoreModel = types
     setChat: (chat: Chat) => {
       self.chats.set(chat.id.toString(), chat)
     },
-    setChats: (chats: Chat[]) => {
-      chats.forEach((chat) => (self as ChatsStore).setChat(chat))
-    },
-    setPricePerMinute(chatID: number, ppm: number) {
-      if (!chatID) return
-      self.pricesPerMinute[chatID] = ppm
-    },
+    // setChats: (chats: Chat[]) => {
+    //   chats.forEach((chat) => (self as ChatsStore).setChat(chat))
+    // },
+
     setTribes: (tribes: any) => (self.tribes = tribes),
     updateChatMeta: (chat_id: number, meta: any) => {
       self.chats.get(chat_id.toString()).meta = meta
@@ -78,10 +76,62 @@ export const ChatsStoreModel = types
       // skipping for now
       // self.servers = [{ host: DEFAULT_TRIBE_SERVER }]
     },
+
+    setChats(chats: Chat[]) {
+      const formattedArray = []
+      chats.forEach((chat) => {
+        formattedArray.push([chat.id, chat])
+      })
+      display({
+        name: 'setChats',
+        preview: `Setting ${chats.length} chats`,
+        value: { chats, formattedArray },
+      })
+      self.chats.merge(formattedArray)
+    },
   }))
   .views((self) => ({
     get chatsArray(): Chat[] {
       return Array.from(self.chats.values())
+    },
+    setPricePerMinute(chatId: number, ppm: number) {
+      if (!chatId) return
+      try {
+        const chat = self.chats.get(chatId.toString())
+        if (chat) {
+          chat.setPricePerMinute(ppm)
+        } else {
+          display({
+            name: 'setPricePerMinute',
+            preview: `Couldn't set price per minute for chat ${chatId}`,
+          })
+          return 0
+        }
+      } catch (e) {
+        display({
+          name: 'setPricePerMinute',
+          preview: `Error setting price per minute for chat ${chatId}`,
+        })
+      }
+    },
+    getPricePerMinute(chatId: number) {
+      try {
+        const chat = self.chats.get(chatId.toString())
+        if (chat) {
+          return chat.pricePerMinute
+        } else {
+          display({
+            name: 'getPricePerMinute',
+            preview: `Couldn't get price per minute for chat ${chatId}`,
+          })
+          return 0
+        }
+      } catch (e) {
+        display({
+          name: 'getPricePerMinute',
+          preview: `Error getting price per minute for chat ${chatId}`,
+        })
+      }
     },
   }))
 

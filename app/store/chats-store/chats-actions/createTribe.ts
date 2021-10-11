@@ -2,6 +2,7 @@ import { ChatsStore } from '../chats-store'
 import { relay } from 'api'
 import { sleep } from 'store/utils/sleep'
 import { display, log } from 'lib/logging'
+import { normalizeChat } from 'app/store/normalize'
 
 export const createTribe = async (self: ChatsStore, params: CreateTribeParams) => {
   display({
@@ -41,7 +42,8 @@ export const createTribe = async (self: ChatsStore, params: CreateTribeParams) =
     feed_url: feed_url || '',
   })
   if (!r) return
-  self.gotChat(r)
+  const normalizedChat = normalizeChat(r)
+  self.gotChat(normalizedChat)
   return r
 }
 

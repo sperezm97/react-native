@@ -34,6 +34,9 @@ export const ChatModel = types
     my_photo_url: types.string,
   })
   .actions((self) => ({
+    setPricePerMinute: (ppm: number) => {
+      self.pricePerMinute = ppm
+    },
     setMuted: (muted: boolean) => {
       self.is_muted = muted
     },

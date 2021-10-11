@@ -9,7 +9,10 @@ let handlers: { [k: string]: DataHandler } = {}
 
 export function registerWsHandlers(hs: { [k: string]: DataHandler }) {
   handlers = hs
-  log('Ws handlers registered?')
+  display({
+    name: 'registerWsHandlers',
+    preview: 'Websocket handlers registered',
+  })
 }
 
 let io: any = null
@@ -60,7 +63,6 @@ export function connectWebSocket(
         name: 'connectWebSocket',
         preview: 'SocketIO message',
         value: { msg },
-        important: true,
       })
       let typ = msg.type
       if (typ === 'delete') typ = 'deleteMessage'

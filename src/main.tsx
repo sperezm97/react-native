@@ -99,7 +99,7 @@ export default function Main() {
       await contacts.getContacts()
     }
 
-    await chatStore.getChats()
+    // await chatStore.getChats()
 
     // await msg.getMessages()
     // FOR NOW, FORCE

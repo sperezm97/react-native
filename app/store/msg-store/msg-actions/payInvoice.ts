@@ -1,5 +1,5 @@
 import { relay } from 'api'
-import { MsgStore } from '..'
+import { MsgStore } from '../msg-store'
 
 export const payInvoice = async (self: MsgStore, payment_request: string, amount: number) => {
   try {

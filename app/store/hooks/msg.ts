@@ -32,8 +32,7 @@ export function useMsgs(chat, limit?: number) {
 
   const shownMsgs = msgs?.slice(0, limit || 1000)
 
-  const theseContacts: Contact[] = Array.from(contacts.contacts.values())
-  const messages = processMsgs(shownMsgs, isTribe, theseContacts, myid)
+  const messages = processMsgs(shownMsgs, isTribe, contacts.contactsArray, myid)
 
   const msgsWithDates = msgs && injectDates(messages)
   const ms = msgsWithDates || []

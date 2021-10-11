@@ -93,7 +93,7 @@ export default function ChatDetails({ route }) {
       })
   }
 
-  let initppm = chats.pricesPerMinute[group.id]
+  let initppm = chats.getPricePerMinute(group.id)
   if (!(initppm || initppm === 0)) initppm = group.pricePerMinute || 5
 
   const uri = useChatPicSrc(group)

@@ -34,18 +34,20 @@ export const getMessages = async (self: MsgStore, forceMore: boolean) => {
   })
   try {
     const r = await relay.get(route)
-    display({
-      name: 'getMessages',
-      preview: `Returned with...`,
-      value: { r },
-    })
+    // display({
+    //   name: 'getMessages',
+    //   preview: `Returned with...`,
+    //   value: { r },
+    // })
     if (!r) return
 
     if (r.new_messages?.length) {
       await self.batchDecodeMessages(r.new_messages)
     } else {
-      console.log('skipping sortAllMsgs')
-      // self.sortAllMsgs(null)
+      display({
+        name: 'getMessages',
+        preview: `No new messages.`,
+      })
     }
   } catch (e) {
     console.log('getMessages error', e)

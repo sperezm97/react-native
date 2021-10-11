@@ -1,5 +1,5 @@
 import { relay } from 'api'
-import { SubsStore } from '..'
+import { SubsStore } from '../subs-store'
 
 export const getSubs = async (self: SubsStore) => {
   try {

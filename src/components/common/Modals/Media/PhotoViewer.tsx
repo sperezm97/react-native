@@ -169,7 +169,6 @@ function SwipeItem(props) {
       showPurchaseButton,
       purchased,
     },
-    important: true,
   })
 
   return (

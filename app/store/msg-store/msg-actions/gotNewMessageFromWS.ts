@@ -1,24 +1,17 @@
-import { decodeSingle } from '..'
-import { display, log } from 'lib/logging'
+import { decodeSingle } from '../msg-helpers'
+import { display } from 'lib/logging'
+import { MsgStore } from '../msg-store'
+import { normalizeMessage } from 'app/store/normalize'
 
-export const gotNewMessageFromWS = async (m: any) => {
+export const gotNewMessageFromWS = async (self: MsgStore, m: any) => {
   let newMsg = await decodeSingle(m)
+  const normalizedMessage = normalizeMessage(newMsg)
 
   display({
     name: 'gotNewMessageFromWS',
-    preview: 'Placeholder - replace this buffer crap',
-    value: { m, decoded: newMsg },
+    preview: `Decoded and normalized message ${normalizedMessage.id}`,
+    value: { m, decoded: newMsg, normalizedMessage },
   })
 
-  // const chatID = newMsg.chat_id
-  // if (chatID || chatID === 0) {
-  //   msgsBuffer.push(newMsg)
-  //   if (msgsBuffer.length === 1) {
-  //     self.pushFirstFromBuffer()
-  //   }
-  //   debounce(() => {
-  //     self.concatNewMsgs()
-  //   }, 1000)
-  // if(newMsg.chat) chatStore.gotChat(newMsg.chat) // IS THIS NEEDED????
-  // }
+  self.setMessage(normalizedMessage)
 }

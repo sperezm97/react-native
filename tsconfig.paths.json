@@ -21,8 +21,6 @@
       "hooks/*": ["src/hooks/*"],
       "lib": ["app/lib"],
       "lib/*": ["app/lib/*"],
-      "navigation": ["app/navigation"],
-      "navigation/*": ["app/navigation/*"],
       "services": ["app/services"],
       "services/*": ["app/services/*"],
       "store": ["app/store"],

@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
 import { ActivityIndicator, IconButton } from 'react-native-paper'
@@ -21,6 +21,7 @@ import PhotoViewer from '../../common/Modals/Media/PhotoViewer'
 import { setTint } from '../../common/StatusBar'
 import EmbedVideo from './embedVideo'
 import { getRumbleLink, getYoutubeLink } from './utils'
+import { display } from 'app/lib/logging'
 
 const { useMsgs } = hooks
 
@@ -42,7 +43,16 @@ export default function MediaMsg(props) {
     if (ldat.sig) purchased = true
   }
 
-  let { data, uri, loading, paidMessageText } = useCachedEncryptedFile(props, ldat, true)
+  let { data, uri, loading, paidMessageText, trigger } = useCachedEncryptedFile(props, ldat) // , true
+
+  useEffect(() => {
+    display({
+      name: 'mediaMsg',
+      preview: 'Triggering in useEffect',
+      value: { data, uri, loading, paidMessageText, ldat, props },
+    })
+    trigger()
+  }, [media_token])
 
   const rumbleLink = useMemo(
     () => paidMessageText && getRumbleLink(paidMessageText),

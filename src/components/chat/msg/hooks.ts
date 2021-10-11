@@ -69,7 +69,7 @@ export function useCachedEncryptedFile(
         log('uri set to:', existingPath)
       }
       setLoading(false)
-      log('exists, going byebye?')
+      // log('exists, going byebye?')
       return
     }
 
@@ -142,9 +142,29 @@ export function useCachedEncryptedFile(
   }
 
   useEffect(() => {
-    log('usething returning')
-    if (!media_token || paidMessageText || !dispatchTrigger) return
-    log('triggering with', media_token, paidMessageText, ldat)
+    if (!media_token || paidMessageText || !dispatchTrigger) {
+      display({
+        name: 'trigger',
+        preview: 'usething returning.',
+        value: {
+          media_token,
+          paidMessageText,
+          dispatchTrigger,
+          ldat,
+        },
+      })
+      return
+    }
+    display({
+      name: 'trigger',
+      preview: 'TRIGGERING!',
+      value: {
+        media_token,
+        paidMessageText,
+        dispatchTrigger,
+      },
+      important: true,
+    })
     trigger()
   }, [media_token, paidMessageText, ldat])
 
@@ -155,7 +175,18 @@ async function parsePaidMsg(id) {
   try {
     const path = dirs.CacheDir + `/attachments/msg_${id}_decrypted`
     const data = await RNFetchBlob.fs.readFile(path, 'base64')
-    return atob(data)
+    const dec = atob(data)
+    display({
+      name: 'parsePaidMsg',
+      preview: 'Parsed paid message',
+      value: {
+        dec,
+        path,
+        data,
+      },
+      important: true,
+    })
+    return dec
   } catch (e) {
     console.log(e)
   }

@@ -6,6 +6,7 @@ import { FeedStoreModel } from '../feed-store/feed-store'
 import { MemeStoreModel } from '../meme-store/meme-store'
 import { MsgStoreModel } from '../msg-store/msg-store'
 import { RelayStoreModel } from '../relay-store/relay-store'
+import { SubsStoreModel } from '../subs-store/subs-store'
 import { ThemeStoreModel } from '../theme-store/theme-store'
 import { UiStoreModel } from '../ui-store/ui-store'
 import { UserStoreModel } from '../user-store/user-store'
@@ -22,6 +23,7 @@ export const RootStoreModel = types.model("RootStore").props({
   meme: types.optional(MemeStoreModel, {} as any),
   msg: types.optional(MsgStoreModel, {} as any),
   relay: types.optional(RelayStoreModel, {} as any),
+  subs: types.optional(SubsStoreModel, {} as any),
   theme: types.optional(ThemeStoreModel, {} as any),
   ui: types.optional(UiStoreModel, {} as any),
   user: types.optional(UserStoreModel, {} as any),

@@ -1,6 +1,6 @@
 import Toast from 'react-native-simple-toast'
 import { contactStore } from './contacts'
-import * as e2e from '../crypto/e2e'
+import * as e2e from 'lib/crypto/e2e'
 import { chatStore } from './chats'
 import { userStore } from './user'
 import { constants } from '../constants'
@@ -18,7 +18,8 @@ const invalidContactKeyMessage = 'Invalid contact_key value'
 const throwInvalidContactKey = () => {
   throw new Error(invalidContactKeyMessage)
 }
-const isInvalidContactKeyError = (error: Error) => error.name === 'Error' && error.message === invalidContactKeyMessage
+const isInvalidContactKeyError = (error: Error) =>
+  error.name === 'Error' && error.message === invalidContactKeyMessage
 export const showToastIfContactKeyError = (error: Error) => {
   if (isInvalidContactKeyError(error)) {
     Toast.showWithGravity(

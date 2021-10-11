@@ -61,6 +61,7 @@ const WebViewVideo: React.FC<WebViewVideoProps> = ({ embedLink, onLongPress, squ
               source={{ uri: embedLink }}
               style={{ width: squareSize || 280, height: squareSize || 150 }}
               onLoadEnd={() => setIsLoading(false)}
+              originWhitelist={['*']}
             />
           </View>
         </View>

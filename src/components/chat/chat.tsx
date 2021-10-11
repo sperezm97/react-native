@@ -44,7 +44,6 @@ export default function Chat() {
       route,
       chat,
     },
-    important: true,
   })
 
   const navigation = useNavigation()

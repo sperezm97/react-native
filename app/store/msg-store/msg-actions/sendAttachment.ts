@@ -1,7 +1,8 @@
 import { relay } from 'api'
 import { getRoot } from 'mobx-state-tree'
 import { RootStore } from 'store'
-import { encryptText, makeRemoteTextMap, MsgStore } from '..'
+import { MsgStore } from '../msg-store'
+import { encryptText, makeRemoteTextMap } from '../msg-helpers'
 
 export const sendAttachment = async (
   self: MsgStore,
@@ -9,7 +10,11 @@ export const sendAttachment = async (
 ) => {
   const root = getRoot(self) as RootStore
   try {
-    const media_key_map = await makeRemoteTextMap(root, { contact_id, text: media_key, chat_id }, true)
+    const media_key_map = await makeRemoteTextMap(
+      root,
+      { contact_id, text: media_key, chat_id },
+      true
+    )
     const v: { [k: string]: any } = {
       contact_id,
       chat_id: chat_id || null,

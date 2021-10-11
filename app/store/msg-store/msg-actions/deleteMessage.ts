@@ -1,5 +1,6 @@
 import { relay } from 'api'
-import { MsgStore, putIn } from '..'
+import { putIn } from '../msg-helpers'
+import { MsgStore } from '../msg-store'
 
 export const deleteMessage = async (self: MsgStore, id: number) => {
   if (!id) return console.log('NO ID!')

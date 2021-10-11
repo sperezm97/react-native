@@ -37,7 +37,8 @@ export const MsgStoreModel = types
     getMessages: async (forceMore: boolean = false): Promise<any> =>
       await actions.getMessages(self as MsgStore, forceMore),
     gotNewMessage: async (m: any): Promise<any> => await actions.gotNewMessage(self as MsgStore, m),
-    gotNewMessageFromWS: async (m: any): Promise<any> => await actions.gotNewMessageFromWS(m),
+    gotNewMessageFromWS: async (m: any): Promise<any> =>
+      await actions.gotNewMessageFromWS(self as MsgStore, m),
     invoicePaid: async (m: any): Promise<any> => await actions.invoicePaid(self as MsgStore, m),
     payInvoice: async ({
       payment_request,
@@ -117,13 +118,13 @@ export const MsgStoreModel = types
       return Array.from(self.messages.values())
     },
     msgsForChatroom(chatId: number) {
-      // log(`msgsForChatroom start with ${chatId}`)
-      const msgs = (self as MsgStore).messagesArray.filter((msg) => msg.chat_id === chatId)
+      const msgs = (self as MsgStore).messagesArray
+        .filter((msg) => msg.chat_id === chatId)
+        .sort((a, b) => moment(b.date).unix() - moment(a.date).unix())
       // display({
-      //   name: 'msg-store',
-      //   preview: 'msgsForChatroom',
+      //   name: 'msgsForChatroom',
+      //   preview: `msgsForChatroom ${chatId}`,
       //   value: { msgs, chatId },
-      //   important: true,
       // })
       return msgs
     },

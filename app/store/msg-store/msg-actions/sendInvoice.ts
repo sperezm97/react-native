@@ -1,9 +1,13 @@
 import { relay } from 'api'
 import { getRoot } from 'mobx-state-tree'
 import { RootStore } from 'store'
-import { encryptText, MsgStore } from '..'
+import { MsgStore } from '../msg-store'
+import { encryptText } from '../msg-helpers'
 
-export const sendInvoice = async (self: MsgStore, { contact_id, amt, chat_id, memo }: SendInvoiceParams) => {
+export const sendInvoice = async (
+  self: MsgStore,
+  { contact_id, amt, chat_id, memo }: SendInvoiceParams
+) => {
   const root = getRoot(self) as RootStore
   try {
     const myid = root.user.myid

@@ -1,7 +1,8 @@
 import { relay } from 'api'
 import { getRoot } from 'mobx-state-tree'
 import { RootStore } from 'store'
-import { Destination, FeedStore } from '..'
+import { Destination } from '../feed-models'
+import { FeedStore } from '../feed-store'
 
 export const sendPayments = async (
   self: FeedStore,

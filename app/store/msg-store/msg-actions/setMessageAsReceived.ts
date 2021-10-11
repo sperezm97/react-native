@@ -1,5 +1,5 @@
 import { constants } from '../../../constants'
-import { MsgStore } from '..'
+import { MsgStore } from '../msg-store'
 
 export const setMessageAsReceived = async (self: MsgStore, m: any) => {
   if (!m.chat_id) return

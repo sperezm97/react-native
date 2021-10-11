@@ -1,8 +1,7 @@
 import { DEFAULT_HUB_API, DEFAULT_SHOP_API } from '../config'
 import API from './api'
 import { connectWebSocket } from './ws'
-import { display, log } from 'lib/logging'
-// import * as wsHandlers from 'store/websocketHandlers'
+import { display } from 'lib/logging'
 
 const invite = new API(DEFAULT_HUB_API, '', '')
 const shop = new API(DEFAULT_SHOP_API, '', '')
@@ -47,19 +46,27 @@ export function instantiateRelay(
   if (authToken) {
     // only connect here (to avoid double) if auth token means for real
     connectWebSocket(`${protocol}${ip}`, authToken, connectedCallback, disconnectCallback)
-    // registerWsHandlers(wsHandlers)
+    // Websocket handlers moved to relay-store action - handlers need the MST self object for actions
   }
-
-  // registerHandler each msg type here?
-  // or just one?
 }
 
 export function composeAPI(host: string, authToken?: string) {
   let api = null
   if (authToken) {
     api = new API(`https://${host}/`, 'Authorization', `Bearer ${authToken}`)
+    display({
+      name: 'composeAPI',
+      preview: `API composed with authToken: ${host}`,
+      important: true,
+      value: { api, authToken },
+    })
   } else {
     api = new API(`https://${host}/`)
+    display({
+      name: 'composeAPI',
+      preview: `API composed with no authToken: ${host}`,
+      value: { api, authToken },
+    })
   }
 
   return api

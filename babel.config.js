@@ -20,7 +20,6 @@ module.exports = function (api) {
             crypto: './src/crypto',
             hooks: './src/hooks',
             lib: './app/lib',
-            navigation: './app/navigation',
             services: './src/services',
             store: './app/store',
             theme: './src/theme',

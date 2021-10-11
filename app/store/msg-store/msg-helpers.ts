@@ -7,6 +7,7 @@ import { constants } from '../../constants'
 import { Msg, MAX_MSGS_PER_CHAT } from './msg-models'
 import { RootStore } from 'store'
 import { Contact } from 'store/contacts-store'
+import { display } from 'app/lib/logging'
 // import { Msg, MAX_MSGS_PER_CHAT } from './msg'
 
 export async function encryptText(
@@ -17,6 +18,12 @@ export async function encryptText(
   const contact = root.contacts.contacts.get(contact_id.toString())
   if (!contact || !contact?.contact_key) return ''
   const encText = await e2e.encryptPublic(text, contact.contact_key) // contact.contact_key === null
+  display({
+    name: 'encryptText',
+    preview: 'Encrypt text',
+    value: { contact_id, text, encText, contact },
+    important: true,
+  })
   return encText
 }
 
@@ -24,16 +31,18 @@ const invalidContactKeyMessage = 'Invalid contact_key value'
 const throwInvalidContactKey = () => {
   throw new Error(invalidContactKeyMessage)
 }
-// const isInvalidContactKeyError = (error: Error) => error.name === 'Error' && error.message === invalidContactKeyMessage
-// export const showToastIfContactKeyError = (error: Error) => {
-//   if (isInvalidContactKeyError(error)) {
-//     Toast.showWithGravity(
-//       'Contact key missing! Wait until you receive this information from the contact',
-//       5,
-//       Toast.CENTER
-//     )
-//   }
-// }
+const isInvalidContactKeyError = (error: Error) =>
+  error.name === 'Error' && error.message === invalidContactKeyMessage
+export const showToastIfContactKeyError = (error: Error) => {
+  if (isInvalidContactKeyError(error)) {
+    alert('Contact key missing! Wait until you receive this information from the contact')
+    // Toast.showWithGravity(
+    //   'Contact key missing! Wait until you receive this information from the contact',
+    //   5,
+    //   Toast.CENTER
+    // )
+  }
+}
 
 export async function makeRemoteTextMap(
   root: RootStore,
@@ -76,6 +85,12 @@ export async function makeRemoteTextMap(
 }
 
 export async function decodeSingle(m: Msg) {
+  display({
+    name: 'decodeSingle',
+    preview: `${m.id} - ${m.type} - ${m.message_content}`,
+    value: { m },
+    important: true,
+  })
   if (m.type === constants.message_types.keysend) {
     return m // "keysend" type is not e2e
   }
@@ -89,6 +104,12 @@ export async function decodeSingle(m: Msg) {
     const dmediakey = await e2e.decryptPrivate(m.media_key)
     msg.media_key = dmediakey as string
   }
+  display({
+    name: 'decodeSingle',
+    preview: `RETURNING ${m.id} - ${m.type} - ${m.message_content}`,
+    value: { m, msg },
+    important: true,
+  })
   return msg
 }
 
@@ -107,6 +128,12 @@ export async function decodeMessages(messages: Msg[]) {
   for (const m of messages) {
     if (typesToDecrypt.includes(m.type)) {
       const msg = await decodeSingle(m)
+      // display({
+      //   name: 'decodeMessages',
+      //   preview: `Decoded msg ${msg.id}: ${msg.message_content}`,
+      //   value: { m, msg },
+      //   important: true,
+      // })
       msgs.push(msg)
     } else {
       msgs.push(m)

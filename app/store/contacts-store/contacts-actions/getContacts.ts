@@ -1,4 +1,3 @@
-// @ts-nocheck
 // TODO - fix all this after other stores pulled in
 import { relay } from 'api'
 import { getRoot } from 'mobx-state-tree'
@@ -14,18 +13,20 @@ export const getContacts = async (self: ContactsStore) => {
   const userStore = root.user
   try {
     const r = await relay.get('contacts')
-    display({
-      name: 'getContacts',
-      preview: `Returned with...`,
-      value: { r },
-    })
+    // display({
+    //   name: 'getContacts',
+    //   preview: `Returned with...`,
+    //   value: { r },
+    // })
 
     if (!r) return
     if (r.contacts) {
+      const contactsToSave = []
       r.contacts.forEach((contact) => {
         const normalizedContact = normalizeContact(contact)
-        self.setContact(normalizedContact)
+        contactsToSave.push(normalizedContact)
       })
+      self.setContacts(contactsToSave)
 
       const me = r.contacts.find((c) => c.is_owner)
 
@@ -41,10 +42,12 @@ export const getContacts = async (self: ContactsStore) => {
     }
 
     if (r.chats) {
+      const chatsToSave = []
       r.chats.forEach((chat) => {
         const normalizedChat = normalizeChat(chat)
-        chatStore.setChat(normalizedChat)
+        chatsToSave.push(normalizedChat)
       })
+      chatStore.setChats(chatsToSave)
     }
 
     if (r.subscriptions) subStore.setSubs(r.subscriptions)

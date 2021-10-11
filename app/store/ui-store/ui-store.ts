@@ -3,6 +3,7 @@ import { Chat, ChatModel } from 'store/chats-store'
 import { Contact, ContactModel } from '../contacts-store'
 import { InvoiceMsg, InvoiceMsgModel } from './ui-models'
 import { withEnvironment } from '../extensions/with-environment'
+import { sleep } from 'components/utils/utils'
 
 export const UiStoreModel = types
   .model('UiStore')
@@ -34,9 +35,12 @@ export const UiStoreModel = types
     shareInviteModal: false,
     shareInviteString: '',
     showPayModal: false,
-    payMode: types.optional(types.enumeration('PayMode', ['', 'invoice', 'payment', 'loopout']), ''),
+    payMode: types.optional(
+      types.enumeration('PayMode', ['', 'invoice', 'payment', 'loopout']),
+      ''
+    ),
     chatForPayModal: types.maybe(types.reference(ChatModel)),
-    confirmInvoiceMsg: types.maybe(types.reference(InvoiceMsgModel)),
+    confirmInvoiceMsg: types.frozen(), // types.maybe(types.reference(InvoiceMsgModel)),
     sendRequestModal: types.maybe(types.reference(ChatModel)),
     viewContact: types.maybe(types.reference(ContactModel)),
     rawInvoiceModal: false,
@@ -122,11 +126,10 @@ export const UiStoreModel = types
       self.contactSubscribeModal = openDialog
       self.contactSubscribeParams = params
     },
-    closeEditContactModal() {
+    async closeEditContactModal() {
       self.contactSubscribeModal = false
-      setTimeout(() => {
-        self.contactSubscribeParams = null
-      }, 500)
+      await sleep(500)
+      self.contactSubscribeParams = null
     },
     setNewTribeModal(openModal: boolean) {
       self.newTribeModal = openModal
@@ -152,11 +155,10 @@ export const UiStoreModel = types
       self.groupModal = true
       self.groupModalParams = groupChat
     },
-    closeGroupModal() {
+    async closeGroupModal() {
       self.groupModal = false
-      setTimeout(() => {
-        self.groupModalParams = null
-      }, 500)
+      await sleep(500)
+      self.groupModalParams = null
     },
     setPubkeyModal(openDialog: boolean) {
       self.pubkeyModal = openDialog
@@ -165,25 +167,34 @@ export const UiStoreModel = types
       self.shareInviteModal = true
       self.shareInviteString = inviteCode
     },
-    clearShareInviteModal() {
+    async clearShareInviteModal() {
       self.shareInviteModal = false
-      setTimeout(() => {
-        self.shareInviteString = ''
-      }, 500)
+      await sleep(500)
+      self.shareInviteString = ''
     },
     setPayMode(payMode: typeof self.payMode, chat: Chat) {
       self.payMode = payMode
-      self.chatForPayModal = chat
+      if (chat) {
+        self.chatForPayModal = chat
+      }
       self.showPayModal = true
     },
-    clearPayModal() {
-      self.showPayModal = false
-      setTimeout(() => {
+    async clearPayModal() {
+      try {
+        self.showPayModal = false
+        await sleep(500)
         self.payMode = ''
         self.chatForPayModal = null
-      }, 500)
+      } catch (e) {
+        console.log('ERROR:', e.message, e)
+      }
     },
     setConfirmInvoiceMsg(msg: InvoiceMsg) {
+      // const invoiceMsg = InvoiceMsgModel.create({
+      //   payment_request: msg.payment_request,
+      //   amount: msg.amount,
+      // })
+      // self.confirmInvoiceMsg = invoiceMsg
       self.confirmInvoiceMsg = msg
     },
     setSendRequestModal(chat: Chat) {
@@ -197,12 +208,11 @@ export const UiStoreModel = types
       self.lastPaidInvoice = ''
       self.rawInvoiceModalParams.replace(params)
     },
-    clearRawInvoiceModal() {
+    async clearRawInvoiceModal() {
       self.rawInvoiceModal = false
-      setTimeout(() => {
-        self.rawInvoiceModalParams = null
-        self.lastPaidInvoice = ''
-      }, 500)
+      await sleep(500)
+      self.rawInvoiceModalParams = null
+      self.lastPaidInvoice = ''
     },
     setLastPaidInvoice(invoiceID: string) {
       self.lastPaidInvoice = invoiceID

@@ -1,6 +1,6 @@
 import { getRoot } from 'mobx-state-tree'
 import { RootStore } from 'store'
-import { Contact, Invite } from '..'
+import { Contact, Invite } from '../contacts-models'
 import { ContactsStore } from '../contacts-store'
 import { display, log } from 'lib/logging'
 

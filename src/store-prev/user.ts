@@ -3,7 +3,7 @@ import { persist } from 'mobx-persist'
 
 import * as api from '../api'
 import { INVITER_KEY } from '../config'
-import { randString } from '../crypto/rand'
+import { randString } from 'lib/crypto/rand'
 import { uiStore } from './ui'
 
 interface Invite {
@@ -252,7 +252,8 @@ class UserStore {
         '',
         {
           // TODO: Create a util for this call
-          exceptionCallback: async (e) => api.invite.post('notify', { error: e }, '', { rawValue: true }),
+          exceptionCallback: async (e) =>
+            api.invite.post('notify', { error: e }, '', { rawValue: true }),
         }
       )
     } catch (e) {
@@ -303,9 +304,14 @@ class UserStore {
   async reportError(label, error) {
     try {
       console.log(label, error)
-      await api.invite.post('notify', { place: 'React Native APP', isDevEnvironment: __DEV__, label, error }, '', {
-        rawValue: true,
-      })
+      await api.invite.post(
+        'notify',
+        { place: 'React Native APP', isDevEnvironment: __DEV__, label, error },
+        '',
+        {
+          rawValue: true,
+        }
+      )
     } catch (error) {
       console.log('reportError: ', error)
     }
