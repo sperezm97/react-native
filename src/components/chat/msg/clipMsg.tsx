@@ -30,7 +30,7 @@ export default function ClipMessage(props) {
   }
   return (
     <View style={{ ...shared.innerPad }}>
-      {!!title && <Typography size={12}>{title}</Typography>}
+      {!!title ? <Typography size={12}>{title}</Typography> : null}
       <AudioPlayer source={url} jumpTo={ts || 0} onListenOneSecond={onListenOneSecond} />
       <Typography>{text}</Typography>
     </View>

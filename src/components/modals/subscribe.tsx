@@ -19,7 +19,7 @@ export default function SubscribeWrap({ visible }) {
 
   return (
     <ModalWrap onClose={close} visible={visible}>
-      {visible && <Subscribe close={close} />}
+      {visible ? <Subscribe close={close} /> : null}
     </ModalWrap>
   )
 }
@@ -74,9 +74,9 @@ function Subscribe({ close }) {
     <Portal.Host>
       <Header title='Subscribe' onClose={close} />
 
-      {params && (
+      {params ? (
         <View style={styles.content}>
-          {params.imgurl && (
+          {params.imgurl ? (
             <Image
               source={{ uri: params.imgurl }}
               style={{
@@ -87,7 +87,7 @@ function Subscribe({ close }) {
               }}
               resizeMode={'cover'}
             />
-          )}
+          ) : null}
 
           <Text style={{ marginTop: 32, fontWeight: 'bold', fontSize: 28 }}>{params.name}</Text>
 
@@ -119,7 +119,7 @@ function Subscribe({ close }) {
             Subscribe
           </Button>
         </View>
-      )}
+      ) : null}
     </Portal.Host>
   ))
 }

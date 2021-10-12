@@ -15,7 +15,7 @@ export default function Header(props) {
       }}
     >
       <View style={styles.headerLefty}>
-        {leftArrow && (
+        {leftArrow ? (
           <IconButton
             icon='arrow-left'
             color={theme.icon}
@@ -23,11 +23,11 @@ export default function Header(props) {
             style={{ marginRight: 14, marginTop: 8 }}
             onPress={() => onClose()}
           />
-        )}
+        ) : null}
       </View>
       <Text style={{ ...styles.headerTitle, color: theme.text }}>{title}</Text>
       <View style={styles.headerLefty}>
-        {!leftArrow && (
+        {!leftArrow ? (
           <IconButton
             icon='close'
             color={theme.icon}
@@ -35,7 +35,7 @@ export default function Header(props) {
             style={{ marginRight: 14, marginTop: 8 }}
             onPress={() => onClose()}
           />
-        )}
+        ) : null}
       </View>
     </View>
   )

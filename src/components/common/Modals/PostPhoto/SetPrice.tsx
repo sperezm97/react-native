@@ -42,7 +42,7 @@ export default function SetPrice({ setAmount, onShow }) {
           {price}
         </Typography>
       </TouchableOpacity>
-      {showNum && (
+      {showNum ? (
         <View style={{ ...styles.num, backgroundColor: theme.bg }}>
           <View style={styles.amtWrap}>
             <Typography size={37}>{amt}</Typography>
@@ -79,7 +79,7 @@ export default function SetPrice({ setAmount, onShow }) {
             </Button>
           </View>
         </View>
-      )}
+      ) : null}
     </>
   ))
 }

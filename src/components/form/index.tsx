@@ -18,7 +18,16 @@ export default function Form(props) {
       }}
       validationSchema={validator(props.schema)}
     >
-      {({ handleChange, handleBlur, handleSubmit, values, setFieldValue, errors, dirty, isValid }) => {
+      {({
+        handleChange,
+        handleBlur,
+        handleSubmit,
+        values,
+        setFieldValue,
+        errors,
+        dirty,
+        isValid,
+      }) => {
         return (
           <View style={styles.wrap}>
             <View style={{ padding: props.nopad ? 0 : 25 }}>
@@ -41,7 +50,7 @@ export default function Form(props) {
               })}
             </View>
 
-            {!props.displayOnly && (
+            {!props.displayOnly ? (
               <Action type={props.actionType} nopad={props.nopad} rowContent={props.rowContent}>
                 <Button
                   mode={props.buttonMode}
@@ -59,7 +68,7 @@ export default function Form(props) {
                   {props.buttonText || 'Submit'}
                 </Button>
               </Action>
-            )}
+            ) : null}
           </View>
         )
       }}

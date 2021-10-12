@@ -75,7 +75,7 @@ export default function TribeMessage(props) {
           </Text>
         </View>
       </View>
-      {showJoinButton && (
+      {showJoinButton ? (
         <Button
           mode='contained'
           icon='arrow-right'
@@ -85,7 +85,7 @@ export default function TribeMessage(props) {
         >
           See Tribe
         </Button>
-      )}
+      ) : null}
     </View>
   )
 }

@@ -22,7 +22,7 @@ export default function VideoViewerWrap({ params, visible }) {
     ui.setVidViewerParams(null)
   }
 
-  return visible && <VideoViewer params={params} close={close} />
+  return visible ? <VideoViewer params={params} close={close} /> : null
 }
 
 function VideoViewer({ params, close }) {

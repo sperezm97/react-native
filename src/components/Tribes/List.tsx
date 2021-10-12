@@ -98,7 +98,7 @@ function Item(props) {
           </View>
 
           <View style={{ paddingRight: 4 }}>
-            {!owner && (
+            {!owner ? (
               <>
                 {joined ? (
                   <Typography size={13} color={theme.primary} ls={0.5}>
@@ -110,7 +110,7 @@ function Item(props) {
                   </Button>
                 )}
               </>
-            )}
+            ) : null}
           </View>
         </View>
         <View style={{ ...styles.bottom }}>
@@ -124,13 +124,13 @@ function Item(props) {
           >
             {description}
           </Typography>
-          {hasUnseen && (
+          {hasUnseen ? (
             <View style={{ ...styles.badge, backgroundColor: theme.green }}>
               <Typography color={theme.white} size={12}>
                 {unseenCount}
               </Typography>
             </View>
-          )}
+          ) : null}
         </View>
       </View>
 

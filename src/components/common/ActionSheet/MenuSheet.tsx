@@ -40,11 +40,11 @@ export default function MenuSheet(props) {
       onModalHide={() => setTimeout(() => setDisableAllFunctions(true), 1000)}
       swipeDirection={noSwipe ? null : swipeDirection}
     >
-      {!noSwipe && (
+      {!noSwipe ? (
         <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
           <View style={styles.headLine} />
         </View>
-      )}
+      ) : null}
 
       <View
         style={{
@@ -103,7 +103,7 @@ export default function MenuSheet(props) {
               >
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                   <>
-                    {item.thumbIcon && (
+                    {item.thumbIcon ? (
                       <View
                         style={{
                           ...styles.thumbWrapper,
@@ -116,8 +116,8 @@ export default function MenuSheet(props) {
                           <Icon name={item.thumbIcon} size={18} color={item.thumbColor} />
                         )}
                       </View>
-                    )}
-                    {item.thumbImage && (
+                    ) : null}
+                    {item.thumbImage ? (
                       <Image
                         source={
                           typeof item.thumbImage === 'string'
@@ -126,15 +126,15 @@ export default function MenuSheet(props) {
                         }
                         style={{ ...styles.thumbImage }}
                       />
-                    )}
+                    ) : null}
                   </>
                   <View>
                     <Typography size={16}>{item.title}</Typography>
-                    {item.description && (
+                    {item.description ? (
                       <Typography size={14} color={theme.subtitle}>
                         {item.description}
                       </Typography>
-                    )}
+                    ) : null}
                   </View>
                 </View>
               </TouchableOpacity>

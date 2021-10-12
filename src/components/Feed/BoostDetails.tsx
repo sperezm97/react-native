@@ -43,7 +43,7 @@ export default function BoostRow(props) {
         </Typography>
       </View>
       <View style={{ ...styles.right }}>
-        {hasBoosts && (
+        {hasBoosts ? (
           <AvatarsRow
             aliases={theBoosts.map((b) => {
               // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -63,7 +63,7 @@ export default function BoostRow(props) {
             })}
             borderColor={theme.border}
           />
-        )}
+        ) : null}
       </View>
     </View>
   )

@@ -18,12 +18,12 @@ export async function encryptText(
   const contact = root.contacts.contacts.get(contact_id.toString())
   if (!contact || !contact?.contact_key) return ''
   const encText = await e2e.encryptPublic(text, contact.contact_key) // contact.contact_key === null
-  display({
-    name: 'encryptText',
-    preview: 'Encrypt text',
-    value: { contact_id, text, encText, contact },
-    important: true,
-  })
+  // display({
+  //   name: 'encryptText',
+  //   preview: 'Encrypt text',
+  //   value: { contact_id, text, encText, contact },
+  //   important: true,
+  // })
   return encText
 }
 
@@ -85,12 +85,12 @@ export async function makeRemoteTextMap(
 }
 
 export async function decodeSingle(m: Msg) {
-  display({
-    name: 'decodeSingle',
-    preview: `${m.id} - ${m.type} - ${m.message_content}`,
-    value: { m },
-    important: true,
-  })
+  // display({
+  //   name: 'decodeSingle',
+  //   preview: `${m.id} - ${m.type} - ${m.message_content}`,
+  //   value: { m },
+  //   important: true,
+  // })
   if (m.type === constants.message_types.keysend) {
     return m // "keysend" type is not e2e
   }
@@ -104,12 +104,12 @@ export async function decodeSingle(m: Msg) {
     const dmediakey = await e2e.decryptPrivate(m.media_key)
     msg.media_key = dmediakey as string
   }
-  display({
-    name: 'decodeSingle',
-    preview: `RETURNING ${m.id} - ${m.type} - ${m.message_content}`,
-    value: { m, msg },
-    important: true,
-  })
+  // display({
+  //   name: 'decodeSingle',
+  //   preview: `RETURNING ${m.id} - ${m.type} - ${m.message_content}`,
+  //   value: { m, msg },
+  //   important: true,
+  // })
   return msg
 }
 

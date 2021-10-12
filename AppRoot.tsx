@@ -157,12 +157,12 @@ function App() {
           <StatusBar />
           <NavigationContainer ref={navigationRef}>
             <Host>
-              {ui.signedUp && (
+              {ui.signedUp ? (
                 <APNManager>
                   <Main />
                 </APNManager>
-              )}
-              {!ui.signedUp && <Auth />}
+              ) : null}
+              {!ui.signedUp ? <Auth /> : null}
             </Host>
           </NavigationContainer>
         </PaperProvider>

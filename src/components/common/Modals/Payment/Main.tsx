@@ -50,7 +50,7 @@ export default function Main({ contact, loading, confirmOrContinue, contactless 
         justifyContent: contact ? 'space-around' : 'center',
       }}
     >
-      {contact && (
+      {contact ? (
         <View style={styles.contactWrap}>
           <Avatar photo={contact.photo_url} size={40} />
           <View style={styles.contactAliasWrap}>
@@ -60,7 +60,7 @@ export default function Main({ contact, loading, confirmOrContinue, contactless 
             <Typography color={nameColor}>{contact.alias}</Typography>
           </View>
         </View>
-      )}
+      ) : null}
 
       <View style={styles.amtWrap}>
         <View style={styles.amtInnerWrap}>
@@ -73,7 +73,7 @@ export default function Main({ contact, loading, confirmOrContinue, contactless 
         </View>
       </View>
 
-      {ui.payMode === 'invoice' && (
+      {ui.payMode === 'invoice' ? (
         <View style={styles.memoWrap}>
           <TextInput
             value={text}
@@ -83,10 +83,10 @@ export default function Main({ contact, loading, confirmOrContinue, contactless 
             underlineColor={theme.border}
           />
         </View>
-      )}
+      ) : null}
       <NumKey onKeyPress={(v) => go(v)} onBackspace={() => backspace()} squish />
       <View style={styles.confirmWrap}>
-        {amt !== '0' && (
+        {amt !== '0' ? (
           <Button
             w={125}
             loading={loading}
@@ -95,7 +95,7 @@ export default function Main({ contact, loading, confirmOrContinue, contactless 
           >
             {contactless || isLoopout ? 'CONTINUE' : 'CONFIRM'}
           </Button>
-        )}
+        ) : null}
       </View>
     </View>
   )

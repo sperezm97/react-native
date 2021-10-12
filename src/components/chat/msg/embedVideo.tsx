@@ -28,13 +28,11 @@ const EmbedVideo: React.FC<EmbedVideoTypes> = ({
     return `https://www.youtube.com/embed/${youtubeVideoID}`
   }, [link, type])
 
-  return (
-    !!embedLink && (
-      <PaidEmbedWrapper>
-        <WebViewVideo embedLink={embedLink} onLongPress={onLongPress} squareSize={squareSize} />
-      </PaidEmbedWrapper>
-    )
-  )
+  return !!embedLink ? (
+    <PaidEmbedWrapper>
+      <WebViewVideo embedLink={embedLink} onLongPress={onLongPress} squareSize={squareSize} />
+    </PaidEmbedWrapper>
+  ) : null
 }
 
 const PaidEmbedWrapper = ({ children }) => {
@@ -45,7 +43,7 @@ const PaidEmbedWrapper = ({ children }) => {
     <>
       {children}
       {/* Displays a button do enable user buy this content */}
-      {!!isMessageMissingPayment && (
+      {!!isMessageMissingPayment ? (
         <Button
           color={theme.dark ? theme.primary : theme.main}
           round={0}
@@ -63,7 +61,7 @@ const PaidEmbedWrapper = ({ children }) => {
         >
           <Typography size={12}>{`Pay ${amountToPay} sat`}</Typography>
         </Button>
-      )}
+      ) : null}
     </>
   )
 }

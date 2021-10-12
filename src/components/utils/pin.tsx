@@ -123,7 +123,7 @@ export default function PIN(props) {
           >
             {txt}
           </Typography>
-          {props?.extraMessage && (
+          {props?.extraMessage ? (
             <Typography
               size={20}
               style={{
@@ -133,7 +133,7 @@ export default function PIN(props) {
             >
               {props.extraMessage}
             </Typography>
-          )}
+          ) : null}
         </View>
         <View style={styles.circles}>
           {ns.map((n) => (
@@ -153,7 +153,7 @@ export default function PIN(props) {
           ))}
         </View>
         <View style={styles.spinWrap}>
-          {checking && <ActivityIndicator animating={true} color={theme.white} />}
+          {checking ? <ActivityIndicator animating={true} color={theme.white} /> : null}
         </View>
       </View>
       <NumKey onKeyPress={(v) => go(v)} onBackspace={() => backspace()} dark />

@@ -54,9 +54,9 @@ export default function InfoBar(props) {
           <Typography size={12} lh={13} color={theme.darkGrey}>
             {moment(props.date).format(timeFormat)}
           </Typography>
-          {showLock && (
+          {showLock ? (
             <Icon name='lock' size={14} color='#AFB6BC' style={{ marginRight: 4, marginLeft: 4 }} />
-          )}
+          ) : null}
           {isMe && isReceived ? (
             <Icon
               name='flash'

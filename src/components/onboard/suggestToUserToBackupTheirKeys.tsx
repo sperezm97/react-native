@@ -26,14 +26,18 @@ export default function SuggestToUserToBackupTheirKeys({ onDone, z, isTheMainRen
   }
 
   const forceFinishLoad = () => {
-    Alert.alert('Are you sure?', 'This video explains the importance of backup your keys, you should watch this!', [
-      {
-        text: 'Cancel',
-        onPress: () => null,
-        style: 'cancel',
-      },
-      { text: 'OK', onPress: onDone },
-    ])
+    Alert.alert(
+      'Are you sure?',
+      'This video explains the importance of backup your keys, you should watch this!',
+      [
+        {
+          text: 'Cancel',
+          onPress: () => null,
+          style: 'cancel',
+        },
+        { text: 'OK', onPress: onDone },
+      ]
+    )
   }
   /**
    * Animation section
@@ -92,11 +96,15 @@ export default function SuggestToUserToBackupTheirKeys({ onDone, z, isTheMainRen
             <Icon name='repeat' color={'white'} size={32} />
           </Button>
           <View>
-            {!isVideoDone && (
+            {!isVideoDone ? (
               <Animated.View
-                style={[progressStyle, styles.absoluteViewAnimation, { backgroundColor: theme.colors.primary }]}
+                style={[
+                  progressStyle,
+                  styles.absoluteViewAnimation,
+                  { backgroundColor: theme.colors.primary },
+                ]}
               />
-            )}
+            ) : null}
             <Button
               accessibilityLabel='onboard-name-button'
               onPress={onDone}

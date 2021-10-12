@@ -110,9 +110,9 @@ export default function Webview({ url }) {
 
   return (
     <View style={styles.webview}>
-      {bridge?.url && (
+      {bridge?.url ? (
         <BridgeModal params={bridge} onClose={onCloseBridgeHandler} authorize={authorize} />
-      )}
+      ) : null}
       <WebView
         ref={ref}
         userAgent='Sphinx'
@@ -164,7 +164,7 @@ function BridgeModal({ params, authorize, onClose }) {
       />
       <Text style={styles.modalText}>Do you want to authorize</Text>
       <Text style={styles.modalURL}>{params.url}</Text>
-      {showBudget && (
+      {showBudget ? (
         <>
           <Text style={styles.modalText}>To withdraw up to</Text>
           <View style={styles.inputWrap}>
@@ -178,7 +178,7 @@ function BridgeModal({ params, authorize, onClose }) {
             </View>
           </View>
         </>
-      )}
+      ) : null}
       <View style={styles.modalButtonWrap}>
         <Button
           labelStyle={{ color: 'grey' }}

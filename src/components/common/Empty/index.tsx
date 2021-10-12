@@ -31,7 +31,7 @@ export default function Empty(props) {
 
   return (
     <View style={{ ...styles.wrap, ...style, ...emptyBox }}>
-      {text && <Typography color={color}>{text}</Typography>}
+      {text ? <Typography color={color}>{text}</Typography> : null}
       {children}
     </View>
   )

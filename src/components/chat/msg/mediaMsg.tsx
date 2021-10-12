@@ -138,7 +138,7 @@ export default function MediaMsg(props) {
           onPress={onMediaPress}
           activeOpacity={0.8}
         >
-          {!hasImgData && (
+          {!hasImgData ? (
             <View
               style={{
                 minHeight,
@@ -146,12 +146,12 @@ export default function MediaMsg(props) {
                 ...(isEmbedVideo && { width: 640 }),
               }}
             >
-              {loading && (
+              {loading ? (
                 <View style={{ minHeight, ...styles.loadingWrap }}>
                   <ActivityIndicator animating={true} color='grey' />
                 </View>
-              )}
-              {Boolean(paidMessageText) && (
+              ) : null}
+              {Boolean(paidMessageText) ? (
                 <View
                   style={{
                     minHeight,
@@ -161,17 +161,17 @@ export default function MediaMsg(props) {
                     ...(isEmbedVideo && { height: 170 }),
                   }}
                 >
-                  {!!rumbleLink && (
+                  {!!rumbleLink ? (
                     <EmbedVideo type='rumble' link={rumbleLink} onLongPress={onLongPressHandler} />
-                  )}
-                  {!!youtubeLink && (
+                  ) : null}
+                  {!!youtubeLink ? (
                     <EmbedVideo
                       type='youtube'
                       link={youtubeLink}
                       onLongPress={onLongPressHandler}
                     />
-                  )}
-                  {!rumbleLink && !youtubeLink && (
+                  ) : null}
+                  {!rumbleLink && !youtubeLink ? (
                     <Text
                       style={{
                         color: theme.title,
@@ -180,44 +180,44 @@ export default function MediaMsg(props) {
                     >
                       {paidMessageText}
                     </Text>
-                  )}
+                  ) : null}
                 </View>
-              )}
-              {showPayToUnlockMessage && (
+              ) : null}
+              {showPayToUnlockMessage ? (
                 <View style={{ ...styles.paidAttachmentText }}>
                   <Typography color={theme.subtitle}>Pay to unlock message</Typography>
                 </View>
-              )}
+              ) : null}
             </View>
-          )}
+          ) : null}
 
-          {hasImgData && (
+          {hasImgData ? (
             <Media
               type={media_type}
               data={data}
               uri={uri}
               filename={meme.filenameCache[props.id]}
             />
-          )}
+          ) : null}
 
-          {isImg && showPurchaseButton && !purchased && (
+          {isImg && showPurchaseButton && !purchased ? (
             <View style={styles.imgIconWrap}>
               <Ionicon name='image' color={theme.icon} size={50} />
             </View>
-          )}
+          ) : null}
 
-          {hasContent && (
+          {hasContent ? (
             <View style={styles.msgContentWrap}>
               <Typography size={14} color={theme.subtitle}>
                 {message_content}
               </Typography>
             </View>
-          )}
+          ) : null}
 
-          {showBoostRow && <BoostRow {...props} myAlias={props.myAlias} pad />}
+          {showBoostRow ? <BoostRow {...props} myAlias={props.myAlias} pad /> : null}
         </TouchableOpacity>
 
-        {showStats && (
+        {showStats ? (
           <View style={styles.stats}>
             <Typography
               size={12}
@@ -236,9 +236,9 @@ export default function MediaMsg(props) {
               Purchased
             </Typography>
           </View>
-        )}
+        ) : null}
 
-        {showPurchaseButton && (
+        {showPurchaseButton ? (
           <>
             {purchased ? (
               <View style={{ ...styles.purchasedWrap, backgroundColor: theme.main }}>
@@ -270,7 +270,7 @@ export default function MediaMsg(props) {
               </Button>
             )}
           </>
-        )}
+        ) : null}
         <PhotoViewer
           visible={mediaModal}
           close={() => {

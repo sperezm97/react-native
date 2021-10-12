@@ -111,19 +111,23 @@ export default function Controls(props) {
         </Typography>
       </View>
 
-      {!selectSpeed && (
+      {!selectSpeed ? (
         <View style={styles.speedWrap}>
           <View style={styles.speedWrapInner}>
-            <TouchableOpacity activeOpacity={0.6} style={styles.speedClickable} onPress={() => setSelectSpeed(true)}>
+            <TouchableOpacity
+              activeOpacity={0.6}
+              style={styles.speedClickable}
+              onPress={() => setSelectSpeed(true)}
+            >
               <Typography color={theme.subtitle} size={14}>
                 {`${props.speed || '1'}x`}
               </Typography>
             </TouchableOpacity>
           </View>
         </View>
-      )}
+      ) : null}
 
-      {selectSpeed && (
+      {selectSpeed ? (
         <View style={styles.selectSpeed}>
           <View style={styles.selectSpeedInner}>
             {ratez.map((s) => {
@@ -137,13 +141,16 @@ export default function Controls(props) {
                     backgroundColor: s === props.speed ? theme.primary : theme.deep,
                   }}
                 >
-                  <Typography size={12} color={s === props.speed ? theme.white : theme.text}>{`${s}x`}</Typography>
+                  <Typography
+                    size={12}
+                    color={s === props.speed ? theme.white : theme.text}
+                  >{`${s}x`}</Typography>
                 </TouchableOpacity>
               )
             })}
           </View>
         </View>
-      )}
+      ) : null}
 
       <View style={styles.progressWrapBottom}>
         <View
@@ -167,7 +174,11 @@ export default function Controls(props) {
               marginRight: 18,
             }}
           >
-            <MaterialCommunityIcons name={playing ? 'pause-circle' : 'play-circle'} size={52} color={theme.primary} />
+            <MaterialCommunityIcons
+              name={playing ? 'pause-circle' : 'play-circle'}
+              size={52}
+              color={theme.primary}
+            />
           </TouchableOpacity>
           <TouchableIcon rippleColor={theme.grey} size={48} onPress={fastForward}>
             <CustomIcon name='forward-30' color={theme.title} size={28} />

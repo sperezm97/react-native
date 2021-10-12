@@ -4,7 +4,6 @@ import { DEFAULT_DOMAIN } from 'config'
 import { Chat } from '../chats-store'
 import { Contact } from '../contacts-store'
 import { constants } from '../../constants'
-import { display, log } from 'lib/logging'
 
 export function useChats() {
   const { chats, msg, contacts, user } = useStores()
@@ -13,7 +12,7 @@ export function useChats() {
   const theseContacts: Contact[] = Array.from(contacts.contacts.values())
   const theChats = allChats(theseChats, theseContacts, user.myid)
   const chatsToShow = theChats
-  // sortChats(chatsToShow, msg.messages)
+  sortChats(chatsToShow, msg.msgsForChatroom)
 
   return chatsToShow
 }
@@ -158,19 +157,13 @@ export function contactForConversation(chat: Chat, contacts: Contact[], myid: nu
   return null
 }
 
-export function sortChats(chatsToShow, messages) {
-  log('skipping sortChats.')
-  // display({
-  //   name: 'sortChats',
-  //   preview: `Starting to sort ${chatsToShow.length} chats and ${messages.length} messages`,
-  //   value: { chatsToShow, messages },
-  // })
+export function sortChats(chatsToShow, msgsForChatroom) {
   chatsToShow.sort((a, b) => {
-    const amsgs = messages[a.id]
+    const amsgs = msgsForChatroom(a.id)
     const alastMsg = amsgs?.[0]
     const then = moment(new Date()).add(-30, 'days')
     const adate = alastMsg?.date ? moment(alastMsg.date) : then
-    const bmsgs = messages[b.id]
+    const bmsgs = msgsForChatroom(b.id)
     const blastMsg = bmsgs?.[0]
     const bdate = blastMsg?.date ? moment(blastMsg.date) : then
     return adate.isBefore(bdate) ? 0 : -1

@@ -246,7 +246,7 @@ function Payment(props: PaymentProps) {
             </Typography>
           </View>
         </View>
-        {showTime && (
+        {showTime ? (
           <View
             style={{
               flex: 1,
@@ -258,7 +258,7 @@ function Payment(props: PaymentProps) {
               {transactionDate}
             </Typography>
           </View>
-        )}
+        ) : null}
       </View>
     </View>
   )

@@ -44,24 +44,24 @@ export function contactForConversation(chat: Chat, contacts: Contact[], myid: nu
   return null
 }
 
-export function sortChats(chatsToShow, messages) {
-  log('skipping sortChats.')
-  return
-  chatsToShow.sort((a, b) => {
-    const amsgs = messages[a.id]
-    const alastMsg = amsgs?.[0]
-    const then = moment(new Date()).add(-30, 'days')
-    const adate = alastMsg?.date ? moment(alastMsg.date) : then
-    const bmsgs = messages[b.id]
-    const blastMsg = bmsgs?.[0]
-    const bdate = blastMsg?.date ? moment(blastMsg.date) : then
-    return adate.isBefore(bdate) ? 0 : -1
-  })
-  chatsToShow.sort((a) => {
-    if (a.invite && a.invite.status !== 4) return -1
-    return 0
-  })
-}
+// export function sortChats(chatsToShow, messages) {
+//   log('skipping sortChats.')
+//   return
+//   chatsToShow.sort((a, b) => {
+//     const amsgs = messages[a.id]
+//     const alastMsg = amsgs?.[0]
+//     const then = moment(new Date()).add(-30, 'days')
+//     const adate = alastMsg?.date ? moment(alastMsg.date) : then
+//     const bmsgs = messages[b.id]
+//     const blastMsg = bmsgs?.[0]
+//     const bdate = blastMsg?.date ? moment(blastMsg.date) : then
+//     return adate.isBefore(bdate) ? 0 : -1
+//   })
+//   chatsToShow.sort((a) => {
+//     if (a.invite && a.invite.status !== 4) return -1
+//     return 0
+//   })
+// }
 
 export function filterChats(theChats, searchTerm) {
   return theChats.filter((c) => {

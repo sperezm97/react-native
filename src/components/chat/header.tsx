@@ -141,14 +141,14 @@ const Header = ({ chat, status, tribeParams, podId, pricePerMinute }: HeaderProp
                 {name}
               </Typography>
 
-              {status !== null && (
+              {status !== null ? (
                 <MaterialIcon
                   name='lock'
                   style={{ marginLeft: 6 }}
                   size={13}
                   color={status === 'active' ? theme.active : theme.inactive}
                 />
-              )}
+              ) : null}
             </View>
             <Typography size={12} color={theme.subtitle}>
               {isTribeAdmin ? `Earned: ${earned} sats` : `Contributed: ${showSpent} sats`}

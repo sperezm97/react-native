@@ -448,7 +448,7 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
         }}
         accessibilityLabel='chat-bottombar-inner'
       >
-        {!recordingStartTime && (
+        {!recordingStartTime ? (
           <>
             <PlusButton setDialogOpen={setDialogOpen} />
             <TextInput
@@ -471,18 +471,18 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
               value={text}
             />
           </>
-        )}
+        ) : null}
         {/* Only renders if `recordingStartTime` is a truthy value*/}
         <RecordingBottomBar recordingStartTime={recordingStartTime} recordSecs={recordSecs} />
 
-        {!hideMic && (
+        {!hideMic ? (
           <MicButton
             panResponder={panResponder}
             uploading={uploading}
             recordingStartTime={recordingStartTime}
           />
-        )}
-        {hideMic && <SendButton text={text} sendMessage={sendMessage} />}
+        ) : null}
+        {hideMic ? <SendButton text={text} sendMessage={sendMessage} /> : null}
 
         <ChatOptions
           visible={dialogOpen}

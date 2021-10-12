@@ -39,7 +39,7 @@ export default function BackHeader({ title, screen, action, navigate, border }) 
         </Typography>
       </View>
 
-      {action && <View style={{ ...styles.right }}>{action}</View>}
+      {action ? <View style={{ ...styles.right }}>{action}</View> : null}
     </Appbar.Header>
   )
 }

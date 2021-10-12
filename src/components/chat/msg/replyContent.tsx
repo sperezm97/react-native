@@ -40,7 +40,7 @@ export default function ReplyContent(props) {
       >
         <View style={{ ...styles.replyBar, backgroundColor: nameColor }} />
         <View style={{ ...styles.replyWrap }}>
-          {props?.replyMessageExtraContent?.media_token && <ReplySource {...props} />}
+          {props?.replyMessageExtraContent?.media_token ? <ReplySource {...props} /> : null}
 
           <View style={{ ...styles.replyContent }}>
             <Typography color={nameColor} numberOfLines={1} fw='500'>
@@ -51,7 +51,7 @@ export default function ReplyContent(props) {
             </Typography>
           </View>
         </View>
-        {props.reply && (
+        {props.reply ? (
           <IconButton
             icon='close'
             size={18}
@@ -59,7 +59,7 @@ export default function ReplyContent(props) {
             style={{ ...styles.close }}
             onPress={onCloseHandler}
           />
-        )}
+        ) : null}
       </View>
     )
   })

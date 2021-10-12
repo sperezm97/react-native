@@ -23,15 +23,15 @@ export default function AvatarEdit({
     <TouchableOpacity onPress={onPress} style={styles.imgWrap} activeOpacity={0.6}>
       {children}
       <>
-        {uploading && (
+        {uploading ? (
           <Typography
             style={{ ...styles.uploadPercent, top: top ? top : '43%' }}
             size={percentSize}
             color={theme.white}
             textAlign='center'
           >{`${uploadPercent}%`}</Typography>
-        )}
-        {uploading && (
+        ) : null}
+        {uploading ? (
           <View
             style={{
               ...styles.backDrop,
@@ -41,12 +41,12 @@ export default function AvatarEdit({
               borderRadius: round,
             }}
           />
-        )}
-        {!display && (
+        ) : null}
+        {!display ? (
           <View style={styles.imgIcon}>
             <Icon name='PlusCircle' fill={theme.primary} color={theme.white} />
           </View>
-        )}
+        ) : null}
         <Portal>
           {/* <Dialog visible={uploading} style={{ backgroundColor: 'transparent' }}>
             <View

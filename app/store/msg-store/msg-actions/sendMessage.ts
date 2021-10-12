@@ -105,7 +105,7 @@ export const sendMessage = async (
     }
   } catch (e) {
     // showToastIfContactKeyError(e)
-    console.tron.log(e)
+    log(e)
   }
 }
 

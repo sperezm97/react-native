@@ -148,7 +148,7 @@ function SearchHeader() {
         />
       </View>
 
-      {scanning && (
+      {scanning ? (
         <QR
           scannerH={SCREEN_HEIGHT - 60}
           visible={scanning}
@@ -159,7 +159,7 @@ function SearchHeader() {
           onScan={(data) => scan(data)}
           showPaster={false}
         />
-      )}
+      ) : null}
 
       <JoinTribe
         visible={joinTribe.visible}

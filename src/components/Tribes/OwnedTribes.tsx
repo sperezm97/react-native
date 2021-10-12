@@ -11,6 +11,7 @@ import Button from '../common/Button'
 import Empty from '../common/Empty'
 import List from './List'
 import { SCREEN_HEIGHT, SCREEN_WIDTH, STACK_HEADER_HEIGHT } from '../../constants'
+import { display } from 'lib/logging'
 
 const { useTribes } = hooks
 

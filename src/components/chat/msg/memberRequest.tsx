@@ -38,7 +38,7 @@ export default function MemberRequest(props) {
         <Text style={{ ...styles.text, color: theme.title }} numberOfLines={2}>
           {msg}
         </Text>
-        {props.isTribeOwner && (
+        {props.isTribeOwner ? (
           <View style={styles.right}>
             <ApproveButton
               disabled={typ === 'member_reject'}
@@ -51,8 +51,8 @@ export default function MemberRequest(props) {
               loading={loadingStatus === 'rejected'}
             />
           </View>
-        )}
-        {!props.isTribeOwner && typ === 'member_reject' && (
+        ) : null}
+        {!props.isTribeOwner && typ === 'member_reject' ? (
           <View style={styles.del}>
             <Button
               color='#ff5e61'
@@ -64,7 +64,7 @@ export default function MemberRequest(props) {
               Delete
             </Button>
           </View>
-        )}
+        ) : null}
       </View>
     </View>
   )

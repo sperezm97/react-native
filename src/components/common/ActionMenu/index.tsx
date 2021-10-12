@@ -27,7 +27,7 @@ export default function ActionMenu({ items }) {
                 disabled={item.disabled}
               >
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  {item.thumbIcon && (
+                  {item.thumbIcon ? (
                     <View
                       style={{
                         ...styles.thumbWrapper,
@@ -40,8 +40,8 @@ export default function ActionMenu({ items }) {
                         <Icon name={item.thumbIcon} size={18} color={item.thumbColor} />
                       )}
                     </View>
-                  )}
-                  {item.thumbImage && (
+                  ) : null}
+                  {item.thumbImage ? (
                     <Image
                       source={
                         typeof item.thumbImage === 'string'
@@ -50,15 +50,15 @@ export default function ActionMenu({ items }) {
                       }
                       style={{ ...styles.thumbImage }}
                     />
-                  )}
+                  ) : null}
                   <Text style={{ fontSize: 16, color: theme.text }}>{item.title}</Text>
                 </View>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  {item.preview && (
+                  {item.preview ? (
                     <Text style={{ ...styles.previewText, color: theme.accent }}>
                       {item.preview}
                     </Text>
-                  )}
+                  ) : null}
                   <Icon name={item.icon} color={theme.icon} size={25} />
                 </View>
               </TouchableOpacity>

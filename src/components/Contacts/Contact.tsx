@@ -76,7 +76,7 @@ export default function EditContact({ route }) {
           </Button>
         </TouchableOpacity>
       )} */}
-      {sub && existingSub && existingSub.id && (
+      {sub && existingSub && existingSub.id ? (
         <View style={styles.row}>
           <IconButton
             icon='trash-can-outline'
@@ -95,7 +95,7 @@ export default function EditContact({ route }) {
             />
           </View>
         </View>
-      )}
+      ) : null}
     </>
   )
 

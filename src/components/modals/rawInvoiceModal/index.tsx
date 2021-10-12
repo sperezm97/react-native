@@ -17,7 +17,7 @@ export default function RawInvoiceModalWrap({ visible }) {
 
   return (
     <ModalWrap onClose={close} visible={visible}>
-      {visible && <RawInvoiceModal close={close} />}
+      {visible ? <RawInvoiceModal close={close} /> : null}
     </ModalWrap>
   )
 }
@@ -45,15 +45,15 @@ function RawInvoiceModal({ close }) {
       <Portal.Host>
         <Header title='Payment Request' onClose={close} />
         <View style={styles.wrap}>
-          {params && !hasPayreq && (
+          {params && !hasPayreq ? (
             <View style={styles.innerWrap}>
               <Text style={styles.genText}>Generate Invoice</Text>
-              {params.get('imgurl') && (
+              {params.get('imgurl') ? (
                 <Image source={{ uri: params.get('imgurl') }} style={styles.img} />
-              )}
-              {params.get('name') && <Text style={styles.genText}>{params.get('name')}</Text>}
-              {params.get('amount') && <Text style={styles.amt}>{params.get('amount')}</Text>}
-              {params.get('amount') && <Text style={styles.sat}>sat</Text>}
+              ) : null}
+              {params.get('name') ? <Text style={styles.genText}>{params.get('name')}</Text> : null}
+              {params.get('amount') ? <Text style={styles.amt}>{params.get('amount')}</Text> : null}
+              {params.get('amount') ? <Text style={styles.sat}>sat</Text> : null}
               <View style={styles.confirmWrap}>
                 <Button
                   style={styles.confirm}
@@ -66,15 +66,15 @@ function RawInvoiceModal({ close }) {
                 </Button>
               </View>
             </View>
-          )}
+          ) : null}
 
-          {hasPayreq && (
+          {hasPayreq ? (
             <ShowRawInvoice
               amount={params.get('amount')}
               payreq={payreq}
               paid={payreq === ui.lastPaidInvoice}
             />
-          )}
+          ) : null}
         </View>
       </Portal.Host>
     )

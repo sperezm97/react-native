@@ -123,7 +123,7 @@ function ChatRow(props) {
             </Typography>
           </View>
           <View style={styles.bottom}>
-            {hasLastMsg && (
+            {hasLastMsg ? (
               <Typography
                 numberOfLines={1}
                 color={theme.subtitle}
@@ -135,7 +135,7 @@ function ChatRow(props) {
               >
                 {lastMsgText}
               </Typography>
-            )}
+            ) : null}
             {hasUnseen ? (
               <View style={{ ...moreStyles.badge, backgroundColor: theme.green }}>
                 <Typography color={theme.white} size={12}>

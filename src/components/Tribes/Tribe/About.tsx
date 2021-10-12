@@ -116,7 +116,7 @@ function Tags(props) {
           </>
         ) : (
           <>
-            {tribe.tags.length > 0 && (
+            {tribe.tags.length > 0 ? (
               <>
                 <BoxHeader title='Topics in this Community' />
                 <TribeTags
@@ -125,7 +125,7 @@ function Tags(props) {
                   containerStyle={{ paddingTop: 18 }}
                 />
               </>
-            )}
+            ) : null}
           </>
         )}
       </>

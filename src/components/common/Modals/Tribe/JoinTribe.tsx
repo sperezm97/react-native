@@ -26,7 +26,7 @@ import Typography from '../../Typography'
 const { useTribes } = hooks
 
 export default function JoinTribeWrap(props) {
-  return <>{props.visible && <JoinTribe {...props} />}</>
+  return <>{props.visible ? <JoinTribe {...props} /> : null}</>
 }
 
 function JoinTribe(props) {
@@ -99,7 +99,7 @@ function JoinTribe(props) {
             <KeyboardAvoidingView behavior='padding' style={{ flex: 1 }} keyboardVerticalOffset={1}>
               <Header title='Join Community' onClose={close} />
               <ScrollView>
-                {tribe && (
+                {tribe ? (
                   <View style={{ ...styles.content }}>
                     <Avatar photo={hasImg && tribe.img} size={160} round={90} />
                     <Typography
@@ -182,12 +182,12 @@ function JoinTribe(props) {
                       </>
                     )}
                   </View>
-                )}
+                ) : null}
               </ScrollView>
             </KeyboardAvoidingView>
           </SafeAreaView>
 
-          {finish && (
+          {finish ? (
             <MemoizedVideoView
               videoVisible={videoVisible}
               tribe={tribeToCheck}
@@ -197,7 +197,7 @@ function JoinTribe(props) {
                 setTint(theme.dark ? 'dark' : 'light')
               }}
             />
-          )}
+          ) : null}
         </Modal>
       </>
     )
@@ -242,7 +242,7 @@ function VideoView({ videoVisible, tribe, joinTribe, close }) {
             height: SCREEN_HEIGHT,
           }}
         />
-        {tribe && (
+        {tribe ? (
           <View
             style={{
               position: 'absolute',
@@ -258,7 +258,7 @@ function VideoView({ videoVisible, tribe, joinTribe, close }) {
               Go to {tribe.name}
             </Button>
           </View>
-        )}
+        ) : null}
       </View>
     </Modal>
   )

@@ -18,13 +18,13 @@ export default function ModalHeader(props) {
       }}
     >
       <TouchableOpacity onPress={onClose} style={{ ...styles.left, ...style }}>
-        {leftArrow && <Icon name='ChevronLeft' size={28} color={theme.icon} />}
+        {leftArrow ? <Icon name='ChevronLeft' size={28} color={theme.icon} /> : null}
       </TouchableOpacity>
       <View>
         <Text style={{ ...styles.title, color: theme.text }}>{title}</Text>
       </View>
       <TouchableOpacity onPress={onClose} style={{ ...styles.right }}>
-        {!leftArrow && <Icon name='Close' size={23} color={theme.icon} />}
+        {!leftArrow ? <Icon name='Close' size={23} color={theme.icon} /> : null}
       </TouchableOpacity>
     </Appbar.Header>
   )

@@ -104,7 +104,7 @@ export default function PhotoURIInput({
           />
         ) : (
           <>
-            {!hasImgURI && (
+            {!hasImgURI ? (
               <Icon
                 name='picture'
                 color='#888'
@@ -112,8 +112,8 @@ export default function PhotoURIInput({
                 style={{ position: 'absolute', right: 13, top: 17 }}
                 onPress={() => setDialogOpen(true)}
               />
-            )}
-            {hasImgURI && (
+            ) : null}
+            {hasImgURI ? (
               <Image
                 source={{ uri: imgURI }}
                 style={{
@@ -125,7 +125,7 @@ export default function PhotoURIInput({
                   borderRadius: 3,
                 }}
               />
-            )}
+            ) : null}
           </>
         )}
       </TouchableWithoutFeedback>
@@ -137,11 +137,11 @@ export default function PhotoURIInput({
         onChooseCam={() => setTakingPhoto(true)}
       />
 
-      {takingPhoto && (
+      {takingPhoto ? (
         <Portal>
           <Cam onCancel={() => setTakingPhoto(false)} onSnap={(pic) => tookPic(pic.uri)} />
         </Portal>
-      )}
+      ) : null}
     </View>
   )
 }

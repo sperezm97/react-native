@@ -2,8 +2,11 @@ import { UserStore } from '../user-store'
 import { sleep } from 'store/utils/sleep'
 import * as api from 'api'
 import { randString } from 'lib/crypto/rand'
+import { getRoot } from 'mobx-state-tree'
+import { RootStore } from 'store'
 
 export const generateToken = async (self: UserStore, pwd: string) => {
+  const root = getRoot(self) as RootStore
   if (api.relay === null && self.currentIP) {
     api.instantiateRelay(self.currentIP)
     await sleep(1)
@@ -20,8 +23,8 @@ export const generateToken = async (self: UserStore, pwd: string) => {
     api.instantiateRelay(
       self.currentIP,
       token,
-      () => console.log('placeholder setConnected true'), // uiStore.setConnected(true),
-      () => console.log('placeholder setConnected false') // uiStore.setConnected(false)
+      () => root.ui.setConnected(true),
+      () => root.ui.setConnected(false)
     )
     return token
   } catch (e) {

@@ -77,13 +77,13 @@ export default function Animation({ dark, myid }) {
       />
 
       <View style={styles.content}>
-        {!!meIMG && (
+        {!!meIMG ? (
           <FastImage
             resizeMode='cover'
             source={{ uri: meIMG }}
             style={{ width: 120, height: 120, borderRadius: 60, zIndex: 102 }}
           />
-        )}
+        ) : null}
         <Boost inert={true} style={{ marginTop: -40, zIndex: 104 }} onPress={() => {}} />
       </View>
 

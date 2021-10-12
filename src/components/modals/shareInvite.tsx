@@ -21,7 +21,7 @@ export default function ShareInviteWrap({ visible }) {
 
   return (
     <ModalWrap onClose={close} visible={visible}>
-      {visible && <ShareInvite close={close} />}
+      {visible ? <ShareInvite close={close} /> : null}
     </ModalWrap>
   )
 }
@@ -55,13 +55,13 @@ function ShareInvite({ close }) {
             <Text style={styles.tapToCopy}>TAP TO COPY</Text>
           </View>
           <View style={styles.qrWrap}>
-            {hasInvite && <QRCode value={ui.shareInviteString} size={SCREEN_WIDTH / 1.3} />}
+            {hasInvite ? <QRCode value={ui.shareInviteString} size={SCREEN_WIDTH / 1.3} /> : null}
           </View>
-          {hasInvite && (
+          {hasInvite ? (
             <View style={styles.inviteStringWrap}>
               <Text style={styles.inviteString}>{ui.shareInviteString}</Text>
             </View>
-          )}
+          ) : null}
           <Button icon='share' onPress={() => share()} style={styles.shareButton}>
             Share
           </Button>

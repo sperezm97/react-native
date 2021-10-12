@@ -40,7 +40,7 @@ export default function PostPhotoWrap() {
 
     return (
       <ModalWrap onClose={close} visible={visible} noHeader noSwipe>
-        {visible && <PostPhoto params={params} close={close} />}
+        {visible ? <PostPhoto params={params} close={close} /> : null}
       </ModalWrap>
     )
   })
@@ -176,21 +176,21 @@ function PostPhoto(props) {
           onPress={close}
           style={{ ...styles.closeButton }}
         />
-        {showInput && <SetPrice setAmount={(amt) => setPrice(amt)} onShow={onShowAmount} />}
-        {showImg && (
+        {showInput ? <SetPrice setAmount={(amt) => setPrice(amt)} onShow={onShowAmount} /> : null}
+        {showImg ? (
           <FastImage
             resizeMode='contain'
             source={{ uri: uri || data }}
             style={{ ...styles.img, ...boxStyles }}
           />
-        )}
-        {showMsgMessage && !uploading && (
+        ) : null}
+        {showMsgMessage && !uploading ? (
           <View style={{ ...styles.msgMessage, ...boxStyles }}>
             <Typography color={theme.white}>Set a price and enter your message</Typography>
           </View>
-        )}
+        ) : null}
 
-        {uploading && (
+        {uploading ? (
           <View
             style={{
               ...styles.activityWrap,
@@ -207,9 +207,9 @@ function PostPhoto(props) {
               }}
             >{`${uploadPercent}%`}</Typography>
           </View>
-        )}
+        ) : null}
 
-        {showInput && (
+        {showInput ? (
           <KeyboardAvoidingView
             style={{ position: 'absolute', left: 0, right: 0, bottom: 0 }}
             behavior='position'
@@ -243,7 +243,7 @@ function PostPhoto(props) {
               </TouchableOpacity>
             </View>
           </KeyboardAvoidingView>
-        )}
+        ) : null}
       </View>
     )
   })

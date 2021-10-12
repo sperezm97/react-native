@@ -48,7 +48,7 @@ export function useCachedEncryptedFile(
 
     const url = `https://${ldat.host}/file/${media_token}`
 
-    log('TRYING TO TRIGGER THIS URL?', url)
+    // log('TRYING TO TRIGGER THIS URL?', url)
 
     const server = meme.servers.find((s) => s.host === ldat.host)
 
@@ -63,10 +63,10 @@ export function useCachedEncryptedFile(
       if (isPaidMessage) {
         const txt = await parsePaidMsg(id)
         setPaidMessageText(txt)
-        log('Paid message:', id, txt)
+        // log('Paid message:', id, txt)
       } else {
         setURI('file://' + existingPath)
-        log('uri set to:', existingPath)
+        // log('uri set to:', existingPath)
       }
       setLoading(false)
       // log('exists, going byebye?')
@@ -143,16 +143,16 @@ export function useCachedEncryptedFile(
 
   useEffect(() => {
     if (!media_token || paidMessageText || !dispatchTrigger) {
-      display({
-        name: 'trigger',
-        preview: 'usething returning.',
-        value: {
-          media_token,
-          paidMessageText,
-          dispatchTrigger,
-          ldat,
-        },
-      })
+      // display({
+      //   name: 'trigger',
+      //   preview: 'usething returning.',
+      //   value: {
+      //     media_token,
+      //     paidMessageText,
+      //     dispatchTrigger,
+      //     ldat,
+      //   },
+      // })
       return
     }
     display({

@@ -45,7 +45,7 @@ export default function TextMsg(props) {
           style={{ width: 200, height: 200 / (aspectRatio || 1) }}
           resizeMode={'cover'}
         />
-        {!!text && (
+        {!!text ? (
           <Typography
             color={props.isMe ? theme.white : theme.text}
             size={16}
@@ -53,8 +53,8 @@ export default function TextMsg(props) {
           >
             {text}
           </Typography>
-        )}
-        {showBoostRow && <BoostRow {...props} myAlias={props.myAlias} pad marginTop={14} />}
+        ) : null}
+        {showBoostRow ? <BoostRow {...props} myAlias={props.myAlias} pad marginTop={14} /> : null}
       </TouchableOpacity>
     )
   }
@@ -62,7 +62,7 @@ export default function TextMsg(props) {
     return (
       <View style={styles.column}>
         <ClipMessage {...props} />
-        {showBoostRow && <BoostRow {...props} myAlias={props.myAlias} pad />}
+        {showBoostRow ? <BoostRow {...props} myAlias={props.myAlias} pad /> : null}
       </View>
     )
   if (isBoost) return <BoostMessage {...props} />
@@ -74,13 +74,13 @@ export default function TextMsg(props) {
         onLongPress={onLongPressHandler}
       >
         {/* TODO: Refactor with a better logic */}
-        {!!rumbleLink && (
+        {!!rumbleLink ? (
           <EmbedVideo type='rumble' link={rumbleLink} onLongPress={onLongPressHandler} />
-        )}
-        {!!youtubeLink && (
+        ) : null}
+        {!!youtubeLink ? (
           <EmbedVideo type='youtube' link={youtubeLink} onLongPress={onLongPressHandler} />
-        )}
-        {showBoostRow && <BoostRow {...props} myAlias={props.myAlias} pad />}
+        ) : null}
+        {showBoostRow ? <BoostRow {...props} myAlias={props.myAlias} pad /> : null}
       </TouchableOpacity>
     )
   return (
@@ -111,7 +111,7 @@ export default function TextMsg(props) {
           {message_content}
         </Typography>
       )}
-      {showBoostRow && (
+      {showBoostRow ? (
         <BoostRow
           {...props}
           isTribe={isTribe}
@@ -126,7 +126,7 @@ export default function TextMsg(props) {
             },
           })}
         />
-      )}
+      ) : null}
     </TouchableOpacity>
   )
 }

@@ -34,9 +34,9 @@ export default function JoinTribeModal() {
 
     return (
       <>
-        {showJoinTribe && params.get('uuid') && !loading && (
+        {showJoinTribe && params.get('uuid') && !loading ? (
           <JoinTribe visible={showJoinTribe} tribe={params} close={close} />
-        )}
+        ) : null}
       </>
     )
   })

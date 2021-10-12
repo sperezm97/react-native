@@ -3,7 +3,7 @@ import { relay } from 'api'
 import moment from 'moment'
 import { display, log } from 'lib/logging'
 
-const DAYS = 7
+const DAYS = 28
 
 export const getMessages = async (self: MsgStore, forceMore: boolean) => {
   const len = self.lengthOfAllMessages()
@@ -21,11 +21,12 @@ export const getMessages = async (self: MsgStore, forceMore: boolean) => {
     const dateq = moment.utc(self.lastFetched - 1000 * mult).format('YYYY-MM-DD%20HH:mm:ss')
     route += `?date=${dateq}`
   } else {
-    console.log('fetch2')
+    console.log('FETCHING ALL MESSAGES')
+    // console.log('fetch2')
     // else just get last week
-    console.log('=> GET LAST WEEK')
-    const start = moment().subtract(DAYS, 'days').format('YYYY-MM-DD%20HH:mm:ss')
-    route += `?date=${start}`
+    // console.log(`=> GET LAST ${DAYS} DAYS`)
+    // const start = moment().subtract(DAYS, 'days').format('YYYY-MM-DD%20HH:mm:ss')
+    // route += `?date=${start}`
   }
   display({
     name: 'getMessages',

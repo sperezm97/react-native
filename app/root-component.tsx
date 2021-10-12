@@ -85,12 +85,15 @@ const App = observer(() => {
     }
 
     check24Hour()
-
-    // TrackPlayer.setupPlayer();
     ;(async () => {
       const isSignedUp = !!(user.currentIP && user.authToken && !user.onboardStep)
-
       ui.setSignedUp(isSignedUp)
+
+      if (!isSignedUp) {
+        await user.attemptRehydrate()
+        setLoading(false)
+        return false
+      }
 
       if (isSignedUp) {
         instantiateRelay(
@@ -100,19 +103,16 @@ const App = observer(() => {
           disconnectedHandler,
           resetIP
         )
+        utils.sleep(500)
+        relay.registerWebsocketHandlers()
+
+        const pinWasEnteredRecently = await wasEnteredRecently()
+
+        if (pinWasEnteredRecently) ui.setPinCodeModal(true)
       }
-      const pinWasEnteredRecently = await wasEnteredRecently()
-
-      if (pinWasEnteredRecently) ui.setPinCodeModal(true)
-
-      utils.sleep(500)
-      relay.registerWebsocketHandlers()
-
       setLoading(false)
-
-      // user.testinit()
     })()
-  }, [])
+  }, [user.currentIP, user.authToken])
 
   async function resetIP() {
     ui.setLoadingHistory(true)
@@ -147,12 +147,12 @@ const App = observer(() => {
         <StatusBar />
         <NavigationContainer ref={navigationRef}>
           <Host>
-            {ui.signedUp && (
+            {ui.signedUp ? (
               <APNManager>
                 <Main />
               </APNManager>
-            )}
-            {!ui.signedUp && <Auth />}
+            ) : null}
+            {!ui.signedUp ? <Auth /> : null}
           </Host>
         </NavigationContainer>
       </PaperProvider>

@@ -39,13 +39,13 @@ export default function PubKey({ visible, close, pubkey }) {
             ...styles.content,
           }}
         >
-          {pubkey && <QRCode value={pubkey} size={SCREEN_WIDTH / 1.3} />}
-          {!pubkey && <Empty text='No Public Address found' h={30} />}
+          {pubkey ? <QRCode value={pubkey} size={SCREEN_WIDTH / 1.3} /> : null}
+          {!pubkey ? <Empty text='No Public Address found' h={30} /> : null}
           <Typography color={theme.title} style={{ marginTop: 40 }}>
             {pubkey}
           </Typography>
 
-          {pubkey && (
+          {pubkey ? (
             <View style={styles.buttonsWrap}>
               <Button onPress={() => share()} w={130}>
                 Share
@@ -54,7 +54,7 @@ export default function PubKey({ visible, close, pubkey }) {
                 Copy
               </Button>
             </View>
-          )}
+          ) : null}
         </View>
       </View>
     </ModalWrap>

@@ -157,7 +157,7 @@ export default function Chat() {
         <ActivityIndicator animating={true} />
       </View> */}
 
-      {showPod && <Podcast pod={pod} chat={chat} onBoost={onBoost} podError={podError} />}
+      {showPod ? <Podcast pod={pod} chat={chat} onBoost={onBoost} podError={podError} /> : null}
 
       <BottomBar chat={chat} pricePerMessage={pricePerMessage} tribeBots={tribeBots} />
     </KeyboardAvoidingView>

@@ -413,7 +413,7 @@ const Podcast = observer(({ pod, chat, onBoost, podError }: any) => {
   function Header() {
     return (
       <View style={{ alignItems: 'center', backgroundColor: theme.bg }}>
-        {pod.image && (
+        {pod.image ? (
           <View
             style={{
               ...styles.imgWrap,
@@ -432,13 +432,13 @@ const Podcast = observer(({ pod, chat, onBoost, podError }: any) => {
             />
             {/* <Replay msgs={replayMsgs.current} playing={playing} /> */}
           </View>
-        )}
+        ) : null}
         <View style={styles.top}>
-          {episode.title && (
+          {episode.title ? (
             <Typography size={18} numberOfLines={1}>
               {episode.title}
             </Typography>
-          )}
+          ) : null}
         </View>
         <View style={styles.track}>
           <Controls
@@ -456,7 +456,7 @@ const Podcast = observer(({ pod, chat, onBoost, podError }: any) => {
           />
         </View>
 
-        {!!pod.episodes && (
+        {!!pod.episodes ? (
           <View style={styles.list}>
             <View
               style={{
@@ -479,7 +479,7 @@ const Podcast = observer(({ pod, chat, onBoost, podError }: any) => {
               </Typography>
             </View>
           </View>
-        )}
+        ) : null}
       </View>
     )
   }

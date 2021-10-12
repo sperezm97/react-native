@@ -52,15 +52,15 @@ export default function RawInvoice({ visible, onClose, amount, payreq, paid }) {
               marginTop: 10,
             }}
           >
-            {amount && (
+            {amount ? (
               <Typography size={16} color={theme.title} style={{ marginBottom: 20 }}>
                 {`Amount:  ${amount}`}
                 <Typography color={theme.subtitle}>{` sats`}</Typography>
               </Typography>
-            )}
+            ) : null}
             <View style={{ position: 'relative' }}>
               <QRCode value={payreq} size={SCREEN_WIDTH / 1.2} />
-              {paid && (
+              {paid ? (
                 <View style={styles.paidWrap}>
                   <Typography
                     style={styles.paid}
@@ -73,7 +73,7 @@ export default function RawInvoice({ visible, onClose, amount, payreq, paid }) {
                     PAID
                   </Typography>
                 </View>
-              )}
+              ) : null}
             </View>
             <Typography
               size={14}

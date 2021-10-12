@@ -22,7 +22,7 @@ export default function PaymentWrap() {
 
   return useObserver(() => (
     <ModalWrap onClose={close} visible={ui.showPayModal}>
-      {ui.showPayModal && <Payment visible={ui.showPayModal} close={close} />}
+      {ui.showPayModal ? <Payment visible={ui.showPayModal} close={close} /> : null}
     </ModalWrap>
   ))
 }
@@ -180,16 +180,16 @@ function Payment({ visible, close }) {
     return (
       <Portal.Host>
         <ModalHeader title={label} onClose={handleOnClose} />
-        {main && (
+        {main ? (
           <Main
             contactless={!chat}
             contact={isLoopout ? null : contact}
             loading={loading}
             confirmOrContinue={confirmOrContinue}
           />
-        )}
+        ) : null}
 
-        {hasRawInvoice && (
+        {hasRawInvoice ? (
           <RawInvoice
             visible={hasRawInvoice}
             onClose={handleOnClose}
@@ -197,7 +197,7 @@ function Payment({ visible, close }) {
             payreq={rawInvoice.invoice}
             paid={rawInvoice.invoice === ui.lastPaidInvoice}
           />
-        )}
+        ) : null}
 
         <QR
           visible={next === 'payment' || next === 'loopout'}

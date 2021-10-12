@@ -45,15 +45,17 @@ export function useOwnedTribes(tribes) {
 
 function useSortTribesByLastMsg(tribesToShow) {
   const {
-    msg: { messages },
+    msg: { messages, msgsForChatroom },
   } = useStores()
 
   return tribesToShow.sort((a, b) => {
-    const amsgs = messages[a.chat.id]
+    // const amsgs = messages[a.chat.id]
+    const amsgs = msgsForChatroom(a.chat.id)
     const alastMsg = amsgs?.[0]
     const then = moment(new Date()).add(-30, 'days')
     const adate = alastMsg?.date ? moment(alastMsg.date) : then
-    const bmsgs = messages[b.chat.id]
+    // const bmsgs = messages[b.chat.id]
+    const bmsgs = msgsForChatroom(b.chat.id)
     const blastMsg = bmsgs?.[0]
     const bdate = blastMsg?.date ? moment(blastMsg.date) : then
     return adate.isBefore(bdate) ? 0 : -1
@@ -73,7 +75,9 @@ export function searchTribes(tribes, searchTerm) {
 
 export function allTribes(tribes, chats, user) {
   const chatsuids = chats.map((c) => c.uuid)
-  const ownedChats = chats.filter((c) => c.type === constants.chat_types.tribe && c.owner_pubkey === user.publicKey)
+  const ownedChats = chats.filter(
+    (c) => c.type === constants.chat_types.tribe && c.owner_pubkey === user.publicKey
+  )
 
   const tribesArray: any[] = Array.from(tribes)
 
@@ -130,7 +134,9 @@ export function useOwnerMediaType(msgs, tribe, type, myId): Array<Msg> {
 // feed from joined tribes
 export function useFeed(tribes, myid) {
   const tribesArray: any[] = Array.from(tribes.values())
-  const filteredTribesArray = tribesArray.filter((t) => t.joined && !t.owner && t.owner_pubkey !== INVITER_KEY)
+  const filteredTribesArray = tribesArray.filter(
+    (t) => t.joined && !t.owner && t.owner_pubkey !== INVITER_KEY
+  )
 
   let allTribes = filteredTribesArray.map((t) => processFeed(t, 6, myid))
 
@@ -152,13 +158,18 @@ export function useFeed(tribes, myid) {
 
 // not used temporarily
 export function useMediaType(msgs, type, myid) {
-  return msgs.filter((m) => m.type === type && m.sender !== myid && m.media_token && m.media_type.startsWith('image'))
+  return msgs.filter(
+    (m) => m.type === type && m.sender !== myid && m.media_token && m.media_type.startsWith('image')
+  )
 }
 
 export function useTribeMediaType(msgs, type) {
   return msgs.filter(
     (m) =>
-      m.type === type && m.media_token && m.media_type.startsWith('image') && m.status !== constants.statuses.deleted
+      m.type === type &&
+      m.media_token &&
+      m.media_type.startsWith('image') &&
+      m.status !== constants.statuses.deleted
   )
 }
 

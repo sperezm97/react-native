@@ -53,7 +53,7 @@ export default function AddMembers({ initialMemberIds, loading, finish }) {
   const flatListHeader: any = () => (
     <View style={styles.topBar}>
       <Typography>CONTACTS</Typography>
-      {!noInitials && (
+      {!noInitials ? (
         <TouchableOpacity
           activeOpacity={0.6}
           onPress={selectAll}
@@ -61,7 +61,7 @@ export default function AddMembers({ initialMemberIds, loading, finish }) {
         >
           <Typography>SELECT ALL</Typography>
         </TouchableOpacity>
-      )}
+      ) : null}
     </View>
   )
 

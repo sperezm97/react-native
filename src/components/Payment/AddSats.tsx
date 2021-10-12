@@ -33,7 +33,7 @@ export default function AddSats() {
       <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
         <BackHeader title='Add Sats' screen='Payment' />
         <View style={styles.content}>
-          {!selectedApp && (
+          {!selectedApp ? (
             <>
               {apps.map((app) => {
                 return (
@@ -55,8 +55,8 @@ export default function AddSats() {
                 )
               })}
             </>
-          )}
-          {selectedApp && <Do app={selectedApp} />}
+          ) : null}
+          {selectedApp ? <Do app={selectedApp} /> : null}
         </View>
       </View>
     </>

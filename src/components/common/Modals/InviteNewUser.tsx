@@ -39,7 +39,7 @@ export default function InviteNewUser() {
 
   const RowContent = (
     <>
-      {hasPrice && (
+      {hasPrice ? (
         <View style={styles.estimatedCost}>
           <Typography color={theme.title} fw='500' style={{ ...styles.estimatedCostText }}>
             ESTIMATED COST
@@ -49,7 +49,7 @@ export default function InviteNewUser() {
             <Typography color={theme.darkGrey}>sat</Typography>
           </View>
         </View>
-      )}
+      ) : null}
     </>
   )
 

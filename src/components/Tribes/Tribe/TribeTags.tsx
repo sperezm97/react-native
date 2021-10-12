@@ -127,7 +127,7 @@ export default function TribeTags(props) {
   return (
     <View style={containerStyle}>
       <View style={{ ...styles.content }}>
-        {!displayOnly && (
+        {!displayOnly ? (
           <>
             <View style={{ ...styles.inputWrap }}>
               <TextInput
@@ -145,11 +145,11 @@ export default function TribeTags(props) {
             </View>
             <InputAccessoryView nativeID={nativeID} done={addTag} doneText='Add' />
           </>
-        )}
+        ) : null}
 
         <View style={{ ...styles.badgeContainer }}>{renderTags()}</View>
       </View>
-      {!displayOnly && (
+      {!displayOnly ? (
         <View
           style={{
             ...styles.buttonWrap,
@@ -161,7 +161,7 @@ export default function TribeTags(props) {
             {saveText}
           </Button>
         </View>
-      )}
+      ) : null}
     </View>
   )
 }

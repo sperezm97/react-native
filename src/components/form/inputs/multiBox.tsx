@@ -22,7 +22,7 @@ export default function MultiBox({ label, setValue, value, options }) {
                 color='#6289FD'
               />
               <Text style={styles.optionLabel}>{o.label}</Text>
-              {o.custom && (
+              {o.custom ? (
                 <Custom
                   type={o.custom}
                   value={isSelected && value && value.custom}
@@ -40,7 +40,7 @@ export default function MultiBox({ label, setValue, value, options }) {
                     })
                   }
                 />
-              )}
+              ) : null}
               <Text style={styles.optionSuffix}>{o.suffix}</Text>
             </View>
           )
@@ -104,7 +104,7 @@ function Custom({ type, onFocus, onChange, value, isFocused }) {
         }}
       >
         <Icon name='calendar' color='grey' size={20} />
-        {value && <Text style={styles.dateValue}>{value}</Text>}
+        {value ? <Text style={styles.dateValue}>{value}</Text> : null}
       </TouchableOpacity>
     )
   }

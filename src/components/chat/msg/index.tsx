@@ -284,7 +284,7 @@ function MsgBubble(props) {
           marginHorizontal: 14,
         }}
       />
-      {(isMe || props.isTribeOwner) && (
+      {isMe || props.isTribeOwner ? (
         <IconButton
           onPress={onDeleteHandler}
           icon={() => <Ionicon name='trash' color={theme.red} size={20} />}
@@ -294,7 +294,7 @@ function MsgBubble(props) {
             marginHorizontal: 14,
           }}
         />
-      )}
+      ) : null}
     </Popover>
   )
 }

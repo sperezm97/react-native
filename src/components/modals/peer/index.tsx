@@ -25,13 +25,13 @@ export default function PeerChat() {
 
   return useObserver(() => (
     <View style={styles.wrap}>
-      {hasLocalStream && <SmallVid />}
+      {hasLocalStream ? <SmallVid /> : null}
 
-      {hasRemoteStream && <BigVid />}
+      {hasRemoteStream ? <BigVid /> : null}
 
-      {peer.joined && !hasRemoteStream && (
+      {peer.joined && !hasRemoteStream ? (
         <ActivityIndicator color={peer.open ? 'white' : 'grey'} animating={true} />
-      )}
+      ) : null}
 
       <View style={styles.toolbar}>
         <HangUpButton onPress={leave} />

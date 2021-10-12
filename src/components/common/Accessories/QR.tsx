@@ -65,7 +65,7 @@ export default function QR({
             scanned={!!scanned}
             handleBarCodeScanned={handleBarCodeScanned}
           />
-          {showPaster && (
+          {showPaster ? (
             <>
               <View style={{ ...styles.inputWrap, backgroundColor: theme.bg }}>
                 <TextInput
@@ -84,7 +84,7 @@ export default function QR({
                   backgroundColor: theme.bg,
                 }}
               >
-                {text.length > 0 && (
+                {text.length > 0 ? (
                   <Button
                     w={125}
                     onPress={() => confirm(text)}
@@ -93,10 +93,10 @@ export default function QR({
                   >
                     CONFIRM
                   </Button>
-                )}
+                ) : null}
               </View>
             </>
-          )}
+          ) : null}
         </KeyboardAwareScrollView>
       </View>
     </Modal>

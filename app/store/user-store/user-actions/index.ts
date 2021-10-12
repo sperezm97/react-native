@@ -1,3 +1,4 @@
+export * from './attemptRehydrate'
 export * from './finishInvite'
 export * from './generateToken'
 export * from './reportError'

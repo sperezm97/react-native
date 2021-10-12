@@ -53,7 +53,7 @@ export default function Members({ route }) {
             // title={`${tribe.name} Members`}
             title='Members'
             navigate={() => navigation.goBack()}
-            // action={tribe.owner && <MemberHeader openDialog={() => setAddMember(true)} />}
+            // action={tribe.owner ? <MemberHeader openDialog={() => setAddMember(true)} /> : null}
           />
           <View style={styles.content}>
             {contactsToShow && contactsToShow.length > 0 ? (

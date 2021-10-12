@@ -87,7 +87,7 @@ export default function AddTribe() {
     >
       <ModalHeader title={getTitle()} onClose={close} />
       <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
-        {next === 1 && (
+        {next === 1 ? (
           <ScrollView style={styles.scroller} contentContainerStyle={styles.container}>
             <Form
               schema={schemas.tribe}
@@ -112,8 +112,8 @@ export default function AddTribe() {
               }}
             />
           </ScrollView>
-        )}
-        {next === 2 && (
+        ) : null}
+        {next === 2 ? (
           <Animated.View
             style={{
               transform: [
@@ -127,8 +127,8 @@ export default function AddTribe() {
 
             {/* <AddMembers initialMemberIds={[]} loading={loading} finish={finish} /> */}
           </Animated.View>
-        )}
-        {![1, 2].includes(next) && (
+        ) : null}
+        {![1, 2].includes(next) ? (
           <Animated.View
             style={{
               transform: [
@@ -154,7 +154,7 @@ export default function AddTribe() {
               />
             </View>
           </Animated.View>
-        )}
+        ) : null}
       </View>
     </Modal>
   ))

@@ -74,11 +74,11 @@ export default function Support() {
         <ScrollView style={styles.scroll} contentContainerStyle={styles.inner}>
           <Typography size={14}>{details.logs}</Typography>
         </ScrollView>
-        {loading && (
+        {loading ? (
           <View style={styles.spinWrap}>
             <ActivityIndicator animating={true} color={theme.icon} />
           </View>
-        )}
+        ) : null}
       </View>
 
       <View style={styles.bottom}>

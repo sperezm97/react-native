@@ -66,7 +66,7 @@ export default function QrInput({
               <Typography color={theme.subtitle}>No Public key found.</Typography>
             )}
           </View>
-          {value && (
+          {value ? (
             <View
               style={{
                 borderBottomWidth: 1,
@@ -74,7 +74,7 @@ export default function QrInput({
                 marginBottom: 25,
               }}
             />
-          )}
+          ) : null}
         </>
       ) : (
         <View>

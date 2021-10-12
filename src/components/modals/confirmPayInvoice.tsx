@@ -23,7 +23,7 @@ export default function ConfirmPayInvoiceWrap({ visible }) {
       swipeDirection='down'
       swipeThreshold={20}
     >
-      {visible && <ConfirmPayInvoice close={close} />}
+      {visible ? <ConfirmPayInvoice close={close} /> : null}
     </ModalWrap>
   )
 }

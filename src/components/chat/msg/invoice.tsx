@@ -50,12 +50,12 @@ export default function Invoice(props) {
         <Text style={{ ...styles.amount, color: theme.title }}>{amount}</Text>
         <Text style={styles.sat}>sat</Text>
       </View>
-      {hasContent && (
+      {hasContent ? (
         <View style={{ ...styles.row, marginTop: 12 }}>
           <Text style={{ ...styles.text, color: theme.title }}>{props.message_content}</Text>
         </View>
-      )}
-      {showPayButton && !isExpired && (
+      ) : null}
+      {showPayButton && !isExpired ? (
         <View style={{ ...styles.row, marginTop: 12 }}>
           <Button
             style={styles.payButton}
@@ -67,7 +67,7 @@ export default function Invoice(props) {
             Pay
           </Button>
         </View>
-      )}
+      ) : null}
     </View>
   )
 }

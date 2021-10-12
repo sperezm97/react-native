@@ -24,20 +24,20 @@ export default function ShowRawInvoice({ amount, payreq, paid }) {
 
   return (
     <View style={{ ...styles.innerWrap, minHeight: h }}>
-      {amount && (
+      {amount ? (
         <View style={styles.amtWrap}>
           <Text
             style={{ fontSize: 16, color: theme.title, marginBottom: 12 }}
           >{`Amount: ${amount} sats`}</Text>
         </View>
-      )}
+      ) : null}
       <View style={styles.qrWrap}>
         <QRCode value={payreq} size={720} />
-        {paid && (
+        {paid ? (
           <View style={styles.paidWrap}>
             <Text style={styles.paid}>PAID</Text>
           </View>
-        )}
+        ) : null}
       </View>
       <Text style={{ ...styles.payreqText, color: theme.title }}>{payreq}</Text>
       <View style={styles.buttonsWrap}>

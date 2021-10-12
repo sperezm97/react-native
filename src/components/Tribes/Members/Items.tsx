@@ -60,14 +60,14 @@ export function Contact(props) {
         {/* <Text style={{ ...styles.contactName, color: theme.title }}>{contact.alias}</Text> */}
       </View>
       <View style={styles.checker}>
-        {!unselectable && (
+        {!unselectable ? (
           <RadioButton
             status={selected ? 'checked' : 'unchecked'}
             value='contact'
             color={theme.primary}
             onPress={onPress}
           />
-        )}
+        ) : null}
       </View>
     </TouchableOpacity>
   )
@@ -121,11 +121,11 @@ export function SelectedContact({ contact, onPress, removable }) {
     <View style={{ ...styles.selectedContact, backgroundColor: theme.bg }}>
       <View style={{ ...styles.selAvatar, borderColor: theme.border }}>
         {/* <Image source={hasImg ? { uri } : require('../../../../android_assets/avatar.png')} style={{ width: 54, height: 54, borderRadius: 27 }} resizeMode={'cover'} /> */}
-        {removable && (
+        {removable ? (
           <TouchableOpacity style={styles.tinyButton} onPress={onPress}>
             <Icon name='close' color='white' size={14} />
           </TouchableOpacity>
-        )}
+        ) : null}
       </View>
       <Typography size={16}>{contact.alias}</Typography>
     </View>

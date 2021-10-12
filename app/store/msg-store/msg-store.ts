@@ -17,7 +17,7 @@ export const MsgStoreModel = types
   .model('MsgStore')
   .props({
     lastFetched: types.optional(types.number, 0),
-    lastSeen: types.optional(types.number, 0),
+    lastSeen: types.optional(types.frozen(), {}),
     messages: types.optional(types.map(MsgModel), {}),
   })
   .extend(withEnvironment)
@@ -92,20 +92,32 @@ export const MsgStoreModel = types
       const now = new Date().getTime()
       let unseenCount = 0
       const lastSeenObj = self.lastSeen
-      Object.entries(self.messages).forEach(function ([id, msgs]) {
-        const lastSeen = lastSeenObj[id || '_'] || now
-        msgs.forEach((m) => {
-          if (m.sender !== myid) {
-            const unseen = moment(new Date(lastSeen)).isBefore(moment(m.date))
-            if (unseen) unseenCount += 1
-          }
-        })
+      ;(self as MsgStore).messagesArray.forEach(function (msg: Msg) {
+        const lastSeen = lastSeenObj[msg.chat_id || '_'] || now
+        if (msg.sender !== myid) {
+          const unseen = moment(new Date(lastSeen)).isBefore(moment(msg.date))
+          if (unseen) unseenCount += 1
+        }
+      })
+      display({
+        name: 'countUnseenMessages',
+        preview: `Unseen messages: ${unseenCount}`,
+        important: true,
       })
       return unseenCount
     },
-    filterMessagesByContent(id, something): any {
-      console.log(id, something)
-      return []
+    filterMessagesByContent(id, filterString): any {
+      const list = (self as MsgStore).msgsForChatroom(id)
+      if (!list) return []
+      const filteredMsgs = list.filter(
+        (m) => !!m.message_content && m.message_content.includes(filterString)
+      )
+      // display({
+      //   name: 'filterMessagesByContent',
+      //   important: true,
+      //   value: { list, id, filterString, filteredMsgs },
+      // })
+      return filteredMsgs
     },
     lengthOfAllMessages(): number {
       let l = 0

@@ -59,7 +59,7 @@ export default function Menu(props) {
               disabled={item.disabled}
             >
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                {item.thumbIcon && (
+                {item.thumbIcon ? (
                   <View
                     style={{
                       ...styles.thumbWrapper,
@@ -72,8 +72,8 @@ export default function Menu(props) {
                       <Icon name={item.thumbIcon} size={18} color={item.thumbColor} />
                     )}
                   </View>
-                )}
-                {item.thumbImage && (
+                ) : null}
+                {item.thumbImage ? (
                   <Image
                     source={
                       typeof item.thumbImage === 'string'
@@ -82,18 +82,18 @@ export default function Menu(props) {
                     }
                     style={{ ...styles.thumbImage }}
                   />
-                )}
+                ) : null}
                 <View>
                   <Typography size={16}>{item.title}</Typography>
-                  {item.description && (
+                  {item.description ? (
                     <Typography size={14} color={theme.subtitle}>
                       {item.description}
                     </Typography>
-                  )}
+                  ) : null}
                 </View>
               </View>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                {item.preview && (
+                {item.preview ? (
                   <Typography
                     style={{
                       marginRight: 5,
@@ -101,8 +101,8 @@ export default function Menu(props) {
                   >
                     {item.preview}
                   </Typography>
-                )}
-                {item.icon && <Icon name={item.icon} color={theme.icon} size={25} />}
+                ) : null}
+                {item.icon ? <Icon name={item.icon} color={theme.icon} size={25} /> : null}
               </View>
             </TouchableOpacity>
           )

@@ -16,7 +16,7 @@ export default function RedeemWrap({ visible }) {
 
   return (
     <ModalWrap onClose={close} visible={visible}>
-      {visible && <Redeem close={close} />}
+      {visible ? <Redeem close={close} /> : null}
     </ModalWrap>
   )
 }

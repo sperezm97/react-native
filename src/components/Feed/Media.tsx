@@ -67,7 +67,7 @@ function Media(props) {
 
   return (
     <>
-      {hasImgData && (
+      {hasImgData ? (
         <View style={{ ...styles.wrap }}>
           <View style={{ ...styles.header }}>
             <TouchableOpacity activeOpacity={0.6} onPress={onTribeOwnerPress}>
@@ -92,15 +92,15 @@ function Media(props) {
 
           <View style={{ ...styles.footer }}>
             <Boost onPress={onBoostPress} circleH={30} circleW={30} />
-            {showBoostRow && (
+            {showBoostRow ? (
               <BoostDetails {...props} myAlias={user.alias} myPhoto={myPhoto} myid={user.myid} />
-            )}
+            ) : null}
           </View>
           {/* <View style={{ ...styles.meta }}></View> */}
 
-          {index + 1 !== mediaLength && <Divider mt={10} mb={10} />}
+          {index + 1 !== mediaLength ? <Divider mt={10} mb={10} /> : null}
         </View>
-      )}
+      ) : null}
     </>
   )
 }

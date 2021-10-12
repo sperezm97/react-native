@@ -250,9 +250,9 @@ export default function Code(props) {
         </KeyboardAwareScrollView>
 
         <View style={styles.spinWrap}>
-          {checking && <ActivityIndicator animating={true} color='white' />}
+          {checking ? <ActivityIndicator animating={true} color='white' /> : null}
         </View>
-        {!!wrong && (
+        {!!wrong ? (
           <View
             style={{
               ...styles.message,
@@ -269,8 +269,8 @@ export default function Code(props) {
               </Typography>
             </TouchableOpacity>
           </View>
-        )}
-        {!!error && (
+        ) : null}
+        {!!error ? (
           <View
             style={{
               ...styles.message,
@@ -282,10 +282,10 @@ export default function Code(props) {
               {error}
             </Typography>
           </View>
-        )}
+        ) : null}
       </RadialGradient>
 
-      {scanning && (
+      {scanning ? (
         <QR
           scannerH={SCREEN_HEIGHT - 60}
           visible={scanning}
@@ -293,7 +293,7 @@ export default function Code(props) {
           onScan={(data) => scan(data)}
           showPaster={false}
         />
-      )}
+      ) : null}
       <PinCodeModal visible={showPin}>
         <PIN
           forceEnterMode

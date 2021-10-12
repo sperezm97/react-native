@@ -63,7 +63,7 @@ export default function TheTextInput({
         textAlignVertical='auto'
         inputAccessoryViewID={name}
       />
-      {hasAccessoryView && <InputAccessoryView nativeID={name} />}
+      {hasAccessoryView ? <InputAccessoryView nativeID={name} /> : null}
     </>
   )
 }

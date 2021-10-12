@@ -173,21 +173,21 @@ function SwipeItem(props) {
 
   return (
     <View style={{ ...styles.swipeItem }}>
-      {isImg && showPurchaseButton && !purchased && (
+      {isImg && showPurchaseButton && !purchased ? (
         <View style={{ ...styles.locked }}>
           <>
             <Ionicon name='lock-closed' color={theme.silver} size={50} />
-            {showPurchaseButton && (
+            {showPurchaseButton ? (
               <Button w='50%' onPress={onPurchasePress} loading={buying} style={{ marginTop: 14 }}>
                 {purchased ? 'Purchased' : `Pay ${amt} sat`}
               </Button>
-            )}
+            ) : null}
           </>
         </View>
-      )}
-      {hasImgData && (
+      ) : null}
+      {hasImgData ? (
         <View>
-          {showStats && (
+          {showStats ? (
             <View style={{ ...styles.stats }}>
               <Typography
                 size={12}
@@ -206,7 +206,7 @@ function SwipeItem(props) {
                 Purchased
               </Typography>
             </View>
-          )}
+          ) : null}
           {/* <View
             style={{
               // width: w,
@@ -231,11 +231,11 @@ function SwipeItem(props) {
           />
           {/* </View> */}
         </View>
-      )}
+      ) : null}
 
       <View style={{ ...styles.footer }}>
         <View style={{ ...styles.row, marginBottom: 10 }}>
-          {hasContent && (
+          {hasContent ? (
             <>
               {message_content.length > 50 ? (
                 <ViewMoreText
@@ -253,14 +253,16 @@ function SwipeItem(props) {
                 </Typography>
               )}
             </>
-          )}
+          ) : null}
         </View>
 
         <View style={styles.row}>
           {!isMe ? <Boost onPress={onBoostPress} /> : <View />}
 
           <View>
-            {showBoostRow && <BoostDetails {...props} myAlias={user.alias} myid={user.myid} />}
+            {showBoostRow ? (
+              <BoostDetails {...props} myAlias={user.alias} myid={user.myid} />
+            ) : null}
           </View>
         </View>
       </View>

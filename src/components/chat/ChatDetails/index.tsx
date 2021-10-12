@@ -158,10 +158,12 @@ export default function ChatDetails({ route }) {
         />
 
         <View style={styles.content}>
-          {hasGroup && (
+          {hasGroup ? (
             <View style={styles.groupInfo}>
               <View style={styles.groupInfoLeft}>
-                {group && <Avatar size={50} aliasSize={18} big alias={group.name} photo={uri} />}
+                {group ? (
+                  <Avatar size={50} aliasSize={18} big alias={group.name} photo={uri} />
+                ) : null}
                 <View style={styles.groupInfoText}>
                   <Typography size={16} style={{ marginBottom: 4 }}>
                     {group.name}
@@ -171,12 +173,12 @@ export default function ChatDetails({ route }) {
                     size={12}
                     style={{ marginBottom: 4 }}
                   >{`Created on ${moment(group.created_at).format('ll')}`}</Typography>
-                  {Boolean(group.price_per_message !== null || group.escrow_amount !== null) && (
+                  {Boolean(group.price_per_message !== null || group.escrow_amount !== null) ? (
                     <Typography
                       size={12}
                       color={theme.subtitle}
                     >{`Price per message: ${group.price_per_message}, Amount to stake: ${group.escrow_amount}`}</Typography>
-                  )}
+                  ) : null}
                 </View>
               </View>
 
@@ -193,7 +195,7 @@ export default function ChatDetails({ route }) {
                 <MaterialCommunityIcon name='dots-vertical' size={25} color={theme.icon} />
               </TouchableOpacity>
             </View>
-          )}
+          ) : null}
 
           <View style={{ ...styles.infoWrap }}>
             <Typography size={16}>Alias</Typography>
@@ -206,7 +208,7 @@ export default function ChatDetails({ route }) {
                 style={{ ...styles.input, backgroundColor: theme.bg }}
                 underlineColor={theme.border}
               />
-              {group && (
+              {group ? (
                 <View style={{ ...styles.infoImg }}>
                   <AvatarEdit
                     onPress={() => setImageDialog(true)}
@@ -219,7 +221,7 @@ export default function ChatDetails({ route }) {
                     <Avatar size={45} aliasSize={18} big alias={group.my_alias} photo={myPhoto} />
                   </AvatarEdit>
                 </View>
-              )}
+              ) : null}
             </View>
 
             <InputAccessoryView nativeID={nativeID} done={updateAlias} />
@@ -281,14 +283,14 @@ function DetailsAction({ chat }) {
 
     return (
       <>
-        {chat && (
+        {chat ? (
           <IconButton
             icon={() => (
               <FeatherIcon name={isMuted ? 'bell-off' : 'bell'} size={22} color={theme.icon} />
             )}
             onPress={muteChat}
           />
-        )}
+        ) : null}
       </>
     )
   })

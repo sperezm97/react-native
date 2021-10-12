@@ -163,8 +163,10 @@ export default function Ready(props) {
             round={40}
             fs={15}
           >
-            {loading && <ActivityIndicator animating={loading} color={theme.grey} size={18} />}
-            {loading && <View style={{ width: 12, height: 1 }} />}
+            {loading ? (
+              <ActivityIndicator animating={loading} color={theme.grey} size={18} />
+            ) : null}
+            {loading ? <View style={{ width: 12, height: 1 }} /> : null}
             Finish
           </Button>
         </View>

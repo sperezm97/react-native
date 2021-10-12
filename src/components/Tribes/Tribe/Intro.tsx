@@ -129,14 +129,14 @@ export default function Intro({ tribe }) {
               <Typography size={22} fw='600' numberOfLines={1}>
                 {tribe.name}
               </Typography>
-              {!tribe.owner && (
+              {!tribe.owner ? (
                 <>
                   <View style={{ ...styles.dot, backgroundColor: theme.text }} />
                   <Typography size={14} fw='500' color={theme.subtitle} numberOfLines={1}>
                     {tribe.owner_alias?.trim()}
                   </Typography>
                 </>
-              )}
+              ) : null}
             </View>
 
             <View
