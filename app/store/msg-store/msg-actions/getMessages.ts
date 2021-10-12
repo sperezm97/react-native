@@ -2,6 +2,7 @@ import { MsgStore } from '../msg-store'
 import { relay } from 'api'
 import moment from 'moment'
 import { display, log } from 'lib/logging'
+import Bugsnag from '@bugsnag/react-native'
 
 const DAYS = 28
 
@@ -42,6 +43,8 @@ export const getMessages = async (self: MsgStore, forceMore: boolean) => {
     // })
     if (!r) return
 
+    // throw 'TEST'
+
     if (r.new_messages?.length) {
       await self.batchDecodeMessages(r.new_messages)
     } else {
@@ -51,6 +54,7 @@ export const getMessages = async (self: MsgStore, forceMore: boolean) => {
       })
     }
   } catch (e) {
+    Bugsnag.notify(e)
     console.log('getMessages error', e)
   }
   return true

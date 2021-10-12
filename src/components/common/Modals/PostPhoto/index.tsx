@@ -25,10 +25,13 @@ export default function PostPhotoWrap() {
     const theme = useTheme()
 
     const visible = !!(
-      ui.imgViewerParams &&
-      (ui.imgViewerParams.get('data') ||
-        ui.imgViewerParams.get('uri') ||
-        ui.imgViewerParams.get('msg'))
+      (
+        ui.imgViewerParams &&
+        (!!ui.imgViewerParams.data || !!ui.imgViewerParams.uri || !!ui.imgViewerParams.msg)
+      )
+      // (ui.imgViewerParams.get('data') ||
+      //   ui.imgViewerParams.get('uri') ||
+      //   ui.imgViewerParams.get('msg'))
     )
 
     const params = ui.imgViewerParams

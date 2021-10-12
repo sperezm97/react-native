@@ -47,7 +47,7 @@ export const UiStoreModel = types
     rawInvoiceModalParams: types.maybeNull(types.map(types.frozen())),
     lastPaidInvoice: '',
     joinTribeParams: types.maybeNull(types.map(types.frozen())),
-    imgViewerParams: types.maybeNull(types.map(types.frozen())),
+    imgViewerParams: types.optional(types.frozen(), {}),
     vidViewerParams: types.maybeNull(types.map(types.frozen())),
     rtcParams: types.maybeNull(types.map(types.frozen())),
     jitsiMeet: false,
@@ -229,7 +229,8 @@ export const UiStoreModel = types
         self.imgViewerParams = null
         return
       }
-      self.imgViewerParams.replace(params)
+      // self.imgViewerParams.replace(params) // threw error
+      self.imgViewerParams = params
     },
     setVidViewerParams(params: { [k: string]: any } | null) {
       if (!params) {
