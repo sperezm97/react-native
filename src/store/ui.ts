@@ -6,6 +6,18 @@ import { Contact } from './contacts'
 type PayMode = '' | 'invoice' | 'payment' | 'loopout'
 
 export class UiStore {
+  @observable messagesRestored: number = 0
+  @action setMessagesRestored(b) {
+    console.log(`setMessagesRestored: ${b}`)
+    this.messagesRestored = b
+  }
+
+  @observable restoringModal: boolean = false
+  @action setRestoringModal(b) {
+    console.log(`setRestoringModal: ${b}`)
+    this.restoringModal = b
+  }
+
   @observable ready: boolean = false
   @action setReady(ready) {
     this.ready = ready
