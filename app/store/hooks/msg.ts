@@ -241,11 +241,11 @@ export function useMsgSender(m, contactList, isTribe) {
   } else {
     senderAlias = sender?.alias
   }
-  display({
-    name: 'useMsgSender',
-    preview: `LOOP THROUGH ${contactList.length} CONTACTS`,
-    important: true,
-  })
+  // display({
+  //   name: 'useMsgSender',
+  //   preview: `LOOP THROUGH ${contactList.length} CONTACTS`,
+  //   important: true,
+  // })
   return { senderAlias, senderPic }
 }
 
