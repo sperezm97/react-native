@@ -9,7 +9,7 @@ import { name as appName } from './app.json'
 //   NativeModules.DevSettings.setIsDebuggingRemotely(true)
 // }
 
-LogBox.ignoreLogs(['Require cycle:'])
+LogBox.ignoreLogs(['Require cycle:', "Can't perform a React"])
 
 AppRegistry.registerComponent(appName, () => App)
 TrackPlayer.registerPlaybackService(() => require('./src/components/Podcast/Service'))
