@@ -19,9 +19,10 @@ import {
 } from './msgHelpers'
 import { updateRealmMsg } from '../realm/exports'
 import { persistMsgLocalForage } from './storage'
+import { uiStore } from './ui'
 import { userStore } from './user'
 
-const DAYS = 7
+const DAYS = 60
 export const MAX_MSGS_PER_CHAT = Platform.OS === 'android' ? 100 : 1000
 export const MAX_MSGS_RESTORE = Platform.OS === 'android' ? 5000 : 50000
 
@@ -139,6 +140,8 @@ class MsgStore {
     try {
       let done = false
       let offset = 0
+      uiStore.setMessagesRestored(0)
+      uiStore.setRestoringModal(true)
       const dateq = moment.utc(0).format('YYYY-MM-DD%20HH:mm:ss')
       let msgs: { [k: number]: Msg[] } = ({} = {})
 
@@ -156,12 +159,15 @@ class MsgStore {
         }
 
         offset += 200
+        uiStore.setMessagesRestored(offset)
+        console.log('offset:', offset)
         if (offset >= MAX_MSGS_RESTORE) done = true
       }
 
       this.sortAllMsgs(msgs)
       this.lastFetched = new Date().getTime()
       this.persister()
+      uiStore.setRestoringModal(false)
     } catch (error) {
       console.log('restoreMessages error', error)
     }
@@ -170,6 +176,7 @@ class MsgStore {
   @action
   async getMessages(forceMore: boolean = false) {
     const len = this.lengthOfAllMessages()
+    console.log(`Length of all messages: ${len}`)
     if (len === 0) {
       return this.restoreMessages()
     }
@@ -178,9 +185,10 @@ class MsgStore {
       const mult = 1
       const dateq = moment.utc(this.lastFetched - 1000 * mult).format('YYYY-MM-DD%20HH:mm:ss')
       route += `?date=${dateq}`
+      console.log('Getting more, no force, with route:', route)
     } else {
       // else just get last week
-      console.log('=> GET LAST WEEK')
+      console.log(`=> GET LAST ${DAYS} DAYS`)
       const start = moment().subtract(DAYS, 'days').format('YYYY-MM-DD%20HH:mm:ss')
       route += `?date=${start}`
     }
@@ -188,7 +196,10 @@ class MsgStore {
       const r = await relay.get(route)
       if (!r) return
       if (r.new_messages && r.new_messages.length) {
+        console.log(`Length of NEW messages: ${r.new_messages.length}`)
+
         await this.batchDecodeMessages(r.new_messages)
+        console.log('DONE DECODING')
       } else {
         this.sortAllMsgs(null)
       }
