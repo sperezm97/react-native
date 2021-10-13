@@ -74,6 +74,7 @@ export const MsgStoreModel = types
     },
     setMessage: (msg: Msg) => {
       self.messages.set(msg.id.toString(), msg)
+      ;(self as MsgStore).rebuildCache()
     },
     setMessages: (msgs: Msg[]) => {
       const formattedArray = []
@@ -102,6 +103,35 @@ export const MsgStoreModel = types
       })
 
       self.messages.merge(formattedArray)
+      self.messageCache = sortedCachedMessages
+    },
+    rebuildCache() {
+      const msgs = Array.from(self.messages.values())
+      const formattedArray = []
+      const messagesByChatroom = {}
+      msgs.forEach((msg) => {
+        formattedArray.push([msg.id, msg])
+        if (typeof messagesByChatroom[msg.chat_id] === 'object') {
+          messagesByChatroom[msg.chat_id].push(msg)
+        } else {
+          messagesByChatroom[msg.chat_id] = []
+        }
+      })
+
+      let sortedCachedMessages = {}
+      Object.entries(messagesByChatroom).forEach((entries) => {
+        const k = entries[0]
+        const v: Msg[] = entries[1]
+        v.sort((a, b) => moment(b.date).unix() - moment(a.date).unix())
+        sortedCachedMessages[k] = v
+      })
+
+      display({
+        name: 'rebuildCache',
+        preview: `Setting ${msgs.length} messages and caching`,
+        value: { msgs, formattedArray, messagesByChatroom, sortedCachedMessages },
+      })
+
       self.messageCache = sortedCachedMessages
     },
   }))

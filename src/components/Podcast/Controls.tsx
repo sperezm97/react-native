@@ -54,7 +54,9 @@ export default function Controls(props) {
       url: ep.enclosureUrl,
       type: 'clip',
     })
-    if (props.myPubkey) obj.pubkey = props.myPubkey
+    if (props.myPubkey) {
+      obj.setPubkey(props.myPubkey)
+    } // obj.pubkey = props.myPubkey
     EE.emit(EXTRA_TEXT_CONTENT, obj)
     if (quoteCallback) quoteCallback()
   }

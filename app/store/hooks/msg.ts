@@ -37,19 +37,19 @@ export function useMsgs(chat, limit?: number) {
   // const msgs = msg.messages[theID]
   const msgs = msg.msgsForChatroom(theID)
 
-  const shownMsgs = msgs?.slice(0, limit || 1000)
+  const shownMsgs = msgs?.slice(0, limit || 5000) // up from 1000
 
   const messages = processMsgs(shownMsgs, isTribe, contacts.contactsArray, myid)
 
   const msgsWithDates = msgs && injectDates(messages)
   const ms = msgsWithDates || []
 
-  display({
-    name: 'useMsgs',
-    preview: `A LOT`,
-    value: { chat, limit, ms },
-    important: true,
-  })
+  // display({
+  //   name: 'useMsgs',
+  //   preview: `A LOT`,
+  //   value: { chat, limit, ms },
+  //   important: true,
+  // })
 
   return ms
 }

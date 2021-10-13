@@ -28,19 +28,26 @@ export const PodcastModel = types.model('Podcast').props({
 
 export interface Podcast extends Instance<typeof PodcastModel> {}
 
-export const StreamPaymentModel = types.model('StreamPayment').props({
-  feedID: types.number,
-  itemID: types.number,
-  ts: types.number,
-  speed: types.maybe(types.string),
-  title: types.maybe(types.string),
-  text: types.maybe(types.string),
-  url: types.maybe(types.string),
-  pubkey: types.maybe(types.string),
-  type: types.maybe(types.string),
-  uuid: types.maybe(types.string),
-  amount: types.maybe(types.number),
-})
+export const StreamPaymentModel = types
+  .model('StreamPayment')
+  .props({
+    feedID: types.number,
+    itemID: types.number,
+    ts: types.number,
+    speed: types.maybe(types.string),
+    title: types.maybe(types.string),
+    text: types.maybe(types.string),
+    url: types.maybe(types.string),
+    pubkey: types.maybe(types.string),
+    type: types.maybe(types.string),
+    uuid: types.maybe(types.string),
+    amount: types.maybe(types.number),
+  })
+  .actions((self) => ({
+    setPubkey(pubkey: string) {
+      self.pubkey = pubkey
+    },
+  }))
 
 export interface StreamPayment extends Instance<typeof StreamPaymentModel> {}
 
