@@ -23,6 +23,7 @@ export const getMessages = async (self: MsgStore, forceMore: boolean) => {
     route += `?date=${dateq}`
   } else {
     console.log('FETCHING ALL MESSAGES')
+    route += '?limit=5000'
     // console.log('fetch2')
     // else just get last week
     // console.log(`=> GET LAST ${DAYS} DAYS`)
