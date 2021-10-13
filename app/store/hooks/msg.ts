@@ -59,13 +59,13 @@ const hideTypes = ['payment', 'purchase', 'purchase_accept', 'purchase_deny']
 function processMsgs(incomingmsgs: Msg[], isTribe: boolean, contacts: Contact[], myid: number) {
   // "deep clone" the messages array
   const msgs = incomingmsgs && incomingmsgs.map((a) => Object.assign({}, a)).reverse()
-  display({
-    name: 'processMsgs',
-    preview: `LOOP THROUGH ${incomingmsgs.length} MSGS TWICE`,
-    important: true,
-  })
   const ms = []
   if (!msgs) return ms
+  // display({
+  //   name: 'processMsgs',
+  //   preview: `LOOP THROUGH ${incomingmsgs.length} MSGS TWICE`,
+  //   important: true,
+  // })
   for (let i = 0; i < msgs.length; i++) {
     let skip = false
     const msg = msgs[i]
