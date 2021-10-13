@@ -9,6 +9,7 @@ import Oauth from './oauth'
 import Subscribe from './subscribe'
 import Redeem from './redeem'
 import VideoViewer from './vidViewer'
+import { RestoringMessages } from './restoringMessages'
 
 export default function Modals() {
   const { ui } = useStores()
@@ -20,6 +21,7 @@ export default function Modals() {
     const showSubModal = ui.subModalParams ? true : false
     const showRedeemModal = ui.redeemModalParams ? true : false
     const showVid = ui.vidViewerParams ? true : false
+    const restoringModalVisible = ui.restoringModal
 
     return (
       <>
@@ -30,6 +32,7 @@ export default function Modals() {
         <Subscribe visible={showSubModal} />
         <Redeem visible={showRedeemModal} />
         <VideoViewer params={showVid} visible={ui.vidViewerParams} />
+        <RestoringMessages visible={restoringModalVisible} />
       </>
     )
   })
