@@ -12,9 +12,11 @@ export const batchDecodeMessages = async (self: MsgStore, msgs: Msg[]) => {
   })
 
   self.setLastFetched(new Date().getTime())
-  const first10 = msgs.slice(msgs.length - 10)
-  const rest = msgs.slice(0, msgs.length - 10)
-  const decodedMsgs = await decodeMessages(first10)
+  const decodedMsgs = await decodeMessages(msgs)
+
+  // const first10 = msgs.slice(msgs.length - 10)
+  // const rest = msgs.slice(0, msgs.length - 10)
+  // const decodedMsgs = await decodeMessages(first10)
 
   let messagesToSave = []
   decodedMsgs.forEach((msg) => {
@@ -24,14 +26,14 @@ export const batchDecodeMessages = async (self: MsgStore, msgs: Msg[]) => {
 
   self.setMessages(messagesToSave)
 
-  messagesToSave = []
-  const decodedRest = await decodeMessages(rest)
+  // messagesToSave = []
+  // const decodedRest = await decodeMessages(rest)
 
-  decodedRest.forEach((msg) => {
-    const normalizedMessage = normalizeMessage(msg)
-    messagesToSave.push(normalizedMessage)
-  })
-  self.setMessages(messagesToSave)
+  // decodedRest.forEach((msg) => {
+  //   const normalizedMessage = normalizeMessage(msg)
+  //   messagesToSave.push(normalizedMessage)
+  // })
+  // self.setMessages(messagesToSave)
 
   return true
 }

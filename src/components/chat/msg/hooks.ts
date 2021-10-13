@@ -52,7 +52,7 @@ export function useCachedEncryptedFile(
 
     const server = meme.servers.find((s) => s.host === ldat.host)
 
-    log('VIA SERVER', server)
+    // log('VIA SERVER', server)
 
     setLoading(true)
     // if img already exists return it
@@ -75,13 +75,13 @@ export function useCachedEncryptedFile(
 
     if (!server) return
     try {
-      log('trying fetchblob...')
+      // log('trying fetchblob...')
       const res = await RNFetchBlob.config({
         path: dirs.CacheDir + `/attachments/msg_${id}`,
       }).fetch('GET', url, {
         Authorization: `Bearer ${server.token}`,
       })
-      log(res)
+      // log(res)
       console.log('The file saved to ', res.path())
 
       const headers = res.info().headers
@@ -106,13 +106,13 @@ export function useCachedEncryptedFile(
 
         if (isPaidMessage) {
           const txt = await aes.decryptFileAndSaveReturningContent(path, media_key, extension)
-          log('yo this is ', txt)
+          // log('yo this is ', txt)
           const textt = media_type === 'n2n2/text' ? isBase64(txt).text : txt
-          log('and this is:', textt)
+          // log('and this is:', textt)
           setPaidMessageText(textt)
         } else {
           const newpath = await aes.decryptFileAndSave(path, media_key, extension)
-          log('is what?')
+          // log('is what?')
           setURI('file://' + newpath)
         }
         setLoading(false)

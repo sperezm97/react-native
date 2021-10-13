@@ -26,6 +26,13 @@ export function useMsgs(chat, limit?: number) {
       (ch) => ch.type === 0 && arraysEqual(ch.contact_ids, chat.contact_ids)
     ) // this is the problem
     if (theChat) theID = theChat.id // new chat pops in, from first message confirmation!
+
+    display({
+      name: 'useMsgs',
+      preview: `LOOP THROUGH ${theseChats.length} CHATS AND A LOT MORE`,
+      value: { theChat, theseChats },
+      important: true,
+    })
   }
   // const msgs = msg.messages[theID]
   const msgs = msg.msgsForChatroom(theID)
@@ -37,11 +44,12 @@ export function useMsgs(chat, limit?: number) {
   const msgsWithDates = msgs && injectDates(messages)
   const ms = msgsWithDates || []
 
-  // display({
-  //   name: 'useMsgs - returning ms',
-  //   value: { chat, limit, ms },
-  //   important: true,
-  // })
+  display({
+    name: 'useMsgs',
+    preview: `A LOT`,
+    value: { chat, limit, ms },
+    important: true,
+  })
 
   return ms
 }
@@ -51,6 +59,11 @@ const hideTypes = ['payment', 'purchase', 'purchase_accept', 'purchase_deny']
 function processMsgs(incomingmsgs: Msg[], isTribe: boolean, contacts: Contact[], myid: number) {
   // "deep clone" the messages array
   const msgs = incomingmsgs && incomingmsgs.map((a) => Object.assign({}, a)).reverse()
+  display({
+    name: 'processMsgs',
+    preview: `LOOP THROUGH ${incomingmsgs.length} MSGS TWICE`,
+    important: true,
+  })
   const ms = []
   if (!msgs) return ms
   for (let i = 0; i < msgs.length; i++) {
@@ -228,6 +241,11 @@ export function useMsgSender(m, contactList, isTribe) {
   } else {
     senderAlias = sender?.alias
   }
+  display({
+    name: 'useMsgSender',
+    preview: `LOOP THROUGH ${contactList.length} CONTACTS`,
+    important: true,
+  })
   return { senderAlias, senderPic }
 }
 
@@ -235,7 +253,11 @@ export function useBoostSender(m, contactList, isTribe) {
   let senderAlias = ''
   const sender = contactList.find((c) => c.id === m.sender)
   let senderPic = (!isTribe && sender && sender.photo_url) || ''
-
+  display({
+    name: 'useBoostSender',
+    preview: `LOOP THROUGH ${contactList.length} CONTACTS`,
+    important: true,
+  })
   if (isTribe) {
     senderAlias = m.sender_alias
 

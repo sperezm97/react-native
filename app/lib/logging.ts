@@ -9,8 +9,8 @@ export const display = (props: any) => {
   if (__DEV__) {
     console.tron.display(props)
   }
-  Bugsnag.leaveBreadcrumb(props.name, {
-    value: JSON.stringify(props.value) ?? {},
-    preview: props.preview ?? '',
-  })
+  // Bugsnag.leaveBreadcrumb(props.name, {
+  //   value: JSON.stringify(props.value) ?? {},
+  //   preview: props.preview ?? '',
+  // })
 }

@@ -4,6 +4,7 @@ import { DEFAULT_DOMAIN } from 'config'
 import { Chat } from '../chats-store'
 import { Contact } from '../contacts-store'
 import { constants } from '../../constants'
+import { display } from 'lib/logging'
 
 export function useChats() {
   const { chats, msg, contacts, user } = useStores()
@@ -13,6 +14,12 @@ export function useChats() {
   const theChats = allChats(theseChats, theseContacts, user.myid)
   const chatsToShow = theChats
   sortChats(chatsToShow, msg.msgsForChatroom)
+
+  display({
+    name: 'useChats',
+    value: { chatsToShow },
+    important: true,
+  })
 
   return chatsToShow
 }
@@ -26,6 +33,13 @@ export function useSearchChats(chats) {
   })
 
   const chatsToShow = searchChats(chats, ui.searchTerm)
+
+  display({
+    name: 'useSearchChats',
+    value: { chatsToShow },
+    important: true,
+  })
+
   return chatsToShow
 }
 
@@ -52,6 +66,12 @@ export function useChatRow(id) {
   //   unseenCount,
   //   hasUnseen,
   // })
+  // display({
+  //   name: 'useChatRow',
+  //   value: { lastMsgText, lastMsgDate, hasLastMsg, unseenCount, hasUnseen },
+  //   important: true,
+  // })
+
   return { lastMsgText, lastMsgDate, hasLastMsg, unseenCount, hasUnseen }
 }
 
@@ -106,6 +126,13 @@ function lastMessageText(msg, myid) {
 function countUnseen(msgs, lastSeen: number, myid: number): number {
   if (!msgs) return 0
   let unseenCount = 0
+
+  display({
+    name: 'countUnseen',
+    preview: `LOOPING THROUGH ${msgs.length} MSGS`,
+    important: true,
+  })
+
   msgs.forEach((m) => {
     if (m.sender !== myid) {
       const unseen = moment(new Date(lastSeen)).isBefore(moment(m.date))
@@ -122,6 +149,12 @@ const expiredInvite = constants.invite_statuses.expired
 export function allChats(chats: Chat[], contacts: Contact[], myid: number): Chat[] {
   const groupChats = chats.filter((c) => c.type !== conversation).map((c) => ({ ...c }))
   const conversations = []
+
+  display({
+    name: 'allChats',
+    preview: `LOOPING THROUGH ${chats.length} CHATS TWICE AND ${contacts.length} CONTACTS`,
+    important: true,
+  })
 
   contacts.forEach((contact) => {
     if (contact.id !== myid && !contact.from_group) {
@@ -144,7 +177,13 @@ export function allChats(chats: Chat[], contacts: Contact[], myid: number): Chat
       }
     }
   })
+
   const convs = conversations.filter((c) => !(c.invite && c.invite.status === expiredInvite))
+  display({
+    name: 'allChats',
+    preview: `LOOPING THROUGH ${convs.length} CONVERSATIONS`,
+    important: true,
+  })
   const all = groupChats.concat(convs)
   return all
 }
@@ -158,6 +197,11 @@ export function contactForConversation(chat: Chat, contacts: Contact[], myid: nu
 }
 
 export function sortChats(chatsToShow, msgsForChatroom) {
+  display({
+    name: 'sortChats',
+    preview: `LOOPING THROUGH ${chatsToShow.length} CHATS TWICE`,
+    important: true,
+  })
   chatsToShow.sort((a, b) => {
     const amsgs = msgsForChatroom(a.id)
     const alastMsg = amsgs?.[0]
@@ -175,6 +219,11 @@ export function sortChats(chatsToShow, msgsForChatroom) {
 }
 
 export function searchChats(theChats, searchTerm) {
+  display({
+    name: 'searchChats',
+    preview: `LOOPING THROUGH ${theChats.length} CHATS`,
+    important: true,
+  })
   return theChats.filter((c) => {
     if (!searchTerm) return true
     return !!c.invite || c.name.toLowerCase().includes(searchTerm.toLowerCase())

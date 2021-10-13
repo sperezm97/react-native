@@ -7,12 +7,19 @@ import { constants } from '../../constants'
 import { calendarDate } from 'store/utils/date'
 import { useMsgs } from './msg'
 import { Msg } from '../msg-store'
+import { display } from 'lib/logging'
 
 export function useTribes() {
   const { chats, user } = useStores()
   const chatsToShow = useChats()
 
   const theTribes = allTribes(chats.tribes, chatsToShow, user)
+
+  display({
+    name: 'useTribes',
+    important: true,
+    value: { theTribes },
+  })
 
   return theTribes
 }
@@ -22,19 +29,34 @@ export function useSearchTribes(tribes) {
   const { ui } = useStores()
 
   // tribes = tribes.filter(t => !t.owner).sort((a, b) => a.joined - b.joined)
-
   tribes = tribes.filter((t) => !t.joined).sort((a) => (!a.img ? 1 : -1))
 
-  return searchTribes(tribes, ui.tribesSearchTerm)
+  const theSearchTribes = searchTribes(tribes, ui.tribesSearchTerm)
+
+  display({
+    name: 'useTribes',
+    important: true,
+    value: { theSearchTribes },
+  })
+
+  return theSearchTribes
 }
 
 export function useJoinedTribes(tribes) {
+  display({
+    name: 'useJoinedTribes',
+    important: true,
+  })
   return tribes.filter((t) => t.joined)
 }
 
 export function useOwnedTribes(tribes) {
   // tribes = tribes.filter(t => t.owner)
   tribes = tribes.filter((t) => t.joined)
+  display({
+    name: 'useOwnedTribes',
+    important: true,
+  })
   return useSortTribesByLastMsg(tribes)
 
   // return tribes.sort((a, b) => {
@@ -47,6 +69,11 @@ function useSortTribesByLastMsg(tribesToShow) {
   const {
     msg: { messages, msgsForChatroom },
   } = useStores()
+
+  display({
+    name: 'useSortTribesByLastMsg',
+    important: true,
+  })
 
   return tribesToShow.sort((a, b) => {
     // const amsgs = messages[a.chat.id]
@@ -63,6 +90,11 @@ function useSortTribesByLastMsg(tribesToShow) {
 }
 
 export function searchTribes(tribes, searchTerm) {
+  display({
+    name: 'searchTribes',
+    value: { searchTerm },
+    important: true,
+  })
   return tribes.filter((c) => {
     if (!searchTerm) return true
 
@@ -81,6 +113,12 @@ export function allTribes(tribes, chats, user) {
 
   const tribesArray: any[] = Array.from(tribes)
 
+  display({
+    name: 'allTribes',
+    important: true,
+    value: { tribesArray },
+  })
+
   return tribesArray.map((tribe) => {
     return {
       ...tribe,
@@ -92,12 +130,22 @@ export function allTribes(tribes, chats, user) {
 }
 
 export function sortTribes(tribes) {
+  display({
+    name: 'sortTribes',
+    preview: 'DOES NOTHING',
+    important: true,
+  })
   return tribes
 }
 
 export function useTribeHistory(created, lastActive) {
   const createdDate = calendarDate(moment(created), 'MMM DD, YYYY')
   const lastActiveDate = calendarDate(moment.unix(lastActive), 'MMM DD, YYYY')
+
+  display({
+    name: 'useTribeHistory',
+    important: true,
+  })
 
   return { createdDate, lastActiveDate }
 }
@@ -113,6 +161,12 @@ export function useTribeHistory(created, lastActive) {
  * ony the covered cases
  */
 export function useOwnerMediaType(msgs, tribe, type, myId): Array<Msg> {
+  display({
+    name: 'useOwnerMediaType',
+    value: { msgs, tribe, type, myId },
+    important: true,
+  })
+
   return msgs.filter((m: Msg) => {
     const matchTypeMessage = m.type === type
     const messageWithValidStatus = m.status !== constants.statuses.deleted
@@ -142,6 +196,12 @@ export function useFeed(tribes, myid) {
 
   let feed = []
 
+  display({
+    name: 'useFeed',
+    value: { allTribes },
+    important: true,
+  })
+
   allTribes.map((t) => {
     t.media.map((m) => {
       feed.push({
@@ -158,12 +218,20 @@ export function useFeed(tribes, myid) {
 
 // not used temporarily
 export function useMediaType(msgs, type, myid) {
+  display({
+    name: 'useMediaType',
+    important: true,
+  })
   return msgs.filter(
     (m) => m.type === type && m.sender !== myid && m.media_token && m.media_type.startsWith('image')
   )
 }
 
 export function useTribeMediaType(msgs, type) {
+  display({
+    name: 'useTribeMediaType',
+    important: true,
+  })
   return msgs.filter(
     (m) =>
       m.type === type &&
@@ -177,6 +245,12 @@ export function processFeed(tribe, type, myid) {
   // TODO: Fix this eslint disable
   // eslint-disable-next-line react-hooks/rules-of-hooks
   let msgs = useMsgs(tribe.chat)
+
+  display({
+    name: 'processFeed',
+    value: `LOOP THROUGH ${msgs.length} MSGS`,
+    important: true,
+  })
 
   msgs = msgs.filter(
     (m) =>

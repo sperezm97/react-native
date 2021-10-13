@@ -1,6 +1,7 @@
 import { useStores } from 'store'
 import { Contact } from 'store/contacts-store'
 import { useAvatarColor } from './msg'
+import { display } from 'lib/logging'
 
 interface CalcBotPriceResponse {
   price: number
@@ -31,6 +32,10 @@ function makeExtraTextContent(obj) {
 
 export function useHasReplyContent(): boolean {
   const { ui } = useStores()
+  display({
+    name: 'useHasReplyContent',
+    important: true,
+  })
   return !!(ui.replyUUID || ui.extraTextContent)
 }
 
@@ -58,7 +63,9 @@ export function useReplyContent(msgs, replyUUID, extraTextContent): replyContent
 
     replyMessageExtraContent = replyMsg
 
-    replyMessageContent = replyMsg?.message_content ? replyMsg.message_content : replyMsg?.media_type
+    replyMessageContent = replyMsg?.message_content
+      ? replyMsg.message_content
+      : replyMsg?.media_type
 
     if (!replyMessageSenderAlias && replyMsg && replyMsg.sender) {
       const theseContacts: Contact[] = Array.from(contacts.contacts.values())
@@ -67,6 +74,18 @@ export function useReplyContent(msgs, replyUUID, extraTextContent): replyContent
     }
   }
   replyColor = useAvatarColor(replyMessageSenderAlias)
+
+  display({
+    name: 'useSortTribesByLastMsg',
+    value: {
+      replyMessageSenderAlias,
+      replyMessageContent,
+      replyMessageExtraContent,
+      replyColor,
+    },
+    important: true,
+  })
+
   return {
     replyMessageSenderAlias,
     replyMessageContent,
@@ -77,6 +96,12 @@ export function useReplyContent(msgs, replyUUID, extraTextContent): replyContent
 
 export function useChatReply(msgs, replyUUID) {
   let replyMessage = msgs && replyUUID && msgs.find((m) => m.uuid === replyUUID)
+
+  display({
+    name: 'useChatReply',
+    value: { replyMessage },
+    important: true,
+  })
 
   return {
     replyMessage,

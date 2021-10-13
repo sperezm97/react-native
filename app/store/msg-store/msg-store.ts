@@ -19,6 +19,7 @@ export const MsgStoreModel = types
     lastFetched: types.optional(types.number, 0),
     lastSeen: types.optional(types.frozen(), {}),
     messages: types.optional(types.map(MsgModel), {}),
+    messageCache: types.frozen({}), // types.optional(types.frozen(), [])
   })
   .extend(withEnvironment)
   .actions((self) => ({
@@ -76,15 +77,32 @@ export const MsgStoreModel = types
     },
     setMessages: (msgs: Msg[]) => {
       const formattedArray = []
+      const messagesByChatroom = {}
       msgs.forEach((msg) => {
         formattedArray.push([msg.id, msg])
+        if (typeof messagesByChatroom[msg.chat_id] === 'object') {
+          messagesByChatroom[msg.chat_id].push(msg)
+        } else {
+          messagesByChatroom[msg.chat_id] = []
+        }
       })
+
+      let sortedCachedMessages = {}
+      Object.entries(messagesByChatroom).forEach((entries) => {
+        const k = entries[0]
+        const v: Msg[] = entries[1]
+        v.sort((a, b) => moment(b.date).unix() - moment(a.date).unix())
+        sortedCachedMessages[k] = v
+      })
+
       display({
         name: 'setMessages',
-        preview: `Setting ${msgs.length} messages`,
-        value: { msgs, formattedArray },
+        preview: `Setting ${msgs.length} messages and caching`,
+        value: { msgs, formattedArray, messagesByChatroom, sortedCachedMessages },
       })
+
       self.messages.merge(formattedArray)
+      self.messageCache = sortedCachedMessages
     },
   }))
   .views((self) => ({
@@ -130,15 +148,32 @@ export const MsgStoreModel = types
       return Array.from(self.messages.values())
     },
     msgsForChatroom(chatId: number) {
-      const msgs = (self as MsgStore).messagesArray
-        .filter((msg) => msg.chat_id === chatId)
-        .sort((a, b) => moment(b.date).unix() - moment(a.date).unix())
+      const msgs = self.messageCache[chatId]
+      // display({
+      //   name: 'msgsForChatroom',
+      //   preview: `Returning msgsForChatroom cache for chatId ${chatId}`,
+      //   important: true,
+      //   value: { msgs },
+      // })
+      return msgs
+
+      // const msgArray = (self as MsgStore).messagesArray
+      // const msgs = msgArray
+      //   .filter((msg) => msg.chat_id === chatId)
+      //   .sort((a, b) => moment(b.date).unix() - moment(a.date).unix())
+
+      // display({
+      //   name: 'msgsForChatroom',
+      //   preview: `LOOPING THROUGH ${msgArray.length} MSGS TWICE ????`,
+      //   important: true,
+      // })
+
       // display({
       //   name: 'msgsForChatroom',
       //   preview: `msgsForChatroom ${chatId}`,
       //   value: { msgs, chatId },
       // })
-      return msgs
+      // return msgs
     },
     sortAllMsgs(allms: { [k: number]: Msg[] }) {
       return false

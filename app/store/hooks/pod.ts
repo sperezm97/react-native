@@ -1,7 +1,12 @@
 import { useMemo } from 'react'
 import { useStores } from '../index'
+import { display } from 'lib/logging'
 
 export function useIncomingPayments(podID, myid) {
+  display({
+    name: 'useIncomingPayments',
+    important: true,
+  })
   const { msg } = useStores()
   let earned = 0
   let spent = 0
@@ -24,6 +29,10 @@ export function useIncomingPayments(podID, myid) {
 }
 
 export function useMemoizedIncomingPaymentsFromPodcast(podID: string, myid: string | number) {
+  display({
+    name: 'useMemoizedIncomingPaymentsFromPodcast',
+    important: true,
+  })
   const { msg } = useStores()
   return useMemo(() => {
     let earned = 0
