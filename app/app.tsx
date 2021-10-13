@@ -4,8 +4,8 @@ import RNBootSplash from 'react-native-bootsplash'
 import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context'
 import { RootStore, RootStoreProvider, setupRootStore } from 'store'
 import { RootComponent } from './root-component'
-// import { ErrorBoundary } from './views/error/error-boundary'
 import Bugsnag from '@bugsnag/react-native'
+import { ErrorSimple } from './views/error/error-simple'
 
 Bugsnag.start()
 
@@ -21,28 +21,15 @@ export const App = () => {
       RNBootSplash.hide({ fade: true })
     })()
   }, [])
+  // return <ErrorSimple />
   if (!rootStore) return null
   return (
-    <ErrorBoundary FallbackComponent={ErrorView}>
+    <ErrorBoundary FallbackComponent={ErrorSimple}>
       <RootStoreProvider value={rootStore}>
         <SafeAreaProvider initialMetrics={initialWindowMetrics}>
           <RootComponent />
         </SafeAreaProvider>
       </RootStoreProvider>
     </ErrorBoundary>
-  )
-}
-
-const ErrorView = (props) => {
-  return (
-    <View style={{ flex: 1, backgroundColor: 'black' }}>
-      <Text style={{ fontFamily: 'mono', textAlign: 'center', color: 'red', fontSize: 20 }}>
-        Error :(
-      </Text>
-      <Text style={{ fontFamily: 'mono', textAlign: 'center' }}>
-        Developers have been notified.
-      </Text>
-      <Text style={{ fontFamily: 'mono' }}>{JSON.stringify(props)}</Text>
-    </View>
   )
 }
