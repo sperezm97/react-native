@@ -653,13 +653,13 @@
 				CODE_SIGN_ENTITLEMENTS = Chat/Chat.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 16;
 				DEVELOPMENT_TEAM = 5ZGU9RL6KG;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Chat/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.14.1;
+				MARKETING_VERSION = 1.15.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -685,13 +685,13 @@
 				CODE_SIGN_ENTITLEMENTS = Chat/Chat.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 16;
 				DEVELOPMENT_TEAM = 5ZGU9RL6KG;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Chat/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.14.1;
+				MARKETING_VERSION = 1.15.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
