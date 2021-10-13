@@ -97,6 +97,10 @@ const Header = ({ chat, status, tribeParams, podId, pricePerMinute }: HeaderProp
     [payments.length, user.myid, chats]
   )
 
+  // Fixes the issue of showing NaN when spentInMessagesBoost returns null
+  const showSpent =
+    !!spentInMessagesBoost && spentInMessagesBoost?.amount ? spent + spentInMessagesBoost?.amount : spent
+
   return (
     <Appbar.Header
       style={{
@@ -138,7 +142,7 @@ const Header = ({ chat, status, tribeParams, podId, pricePerMinute }: HeaderProp
               )}
             </View>
             <Typography size={12} color={theme.subtitle}>
-              {isTribeAdmin ? `Earned: ${earned} sats` : `Contributed: ${spent + spentInMessagesBoost?.amount} sats`}
+              {isTribeAdmin ? `Earned: ${earned} sats` : `Contributed: ${showSpent} sats`}
             </Typography>
           </View>
         </TouchableOpacity>
