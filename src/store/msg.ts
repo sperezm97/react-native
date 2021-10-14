@@ -26,6 +26,7 @@ const DAYS = 90
 export const MAX_MSGS_PER_CHAT = 1000
 const MSGS_PER_CHAT_PRUNE = 50
 export const MAX_MSGS_RESTORE = Platform.OS === 'android' ? 5000 : 50000
+let restoring = false
 
 type Maybe<T> = T | null
 /**
@@ -138,6 +139,11 @@ class MsgStore {
   }
 
   @action async restoreMessages() {
+    if (restoring) {
+      console.log('Preventing dupe restore attempt')
+      return false
+    }
+    restoring = true
     try {
       let done = false
       let offset = 0
@@ -169,8 +175,10 @@ class MsgStore {
       this.lastFetched = new Date().getTime()
       this.persister()
       uiStore.setRestoringModal(false)
+      restoring = false
     } catch (error) {
       console.log('restoreMessages error', error)
+      restoring = false
     }
   }
 
