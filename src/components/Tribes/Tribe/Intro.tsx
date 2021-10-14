@@ -229,7 +229,7 @@ function TribeActions({ tribe }) {
   async function onChatPress() {
     setLoading(true)
     try {
-      await msg.seeChat(tribe.chat.id) // Ping relay to read message
+      msg.seeChat(tribe.chat.id) // Ping relay to read message - CD removed await here
       await msg.getMessages()
       navigation.navigate('Chat', { ...tribe.chat })
     } catch (e) {

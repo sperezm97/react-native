@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { KeyboardAvoidingView } from 'react-native'
+import { ActivityIndicator, KeyboardAvoidingView, View } from 'react-native'
 import { useRoute, useNavigation } from '@react-navigation/native'
 
 import { useStores, useTheme } from '../../store'
@@ -38,6 +38,8 @@ export default function Chat() {
 
   const navigation = useNavigation()
 
+  const [loadingChat, setLoadingChat] = useState(false)
+
   const loadPod = useCallback(
     async (tr) => {
       const params = await chats.loadFeed(chat.host, chat.uuid, tr.feed_url)
@@ -56,7 +58,7 @@ export default function Chat() {
     if (isTribe) {
       //&& !isTribeAdmin) {
       setAppMode(true)
-      // setLoadingChat(true)
+      setLoadingChat(true)
       const params = await chats.getTribeDetails(chat.host, chat.uuid)
       if (params) {
         const price = params.price_per_message + params.escrow_amount
@@ -73,7 +75,7 @@ export default function Chat() {
           loadPod(params)
         }
       }
-      // setLoadingChat(false)
+      setLoadingChat(false)
     } else {
       setAppMode(false)
       setTribeParams(null)
@@ -136,11 +138,13 @@ export default function Chat() {
         podId={pod?.id}
       />
 
-      <MsgList chat={chat} pricePerMessage={pricePerMessage} />
-
-      {/* <View style={{ ...styles.loadWrap, backgroundColor: theme.bg }}>
-        <ActivityIndicator animating={true} />
-      </View> */}
+      {loadingChat ? (
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: theme.bg }}>
+          <ActivityIndicator animating={true} />
+        </View>
+      ) : (
+        <MsgList chat={chat} pricePerMessage={pricePerMessage} />
+      )}
 
       {showPod && <Podcast pod={pod} chat={chat} onBoost={onBoost} podError={podError} />}
 
