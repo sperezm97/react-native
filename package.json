@@ -21,12 +21,6 @@
     "electron": "ELECTRON_DEV_URL=http://localhost:3000 electron .",
     "install-app-deps": "electron-builder install-app-deps"
   },
-  "lint-staged": {
-    "{src,web}/**/*.{js,ts,jsx,tsx}": [
-      "yarn lint",
-      "yarn t"
-    ]
-  },
   "build": {
     "appId": "Zion.chat",
     "productName": "Zion Chat",
