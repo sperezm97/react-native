@@ -230,10 +230,20 @@ function TribeActions({ tribe }) {
     setLoading(true)
     try {
       msg.seeChat(tribe.chat.id) // Ping relay to read message - CD removed await here
-      await msg.getMessages()
+      // Only call getMessages if this tribe doesn't already have messages
+      const howManyMsgs = msg.messages[tribe.chat.id]
+      console.log('howmanymsgs:')
+      if (!howManyMsgs || howManyMsgs.length === 0) {
+        await msg.getMessages()
+      } else {
+        console.log('onChatPress skipping getMessages')
+      }
+
       navigation.navigate('Chat', { ...tribe.chat })
     } catch (e) {
       console.log(e)
+      navigation.navigate('Chat', { ...tribe.chat })
+      setLoading(false)
     } finally {
       setLoading(false)
     }
