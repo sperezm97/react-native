@@ -16,7 +16,6 @@ export const RestoringMessages = observer(({ visible }: any) => {
   const theme = useTheme()
   const { ui } = useStores()
   const messagesRestored = ui.messagesRestored
-  console.log('HERE! VISIBLE:', visible)
   return (
     <Dialog visible={visible} style={{ bottom: 10 }} dismissable={false}>
       <Dialog.Title>Restoring Messages...</Dialog.Title>
