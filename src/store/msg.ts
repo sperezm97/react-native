@@ -22,8 +22,8 @@ import { persistMsgLocalForage } from './storage'
 import { uiStore } from './ui'
 import { userStore } from './user'
 
-const DAYS = 60
-export const MAX_MSGS_PER_CHAT = 750
+const DAYS = 90
+export const MAX_MSGS_PER_CHAT = 1000
 const MSGS_PER_CHAT_PRUNE = 50
 export const MAX_MSGS_RESTORE = Platform.OS === 'android' ? 5000 : 50000
 
@@ -237,10 +237,10 @@ class MsgStore {
     entriesToSort.forEach((entries) => {
       const k = entries[0]
       let v: Msg[] = entries[1]
-      v.slice().sort((a, b) => moment(b.date).unix() - moment(a.date).unix())
+      v.sort((a, b) => moment(b.date).unix() - moment(a.date).unix())
       if (v.length > MSGS_PER_CHAT_PRUNE) {
         console.log(`Pruning chatID ${k} from ${v.length} messages to ${MSGS_PER_CHAT_PRUNE}`)
-        v = v.slice(-1 * MSGS_PER_CHAT_PRUNE)
+        v = v.slice(0, MSGS_PER_CHAT_PRUNE)
       }
       final[k] = v
     })
