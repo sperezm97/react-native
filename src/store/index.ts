@@ -64,12 +64,13 @@ async function hydrateMessageStoreFromRealm() {
   console.log('hydrateMessageStoreFromRealm')
   const hasRealmData = hasData()
   if (hasRealmData.msg) {
-    console.log('has msgs')
+    console.log('!!!! Realm has msgs - lets get them and hydrate from here !!!!!')
     const rs = getRealmMessages()
     msgStore.messages = rs.messages
     msgStore.lastSeen = rs.lastSeen
     msgStore.lastFetched = rs.lastFetched
   } else {
+    console.log('NO messages in realm - hydrating from msg store')
     await hydrate('msg', msgStore)
     await sleep(DEBOUNCE_TIME)
     updateRealmMsg(msgStore)
@@ -107,6 +108,7 @@ function initWeb() {
 }
 
 function initIOS() {
+  console.log('in initIOS...')
   Promise.all([
     hydrate('user', userStore),
     hydrate('details', detailsStore),
