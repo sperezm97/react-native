@@ -55,30 +55,35 @@ export default function Chat() {
     const isTribeAdmin = isTribe && chat.owner_pubkey === user.publicKey
     // let isAppURL = false
     // let isFeedURL = false
-    if (isTribe) {
-      //&& !isTribeAdmin) {
-      setAppMode(true)
-      setLoadingChat(true)
-      const params = await chats.getTribeDetails(chat.host, chat.uuid)
-      if (params) {
-        const price = params.price_per_message + params.escrow_amount
-        setPricePerMessage(price)
-        // Toast.showWithGravity('Price Per Message: ' + price + ' sat', 0.3, Toast.CENTER)
+    try {
+      if (isTribe) {
+        //&& !isTribeAdmin) {
+        setAppMode(true)
+        setLoadingChat(true)
+        const params = await chats.getTribeDetails(chat.host, chat.uuid)
+        if (params) {
+          const price = params.price_per_message + params.escrow_amount
+          setPricePerMessage(price)
+          // Toast.showWithGravity('Price Per Message: ' + price + ' sat', 0.3, Toast.CENTER)
 
-        if (!isTribeAdmin) {
-          if (chat.name !== params.name || chat.photo_url !== params.img) {
-            chats.updateTribeAsNonAdmin(chat.id, params.name, params.img)
+          if (!isTribeAdmin) {
+            if (chat.name !== params.name || chat.photo_url !== params.img) {
+              chats.updateTribeAsNonAdmin(chat.id, params.name, params.img)
+            }
+          }
+          setTribeParams(params)
+          if (params.feed_url) {
+            loadPod(params)
           }
         }
-        setTribeParams(params)
-        if (params.feed_url) {
-          loadPod(params)
-        }
+        setLoadingChat(false)
+      } else {
+        setAppMode(false)
+        setTribeParams(null)
       }
+    } catch (e) {
+      console.log(e)
       setLoadingChat(false)
-    } else {
-      setAppMode(false)
-      setTribeParams(null)
     }
 
     const r = await chats.checkRoute(chat.id, myid)
