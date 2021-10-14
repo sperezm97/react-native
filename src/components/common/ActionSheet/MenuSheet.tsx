@@ -9,7 +9,7 @@ import Typography from '../Typography'
 export default function MenuSheet(props) {
   const { visible, items, hasBackdrop, swipeDirection, onCancel, noSwipe } = props
   const theme = useTheme()
-  const [disableAllFunctions, setDisableAllFunctions] = useState(true)
+  const [disableAllFunctions, setDisableAllFunctions] = useState(false) // this thing was poorly implemented, requiring double taps to do anything, falsing this for now. --CD
 
   let actionItems = []
 
