@@ -116,6 +116,7 @@ export function orgMsgs(messages: Msg[]) {
 }
 
 export function orgMsgsFromExisting(allMsgs: { [k: number]: Msg[] }, messages: Msg[]) {
+  console.log(`orgMsgsFromExisting with ${messages.length} messages`)
   const allms: { [k: number]: Msg[] } = JSON.parse(JSON.stringify(allMsgs))
 
   messages.forEach((msg) => {
@@ -123,6 +124,7 @@ export function orgMsgsFromExisting(allMsgs: { [k: number]: Msg[] }, messages: M
       putIn(allms, msg, msg.chat_id) // THIS IS TOO HEAVY in a for each
     }
   })
+
   // limit to 50 each?
   return allms
 }
@@ -158,6 +160,7 @@ export function putInReverse(allms, decoded) {
 }
 
 export function putIn(orged, msg, chatID) {
+  console.log(`putIn msg to chat ${chatID}`)
   if (!(chatID || chatID === 0)) return
   if (orged[chatID]) {
     if (!Array.isArray(orged[chatID])) return

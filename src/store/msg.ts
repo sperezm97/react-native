@@ -23,7 +23,8 @@ import { uiStore } from './ui'
 import { userStore } from './user'
 
 const DAYS = 60
-export const MAX_MSGS_PER_CHAT = Platform.OS === 'android' ? 100 : 1000
+export const MAX_MSGS_PER_CHAT = 750
+const MSGS_PER_CHAT_PRUNE = 50
 export const MAX_MSGS_RESTORE = Platform.OS === 'android' ? 5000 : 50000
 
 type Maybe<T> = T | null
@@ -197,7 +198,6 @@ class MsgStore {
       if (!r) return
       if (r.new_messages && r.new_messages.length) {
         console.log(`Length of NEW messages: ${r.new_messages.length}`)
-
         await this.batchDecodeMessages(r.new_messages)
         console.log('DONE DECODING')
       } else {
@@ -232,10 +232,16 @@ class MsgStore {
   sortAllMsgs(allms: { [k: number]: Msg[] }) {
     const final = {}
     let toSort: { [k: number]: Msg[] } = allms || JSON.parse(JSON.stringify(this.messages))
-    Object.entries(toSort).forEach((entries) => {
+    const entriesToSort = Object.entries(toSort)
+    console.log(`Sorting messages for ${entriesToSort.length} chats`)
+    entriesToSort.forEach((entries) => {
       const k = entries[0]
-      const v: Msg[] = entries[1]
-      v.sort((a, b) => moment(b.date).unix() - moment(a.date).unix())
+      let v: Msg[] = entries[1]
+      v.slice().sort((a, b) => moment(b.date).unix() - moment(a.date).unix())
+      if (v.length > MSGS_PER_CHAT_PRUNE) {
+        console.log(`Pruning chatID ${k} from ${v.length} messages to ${MSGS_PER_CHAT_PRUNE}`)
+        v = v.slice(-1 * MSGS_PER_CHAT_PRUNE)
+      }
       final[k] = v
     })
 
