@@ -24,6 +24,12 @@ import Splash from './src/components/common/Splash'
 import PinCodeModal from './src/components/common/Modals/PinCode'
 import StatusBar from './src/components/common/StatusBar'
 import RNBootSplash from 'react-native-bootsplash'
+import { ErrorSimple } from './src/components/error/error-simple'
+
+import Bugsnag from '@bugsnag/react-native'
+Bugsnag.start()
+
+const ErrorBoundary = Bugsnag.getPlugin('react').createErrorBoundary(React)
 
 declare var global: { HermesInternal: null | {} }
 
@@ -170,14 +176,16 @@ function App() {
         <PaperProvider theme={pTheme}>
           <StatusBar />
           <NavigationContainer ref={navigationRef}>
-            <Host>
-              {ui.signedUp && (
-                <APNManager>
-                  <Main />
-                </APNManager>
-              )}
-              {!ui.signedUp && <Auth />}
-            </Host>
+            <ErrorBoundary FallbackComponent={ErrorSimple}>
+              <Host>
+                {ui.signedUp && (
+                  <APNManager>
+                    <Main />
+                  </APNManager>
+                )}
+                {!ui.signedUp && <Auth />}
+              </Host>
+            </ErrorBoundary>
           </NavigationContainer>
         </PaperProvider>
       </>
