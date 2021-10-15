@@ -26,13 +26,13 @@ export default function SuggestToUserToBackupTheirKeys({ onDone, z, isTheMainRen
   }
 
   const forceFinishLoad = () => {
-    Alert.alert('Are you sure?', 'This video explains the importance of backup your keys, you should watch this!', [
+    Alert.alert('Are you sure?', 'This video explains the importance of backing up your keys, you should watch this!', [
       {
-        text: 'Cancel',
+        text: 'Watch',
         onPress: () => null,
         style: 'cancel',
       },
-      { text: 'OK', onPress: onDone },
+      { text: 'Skip', onPress: onDone },
     ])
   }
   /**
