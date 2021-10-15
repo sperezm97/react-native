@@ -55,7 +55,7 @@ export default function Home() {
             style={{ marginTop: 15 }}
             onPress={() => navigation.navigate('Onboard', { codeType: 'invite' })}
           >
-            I have an invite code
+            Enter access key
           </Button>
           <Button
             fw='500'
@@ -64,7 +64,7 @@ export default function Home() {
             style={{ marginTop: 15 }}
             onPress={() => navigation.navigate('Onboard', { codeType: 'backup' })}
           >
-            I have a backup code
+            Enter backup key
           </Button>
         </View>
       </RadialGradient>
