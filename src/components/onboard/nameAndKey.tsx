@@ -36,6 +36,12 @@ export default function NameAndKey(props) {
   }
   return (
     <Slider z={z} show={show} style={{ backgroundColor: theme.bg }} accessibilityLabel='onboard-name'>
+      <Typography size={24} fw='600' color={theme.dark ? theme.white : theme.black}>
+        What's your name?
+      </Typography>
+      <Typography size={16} fw='600' color={theme.dark ? theme.white : theme.black}>
+        You can change this at any time.
+      </Typography>
       <TextInput
         value={text}
         ref={inputRef}
