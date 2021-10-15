@@ -57,9 +57,6 @@ export default function Ready(props) {
       >
         <View style={styles.titleWrap} accessibilityLabel='onboard-ready-title'>
           <View style={styles.titleRow}>
-            <Typography size={40} color={theme.white}>
-              You're
-            </Typography>
             <Typography
               style={{
                 marginLeft: 10,
@@ -69,38 +66,25 @@ export default function Ready(props) {
               color={theme.white}
               fw='600'
             >
-              ready
+              Welcome
             </Typography>
           </View>
           <View style={styles.titleRow}>
             <Typography size={40} color={theme.white} lh={50}>
-              to use Zion
+              to Zion
             </Typography>
           </View>
         </View>
         <View style={styles.msgWrap} accessibilityLabel='onboard-ready-message'>
           <View style={styles.msgRow}>
             <Typography size={20} color={theme.white} textAlign='center' lh={28}>
-              You can send messages
+              Thank you for fighting for freedom.
             </Typography>
           </View>
-          <View style={styles.msgRow}>
+          <View style={{ ...styles.msgRow, marginTop: 40 }}>
             <Typography size={20} color={theme.white} textAlign='center' lh={28}>
-              spend
-            </Typography>
-            <Typography style={styles.msgBold} size={20} color={theme.white} lh={28} fw='600'>
-              1000 sats,
-            </Typography>
-            <Typography size={20} color={theme.white} textAlign='center' lh={28}>
-              or receive
-            </Typography>
-          </View>
-          <View style={styles.msgRow}>
-            <Typography size={20} color={theme.white} textAlign='center' lh={28}>
-              up to
-            </Typography>
-            <Typography style={styles.msgBold} size={20} color={theme.white} lh={28} fw='600'>
-              10000 sats
+              The Zion Community is unlike any other. You understand our vision for freedom, decentralization, and
+              sovereignty. You’re helping us make this vision a reality, so we can build a world we ALL want to live in.
             </Typography>
           </View>
         </View>
@@ -117,7 +101,7 @@ export default function Ready(props) {
           >
             {loading && <ActivityIndicator animating={loading} color={theme.grey} size={18} />}
             {loading && <View style={{ width: 12, height: 1 }}></View>}
-            Finish
+            Get started
           </Button>
         </View>
       </RadialGradient>
@@ -144,7 +128,7 @@ const styles = StyleSheet.create({
   },
   msgWrap: {
     display: 'flex',
-    maxWidth: 250,
+    maxWidth: 330,
     marginTop: 42,
     marginBottom: 100,
     width: '100%',

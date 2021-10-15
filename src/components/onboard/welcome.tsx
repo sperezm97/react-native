@@ -29,15 +29,23 @@ export default function Welcome(props) {
               textAlign='center'
               color={theme.dark ? theme.white : theme.black}
             >
-              A message from your friend...
+              Welcome to Zion!
             </Typography>
-            <Avatar size={200} />
+            {/* <Avatar size={200} /> */}
             <Typography style={{ ...styles.name }} size={24} fw='600' color={theme.dark ? theme.white : theme.black}>
-              {user.invite.inviterNickname || 'Inviter'}
+              Now you can:
             </Typography>
-            <Typography style={{ ...styles.message }} size={20} color={theme.title}>{`${
-              user.invite.welcomeMessage || 'Welcome to Zion!'
-            }`}</Typography>
+            <View>
+              <Typography style={{ ...styles.message }} size={20} color={theme.title}>
+                • Join private communities...and start building your own.
+              </Typography>
+              <Typography style={{ ...styles.message }} size={20} color={theme.title}>
+                • Chat with your friends via fully encrypted messages.
+              </Typography>
+              <Typography style={{ ...styles.message }} size={20} color={theme.title}>
+                • Pay anyone, instantly and securely over lightning.
+              </Typography>
+            </View>
           </View>
           <Button
             accessibilityLabel='onboard-welcome-button'
@@ -80,6 +88,8 @@ const styles = StyleSheet.create({
   },
   message: {
     marginTop: 20,
+    paddingHorizontal: 30,
+    alignItems: 'flex-start',
   },
   button: {
     marginTop: 28,
