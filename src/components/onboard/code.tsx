@@ -210,13 +210,15 @@ export default function Code(props) {
               maxWidth: 240,
             }}
           >
-            {`Paste the ${route.params?.codeType === 'invite' ? 'invitation' : 'backup'} key or scan the QR code`}
+            {route.params?.codeType === 'invite'
+              ? 'Paste the access key or scan the QR code.'
+              : 'Paste the backup key.'}
           </Typography>
           <View style={styles.inputWrap} accessibilityLabel='onboard-code-input-wrap'>
             <TextInput
               autoCorrect={false}
               accessibilityLabel='onboard-code-input'
-              placeholder='Enter Code ...'
+              placeholder='Enter Key'
               style={{
                 ...styles.input,
                 backgroundColor: theme.white,
@@ -325,6 +327,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 15,
     top: 45,
+    zIndex: 700,
   },
   welcome: {
     color: 'white',
