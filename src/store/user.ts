@@ -4,6 +4,7 @@ import { persist } from 'mobx-persist'
 import * as api from '../api'
 import { INVITER_KEY } from '../config'
 import { randString } from '../crypto/rand'
+import { reportError } from '../errorHelper'
 import { uiStore } from './ui'
 
 interface Invite {
@@ -165,7 +166,7 @@ class UserStore {
         this.deviceId = r.device_id
       }
     } catch (e) {
-      console.log(e)
+      reportError(e)
     }
   }
 
@@ -196,6 +197,7 @@ class UserStore {
       return { ip: r.ip, password: r.password }
     } catch (e) {
       console.log('Error:', e)
+      reportError(e)
     }
   }
 
@@ -209,6 +211,7 @@ class UserStore {
       return ip
     } catch (e) {
       console.log('Error:', e)
+      reportError(e)
     }
   }
 
@@ -237,7 +240,7 @@ class UserStore {
       )
       return token
     } catch (e) {
-      console.log(e)
+      reportError(e)
     }
   }
 
@@ -257,6 +260,7 @@ class UserStore {
       )
     } catch (e) {
       console.error('[Error - finishInvite]', e)
+      reportError(e)
     }
   }
 
@@ -273,6 +277,7 @@ class UserStore {
       return r.node_ip
     } catch (e) {
       console.log('Error:', e)
+      reportError(e)
     }
   }
 

@@ -7,6 +7,7 @@ import { subStore } from './subs'
 import { createFormData } from '../api/formdata'
 import { userStore } from './user'
 import { detailsStore } from './details'
+import { reportError } from '../errorHelper'
 
 /*
 invites:
@@ -77,7 +78,9 @@ class ContactStore {
       if (r.subscriptions) subStore.setSubs(r.subscriptions)
 
       return r
-    } catch (e) {}
+    } catch (e) {
+      reportError(e)
+    }
   }
 
   @action
@@ -86,7 +89,7 @@ class ContactStore {
       await relay.del(`contacts/${id}`)
       this.contacts = this.contacts.filter((c) => c.id !== id)
     } catch (e) {
-      console.log(e)
+      reportError(e)
     }
   }
 
@@ -112,6 +115,7 @@ class ContactStore {
       return r
     } catch (e) {
       console.log('[Error - addContact]', e)
+      reportError(e)
     }
   }
 
@@ -131,7 +135,7 @@ class ContactStore {
         return c
       })
     } catch (e) {
-      console.log(e)
+      reportError(e)
     }
   }
 
@@ -164,7 +168,7 @@ class ContactStore {
       if (!r) return
       console.log(r)
     } catch (e) {
-      console.log(e)
+      reportError(e)
     }
   }
 
@@ -174,7 +178,7 @@ class ContactStore {
       const r = await relay.post(`contacts/${id}/keys`, {})
       console.log('r', r)
     } catch (e) {
-      console.log(e)
+      reportError(e)
     }
   }
 
@@ -188,6 +192,7 @@ class ContactStore {
       this.getContacts()
     } catch (e) {
       console.log('could not create invite', e)
+      reportError(e)
     }
   }
 
@@ -212,6 +217,7 @@ class ContactStore {
       this.updateInvite(inv.invite)
     } catch (e) {
       console.log('could not pay invite', e)
+      reportError(e)
     }
   }
 
@@ -221,7 +227,7 @@ class ContactStore {
       const r = await invite.get('nodes/pricing')
       if (r && (r.price || r.price === 0)) return r.price
     } catch (e) {
-      console.log(e)
+      reportError(e)
     }
   }
 
@@ -234,7 +240,7 @@ class ContactStore {
       console.log(s)
       return s
     } catch (e) {
-      console.log(e)
+      reportError(e)
     }
   }
 
@@ -243,7 +249,7 @@ class ContactStore {
       const s = await relay.del(`subscription/${id}`)
       console.log(s)
     } catch (e) {
-      console.log(e)
+      reportError(e)
     }
   }
 
@@ -252,7 +258,7 @@ class ContactStore {
       const s = await relay.get(`subscriptions/contact/${contactID}`)
       return s
     } catch (e) {
-      console.log(e)
+      reportError(e)
     }
   }
 
@@ -264,7 +270,7 @@ class ContactStore {
       const s = await relay.put(`subscription/${id}`, v)
       return s
     } catch (e) {
-      console.log(e)
+      reportError(e)
     }
   }
 
@@ -273,7 +279,7 @@ class ContactStore {
       const s = await relay.put(`subscription/${sid}/${paused ? 'restart' : 'pause'}`)
       if (s) return true
     } catch (e) {
-      console.log(e)
+      reportError(e)
     }
   }
 

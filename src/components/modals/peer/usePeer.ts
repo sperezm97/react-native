@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import Peer from 'react-native-peerjs'
+import { reportError } from '../../../errorHelper'
 
 function rid() {
   return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
@@ -15,7 +16,7 @@ async function start() {
     })
     return { id, peer, localStream }
   } catch (e) {
-    console.log(e)
+    reportError(e)
     return {}
   }
 }
@@ -58,7 +59,7 @@ export function usePeer() {
           setLocalStreamID(lsurl)
         })
       } catch (e) {
-        console.log(e)
+        reportError(e)
       }
     })
 

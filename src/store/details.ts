@@ -3,6 +3,7 @@ import { persist } from 'mobx-persist'
 
 import { relay } from '../api'
 import { DEFAULT_HUB_API } from '../config'
+import { reportError } from '../errorHelper'
 import { Msg } from './msg'
 
 class DetailsStore {
@@ -41,7 +42,7 @@ class DetailsStore {
       this.balance = b || 0
       this.fullBalance = fb || 0
     } catch (e) {
-      console.log(e)
+      reportError(e)
     }
   }
 
@@ -57,7 +58,7 @@ class DetailsStore {
       this.localBalance = lb || 0
       this.remoteBalance = rb || 0
     } catch (e) {
-      console.log(e)
+      reportError(e)
     }
   }
 
@@ -76,7 +77,7 @@ class DetailsStore {
 
       this.usAmount = Number(final.toFixed(2)) || 0
     } catch (e) {
-      console.log(e)
+      reportError(e)
     }
   }
 
@@ -91,7 +92,7 @@ class DetailsStore {
       const r: Array<Msg> = await relay.get('payments')
       return r
     } catch (e) {
-      console.log(e)
+      reportError(e)
     }
   }
 
@@ -123,7 +124,7 @@ class DetailsStore {
 
       // return j
     } catch (e) {
-      console.log(e)
+      reportError(e)
 
       return false
     }
@@ -136,7 +137,7 @@ class DetailsStore {
       const r = await relay.get('logs')
       if (r) this.logs = r
     } catch (e) {
-      console.log(e)
+      reportError(e)
     }
   }
   @action
@@ -150,7 +151,7 @@ class DetailsStore {
       const r = await relay.get('app_versions')
       if (r) return r
     } catch (e) {
-      console.log(e)
+      reportError(e)
     }
   }
 

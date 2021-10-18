@@ -1,3 +1,4 @@
+import { reportError } from '../../errorHelper'
 import { realm } from './realm.instance'
 import { Update } from './types/update.interface'
 
@@ -44,6 +45,7 @@ export default (props: Update) => {
     console.log(`id: ${id}`)
     console.log(`body: ${body}`)
     console.log(`error: ${e}`)
+    reportError(e)
     return e
   }
 }

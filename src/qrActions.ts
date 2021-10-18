@@ -1,3 +1,5 @@
+import { reportError } from './errorHelper'
+
 export async function qrActions(j, ui, chats) {
   const action = j['action']
 
@@ -7,7 +9,9 @@ export async function qrActions(j, ui, chats) {
         const tribeParams = await chats.getTribeDetails(j.host, j.uuid)
 
         ui.setJoinTribeParams(tribeParams)
-      } catch (e) {}
+      } catch (e) {
+        reportError(e)
+      }
 
     default:
   }

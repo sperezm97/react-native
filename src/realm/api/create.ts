@@ -1,3 +1,4 @@
+import { reportError } from '../../errorHelper'
 import { realm } from './realm.instance'
 import { Create } from './types/create.interface'
 
@@ -24,6 +25,7 @@ export default (props: Create) => {
     console.log(`Error on creation with schema: ${schema}`)
     console.log(`body: ${body}`)
     console.log(`error: ${e}`)
+    reportError(e)
     return e
   }
 }

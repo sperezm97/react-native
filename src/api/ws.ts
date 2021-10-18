@@ -1,4 +1,5 @@
 import socketio from 'socket.io-client'
+import { reportError } from '../errorHelper'
 
 type WSMessage = { [k: string]: any }
 
@@ -51,10 +52,13 @@ export function connectWebSocket(
       if (handler) {
         handler(msg)
       }
-    } catch (e) {}
+    } catch (e) {
+      reportError(e)
+    }
   })
 
   io.on('error', function (e) {
     console.log('socketio error', e)
+    reportError(e)
   })
 }

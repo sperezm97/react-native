@@ -12,6 +12,7 @@ import Header from './header'
 import MsgList from './msgList'
 import BottomBar from './BottomBar/bottomBar'
 import Podcast from '../Podcast'
+import { reportError } from '../../errorHelper'
 
 export type RouteStatus = 'active' | 'inactive' | null
 
@@ -84,6 +85,7 @@ export default function Chat() {
     } catch (e) {
       console.log(e)
       setLoadingChat(false)
+      reportError(e)
     }
 
     const r = await chats.checkRoute(chat.id, myid)

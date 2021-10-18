@@ -6,6 +6,7 @@ import { useNavigation } from '@react-navigation/native'
 
 import { useTheme, useStores } from '../../../store'
 import { DEFAULT_TRIBE_SERVER } from '../../../config'
+import { reportError } from '../../../errorHelper'
 
 interface Tribe {
   name: string
@@ -131,11 +132,12 @@ async function getTribeDetails(host: string, uuid: string) {
         j.bots = bots
       } catch (e) {
         j.bots = []
+        reportError(e)
       }
     }
     return j
   } catch (e) {
-    console.log(e)
+    reportError(e)
   }
 }
 

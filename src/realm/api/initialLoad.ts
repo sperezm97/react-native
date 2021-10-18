@@ -1,3 +1,4 @@
+import { reportError } from '../../errorHelper'
 import { create, hasData, delet } from './'
 import { InitialLoad } from './types/initialLoad.interface'
 
@@ -60,6 +61,7 @@ export default (props: InitialLoad) => {
   } catch (e) {
     console.log(`Error at initial load.`)
     console.log(`error: ${e}`)
+    reportError(e)
     return {
       success: false,
       error: e,

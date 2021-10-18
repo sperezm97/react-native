@@ -15,6 +15,7 @@ import PhotoModal from '../../common/Modals/Media/Photo'
 import JoinTribe from '../../common/Modals/Tribe/JoinTribe'
 import AvatarEdit from '../../common/Avatar/AvatarEdit'
 import { setTint } from '../../common/StatusBar'
+import { reportError } from '../../../errorHelper'
 
 export default function Intro({ tribe }) {
   const { chats, meme } = useStores()
@@ -32,6 +33,7 @@ export default function Intro({ tribe }) {
       await upload(img.uri)
     } catch (e) {
       setUploading(false)
+      reportError(e)
     }
   }
 
@@ -238,9 +240,9 @@ function TribeActions({ tribe }) {
 
       navigation.navigate('Chat', { ...tribe.chat })
     } catch (e) {
-      console.log(e)
       navigation.navigate('Chat', { ...tribe.chat })
       setLoading(false)
+      reportError(e)
     } finally {
       setLoading(false)
     }

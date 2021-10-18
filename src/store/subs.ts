@@ -1,5 +1,6 @@
 import { observable, action } from 'mobx'
 import { relay } from '../api'
+import { reportError } from '../errorHelper'
 
 interface Sub {
   id: number
@@ -30,7 +31,7 @@ class SubStore {
       if (!r) return
       this.subs = r
     } catch (e) {
-      console.log(e)
+      reportError(e)
     }
   }
 

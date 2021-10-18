@@ -3,6 +3,7 @@ global.Buffer = global.Buffer || require('buffer').Buffer
 
 // import SecureStorage from 'react-native-secure-storage'
 import EncryptedStorage from 'react-native-encrypted-storage'
+import { reportError } from '../errorHelper'
 
 const KEY_SIZE = 2048
 const KEY_TAG = 'sphinx'
@@ -23,7 +24,9 @@ export async function generateKeyPair(): Promise<{
     await EncryptedStorage.setItem('private', priv)
 
     return { private: priv, public: pub }
-  } catch (e) {}
+  } catch (e) {
+    reportError(e)
+  }
 }
 
 export async function getPrivateKey() {
@@ -35,7 +38,7 @@ export async function getPrivateKey() {
 
     return item
   } catch (e) {
-    console.log(e)
+    reportError(e)
   }
 }
 
@@ -48,7 +51,7 @@ export async function setPrivateKey(priv) {
 
     return priv
   } catch (e) {
-    console.log(e)
+    reportError(e)
   }
 }
 
@@ -77,7 +80,7 @@ export async function decrypt(data) {
 
     return finalDec
   } catch (e) {
-    console.log(e)
+    reportError(e)
   }
   return ''
 }
@@ -86,7 +89,9 @@ export async function keyGen() {
   try {
     const keys = await RSAKeychain.generateKeys(KEY_TAG, KEY_SIZE)
     return pubuncert(keys.public)
-  } catch (e) {}
+  } catch (e) {
+    reportError(e)
+  }
   return ''
 }
 
@@ -94,7 +99,7 @@ export async function getPublicKey() {
   try {
     const pub = await RSAKeychain.getPublicKey(KEY_TAG)
   } catch (e) {
-    console.log(e)
+    reportError(e)
   }
 }
 
@@ -117,7 +122,9 @@ export async function encrypt(data, pubkey) {
       finalBuf = Buffer.concat([finalBuf, encBuf])
     })
     return finalBuf.toString('base64')
-  } catch (e) {}
+  } catch (e) {
+    reportError(e)
+  }
   return ''
 }
 
@@ -137,7 +144,9 @@ export async function decryptOld(data) {
       finalDec += dec
     })
     return finalDec
-  } catch (e) {}
+  } catch (e) {
+    reportError(e)
+  }
   return ''
 }
 
@@ -150,7 +159,7 @@ export async function testRSA() {
     const dec = await decrypt(enc)
     console.log('MESSAGE:', dec)
   } catch (e) {
-    console.log(e)
+    reportError(e)
   }
 }
 

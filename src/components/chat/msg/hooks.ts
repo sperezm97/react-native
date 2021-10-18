@@ -4,6 +4,7 @@ import { useStores } from '../../../store'
 import * as aes from '../../../crypto/aes'
 import { decode as atob } from 'base-64'
 import { isBase64 } from '../../../crypto/Base64'
+import { reportError } from '../../../errorHelper'
 
 const sess = 'all'
 
@@ -119,7 +120,7 @@ export function useCachedEncryptedFile(props, ldat, dispatchTrigger = false): Us
       //   setLoading(false)
       // }
     } catch (e) {
-      console.log(e)
+      reportError(e)
     }
   }
 
@@ -137,6 +138,6 @@ async function parsePaidMsg(id) {
     const data = await RNFetchBlob.fs.readFile(path, 'base64')
     return atob(data)
   } catch (e) {
-    console.log(e)
+    reportError(e)
   }
 }

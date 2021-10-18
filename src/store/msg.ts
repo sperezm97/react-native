@@ -21,6 +21,7 @@ import { updateRealmMsg } from '../realm/exports'
 import { persistMsgLocalForage } from './storage'
 import { uiStore } from './ui'
 import { userStore } from './user'
+import { reportError } from '../errorHelper'
 
 const DAYS = 90
 export const MAX_MSGS_PER_CHAT = 1000
@@ -117,7 +118,7 @@ class MsgStore {
   //     this.messages = orgMsgs(msgs)
   //     this.lastFetched = new Date().getTime()
   //   } catch (e) {
-  //     console.log(e)
+  //     reportError(e)
   //   }
   // }
 
@@ -213,6 +214,7 @@ class MsgStore {
       }
     } catch (e) {
       console.log('getMessages error', e)
+      reportError(e)
     }
   }
 
@@ -358,7 +360,7 @@ class MsgStore {
       }
     } catch (e) {
       showToastIfContactKeyError(e)
-      console.log(e)
+      reportError(e)
     }
   }
 
@@ -392,7 +394,7 @@ class MsgStore {
       this.gotNewMessage(r)
     } catch (e) {
       showToastIfContactKeyError(e)
-      console.log(e)
+      reportError(e)
     }
   }
 
@@ -428,7 +430,7 @@ class MsgStore {
       if (contact_id || chat_id) this.gotNewMessage(r)
       if (r.amount) detailsStore.addToBalance(r.amount * -1)
     } catch (e) {
-      console.log(e)
+      reportError(e)
     }
   }
 
@@ -444,7 +446,7 @@ class MsgStore {
       if (!r) return
       if (r.amount) detailsStore.addToBalance(r.amount * -1)
     } catch (e) {
-      console.log(e)
+      reportError(e)
     }
   }
 
@@ -460,7 +462,7 @@ class MsgStore {
 
       await relay.post('purchase', v)
     } catch (e) {
-      console.log(e)
+      reportError(e)
     }
   }
 
@@ -481,7 +483,7 @@ class MsgStore {
       if (!r) return
       this.gotNewMessage(r)
     } catch (e) {
-      console.log(e)
+      reportError(e)
     }
   }
 
@@ -493,7 +495,7 @@ class MsgStore {
       return r
       // r = {invoice: payment_request}
     } catch (e) {
-      console.log(e)
+      reportError(e)
     }
   }
 
@@ -512,7 +514,7 @@ class MsgStore {
       if (!r) return
       this.invoicePaid({ ...r, amount })
     } catch (e) {
-      console.log(e)
+      reportError(e)
     }
   }
 

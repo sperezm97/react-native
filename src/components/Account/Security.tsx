@@ -21,6 +21,7 @@ import ActionMenu from '../common/ActionMenu'
 import BackHeader from '../common/BackHeader'
 import Typography from '../common/Typography'
 import { setTint } from '../common/StatusBar'
+import { reportError } from '../../errorHelper'
 
 export default function Security() {
   const modalizeRef = useRef<Modalize>(null)
@@ -83,6 +84,7 @@ export default function Security() {
       Toast.showWithGravity('Export Keys Copied.', TOAST_DURATION, Toast.CENTER)
     } catch (e) {
       showError(e.message || e)
+      reportError(e)
     }
   }
 

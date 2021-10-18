@@ -27,6 +27,7 @@ import ChatOptions from '../../common/Dialogs/ChatOptions'
 import { styles } from './styles'
 import { RecordingBottomBar } from './RecordingBottomBar'
 import { ThemeStore } from '../../../store/theme'
+import { reportError } from '../../../errorHelper'
 
 let dirs = RNFetchBlob.fs.dirs
 
@@ -197,6 +198,7 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
       }
     } catch (e) {
       console.log(e || 'ERROR')
+      reportError(e)
     }
   }
 
@@ -213,7 +215,7 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
       setRecordSecs('0:00')
       if (cb && !tooShort) cb(result)
     } catch (e) {
-      console.log(e)
+      reportError(e)
     }
   }
 
@@ -303,6 +305,7 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
       openGiphyModal()
     } catch (e) {
       console.warn(e)
+      reportError(e)
     }
   }
 

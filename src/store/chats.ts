@@ -7,6 +7,7 @@ import { relay } from '../api'
 import { constants } from '../constants'
 import { detailsStore } from './details'
 import * as api from '../api'
+import { reportError } from '../errorHelper'
 /*
 disconneted - socket?
 03eab50cef61b9360bc24f0fd8a8cb3ebd7cec226d9f6fd39150594e0da8bd58a7
@@ -117,7 +118,9 @@ export class ChatStore {
       let meta
       try {
         meta = JSON.parse(String(c.meta))
-      } catch (e) {}
+      } catch (e) {
+        reportError(e)
+      }
       return { ...c, meta }
     }
     return c
@@ -406,7 +409,7 @@ export class ChatStore {
 
       return true
     } catch (e) {
-      console.log(e)
+      reportError(e)
     }
   }
 
@@ -423,12 +426,13 @@ export class ChatStore {
           j.bots = bots
         } catch (e) {
           j.bots = []
+          reportError(e)
         }
       }
       return j
     } catch (e) {
       api.invite.post('notify', { error: e }, '', { rawValue: true })
-      console.log(e)
+      reportError(e)
     }
   }
 
@@ -468,6 +472,7 @@ export class ChatStore {
       return j
     } catch (e) {
       console.log('error loading podcast', e)
+      reportError(e)
       return null
     }
   }

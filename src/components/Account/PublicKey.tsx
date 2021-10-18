@@ -10,6 +10,7 @@ import { TOAST_DURATION } from '../../constants'
 import QRCode from '../utils/qrcode'
 import Button from '../common/Button'
 import BackHeader from '../common/BackHeader'
+import { reportError } from '../../errorHelper'
 
 export default function PubKey() {
   const { user } = useStores()
@@ -23,7 +24,9 @@ export default function PubKey() {
   async function share() {
     try {
       await Share.open({ message: user.publicKey })
-    } catch (e) {}
+    } catch (e) {
+      reportError(e)
+    }
   }
 
   return useObserver(() => (

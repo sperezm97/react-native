@@ -15,6 +15,7 @@ import ImageDialog from '../../Dialogs/ImageDialog'
 import AvatarEdit from '../../Avatar/AvatarEdit'
 // import AddMembers from '../../../Tribes/Members/AddMembers'
 import TribeTags from '../../../Tribes/Tribe/TribeTags'
+import { reportError } from '../../../../errorHelper'
 
 export default function AddTribe() {
   const { ui, chats } = useStores()
@@ -169,6 +170,7 @@ const AddPhoto = ({ finish }) => {
       await upload(img.uri)
     } catch (e) {
       setUploading(false)
+      reportError(e)
     }
   }
 

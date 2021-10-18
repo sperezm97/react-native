@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import { View, StyleSheet } from 'react-native'
 // import {Player} from '@react-native-community/audio-toolkit'
 import { IconButton } from 'react-native-paper'
+import { reportError } from '../../../errorHelper'
 import ARP from './audioRecorderPlayer'
 
 let nonStateSeconds = 0
@@ -48,6 +49,7 @@ export default function AudioPlayer(props) {
       }
     } catch (e) {
       console.log(e)
+      reportError(e)
     }
   }
   return (

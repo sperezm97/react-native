@@ -7,6 +7,7 @@ import Toast from 'react-native-simple-toast'
 
 import { useTheme } from '../../../store'
 import QRCode from '../../utils/qrcode'
+import { reportError } from '../../../errorHelper'
 
 export default function ShowRawInvoice({ amount, payreq, paid }) {
   const theme = useTheme()
@@ -17,7 +18,9 @@ export default function ShowRawInvoice({ amount, payreq, paid }) {
   async function share() {
     try {
       await Share.open({ message: payreq })
-    } catch (e) {}
+    } catch (e) {
+      reportError(e)
+    }
   }
   const { height, width } = Dimensions.get('window')
   const h = height - 280

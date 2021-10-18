@@ -1,3 +1,4 @@
+import { reportError } from '../../errorHelper'
 import { realm } from './realm.instance'
 import { Delete } from './types/delete.interface'
 
@@ -33,6 +34,7 @@ export default (props: Delete) => {
     console.log(`Error erasing in the schema: ${schema}`)
     console.log(`id: ${id}`)
     console.log(`error: ${e}`)
+    reportError(e)
     return e
   }
 }

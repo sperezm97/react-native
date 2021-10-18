@@ -11,6 +11,7 @@ import * as e2e from '../../../crypto/e2e'
 import * as utils from '../../utils/utils'
 import PIN, { userPinCode } from '../../utils/pin'
 import ModalWrap from './ModalWrap'
+import { reportError } from '../../../errorHelper'
 
 export default function BackupKeys({ visible, close }) {
   const { user, contacts } = useStores()
@@ -57,6 +58,7 @@ export default function BackupKeys({ visible, close }) {
       Toast.showWithGravity('Export Keys Copied.', TOAST_DURATION, Toast.TOP)
     } catch (e) {
       showError(e.message || e)
+      reportError(e)
     } finally {
       await utils.sleep(500)
       close()

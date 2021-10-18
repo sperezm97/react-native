@@ -12,6 +12,7 @@ import { useStores, useTheme } from '../../store'
 import { SCREEN_HEIGHT } from '../../constants'
 import NumKey from './numkey'
 import Typography from '../common/Typography'
+import { reportError } from '../../errorHelper'
 
 const ns = [1, 2, 3, 4, 5, 6]
 export default function PIN(props) {
@@ -167,6 +168,7 @@ export async function userPinCode(): Promise<string> {
     if (pin) return pin
     else return ''
   } catch (e) {
+    reportError(e)
     return ''
   }
 }

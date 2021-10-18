@@ -14,6 +14,7 @@ import ModalWrap from './ModalWrap'
 import ModalHeader from './ModalHeader'
 import Button from '../Button'
 import Typography from '../Typography'
+import { reportError } from '../../../errorHelper'
 
 export default function ShareGroup() {
   const { ui, chats } = useStores()
@@ -27,7 +28,9 @@ export default function ShareGroup() {
   async function share() {
     try {
       await Share.open({ message: uuid })
-    } catch (e) {}
+    } catch (e) {
+      reportError(e)
+    }
   }
 
   function close() {

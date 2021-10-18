@@ -17,6 +17,7 @@ import DialogWrap from '../common/Dialogs/DialogWrap'
 import Form from '../form'
 import { me } from '../form/schemas'
 import Typography from '../common/Typography'
+import { reportError } from '../../errorHelper'
 
 export default function Account() {
   const { user, contacts, meme } = useStores()
@@ -35,6 +36,7 @@ export default function Account() {
       await upload(img.uri)
     } catch (e) {
       setUploading(false)
+      reportError(e)
     }
   }
 

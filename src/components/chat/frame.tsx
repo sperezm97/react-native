@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { Button } from 'react-native-paper'
 import { useStores } from '../../store'
 import { randString } from '../../crypto/rand'
+import { reportError } from '../../errorHelper'
 
 export default function Webview({ url }) {
   const { user, msg, auth } = useStores()
@@ -64,6 +65,7 @@ export default function Webview({ url }) {
       }
     } catch (e) {
       console.log(e)
+      reportError(e)
     }
   }
 

@@ -1,3 +1,5 @@
+import { reportError } from '../errorHelper'
+
 type RelayMethod = (url: string, data?: any, encoding?: string, options?: APIOptions) => any
 export default class API {
   constructor(url: string, tokenKey?: string, tokenValue?: string, resetIPCallback?: Function) {
@@ -94,6 +96,7 @@ function addMethod(m: string, rootUrl: string): RelayMethod {
         return res
       }
     } catch (e) {
+      reportError(e)
       // 20 is an "abort" i guess
       // console.warn(e, 'url', url)
       if (options?.exceptionCallback && typeof options?.exceptionCallback === 'function') {

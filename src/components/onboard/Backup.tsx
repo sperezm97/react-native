@@ -12,6 +12,7 @@ import * as e2e from '../../crypto/e2e'
 import * as utils from '../utils/utils'
 import PIN, { userPinCode } from '../utils/pin'
 import Slider from '../utils/slider'
+import { reportError } from '../../errorHelper'
 
 export default function Backup(props) {
   const { onDone, z, show } = props
@@ -59,6 +60,7 @@ export default function Backup(props) {
       Toast.showWithGravity('Export Keys Copied.', TOAST_DURATION, Toast.TOP)
     } catch (e) {
       showError(e.message || e)
+      reportError(e)
     } finally {
       await utils.sleep(500)
       onDone()

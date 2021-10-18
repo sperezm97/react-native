@@ -4,6 +4,7 @@ import { DEFAULT_TRIBE_SERVER } from '../config'
 import { chatStore } from './chats'
 import { relay } from '../api'
 import { detailsStore } from './details'
+import { reportError } from '../errorHelper'
 
 export const NUM_SECONDS = 60
 
@@ -55,7 +56,9 @@ export class FeedStore {
       let meta
       try {
         meta = JSON.parse(text)
-      } catch (e) {}
+      } catch (e) {
+        reportError(e)
+      }
       if (meta) {
         chatStore.updateChatMeta(chat_id, meta)
       }
@@ -88,7 +91,7 @@ export class FeedStore {
       const j = await r.json()
       return j
     } catch (e) {
-      console.log(e)
+      reportError(e)
     }
   }
 }

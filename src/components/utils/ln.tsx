@@ -1,3 +1,4 @@
+import { reportError } from '../../errorHelper'
 import * as ln from './decode'
 
 const lnPrefixes = ['ln', 'LIGHTNING:ln']
@@ -20,6 +21,8 @@ export function parseLightningInvoice(data) {
   const theData = removeLightningPrefix(data)
   try {
     inv = ln.decode(theData.toLowerCase())
-  } catch (e) {}
+  } catch (e) {
+    reportError(e)
+  }
   return inv
 }

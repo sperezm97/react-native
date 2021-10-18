@@ -20,6 +20,7 @@ import * as localForage from 'localforage'
 import { getRealmMessages, updateRealmMsg } from '../realm/exports'
 import { hasData } from '../realm/exports'
 import { DEBOUNCE_TIME, persistMsgLocalForage } from './storage'
+import { reportError } from '../errorHelper'
 
 const strg = {
   ios: AsyncStorage,
@@ -51,6 +52,7 @@ async function hydrateMessageStoreFromLocalforage() {
       msgStore.lastFetched = rs.lastFetched
     } catch (e) {
       console.log('LOCALFORAGE ERROR', e)
+      reportError(e)
     }
   } else {
     await hydrate('msg', msgStore)

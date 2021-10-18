@@ -13,6 +13,7 @@ import ModalHeader from '../ModalHeader'
 // import QRCode from '../../../utils/qrcode'
 import Button from '../../Button'
 import Typography from '../../Typography'
+import { reportError } from '../../../../errorHelper'
 
 export default function RawInvoice({ visible, onClose, amount, payreq, paid }) {
   const theme = useTheme()
@@ -25,7 +26,9 @@ export default function RawInvoice({ visible, onClose, amount, payreq, paid }) {
   async function share() {
     try {
       await Share.open({ message: payreq })
-    } catch (e) {}
+    } catch (e) {
+      reportError(e)
+    }
   }
 
   return (

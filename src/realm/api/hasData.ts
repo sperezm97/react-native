@@ -1,4 +1,5 @@
 import { get } from '.'
+import { reportError } from '../../errorHelper'
 import { HasData } from './types/hasData.interface'
 
 /**
@@ -21,6 +22,7 @@ export default () => {
   } catch (e) {
     console.log(`Error at checking if data exist`)
     console.log(`error: ${e}`)
+    reportError(e)
     return e
   }
 }

@@ -11,6 +11,7 @@ import { useStores } from '../../store'
 import { SCREEN_WIDTH, TOAST_DURATION } from '../../constants'
 import ModalWrap from './modalWrap'
 import Header from './modalHeader'
+import { reportError } from '../../errorHelper'
 
 export default function ShareInviteWrap({ visible }) {
   const { ui } = useStores()
@@ -37,7 +38,9 @@ function ShareInvite({ close }) {
   async function share() {
     try {
       await Share.open({ message: ui.shareInviteString })
-    } catch (e) {}
+    } catch (e) {
+      reportError(e)
+    }
   }
 
   const hasInvite = ui.shareInviteString ? true : false

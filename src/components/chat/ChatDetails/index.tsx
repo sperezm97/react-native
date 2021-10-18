@@ -20,6 +20,7 @@ import Avatar from '../../common/Avatar'
 import AvatarEdit from '../../common/Avatar/AvatarEdit'
 import Typography from '../../common/Typography'
 import InputAccessoryView from '../../common/Accessories/InputAccessoryView'
+import { reportError } from '../../../errorHelper'
 
 export default function ChatDetails({ route }) {
   const { ui, chats, user, contacts, meme } = useStores()
@@ -49,6 +50,7 @@ export default function ChatDetails({ route }) {
       await upload(img.uri)
     } catch (e) {
       setUploading(false)
+      reportError(e)
     }
   }
 

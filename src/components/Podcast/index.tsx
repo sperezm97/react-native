@@ -22,6 +22,7 @@ import Typography from '../common/Typography'
 import Button from '../common/Button'
 import BoostButton from '../common/Button/BoostButton'
 import BoostControls from '../common/Button/BoostControls'
+import { reportError } from '../../errorHelper'
 
 export default function Podcast({ pod, chat, onBoost, podError }) {
   const theme = useTheme()
@@ -311,7 +312,9 @@ export default function Podcast({ pod, chat, onBoost, podError }) {
             alias: m.sender_alias || (m.sender === myid ? user.alias : ''),
             date: m.date,
           })
-      } catch (e) {}
+      } catch (e) {
+        reportError(e)
+      }
     })
     replayMsgs.current = msgsforReplay
     modalizeRef.current?.open()

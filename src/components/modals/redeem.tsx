@@ -6,6 +6,7 @@ import { Button, Portal } from 'react-native-paper'
 import { useStores } from '../../store'
 import ModalWrap from './modalWrap'
 import Header from './modalHeader'
+import { reportError } from '../../errorHelper'
 
 export default function RedeemWrap({ visible }) {
   const { ui } = useStores()
@@ -43,6 +44,7 @@ function Redeem({ close }) {
       close()
     } catch (e) {
       close()
+      reportError(e)
     }
     setLoading(false)
   }

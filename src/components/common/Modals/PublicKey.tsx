@@ -14,6 +14,7 @@ import ModalHeader from './ModalHeader'
 import Button from '../Button'
 import Empty from '../Empty'
 import Typography from '../Typography'
+import { reportError } from '../../../errorHelper'
 
 export default function PubKey({ visible, close, pubkey }) {
   const theme = useTheme()
@@ -26,7 +27,9 @@ export default function PubKey({ visible, close, pubkey }) {
   async function share() {
     try {
       await Share.open({ message: pubkey })
-    } catch (e) {}
+    } catch (e) {
+      reportError(e)
+    }
   }
 
   return useObserver(() => (

@@ -16,6 +16,7 @@ import QR from '../common/Accessories/QR'
 import PinCodeModal from '../common/Modals/PinCode'
 import Typography from '../common/Typography'
 import { SCREEN_HEIGHT } from '../../constants'
+import { reportError } from '../../errorHelper'
 
 type RouteParams = {
   Onboard: {
@@ -105,6 +106,7 @@ export default function Code(props) {
       user.reportError("Code Component - checkInvite function isn't keys or ip", { code: theCode })
     } catch (e) {
       user.reportError('Code component - checkInvite function - try catch of checking keys prefix', e)
+      reportError(e)
     }
 
     const isCorrect = theCode.length === 40 && theCode.match(/[0-9a-fA-F]+/g)

@@ -5,6 +5,7 @@ import { Chat } from '../../store/chats'
 import { Contact } from '../../store/contacts'
 import { constants } from '../../constants'
 import { useStores } from '../../store'
+import { reportError } from '../../errorHelper'
 
 const conversation = constants.chat_types.conversation
 
@@ -82,7 +83,7 @@ export async function initPicSrc() {
         await RNFetchBlob.fs.mkdir(path)
       }
     } catch (e) {
-      console.log(e)
+      reportError(e)
     }
   })
 }
@@ -92,7 +93,9 @@ export async function contactPicSrc(id): Promise<any> {
   try {
     const exists = await RNFetchBlob.fs.exists(path)
     if (exists) return { uri: path }
-  } catch (e) {}
+  } catch (e) {
+    reportError(e)
+  }
   return null
 }
 
@@ -105,6 +108,7 @@ export async function chatPicSrc(id): Promise<any> {
     }
   } catch (e) {
     console.log('error chatPicSrc', e)
+    reportError(e)
   }
   return null
 }
@@ -116,6 +120,7 @@ export async function createContactPic(id, uri): Promise<any> {
     return path
   } catch (e) {
     console.log('error createContactPic', e)
+    reportError(e)
   }
 }
 
@@ -126,5 +131,6 @@ export async function createChatPic(id, uri): Promise<any> {
     return path
   } catch (e) {
     console.log('error createChatPic', e)
+    reportError(e)
   }
 }

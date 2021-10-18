@@ -6,6 +6,7 @@ import { constants, constantCodes } from '../../constants'
 import { Msg, BoostMsg } from '../msg'
 import { Contact } from '../contacts'
 import { parseLDAT, urlBase64FromAscii } from '../utils/ldat'
+import { reportError } from '../../errorHelper'
 
 const tribe = constants.chat_types.tribe
 
@@ -240,6 +241,7 @@ export function useParsedJsonMsg(message_content: string) {
     const r = JSON.parse(message_content)
     return r
   } catch (e) {
+    reportError(e)
     return {}
   }
 }
@@ -252,6 +254,7 @@ export function useParsedClipMsg(message_content: string) {
     const r = JSON.parse(arr[1])
     return r
   } catch (e) {
+    reportError(e)
     return {}
   }
 }
@@ -266,6 +269,7 @@ export function useParsedGiphyMsg(message_content: string) {
     const thumb = r.url.replace(/giphy.gif/g, '200w.gif')
     return { ...r, aspectRatio, thumb }
   } catch (e) {
+    reportError(e)
     return {}
   }
 }

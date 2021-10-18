@@ -1,3 +1,4 @@
+import { reportError } from '../../errorHelper'
 import { realm } from './realm.instance'
 import { Get } from './types/get.interface'
 
@@ -13,6 +14,7 @@ export default (props: Get) => {
   } catch (e) {
     console.log(`Error on getting data from schema: ${schema}`)
     console.log(`error: ${e}`)
+    reportError(e)
     return e
   }
 }
