@@ -11,6 +11,7 @@ type transformPaymentsParams = {
  * @returns the sum of amounts in a object with the shape of `Msg[]`
  */
 export const transformPayments = ({ payments, userId, chats }: transformPaymentsParams): Msg[] => {
+  if (!payments) return []
   return payments
     .filter((payment) => {
       const chat = chats.chats.find((c) => c.id === payment.chat_id)

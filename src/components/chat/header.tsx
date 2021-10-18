@@ -94,7 +94,7 @@ const Header = ({ chat, status, tribeParams, podId, pricePerMinute }: HeaderProp
   const { earned, spent } = useMemoizedIncomingPaymentsFromPodcast(podId, user.myid)
   const [spentInMessagesBoost] = useMemo(
     () => transformPayments({ payments, userId: user.myid, chats }).filter((c) => c.chat_id === chat.id),
-    [payments.length, user.myid, chats]
+    [payments, user.myid, chats] // formerly payments.length
   )
 
   // Fixes the issue of showing NaN when spentInMessagesBoost returns null
