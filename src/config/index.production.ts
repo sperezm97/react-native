@@ -7,7 +7,7 @@ const config: Config = {
     api: 'https://hub.n2n2.chat/api/v1/',
   },
   shop: {
-    api: 'https://shop.n2n2.chat/api/v1/',
+    api: 'https://shop.getzion.com/api/v1/',
   },
   tribes: {
     server: 'communities.getzion.com',
