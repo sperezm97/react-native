@@ -26,13 +26,15 @@ export default function OwnedTribes() {
   }, [ui.newTribeModal, isFocused])
 
   function fetchTribes() {
-    chats.getTribes().then(() => setLoading(false))
+    chats.getTribes().then(() => {
+      setLoading(false)
+      setRefreshing(false)
+    })
   }
 
   function onRefresh() {
     setRefreshing(true)
     fetchTribes()
-    setRefreshing(false)
   }
 
   return useObserver(() => {
